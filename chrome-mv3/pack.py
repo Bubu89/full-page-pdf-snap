@@ -65,6 +65,14 @@ stamp = datetime.now()
     f"Testen    : Ordner extension\\ ueber chrome://extensions laden\n",
     encoding="utf-8")
 
+# Store-Assets mitliefern, damit im Upload-Ordner alles beisammen liegt
+assets_src = HERE / "store-assets"
+if assets_src.exists():
+    assets_dst = UPLOAD / "store-assets"
+    assets_dst.mkdir(exist_ok=True)
+    for a in sorted(assets_src.glob("*.png")):
+        shutil.copy(a, assets_dst / a.name)
+
 # Aenderungsdatum des Ordners auf jetzt setzen - macht im Explorer sofort
 # sichtbar, wie aktuell der Stand ist.
 now = stamp.timestamp()

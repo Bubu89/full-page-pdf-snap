@@ -1,5 +1,36 @@
 # Changelog
 
+## 2.2.0-chrome — 2026-07-27 (Chrome-MV3-Zweig)
+
+**Was:** Portierung nach Chrome Manifest V3 in `chrome-mv3/`, plus Verbesserungen
+an der Erfassung von App-Layouts, die auch der Firefox-Fassung zugutekommen.
+
+**Warum:** Chrome nimmt seit 2025 nur noch MV3 an. Beim Testen zeigten sich drei
+Laufzeitfehler und zwei inhaltliche Schwaechen, die statische Pruefung nicht
+findet.
+
+**Wie:**
+- `compat.js` kapselt die fehlenden Service-Worker-APIs: `OffscreenCanvas` statt
+  `document.createElement`, `createImageBitmap` statt `new Image`, `data:`-URL
+  statt Blob-URL. `port.py` erzeugt den Zweig reproduzierbar und bricht ab, wenn
+  eine Ersetzung nicht mehr greift.
+- Drossel auf 550 ms fuer `captureVisibleTab` — Chrome erlaubt nur zwei Aufrufe
+  pro Sekunde, Firefox kennt die Grenze nicht.
+- Container-Auswahl nach Breite statt nach Scroll-Ueberhang; eine schmale
+  Navigationsspalte gewinnt sonst gegen den Lesebereich.
+- Neue Einstellung `appLayout` (Standard `context`): Menue und Seitenleiste
+  erscheinen einmal oben statt in jedem Abschnitt, die frei werdende Flaeche
+  bekommt die aus dem Screenshot abgetastete Hintergrundfarbe.
+- Scrollbare Nebenbereiche werden eigenstaendig durchgescrollt; die Seitenhoehe
+  richtet sich nach dem laengsten Bereich, damit nichts abgeschnitten wird.
+- `captureScale` von 1.5 auf 1.0: das PDF zeigt die Seite so, wie sie am
+  Bildschirm steht. Hoehere Werte bleiben waehlbar, mit benanntem Zielkonflikt.
+
+**Resultat:** Aufnahme auf Gmail laeuft durch, ohne wiederholtes Menue und ohne
+sichtbare Farbkante. Geprueft mit acht Layout-Typen, neun Ende-Erkennungsfaellen
+und pixelweiser Kontrolle des Zusammenfuegens — siehe `chrome-mv3/tests/`.
+
+
 ## 2.2.0 — 2026-07-21 (Keine Zwischen-Nachrichten mehr)
 
 User-Feedback: Die Nachricht "Speichere PDF (X Seiten) ..." wirkte verwirrend, weil danach direkt die finale Nachricht kam (oder auch nicht).
