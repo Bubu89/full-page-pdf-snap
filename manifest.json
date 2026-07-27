@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Full Page PDF Snap",
   "short_name": "PDFSnap",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Speichert eine komplette Webseite als hochaufloesendes PDF. Ausschliesslich lokale Verarbeitung — kein Serverzugriff, keine Datenerhebung, keine Uebermittlung an den Anbieter.",
   "author": "Bubu89",
   "browser_specific_settings": {
