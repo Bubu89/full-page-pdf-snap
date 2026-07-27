@@ -1,0 +1,89 @@
+{
+  "extName": {
+    "message": "Full Page PDF Snap – Save Webpage as PDF"
+  },
+  "extDescription": {
+    "message": "Save any webpage as a single high-resolution PDF. Auto-scrolls the whole page — no cropping, no print dialog."
+  },
+  "actionTitle": {
+    "message": "Full Page PDF Snap — save the whole page as PDF (Ctrl+Shift+Y)"
+  },
+  "commandCapture": {
+    "message": "Save the whole page as PDF"
+  },
+  "popupHeading": {
+    "message": "Save the whole page as PDF"
+  },
+  "popupCapture": {
+    "message": "Capture now"
+  },
+  "popupShortcut": {
+    "message": "Shortcut:"
+  },
+  "popupSettings": {
+    "message": "Settings"
+  },
+  "popupRunning": {
+    "message": "Capturing…"
+  },
+  "popupDone": {
+    "message": "Saved."
+  },
+  "busy": {
+    "message": "A capture is already running"
+  },
+  "noTab": {
+    "message": "No active tab."
+  },
+  "internalPage": {
+    "message": "Internal browser page (settings, store, add-on pages) — please switch to a normal website (https://…)."
+  },
+  "protectedPage": {
+    "message": "The browser protects this page. Please switch to a normal website (e.g. wikipedia.org)."
+  },
+  "noScripts": {
+    "message": "This page does not allow extension scripts."
+  },
+  "errTitle": {
+    "message": "Full Page PDF Snap — error"
+  },
+  "hintTitle": {
+    "message": "Full Page PDF Snap — note"
+  },
+  "incompleteHint": {
+    "message": "Parts of the page could not be captured completely:"
+  },
+  "menuCapture": {
+    "message": "Save the whole page as PDF"
+  },
+  "menuSaveAs": {
+    "message": "Ask where to save every time"
+  },
+  "menuShowFolder": {
+    "message": "After saving: show folder"
+  },
+  "menuOpenPdf": {
+    "message": "After saving: open PDF"
+  },
+  "menuHideSticky": {
+    "message": "Hide sticky elements"
+  },
+  "menuQuality": {
+    "message": "Capture quality"
+  },
+  "menuScale10": {
+    "message": "1.0x — as on screen"
+  },
+  "menuScale125": {
+    "message": "1.25x — balanced"
+  },
+  "menuScale15": {
+    "message": "1.5x — sharp"
+  },
+  "menuScale20": {
+    "message": "2.0x — maximum"
+  },
+  "menuAllSettings": {
+    "message": "All settings…"
+  }
+}

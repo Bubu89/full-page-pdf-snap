@@ -21,7 +21,8 @@ UPLOAD = Path("/mnt/c/Users/HOLO/Documents/FullPagePDFSnap_Firefox/upload")
 
 # Nur diese Dateien gehoeren ins Paket
 INCLUDE = ["manifest.json", "background.html", "background.js", "content.js",
-           "popup.html", "popup.js", "options.html", "options.js", "pdf-writer.js"]
+           "popup.html", "popup.js", "options.html", "options.js", "pdf-writer.js",
+           "i18n.js"]
 ICONS = ["icon-16.png", "icon-32.png", "icon-48.png", "icon-64.png",
          "icon-128.png", "icon.svg"]
 
@@ -46,6 +47,12 @@ with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
         src = HERE / "icons" / i
         if src.exists():
             z.write(src, f"icons/{i}")
+            count += 1
+    # Sprachdateien - ohne sie faellt der Store auf die Manifest-Platzhalter zurueck
+    for loc in sorted((HERE / "_locales").iterdir()):
+        msg = loc / "messages.json"
+        if msg.exists():
+            z.write(msg, f"_locales/{loc.name}/messages.json")
             count += 1
 
 digest = hashlib.sha256(zip_path.read_bytes()).hexdigest()

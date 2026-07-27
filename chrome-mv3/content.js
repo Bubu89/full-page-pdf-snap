@@ -196,11 +196,44 @@
 
   function collectSideScrollers(state) {
     sideScrollerEls.length = 0;
-    if (state.isWindow) return [];
 
     const main = state.root;
-    const mainRect = main.getBoundingClientRect();
     const out = [];
+
+    /* Bei Fenster-Scroll gibt es keinen inneren Hauptbereich, aber sehr wohl
+     * scrollbare Navigationsspalten - Dokumentations-Seiten legen ihre
+     * Navigation als festes, eigenstaendig scrollendes Element an. Ohne
+     * diesen Zweig landet nur der sichtbare Ausschnitt im PDF.
+     */
+    if (state.isWindow) {
+      for (const el of document.querySelectorAll("*")) {
+        const delta = el.scrollHeight - el.clientHeight;
+        if (delta <= 4) continue;
+        let cs;
+        try { cs = getComputedStyle(el); } catch (_) { continue; }
+        if (cs.position !== "fixed" && cs.position !== "sticky") continue;
+        if (!/auto|scroll|overlay/.test(cs.overflowY)) continue;
+        let r;
+        try { r = el.getBoundingClientRect(); } catch (_) { continue; }
+        if (!isSideNavigation(r)) continue;
+        if (out.some(o => o.el.contains(el))) continue;
+        out.push({
+          el,
+          x: Math.max(0, Math.round(r.left)), y: Math.max(0, Math.round(r.top)),
+          w: Math.round(Math.min(r.width, window.innerWidth - Math.max(0, r.left))),
+          h: Math.round(Math.min(r.height, window.innerHeight - Math.max(0, r.top))),
+          max: delta
+        });
+      }
+      out.sort((a, b) => b.max - a.max);
+      const capped = out.slice(0, 2);
+      capped.forEach(o => sideScrollerEls.push(o.el));
+      log("Scrollbare Navigationsspalten:",
+          capped.map(o => `${tagOf(o.el)} ${o.w}x${o.h} max=${o.max}`).join(" | ") || "keine");
+      return capped.map(({ el, ...rest }) => rest);
+    }
+
+    const mainRect = main.getBoundingClientRect();
 
     const rejected = [];   // fuer die Diagnose im Log
     for (const el of document.querySelectorAll("*")) {

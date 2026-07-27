@@ -170,6 +170,45 @@ async function captureFullPage(tab) {
   }
 }
 
+/* Prueft je Scroll-Ebene, ob Anfang und Ende tatsaechlich erfasst wurden.
+ *
+ * Eine Aufnahme kann aus drei Gruenden unvollstaendig sein, ohne dass es im
+ * fertigen PDF auffiele: der Anfang fehlt (Startposition nicht erreicht), das
+ * Ende fehlt (Schleife brach zu frueh ab) oder mittendrin klafft eine Luecke
+ * (Sprungweite groesser als das Fenster). Alle drei sind hier pruefbar, weil
+ * die tatsaechlichen Scroll-Positionen bekannt sind.
+ *
+ * Gibt {ok, meldung} zurueck - die Meldung nennt die Ebene beim Namen.
+ */
+function verifyCoverage(label, positions, viewH, maxScroll) {
+  if (!positions.length) {
+    return { ok: false, meldung: `${label}: keine Aufnahme` };
+  }
+  const ys = positions.slice().sort((a, b) => a - b);
+  const startOk = ys[0] <= 2;
+  const endOk = ys[ys.length - 1] >= maxScroll - 2;
+
+  const gaps = [];
+  let reach = 0;
+  for (const y of ys) {
+    if (y > reach + 2) gaps.push([Math.round(reach), Math.round(y)]);
+    reach = Math.max(reach, y + viewH);
+  }
+  if (reach < maxScroll + viewH - 2) {
+    gaps.push([Math.round(reach), Math.round(maxScroll + viewH)]);
+  }
+
+  const ok = startOk && endOk && gaps.length === 0;
+  const teile = [
+    `Anfang ${startOk ? "ok" : "FEHLT"}`,
+    `Ende ${endOk ? "ok" : "FEHLT"}`,
+    gaps.length ? `${gaps.length} Luecke(n) ${JSON.stringify(gaps.slice(0, 3))}` : "lueckenlos",
+    `${positions.length} Aufnahmen`
+  ];
+  log(`Abdeckung ${label}: ${teile.join(", ")}`);
+  return { ok, meldung: `${label}: ${teile.slice(0, 3).join(", ")}` };
+}
+
 async function captureFullPageInner(tab, settings) {
   await ensureContentInjected(tab.id);
 
@@ -350,6 +389,25 @@ async function captureFullPageInner(tab, settings) {
   }
 
   log("Capture loop done. Segments=", segments.length, "finalTotalH=", totalH);
+
+  // --- Vollstaendigkeit je Scroll-Ebene pruefen ----------------------------
+  const coverage = [];
+  coverage.push(verifyCoverage("Hauptbereich", segments.map(s2 => s2.y),
+                               layout.viewportH, maxScroll));
+  for (let i = 0; i < sideCaptures.length; i++) {
+    const side = sideCaptures[i];
+    coverage.push(verifyCoverage(`Nebenbereich ${i + 1}`,
+                                 [0].concat(side.shots.map(s2 => s2.y)),
+                                 side.rect.h, side.rect.max));
+  }
+  const unvollstaendig = coverage.filter(c => !c.ok);
+  if (unvollstaendig.length) {
+    log("WARNUNG: unvollstaendige Abdeckung —", unvollstaendig.map(c => c.meldung).join(" | "));
+    notifyHint("Teile der Seite konnten nicht vollstaendig erfasst werden: "
+               + unvollstaendig.map(c => c.meldung).join(" · "));
+  } else {
+    log("Abdeckung vollstaendig in allen", coverage.length, "Scroll-Ebene(n).");
+  }
 
   if (segments.length === 1 && totalH > layout.viewportH * 1.2) {
     log("WARNING: Only one segment captured but page is taller than viewport.");

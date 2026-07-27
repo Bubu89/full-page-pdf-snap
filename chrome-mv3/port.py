@@ -90,14 +90,15 @@ PATCHES = [
 
 # Dateien, die unveraendert uebernommen werden
 COPY_AS_IS = ["content.js", "pdf-writer.js", "popup.html", "popup.js",
-              "options.html", "options.js"]
+              "options.html", "options.js", "i18n.js"]
 
 MANIFEST = """{
   "manifest_version": 3,
-  "name": "Full Page PDF Snap \\u2013 Save Webpage as PDF",
+  "name": "__MSG_extName__",
+  "default_locale": "en",
   "short_name": "PDFSnap",
   "version": "2.4.0",
-  "description": "Save any webpage as a single high-resolution PDF. Auto-scrolls the whole page \\u2014 no cropping, no print dialog.",
+  "description": "__MSG_extDescription__",
   "author": "Bubu89",
   "minimum_chrome_version": "116",
   "icons": {
@@ -238,6 +239,12 @@ def main():
 
     # Nur die im Manifest referenzierten Groessen - jede zusaetzliche Datei im
     # Paket erzeugt beim Review nur Rueckfragen. Chrome kann kein SVG.
+    # Sprachdateien mituebernehmen
+    loc_dst = DST / "_locales"
+    if loc_dst.exists():
+        shutil.rmtree(loc_dst)
+    shutil.copytree(SRC / "_locales", loc_dst)
+
     icons_dir = DST / "icons"
     if icons_dir.exists():
         shutil.rmtree(icons_dir)

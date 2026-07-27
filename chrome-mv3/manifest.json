@@ -1,9 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "Full Page PDF Snap \u2013 Save Webpage as PDF",
+  "name": "__MSG_extName__",
+  "default_locale": "en",
   "short_name": "PDFSnap",
   "version": "2.4.0",
-  "description": "Save any webpage as a single high-resolution PDF. Auto-scrolls the whole page \u2014 no cropping, no print dialog.",
+  "description": "__MSG_extDescription__",
   "author": "Bubu89",
   "minimum_chrome_version": "116",
   "icons": {

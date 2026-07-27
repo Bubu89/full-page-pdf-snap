@@ -1,0 +1,89 @@
+{
+  "extName": {
+    "message": "Full Page PDF Snap – Webseite als PDF"
+  },
+  "extDescription": {
+    "message": "Speichert jede Webseite als ein hochauflösendes PDF. Auto-Scroll erfasst die ganze Seite — kein Zuschneiden, kein Druckdialog."
+  },
+  "actionTitle": {
+    "message": "Full Page PDF Snap — ganze Seite als PDF (Strg+Shift+Y)"
+  },
+  "commandCapture": {
+    "message": "Ganze Seite als PDF speichern"
+  },
+  "popupHeading": {
+    "message": "Ganze Seite als PDF"
+  },
+  "popupCapture": {
+    "message": "Jetzt aufnehmen"
+  },
+  "popupShortcut": {
+    "message": "Tastenkürzel:"
+  },
+  "popupSettings": {
+    "message": "Einstellungen"
+  },
+  "popupRunning": {
+    "message": "Aufnahme läuft …"
+  },
+  "popupDone": {
+    "message": "Gespeichert."
+  },
+  "busy": {
+    "message": "Bereits laufend"
+  },
+  "noTab": {
+    "message": "Kein aktiver Tab."
+  },
+  "internalPage": {
+    "message": "Interne Browser-Seite (Einstellungen, Store, Add-on-Seiten) — bitte zu einer normalen Webseite wechseln (https://…)."
+  },
+  "protectedPage": {
+    "message": "Der Browser schützt diese Seite. Bitte zu einer normalen Webseite wechseln (z.B. wikipedia.org)."
+  },
+  "noScripts": {
+    "message": "Diese Seite erlaubt keine Erweiterungs-Skripte."
+  },
+  "errTitle": {
+    "message": "Full Page PDF Snap — Fehler"
+  },
+  "hintTitle": {
+    "message": "Full Page PDF Snap — Hinweis"
+  },
+  "incompleteHint": {
+    "message": "Teile der Seite konnten nicht vollständig erfasst werden:"
+  },
+  "menuCapture": {
+    "message": "Ganze Seite als PDF speichern"
+  },
+  "menuSaveAs": {
+    "message": "Speicher-Dialog jedes Mal anzeigen"
+  },
+  "menuShowFolder": {
+    "message": "Nach Save: Ordner zeigen"
+  },
+  "menuOpenPdf": {
+    "message": "Nach Save: PDF öffnen"
+  },
+  "menuHideSticky": {
+    "message": "Sticky/Sidebar verstecken"
+  },
+  "menuQuality": {
+    "message": "Capture-Qualität"
+  },
+  "menuScale10": {
+    "message": "1.0x — wie am Bildschirm"
+  },
+  "menuScale125": {
+    "message": "1.25x — Balance"
+  },
+  "menuScale15": {
+    "message": "1.5x — scharf"
+  },
+  "menuScale20": {
+    "message": "2.0x — maximal"
+  },
+  "menuAllSettings": {
+    "message": "Alle Einstellungen…"
+  }
+}

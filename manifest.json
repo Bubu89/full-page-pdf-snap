@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "Full Page PDF Snap",
+  "name": "__MSG_extName__",
   "short_name": "PDFSnap",
   "version": "2.4.0",
-  "description": "Speichert eine komplette Webseite als hochaufloesendes PDF. Ausschliesslich lokale Verarbeitung — kein Serverzugriff, keine Datenerhebung, keine Uebermittlung an den Anbieter.",
+  "description": "__MSG_extDescription__",
   "author": "Bubu89",
   "browser_specific_settings": {
     "gecko": {
@@ -43,7 +43,7 @@
       "16": "icons/icon.svg",
       "48": "icons/icon.svg"
     },
-    "default_title": "Full Page PDF Snap — ganze Seite als PDF (Ctrl+Shift+Y)",
+    "default_title": "__MSG_actionTitle__",
     "default_popup": "popup.html"
   },
   "options_ui": {
@@ -55,7 +55,8 @@
       "suggested_key": {
         "default": "Ctrl+Shift+Y"
       },
-      "description": "Ganze Seite als PDF speichern"
+      "description": "__MSG_commandCapture__"
     }
-  }
+  },
+  "default_locale": "en"
 }
