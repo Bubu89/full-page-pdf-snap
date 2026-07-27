@@ -2,31 +2,38 @@
 
 ## 2.12.0 — 2026-07-27 (beide)
 
-**Was:** Das Tastenkürzel wird überall aus dem gemeldet, was der Browser
-tatsächlich vergeben hat, und Chrome bekommt ein zweites Kürzel.
+**Was:** Neues Standardkürzel `Alt+Shift+Y`, ein zweites `Ctrl+Shift+Y` für
+Chrome, und jede Anzeige einer Tastenkombination stammt jetzt aus dem, was der
+Browser tatsächlich vergeben hat.
 
-**Warum:** Der Hinweiskasten auf der Optionsseite nannte weiterhin
-`Ctrl+Shift+Y`, obwohl der Standard längst `Alt+Shift+P` war — die Kombination
-stand fest im HTML, während das Feld darüber schon den echten Wert las. Wer
-sich auf den Kasten verließ, drückte in Firefox die Tastenkombination der
-Bibliothek und wunderte sich, dass nichts geschieht.
+**Warum:** Zwei Fehler in Folge, beide mit derselben Ursache. Der Hinweiskasten
+auf der Optionsseite nannte `Ctrl+Shift+Y`, obwohl der Standard längst ein
+anderer war — die Kombination stand fest im HTML, während das Feld darüber
+schon den echten Wert las. Und `Alt+Shift+P` erwies sich in Firefox als
+untauglich: `Alt+Shift` ist dort zugleich der Modifikator für
+`accesskey`-Attribute, und der Profil-Dialog hat einen Knopf mit Accesskey `P`.
+Die Aufnahme startete, nebenbei ging ein Profil-Fenster auf.
 
 **Wie:**
-- `options.html`, Toolbar-Tooltip und Feld speisen sich aus `commands.getAll()`;
-  eine fest verdrahtete Kombination gibt es nirgends mehr.
-- Chrome erhält zusätzlich `Ctrl+Shift+Y`. Die Ctrl+Shift-Reihe ist dort im
-  Gegensatz zu Firefox weitgehend frei, und es war das frühere Kürzel — wer es
-  gewohnt war, behält es. Firefox bleibt bei einem, weil dort A, B, C, D, E, G,
-  H, I, J, K, M, N, O, P, Q, R, T, V, W, Y und Z belegt sind.
+- Standard ist `Alt+Shift+Y`. `Y` ist als Accesskey deutlich seltener als `P`,
+  und der Buchstabe bleibt derselbe wie beim früheren `Ctrl+Shift+Y` — wer es
+  gewohnt war, behält die Fingerbewegung.
+- Chrome erhält zusätzlich `Ctrl+Shift+Y`. Diese Reihe ist dort im Gegensatz zu
+  Firefox weitgehend frei; in Firefox sind A, B, C, D, E, G, H, I, J, K, M, N,
+  O, P, Q, R, T, V, W, Y und Z belegt.
 - Der Befehlsempfänger reagiert auf jeden Namen mit dem Präfix
   `capture-full-page`, beide Kürzel lösen dasselbe aus.
-- Der Tooltip wird beim Laden richtiggestellt, nicht erst nach der ersten
-  Aufnahme.
+- Optionsseite, Hinweiskasten, Popup und Toolbar-Tooltip lesen alle
+  `commands.getAll()`. Auch die Übersetzungen nennen keine Kombination mehr,
+  der Tooltip setzt sie zur Laufzeit ein.
+- Findet das Popup kein Kürzel, zeigt es `—` statt zu raten. Eine genannte,
+  aber nicht vergebene Kombination ist schlimmer als keine Angabe.
 - Eine deutsche Restzeile in der Android-Hilfe übersetzt.
 
-**Ergebnis:** Die Optionsseite zeigt in Chrome `Alt+Shift+P / Ctrl+Shift+Y`, in
-Firefox `Alt+Shift+P` — und zwar genau das, was auch auslöst. Beansprucht ein
-Browser eine Kombination für sich, erscheint sie schlicht nicht.
+**Ergebnis:** Die Optionsseite zeigt in Chrome `Alt+Shift+Y / Ctrl+Shift+Y`, in
+Firefox `Alt+Shift+Y` — und zwar genau das, was auch auslöst. Beansprucht ein
+Browser eine Kombination für sich, erscheint sie schlicht nicht, statt ein
+Versprechen zu geben, das die Taste nicht hält.
 
 ## 2.3.0 — 2026-07-27 (Firefox)
 

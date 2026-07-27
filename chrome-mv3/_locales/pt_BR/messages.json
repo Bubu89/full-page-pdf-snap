@@ -6,7 +6,7 @@
     "message": "Salva qualquer página web como um único PDF de alta resolução. Rola automaticamente a página inteira, sem cortes nem caixa de impressão."
   },
   "actionTitle": {
-    "message": "Full Page PDF Snap — salvar a página inteira como PDF (Alt+Shift+P)"
+    "message": "Full Page PDF Snap — salvar a página inteira como PDF"
   },
   "commandCapture": {
     "message": "Salvar a página inteira como PDF"

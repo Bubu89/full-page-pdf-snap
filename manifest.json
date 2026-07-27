@@ -53,7 +53,7 @@
   "commands": {
     "capture-full-page": {
       "suggested_key": {
-        "default": "Alt+Shift+P"
+        "default": "Alt+Shift+Y"
       },
       "description": "__MSG_commandCapture__"
     }

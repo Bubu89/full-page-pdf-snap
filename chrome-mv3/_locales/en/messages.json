@@ -6,7 +6,7 @@
     "message": "Save any webpage as a single high-resolution PDF. Auto-scrolls the whole page — no cropping, no print dialog."
   },
   "actionTitle": {
-    "message": "Full Page PDF Snap — save the whole page as PDF (Alt+Shift+P)"
+    "message": "Full Page PDF Snap — save the whole page as PDF"
   },
   "commandCapture": {
     "message": "Save the whole page as PDF"

@@ -874,7 +874,11 @@ async function setIdleTitle() {
       .map(c => c.shortcut);
     if (keys.length) hint = ` (${keys.join(" / ")})`;
   } catch (_) { /* Android kennt commands.getAll nicht */ }
-  await setActionTitle(`Full Page PDF Snap — save the whole page as PDF${hint}`);
+  let base = "Full Page PDF Snap — save the whole page as PDF";
+  try {
+    base = browser.i18n.getMessage("actionTitle") || base;
+  } catch (_) { /* Fallback bleibt englisch */ }
+  await setActionTitle(base + hint);
 }
 
 // Chrome blockiert Content-Script-Injektion auf diesen Seiten aus Sicherheitsgruenden.

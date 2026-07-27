@@ -6,7 +6,7 @@
     "message": "任意のウェブページを 1 つの高解像度 PDF として保存します。ページ全体を自動スクロールし、切り取りも印刷ダイアログも不要です。"
   },
   "actionTitle": {
-    "message": "Full Page PDF Snap — ページ全体を PDF として保存 (Alt+Shift+P)"
+    "message": "Full Page PDF Snap — ページ全体を PDF として保存"
   },
   "commandCapture": {
     "message": "ページ全体を PDF として保存"

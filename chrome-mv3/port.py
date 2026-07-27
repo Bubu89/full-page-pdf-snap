@@ -125,7 +125,7 @@ MANIFEST = """{
       "16": "icons/icon-16.png",
       "48": "icons/icon-48.png"
     },
-    "default_title": "Full Page PDF Snap \\u2014 save the whole page as PDF (Alt+Shift+P)",
+    "default_title": "Full Page PDF Snap \\u2014 save the whole page as PDF",
     "default_popup": "popup.html"
   },
   "options_ui": {
@@ -134,7 +134,7 @@ MANIFEST = """{
   },
   "commands": {
     "capture-full-page": {
-      "suggested_key": { "default": "Alt+Shift+P" },
+      "suggested_key": { "default": "Alt+Shift+Y" },
       "description": "Save the whole page as PDF"
     },
     "capture-full-page-alt": {

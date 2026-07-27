@@ -6,7 +6,7 @@
     "message": "将任意网页保存为一个高分辨率 PDF。自动滚动整页，无裁剪，无需打印对话框。"
   },
   "actionTitle": {
-    "message": "Full Page PDF Snap — 将整页保存为 PDF (Alt+Shift+P)"
+    "message": "Full Page PDF Snap — 将整页保存为 PDF"
   },
   "commandCapture": {
     "message": "将整页保存为 PDF"

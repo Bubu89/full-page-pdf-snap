@@ -43,15 +43,21 @@ $("opts").addEventListener("click", () => {
   if (!el) return;
   try {
     const cmds = await browser.commands.getAll();
-    const c = cmds.find(x => x.name === "capture-full-page");
-    if (c && c.shortcut) {
-      el.textContent = c.shortcut;
+    // Chrome fuehrt ein zweites Kuerzel; hier steht das erste vergebene.
+    const keys = cmds
+      .filter(x => x.name.startsWith("capture-full-page") && x.shortcut)
+      .map(x => x.shortcut);
+    if (keys.length) {
+      el.textContent = keys[0];
+      if (keys.length > 1) el.title = keys.join("  /  ");
     } else {
       el.textContent = "—";
       el.title = "No shortcut assigned (conflict with a browser shortcut). "
                + "Assign one in the browser's extension shortcut settings.";
     }
   } catch (_) {
-    el.textContent = "Alt+Shift+P";
+    // Kein Rateversuch: eine genannte, aber nicht vergebene Kombination ist
+    // schlimmer als gar keine Angabe.
+    el.textContent = "—";
   }
 })();
