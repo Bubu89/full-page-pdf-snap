@@ -393,8 +393,25 @@ async function captureFullPageInner(tab, settings) {
   const keepFrame = clipMode === "context";
   const pxW = keepFrame ? segments[0].pxW : clipW;
   const contentTop = keepFrame ? srcY : 0;
-  const bigH = Math.max(contentTop + Math.round(lastSeg.y * dprY) + segH,
-                        segments[0].pxH);
+
+  /* Die Hoehe richtet sich nach dem LAENGSTEN Bereich, nicht nur nach dem
+   * Hauptbereich. Sonst wird eine Seitenleiste, die mehr Inhalt hat als die
+   * Liste daneben, am unteren Rand abgeschnitten - Datenverlust, der im
+   * fertigen PDF nicht mehr auffaellt.
+   */
+  let bigH = Math.max(contentTop + Math.round(lastSeg.y * dprY) + segH,
+                      segments[0].pxH);
+  if (keepFrame) {
+    for (const side of sideCaptures) {
+      const need = Math.round(side.rect.y * dprY)
+                 + Math.round(side.lastY * dprY)
+                 + Math.round(side.rect.h * dprY);
+      if (need > bigH) {
+        log("Nebenbereich ist laenger - Hoehe", bigH, "->", need);
+        bigH = need;
+      }
+    }
+  }
 
   log("Big canvas size:", pxW, "x", bigH, "mode=" + clipMode);
 
@@ -433,7 +450,12 @@ async function captureFullPageInner(tab, settings) {
       const sy = Math.round(side.rect.y * dprY);
       for (const shot of side.shots) {
         const destY = sy + Math.round(shot.y * dprY);
-        if (destY + sh > bigH) break;                 // nicht ueber das Ende hinaus
+        // Die Hoehe wurde oben auf den laengsten Bereich ausgelegt; ein Rest
+        // hier waere ein Rechenfehler und soll auffallen statt still zu fehlen.
+        if (destY + sh > bigH) {
+          log("WARNUNG: Nebenbereich passt nicht -", destY + sh, ">", bigH);
+          break;
+        }
         bigCtx.drawImage(shot.img, sx, sy, sw, sh, sx, destY, sw, sh);
       }
       const covered = sy + Math.round(side.lastY * dprY) + sh;

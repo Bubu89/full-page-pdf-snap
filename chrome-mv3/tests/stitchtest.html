@@ -186,6 +186,45 @@ function fakeShot(scrollTop) {
   ok(kWrong === 0, `Inhalt lueckenlos an richtiger Position (${kChecked} Streifen, ${kWrong} Abweichungen)`);
   R.push(`      Kontext-Bild: ${kW} x ${kH} px`);
 
+  // ======================================================================
+  //  Dritter Durchlauf: Seitenleiste LAENGER als der Hauptinhalt.
+  //  Die PDF-Hoehe muss sich nach dem laengsten Bereich richten, sonst
+  //  gehen Daten verloren.
+  // ======================================================================
+  R.push("");
+  R.push("--- Nebenbereich laenger als Hauptbereich ---");
+
+  const SIDE = { x: 0, y: 64, w: 240, h: 741 };
+  const sideMax = 2400;                       // Seitenleiste scrollt weiter
+  const mainReach = contentTop + Math.round(lastSeg.y * dprY) + segH;
+  const sideReach = Math.round(SIDE.y * dprY)
+                  + Math.round(sideMax * dprY)
+                  + Math.round(SIDE.h * dprY);
+  const need = Math.max(mainReach, sideReach);
+
+  ok(sideReach > mainReach,
+     `Testaufbau: Seitenleiste reicht weiter (${sideReach} > ${mainReach})`);
+  ok(need === sideReach,
+     `Hoehe richtet sich nach dem laengsten Bereich (${need} px)`);
+
+  // Nachstellen: alle Seitenleisten-Segmente muessen hineinpassen
+  const stepSide = SIDE.h - 30;
+  let fits = 0, cut = 0;
+  for (let sy2 = stepSide; sy2 <= sideMax; sy2 += stepSide) {
+    const destY = Math.round(SIDE.y * dprY) + Math.round(sy2 * dprY);
+    if (destY + Math.round(SIDE.h * dprY) > need) cut++; else fits++;
+  }
+  ok(cut === 0, `alle ${fits} Seitenleisten-Segmente passen hinein (${cut} abgeschnitten)`);
+
+  // Gegenprobe: mit der alten Rechnung (nur Hauptbereich) waere abgeschnitten worden
+  let cutOld = 0;
+  for (let sy2 = stepSide; sy2 <= sideMax; sy2 += stepSide) {
+    const destY = Math.round(SIDE.y * dprY) + Math.round(sy2 * dprY);
+    if (destY + Math.round(SIDE.h * dprY) > mainReach) cutOld++;
+  }
+  ok(cutOld > 0,
+     `Gegenprobe: die alte Rechnung haette ${cutOld} Segmente verloren`);
+
   R.push("");
   R.push(`Ergebnisbild: ${pxW} x ${bigH} px  (Fenster waere ${WIN_W * SCALE} x ...)`);
   R.push("");
