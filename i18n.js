@@ -14,22 +14,14 @@
   const FALLBACK = "en";
   let table = null;              // gefuellt, wenn eine Sprache erzwungen wurde
 
-  async function loadTable(lang) {
+  function loadTable(lang) {
     if (!lang || lang === "auto") return null;
-    try {
-      const url = browser.runtime.getURL(`_locales/${lang}/messages.json`);
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(res.status);
-      return await res.json();
-    } catch (_) {
-      // Unbekannte Sprache oder fehlende Datei: lieber Englisch als leer
-      if (lang !== FALLBACK) return loadTable(FALLBACK);
-      return null;
-    }
+    const all = (typeof PAGESHOT_MESSAGES !== "undefined") ? PAGESHOT_MESSAGES : {};
+    return all[lang] || all[lang.split("_")[0]] || all[FALLBACK] || null;
   }
 
   function t(key) {
-    if (table && table[key] && table[key].message) return table[key].message;
+    if (table && table[key]) return table[key];
     try { return browser.i18n.getMessage(key) || ""; } catch (_) { return ""; }
   }
 
@@ -56,7 +48,7 @@
       const s = await browser.storage.local.get({ uiLanguage: "auto" });
       lang = s.uiLanguage || "auto";
     } catch (_) { /* Standard bleibt auto */ }
-    table = await loadTable(lang);
+    table = loadTable(lang);
     document.documentElement.lang = lang !== "auto" ? lang.split("_")[0]
       : ((browser.i18n.getUILanguage && browser.i18n.getUILanguage()) || FALLBACK).slice(0, 2);
     apply();

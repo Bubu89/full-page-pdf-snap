@@ -22,7 +22,7 @@ UPLOAD = Path("/mnt/c/Users/HOLO/Documents/FullPagePDFSnap_Firefox/upload")
 # Nur diese Dateien gehoeren ins Paket
 INCLUDE = ["manifest.json", "background.html", "background.js", "content.js",
            "popup.html", "popup.js", "options.html", "options.js", "pdf-writer.js",
-           "i18n.js"]
+           "i18n.js", "i18n-data.js"]
 ICONS = ["icon-16.png", "icon-32.png", "icon-48.png", "icon-64.png",
          "icon-128.png", "icon.svg"]
 

@@ -100,6 +100,13 @@ def main():
         print("\n  --check: keine Pakete gebaut.")
         return 0
 
+    # --- 3b. Sprachdaten aus _locales erzeugen ------------------------------
+    step("3b", "Sprachdaten")
+    ok, _ = run(["python3", "build-i18n-data.py"])
+    if not ok:
+        print("\n  ABBRUCH: Sprachdaten nicht erzeugbar")
+        return 1
+
     # --- 4. Chrome portieren und packen -------------------------------------
     step(4, "Chrome MV3")
     ok, out = run(["python3", "port.py"], cwd=HERE / "chrome-mv3", quiet=True)

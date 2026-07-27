@@ -1,5 +1,20 @@
 "use strict";
 
+/* Waehlt die Option, deren Zahlenwert passt - unabhaengig von der Schreibweise
+   ("1.0" gegen "1"). */
+function setNumericSelect(id, value, fallback) {
+  const sel = document.getElementById(id);
+  if (!sel) return;
+  const target = parseFloat(value);
+  const wanted = Number.isFinite(target) ? target : fallback;
+  for (const o of sel.options) {
+    if (parseFloat(o.value) === wanted) { sel.value = o.value; return; }
+  }
+  for (const o of sel.options) {
+    if (parseFloat(o.value) === fallback) { sel.value = o.value; return; }
+  }
+}
+
 const DEFAULTS = {
   subfolder: "Full Page PDF Snap",
   saveAs: false,
@@ -101,7 +116,9 @@ async function load() {
   $("uiLanguage").value = s.uiLanguage || "auto";
   $("appLayout").value = s.appLayout || "context";
   $("afterCapture").value = s.afterCapture || "show";
-  $("captureScale").value = String(s.captureScale || 1.0);
+  // String(1.0) ergibt "1", die Option heisst aber "1.0" - ohne Zuordnung
+  // ueber den Zahlenwert bliebe das Feld bei 1.0 und 2.0 leer.
+  setNumericSelect("captureScale", s.captureScale, 1.0);
 }
 
 $("resetCounter").addEventListener("click", async () => {

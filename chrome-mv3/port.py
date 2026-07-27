@@ -90,14 +90,14 @@ PATCHES = [
 
 # Dateien, die unveraendert uebernommen werden
 COPY_AS_IS = ["content.js", "pdf-writer.js", "popup.html", "popup.js",
-              "options.html", "options.js", "i18n.js"]
+              "options.html", "options.js", "i18n.js", "i18n-data.js"]
 
 MANIFEST = """{
   "manifest_version": 3,
   "name": "__MSG_extName__",
   "default_locale": "en",
   "short_name": "PDFSnap",
-  "version": "2.9.0",
+  "version": "2.10.0",
   "description": "__MSG_extDescription__",
   "author": "Bubu89",
   "minimum_chrome_version": "116",
