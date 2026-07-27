@@ -357,24 +357,62 @@ async function captureFullPageInner(tab, settings) {
   big.width = pxW;
   big.height = bigH;
   const bigCtx = big.getContext("2d");
-  bigCtx.fillStyle = (keepFrame && layout.bgColor) || "#ffffff";
+  bigCtx.fillStyle = "#ffffff";
   bigCtx.fillRect(0, 0, pxW, bigH);
 
-  segments.forEach((seg, i) => {
-    const destY = Math.round(seg.y * dprY);
-    if (!clip) {
-      bigCtx.drawImage(seg.img, 0, destY);
-    } else if (keepFrame && i === 0) {
-      // Erstes Segment vollstaendig - hier bleiben Menue und Seitenleiste.
-      bigCtx.drawImage(seg.img, 0, 0);
-    } else if (keepFrame) {
-      // Danach nur noch der Inhalt, an derselben x-Position wie oben.
-      bigCtx.drawImage(seg.img, srcX, srcY, clipW, segH,
-                       srcX, contentTop + destY, clipW, segH);
-    } else {
-      bigCtx.drawImage(seg.img, srcX, srcY, clipW, segH, 0, destY, clipW, segH);
+  if (!clip) {
+    for (const seg of segments) {
+      bigCtx.drawImage(seg.img, 0, Math.round(seg.y * dprY));
     }
-  });
+  } else if (!keepFrame) {
+    for (const seg of segments) {
+      bigCtx.drawImage(seg.img, srcX, srcY, clipW, segH,
+                       0, Math.round(seg.y * dprY), clipW, segH);
+    }
+  } else {
+    // Erstes Segment vollstaendig - hier bleiben Menue und Seitenleiste.
+    const frameH = segments[0].pxH;
+    bigCtx.drawImage(segments[0].img, 0, 0);
+
+    /* Die Flaeche unterhalb davon bekommt die Farbe, die im Screenshot
+     * tatsaechlich neben dem Inhalt liegt. Aus CSS geraten geht daneben:
+     * bei Gmail ist der Scroll-Container weiss, die Seitenleiste daneben
+     * aber leicht blaustichig - der Sprung faellt im PDF sofort auf.
+     * Links und rechts werden getrennt abgetastet, weil sie sich
+     * unterscheiden koennen (Seitenleiste vs. Icon-Spalte).
+     */
+    const fillSide = (x0, x1) => {
+      if (x1 - x0 < 2) return;
+      const counts = new Map();
+      for (let i = 1; i <= 4; i++) {
+        const y = Math.round(frameH - (frameH - srcY) * (i / 5));
+        for (let j = 1; j <= 4; j++) {
+          const x = Math.round(x0 + (x1 - x0) * (j / 5));
+          try {
+            const d = bigCtx.getImageData(x, y, 1, 1).data;
+            const key = `${d[0]},${d[1]},${d[2]}`;
+            counts.set(key, (counts.get(key) || 0) + 1);
+          } catch (_) { /* ausserhalb - ignorieren */ }
+        }
+      }
+      let win = null, n = 0;
+      for (const [k, c] of counts) if (c > n) { win = k; n = c; }
+      bigCtx.fillStyle = win ? `rgb(${win})` : (layout.bgColor || "#ffffff");
+      bigCtx.fillRect(x0, frameH, x1 - x0, bigH - frameH);
+    };
+    fillSide(0, srcX);                 // links neben dem Inhalt
+    fillSide(srcX + clipW, pxW);       // rechts daneben
+
+    // Inhaltsspalte selbst neutral fuellen, damit unter dem letzten Segment
+    // kein weisser Rest steht, falls die Seite kuerzer endet als erwartet.
+    bigCtx.fillStyle = "#ffffff";
+    bigCtx.fillRect(srcX, frameH, clipW, bigH - frameH);
+
+    for (let i = 1; i < segments.length; i++) {
+      bigCtx.drawImage(segments[i].img, srcX, srcY, clipW, segH,
+                       srcX, contentTop + Math.round(segments[i].y * dprY), clipW, segH);
+    }
+  }
 
   // Adaptive tilePx-Berechnung fuer Android: passt sich an Device an.
   // Samsung S24 Ultra (DPR 3.5, 12 GB RAM) bekommt groessere Kacheln als

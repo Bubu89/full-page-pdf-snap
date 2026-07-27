@@ -115,19 +115,43 @@ function fakeShot(scrollTop) {
   R.push("");
   R.push("--- Kontext-Modus (Menue einmal oben) ---");
 
-  const BG = "rgb(250, 250, 252)";
+  // Farbe wird NICHT vorgegeben, sondern aus dem Screenshot abgetastet -
+  // genau wie in background.js. Erwartet wird der Seitenleisten-Ton.
+  const sample = (ctx, x0, x1, frameH, top) => {
+    const counts = new Map();
+    for (let i = 1; i <= 4; i++) {
+      const y = Math.round(frameH - (frameH - top) * (i / 5));
+      for (let j = 1; j <= 4; j++) {
+        const x = Math.round(x0 + (x1 - x0) * (j / 5));
+        const d = ctx.getImageData(x, y, 1, 1).data;
+        const key = `${d[0]},${d[1]},${d[2]}`;
+        counts.set(key, (counts.get(key) || 0) + 1);
+      }
+    }
+    let win = null, n = 0;
+    for (const [k, c] of counts) if (c > n) { win = k; n = c; }
+    return win;
+  };
   const kW = segments[0].pxW;                       // volle Fensterbreite
   const contentTop = srcY;
   const kH = Math.max(contentTop + Math.round(lastSeg.y * dprY) + segH, segments[0].pxH);
 
   const kBig = new OffscreenCanvas(kW, kH);
   const k = kBig.getContext("2d");
-  k.fillStyle = BG; k.fillRect(0, 0, kW, kH);
-  segments.forEach((seg, i) => {
-    const destY = Math.round(seg.y * dprY);
-    if (i === 0) k.drawImage(seg.img, 0, 0);
-    else k.drawImage(seg.img, srcX, srcY, pxW, segH, srcX, contentTop + destY, pxW, segH);
-  });
+  k.fillStyle = "#ffffff"; k.fillRect(0, 0, kW, kH);
+  const frameH = segments[0].pxH;
+  k.drawImage(segments[0].img, 0, 0);
+  const sideColor = sample(k, 0, srcX, frameH, srcY);
+  k.fillStyle = `rgb(${sideColor})`;
+  k.fillRect(0, frameH, srcX, kH - frameH);
+  k.fillStyle = "#ffffff";
+  k.fillRect(srcX, frameH, pxW, kH - frameH);
+  for (let i = 1; i < segments.length; i++) {
+    k.drawImage(segments[i].img, srcX, srcY, pxW, segH,
+                srcX, contentTop + Math.round(segments[i].y * dprY), pxW, segH);
+  }
+  ok(sideColor === "64,64,64",
+     `Fuellfarbe aus dem Screenshot abgetastet: rgb(${sideColor}) - Seitenleisten-Ton, nicht Weiss`);
 
   ok(kW === WIN_W * SCALE, `volle Fensterbreite erhalten (${kW})`);
 
@@ -142,12 +166,12 @@ function fakeShot(scrollTop) {
   let repeats = 0, bgHits = 0, bgChecks = 0;
   for (let y = belowStart; y < kH - 5; y += 53) {
     const d = k.getImageData(20, y, 1, 1).data;            // linke Spalte
-    if (Math.abs(d[0] - 64) < 6 && Math.abs(d[1] - 64) < 6) repeats++;
+    if (Math.abs(d[0] - 96) < 6 && Math.abs(d[1] - 96) < 6) repeats++;
     bgChecks++;
-    if (d[0] === 250 && d[1] === 250 && d[2] === 252) bgHits++;
+    if (Math.abs(d[0] - 64) < 6 && Math.abs(d[1] - 64) < 6 && Math.abs(d[2] - 64) < 6) bgHits++;
   }
-  ok(repeats === 0, `keine Menue-Wiederholung weiter unten (${repeats} von ${bgChecks} Abtastungen)`);
-  ok(bgHits === bgChecks, `frei gewordene Flaeche traegt die Hintergrundfarbe (${bgHits}/${bgChecks})`);
+  ok(repeats === 0, `keine Kopfzeilen-Wiederholung weiter unten (${repeats} von ${bgChecks} Abtastungen)`);
+  ok(bgHits === bgChecks, `frei gewordene Flaeche traegt durchgehend den Seitenleisten-Ton (${bgHits}/${bgChecks})`);
 
   // Inhalt muss auch hier lueckenlos durchlaufen
   let kWrong = 0, kChecked = 0;
