@@ -14,7 +14,7 @@ const DEFAULTS = {
   hideSticky: true,
   appLayout: "context",
   afterCapture: "show",
-  captureScale: 1.5
+  captureScale: 1.0
 };
 
 const $ = id => document.getElementById(id);
@@ -99,7 +99,7 @@ async function load() {
   $("hideSticky").checked = s.hideSticky !== false;
   $("appLayout").value = s.appLayout || "context";
   $("afterCapture").value = s.afterCapture || "show";
-  $("captureScale").value = String(s.captureScale || 1.5);
+  $("captureScale").value = String(s.captureScale || 1.0);
 }
 
 $("resetCounter").addEventListener("click", async () => {
@@ -128,7 +128,7 @@ $("save").addEventListener("click", async () => {
     hideSticky: $("hideSticky").checked,
     appLayout: $("appLayout").value,
     afterCapture: $("afterCapture").value,
-    captureScale: parseFloat($("captureScale").value) || 1.5
+    captureScale: parseFloat($("captureScale").value) || 1.0
   };
   await browser.storage.local.set(data);
   const s = $("status");

@@ -124,12 +124,12 @@
 
   <label>Capture-Skalierung (Aufloesung)
     <select id="captureScale" style="width:100%; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
-      <option value="1.0">1.0x — schnell, Standard-Aufloesung</option>
+      <option value="1.0">1.0x — genau wie am Bildschirm (Standard)</option>
       <option value="1.25">1.25x — leicht schaerfer</option>
       <option value="1.5">1.5x — deutlich schaerfer, ca. 50% laenger</option>
       <option value="2.0">2.0x — maximal scharf, ca. 2x laenger</option>
     </select>
-    <div class="hint">Setzt Browser-Zoom vor dem Capture per <code>tabs.setZoom</code>. Auf Android ohne Wirkung (API fehlt).</div>
+    <div class="hint">Standard ist 1.0x: das PDF zeigt die Seite genau so, wie sie gerade am Bildschirm steht — bei 144 dpi fuer normalen Druck ausreichend. Hoehere Werte zoomen die Seite vor der Aufnahme und liefern schaerferen Text, veraendern aber die Ansicht: es passt weniger ins Fenster, wodurch Menues und Seitenleisten frueher enden. Fuer originalgetreue Abbildung bei 1.0x bleiben.<code>tabs.setZoom</code>. Auf Android ohne Wirkung (API fehlt).</div>
   </label>
 
   <button id="save">Speichern</button>

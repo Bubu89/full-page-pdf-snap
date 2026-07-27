@@ -186,6 +186,12 @@
    * Erfasst werden nur Bereiche, die neben dem Hauptbereich liegen (nicht
    * darin) und selbst nennenswert scrollen.
    */
+  const tagOf = (el) =>
+    el.tagName.toLowerCase()
+    + (el.id ? "#" + el.id : "")
+    + (el.className && typeof el.className === "string"
+        ? "." + el.className.trim().split(/\s+/).slice(0, 2).join(".") : "");
+
   const sideScrollerEls = [];
 
   function collectSideScrollers(state) {
@@ -196,20 +202,37 @@
     const mainRect = main.getBoundingClientRect();
     const out = [];
 
+    const rejected = [];   // fuer die Diagnose im Log
     for (const el of document.querySelectorAll("*")) {
       if (el === main || main.contains(el) || el.contains(main)) continue;
       const delta = el.scrollHeight - el.clientHeight;
-      if (delta <= 20) continue;
+      // Gleiche Schwelle wie beim Hauptbereich - ein Menue, das nur wenig
+      // ueberlaeuft, ist trotzdem unvollstaendig, wenn man es weglaesst.
+      if (delta <= 4) continue;
       let cs;
       try { cs = getComputedStyle(el); } catch (_) { continue; }
-      if (!/auto|scroll|overlay/.test(cs.overflowY)) continue;
+      if (!/auto|scroll|overlay/.test(cs.overflowY)) {
+        rejected.push(`${tagOf(el)} overflowY=${cs.overflowY} delta=${delta}`);
+        continue;
+      }
 
       let r;
       try { r = el.getBoundingClientRect(); } catch (_) { continue; }
-      if (r.width < 40 || r.height < 100) continue;
-      // muss im Fenster sichtbar sein und darf den Hauptbereich nicht ueberlappen
-      if (r.bottom <= 0 || r.top >= window.innerHeight) continue;
-      if (r.right > mainRect.left + 4 && r.left < mainRect.right - 4) continue;
+      if (r.width < 30 || r.height < 60) {
+        rejected.push(`${tagOf(el)} zu klein ${Math.round(r.width)}x${Math.round(r.height)}`);
+        continue;
+      }
+      if (r.bottom <= 0 || r.top >= window.innerHeight) {
+        rejected.push(`${tagOf(el)} ausserhalb des Fensters`);
+        continue;
+      }
+      // Ueberlappung mit dem Hauptbereich: nur verwerfen, wenn sie erheblich
+      // ist. Bei knappen Randfaellen (Rahmen, Schatten) sonst faelschlich raus.
+      const overlap = Math.min(r.right, mainRect.right) - Math.max(r.left, mainRect.left);
+      if (overlap > Math.min(r.width, mainRect.width) * 0.25) {
+        rejected.push(`${tagOf(el)} ueberlappt Hauptbereich um ${Math.round(overlap)}px`);
+        continue;
+      }
       // verschachtelte Kandidaten: nur den aeussersten behalten
       if (out.some(o => o.el.contains(el))) continue;
 
@@ -226,7 +249,13 @@
     out.sort((a, b) => b.max - a.max);
     const capped = out.slice(0, 2);          // mehr als zwei sind unrealistisch
     capped.forEach(o => sideScrollerEls.push(o.el));
-    log("Weitere Scroll-Bereiche:", capped.map(o => `${o.w}x${o.h} max=${o.max}`));
+    if (capped.length) {
+      log("Weitere Scroll-Bereiche:",
+          capped.map(o => `${tagOf(o.el)} ${o.w}x${o.h} bei ${o.x},${o.y} max=${o.max}`).join(" | "));
+    } else {
+      log("Keine weiteren Scroll-Bereiche gefunden.");
+      if (rejected.length) log("  Verworfene Kandidaten:", rejected.slice(0, 8).join(" | "));
+    }
     return capped.map(({ el, ...rest }) => rest);
   }
 

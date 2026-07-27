@@ -33,7 +33,10 @@ const DEFAULTS_DESKTOP = {
   hideSticky: true,
   appLayout: "context",
   afterCapture: "show",
-  captureScale: 1.5
+  // 1.0 = genau die Ansicht, die der Nutzer am Bildschirm sieht. Hoehere Werte
+  // zoomen die Seite vor der Aufnahme: schaerfer, aber es passt weniger ins
+  // Fenster - Menues und Seitenleisten werden dann frueher abgeschnitten.
+  captureScale: 1.0
 };
 
 // Android: kein Ordner-Zeigen (downloads.show fehlt), stattdessen PDF direkt oeffnen.
@@ -1076,8 +1079,8 @@ async function buildMenus() {
   browser.menus.create({ id: MENU_IDS.hideSticky, type: "checkbox", checked: !!s.hideSticky, title: "Sticky/Sidebar verstecken", contexts: ctx });
   browser.menus.create({ id: MENU_IDS.sep2, type: "separator", contexts: ctx });
   browser.menus.create({ id: MENU_IDS.scaleParent, title: "Capture-Qualitaet", contexts: ctx });
-  const scale = Number(s.captureScale || 1.5);
-  browser.menus.create({ parentId: MENU_IDS.scaleParent, id: MENU_IDS.scale1, type: "radio", checked: scale === 1.0, title: "1.0x — schnell", contexts: ctx });
+  const scale = Number(s.captureScale || 1.0);
+  browser.menus.create({ parentId: MENU_IDS.scaleParent, id: MENU_IDS.scale1, type: "radio", checked: scale === 1.0, title: "1.0x — wie am Bildschirm", contexts: ctx });
   browser.menus.create({ parentId: MENU_IDS.scaleParent, id: MENU_IDS.scale125, type: "radio", checked: scale === 1.25, title: "1.25x — Balance", contexts: ctx });
   browser.menus.create({ parentId: MENU_IDS.scaleParent, id: MENU_IDS.scale15, type: "radio", checked: scale === 1.5, title: "1.5x — scharf", contexts: ctx });
   browser.menus.create({ parentId: MENU_IDS.scaleParent, id: MENU_IDS.scale2, type: "radio", checked: scale === 2.0, title: "2.0x — maximal", contexts: ctx });
