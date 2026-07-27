@@ -110,7 +110,7 @@
       <option value="show">Ordner zeigen (Datei vorausgewaehlt)</option>
       <option value="both">Ordner zeigen + PDF oeffnen</option>
     </select>
-    <div class="hint">"Ordner zeigen" nutzt Firefox-Downloads-API (Desktop). Auf Android wird das PDF direkt in der Standard-App geoeffnet — die Ordner-Anzeige ist dort nicht verfuegbar.</div>
+    <div class="hint">Standard ist "Ordner zeigen": nach dem Speichern oeffnet sich der Download-Ordner mit vorausgewaehlter Datei. "PDF automatisch oeffnen" startet stattdessen den PDF-Betrachter, "Beides" macht nacheinander beides.</div>
   </label>
 
   <label>Capture-Skalierung (Aufloesung)
@@ -120,7 +120,7 @@
       <option value="1.5">1.5x — deutlich schaerfer, ca. 50% laenger</option>
       <option value="2.0">2.0x — maximal scharf, ca. 2x laenger</option>
     </select>
-    <div class="hint">Setzt Browser-Zoom vor dem Capture per <code>tabs.setZoom</code>. Auf Android ohne Wirkung (API fehlt).</div>
+    <div class="hint">Setzt Browser-Zoom vor dem Capture per <code>tabs.setZoom</code>.</div>
   </label>
 
   <button id="save">Speichern</button>

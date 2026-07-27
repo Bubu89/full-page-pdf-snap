@@ -19,10 +19,10 @@ CHECK = "--check" in sys.argv
 
 # (Beschreibung, Suchmuster, Ersatz, erwartete Trefferzahl)
 PATCHES = [
-    ("Compat-Layer im Service Worker laden",
-     '"use strict";\n',
-     '"use strict";\n\n// Chrome MV3: Namensraum, DOM-Ersatz und data:-URL-Helfer.\n'
-     'importScripts("compat.js");\n', 1),
+    # Platzhalter - die tatsaechliche importScripts-Zeile wird aus
+    # background.html abgeleitet, siehe build_import_line().
+    ("Skripte per importScripts laden (MV3 hat keine background.html)",
+     '"use strict";\n', "@@IMPORTS@@", 1),
 
     ("blobToImage -> createImageBitmap (kein DOM im Service Worker)",
      re.compile(r"async function blobToImage\(blob\) \{.*?\n\}\n", re.S),
@@ -111,10 +111,31 @@ MANIFEST = """{
 """
 
 
+def build_import_line():
+    """Leitet die importScripts-Zeile aus background.html ab.
+
+    MV2 laedt Bibliotheken ueber <script>-Tags in der Hintergrundseite. MV3 hat
+    keine solche Seite - fehlt hier eine Datei, ist sie zur Laufzeit schlicht
+    nicht definiert (genau so fehlte pdf-writer.js und PageShotPdf war undefined).
+    Deshalb wird die Liste ausgelesen statt gepflegt.
+    """
+    html = (SRC / "background.html").read_text(encoding="utf-8")
+    srcs = [s for s in re.findall(r'<script src="([^"]+)"', html) if s != "background.js"]
+    files = ["compat.js"] + srcs          # compat.js zuerst: setzt den Namensraum
+    joined = ", ".join(f'"{f}"' for f in files)
+    return ('"use strict";\n\n'
+            "// Chrome MV3 kennt keine background.html - alle dort geladenen\n"
+            "// Skripte muessen hier importiert werden, sonst fehlen sie zur Laufzeit.\n"
+            f"importScripts({joined});\n"), files
+
+
 def patch_background():
     text = (SRC / "background.js").read_text(encoding="utf-8")
-    report = []
+    import_line, imported = build_import_line()
+    report = [f"  [INFO] importScripts: {', '.join(imported)}"]
     for desc, pattern, repl, expected in PATCHES:
+        if repl == "@@IMPORTS@@":
+            repl = import_line
         if isinstance(pattern, re.Pattern):
             text, n = pattern.subn(repl, text)
         else:
@@ -130,6 +151,31 @@ def add_compat_script(html_text):
     return re.sub(r'(<script src="(?:popup|options)\.js")',
                   r'<script src="compat.js"></script>\n  \1',
                   html_text, count=1)
+
+
+# Hinweistexte, die auf Firefox oder Android verweisen - in Chrome sachlich
+# falsch. Chrome fuer Android kennt keine Erweiterungen.
+HTML_TEXT_PATCHES = [
+    ('"Ordner zeigen" nutzt Firefox-Downloads-API (Desktop). Auf Android wird '
+     'das PDF direkt in der Standard-App geoeffnet — die Ordner-Anzeige ist dort '
+     'nicht verfuegbar.',
+     'Standard ist "Ordner zeigen": nach dem Speichern oeffnet sich der '
+     'Download-Ordner mit vorausgewaehlter Datei. "PDF automatisch oeffnen" '
+     'startet stattdessen den PDF-Betrachter, "Beides" macht nacheinander beides.'),
+    ('Setzt Browser-Zoom vor dem Capture per <code>tabs.setZoom</code>. '
+     'Auf Android ohne Wirkung (API fehlt).',
+     'Setzt Browser-Zoom vor dem Capture per <code>tabs.setZoom</code>.'),
+]
+
+
+def patch_html_texts(html_text):
+    """Gibt (Text, Trefferliste) zurueck - Treffer werden im Report gemeldet."""
+    hits = []
+    for old, new in HTML_TEXT_PATCHES:
+        n = html_text.count(old)
+        hits.append(n)
+        html_text = html_text.replace(old, new)
+    return html_text, hits
 
 
 def main():
@@ -154,6 +200,10 @@ def main():
         content = (SRC / name).read_text(encoding="utf-8")
         if name.endswith(".html"):
             content = add_compat_script(content)
+            content, hits = patch_html_texts(content)
+            if name == "options.html":
+                print(f"  Hinweistexte in options.html angepasst: {hits} "
+                      f"(Firefox-/Android-Erwaehnungen)")
         (DST / name).write_text(content, encoding="utf-8")
 
     # Nur die im Manifest referenzierten Groessen - jede zusaetzliche Datei im

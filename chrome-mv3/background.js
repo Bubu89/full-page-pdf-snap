@@ -1,7 +1,8 @@
 "use strict";
 
-// Chrome MV3: Namensraum, DOM-Ersatz und data:-URL-Helfer.
-importScripts("compat.js");
+// Chrome MV3 kennt keine background.html - alle dort geladenen
+// Skripte muessen hier importiert werden, sonst fehlen sie zur Laufzeit.
+importScripts("compat.js", "pdf-writer.js");
 
 const TAG = "[PDFSnap/bg]";
 const log = (...a) => console.log(TAG, ...a);
