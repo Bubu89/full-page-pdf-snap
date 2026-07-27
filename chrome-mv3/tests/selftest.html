@@ -1,0 +1,95 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Compat-Selbsttest</title>
+<pre id="out">läuft…</pre>
+<script>
+/* Prueft die Kette, die im Chrome-Port abgestuerzt ist:
+   JPEG-Blob -> createImageBitmap -> OffscreenCanvas -> convertToBlob -> data:-URL
+   Genau so laeuft es im MV3-Service-Worker. */
+const lines = [];
+const log = (ok, msg) => lines.push(`${ok ? "OK  " : "FEHL"}  ${msg}`);
+
+async function makeJpegBlob(w, h, color) {
+  const c = new OffscreenCanvas(w, h);
+  const ctx = c.getContext("2d");
+  ctx.fillStyle = color; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = "#000"; ctx.fillRect(0, h - 10, w, 10);   // Markierung unten
+  return await c.convertToBlob({ type: "image/jpeg", quality: 0.92 });
+}
+
+(async () => {
+  try {
+    // --- 1. Die Root-Cause belegen -------------------------------------
+    const blob = await makeJpegBlob(400, 300, "#e0e0ff");
+    const bmp = await createImageBitmap(blob);
+    log(bmp.width === 400 && bmp.height === 300,
+        `ImageBitmap.width/height = ${bmp.width}x${bmp.height} (erwartet 400x300)`);
+    log(bmp.naturalWidth === undefined,
+        `ImageBitmap.naturalWidth = ${bmp.naturalWidth}  <- genau das war der Absturz`);
+
+    // --- 2. Der alte Code-Pfad muss reproduzierbar werfen ---------------
+    try {
+      const c = new OffscreenCanvas(1, 1);
+      c.width = bmp.naturalWidth;          // undefined
+      log(false, "OffscreenCanvas nahm undefined an — unerwartet");
+    } catch (e) {
+      log(true, `Alter Pfad wirft weiterhin: "${e.message.slice(0, 60)}…"`);
+    }
+
+    // --- 3. Der gefixte Pfad: Stitching mehrerer Segmente ---------------
+    const segs = [];
+    for (const col of ["#ffdddd", "#ddffdd", "#ddddff"]) {
+      segs.push(await createImageBitmap(await makeJpegBlob(400, 300, col)));
+    }
+    const pxW = segs[0].width;                       // gefixt: .width
+    const bigH = segs.length * segs[0].height;
+    const big = new OffscreenCanvas(1, 1);
+    big.width = pxW; big.height = bigH;
+    log(big.width === 400 && big.height === 900,
+        `Grosses Canvas ${big.width}x${big.height} (erwartet 400x900)`);
+
+    const ctx = big.getContext("2d");
+    ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, pxW, bigH);
+    segs.forEach((s, i) => ctx.drawImage(s, 0, i * 300));
+
+    // Stimmen die Segmentgrenzen? Mitte jedes Streifens abtasten.
+    const probes = [[150, "255,221,221"], [450, "221,255,221"], [750, "221,221,255"]];
+    for (const [y, expect] of probes) {
+      const d = ctx.getImageData(200, y, 1, 1).data;
+      const got = `${d[0]},${d[1]},${d[2]}`;
+      const near = expect.split(",").every((v, i) => Math.abs(+v - d[i]) <= 6);
+      log(near, `Pixel bei y=${y}: ${got} (erwartet ~${expect}) — Segment sitzt richtig`);
+    }
+
+    // --- 4. JPEG-Bytes wie canvasToJpegBytes ---------------------------
+    const jb = await big.convertToBlob({ type: "image/jpeg", quality: 0.92 });
+    const bytes = new Uint8Array(await jb.arrayBuffer());
+    log(bytes[0] === 0xFF && bytes[1] === 0xD8,
+        `convertToBlob liefert JPEG (${bytes.length} Bytes, Magic ${bytes[0].toString(16)}${bytes[1].toString(16)})`);
+
+    // --- 5. data:-URL statt Blob-URL, inkl. Chunk-Grenze ---------------
+    const big2 = new Uint8Array(200000).fill(65);       // > 32-KB-Chunk
+    const pdfBlob = new Blob([big2], { type: "application/pdf" });
+    const t0 = performance.now();
+    const buf = new Uint8Array(await pdfBlob.arrayBuffer());
+    let bin = "";
+    for (let i = 0; i < buf.length; i += 0x8000) {
+      bin += String.fromCharCode.apply(null, buf.subarray(i, i + 0x8000));
+    }
+    const url = "data:application/pdf;base64," + btoa(bin);
+    const ms = Math.round(performance.now() - t0);
+    log(url.startsWith("data:application/pdf;base64,") && url.length > 260000,
+        `data:-URL aus 200 KB erzeugt (${url.length} Zeichen, ${ms} ms) — Chunking hält`);
+
+    const back = await (await fetch(url)).arrayBuffer();
+    log(back.byteLength === 200000,
+        `Rueckdekodierung ergibt ${back.byteLength} Bytes (erwartet 200000) — verlustfrei`);
+
+  } catch (e) {
+    log(false, "ABBRUCH: " + e.message);
+  }
+  document.getElementById("out").textContent =
+    lines.join("\n") + "\n\nERGEBNIS: " +
+    (lines.some(l => l.startsWith("FEHL")) ? "FEHLER" : "ALLE TESTS BESTANDEN");
+})();
+</script>

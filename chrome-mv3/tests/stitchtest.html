@@ -1,0 +1,118 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Stitch-Test</title>
+<pre id="out"></pre>
+<script>
+/* Bildet das Zusammenfuegen mit Zuschnitt exakt so nach wie background.js
+   und prueft das Ergebnis pixelweise:
+     - ist der App-Rahmen (Seitenleiste, Kopfzeile) verschwunden?
+     - sitzen die Segmente lueckenlos aneinander?
+     - stimmen die Masse? */
+const R = [];
+const ok = (c, m) => R.push(`${c ? "OK  " : "FEHL"}  ${m}`);
+
+const WIN_W = 1384, WIN_H = 805;      // Fenster
+const CLIP = { x: 240, y: 64, w: 1144, h: 741 };   // wie im Layout-Test B gemessen
+const SCALE = 2;                       // Screenshot in 2x (DPR)
+const SIDEBAR = "#404040", HEADER = "#606060";
+
+/* Ein Screenshot: Seitenleiste + Kopfzeile + Inhaltsbereich mit farbigen
+   Streifen, deren Farbe die absolute Position codiert. */
+function fakeShot(scrollTop) {
+  const c = new OffscreenCanvas(WIN_W * SCALE, WIN_H * SCALE);
+  const x = c.getContext("2d");
+  x.fillStyle = "#ffffff"; x.fillRect(0, 0, c.width, c.height);
+  x.fillStyle = SIDEBAR;   x.fillRect(0, 0, CLIP.x * SCALE, c.height);
+  x.fillStyle = HEADER;    x.fillRect(0, 0, c.width, CLIP.y * SCALE);
+
+  // Inhalt: 60-px-Streifen, Farbe = Position im Dokument
+  const stripe = 60;
+  for (let docY = Math.floor(scrollTop / stripe) * stripe;
+       docY < scrollTop + CLIP.h + stripe; docY += stripe) {
+    const yInClip = docY - scrollTop;
+    const idx = docY / stripe;
+    x.fillStyle = `rgb(${(idx * 37) % 256}, ${(idx * 91) % 256}, ${(idx * 53) % 256})`;
+    x.fillRect(CLIP.x * SCALE, (CLIP.y + yInClip) * SCALE,
+               CLIP.w * SCALE, stripe * SCALE);
+  }
+  return c.transferToImageBitmap();
+}
+
+(async () => {
+  // --- Segmente wie im Capture-Loop ----------------------------------------
+  const step = CLIP.h - 40;                     // wie stepCss in background.js
+  const totalDoc = 2400;
+  const segments = [];
+  for (let y = 0; y <= totalDoc - CLIP.h; y += step) {
+    const img = fakeShot(y);
+    segments.push({ y, img, pxW: img.width, pxH: img.height });
+  }
+  R.push(`${segments.length} Segmente, Dokumenthoehe ${totalDoc} px, Schritt ${step} px`);
+
+  // --- Exakt die Rechnung aus background.js --------------------------------
+  const layout = { winH: WIN_H, viewportH: CLIP.h, clip: CLIP };
+  const dprY = segments[0].pxH / (layout.winH || layout.viewportH);
+  const clip = layout.clip;
+  const srcX = Math.round(clip.x * dprY);
+  const srcY = Math.round(clip.y * dprY);
+  const pxW  = Math.round(clip.w * dprY);
+  const segH = Math.round(clip.h * dprY);
+  const lastSeg = segments[segments.length - 1];
+  const bigH = Math.max(Math.round(lastSeg.y * dprY) + segH, segH);
+
+  ok(dprY === SCALE, `Skalierung ueber Fensterhoehe korrekt (${dprY}, erwartet ${SCALE})`);
+  ok(pxW === CLIP.w * SCALE, `Breite = nur Inhaltsbereich (${pxW}, erwartet ${CLIP.w * SCALE})`);
+  ok(pxW < WIN_W * SCALE, `schmaler als das Fenster (${pxW} < ${WIN_W * SCALE}) - Seitenleiste weg`);
+
+  const big = new OffscreenCanvas(pxW, bigH);
+  const ctx = big.getContext("2d");
+  ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, pxW, bigH);
+  for (const seg of segments) {
+    const destY = Math.round(seg.y * dprY);
+    ctx.drawImage(seg.img, srcX, srcY, pxW, segH, 0, destY, pxW, segH);
+  }
+
+  // --- Pruefung 1: kein Rahmen mehr im Ergebnis ----------------------------
+  const hex = (d) => `rgb(${d[0]}, ${d[1]}, ${d[2]})`;
+  let sidebarHits = 0, headerHits = 0;
+  for (let y = 5; y < bigH; y += 97) {
+    for (let x = 2; x < pxW; x += 211) {
+      const d = ctx.getImageData(x, y, 1, 1).data;
+      if (Math.abs(d[0] - 64) < 6 && Math.abs(d[1] - 64) < 6 && Math.abs(d[2] - 64) < 6) sidebarHits++;
+      if (Math.abs(d[0] - 96) < 6 && Math.abs(d[1] - 96) < 6 && Math.abs(d[2] - 96) < 6) headerHits++;
+    }
+  }
+  ok(sidebarHits === 0, `keine Seitenleisten-Pixel im Ergebnis (${sidebarHits} Treffer)`);
+  ok(headerHits === 0, `keine Kopfzeilen-Pixel im Ergebnis (${headerHits} Treffer)`);
+
+  // --- Pruefung 2: Inhalt lueckenlos und in richtiger Reihenfolge ----------
+  // Jeder 60-px-Streifen im Dokument muss an seiner Sollposition stehen.
+  let wrong = 0, checked = 0;
+  for (let idx = 0; idx * 60 + 30 < totalDoc - CLIP.h; idx++) {
+    const docY = idx * 60 + 30;                 // Mitte des Streifens
+    const py = Math.round(docY * SCALE);
+    if (py >= bigH) break;
+    const d = ctx.getImageData(Math.round(pxW / 2), py, 1, 1).data;
+    const want = [(idx * 37) % 256, (idx * 91) % 256, (idx * 53) % 256];
+    const near = want.every((v, i) => Math.abs(v - d[i]) <= 4);
+    checked++;
+    if (!near) { wrong++; if (wrong <= 3) R.push(`      Abweichung bei docY=${docY}: ${hex(d)} statt rgb(${want})`); }
+  }
+  ok(wrong === 0, `alle ${checked} Streifen an der richtigen Position (${wrong} Abweichungen)`);
+
+  // --- Pruefung 3: keine weissen Luecken zwischen Segmenten ----------------
+  let white = 0;
+  for (let y = 0; y < bigH; y += 3) {
+    const d = ctx.getImageData(Math.round(pxW / 2), y, 1, 1).data;
+    if (d[0] > 250 && d[1] > 250 && d[2] > 250) white++;
+  }
+  ok(white === 0, `keine weissen Luecken im Verlauf (${white} von ${Math.ceil(bigH / 3)} Abtastungen)`);
+
+  R.push("");
+  R.push(`Ergebnisbild: ${pxW} x ${bigH} px  (Fenster waere ${WIN_W * SCALE} x ...)`);
+  R.push("");
+  R.push("ERGEBNIS: " + (R.some(l => l.startsWith("FEHL")) ? "FEHLER" : "ALLE BESTANDEN"));
+  document.getElementById("out").textContent = R.join("\n");
+  document.title = "fertig";
+})();
+</script>

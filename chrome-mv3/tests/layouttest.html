@@ -1,0 +1,122 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Layout-Test</title>
+<style>
+  html,body{margin:0;height:100%;font:13px system-ui}
+  #stage{position:absolute;inset:0}
+  #out{display:none}
+</style>
+<div id="stage"></div>
+<pre id="out"></pre>
+<script src="_logic.js"></script>
+<script>
+/* Prueft findScrollableRoot + computeClipRect gegen sechs Layout-Typen.
+   Es laeuft der unveraenderte Code aus content.js. */
+const R = [];
+const ok = (c, m) => R.push(`${c ? "OK  " : "FEHL"}  ${m}`);
+const stage = document.getElementById("stage");
+const rows = (n) => Array.from({length: n}, (_, i) =>
+  `<div style="height:60px;border-bottom:1px solid #ddd">Zeile ${i + 1}</div>`).join("");
+
+const CASES = [
+  {
+    name: "A  Normale lange Seite (Fenster scrollt)",
+    html: `<div style="height:4000px">${rows(60)}</div>`,
+    check: (s, clip) => {
+      ok(s.isWindow === true, "  erkannt als Fenster-Scroll");
+      ok(clip === null, "  kein Zuschnitt (voller Viewport gewollt)");
+    }
+  },
+  {
+    name: "B  App-Layout wie Gmail (Kopf + Seitenleiste + innerer Container)",
+    html: `<div style="position:absolute;inset:0;display:grid;
+             grid-template-rows:64px 1fr;grid-template-columns:240px 1fr">
+             <div style="grid-column:1/3;background:#eee">KOPFZEILE</div>
+             <div style="background:#f5f5f5">SEITENLEISTE</div>
+             <div id="scroller" style="overflow-y:auto">${rows(80)}</div>
+           </div>`,
+    check: (s, clip) => {
+      ok(s.isWindow === false, "  erkannt als innerer Container");
+      ok(s.root.id === "scroller", `  richtiger Container gefunden (id=${s.root.id})`);
+      ok(clip !== null, "  Zuschnitt erzeugt");
+      if (clip) {
+        ok(clip.y >= 60, `  Kopfzeile ausgeschlossen (y=${clip.y} >= 64)`);
+        ok(clip.x >= 235, `  Seitenleiste ausgeschlossen (x=${clip.x} >= 240)`);
+        ok(clip.w > 100 && clip.h > 100, `  plausible Groesse ${clip.w}x${clip.h}`);
+      }
+    }
+  },
+  {
+    name: "C  Verschachtelt: Container im Container",
+    html: `<div style="position:absolute;inset:0;overflow-y:auto">
+             <div style="height:200px;background:#eef">Aussen oben</div>
+             <div id="inner" style="height:600px;overflow-y:auto;border:2px solid #99f">
+               ${rows(40)}
+             </div>
+             <div style="height:200px;background:#eef">Aussen unten</div>
+           </div>`,
+    check: (s, clip) => {
+      ok(s.isWindow === false, "  innerer Container gewaehlt (nicht das Fenster)");
+      ok(clip !== null, `  Zuschnitt erzeugt (${clip ? clip.w + "x" + clip.h : "-"})`);
+      // Der groesste Scroll-Ueberhang gewinnt - hier der aeussere Wrapper
+      ok(s.root.scrollHeight - s.root.clientHeight > 0, "  gewaehlter Container scrollt wirklich");
+    }
+  },
+  {
+    name: "D  Zwei Container nebeneinander (ungleich lang)",
+    html: `<div style="position:absolute;inset:0;display:flex">
+             <div id="klein" style="flex:1;overflow-y:auto">${rows(12)}</div>
+             <div id="gross" style="flex:1;overflow-y:auto">${rows(90)}</div>
+           </div>`,
+    check: (s, clip) => {
+      ok(s.root.id === "gross", `  der laengere Container gewinnt (id=${s.root.id})`);
+      ok(clip && clip.w < window.innerWidth * 0.75,
+         `  Zuschnitt nur auf die halbe Breite (w=${clip ? clip.w : "-"} < ${Math.round(window.innerWidth * 0.75)})`);
+    }
+  },
+  {
+    name: "E  Winziger Scroll-Container (muss verworfen werden)",
+    html: `<div style="height:3000px">${rows(20)}
+             <div id="mini" style="width:40px;height:40px;overflow-y:auto">
+               <div style="height:400px"></div></div></div>`,
+    check: (s, clip) => {
+      ok(s.isWindow === true, "  Fenster-Scroll bevorzugt, Mini-Container ignoriert");
+      ok(clip === null, "  kein Zuschnitt");
+    }
+  },
+  {
+    name: "F  Fixed-Kopfzeile ueber normalem Seiten-Scroll",
+    html: `<div style="position:fixed;top:0;left:0;right:0;height:56px;
+             background:#333;color:#fff;z-index:9">STICKY KOPF</div>
+           <div style="height:4000px;padding-top:56px">${rows(60)}</div>`,
+    check: (s, clip) => {
+      ok(s.isWindow === true, "  Fenster-Scroll erkannt");
+      ok(clip === null, "  kein Zuschnitt - Sticky wird stattdessen ausgeblendet");
+    }
+  },
+];
+
+(async () => {
+  for (const c of CASES) {
+    R.push("");
+    R.push(c.name);
+    stage.innerHTML = c.html;
+    // Layout erzwingen, bevor gemessen wird
+    void stage.offsetHeight;
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    try {
+      const s = findScrollableRoot();
+      const clip = computeClipRect(s);
+      c.check(s, clip);
+      R.push(`      [root=${s.root.tagName}${s.root.id ? "#" + s.root.id : ""}, ` +
+             `isWindow=${s.isWindow}, clip=${clip ? `${clip.x},${clip.y} ${clip.w}x${clip.h}` : "null"}]`);
+    } catch (e) {
+      ok(false, "  AUSNAHME: " + e.message);
+    }
+  }
+  R.push("");
+  R.push("ERGEBNIS: " + (R.some(l => l.startsWith("FEHL")) ? "FEHLER" : "ALLE BESTANDEN"));
+  document.getElementById("out").textContent = R.join("\n");
+  document.title = "fertig";
+})();
+</script>
