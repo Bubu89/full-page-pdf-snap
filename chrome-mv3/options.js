@@ -193,15 +193,33 @@ load();
     now.textContent = "?";
   }
 
+  /* Kein Tab-Aufruf: Browser lassen about:addons und chrome://extensions
+   * grundsaetzlich nicht von einer Erweiterung oeffnen - der Versuch endete
+   * in einem prompt-Dialog. Stattdessen steht die Adresse sichtbar da und
+   * laesst sich mit einem Klick kopieren.
+   */
+  const urlEl = document.getElementById("shortcutUrl");
+  const isChrome = /Chrome|Chromium|Edg/.test(navigator.userAgent);
+  const url = isChrome ? "chrome://extensions/shortcuts" : "about:addons";
+  if (urlEl) urlEl.textContent = url;
+
   if (btn) {
     btn.addEventListener("click", async () => {
-      // Firefox und Chrome verwalten Kuerzel auf verschiedenen Seiten, und
-      // beide lassen sich nicht direkt oeffnen - deshalb ein Tab mit der
-      // passenden Adresse.
-      const isChrome = !!(navigator.userAgent.match(/Chrome|Chromium|Edg/));
-      const url = isChrome ? "chrome://extensions/shortcuts" : "about:addons";
-      try { await browser.tabs.create({ url }); }
-      catch (_) { window.prompt("Open this address:", url); }
+      const label = btn.textContent;
+      try {
+        await navigator.clipboard.writeText(url);
+        btn.textContent = t("optShortcutCopied", "Address copied");
+      } catch (_) {
+        // Zwischenablage gesperrt: Text markieren, damit Strg+C reicht
+        if (urlEl) {
+          const r = document.createRange();
+          r.selectNodeContents(urlEl);
+          const sel = window.getSelection();
+          sel.removeAllRanges(); sel.addRange(r);
+        }
+        btn.textContent = t("optShortcutWhere", "Copy this address");
+      }
+      setTimeout(() => { btn.textContent = label; }, 2500);
     });
   }
 })();

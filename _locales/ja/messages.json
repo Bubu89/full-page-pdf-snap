@@ -231,6 +231,15 @@
     "message": "Change shortcut"
   },
   "optShortcutHint": {
-    "message": "Shown here is the shortcut the browser has actually assigned. Browser shortcuts always take precedence and cannot be overridden by an extension — if the field says none, the combination is taken by the browser itself. Assign a free one via the button."
+    "message": "Shown here is the shortcut the browser has actually assigned. Browser shortcuts always take precedence and cannot be overridden by an extension — if the field says none, the combination is taken by the browser itself. To change it, open the address next to the button in a new tab."
+  },
+  "optShortcutCopy": {
+    "message": "Copy address"
+  },
+  "optShortcutCopied": {
+    "message": "Address copied — paste it into a new tab"
+  },
+  "optShortcutWhere": {
+    "message": "To change it, open this address in a new tab:"
   }
 }

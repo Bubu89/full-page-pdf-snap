@@ -231,6 +231,15 @@
     "message": "Kürzel ändern"
   },
   "optShortcutHint": {
-    "message": "Angezeigt wird das Kürzel, das der Browser tatsächlich vergeben hat. Browser-Kürzel haben immer Vorrang und lassen sich von einer Erweiterung nicht überschreiben — steht dort keines, ist die Kombination vom Browser belegt. Über die Schaltfläche lässt sich ein freies vergeben."
+    "message": "Angezeigt wird das Kürzel, das der Browser tatsächlich vergeben hat. Browser-Kürzel haben immer Vorrang und lassen sich von einer Erweiterung nicht überschreiben — steht dort keines, ist die Kombination vom Browser belegt. Zum Ändern die Adresse neben der Schaltfläche in einem neuen Tab öffnen."
+  },
+  "optShortcutCopy": {
+    "message": "Adresse kopieren"
+  },
+  "optShortcutCopied": {
+    "message": "Adresse kopiert — in einem neuen Tab einfügen"
+  },
+  "optShortcutWhere": {
+    "message": "Zum Ändern diese Adresse in einem neuen Tab öffnen:"
   }
 }
