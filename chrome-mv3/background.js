@@ -869,8 +869,10 @@ async function setIdleTitle() {
   let hint = "";
   try {
     const cmds = await browser.commands.getAll();
-    const c = cmds.find(x => x.name === "capture-full-page");
-    if (c && c.shortcut) hint = ` (${c.shortcut})`;
+    const keys = cmds
+      .filter(c => c.name.startsWith("capture-full-page") && c.shortcut)
+      .map(c => c.shortcut);
+    if (keys.length) hint = ` (${keys.join(" / ")})`;
   } catch (_) { /* Android kennt commands.getAll nicht */ }
   await setActionTitle(`Full Page PDF Snap — save the whole page as PDF${hint}`);
 }
@@ -1036,7 +1038,9 @@ async function runOnActiveTab() {
 
 if (browser.commands && typeof browser.commands.onCommand?.addListener === "function") {
   browser.commands.onCommand.addListener(async (name) => {
-    if (name !== "capture-full-page") return;
+    // Chrome bekommt ein zweites Kuerzel aus der Ctrl+Shift-Reihe, die dort
+    // anders als in Firefox noch Luft hat. Beide Kommandos loesen dasselbe aus.
+    if (!name.startsWith("capture-full-page")) return;
     try { await runOnActiveTab(); }
     catch (e) { console.error(TAG, e); notifyError(e.message); }
   });
@@ -1250,6 +1254,11 @@ buildMenus().catch(() => {});
  * den der Nutzer sehr wahrscheinlich nie bewusst gewaehlt hat. Wer 1.25 oder
  * 2.0 eingestellt hat, behaelt seine Wahl.
  */
+// Der Titel steht im Manifest mit einer festen Kombination. Beansprucht der
+// Browser sie, verspricht der Tooltip ein Kuerzel, das nicht ausloest - darum
+// gleich beim Laden durch den tatsaechlichen Stand ersetzen.
+setIdleTitle();
+
 browser.runtime.onInstalled.addListener(async (details) => {
   if (details.reason !== "update") return;
   try {

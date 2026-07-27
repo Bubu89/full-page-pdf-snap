@@ -181,19 +181,22 @@ load();
 
   try {
     const cmds = await browser.commands.getAll();
-    const c = cmds.find(x => x.name === "capture-full-page");
-    if (c && c.shortcut) {
-      now.textContent = c.shortcut;
+    // Chrome bekommt ein zweites Kuerzel; angezeigt wird, was der Browser
+    // davon tatsaechlich vergeben hat - moeglicherweise nur eines.
+    const keys = cmds
+      .filter(c => c.name.startsWith("capture-full-page") && c.shortcut)
+      .map(c => c.shortcut);
+    const inline = document.getElementById("shortcutInline");
+    if (keys.length) {
+      now.textContent = keys.join("   /   ");
       now.style.color = "";
       // Der Hinweiskasten weiter unten nannte die Kombination fest verdrahtet -
-      // nach dem Wechsel auf Alt+Shift+P stand dort monatelang das alte Kuerzel.
-      // Beide Stellen speisen sich jetzt aus derselben Abfrage.
-      const inline = document.getElementById("shortcutInline");
-      if (inline) inline.textContent = c.shortcut;
+      // nach dem Wechsel auf Alt+Shift+P stand dort das alte Kuerzel. Beide
+      // Stellen speisen sich jetzt aus derselben Abfrage.
+      if (inline) inline.textContent = keys.join(" / ");
     } else {
       now.textContent = t("optShortcutNone", "none assigned");
       now.style.color = "#b91c1c";
-      const inline = document.getElementById("shortcutInline");
       if (inline) inline.textContent = t("optShortcutNone", "none assigned");
     }
   } catch (_) {

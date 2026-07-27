@@ -136,6 +136,10 @@ MANIFEST = """{
     "capture-full-page": {
       "suggested_key": { "default": "Alt+Shift+P" },
       "description": "Save the whole page as PDF"
+    },
+    "capture-full-page-alt": {
+      "suggested_key": { "default": "Ctrl+Shift+Y" },
+      "description": "Save the whole page as PDF (second shortcut)"
     }
   }
 }

@@ -1,5 +1,33 @@
 # Changelog
 
+## 2.12.0 — 2026-07-27 (beide)
+
+**Was:** Das Tastenkürzel wird überall aus dem gemeldet, was der Browser
+tatsächlich vergeben hat, und Chrome bekommt ein zweites Kürzel.
+
+**Warum:** Der Hinweiskasten auf der Optionsseite nannte weiterhin
+`Ctrl+Shift+Y`, obwohl der Standard längst `Alt+Shift+P` war — die Kombination
+stand fest im HTML, während das Feld darüber schon den echten Wert las. Wer
+sich auf den Kasten verließ, drückte in Firefox die Tastenkombination der
+Bibliothek und wunderte sich, dass nichts geschieht.
+
+**Wie:**
+- `options.html`, Toolbar-Tooltip und Feld speisen sich aus `commands.getAll()`;
+  eine fest verdrahtete Kombination gibt es nirgends mehr.
+- Chrome erhält zusätzlich `Ctrl+Shift+Y`. Die Ctrl+Shift-Reihe ist dort im
+  Gegensatz zu Firefox weitgehend frei, und es war das frühere Kürzel — wer es
+  gewohnt war, behält es. Firefox bleibt bei einem, weil dort A, B, C, D, E, G,
+  H, I, J, K, M, N, O, P, Q, R, T, V, W, Y und Z belegt sind.
+- Der Befehlsempfänger reagiert auf jeden Namen mit dem Präfix
+  `capture-full-page`, beide Kürzel lösen dasselbe aus.
+- Der Tooltip wird beim Laden richtiggestellt, nicht erst nach der ersten
+  Aufnahme.
+- Eine deutsche Restzeile in der Android-Hilfe übersetzt.
+
+**Ergebnis:** Die Optionsseite zeigt in Chrome `Alt+Shift+P / Ctrl+Shift+Y`, in
+Firefox `Alt+Shift+P` — und zwar genau das, was auch auslöst. Beansprucht ein
+Browser eine Kombination für sich, erscheint sie schlicht nicht.
+
 ## 2.3.0 — 2026-07-27 (Firefox)
 
 **Was:** Die Verbesserungen an der Erfassung von App-Layouts, die beim
