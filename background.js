@@ -212,7 +212,9 @@ async function captureFullPageInner(tab, settings) {
   await sleep(300);
 
   if (settings.hideSticky) {
-    await browser.tabs.sendMessage(tab.id, { cmd: "hideSticky" });
+    // Erste Phase: nur stoerende Overlays. Eine fixe Navigationsspalte bleibt
+    // vorerst stehen, damit sie im ersten Segment erhalten bleibt.
+    await browser.tabs.sendMessage(tab.id, { cmd: "hideSticky", includeSideNav: false });
     await sleep(80);
   }
 
@@ -280,6 +282,16 @@ async function captureFullPageInner(tab, settings) {
         pxW: img.naturalWidth,
         pxH: img.naturalHeight
       });
+
+      // Zweite Phase: Nach dem ersten Segment verschwindet auch eine fixe
+      // Navigationsspalte. Sonst wandert sie durch jedes weitere Segment und
+      // zerschneidet den Verlauf - dasselbe Prinzip wie der Kontext-Modus bei
+      // App-Layouts, nur fuer Seiten, bei denen das Fenster selbst scrollt.
+      if (settings.hideSticky && segments.length === 1 && clipModeWanted !== "full") {
+        await browser.tabs.sendMessage(tab.id, { cmd: "hideSticky", includeSideNav: true })
+          .catch(() => {});
+        await sleep(60);
+      }
 
       // Progress-Feedback fuer Android (alle 2 Segmente Notification aktualisieren).
       // Auf Desktop lassen wir es weg (Popup gibt sowieso Rueckmeldung).

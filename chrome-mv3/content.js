@@ -322,19 +322,67 @@
     log("Restored.");
   }
 
-  function hideStickyAndFixed() {
+  /* Seitliche Navigation von stoerenden Overlays unterscheiden.
+   *
+   * "Sticky ausblenden" soll Cookie-Banner, Chat-Blasen und mitwandernde
+   * Kopfleisten entfernen - die tauchen sonst in jedem Abschnitt erneut auf.
+   *
+   * Dokumentations-Seiten (VitePress, Docusaurus, MkDocs) legen ihre
+   * Navigation aber ebenfalls als position:fixed an. Die pauschal
+   * auszublenden loescht Inhalt statt Stoerung: im PDF bleibt links eine
+   * leere Spalte.
+   *
+   * Merkmal einer Navigationsspalte: hoch, schmal und an einem Fensterrand.
+   * Banner sind breit und flach, Chat-Blasen klein - beide fallen durch.
+   */
+  function isSideNavigation(r) {
+    const winW = window.innerWidth, winH = window.innerHeight;
+    const tall = r.height >= winH * 0.5;
+    const narrow = r.width <= winW * 0.4;
+    // Toleranz relativ zur Fensterbreite: Layouts mit Aussenabstand haben
+    // ihre Navigationsspalte nicht buendig am Rand.
+    const edge = Math.max(12, winW * 0.05);
+    const atEdge = r.left <= edge || r.right >= winW - edge;
+    return tall && narrow && atEdge;
+  }
+
+  /* includeSideNav=false: Navigationsspalten bleiben stehen (erstes Segment).
+   * includeSideNav=true:  auch sie verschwinden (alle weiteren Segmente).
+   *
+   * Bei fixem Layout mit Fenster-Scroll wandert die Navigation sonst durch
+   * jedes Segment und zerschneidet den Verlauf - genau wie Kopfzeile und
+   * Seitenleiste bei App-Layouts. Einmal oben zeigen loest beides.
+   */
+  function hideStickyAndFixed(includeSideNav) {
     const els = document.querySelectorAll("*");
-    let n = 0;
+    const keep = [];
+    const candidates = [];
+
     for (const el of els) {
       let cs;
       try { cs = getComputedStyle(el); } catch (_) { continue; }
-      if (cs.position === "fixed" || cs.position === "sticky") {
-        saved.stickyChanges.push({ el, prevVisibility: el.style.visibility });
-        el.style.setProperty("visibility", "hidden", "important");
-        n++;
+      if (cs.position !== "fixed" && cs.position !== "sticky") continue;
+      let r;
+      try { r = el.getBoundingClientRect(); } catch (_) { continue; }
+      if (!includeSideNav && isSideNavigation(r)) {
+        keep.push(el);
+        log("Sticky behalten (Navigationsspalte):",
+            el.tagName.toLowerCase(), Math.round(r.width) + "x" + Math.round(r.height));
+      } else {
+        candidates.push(el);
       }
     }
-    log("Hidden sticky/fixed:", n);
+
+    let n = 0;
+    for (const el of candidates) {
+      // Was innerhalb einer behaltenen Navigation liegt, bleibt ebenfalls -
+      // sonst verschwinden einzelne Bedienelemente aus der Spalte.
+      if (keep.some(k => k.contains(el))) continue;
+      saved.stickyChanges.push({ el, prevVisibility: el.style.visibility });
+      el.style.setProperty("visibility", "hidden", "important");
+      n++;
+    }
+    log("Sticky/fixed ausgeblendet:", n, "| behalten:", keep.length);
   }
 
   function scrollToYActive(targetY) {
@@ -425,7 +473,7 @@
             sendResponse({ ok: true, scrollTop: getScrollTop(scrollState) });
             break;
           case "hideSticky":
-            hideStickyAndFixed();
+            hideStickyAndFixed(!!msg.includeSideNav);
             sendResponse({ ok: true });
             break;
           case "scrollTo": {
