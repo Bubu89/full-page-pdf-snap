@@ -50,6 +50,7 @@
   }
 
   async function init() {
+    table = null;                 // bei erneutem Aufruf nicht die alte Wahl behalten
     let lang = "auto";
     try {
       const s = await browser.storage.local.get({ uiLanguage: "auto" });

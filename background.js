@@ -271,6 +271,51 @@ async function captureFullPageInner(tab, settings) {
   const sideCaptures = [];
 
   try {
+    /* Nebenbereiche (z.B. scrollbare Seitenleiste) eigenstaendig durchscrollen.
+     *
+     * Laeuft nach dem Hauptdurchlauf, damit sich beide nicht gegenseitig stoeren.
+     * Ohne diesen Schritt endet eine scrollbare Seitenleiste im PDF am Ende des
+     * ersten Segments, obwohl sie noch Inhalt haette.
+     */
+    const sideList = (layout.sideScrollers || []);
+    // Auch bei Fenster-Scroll: Dokumentations-Seiten legen ihre Navigation
+    // als festes, eigenstaendig scrollendes Element an - dort gibt es keinen
+    // Clip, aber sehr wohl einen Nebenbereich mit eigenem Inhalt.
+    if (clipModeWanted !== "full" && sideList.length) {
+      for (let idx = 0; idx < sideList.length; idx++) {
+        const rect = sideList[idx];
+        const shots = [];
+        const stepSide = Math.max(80, rect.h - 30);
+        let sy = 0, lastY = 0, guard = 0;
+        try {
+          while (true) {
+            const res = await browser.tabs.sendMessage(tab.id, { cmd: "scrollSide", index: idx, y: sy });
+            if (!res || !res.ok) break;
+            const actual = res.actualY || 0;
+            if (shots.length && actual <= lastY + 2) break;      // kommt nicht weiter
+            await sleep(Math.min(400, settings.settlingMs));
+            let dataUrl;
+            try { dataUrl = await browser.tabs.captureVisibleTab(tab.windowId, { format: "png" }); }
+            catch (_) { dataUrl = await browser.tabs.captureVisibleTab({ format: "png" }); }
+            const img = await blobToImage(await dataUrlToBlob(dataUrl));
+            shots.push({ y: actual, img });
+            lastY = actual;
+            if (actual >= rect.max - 2) break;
+            sy = actual + stepSide;
+            if (++guard > 30) break;
+          }
+        } catch (e) { log("Nebenbereich", idx, "abgebrochen:", e.message); }
+        if (shots.length > 1) {
+          sideCaptures.push({ rect, shots: shots.slice(1), lastY });
+          log("Nebenbereich", idx, "->", shots.length - 1, "zusaetzliche Segmente");
+        }
+      }
+      // Nebenbereiche zurueckstellen, damit die Seite unveraendert bleibt
+      for (let idx = 0; idx < sideList.length; idx++) {
+        await browser.tabs.sendMessage(tab.id, { cmd: "scrollSide", index: idx, y: 0 }).catch(() => {});
+      }
+    }
+
     while (true) {
       const targetY = Math.min(y, maxScroll);
       const scrollRes = await browser.tabs.sendMessage(tab.id, { cmd: "scrollTo", y: targetY });
@@ -362,50 +407,6 @@ async function captureFullPageInner(tab, settings) {
       y += stepCss;
       if (y > maxScroll) y = maxScroll;
       if (++safety > 400) throw new Error("Zu viele Scroll-Schritte");
-    }
-    /* Nebenbereiche (z.B. scrollbare Seitenleiste) eigenstaendig durchscrollen.
-     *
-     * Laeuft nach dem Hauptdurchlauf, damit sich beide nicht gegenseitig stoeren.
-     * Ohne diesen Schritt endet eine scrollbare Seitenleiste im PDF am Ende des
-     * ersten Segments, obwohl sie noch Inhalt haette.
-     */
-    const sideList = (layout.sideScrollers || []);
-    // Auch bei Fenster-Scroll: Dokumentations-Seiten legen ihre Navigation
-    // als festes, eigenstaendig scrollendes Element an - dort gibt es keinen
-    // Clip, aber sehr wohl einen Nebenbereich mit eigenem Inhalt.
-    if (clipModeWanted !== "full" && sideList.length) {
-      for (let idx = 0; idx < sideList.length; idx++) {
-        const rect = sideList[idx];
-        const shots = [];
-        const stepSide = Math.max(80, rect.h - 30);
-        let sy = 0, lastY = 0, guard = 0;
-        try {
-          while (true) {
-            const res = await browser.tabs.sendMessage(tab.id, { cmd: "scrollSide", index: idx, y: sy });
-            if (!res || !res.ok) break;
-            const actual = res.actualY || 0;
-            if (shots.length && actual <= lastY + 2) break;      // kommt nicht weiter
-            await sleep(Math.min(400, settings.settlingMs));
-            let dataUrl;
-            try { dataUrl = await browser.tabs.captureVisibleTab(tab.windowId, { format: "png" }); }
-            catch (_) { dataUrl = await browser.tabs.captureVisibleTab({ format: "png" }); }
-            const img = await blobToImage(await dataUrlToBlob(dataUrl));
-            shots.push({ y: actual, img });
-            lastY = actual;
-            if (actual >= rect.max - 2) break;
-            sy = actual + stepSide;
-            if (++guard > 30) break;
-          }
-        } catch (e) { log("Nebenbereich", idx, "abgebrochen:", e.message); }
-        if (shots.length > 1) {
-          sideCaptures.push({ rect, shots: shots.slice(1), lastY });
-          log("Nebenbereich", idx, "->", shots.length - 1, "zusaetzliche Segmente");
-        }
-      }
-      // Nebenbereiche zurueckstellen, damit die Seite unveraendert bleibt
-      for (let idx = 0; idx < sideList.length; idx++) {
-        await browser.tabs.sendMessage(tab.id, { cmd: "scrollSide", index: idx, y: 0 }).catch(() => {});
-      }
     }
   } finally {
     await browser.tabs.sendMessage(tab.id, { cmd: "restore" }).catch(() => {});

@@ -134,8 +134,16 @@ $("save").addEventListener("click", async () => {
     captureScale: parseFloat($("captureScale").value) || 1.0
   };
   await browser.storage.local.set(data);
+
+  // Sprache sofort anwenden statt erst beim naechsten Oeffnen. Ohne das
+  // wirkt eine Umstellung erst nach dem Neuladen der Seite - was aussieht,
+  // als haette die Einstellung nicht gegriffen.
+  if (window.PageShotI18n) {
+    try { await window.PageShotI18n.init(); } catch (_) { /* Anzeige bleibt */ }
+  }
+
   const s = $("status");
-  s.textContent = "Gespeichert.";
+  s.textContent = (window.PageShotI18n && window.PageShotI18n.t("optSaved")) || "Saved.";
   setTimeout(() => { s.textContent = ""; }, 1800);
 });
 
