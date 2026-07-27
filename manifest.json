@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Full Page PDF Snap",
   "short_name": "PDFSnap",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Speichert eine komplette Webseite als hochaufloesendes PDF. Ausschliesslich lokale Verarbeitung — kein Serverzugriff, keine Datenerhebung, keine Uebermittlung an den Anbieter.",
   "author": "Bubu89",
   "browser_specific_settings": {
@@ -10,7 +10,9 @@
       "id": "pageshot-pdf@bubu89.local",
       "strict_min_version": "109.0",
       "data_collection_permissions": {
-        "required": ["none"]
+        "required": [
+          "none"
+        ]
       }
     },
     "gecko_android": {

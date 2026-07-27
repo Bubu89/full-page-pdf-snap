@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.3.0 — 2026-07-27 (Firefox)
+
+**Was:** Die Verbesserungen an der Erfassung von App-Layouts, die beim
+Chrome-Port entstanden sind, gelten ab dieser Version auch für Firefox.
+
+**Warum:** Beide Fassungen teilen sich `content.js` und den Stitching-Block in
+`background.js`. Ohne diese Version wäre die Firefox-Fassung schlechter als die
+Chrome-Fassung, obwohl derselbe Code dahinter steht.
+
+**Wie:**
+- Zuschnitt auf den Scroll-Container: Menü und Seitenleiste erscheinen einmal
+  oben statt in jedem Abschnitt, die frei werdende Fläche bekommt die aus dem
+  Screenshot abgetastete Hintergrundfarbe.
+- Scrollbare Nebenbereiche werden eigenständig durchgescrollt; die Seitenhöhe
+  richtet sich nach dem längsten Bereich.
+- Container-Auswahl nach Breite statt nach Scroll-Überhang.
+- Neue Einstellung `appLayout` (Standard `context`) mit drei Möglichkeiten.
+- `captureScale` von 1.5 auf 1.0 — das PDF zeigt die Seite wie am Bildschirm.
+
+**Resultat:** Firefox- und Chrome-Paket sind funktional gleichwertig. Gegenprobe
+an den fertigen Paketen: `content.js` ist bytegleich (SHA `ee2d09e79158`), der
+Stitching-Block unterscheidet sich in genau einer Zeile — dem Chrome-Ersatz für
+`document.createElement("canvas")`.
+
+
 ## 2.2.0-chrome — 2026-07-27 (Chrome-MV3-Zweig)
 
 **Was:** Portierung nach Chrome Manifest V3 in `chrome-mv3/`, plus Verbesserungen
