@@ -94,6 +94,26 @@ const CASES = [
       ok(clip === null, "  kein Zuschnitt - Sticky wird stattdessen ausgeblendet");
     }
   },
+  {
+    name: "G  Schmale Navigation (scrollt viel) neben breitem Inhalt (scrollt wenig)",
+    html: `<div style="position:absolute;inset:0;display:flex">
+             <div id="navi" style="width:250px;overflow-y:auto;background:#eef">
+               ${rows(120)}
+             </div>
+             <div id="inhalt" style="flex:1;overflow-y:auto">
+               ${rows(25)}
+             </div>
+           </div>`,
+    check: (s, clip) => {
+      // Die Navigation scrollt 3x weiter als der Inhalt. Nach reinem
+      // Scroll-Ueberhang wuerde sie gewinnen - das waere falsch.
+      ok(s.root.id === "inhalt",
+         `  breiter Inhalt gewinnt gegen laenger scrollende Navigation (id=${s.root.id})`);
+      ok(clip && clip.x >= 245,
+         `  Navigation ausgeschlossen (x=${clip ? clip.x : "-"} >= 250)`);
+      ok(clip && clip.w > 1000, `  volle Inhaltsbreite (w=${clip ? clip.w : "-"})`);
+    }
+  },
 ];
 
 (async () => {

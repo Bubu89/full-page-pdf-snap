@@ -22,7 +22,7 @@ HERE = Path(__file__).resolve().parent
 UPLOAD = Path("/mnt/c/Users/HOLO/Documents/FullPagePDFSnap_Chrome/upload")
 
 EXCLUDE_FILES = {"port.py", "pack.py", "README.md"}
-EXCLUDE_DIRS = {"store-assets", "__pycache__"}
+EXCLUDE_DIRS = {"store-assets", "tests", "__pycache__"}
 
 version = json.loads((HERE / "manifest.json").read_text())["version"]
 

@@ -40,15 +40,37 @@
       }
     }
 
+    /* Auswahl unter mehreren Scroll-Containern.
+     *
+     * Der breiteste Bereich ist der Hauptinhalt - eine schmale Navigations-
+     * spalte kann laenger scrollen als der Lesebereich, ist aber nie das,
+     * was der Nutzer als PDF haben will.
+     *
+     * Breite allein reicht jedoch nicht: bei verschachtelten Containern ist
+     * der aeussere fast genauso breit wie der innere, obwohl der Inhalt im
+     * inneren steckt. Darum entscheidet bei aehnlicher Breite (10 % Toleranz)
+     * der groessere Scroll-Ueberhang.
+     */
+    const WIDTH_TOLERANCE = 0.9;
+
+    function isBetter(el, delta, cur, curDelta) {
+      if (!cur) return true;
+      const w = el.clientWidth, cw = cur.clientWidth;
+      if (w > cw / WIDTH_TOLERANCE) return true;    // deutlich breiter gewinnt
+      if (w < cw * WIDTH_TOLERANCE) return false;   // deutlich schmaler verliert
+      return delta > curDelta;                      // aehnlich breit: mehr Inhalt
+    }
+
     let best = null, bestDelta = 0;
     const all = document.querySelectorAll("*");
     for (const el of all) {
       if (!el || el.clientHeight < winH * 0.5) continue;
       const delta = el.scrollHeight - el.clientHeight;
-      if (delta <= 4 || delta <= bestDelta) continue;
+      if (delta <= 4) continue;
       let cs;
       try { cs = getComputedStyle(el); } catch (_) { continue; }
       if (!/auto|scroll|overlay/.test(cs.overflowY)) continue;
+      if (!isBetter(el, delta, best, bestDelta)) continue;
       best = el; bestDelta = delta;
     }
     if (best) {
@@ -137,6 +159,24 @@
     return { x, y, w, h };
   }
 
+  /* Hintergrundfarbe fuer die Flaeche, auf der im Kontext-Modus unterhalb des
+   * ersten Segments kein Menue mehr gezeichnet wird. Ohne sie entstuende dort
+   * ein weisser Block, der bei dunklen Oberflaechen wie ein Fehler wirkt.
+   */
+  function pageBackgroundColor(state) {
+    const opaque = (c) =>
+      c && !/^rgba\(0,\s*0,\s*0,\s*0\)$/.test(c) && c !== "transparent";
+    const candidates = [state.root, document.body, document.documentElement];
+    for (const el of candidates) {
+      if (!el) continue;
+      try {
+        const c = getComputedStyle(el).backgroundColor;
+        if (opaque(c)) return c;
+      } catch (_) { /* weiter */ }
+    }
+    return "#ffffff";
+  }
+
   function measureLayout() {
     scrollState = findScrollableRoot();
     const layout = {
@@ -148,6 +188,7 @@
       winH: window.innerHeight,
       winW: window.innerWidth,
       clip: computeClipRect(scrollState),
+      bgColor: pageBackgroundColor(scrollState),
       dpr: window.devicePixelRatio || 1,
       isWindow: scrollState.isWindow,
       rootTag: scrollState.root.tagName || "?",

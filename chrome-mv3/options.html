@@ -103,6 +103,15 @@
     </div>
   </label>
 
+  <label>App-Layouts (Gmail, Outlook, Notion &hellip;)
+    <select id="appLayout" style="width:100%; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+      <option value="context">Menue einmal oben, darunter nur der Inhalt (Standard)</option>
+      <option value="crop">Nur der Inhaltsbereich &mdash; schmalstes PDF</option>
+      <option value="full">Alles aufnehmen &mdash; Menue wiederholt sich</option>
+    </select>
+    <div class="hint">Bei Seiten, die den Inhalt in einem eigenen Bereich scrollen, bleiben Kopfzeile und Seitenleiste beim Scrollen stehen und landen sonst in jedem Abschnitt erneut im PDF. "Menue einmal oben" behaelt den Zusammenhang und fuellt die frei werdende Flaeche mit der Hintergrundfarbe der Seite. Auf normalen Seiten ohne eigenen Scroll-Bereich hat die Einstellung keine Wirkung.</div>
+  </label>
+
   <label>Nach Erstellung
     <select id="afterCapture" style="width:100%; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
       <option value="none">Nichts tun</option>

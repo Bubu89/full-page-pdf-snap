@@ -27,6 +27,7 @@ const DEFAULTS_DESKTOP = {
   pageHeightPx: 2400,
   tilePx: 4000,
   hideSticky: true,
+  appLayout: "context",
   afterCapture: "show",
   captureScale: 1.5
 };
@@ -322,34 +323,58 @@ async function captureFullPageInner(tab, settings) {
   // Skripten, dann greift der bisherige Weg ueber viewportH.
   const dprY = segments[0].pxH / (layout.winH || layout.viewportH);
 
-  // Bei App-Layouts (Gmail, Outlook, Notion) liefert das Content-Skript den
-  // Ausschnitt des Scroll-Containers. Ohne ihn landen Kopfzeile und
-  // Seitenleiste in jedem Segment erneut im PDF.
-  const clip = layout.clip || null;
+  /* Bei App-Layouts (Gmail, Outlook, Notion) liefert das Content-Skript den
+   * Ausschnitt des Scroll-Containers. Ohne ihn landen Kopfzeile und
+   * Seitenleiste in JEDEM Segment erneut im PDF und zerschneiden den Verlauf.
+   *
+   * Drei Umgangsweisen, per Einstellung waehlbar:
+   *   context - Menue und Seitenleiste einmal oben, darunter laeuft nur der
+   *             Inhalt weiter; die frei werdende Flaeche bekommt die
+   *             Hintergrundfarbe der Seite. Standard.
+   *   crop    - ausschliesslich der Inhaltsbereich, schmalstes Ergebnis.
+   *   full    - alles unveraendert, Rahmen wiederholt sich (Notbehelf).
+   */
+  const clipMode = layout.clip ? (settings.appLayout || "context") : "full";
+  const clip = clipMode === "full" ? null : layout.clip;
+
   const srcX = clip ? Math.round(clip.x * dprY) : 0;
   const srcY = clip ? Math.round(clip.y * dprY) : 0;
-  const pxW = clip ? Math.round(clip.w * dprY) : segments[0].pxW;
+  const clipW = clip ? Math.round(clip.w * dprY) : segments[0].pxW;
   const segH = clip ? Math.round(clip.h * dprY) : segments[0].pxH;
-
   const lastSeg = segments[segments.length - 1];
-  const bigH = Math.max(Math.round(lastSeg.y * dprY) + segH, segH);
-  log("Big canvas size:", pxW, "x", bigH, clip ? "(auf Scroll-Container zugeschnitten)" : "");
+
+  // Im Kontext-Modus bleibt die volle Fensterbreite stehen, und der Inhalt
+  // beginnt erst unterhalb der Kopfzeile.
+  const keepFrame = clipMode === "context";
+  const pxW = keepFrame ? segments[0].pxW : clipW;
+  const contentTop = keepFrame ? srcY : 0;
+  const bigH = Math.max(contentTop + Math.round(lastSeg.y * dprY) + segH,
+                        segments[0].pxH);
+
+  log("Big canvas size:", pxW, "x", bigH, "mode=" + clipMode);
 
   const big = document.createElement("canvas");
   big.width = pxW;
   big.height = bigH;
   const bigCtx = big.getContext("2d");
-  bigCtx.fillStyle = "#ffffff";
+  bigCtx.fillStyle = (keepFrame && layout.bgColor) || "#ffffff";
   bigCtx.fillRect(0, 0, pxW, bigH);
 
-  for (const seg of segments) {
+  segments.forEach((seg, i) => {
     const destY = Math.round(seg.y * dprY);
-    if (clip) {
-      bigCtx.drawImage(seg.img, srcX, srcY, pxW, segH, 0, destY, pxW, segH);
-    } else {
+    if (!clip) {
       bigCtx.drawImage(seg.img, 0, destY);
+    } else if (keepFrame && i === 0) {
+      // Erstes Segment vollstaendig - hier bleiben Menue und Seitenleiste.
+      bigCtx.drawImage(seg.img, 0, 0);
+    } else if (keepFrame) {
+      // Danach nur noch der Inhalt, an derselben x-Position wie oben.
+      bigCtx.drawImage(seg.img, srcX, srcY, clipW, segH,
+                       srcX, contentTop + destY, clipW, segH);
+    } else {
+      bigCtx.drawImage(seg.img, srcX, srcY, clipW, segH, 0, destY, clipW, segH);
     }
-  }
+  });
 
   // Adaptive tilePx-Berechnung fuer Android: passt sich an Device an.
   // Samsung S24 Ultra (DPR 3.5, 12 GB RAM) bekommt groessere Kacheln als
