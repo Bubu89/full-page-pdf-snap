@@ -6,7 +6,7 @@
     "message": "Speichert jede Webseite als ein hochauflösendes PDF. Auto-Scroll erfasst die ganze Seite — kein Zuschneiden, kein Druckdialog."
   },
   "actionTitle": {
-    "message": "Full Page PDF Snap — ganze Seite als PDF (Strg+Shift+Y)"
+    "message": "Full Page PDF Snap — ganze Seite als PDF (Strg+Umschalt+Y)"
   },
   "commandCapture": {
     "message": "Ganze Seite als PDF speichern"
@@ -30,7 +30,7 @@
     "message": "Gespeichert."
   },
   "busy": {
-    "message": "Bereits laufend"
+    "message": "Aufnahme läuft bereits"
   },
   "noTab": {
     "message": "Kein aktiver Tab."
@@ -39,7 +39,7 @@
     "message": "Interne Browser-Seite (Einstellungen, Store, Add-on-Seiten) — bitte zu einer normalen Webseite wechseln (https://…)."
   },
   "protectedPage": {
-    "message": "Der Browser schützt diese Seite. Bitte zu einer normalen Webseite wechseln (z.B. wikipedia.org)."
+    "message": "Der Browser schützt diese Seite. Bitte zu einer normalen Webseite wechseln (z. B. wikipedia.org)."
   },
   "noScripts": {
     "message": "Diese Seite erlaubt keine Erweiterungs-Skripte."
@@ -57,25 +57,25 @@
     "message": "Ganze Seite als PDF speichern"
   },
   "menuSaveAs": {
-    "message": "Speicher-Dialog jedes Mal anzeigen"
+    "message": "Speicherdialog jedes Mal anzeigen"
   },
   "menuShowFolder": {
-    "message": "Nach Save: Ordner zeigen"
+    "message": "Nach dem Speichern: Ordner zeigen"
   },
   "menuOpenPdf": {
-    "message": "Nach Save: PDF öffnen"
+    "message": "Nach dem Speichern: PDF öffnen"
   },
   "menuHideSticky": {
-    "message": "Sticky/Sidebar verstecken"
+    "message": "Feste Elemente ausblenden"
   },
   "menuQuality": {
-    "message": "Capture-Qualität"
+    "message": "Aufnahmequalität"
   },
   "menuScale10": {
     "message": "1.0x — wie am Bildschirm"
   },
   "menuScale125": {
-    "message": "1.25x — Balance"
+    "message": "1.25x — ausgewogen"
   },
   "menuScale15": {
     "message": "1.5x — scharf"
@@ -84,6 +84,141 @@
     "message": "2.0x — maximal"
   },
   "menuAllSettings": {
-    "message": "Alle Einstellungen…"
+    "message": "Alle Einstellungen …"
+  },
+  "optTitle": {
+    "message": "Full Page PDF Snap — Einstellungen"
+  },
+  "optIntro": {
+    "message": "Speichert die ganze Seite per Auto-Scroll als hochauflösendes PDF."
+  },
+  "optSubfolder": {
+    "message": "Unterordner im Download-Verzeichnis"
+  },
+  "optSaveAs": {
+    "message": "Jedes Mal fragen, wohin gespeichert wird"
+  },
+  "optFilename": {
+    "message": "Vorlage für den Dateinamen"
+  },
+  "optTitleLen": {
+    "message": "Maximale Länge für {title} (Zeichen)"
+  },
+  "optCounter": {
+    "message": "Fortlaufende Nummerierung"
+  },
+  "optCounterReset": {
+    "message": "Zähler zurücksetzen"
+  },
+  "optJpeg": {
+    "message": "JPEG-Qualität"
+  },
+  "optScrollWait": {
+    "message": "Wartezeit pro Scroll-Schritt (ms)"
+  },
+  "optPdfFormat": {
+    "message": "PDF-Format"
+  },
+  "optSinglePage": {
+    "message": "Eine fortlaufende Seite (Standard — ohne sichtbare Schnittkanten)"
+  },
+  "optMultiPage": {
+    "message": "Mehrere Seiten (zum Drucken)"
+  },
+  "optPageHeight": {
+    "message": "Seitenhöhe bei mehrseitiger Ausgabe (Pixel)"
+  },
+  "optTileHeight": {
+    "message": "Kachelhöhe bei fortlaufender Seite (Pixel)"
+  },
+  "optHideSticky": {
+    "message": "Feste Elemente ausblenden"
+  },
+  "optHideStickyHint": {
+    "message": "Blendet Seitenleisten und Kopfzeilen vor der Aufnahme aus. Navigationsspalten bleiben einmal oben erhalten."
+  },
+  "optAppLayout": {
+    "message": "App-Oberflächen (Gmail, Outlook, Notion …)"
+  },
+  "optLayoutContext": {
+    "message": "Menü einmal oben, darunter nur der Inhalt (Standard)"
+  },
+  "optLayoutCrop": {
+    "message": "Nur der Inhaltsbereich — schmalstes PDF"
+  },
+  "optLayoutFull": {
+    "message": "Alles aufnehmen — Menü wiederholt sich"
+  },
+  "optAppLayoutHint": {
+    "message": "Bei Seiten, die ihren Inhalt in einem eigenen Bereich scrollen, bleiben Kopfzeile und Seitenleiste stehen und landen sonst in jedem Abschnitt erneut im PDF. Auf gewöhnlichen Seiten ohne Wirkung."
+  },
+  "optAfter": {
+    "message": "Nach der Aufnahme"
+  },
+  "optAfterNone": {
+    "message": "Nichts tun"
+  },
+  "optAfterOpen": {
+    "message": "PDF automatisch öffnen"
+  },
+  "optAfterShow": {
+    "message": "Ordner zeigen (Datei vorausgewählt)"
+  },
+  "optAfterBoth": {
+    "message": "Ordner zeigen und PDF öffnen"
+  },
+  "optAfterHint": {
+    "message": "Standard ist „Ordner zeigen“: Nach dem Speichern öffnet sich der Download-Ordner mit vorausgewählter Datei. „PDF öffnen“ startet stattdessen den PDF-Betrachter, „Beides“ macht nacheinander beides."
+  },
+  "optScale": {
+    "message": "Aufnahme-Skalierung (Auflösung)"
+  },
+  "optScale10": {
+    "message": "1.0x — genau wie am Bildschirm (Standard)"
+  },
+  "optScale125": {
+    "message": "1.25x — etwas schärfer"
+  },
+  "optScale15": {
+    "message": "1.5x — deutlich schärfer, etwa 50 % länger"
+  },
+  "optScale20": {
+    "message": "2.0x — maximal, für großen Druck"
+  },
+  "optScaleHint": {
+    "message": "Standard ist 1.0x: Das PDF zeigt die Seite genau so, wie sie am Bildschirm steht — bei 144 dpi für normalen Druck ausreichend. Höhere Werte schärfen den Text, es passt aber weniger ins Fenster, wodurch Menüs und Seitenleisten früher enden."
+  },
+  "optLanguage": {
+    "message": "Sprache"
+  },
+  "optLanguageAuto": {
+    "message": "Automatisch (Browsersprache)"
+  },
+  "optLanguageHint": {
+    "message": "Sprache der Oberfläche. „Automatisch“ folgt der Browsersprache, sonst Englisch. Der Name im Store richtet sich immer nach der Browsersprache — darauf hat eine Erweiterung keinen Einfluss."
+  },
+  "optSave": {
+    "message": "Speichern"
+  },
+  "optSaved": {
+    "message": "Gespeichert."
+  },
+  "optSubfolderHint": {
+    "message": "Standard: Full Page PDF Snap. Leer lassen speichert direkt in Downloads/. Aus Sicherheitsgründen erlaubt der Browser nur Unterordner."
+  },
+  "optSaveAsHint": {
+    "message": "Aktivieren, wenn du in beliebige Ordner außerhalb von Downloads/ speichern willst."
+  },
+  "optTitleLenHint": {
+    "message": "Verhindert überlange Dateinamen. Standard 40."
+  },
+  "optCounterHint": {
+    "message": "Erhöht sich mit jedem neuen PDF um eins. Zurücksetzen stellt auf null."
+  },
+  "optPdfFormatHint": {
+    "message": "Eine fortlaufende Seite beseitigt die sichtbaren Schnittkanten zwischen den Streifen. Mehrseitig teilt das Ergebnis in Seiten der unten eingestellten Höhe."
+  },
+  "optPageHeightHint": {
+    "message": "Nur wirksam, wenn „Mehrere Seiten“ gewählt ist. Standard 2400 px."
   }
 }

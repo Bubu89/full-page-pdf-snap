@@ -85,5 +85,140 @@
   },
   "menuAllSettings": {
     "message": "すべての設定…"
+  },
+  "optTitle": {
+    "message": "Full Page PDF Snap — Settings"
+  },
+  "optIntro": {
+    "message": "Save the whole page as a high-resolution PDF via auto-scroll."
+  },
+  "optSubfolder": {
+    "message": "Download subfolder"
+  },
+  "optSaveAs": {
+    "message": "Ask where to save every time"
+  },
+  "optFilename": {
+    "message": "Filename template"
+  },
+  "optTitleLen": {
+    "message": "Max. length for {title} (characters)"
+  },
+  "optCounter": {
+    "message": "Sequential numbering"
+  },
+  "optCounterReset": {
+    "message": "Reset counter"
+  },
+  "optJpeg": {
+    "message": "JPEG quality"
+  },
+  "optScrollWait": {
+    "message": "Scroll delay per step (ms)"
+  },
+  "optPdfFormat": {
+    "message": "PDF format"
+  },
+  "optSinglePage": {
+    "message": "One continuous page (default — no visible seams)"
+  },
+  "optMultiPage": {
+    "message": "Multiple pages (for printing)"
+  },
+  "optPageHeight": {
+    "message": "Page height for multi-page (pixels)"
+  },
+  "optTileHeight": {
+    "message": "Tile height for single-page (pixels)"
+  },
+  "optHideSticky": {
+    "message": "Hide sticky/fixed elements"
+  },
+  "optHideStickyHint": {
+    "message": "Hide sidebars and top bars before capture. Navigation columns are kept once at the top."
+  },
+  "optAppLayout": {
+    "message": "App layouts (Gmail, Outlook, Notion …)"
+  },
+  "optLayoutContext": {
+    "message": "Menu once at the top, content below (default)"
+  },
+  "optLayoutCrop": {
+    "message": "Content area only — narrowest PDF"
+  },
+  "optLayoutFull": {
+    "message": "Capture everything — menu repeats"
+  },
+  "optAppLayoutHint": {
+    "message": "On pages that scroll their content in a separate area, the header and sidebar stay in place and would otherwise appear in every section of the PDF. Has no effect on ordinary pages."
+  },
+  "optAfter": {
+    "message": "After capture"
+  },
+  "optAfterNone": {
+    "message": "Do nothing"
+  },
+  "optAfterOpen": {
+    "message": "Open the PDF automatically"
+  },
+  "optAfterShow": {
+    "message": "Show folder (file preselected)"
+  },
+  "optAfterBoth": {
+    "message": "Show folder and open the PDF"
+  },
+  "optAfterHint": {
+    "message": "Default is \"Show folder\": after saving, the download folder opens with the file preselected. \"Open the PDF\" starts the PDF viewer instead, \"Both\" does one after the other."
+  },
+  "optScale": {
+    "message": "Capture scaling (resolution)"
+  },
+  "optScale10": {
+    "message": "1.0x — exactly as on screen (default)"
+  },
+  "optScale125": {
+    "message": "1.25x — slightly sharper"
+  },
+  "optScale15": {
+    "message": "1.5x — noticeably sharper, about 50% longer"
+  },
+  "optScale20": {
+    "message": "2.0x — maximum, for large prints"
+  },
+  "optScaleHint": {
+    "message": "Default is 1.0x: the PDF shows the page exactly as it appears on screen — enough for normal printing at 144 dpi. Higher values sharpen the text but fit less into the window, so menus and sidebars end earlier."
+  },
+  "optLanguage": {
+    "message": "Language"
+  },
+  "optLanguageAuto": {
+    "message": "Automatic (browser language)"
+  },
+  "optLanguageHint": {
+    "message": "Interface language. \"Automatic\" follows the browser language, otherwise English. The name shown in the store always follows the browser language — an extension cannot influence that."
+  },
+  "optSave": {
+    "message": "Save"
+  },
+  "optSaved": {
+    "message": "Saved."
+  },
+  "optSubfolderHint": {
+    "message": "Default: Full Page PDF Snap. Leave empty to save directly into Downloads/. For security reasons the browser only allows subfolders."
+  },
+  "optSaveAsHint": {
+    "message": "Enable this if you want to save into folders outside Downloads/."
+  },
+  "optTitleLenHint": {
+    "message": "Prevents overly long filenames. Default 40."
+  },
+  "optCounterHint": {
+    "message": "Increases by one with every new PDF. Reset sets it back to zero."
+  },
+  "optPdfFormatHint": {
+    "message": "A single continuous page removes the visible seams between segments. Multi-page splits the result into pages of the height set below."
+  },
+  "optPageHeightHint": {
+    "message": "Only relevant when \"Multiple pages\" is selected. Default 2400 px."
   }
 }

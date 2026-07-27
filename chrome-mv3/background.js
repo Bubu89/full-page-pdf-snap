@@ -351,7 +351,10 @@ async function captureFullPageInner(tab, settings) {
      * ersten Segments, obwohl sie noch Inhalt haette.
      */
     const sideList = (layout.sideScrollers || []);
-    if (clipModeWanted !== "full" && layout.clip && sideList.length) {
+    // Auch bei Fenster-Scroll: Dokumentations-Seiten legen ihre Navigation
+    // als festes, eigenstaendig scrollendes Element an - dort gibt es keinen
+    // Clip, aber sehr wohl einen Nebenbereich mit eigenem Inhalt.
+    if (clipModeWanted !== "full" && sideList.length) {
       for (let idx = 0; idx < sideList.length; idx++) {
         const rect = sideList[idx];
         const shots = [];
@@ -455,15 +458,15 @@ async function captureFullPageInner(tab, settings) {
    */
   let bigH = Math.max(contentTop + Math.round(lastSeg.y * dprY) + segH,
                       segments[0].pxH);
-  if (keepFrame) {
-    for (const side of sideCaptures) {
-      const need = Math.round(side.rect.y * dprY)
-                 + Math.round(side.lastY * dprY)
-                 + Math.round(side.rect.h * dprY);
-      if (need > bigH) {
-        log("Nebenbereich ist laenger - Hoehe", bigH, "->", need);
-        bigH = need;
-      }
+  // Gilt fuer beide Faelle: der laengste Bereich bestimmt die Hoehe, egal ob
+  // ein innerer Container oder das Fenster selbst gescrollt wurde.
+  for (const side of sideCaptures) {
+    const need = Math.round(side.rect.y * dprY)
+               + Math.round(side.lastY * dprY)
+               + Math.round(side.rect.h * dprY);
+    if (need > bigH) {
+      log("Nebenbereich ist laenger - Hoehe", bigH, "->", need);
+      bigH = need;
     }
   }
 
@@ -476,10 +479,39 @@ async function captureFullPageInner(tab, settings) {
   bigCtx.fillStyle = "#ffffff";
   bigCtx.fillRect(0, 0, pxW, bigH);
 
+  /* Zusaetzliche Segmente der Nebenbereiche an ihre Position zeichnen.
+   *
+   * Gilt fuer beide Faelle: bei App-Layouts die scrollbare Seitenleiste, bei
+   * Fenster-Scroll die feste Navigationsspalte einer Dokumentations-Seite.
+   * Beide stehen im ersten Abschnitt bereits im Bild - hier kommt nur ihre
+   * Fortsetzung darunter dazu.
+   */
+  function drawSideAreas() {
+    for (const side of sideCaptures) {
+      const sx = Math.round(side.rect.x * dprY);
+      const sw = Math.round(side.rect.w * dprY);
+      const sh = Math.round(side.rect.h * dprY);
+      const sy = Math.round(side.rect.y * dprY);
+      for (const shot of side.shots) {
+        const destY = sy + Math.round(shot.y * dprY);
+        // Die Hoehe wurde auf den laengsten Bereich ausgelegt; ein Rest hier
+        // waere ein Rechenfehler und soll auffallen statt still zu fehlen.
+        if (destY + sh > bigH) {
+          log("WARNUNG: Nebenbereich passt nicht -", destY + sh, ">", bigH);
+          break;
+        }
+        bigCtx.drawImage(shot.img, sx, sy, sw, sh, sx, destY, sw, sh);
+      }
+      log("Nebenbereich fortgesetzt bis",
+          sy + Math.round(side.lastY * dprY) + sh, "von", bigH);
+    }
+  }
+
   if (!clip) {
     for (const seg of segments) {
       bigCtx.drawImage(seg.img, 0, Math.round(seg.y * dprY));
     }
+    drawSideAreas();
   } else if (!keepFrame) {
     for (const seg of segments) {
       bigCtx.drawImage(seg.img, srcX, srcY, clipW, segH,
@@ -497,25 +529,7 @@ async function captureFullPageInner(tab, settings) {
      * untereinander in dieselbe Spalte gezeichnet - so weit ihr Inhalt
      * reicht. Erst danach greift die Fuellfarbe.
      */
-    for (const side of sideCaptures) {
-      const sx = Math.round(side.rect.x * dprY);
-      const sw = Math.round(side.rect.w * dprY);
-      const sh = Math.round(side.rect.h * dprY);
-      const sy = Math.round(side.rect.y * dprY);
-      for (const shot of side.shots) {
-        const destY = sy + Math.round(shot.y * dprY);
-        // Die Hoehe wurde oben auf den laengsten Bereich ausgelegt; ein Rest
-        // hier waere ein Rechenfehler und soll auffallen statt still zu fehlen.
-        if (destY + sh > bigH) {
-          log("WARNUNG: Nebenbereich passt nicht -", destY + sh, ">", bigH);
-          break;
-        }
-        bigCtx.drawImage(shot.img, sx, sy, sw, sh, sx, destY, sw, sh);
-      }
-      const covered = sy + Math.round(side.lastY * dprY) + sh;
-      log("Nebenbereich fortgesetzt bis", covered, "von", bigH);
-      side.coveredTo = covered;
-    }
+    drawSideAreas();
 
     /* Die Flaeche unterhalb davon bekommt die Farbe, die im Screenshot
      * tatsaechlich neben dem Inhalt liegt. Aus CSS geraten geht daneben:

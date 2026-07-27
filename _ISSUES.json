@@ -43,5 +43,14 @@
     "command": "cd /home/holo/repos/full-page-pdf-snap-public\npython3 - <<'PYEOF'\nfrom pathlib i...",
     "excerpt": "Traceback (most recent call last):",
     "status": "open"
+  },
+  {
+    "id": "6cf7f0fb",
+    "ts": "2026-07-27T10:50:52",
+    "type": "RUNTIME",
+    "label": "Python Exception",
+    "command": "cd /home/holo/repos/full-page-pdf-snap-public\npython3 - <<'PYEOF'\nimport json, r...",
+    "excerpt": "SyntaxError: unexpected character after line continuation character",
+    "status": "open"
   }
 ]

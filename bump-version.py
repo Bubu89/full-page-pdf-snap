@@ -54,6 +54,12 @@ def main():
 
     if "--set" in sys.argv:
         target = sys.argv[sys.argv.index("--set") + 1]
+    elif local not in remote:
+        # Die lokale Nummer ist noch nicht veroeffentlicht - es gibt keinen
+        # Grund weiterzuzaehlen. Sonst springt die Version bei jedem
+        # Zwischenlauf, obwohl nie etwas hochgeladen wurde.
+        print(f"  {local} ist noch nicht veroeffentlicht - bleibt.")
+        return 0
     else:
         # Hoechste bekannte Nummer als Ausgangspunkt - lokal ODER veroeffentlicht
         highest = max([parse(local)] + [parse(v) for v in remote])
