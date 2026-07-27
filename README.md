@@ -39,7 +39,7 @@ The full source is in this repository under the MIT license, so you can verify a
 **Desktop**
 
 - Click the toolbar icon → **Capture now**
-- Press `Ctrl+Shift+Y`
+- Press `Alt+Shift+P`
 - Right-click the toolbar icon → **Save entire page as PDF** (also offers quick switches for scaling, folder and sticky handling)
 
 **Android**
@@ -102,7 +102,7 @@ Die Erweiterung enthält **technisch keine Funktion zur Datenerhebung**. Die ges
 
 ## Auslösen
 
-- **Desktop:** Toolbar-Icon → **Jetzt aufnehmen**, Tastenkürzel `Strg+Shift+Y`, oder Rechtsklick auf das Toolbar-Icon
+- **Desktop:** Toolbar-Icon → **Jetzt aufnehmen**, Tastenkürzel `Alt+Shift+P`, oder Rechtsklick auf das Toolbar-Icon
 - **Android:** Menü → Erweiterung antippen, die Aufnahme startet sofort
 
 ## Support

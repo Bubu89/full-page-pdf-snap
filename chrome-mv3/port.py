@@ -97,7 +97,7 @@ MANIFEST = """{
   "name": "__MSG_extName__",
   "default_locale": "en",
   "short_name": "PDFSnap",
-  "version": "2.11.0",
+  "version": "2.12.0",
   "description": "__MSG_extDescription__",
   "author": "Bubu89",
   "minimum_chrome_version": "116",

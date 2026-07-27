@@ -185,9 +185,16 @@ load();
     if (c && c.shortcut) {
       now.textContent = c.shortcut;
       now.style.color = "";
+      // Der Hinweiskasten weiter unten nannte die Kombination fest verdrahtet -
+      // nach dem Wechsel auf Alt+Shift+P stand dort monatelang das alte Kuerzel.
+      // Beide Stellen speisen sich jetzt aus derselben Abfrage.
+      const inline = document.getElementById("shortcutInline");
+      if (inline) inline.textContent = c.shortcut;
     } else {
       now.textContent = t("optShortcutNone", "none assigned");
       now.style.color = "#b91c1c";
+      const inline = document.getElementById("shortcutInline");
+      if (inline) inline.textContent = t("optShortcutNone", "none assigned");
     }
   } catch (_) {
     now.textContent = "?";

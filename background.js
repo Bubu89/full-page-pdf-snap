@@ -878,6 +878,22 @@ async function setActionTitle(text) {
   catch (_) { /* ignore */ }
 }
 
+/* Ruhezustands-Titel des Toolbar-Knopfs.
+ *
+ * Das Kuerzel stand hier fest im Text und war nach dem Wechsel auf
+ * Alt+Shift+P falsch. Es wird jetzt beim Browser erfragt - beansprucht der
+ * die Kombination fuer sich, nennt der Tooltip erst gar keine.
+ */
+async function setIdleTitle() {
+  let hint = "";
+  try {
+    const cmds = await browser.commands.getAll();
+    const c = cmds.find(x => x.name === "capture-full-page");
+    if (c && c.shortcut) hint = ` (${c.shortcut})`;
+  } catch (_) { /* Android kennt commands.getAll nicht */ }
+  await setActionTitle(`Full Page PDF Snap — save the whole page as PDF${hint}`);
+}
+
 // Firefox blockiert Content-Script-Injektion auf diesen Seiten aus Sicherheitsgruenden.
 // Wir fangen das VOR dem Injection-Versuch ab, um eine klare Meldung zu geben.
 const BLOCKED_HOSTS = [
@@ -997,7 +1013,7 @@ async function runOnActiveTab() {
   _lastFallbackTabId = null;
   const platform = await getPlatform();
   await setBadge("...", "#2563eb");
-  await setActionTitle("Full Page PDF Snap — Capture laeuft ...");
+  await setActionTitle("Full Page PDF Snap — capture running …");
   // Diese Start-Notification NUTZT die gleiche ID wie die Progress-Updates,
   // damit sie nachher nicht doppelt neben der 64%-Anzeige stehen bleibt.
   if (platform.isAndroid) {
@@ -1035,7 +1051,7 @@ async function runOnActiveTab() {
     return { ok: false, error: e && e.message ? e.message : String(e) };
   } finally {
     _captureInFlight = false;
-    await setActionTitle("Full Page PDF Snap — ganze Seite als PDF (Ctrl+Shift+Y)");
+    await setIdleTitle();
   }
 }
 
