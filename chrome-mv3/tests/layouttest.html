@@ -22,7 +22,7 @@ const CASES = [
   {
     name: "A  Normale lange Seite (Fenster scrollt)",
     html: `<div style="height:4000px">${rows(60)}</div>`,
-    check: (s, clip) => {
+    check: (s, clip, sides) => {
       ok(s.isWindow === true, "  erkannt als Fenster-Scroll");
       ok(clip === null, "  kein Zuschnitt (voller Viewport gewollt)");
     }
@@ -35,7 +35,7 @@ const CASES = [
              <div style="background:#f5f5f5">SEITENLEISTE</div>
              <div id="scroller" style="overflow-y:auto">${rows(80)}</div>
            </div>`,
-    check: (s, clip) => {
+    check: (s, clip, sides) => {
       ok(s.isWindow === false, "  erkannt als innerer Container");
       ok(s.root.id === "scroller", `  richtiger Container gefunden (id=${s.root.id})`);
       ok(clip !== null, "  Zuschnitt erzeugt");
@@ -55,7 +55,7 @@ const CASES = [
              </div>
              <div style="height:200px;background:#eef">Aussen unten</div>
            </div>`,
-    check: (s, clip) => {
+    check: (s, clip, sides) => {
       ok(s.isWindow === false, "  innerer Container gewaehlt (nicht das Fenster)");
       ok(clip !== null, `  Zuschnitt erzeugt (${clip ? clip.w + "x" + clip.h : "-"})`);
       // Der groesste Scroll-Ueberhang gewinnt - hier der aeussere Wrapper
@@ -68,7 +68,7 @@ const CASES = [
              <div id="klein" style="flex:1;overflow-y:auto">${rows(12)}</div>
              <div id="gross" style="flex:1;overflow-y:auto">${rows(90)}</div>
            </div>`,
-    check: (s, clip) => {
+    check: (s, clip, sides) => {
       ok(s.root.id === "gross", `  der laengere Container gewinnt (id=${s.root.id})`);
       ok(clip && clip.w < window.innerWidth * 0.75,
          `  Zuschnitt nur auf die halbe Breite (w=${clip ? clip.w : "-"} < ${Math.round(window.innerWidth * 0.75)})`);
@@ -79,7 +79,7 @@ const CASES = [
     html: `<div style="height:3000px">${rows(20)}
              <div id="mini" style="width:40px;height:40px;overflow-y:auto">
                <div style="height:400px"></div></div></div>`,
-    check: (s, clip) => {
+    check: (s, clip, sides) => {
       ok(s.isWindow === true, "  Fenster-Scroll bevorzugt, Mini-Container ignoriert");
       ok(clip === null, "  kein Zuschnitt");
     }
@@ -89,7 +89,7 @@ const CASES = [
     html: `<div style="position:fixed;top:0;left:0;right:0;height:56px;
              background:#333;color:#fff;z-index:9">STICKY KOPF</div>
            <div style="height:4000px;padding-top:56px">${rows(60)}</div>`,
-    check: (s, clip) => {
+    check: (s, clip, sides) => {
       ok(s.isWindow === true, "  Fenster-Scroll erkannt");
       ok(clip === null, "  kein Zuschnitt - Sticky wird stattdessen ausgeblendet");
     }
@@ -104,7 +104,7 @@ const CASES = [
                ${rows(25)}
              </div>
            </div>`,
-    check: (s, clip) => {
+    check: (s, clip, sides) => {
       // Die Navigation scrollt 3x weiter als der Inhalt. Nach reinem
       // Scroll-Ueberhang wuerde sie gewinnen - das waere falsch.
       ok(s.root.id === "inhalt",
@@ -112,6 +112,24 @@ const CASES = [
       ok(clip && clip.x >= 245,
          `  Navigation ausgeschlossen (x=${clip ? clip.x : "-"} >= 250)`);
       ok(clip && clip.w > 1000, `  volle Inhaltsbreite (w=${clip ? clip.w : "-"})`);
+    }
+  },
+  {
+    name: "H  Scrollbare Seitenleiste neben scrollbarem Inhalt (Gmail-Fall)",
+    html: `<div style="position:absolute;inset:0;display:grid;
+             grid-template-rows:64px 1fr;grid-template-columns:240px 1fr">
+             <div style="grid-column:1/3;background:#eee">KOPFZEILE</div>
+             <div id="labels" style="overflow-y:auto;background:#f5f5f5">${rows(40)}</div>
+             <div id="mails" style="overflow-y:auto">${rows(90)}</div>
+           </div>`,
+    check: (s, clip, sides) => {
+      ok(s.root.id === "mails", `  Hauptbereich = Mail-Liste (id=${s.root.id})`);
+      ok(sides.length === 1, `  Seitenleiste als Nebenbereich erkannt (${sides.length})`);
+      if (sides[0]) {
+        ok(sides[0].max > 100, `  hat eigenen Scroll-Inhalt (max=${sides[0].max} px)`);
+        ok(sides[0].x < 10 && sides[0].w <= 245,
+           `  liegt links, richtige Breite (x=${sides[0].x}, w=${sides[0].w})`);
+      }
     }
   },
 ];
@@ -127,7 +145,8 @@ const CASES = [
     try {
       const s = findScrollableRoot();
       const clip = computeClipRect(s);
-      c.check(s, clip);
+      const sides = collectSideScrollers(s);
+      c.check(s, clip, sides);
       R.push(`      [root=${s.root.tagName}${s.root.id ? "#" + s.root.id : ""}, ` +
              `isWindow=${s.isWindow}, clip=${clip ? `${clip.x},${clip.y} ${clip.w}x${clip.h}` : "null"}]`);
     } catch (e) {

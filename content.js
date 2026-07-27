@@ -177,6 +177,59 @@
     return "#ffffff";
   }
 
+  /* Weitere Scroll-Bereiche neben dem Hauptbereich.
+   *
+   * Bei App-Layouts ist die Seitenleiste oft selbst scrollbar - bei Gmail die
+   * Label-Liste. Wird nur der Hauptbereich verfolgt, endet die Seitenleiste im
+   * PDF am Ende des ersten Segments, obwohl sie noch Inhalt haette.
+   *
+   * Erfasst werden nur Bereiche, die neben dem Hauptbereich liegen (nicht
+   * darin) und selbst nennenswert scrollen.
+   */
+  const sideScrollerEls = [];
+
+  function collectSideScrollers(state) {
+    sideScrollerEls.length = 0;
+    if (state.isWindow) return [];
+
+    const main = state.root;
+    const mainRect = main.getBoundingClientRect();
+    const out = [];
+
+    for (const el of document.querySelectorAll("*")) {
+      if (el === main || main.contains(el) || el.contains(main)) continue;
+      const delta = el.scrollHeight - el.clientHeight;
+      if (delta <= 20) continue;
+      let cs;
+      try { cs = getComputedStyle(el); } catch (_) { continue; }
+      if (!/auto|scroll|overlay/.test(cs.overflowY)) continue;
+
+      let r;
+      try { r = el.getBoundingClientRect(); } catch (_) { continue; }
+      if (r.width < 40 || r.height < 100) continue;
+      // muss im Fenster sichtbar sein und darf den Hauptbereich nicht ueberlappen
+      if (r.bottom <= 0 || r.top >= window.innerHeight) continue;
+      if (r.right > mainRect.left + 4 && r.left < mainRect.right - 4) continue;
+      // verschachtelte Kandidaten: nur den aeussersten behalten
+      if (out.some(o => o.el.contains(el))) continue;
+
+      out.push({
+        el,
+        x: Math.max(0, Math.round(r.left)),
+        y: Math.max(0, Math.round(r.top)),
+        w: Math.round(Math.min(r.width, window.innerWidth - Math.max(0, r.left))),
+        h: Math.round(Math.min(r.height, window.innerHeight - Math.max(0, r.top))),
+        max: delta
+      });
+    }
+
+    out.sort((a, b) => b.max - a.max);
+    const capped = out.slice(0, 2);          // mehr als zwei sind unrealistisch
+    capped.forEach(o => sideScrollerEls.push(o.el));
+    log("Weitere Scroll-Bereiche:", capped.map(o => `${o.w}x${o.h} max=${o.max}`));
+    return capped.map(({ el, ...rest }) => rest);
+  }
+
   function measureLayout() {
     scrollState = findScrollableRoot();
     const layout = {
@@ -189,6 +242,7 @@
       winW: window.innerWidth,
       clip: computeClipRect(scrollState),
       bgColor: pageBackgroundColor(scrollState),
+      sideScrollers: collectSideScrollers(scrollState),
       dpr: window.devicePixelRatio || 1,
       isWindow: scrollState.isWindow,
       rootTag: scrollState.root.tagName || "?",
@@ -348,6 +402,15 @@
           case "scrollTo": {
             const res = await scrollToYActive(msg.y || 0);
             sendResponse({ ok: true, ...res });
+            break;
+          }
+          case "scrollSide": {
+            // Nebenbereich (z.B. Seitenleiste) unabhaengig vom Hauptbereich
+            // scrollen, damit auch dessen Inhalt vollstaendig erfasst wird.
+            const sideEl = sideScrollerEls[msg.index];
+            if (!sideEl) { sendResponse({ ok: false, actualY: 0 }); break; }
+            try { sideEl.scrollTop = msg.y; } catch (_) { /* ignore */ }
+            sendResponse({ ok: true, actualY: sideEl.scrollTop || 0 });
             break;
           }
           case "currentTotalH":

@@ -296,6 +296,51 @@ async function captureFullPageInner(tab, settings) {
     log("WARNING: Only one segment captured but page is taller than viewport.");
   }
 
+  const clipModeWanted = settings.appLayout || "context";
+
+  /* Nebenbereiche (z.B. scrollbare Seitenleiste) eigenstaendig durchscrollen.
+   *
+   * Laeuft nach dem Hauptdurchlauf, damit sich beide nicht gegenseitig stoeren.
+   * Ohne diesen Schritt endet eine scrollbare Seitenleiste im PDF am Ende des
+   * ersten Segments, obwohl sie noch Inhalt haette.
+   */
+  const sideCaptures = [];
+  const sideList = (layout.sideScrollers || []);
+  if (clipModeWanted !== "full" && layout.clip && sideList.length) {
+    for (let idx = 0; idx < sideList.length; idx++) {
+      const rect = sideList[idx];
+      const shots = [];
+      const stepSide = Math.max(80, rect.h - 30);
+      let sy = 0, lastY = 0, guard = 0;
+      try {
+        while (true) {
+          const res = await browser.tabs.sendMessage(tab.id, { cmd: "scrollSide", index: idx, y: sy });
+          if (!res || !res.ok) break;
+          const actual = res.actualY || 0;
+          if (shots.length && actual <= lastY + 2) break;      // kommt nicht weiter
+          await sleep(Math.min(400, settings.settlingMs));
+          let dataUrl;
+          try { dataUrl = await browser.tabs.captureVisibleTab(tab.windowId, { format: "png" }); }
+          catch (_) { dataUrl = await browser.tabs.captureVisibleTab({ format: "png" }); }
+          const img = await blobToImage(await dataUrlToBlob(dataUrl));
+          shots.push({ y: actual, img });
+          lastY = actual;
+          if (actual >= rect.max - 2) break;
+          sy = actual + stepSide;
+          if (++guard > 30) break;
+        }
+      } catch (e) { log("Nebenbereich", idx, "abgebrochen:", e.message); }
+      if (shots.length > 1) {
+        sideCaptures.push({ rect, shots: shots.slice(1), lastY });
+        log("Nebenbereich", idx, "->", shots.length - 1, "zusaetzliche Segmente");
+      }
+    }
+    // Nebenbereiche zurueckstellen, damit die Seite unveraendert bleibt
+    for (let idx = 0; idx < sideList.length; idx++) {
+      await browser.tabs.sendMessage(tab.id, { cmd: "scrollSide", index: idx, y: 0 }).catch(() => {});
+    }
+  }
+
   log("Stitching", segments.length, "segments via big-canvas.");
 
   // Skalierung Screenshot zu CSS-Pixel. Ueber die FENSTERhoehe gerechnet, denn
@@ -315,7 +360,7 @@ async function captureFullPageInner(tab, settings) {
    *   crop    - ausschliesslich der Inhaltsbereich, schmalstes Ergebnis.
    *   full    - alles unveraendert, Rahmen wiederholt sich (Notbehelf).
    */
-  const clipMode = layout.clip ? (settings.appLayout || "context") : "full";
+  const clipMode = clipModeWanted === "full" || !layout.clip ? "full" : clipModeWanted;
   const clip = clipMode === "full" ? null : layout.clip;
 
   const srcX = clip ? Math.round(clip.x * dprY) : 0;
@@ -354,6 +399,28 @@ async function captureFullPageInner(tab, settings) {
     // Erstes Segment vollstaendig - hier bleiben Menue und Seitenleiste.
     const frameH = segments[0].pxH;
     bigCtx.drawImage(segments[0].img, 0, 0);
+
+    /* Nebenbereiche mit eigenem Inhalt fortsetzen.
+     *
+     * Eine scrollbare Seitenleiste endet sonst am Ende des ersten Segments,
+     * obwohl sie weitergeht. Ihre zusaetzlichen Segmente werden hier
+     * untereinander in dieselbe Spalte gezeichnet - so weit ihr Inhalt
+     * reicht. Erst danach greift die Fuellfarbe.
+     */
+    for (const side of sideCaptures) {
+      const sx = Math.round(side.rect.x * dprY);
+      const sw = Math.round(side.rect.w * dprY);
+      const sh = Math.round(side.rect.h * dprY);
+      const sy = Math.round(side.rect.y * dprY);
+      for (const shot of side.shots) {
+        const destY = sy + Math.round(shot.y * dprY);
+        if (destY + sh > bigH) break;                 // nicht ueber das Ende hinaus
+        bigCtx.drawImage(shot.img, sx, sy, sw, sh, sx, destY, sw, sh);
+      }
+      const covered = sy + Math.round(side.lastY * dprY) + sh;
+      log("Nebenbereich fortgesetzt bis", covered, "von", bigH);
+      side.coveredTo = covered;
+    }
 
     /* Die Flaeche unterhalb davon bekommt die Farbe, die im Screenshot
      * tatsaechlich neben dem Inhalt liegt. Aus CSS geraten geht daneben:

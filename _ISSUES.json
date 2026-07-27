@@ -34,5 +34,14 @@
     "command": "cd /home/holo/repos/full-page-pdf-snap-public\ngrep -n \"measure\\|viewportH\\|dpr\\|...",
     "excerpt": "error: \"unknown cmd: \" + msg.cmd });",
     "status": "open"
+  },
+  {
+    "id": "30aea881",
+    "ts": "2026-07-27T09:14:15",
+    "type": "RUNTIME",
+    "label": "Python Traceback",
+    "command": "cd /home/holo/repos/full-page-pdf-snap-public\npython3 - <<'PYEOF'\nfrom pathlib i...",
+    "excerpt": "Traceback (most recent call last):",
+    "status": "open"
   }
 ]
