@@ -1134,4 +1134,33 @@ browser.storage.onChanged.addListener(() => { buildMenus().catch(() => {}); });
 
 buildMenus().catch(() => {});
 
+/* Einmalige Anpassung beim Update auf 2.3.0.
+ *
+ * Der Standard fuer die Capture-Skalierung war frueher 1.5 - die Seite wurde
+ * also vor der Aufnahme gezoomt. Dadurch passt weniger ins Fenster, und Menues
+ * oder Seitenleisten enden im PDF frueher als am Bildschirm. Neuer Standard
+ * ist 1.0: das PDF zeigt die Seite so, wie sie dasteht.
+ *
+ * Gespeicherte Einstellungen gewinnen aber gegen den Standard. Ohne diesen
+ * Schritt bliebe es bei allen Bestandsnutzern beim alten Verhalten.
+ *
+ * Angepasst wird ausschliesslich der Wert 1.5 - also genau der alte Standard,
+ * den der Nutzer sehr wahrscheinlich nie bewusst gewaehlt hat. Wer 1.25 oder
+ * 2.0 eingestellt hat, behaelt seine Wahl.
+ */
+browser.runtime.onInstalled.addListener(async (details) => {
+  if (details.reason !== "update") return;
+  try {
+    const { captureScale } = await browser.storage.local.get({ captureScale: null });
+    if (captureScale === 1.5) {
+      await browser.storage.local.set({ captureScale: 1.0 });
+      log("Update: Capture-Skalierung von 1.5 auf 1.0 gesetzt (neuer Standard).");
+    } else {
+      log("Update: Capture-Skalierung unveraendert (" + captureScale + ").");
+    }
+  } catch (e) {
+    log("Update-Anpassung fehlgeschlagen:", e);
+  }
+});
+
 log("Background ready.");

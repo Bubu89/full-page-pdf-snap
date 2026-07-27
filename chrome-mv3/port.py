@@ -96,7 +96,7 @@ MANIFEST = """{
   "manifest_version": 3,
   "name": "Full Page PDF Snap \\u2013 Save Webpage as PDF",
   "short_name": "PDFSnap",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Save any webpage as a single high-resolution PDF. Auto-scrolls the whole page \\u2014 no cropping, no print dialog.",
   "author": "Bubu89",
   "minimum_chrome_version": "116",
