@@ -49,3 +49,23 @@ Fall C und D in `layouttest.html` dokumentieren bewusste Abwägungen, keine Fehl
 - **Zwei Container nebeneinander:** Der längere gewinnt, der andere wird abgeschnitten.
 
 Beides ist für Mail- und Dokument-Apps richtig, weil dort der Hauptinhalt der längste Container ist. Bei geteilten Ansichten (Vorschau neben Liste) ist es eine Einschränkung.
+
+## `end-detection.test.js`
+
+Reiner Logik-Test, läuft ohne Browser:
+
+```bash
+node chrome-mv3/tests/end-detection.test.js
+```
+
+Stellt beide Scroll-Schleifen nach — Haupt- und Nebenbereich — gegen einen
+Container, der `scrollTop` auf `[0, max]` klemmt, genau wie der Browser. Geprüft
+wird für jeden von neun Fällen dreierlei:
+
+- **Ende erreicht** — die letzte Aufnahme sitzt exakt auf `max`
+- **keine Wiederholung** — keine Position wird zweimal aufgenommen
+- **keine Lücke** — die Fenster decken den Bereich zusammenhängend ab
+
+Abgedeckt: glatte und ungerade Resthöhen, Seiten knapp über Fensterhöhe, exakt
+eine Fensterhöhe, 50.000 px lange Seiten, sowie Nebenbereiche von 0 px Überhang
+bis zum schmalen 5.000-px-Menü.
