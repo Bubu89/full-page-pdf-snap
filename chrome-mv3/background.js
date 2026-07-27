@@ -245,13 +245,13 @@ async function captureFullPageInner(tab, settings) {
       }
       const blob = await dataUrlToBlob(dataUrl);
       const img = await blobToImage(blob);
-      log("Captured segment", segments.length, "at actualY=", actualY, "size=", img.naturalWidth, "x", img.naturalHeight);
+      log("Captured segment", segments.length, "at actualY=", actualY, "size=", img.width, "x", img.height);
 
       segments.push({
         y: actualY,
         img,
-        pxW: img.naturalWidth,
-        pxH: img.naturalHeight
+        pxW: img.width,
+        pxH: img.height
       });
 
       // Progress-Feedback fuer Android (alle 2 Segmente Notification aktualisieren).

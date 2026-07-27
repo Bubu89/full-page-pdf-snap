@@ -36,6 +36,15 @@ PATCHES = [
      'document.createElement("canvas")',
      "createCanvas()", 3),
 
+    # createImageBitmap liefert ein ImageBitmap. Das kennt nur width/height -
+    # naturalWidth/naturalHeight gibt es ausschliesslich bei HTMLImageElement.
+    # Ohne diesen Patch ist pxW undefined und OffscreenCanvas wirft
+    # "Value is not of type 'unsigned long'".
+    ("img.naturalWidth -> img.width (ImageBitmap kennt kein naturalWidth)",
+     ".naturalWidth", ".width", 2),
+    ("img.naturalHeight -> img.height",
+     ".naturalHeight", ".height", 2),
+
     ("PDF-Blob -> data:-URL statt Blob-URL",
      "const url = URL.createObjectURL(pdfBlob);",
      "const url = await blobToDataUrl(pdfBlob);", 1),

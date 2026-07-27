@@ -23,6 +23,38 @@ if (!globalThis.browser.browserAction && chrome.action) {
   globalThis.browser.browserAction = chrome.action;
 }
 
+// --- 1b. Drossel fuer captureVisibleTab -------------------------------------
+// Chrome begrenzt tabs.captureVisibleTab auf MAX_CAPTURE_VISIBLE_TAB_CALLS_PER_SECOND
+// (zwei Aufrufe pro Sekunde). Firefox kennt diese Grenze nicht, deshalb ruft der
+// gemeinsame Code schneller auf und laeuft ins Kontingent. Die Drossel haelt einen
+// Mindestabstand ein und wiederholt, falls die Grenze trotzdem greift - etwa weil
+// eine andere Erweiterung parallel aufnimmt.
+const CAPTURE_MIN_GAP_MS = 550;   // etwas ueber 500 ms, gegen Taktungenauigkeit
+const CAPTURE_MAX_RETRIES = 4;
+
+if (chrome.tabs && typeof chrome.tabs.captureVisibleTab === "function") {
+  const original = chrome.tabs.captureVisibleTab.bind(chrome.tabs);
+  let lastCall = 0;
+
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  chrome.tabs.captureVisibleTab = async function throttledCapture(...args) {
+    for (let attempt = 0; ; attempt++) {
+      const wait = CAPTURE_MIN_GAP_MS - (Date.now() - lastCall);
+      if (wait > 0) await sleep(wait);
+      lastCall = Date.now();
+      try {
+        return await original(...args);
+      } catch (err) {
+        const isQuota = /quota|MAX_CAPTURE/i.test(err && err.message || "");
+        if (!isQuota || attempt >= CAPTURE_MAX_RETRIES) throw err;
+        // Bei Quota-Treffer laenger warten und erneut versuchen
+        await sleep(CAPTURE_MIN_GAP_MS * (attempt + 1));
+      }
+    }
+  };
+}
+
 // --- 2. Grafik ohne DOM -----------------------------------------------------
 
 /** Ersetzt document.createElement("canvas"). width/height bleiben schreibbar,
