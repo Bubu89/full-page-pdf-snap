@@ -1,0 +1,96 @@
+CHROME WEB STORE - HOCHLADEN
+============================
+Alles Noetige liegt in diesem Ordner.
+
+Dashboard: https://chrome.google.com/webstore/devconsole
+
+
+SCHRITT 1 - Item anlegen
+------------------------
+"Items" -> "Add new item" -> Datei hochladen:
+
+    full-page-pdf-snap-chrome-2.2.0.zip
+
+Titel und Kurzbeschreibung zieht Chrome aus dem Manifest im ZIP
+("Title from package"). Sie stehen bereits richtig drin:
+
+    Full Page PDF Snap - Save Webpage as PDF
+    Save any webpage as a single high-resolution PDF. Auto-scrolls the
+    whole page - no cropping, no print dialog.
+
+Diese beiden Felder lassen sich im Formular NICHT aendern - dafuer muesste
+das Manifest geaendert und neu hochgeladen werden.
+
+
+SCHRITT 2 - Grafiken   (Ordner store-assets)
+--------------------------------------------
+  Store icon (128x128, Pflicht)
+      store_icon_128.png            <- normal dieses nehmen
+      store_icon_128_weiss.png      <- Ersatz, falls Transparenz beanstandet wird
+
+  Screenshots (Pflicht, 1280x800, genau diese drei in dieser Reihenfolge)
+      1. 01_capture_en_1280x800.png
+      2. 02_settings_en_1280x800.png
+      3. 03_output_en_1280x800.png
+
+  Small promo tile (440x280)
+      promo_tile_440x280.png
+
+  Marquee promo tile (1400x560, optional - noetig fuer eine moegliche
+  Platzierung auf der Startseite des Stores)
+      marquee_promo_1400x560.png
+
+Alle Bilder sind RGB ohne Alpha-Kanal, wie vom Store verlangt.
+Die _de-Bilder erst verwenden, wenn du Deutsch als Sprache ergaenzt.
+
+
+SCHRITT 3 - Beschreibung
+------------------------
+Aus Chrome_Store_Listing.docx (oder .txt), Abschnitt "English":
+
+    Detailed description  -> kompletter Block
+    Category              -> Workflow & Planning
+    Language              -> English
+
+Weitere Sprachen spaeter ueber "Add language" - die deutschen Texte stehen
+im selben Dokument.
+
+
+SCHRITT 4 - Privacy practices   (haeufigster Ablehnungsgrund)
+--------------------------------------------------------------
+Alles im Dokument, Abschnitt "Privacy practices":
+
+    Single purpose        -> Textblock uebernehmen
+    Remote code           -> NO
+    Datenkategorien       -> ALLE unangehakt lassen (es wird nichts erhoben)
+    Zertifizierungen      -> alle drei bestaetigen
+    Privacy policy URL    -> https://bubu89.github.io/full-page-pdf-snap/privacy.html
+
+    Permission justifications -> fuer JEDE der neun Berechtigungen ein
+    eigenes Feld. Die Texte stehen im Dokument, englisch zum Einfuegen,
+    deutsche Fassung darunter zur Kontrolle:
+        activeTab, tabs, scripting, downloads, downloads.open,
+        storage, contextMenus, notifications, host permission <all_urls>
+
+    Pauschale Begruendungen werden abgelehnt. Die vorbereiteten Texte
+    nennen jeweils die konkrete Funktion, die die Berechtigung braucht.
+
+
+SCHRITT 5 - Absenden
+--------------------
+"Submit for review". Pruefung dauert meist wenige Tage.
+
+
+VORHER PRUEFEN
+--------------
+Ordner extension\ ueber chrome://extensions laden ("Entpackte Erweiterung
+laden") und eine Aufnahme durchlaufen lassen. Der Ordner ist aus genau
+dieser ZIP entpackt - du testest also das, was eingereicht wird.
+
+
+HINWEIS ZU SCREENSHOT 3
+-----------------------
+Dort ist die Capture-Skalierung mit 1.5x zu sehen. Seit dieser Version ist
+1.0x der Standard ("genau wie am Bildschirm"). Die Abbildung zeigt also eine
+gueltige, aber nicht mehr voreingestellte Auswahl. Fuer die Einreichung
+unkritisch - bei Gelegenheit mit einer neuen Aufnahme ersetzen.

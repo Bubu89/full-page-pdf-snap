@@ -36,9 +36,13 @@ for p in sorted(HERE.rglob("*")):
     files.append((p, rel))
 
 # --- Ziel leeren, damit keine Datei einer Vorversion liegen bleibt ----------
-if UPLOAD.exists():
-    shutil.rmtree(UPLOAD)
-UPLOAD.mkdir(parents=True)
+# Frueher wurde der ganze Ordner geloescht. Das scheitert, sobald eine Datei
+# darin geoeffnet ist (Word sperrt .docx), und riss dabei Zusatzdateien mit.
+UPLOAD.mkdir(parents=True, exist_ok=True)
+for old_zip in UPLOAD.glob("*.zip"):
+    old_zip.unlink()
+if (UPLOAD / "extension").exists():
+    shutil.rmtree(UPLOAD / "extension")
 
 zip_path = UPLOAD / f"full-page-pdf-snap-chrome-{version}.zip"
 with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:

@@ -1,0 +1,86 @@
+AUF REICHWEITE OPTIMIEREN
+=========================
+Was tatsaechlich Nutzer bringt, nach Wirkung sortiert.
+
+
+1. TITEL - der staerkste einzelne Hebel
+---------------------------------------
+Beide Marktfuehrer dieser Nische haben den Suchbegriff IM TITEL, nicht nur
+den Markennamen:
+
+    169.292 Nutzer   "Full Page Screen Capture - FireShot"
+    Chrome-Marktfuehrer  "GoFullPage - Full Page Screen Capture"
+
+Aktueller Titel:
+    Full Page PDF Snap - Save Webpage as PDF          (40 von 75 Zeichen)
+
+Enthaelt "Full Page", "PDF" und "Webpage" - gut. Es fehlt der meistgesuchte
+Begriff der Kategorie: "Screenshot" bzw. "Screen Capture".
+
+Vorschlag (58 Zeichen, weiterhin natuerlich lesbar):
+    Full Page PDF Snap - Webpage to PDF & Full Page Screenshot
+
+Aenderung nur ueber das Manifest moeglich: in chrome-mv3/port.py das Feld
+"name" anpassen, dann port.py + pack.py laufen lassen und die neue ZIP
+hochladen. Vor der ersten Veroeffentlichung kostenlos - danach aendert sich
+die Store-URL nicht, nur der angezeigte Name.
+
+
+2. BESCHREIBUNG - bereits optimiert
+-----------------------------------
+Die ersten Zeilen zaehlen fuer Suche und Vorschau am meisten. Sie beginnen
+jetzt mit "Take a full page screenshot and save any web page as PDF" und
+nennen im zweiten Absatz die Faelle, in denen ein normaler Screenshot
+scheitert (lange Artikel, Postfaecher, Dashboards, Chatverlaeufe).
+
+Neu ist ausserdem ein Abschnitt "Typical uses" - er deckt Suchanfragen ab,
+die nach dem Zweck statt nach der Technik gestellt werden ("archive a web
+page", "save receipt as pdf", "document a page for a lawyer").
+
+
+3. BEIDE STORES
+---------------
+Firefox ist ein kleiner Teich. Zum Vergleich: GoFullPage hat auf Firefox
+45 Nutzer und in Chrome Millionen. Das MV3-Paket laeuft unveraendert auch
+in Microsoft Edge - dort kostenlos, Microsoft-Konto statt Google-Konto:
+    https://partner.microsoft.com/dashboard/microsoftedge
+
+Dieselbe ZIP, dieselben Texte, dieselben Bilder.
+
+
+4. AUSSERHALB DER STORES
+------------------------
+Das Store-Ranking gewichtet Nutzerzahlen - ohne Nutzer keine Sichtbarkeit,
+ohne Sichtbarkeit keine Nutzer. Dieser Kreis bricht nur von aussen auf:
+
+  alternativeto.net    Als Alternative zu GoFullPage, FireShot und
+                       SingleFile eintragen. Dauerhafter Traffic,
+                       kein Community-Risiko.
+  r/chrome, r/firefox  Regeln zu Eigenwerbung vorher lesen.
+  r/DataHoarder        Dort wird Seitenarchivierung aktiv gesucht -
+                       die passendste Zielgruppe.
+  Show HN              Titel sachlich halten, Dienstag bis Donnerstag
+                       vormittags US-Zeit.
+
+Immer auf die Projektseite verlinken, nicht auf den Store:
+    https://bubu89.github.io/full-page-pdf-snap/
+
+
+5. BEWERTUNGEN
+--------------
+Stores sortieren nach einem gewichteten Mittel: Bei einer einzigen
+5-Sterne-Bewertung zaehlt effektiv nur etwa 2,3 von 5. Die ersten rund
+zehn Bewertungen sind daher ueberproportional wertvoll, danach flacht der
+Effekt ab.
+
+Ein dezenter, einmalig wegklickbarer Hinweis nach etwa dem zehnten
+erzeugten PDF ist bei beiden Stores regelkonform - er trifft Leute, die
+den Nutzen bereits erlebt haben. Noch nicht eingebaut.
+
+
+REIHENFOLGE
+-----------
+1. Chrome einreichen (alles liegt bereit)
+2. Edge nachziehen - eine Stunde Arbeit, gleicher Umfang
+3. alternativeto.net eintragen
+4. Erst wenn die ersten Nutzer da sind: Reddit und Show HN
