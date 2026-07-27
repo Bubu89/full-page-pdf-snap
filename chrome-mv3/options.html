@@ -103,6 +103,15 @@
     </div>
   </label>
 
+  <label><span data-i18n="optShortcut">Keyboard shortcut</span>
+    <div style="display:flex; gap:10px; align-items:center; margin-top:4px;">
+      <code id="shortcutNow" style="padding:6px 12px; background:#f3f4f6; border:1px solid #d1d5db; border-radius:6px; font-size:13px;">…</code>
+      <button type="button" id="shortcutManage" data-i18n="optShortcutManage"
+              style="padding:6px 12px; font-size:13px; cursor:pointer;">Change shortcut</button>
+    </div>
+    <div class="hint" data-i18n="optShortcutHint">Shown here is the shortcut the browser has actually assigned.</div>
+  </label>
+
   <label><span data-i18n="optLanguage">Language</span>
     <select id="uiLanguage" style="width:100%; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
       <option value="auto" data-i18n="optLanguageAuto">Automatic (browser language)</option>

@@ -6,7 +6,7 @@
     "message": "Salva qualquer página web como um único PDF de alta resolução. Rola automaticamente a página inteira, sem cortes nem caixa de impressão."
   },
   "actionTitle": {
-    "message": "Full Page PDF Snap — salvar a página inteira como PDF (Ctrl+Shift+Y)"
+    "message": "Full Page PDF Snap — salvar a página inteira como PDF (Alt+Shift+P)"
   },
   "commandCapture": {
     "message": "Salvar a página inteira como PDF"
@@ -220,5 +220,17 @@
   },
   "optPageHeightHint": {
     "message": "Only relevant when \"Multiple pages\" is selected. Default 2400 px."
+  },
+  "optShortcut": {
+    "message": "Keyboard shortcut"
+  },
+  "optShortcutNone": {
+    "message": "none assigned — conflicts with a browser shortcut"
+  },
+  "optShortcutManage": {
+    "message": "Change shortcut"
+  },
+  "optShortcutHint": {
+    "message": "Shown here is the shortcut the browser has actually assigned. Browser shortcuts always take precedence and cannot be overridden by an extension — if the field says none, the combination is taken by the browser itself. Assign a free one via the button."
   }
 }

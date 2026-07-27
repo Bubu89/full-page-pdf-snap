@@ -6,7 +6,7 @@
     "message": "Speichert jede Webseite als ein hochauflösendes PDF. Auto-Scroll erfasst die ganze Seite — kein Zuschneiden, kein Druckdialog."
   },
   "actionTitle": {
-    "message": "Full Page PDF Snap — ganze Seite als PDF (Strg+Umschalt+Y)"
+    "message": "Full Page PDF Snap — ganze Seite als PDF (Alt+Umschalt+P)"
   },
   "commandCapture": {
     "message": "Ganze Seite als PDF speichern"
@@ -220,5 +220,17 @@
   },
   "optPageHeightHint": {
     "message": "Nur wirksam, wenn „Mehrere Seiten“ gewählt ist. Standard 2400 px."
+  },
+  "optShortcut": {
+    "message": "Tastenkürzel"
+  },
+  "optShortcutNone": {
+    "message": "keines vergeben — Konflikt mit einem Browser-Kürzel"
+  },
+  "optShortcutManage": {
+    "message": "Kürzel ändern"
+  },
+  "optShortcutHint": {
+    "message": "Angezeigt wird das Kürzel, das der Browser tatsächlich vergeben hat. Browser-Kürzel haben immer Vorrang und lassen sich von einer Erweiterung nicht überschreiben — steht dort keines, ist die Kombination vom Browser belegt. Über die Schaltfläche lässt sich ein freies vergeben."
   }
 }

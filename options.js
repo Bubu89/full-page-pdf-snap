@@ -165,3 +165,43 @@ $("save").addEventListener("click", async () => {
 });
 
 load();
+
+/* Zeigt das real vergebene Tastenkuerzel und fuehrt zur Verwaltung.
+ *
+ * commands.getAll() liefert den Zustand, den der Browser tatsaechlich gesetzt
+ * hat. Bleibt shortcut leer, hat der Browser die gewuenschte Kombination fuer
+ * sich beansprucht - dann loest nichts aus, ohne dass es irgendwo auffiele.
+ */
+(async () => {
+  const now = document.getElementById("shortcutNow");
+  const btn = document.getElementById("shortcutManage");
+  if (!now) return;
+
+  const t = (k, fb) => (window.PageShotI18n && window.PageShotI18n.t(k)) || fb;
+
+  try {
+    const cmds = await browser.commands.getAll();
+    const c = cmds.find(x => x.name === "capture-full-page");
+    if (c && c.shortcut) {
+      now.textContent = c.shortcut;
+      now.style.color = "";
+    } else {
+      now.textContent = t("optShortcutNone", "none assigned");
+      now.style.color = "#b91c1c";
+    }
+  } catch (_) {
+    now.textContent = "?";
+  }
+
+  if (btn) {
+    btn.addEventListener("click", async () => {
+      // Firefox und Chrome verwalten Kuerzel auf verschiedenen Seiten, und
+      // beide lassen sich nicht direkt oeffnen - deshalb ein Tab mit der
+      // passenden Adresse.
+      const isChrome = !!(navigator.userAgent.match(/Chrome|Chromium|Edg/));
+      const url = isChrome ? "chrome://extensions/shortcuts" : "about:addons";
+      try { await browser.tabs.create({ url }); }
+      catch (_) { window.prompt("Open this address:", url); }
+    });
+  }
+})();

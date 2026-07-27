@@ -30,3 +30,28 @@ $("opts").addEventListener("click", () => {
   browser.runtime.openOptionsPage();
   window.close();
 });
+
+/* Zeigt die tatsaechlich aktive Tastenkombination.
+ *
+ * Sie fest ins HTML zu schreiben war falsch: der Nutzer kann sie in den
+ * Browser-Einstellungen aendern, und bei einem Konflikt mit einem
+ * browsereigenen Kuerzel vergibt der Browser gar keine - dann stand dort eine
+ * Kombination, die nichts ausloest.
+ */
+(async () => {
+  const el = document.getElementById("shortcut");
+  if (!el) return;
+  try {
+    const cmds = await browser.commands.getAll();
+    const c = cmds.find(x => x.name === "capture-full-page");
+    if (c && c.shortcut) {
+      el.textContent = c.shortcut;
+    } else {
+      el.textContent = "—";
+      el.title = "No shortcut assigned (conflict with a browser shortcut). "
+               + "Assign one in the browser's extension shortcut settings.";
+    }
+  } catch (_) {
+    el.textContent = "Alt+Shift+P";
+  }
+})();

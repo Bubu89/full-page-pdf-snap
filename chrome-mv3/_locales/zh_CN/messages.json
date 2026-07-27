@@ -6,7 +6,7 @@
     "message": "将任意网页保存为一个高分辨率 PDF。自动滚动整页，无裁剪，无需打印对话框。"
   },
   "actionTitle": {
-    "message": "Full Page PDF Snap — 将整页保存为 PDF (Ctrl+Shift+Y)"
+    "message": "Full Page PDF Snap — 将整页保存为 PDF (Alt+Shift+P)"
   },
   "commandCapture": {
     "message": "将整页保存为 PDF"
@@ -220,5 +220,17 @@
   },
   "optPageHeightHint": {
     "message": "Only relevant when \"Multiple pages\" is selected. Default 2400 px."
+  },
+  "optShortcut": {
+    "message": "Keyboard shortcut"
+  },
+  "optShortcutNone": {
+    "message": "none assigned — conflicts with a browser shortcut"
+  },
+  "optShortcutManage": {
+    "message": "Change shortcut"
+  },
+  "optShortcutHint": {
+    "message": "Shown here is the shortcut the browser has actually assigned. Browser shortcuts always take precedence and cannot be overridden by an extension — if the field says none, the combination is taken by the browser itself. Assign a free one via the button."
   }
 }
