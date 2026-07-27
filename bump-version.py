@@ -45,48 +45,46 @@ def published_versions():
 
 
 def main():
-    manifests = [HERE / "manifest.json", HERE / "chrome-mv3" / "port.py"]
     local = json.loads((HERE / "manifest.json").read_text(encoding="utf-8"))["version"]
     remote = published_versions()
+    published = local in remote
 
     print(f"  lokal        : {local}")
     print(f"  bei AMO      : {', '.join(remote[:5]) if remote else '(unbekannt)'}")
+    print(f"  Status       : {'VEROEFFENTLICHT' if published else 'noch nicht veroeffentlicht'}")
 
+    # Zielnummer bestimmen
     if "--set" in sys.argv:
         target = sys.argv[sys.argv.index("--set") + 1]
-    elif local not in remote:
-        # Die lokale Nummer ist noch nicht veroeffentlicht - es gibt keinen
-        # Grund weiterzuzaehlen. Sonst springt die Version bei jedem
-        # Zwischenlauf, obwohl nie etwas hochgeladen wurde.
-        print(f"  {local} ist noch nicht veroeffentlicht - bleibt.")
+    elif not published:
+        # Noch nicht draussen - es gibt nichts hochzuzaehlen. Sonst springt die
+        # Nummer bei jedem Zwischenlauf, ohne dass je etwas hochgeladen wurde.
+        print(f"  Ergebnis     : {local} bleibt.")
         return 0
     else:
-        # Hoechste bekannte Nummer als Ausgangspunkt - lokal ODER veroeffentlicht
-        highest = max([parse(local)] + [parse(v) for v in remote])
-        maj, mi, pa = highest
+        # Vom hoechsten bekannten Stand aus weiter - lokal ODER veroeffentlicht.
+        maj, mi, pa = max([parse(local)] + [parse(v) for v in remote])
         target = fmt((maj, mi, pa + 1)) if "--patch" in sys.argv else fmt((maj, mi + 1, 0))
 
     if target in remote:
-        print(f"  ABBRUCH: {target} ist bei AMO bereits veroeffentlicht.")
+        print(f"  ABBRUCH      : {target} ist bereits veroeffentlicht.")
         return 1
-    print(f"  naechste frei: {target}")
 
+    print(f"  Ergebnis     : {local} -> {target}")
     if "--check" in sys.argv:
-        print("  --check: nichts geaendert.")
+        print("  --check: nichts geschrieben.")
         return 0
 
-    p = HERE / "manifest.json"
-    m = json.loads(p.read_text(encoding="utf-8"))
+    f = HERE / "manifest.json"
+    m = json.loads(f.read_text(encoding="utf-8"))
     m["version"] = target
-    p.write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    f.write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
-    p = HERE / "chrome-mv3" / "port.py"
-    s = p.read_text(encoding="utf-8")
-    s = s.replace(f'"version": "{local}",', f'"version": "{target}",')
-    p.write_text(s, encoding="utf-8")
+    f = HERE / "chrome-mv3" / "port.py"
+    t = f.read_text(encoding="utf-8")
+    f.write_text(t.replace(f'"version": "{local}",', f'"version": "{target}",'), encoding="utf-8")
 
-    print(f"  gesetzt in manifest.json und chrome-mv3/port.py")
-    print(f"  Naechster Schritt: python3 pack-firefox.py  bzw.  cd chrome-mv3 && python3 port.py && python3 pack.py")
+    print("  geschrieben in manifest.json und chrome-mv3/port.py")
     return 0
 
 

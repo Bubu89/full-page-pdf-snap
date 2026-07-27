@@ -74,8 +74,17 @@ def main():
     # --- 3. Version ---------------------------------------------------------
     step(3, "Version")
     if KEEP:
+        # --keep darf die Store-Pruefung nicht umgehen. Genau daran ist es
+        # schiefgegangen: Code geaendert, Nummer behalten, Upload abgelehnt
+        # mit "Version already exists".
         v = json.loads((HERE / "manifest.json").read_text(encoding="utf-8"))["version"]
+        ok, out = run(["python3", "bump-version.py", "--check"], quiet=True)
+        veroeffentlicht = "Status       : VEROEFFENTLICHT" in out
         print(f"    unveraendert: {v}")
+        if veroeffentlicht:
+            print(f"    ABBRUCH: {v} ist bereits veroeffentlicht - --keep wuerde ein")
+            print( "             Paket bauen, das der Store ablehnt. Ohne --keep laufen.")
+            return 1
     else:
         args = ["python3", "bump-version.py"]
         if CHECK:

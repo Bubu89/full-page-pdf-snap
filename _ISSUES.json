@@ -52,5 +52,14 @@
     "command": "cd /home/holo/repos/full-page-pdf-snap-public\npython3 - <<'PYEOF'\nimport json, r...",
     "excerpt": "SyntaxError: unexpected character after line continuation character",
     "status": "open"
+  },
+  {
+    "id": "d930ef0d",
+    "ts": "2026-07-27T11:09:25",
+    "type": "BUILD",
+    "label": "Generic Error",
+    "command": "cd /mnt/c/Users/HOLO/Documents/FullPagePDFSnap_Firefox/upload\nrm -f full-page-pd...",
+    "excerpt": "error: pathspec '2.8.0' did not match any file(s) known to git",
+    "status": "open"
   }
 ]
