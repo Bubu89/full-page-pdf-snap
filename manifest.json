@@ -1,0 +1,59 @@
+{
+  "manifest_version": 2,
+  "name": "Full Page PDF Snap",
+  "short_name": "PDFSnap",
+  "version": "2.2.0",
+  "description": "Speichert eine komplette Webseite als hochaufloesendes PDF. Ausschliesslich lokale Verarbeitung — kein Serverzugriff, keine Datenerhebung, keine Uebermittlung an den Anbieter.",
+  "author": "Bubu89",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "pageshot-pdf@bubu89.local",
+      "strict_min_version": "109.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    },
+    "gecko_android": {
+      "strict_min_version": "127.0"
+    }
+  },
+  "icons": {
+    "16": "icons/icon.svg",
+    "48": "icons/icon.svg",
+    "128": "icons/icon.svg"
+  },
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "downloads",
+    "downloads.open",
+    "storage",
+    "menus",
+    "notifications",
+    "<all_urls>"
+  ],
+  "background": {
+    "page": "background.html",
+    "persistent": false
+  },
+  "browser_action": {
+    "default_icon": {
+      "16": "icons/icon.svg",
+      "48": "icons/icon.svg"
+    },
+    "default_title": "Full Page PDF Snap — ganze Seite als PDF (Ctrl+Shift+Y)",
+    "default_popup": "popup.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "commands": {
+    "capture-full-page": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y"
+      },
+      "description": "Ganze Seite als PDF speichern"
+    }
+  }
+}

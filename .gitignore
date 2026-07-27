@@ -1,0 +1,6 @@
+web-ext-artifacts/
+node_modules/
+*.log
+.DS_Store
+WORK_LOG.md
+_ISSUES.md
