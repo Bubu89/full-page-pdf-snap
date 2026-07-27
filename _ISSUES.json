@@ -7,5 +7,23 @@
     "command": "cp /home/holo/repos/full-page-pdf-snap-public/screenshots/*.png /mnt/c/Users/HOL...",
     "excerpt": "Error: [Errno 2] No such file or directory: '/Claude_Max_Workspace/full-page-pdf-snap'",
     "status": "open"
+  },
+  {
+    "id": "03932796",
+    "ts": "2026-07-27T07:17:08",
+    "type": "BUILD",
+    "label": "Generic Error",
+    "command": "cd /home/holo/repos/full-page-pdf-snap-public\ncp screenshots/*.png docs/screensh...",
+    "excerpt": "error: failed to push some refs to 'https://github.com/Bubu89/full-page-pdf-snap.git'",
+    "status": "open"
+  },
+  {
+    "id": "4546b120",
+    "ts": "2026-07-27T07:50:57",
+    "type": "ENV",
+    "label": "Command not found",
+    "command": "cd /home/holo/repos/full-page-pdf-snap-public\n# Verifikation: Paket bauen wie be...",
+    "excerpt": "command not found\n===",
+    "status": "open"
   }
 ]

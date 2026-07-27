@@ -4,3 +4,4 @@ node_modules/
 .DS_Store
 WORK_LOG.md
 _ISSUES.md
+*.zip

@@ -1,0 +1,46 @@
+{
+  "manifest_version": 3,
+  "name": "Full Page PDF Snap",
+  "short_name": "PDFSnap",
+  "version": "2.2.0",
+  "description": "Save any webpage as a single high-resolution PDF. Runs entirely on your device \u2014 no upload, no account, no data collection.",
+  "author": "Bubu89",
+  "minimum_chrome_version": "116",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "downloads",
+    "downloads.open",
+    "storage",
+    "contextMenus",
+    "notifications",
+    "scripting"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png"
+    },
+    "default_title": "Full Page PDF Snap \u2014 save the whole page as PDF (Ctrl+Shift+Y)",
+    "default_popup": "popup.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "commands": {
+    "capture-full-page": {
+      "suggested_key": { "default": "Ctrl+Shift+Y" },
+      "description": "Save the whole page as PDF"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Full Page PDF Snap</title>
+<style>
+  body { font-family: system-ui, sans-serif; width: 260px; margin: 0; padding: 14px; background: #1f2937; color: #f3f4f6; }
+  h1 { font-size: 14px; margin: 0 0 10px 0; }
+  button { width: 100%; padding: 10px 12px; border: 0; border-radius: 6px; font-size: 13px; cursor: pointer; }
+  .primary { background: #2563eb; color: #fff; font-weight: 600; }
+  .primary:hover { background: #1d4ed8; }
+  .ghost { background: transparent; color: #d1d5db; margin-top: 8px; text-decoration: underline; }
+  .status { margin-top: 10px; font-size: 12px; color: #9ca3af; min-height: 16px; }
+  .err { color: #fca5a5; }
+  .ok { color: #86efac; }
+  .kbd { background: #374151; padding: 1px 6px; border-radius: 4px; font-family: monospace; font-size: 11px; }
+  p { font-size: 11px; color: #9ca3af; margin: 8px 0 0 0; }
+</style>
+</head>
+<body>
+  <h1>Ganze Seite als PDF</h1>
+  <button id="go" class="primary">Jetzt aufnehmen</button>
+  <p>Tastenkuerzel: <span class="kbd">Ctrl+Shift+Y</span></p>
+  <button id="opts" class="ghost">Einstellungen</button>
+  <div id="status" class="status"></div>
+  <script src="compat.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

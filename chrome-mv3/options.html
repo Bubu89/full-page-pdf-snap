@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Full Page PDF Snap — Einstellungen</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 560px; margin: 30px auto; padding: 0 16px; color: #111827; }
+  h1 { font-size: 20px; margin: 0 0 6px 0; }
+  p.lead { color: #6b7280; margin: 0 0 22px 0; font-size: 13px; }
+  label { display: block; margin: 14px 0 6px 0; font-weight: 600; font-size: 13px; }
+  .hint { color: #6b7280; font-size: 12px; font-weight: 400; margin-top: 4px; }
+  input[type="text"], input[type="number"] { width: 100%; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; box-sizing: border-box; }
+  input[type="range"] { width: 100%; }
+  .row { display: flex; gap: 10px; align-items: center; }
+  .row input[type="checkbox"] { width: 18px; height: 18px; }
+  button { margin-top: 22px; padding: 10px 16px; border: 0; background: #2563eb; color: #fff; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
+  button:hover { background: #1d4ed8; }
+  .status { margin-top: 10px; font-size: 13px; color: #059669; }
+  .box { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px 16px; margin: 18px 0; font-size: 12px; color: #4b5563; }
+  code { background: #e5e7eb; padding: 1px 5px; border-radius: 3px; font-family: monospace; }
+</style>
+</head>
+<body>
+  <h1>Full Page PDF Snap — Einstellungen</h1>
+  <p class="lead">Ganze Seite per Auto-Scroll als hochaufloesendes PDF.</p>
+
+  <label>Speicher-Unterordner (relativ zum Firefox-Download-Ordner)
+    <input id="subfolder" type="text" placeholder="Full Page PDF Snap">
+    <div class="hint">Standard: <code>Full Page PDF Snap</code>. Leer lassen = direkt in Downloads/. Firefox erlaubt aus Sicherheitsgruenden nur Unterordner.</div>
+  </label>
+
+  <div class="row" style="margin-top: 16px;">
+    <input id="saveAs" type="checkbox">
+    <label for="saveAs" style="margin: 0;">Jedes Mal Speicherdialog oeffnen
+      <div class="hint">Aktiviere das, wenn du in beliebige Ordner ausserhalb von Downloads/ speichern willst.</div>
+    </label>
+  </div>
+
+  <label>Dateiname-Vorlage
+    <input id="filenameTemplate" type="text" placeholder="{site}_{date}_{time}_{n}">
+    <div class="hint">
+      Platzhalter:
+      <code>{site}</code> = Webseite (z.B. <em>wikipedia_org</em>) &middot;
+      <code>{date}</code> = 2026-06-17 &middot;
+      <code>{time}</code> = 0923 &middot;
+      <code>{timesec}</code> = 092347 &middot;
+      <code>{n}</code> = fortlaufende Nummer (0001, 0002, ...) &middot;
+      <code>{title}</code> = Seitentitel (gekuerzt)
+    </div>
+  </label>
+
+  <label>Max. Laenge fuer {title} (Zeichen)
+    <input id="titleMaxLen" type="number" min="10" max="120" step="1" value="40">
+    <div class="hint">Verhindert lange Dateinamen. Default 40.</div>
+  </label>
+
+  <label>Fortlaufende Nummerierung
+    <div class="row" style="margin-top: 4px;">
+      <span id="counterVal" style="font-family: monospace; background: #f3f4f6; padding: 4px 10px; border-radius: 4px;">0000</span>
+      <button id="resetCounter" type="button" style="margin: 0; background: #6b7280;">Counter zuruecksetzen</button>
+    </div>
+    <div class="hint">Wird bei jedem neuen PDF automatisch um 1 erhoeht. Reset setzt auf 0.</div>
+  </label>
+
+  <label>JPEG-Qualitaet: <span id="qVal">0.92</span>
+    <input id="jpegQuality" type="range" min="0.70" max="1.00" step="0.01" value="0.92">
+    <div class="hint">
+      0.92 = Default (Chroma-Subsampling aktiv, deutlich kleinere Datei bei nahezu unveraenderter Optik).
+      0.95 = lossless-aehnlich, ca. 2x groessere Datei.
+      0.80 = sehr klein, leichte Artefakte bei Farbverlaeufen.
+    </div>
+  </label>
+
+  <label>Scroll-Wartezeit pro Schritt (ms)
+    <input id="settlingMs" type="number" min="50" max="5000" step="10" value="400">
+    <div class="hint">Standard: 400 ms — deckt Lazy-Load-Seiten (LinkedIn, Twitter/X, News-Portale) ab. Nur reduzieren wenn dir Zeit wichtiger als Vollstaendigkeit ist.</div>
+  </label>
+
+  <label>PDF-Format
+    <select id="singlePagePdf" style="width:100%; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+      <option value="true">Eine fortlaufende Seite (Default — keine sichtbaren Spalten)</option>
+      <option value="false">Mehrere Seiten (z.B. zum Drucken)</option>
+    </select>
+    <div class="hint">Single-Page eliminiert sichtbare Spalten zwischen Streifen. Multi-Page bricht in Streifen entsprechend Hoehe unten.</div>
+  </label>
+
+  <label>Seitenhoehe bei Multi-Page (Pixel)
+    <input id="pageHeightPx" type="number" min="400" max="8000" step="100" value="2400">
+    <div class="hint">Nur relevant wenn "Mehrere Seiten" gewaehlt. Default 2400 px.</div>
+  </label>
+
+  <label>Kachel-Hoehe bei Single-Page (Pixel)
+    <input id="tilePx" type="number" min="800" max="8000" step="100" value="4000">
+    <div class="hint">
+      Lange Seiten werden intern in JPEG-Kacheln dieser Hoehe zerlegt und auf EINER PDF-Seite stacken — kein sichtbarer Schnitt, aber deutlich kleinere Datei (JPEG-Encoder arbeitet pro Kachel effizient). Default 4000 px. Niedriger = kleiner pro Kachel, mehr Kacheln; hoeher = weniger Kacheln, ineffizientere Kompression bei Weissraum.
+    </div>
+  </label>
+
+  <label>Sticky/Fixed-Elemente verstecken
+    <div class="row" style="margin-top: 4px;">
+      <input id="hideSticky" type="checkbox">
+      <span>Sidebars und Top-Bars vor dem Capture ausblenden (empfohlen, konsistentes Layout).</span>
+    </div>
+  </label>
+
+  <label>Nach Erstellung
+    <select id="afterCapture" style="width:100%; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+      <option value="none">Nichts tun</option>
+      <option value="open">PDF automatisch oeffnen</option>
+      <option value="show">Ordner zeigen (Datei vorausgewaehlt)</option>
+      <option value="both">Ordner zeigen + PDF oeffnen</option>
+    </select>
+    <div class="hint">"Ordner zeigen" nutzt Firefox-Downloads-API (Desktop). Auf Android wird das PDF direkt in der Standard-App geoeffnet — die Ordner-Anzeige ist dort nicht verfuegbar.</div>
+  </label>
+
+  <label>Capture-Skalierung (Aufloesung)
+    <select id="captureScale" style="width:100%; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+      <option value="1.0">1.0x — schnell, Standard-Aufloesung</option>
+      <option value="1.25">1.25x — leicht schaerfer</option>
+      <option value="1.5">1.5x — deutlich schaerfer, ca. 50% laenger</option>
+      <option value="2.0">2.0x — maximal scharf, ca. 2x laenger</option>
+    </select>
+    <div class="hint">Setzt Browser-Zoom vor dem Capture per <code>tabs.setZoom</code>. Auf Android ohne Wirkung (API fehlt).</div>
+  </label>
+
+  <button id="save">Speichern</button>
+  <span id="status" class="status"></span>
+
+  <div class="box" id="triggerBoxDesktop" style="display:none;">
+    <strong>So loest du eine Aufnahme aus (Desktop):</strong>
+    <ol style="margin: 8px 0 0 20px; padding: 0; line-height: 1.6;">
+      <li>Klick auf das Toolbar-Icon &rarr; Popup &rarr; <strong>Jetzt aufnehmen</strong></li>
+      <li>Tastenkuerzel <code>Ctrl+Shift+Y</code></li>
+      <li>Rechtsklick auf das Toolbar-Icon &rarr; <strong>Ganze Seite als PDF speichern</strong> (auch Schnell-Umschalter fuer Skalierung/Ordner/Sticky)</li>
+    </ol>
+    <div style="margin-top: 10px;"><strong>Was passiert danach:</strong> Firefox scrollt die Seite automatisch ganz nach unten, macht bei jedem Sprung einen Screenshot, faedelt alles zu einer PDF zusammen und speichert sie in <code>Downloads/&lt;dein Unterordner&gt;</code>. Bei Erfolg wird der Zielordner geoeffnet (oder das PDF, je nach Einstellung).</div>
+  </div>
+
+  <div class="box" id="triggerBoxAndroid" style="display:none;">
+    <strong>So loest du eine Aufnahme aus (Firefox for Android):</strong>
+    <ol style="margin: 8px 0 0 20px; padding: 0; line-height: 1.6;">
+      <li>Firefox-Menue (drei Punkte oben rechts) &rarr; <strong>Full Page PDF Snap</strong> antippen</li>
+      <li>Aufnahme startet sofort — kein Zwischen-Popup, kein Dialog</li>
+      <li>Verlauf sichtbar oben in der Benachrichtigungsleiste ("Erfasse Seite ... XX%")</li>
+      <li>Wenn fertig: Benachrichtigung "Fertig — X Seiten gespeichert" &rarr; <strong>antippen</strong> um das PDF direkt zu oeffnen</li>
+    </ol>
+    <div style="margin-top: 10px;"><strong>Wichtige Hinweise fuer Android:</strong>
+      <ul style="margin: 6px 0 0 20px; padding: 0; line-height: 1.55;">
+        <li>Der Ziel-Tab muss aktiv bleiben. Bei Tab-Wechsel wechselt die Erweiterung automatisch zurueck</li>
+        <li>Firefox darf nicht in den Hintergrund geschickt werden (Home-Button) — Android pausiert das Rendering, der Screenshot pausiert dann auch</li>
+        <li>PDFs landen in <code>Download/&lt;dein Unterordner&gt;/</code> — sichtbar in jeder Datei-App unter "Download"</li>
+        <li>Die "Aktion nach Erstellung"-Optionen "Ordner zeigen" sind unter Android nicht verfuegbar (Firefox-API fehlt)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="box" id="diagBox" style="background: #eff6ff; border-color: #bfdbfe;">
+    <strong>Erkanntes System:</strong> <span id="diagPlatform" style="font-family: monospace;">wird geprueft ...</span><br>
+    <strong>Extension-Version:</strong> <span id="diagVersion" style="font-family: monospace;">?</span><br>
+    <strong>Bildschirm-Aufloesung:</strong> <span id="diagScreen" style="font-family: monospace;">?</span><br>
+    <strong>Pixel-Dichte (DPR):</strong> <span id="diagDpr" style="font-family: monospace;">?</span><br>
+    <strong>Arbeitsspeicher:</strong> <span id="diagRam" style="font-family: monospace;">?</span> GB &middot; <strong>CPU-Kerne:</strong> <span id="diagCpu" style="font-family: monospace;">?</span><br>
+    <strong>Adaptive Kachel-Groesse:</strong> <span id="diagTile" style="font-family: monospace;">?</span> px
+    <div class="hint" style="margin-top:8px;">Die Kachel-Groesse wird auf Android automatisch an dein Geraet angepasst — hohe Aufloesung + viel RAM = groessere Kacheln = schnellerer PDF-Build. Ueberschreibbar oben unter "Kachel-Hoehe bei Single-Page".</div>
+  </div>
+
+  <script src="compat.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
