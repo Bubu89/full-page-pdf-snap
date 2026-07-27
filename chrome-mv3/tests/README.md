@@ -69,3 +69,25 @@ wird für jeden von neun Fällen dreierlei:
 Abgedeckt: glatte und ungerade Resthöhen, Seiten knapp über Fensterhöhe, exakt
 eine Fensterhöhe, 50.000 px lange Seiten, sowie Nebenbereiche von 0 px Überhang
 bis zum schmalen 5.000-px-Menü.
+
+## `coverage.test.js`
+
+```bash
+node chrome-mv3/tests/coverage.test.js
+```
+
+Prüft `verifyCoverage` aus `background.js` — die Selbstkontrolle, die nach jeder
+Aufnahme je Scroll-Ebene meldet, ob Anfang und Ende erreicht wurden und ob die
+Aufnahmefenster lückenlos aneinanderschließen. Acht Fälle, darunter fehlender
+Anfang, fehlendes Ende, Lücke in der Mitte und abgebrochener Nebenbereich.
+
+## `sidenav.test.js`
+
+```bash
+node chrome-mv3/tests/sidenav.test.js
+```
+
+Prüft, welche fixed/sticky-Elemente als Navigation gelten (bleiben im ersten
+Abschnitt stehen) und welche als Störer gelten (werden ausgeblendet). Geometrie
+aus echten Seiten, dazu Cookie-Banner, Chat-Blase, Newsletter-Overlay und
+Grenzfälle.
