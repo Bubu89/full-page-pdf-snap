@@ -129,7 +129,7 @@ async function ensureContentInjected(tabId) {
       log("Content injected (attempt " + (attempt + 1) + ").");
     } catch (e) {
       log("executeScript failed:", e);
-      throw new Error("Diese Seite erlaubt keine Erweiterungs-Skripte (about:/addons.mozilla.org/PDF-Viewer etc.)");
+      throw new Error("Diese Seite erlaubt keine Erweiterungs-Skripte (chrome://, Chrome Web Store, PDF-Viewer)");
     }
     await sleep(120);
   }
@@ -297,14 +297,24 @@ async function captureFullPageInner(tab, settings) {
 
   log("Stitching", segments.length, "segments via big-canvas.");
 
-  const pxW = segments[0].pxW;
-  const dprY = segments[0].pxH / layout.viewportH;
+  // Skalierung Screenshot zu CSS-Pixel. Ueber die FENSTERhoehe gerechnet, denn
+  // der Screenshot bildet immer das ganze Fenster ab - auch wenn nur ein
+  // innerer Container gescrollt wird. layout.winH fehlt bei alten Content-
+  // Skripten, dann greift der bisherige Weg ueber viewportH.
+  const dprY = segments[0].pxH / (layout.winH || layout.viewportH);
+
+  // Bei App-Layouts (Gmail, Outlook, Notion) liefert das Content-Skript den
+  // Ausschnitt des Scroll-Containers. Ohne ihn landen Kopfzeile und
+  // Seitenleiste in jedem Segment erneut im PDF.
+  const clip = layout.clip || null;
+  const srcX = clip ? Math.round(clip.x * dprY) : 0;
+  const srcY = clip ? Math.round(clip.y * dprY) : 0;
+  const pxW = clip ? Math.round(clip.w * dprY) : segments[0].pxW;
+  const segH = clip ? Math.round(clip.h * dprY) : segments[0].pxH;
+
   const lastSeg = segments[segments.length - 1];
-  const bigH = Math.max(
-    Math.round(lastSeg.y * dprY) + lastSeg.pxH,
-    segments[0].pxH
-  );
-  log("Big canvas size:", pxW, "x", bigH);
+  const bigH = Math.max(Math.round(lastSeg.y * dprY) + segH, segH);
+  log("Big canvas size:", pxW, "x", bigH, clip ? "(auf Scroll-Container zugeschnitten)" : "");
 
   const big = createCanvas();
   big.width = pxW;
@@ -315,7 +325,11 @@ async function captureFullPageInner(tab, settings) {
 
   for (const seg of segments) {
     const destY = Math.round(seg.y * dprY);
-    bigCtx.drawImage(seg.img, 0, destY);
+    if (clip) {
+      bigCtx.drawImage(seg.img, srcX, srcY, pxW, segH, 0, destY, pxW, segH);
+    } else {
+      bigCtx.drawImage(seg.img, 0, destY);
+    }
   }
 
   // Adaptive tilePx-Berechnung fuer Android: passt sich an Device an.
@@ -605,24 +619,22 @@ async function setActionTitle(text) {
   catch (_) { /* ignore */ }
 }
 
-// Firefox blockiert Content-Script-Injektion auf diesen Seiten aus Sicherheitsgruenden.
+// Chrome blockiert Content-Script-Injektion auf diesen Seiten aus Sicherheitsgruenden.
 // Wir fangen das VOR dem Injection-Versuch ab, um eine klare Meldung zu geben.
 const BLOCKED_HOSTS = [
-  "addons.mozilla.org",
-  "accounts.firefox.com",
-  "support.mozilla.org",
-  "install.mozilla.org"
+  "chromewebstore.google.com",
+  "chrome.google.com"
 ];
 
 function isCapturable(url) {
   if (!url) return { ok: false, reason: "Kein Tab geladen." };
   if (!/^https?:|^file:/.test(url)) {
-    return { ok: false, reason: "Interne Firefox-Seite — bitte zu einer normalen Webseite wechseln (https://...)." };
+    return { ok: false, reason: "Interne Browser-Seite (chrome://, Web Store, Einstellungen) — bitte zu einer normalen Webseite wechseln (https://...)." };
   }
   try {
     const host = new URL(url).hostname;
     if (BLOCKED_HOSTS.some(h => host === h || host.endsWith("." + h))) {
-      return { ok: false, reason: "Firefox schuetzt diese Seite. Bitte zu einer normalen Webseite wechseln (z.B. wikipedia.org)." };
+      return { ok: false, reason: "Chrome schuetzt diese Seite. Bitte zu einer normalen Webseite wechseln (z.B. wikipedia.org)." };
     }
     // PDF-Direkt-Modus: schon eine PDF geoeffnet -> nicht sinnlos screenshotten,
     // sondern die Datei direkt in unseren Downloads-Ordner kopieren.

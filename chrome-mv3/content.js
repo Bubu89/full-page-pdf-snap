@@ -107,12 +107,47 @@
     return state.isWindow ? window.innerWidth : state.root.clientWidth;
   }
 
+  /* Ausschnitt des Scroll-Containers im Fenster, in CSS-Pixeln.
+   *
+   * Bei App-Layouts (Gmail, Outlook, Notion) scrollt nicht die Seite, sondern
+   * ein inneres Element. Der Screenshot zeigt aber immer das ganze Fenster -
+   * also auch Kopfzeile und Seitenleiste, die beim Scrollen stehen bleiben.
+   * Ohne Zuschnitt taucht dieser Rahmen in JEDEM Segment erneut auf und
+   * zerschneidet den Verlauf.
+   *
+   * Rueckgabe null bei normalen Seiten: dort ist der ganze Viewport gewollt.
+   */
+  function computeClipRect(state) {
+    if (state.isWindow) return null;
+    let r;
+    try { r = state.root.getBoundingClientRect(); } catch (_) { return null; }
+
+    const x = Math.max(0, Math.round(r.left));
+    const y = Math.max(0, Math.round(r.top));
+    const w = Math.round(Math.min(r.width, window.innerWidth - x));
+    const h = Math.round(Math.min(r.height, window.innerHeight - y));
+
+    // Unbrauchbar schmale oder hohe Ausschnitte lieber verwerfen als ein
+    // kaputtes PDF erzeugen - dann bleibt es beim vollen Viewport.
+    if (w < 50 || h < 50) {
+      log("Clip verworfen (zu klein):", w, "x", h);
+      return null;
+    }
+    log("Clip auf Scroll-Container:", x, y, w, h);
+    return { x, y, w, h };
+  }
+
   function measureLayout() {
     scrollState = findScrollableRoot();
     const layout = {
       totalH: getTotalHeight(scrollState),
       viewportH: getViewportHeight(scrollState),
       viewportW: getViewportWidth(scrollState),
+      // Fenstermasse getrennt vom Container: der Screenshot bildet immer das
+      // Fenster ab, daraus ergibt sich der Skalierungsfaktor.
+      winH: window.innerHeight,
+      winW: window.innerWidth,
+      clip: computeClipRect(scrollState),
       dpr: window.devicePixelRatio || 1,
       isWindow: scrollState.isWindow,
       rootTag: scrollState.root.tagName || "?",

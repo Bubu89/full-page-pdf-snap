@@ -25,5 +25,14 @@
     "command": "cd /home/holo/repos/full-page-pdf-snap-public\n# Verifikation: Paket bauen wie be...",
     "excerpt": "command not found\n===",
     "status": "open"
+  },
+  {
+    "id": "5482074e",
+    "ts": "2026-07-27T08:42:52",
+    "type": "BUILD",
+    "label": "Generic Error",
+    "command": "cd /home/holo/repos/full-page-pdf-snap-public\ngrep -n \"measure\\|viewportH\\|dpr\\|...",
+    "excerpt": "error: \"unknown cmd: \" + msg.cmd });",
+    "status": "open"
   }
 ]

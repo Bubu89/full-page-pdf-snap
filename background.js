@@ -316,14 +316,24 @@ async function captureFullPageInner(tab, settings) {
 
   log("Stitching", segments.length, "segments via big-canvas.");
 
-  const pxW = segments[0].pxW;
-  const dprY = segments[0].pxH / layout.viewportH;
+  // Skalierung Screenshot zu CSS-Pixel. Ueber die FENSTERhoehe gerechnet, denn
+  // der Screenshot bildet immer das ganze Fenster ab - auch wenn nur ein
+  // innerer Container gescrollt wird. layout.winH fehlt bei alten Content-
+  // Skripten, dann greift der bisherige Weg ueber viewportH.
+  const dprY = segments[0].pxH / (layout.winH || layout.viewportH);
+
+  // Bei App-Layouts (Gmail, Outlook, Notion) liefert das Content-Skript den
+  // Ausschnitt des Scroll-Containers. Ohne ihn landen Kopfzeile und
+  // Seitenleiste in jedem Segment erneut im PDF.
+  const clip = layout.clip || null;
+  const srcX = clip ? Math.round(clip.x * dprY) : 0;
+  const srcY = clip ? Math.round(clip.y * dprY) : 0;
+  const pxW = clip ? Math.round(clip.w * dprY) : segments[0].pxW;
+  const segH = clip ? Math.round(clip.h * dprY) : segments[0].pxH;
+
   const lastSeg = segments[segments.length - 1];
-  const bigH = Math.max(
-    Math.round(lastSeg.y * dprY) + lastSeg.pxH,
-    segments[0].pxH
-  );
-  log("Big canvas size:", pxW, "x", bigH);
+  const bigH = Math.max(Math.round(lastSeg.y * dprY) + segH, segH);
+  log("Big canvas size:", pxW, "x", bigH, clip ? "(auf Scroll-Container zugeschnitten)" : "");
 
   const big = document.createElement("canvas");
   big.width = pxW;
@@ -334,7 +344,11 @@ async function captureFullPageInner(tab, settings) {
 
   for (const seg of segments) {
     const destY = Math.round(seg.y * dprY);
-    bigCtx.drawImage(seg.img, 0, destY);
+    if (clip) {
+      bigCtx.drawImage(seg.img, srcX, srcY, pxW, segH, 0, destY, pxW, segH);
+    } else {
+      bigCtx.drawImage(seg.img, 0, destY);
+    }
   }
 
   // Adaptive tilePx-Berechnung fuer Android: passt sich an Device an.

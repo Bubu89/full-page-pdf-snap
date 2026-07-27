@@ -56,6 +56,36 @@ PATCHES = [
     ("tabs.executeScript -> scripting.executeScript",
      'await browser.tabs.executeScript(tabId, { file: "content.js" });',
      'await injectContentScript(tabId, "content.js");', 1),
+
+    # --- Meldungstexte: nennen Firefox, laufen aber in Chrome ---------------
+    ("Meldung 'Interne Firefox-Seite' -> browserneutral",
+     '"Interne Firefox-Seite — bitte zu einer normalen Webseite wechseln (https://...)."',
+     '"Interne Browser-Seite (chrome://, Web Store, Einstellungen) — '
+     'bitte zu einer normalen Webseite wechseln (https://...)."', 1),
+
+    ("Meldung 'Firefox schuetzt diese Seite' -> browserneutral",
+     '"Firefox schuetzt diese Seite. Bitte zu einer normalen Webseite wechseln (z.B. wikipedia.org)."',
+     '"Chrome schuetzt diese Seite. Bitte zu einer normalen Webseite wechseln (z.B. wikipedia.org)."', 1),
+
+    ("Injektions-Fehlertext -> Chrome-Beispiele",
+     '"Diese Seite erlaubt keine Erweiterungs-Skripte (about:/addons.mozilla.org/PDF-Viewer etc.)"',
+     '"Diese Seite erlaubt keine Erweiterungs-Skripte (chrome://, Chrome Web Store, PDF-Viewer)"', 1),
+
+    ("Gesperrte Hosts: Mozilla -> Chrome Web Store",
+     '''const BLOCKED_HOSTS = [
+  "addons.mozilla.org",
+  "accounts.firefox.com",
+  "support.mozilla.org",
+  "install.mozilla.org"
+];''',
+     '''const BLOCKED_HOSTS = [
+  "chromewebstore.google.com",
+  "chrome.google.com"
+];''', 1),
+
+    ("Kommentar zur Host-Sperre -> Chrome",
+     "// Firefox blockiert Content-Script-Injektion auf diesen Seiten aus Sicherheitsgruenden.",
+     "// Chrome blockiert Content-Script-Injektion auf diesen Seiten aus Sicherheitsgruenden.", 1),
 ]
 
 # Dateien, die unveraendert uebernommen werden
