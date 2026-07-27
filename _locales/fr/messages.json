@@ -87,121 +87,121 @@
     "message": "Tous les paramètres…"
   },
   "optTitle": {
-    "message": "Full Page PDF Snap — Settings"
+    "message": "Full Page PDF Snap — Paramètres"
   },
   "optIntro": {
-    "message": "Save the whole page as a high-resolution PDF via auto-scroll."
+    "message": "Enregistre toute la page en PDF haute résolution par défilement automatique."
   },
   "optSubfolder": {
-    "message": "Download subfolder"
+    "message": "Sous-dossier de téléchargement"
   },
   "optSaveAs": {
-    "message": "Ask where to save every time"
+    "message": "Demander où enregistrer à chaque fois"
   },
   "optFilename": {
-    "message": "Filename template"
+    "message": "Modèle de nom de fichier"
   },
   "optTitleLen": {
-    "message": "Max. length for {title} (characters)"
+    "message": "Longueur maximale de {title} (caractères)"
   },
   "optCounter": {
-    "message": "Sequential numbering"
+    "message": "Numérotation continue"
   },
   "optCounterReset": {
-    "message": "Reset counter"
+    "message": "Réinitialiser le compteur"
   },
   "optJpeg": {
-    "message": "JPEG quality"
+    "message": "Qualité JPEG"
   },
   "optScrollWait": {
-    "message": "Scroll delay per step (ms)"
+    "message": "Délai par étape de défilement (ms)"
   },
   "optPdfFormat": {
-    "message": "PDF format"
+    "message": "Format PDF"
   },
   "optSinglePage": {
-    "message": "One continuous page (default — no visible seams)"
+    "message": "Une page continue (par défaut — sans coupures visibles)"
   },
   "optMultiPage": {
-    "message": "Multiple pages (for printing)"
+    "message": "Plusieurs pages (pour l'impression)"
   },
   "optPageHeight": {
-    "message": "Page height for multi-page (pixels)"
+    "message": "Hauteur de page en multipage (pixels)"
   },
   "optTileHeight": {
-    "message": "Tile height for single-page (pixels)"
+    "message": "Hauteur de tuile en page continue (pixels)"
   },
   "optHideSticky": {
-    "message": "Hide sticky/fixed elements"
+    "message": "Masquer les éléments fixes"
   },
   "optHideStickyHint": {
     "message": "Hide sidebars and top bars before capture. Navigation columns are kept once at the top."
   },
   "optAppLayout": {
-    "message": "App layouts (Gmail, Outlook, Notion …)"
+    "message": "Interfaces d'application (Gmail, Outlook, Notion …)"
   },
   "optLayoutContext": {
-    "message": "Menu once at the top, content below (default)"
+    "message": "Menu une fois en haut, contenu en dessous (par défaut)"
   },
   "optLayoutCrop": {
-    "message": "Content area only — narrowest PDF"
+    "message": "Zone de contenu uniquement — PDF le plus étroit"
   },
   "optLayoutFull": {
-    "message": "Capture everything — menu repeats"
+    "message": "Tout capturer — le menu se répète"
   },
   "optAppLayoutHint": {
     "message": "On pages that scroll their content in a separate area, the header and sidebar stay in place and would otherwise appear in every section of the PDF. Has no effect on ordinary pages."
   },
   "optAfter": {
-    "message": "After capture"
+    "message": "Après la capture"
   },
   "optAfterNone": {
-    "message": "Do nothing"
+    "message": "Ne rien faire"
   },
   "optAfterOpen": {
-    "message": "Open the PDF automatically"
+    "message": "Ouvrir le PDF automatiquement"
   },
   "optAfterShow": {
-    "message": "Show folder (file preselected)"
+    "message": "Afficher le dossier (fichier présélectionné)"
   },
   "optAfterBoth": {
-    "message": "Show folder and open the PDF"
+    "message": "Afficher le dossier et ouvrir le PDF"
   },
   "optAfterHint": {
     "message": "Default is \"Show folder\": after saving, the download folder opens with the file preselected. \"Open the PDF\" starts the PDF viewer instead, \"Both\" does one after the other."
   },
   "optScale": {
-    "message": "Capture scaling (resolution)"
+    "message": "Échelle de capture (résolution)"
   },
   "optScale10": {
-    "message": "1.0x — exactly as on screen (default)"
+    "message": "1.0x — comme à l'écran (par défaut)"
   },
   "optScale125": {
-    "message": "1.25x — slightly sharper"
+    "message": "1.25x — légèrement plus net"
   },
   "optScale15": {
-    "message": "1.5x — noticeably sharper, about 50% longer"
+    "message": "1.5x — nettement plus net, environ 50 % plus long"
   },
   "optScale20": {
-    "message": "2.0x — maximum, for large prints"
+    "message": "2.0x — maximum, pour grande impression"
   },
   "optScaleHint": {
     "message": "Default is 1.0x: the PDF shows the page exactly as it appears on screen — enough for normal printing at 144 dpi. Higher values sharpen the text but fit less into the window, so menus and sidebars end earlier."
   },
   "optLanguage": {
-    "message": "Language"
+    "message": "Langue"
   },
   "optLanguageAuto": {
-    "message": "Automatic (browser language)"
+    "message": "Automatique (langue du navigateur)"
   },
   "optLanguageHint": {
     "message": "Interface language. \"Automatic\" follows the browser language, otherwise English. The name shown in the store always follows the browser language — an extension cannot influence that."
   },
   "optSave": {
-    "message": "Save"
+    "message": "Enregistrer"
   },
   "optSaved": {
-    "message": "Saved."
+    "message": "Enregistré."
   },
   "optSubfolderHint": {
     "message": "Default: Full Page PDF Snap. Leave empty to save directly into Downloads/. For security reasons the browser only allows subfolders."

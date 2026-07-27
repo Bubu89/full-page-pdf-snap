@@ -87,121 +87,121 @@
     "message": "所有设置…"
   },
   "optTitle": {
-    "message": "Full Page PDF Snap — Settings"
+    "message": "Full Page PDF Snap — 设置"
   },
   "optIntro": {
-    "message": "Save the whole page as a high-resolution PDF via auto-scroll."
+    "message": "通过自动滚动将整页保存为高分辨率 PDF。"
   },
   "optSubfolder": {
-    "message": "Download subfolder"
+    "message": "下载子文件夹"
   },
   "optSaveAs": {
-    "message": "Ask where to save every time"
+    "message": "每次都询问保存位置"
   },
   "optFilename": {
-    "message": "Filename template"
+    "message": "文件名模板"
   },
   "optTitleLen": {
-    "message": "Max. length for {title} (characters)"
+    "message": "{title} 的最大长度（字符）"
   },
   "optCounter": {
-    "message": "Sequential numbering"
+    "message": "连续编号"
   },
   "optCounterReset": {
-    "message": "Reset counter"
+    "message": "重置计数器"
   },
   "optJpeg": {
-    "message": "JPEG quality"
+    "message": "JPEG 质量"
   },
   "optScrollWait": {
-    "message": "Scroll delay per step (ms)"
+    "message": "每步滚动等待时间（毫秒）"
   },
   "optPdfFormat": {
-    "message": "PDF format"
+    "message": "PDF 格式"
   },
   "optSinglePage": {
-    "message": "One continuous page (default — no visible seams)"
+    "message": "单页连续（默认 — 无可见接缝）"
   },
   "optMultiPage": {
-    "message": "Multiple pages (for printing)"
+    "message": "多页（用于打印）"
   },
   "optPageHeight": {
-    "message": "Page height for multi-page (pixels)"
+    "message": "多页模式的页面高度（像素）"
   },
   "optTileHeight": {
-    "message": "Tile height for single-page (pixels)"
+    "message": "单页模式的分块高度（像素）"
   },
   "optHideSticky": {
-    "message": "Hide sticky/fixed elements"
+    "message": "隐藏固定元素"
   },
   "optHideStickyHint": {
     "message": "Hide sidebars and top bars before capture. Navigation columns are kept once at the top."
   },
   "optAppLayout": {
-    "message": "App layouts (Gmail, Outlook, Notion …)"
+    "message": "应用界面（Gmail、Outlook、Notion …）"
   },
   "optLayoutContext": {
-    "message": "Menu once at the top, content below (default)"
+    "message": "菜单仅在顶部显示一次，内容在下方（默认）"
   },
   "optLayoutCrop": {
-    "message": "Content area only — narrowest PDF"
+    "message": "仅内容区域 — 最窄的 PDF"
   },
   "optLayoutFull": {
-    "message": "Capture everything — menu repeats"
+    "message": "全部捕获 — 菜单会重复"
   },
   "optAppLayoutHint": {
     "message": "On pages that scroll their content in a separate area, the header and sidebar stay in place and would otherwise appear in every section of the PDF. Has no effect on ordinary pages."
   },
   "optAfter": {
-    "message": "After capture"
+    "message": "捕获后"
   },
   "optAfterNone": {
-    "message": "Do nothing"
+    "message": "不执行任何操作"
   },
   "optAfterOpen": {
-    "message": "Open the PDF automatically"
+    "message": "自动打开 PDF"
   },
   "optAfterShow": {
-    "message": "Show folder (file preselected)"
+    "message": "显示文件夹（已选中文件）"
   },
   "optAfterBoth": {
-    "message": "Show folder and open the PDF"
+    "message": "显示文件夹并打开 PDF"
   },
   "optAfterHint": {
     "message": "Default is \"Show folder\": after saving, the download folder opens with the file preselected. \"Open the PDF\" starts the PDF viewer instead, \"Both\" does one after the other."
   },
   "optScale": {
-    "message": "Capture scaling (resolution)"
+    "message": "捕获缩放（分辨率）"
   },
   "optScale10": {
-    "message": "1.0x — exactly as on screen (default)"
+    "message": "1.0x — 与屏幕一致（默认）"
   },
   "optScale125": {
-    "message": "1.25x — slightly sharper"
+    "message": "1.25x — 略微清晰"
   },
   "optScale15": {
-    "message": "1.5x — noticeably sharper, about 50% longer"
+    "message": "1.5x — 明显更清晰，约慢 50%"
   },
   "optScale20": {
-    "message": "2.0x — maximum, for large prints"
+    "message": "2.0x — 最高，适合大幅打印"
   },
   "optScaleHint": {
     "message": "Default is 1.0x: the PDF shows the page exactly as it appears on screen — enough for normal printing at 144 dpi. Higher values sharpen the text but fit less into the window, so menus and sidebars end earlier."
   },
   "optLanguage": {
-    "message": "Language"
+    "message": "语言"
   },
   "optLanguageAuto": {
-    "message": "Automatic (browser language)"
+    "message": "自动（浏览器语言）"
   },
   "optLanguageHint": {
     "message": "Interface language. \"Automatic\" follows the browser language, otherwise English. The name shown in the store always follows the browser language — an extension cannot influence that."
   },
   "optSave": {
-    "message": "Save"
+    "message": "保存"
   },
   "optSaved": {
-    "message": "Saved."
+    "message": "已保存。"
   },
   "optSubfolderHint": {
     "message": "Default: Full Page PDF Snap. Leave empty to save directly into Downloads/. For security reasons the browser only allows subfolders."

@@ -42,7 +42,7 @@ async function load() {
     const info = await browser.runtime.getPlatformInfo();
     isAndroid = info && info.os === "android";
     const diag = $("diagPlatform");
-    if (diag) diag.textContent = (info && info.os) ? info.os + (info.arch ? " / " + info.arch : "") : "unbekannt";
+    if (diag) diag.textContent = (info && info.os) ? info.os + (info.arch ? " / " + info.arch : "") : "unknown";
   } catch (_) {
     const diag = $("diagPlatform");
     if (diag) diag.textContent = "PlatformInfo nicht verfuegbar";
@@ -60,10 +60,10 @@ async function load() {
     const cores = navigator.hardwareConcurrency || null;
     const sw = window.screen ? Math.round(window.screen.width * dpr) : null;
     const sh = window.screen ? Math.round(window.screen.height * dpr) : null;
-    if ($("diagScreen")) $("diagScreen").textContent = (sw && sh) ? `${sw} x ${sh} px` : "unbekannt";
+    if ($("diagScreen")) $("diagScreen").textContent = (sw && sh) ? `${sw} x ${sh} px` : "unknown";
     if ($("diagDpr")) $("diagDpr").textContent = dpr.toFixed(2);
-    if ($("diagRam")) $("diagRam").textContent = memGb ? String(memGb) : "unbekannt";
-    if ($("diagCpu")) $("diagCpu").textContent = cores ? String(cores) : "unbekannt";
+    if ($("diagRam")) $("diagRam").textContent = memGb ? String(memGb) : "unknown";
+    if ($("diagCpu")) $("diagCpu").textContent = cores ? String(cores) : "unknown";
     // Effektive tilePx nach gleicher Formel wie background.js
     if (isAndroid) {
       const m = memGb || 4;
@@ -74,7 +74,7 @@ async function load() {
       if ($("diagTile")) $("diagTile").textContent = String(eff) + " (adaptive)";
     } else {
       const s = await browser.storage.local.get(DEFAULTS);
-      if ($("diagTile")) $("diagTile").textContent = String(s.tilePx || 4000) + " (User-Setting, Desktop nutzt keine Adaptive)";
+      if ($("diagTile")) $("diagTile").textContent = String(s.tilePx || 4000) + " (your setting; desktop does not use adaptive sizing)";
     }
   } catch (_) { /* ignore */ }
 
@@ -125,7 +125,7 @@ $("resetCounter").addEventListener("click", async () => {
   await browser.storage.local.set({ counter: 0 });
   $("counterVal").textContent = "0000";
   const s = $("status");
-  s.textContent = "Counter zurueckgesetzt.";
+  s.textContent = "Counter reset.";
   setTimeout(() => { s.textContent = ""; }, 1800);
 });
 

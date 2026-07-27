@@ -97,7 +97,7 @@ MANIFEST = """{
   "name": "__MSG_extName__",
   "default_locale": "en",
   "short_name": "PDFSnap",
-  "version": "2.10.0",
+  "version": "2.11.0",
   "description": "__MSG_extDescription__",
   "author": "Bubu89",
   "minimum_chrome_version": "116",
@@ -178,8 +178,14 @@ def patch_background():
 
 
 def add_compat_script(html_text):
-    """compat.js vor dem eigenen Skript laden, damit `browser` existiert."""
-    return re.sub(r'(<script src="(?:popup|options)\.js")',
+    """compat.js als ERSTES Skript laden.
+
+    i18n.js greift beim Start auf `browser` zu - in Chrome existiert der
+    Namensraum erst, nachdem compat.js gelaufen ist. Vor dem eigenen Skript
+    einzufuegen reichte nicht: i18n.js stand davor und haette bei bereits
+    geladenem Dokument sofort ins Leere gegriffen.
+    """
+    return re.sub(r'(<script src="i18n-data\.js")',
                   r'<script src="compat.js"></script>\n  \1',
                   html_text, count=1)
 

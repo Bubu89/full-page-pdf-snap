@@ -87,121 +87,121 @@
     "message": "すべての設定…"
   },
   "optTitle": {
-    "message": "Full Page PDF Snap — Settings"
+    "message": "Full Page PDF Snap — 設定"
   },
   "optIntro": {
-    "message": "Save the whole page as a high-resolution PDF via auto-scroll."
+    "message": "自動スクロールでページ全体を高解像度 PDF として保存します。"
   },
   "optSubfolder": {
-    "message": "Download subfolder"
+    "message": "ダウンロードのサブフォルダー"
   },
   "optSaveAs": {
-    "message": "Ask where to save every time"
+    "message": "毎回保存先を確認する"
   },
   "optFilename": {
-    "message": "Filename template"
+    "message": "ファイル名のテンプレート"
   },
   "optTitleLen": {
-    "message": "Max. length for {title} (characters)"
+    "message": "{title} の最大文字数"
   },
   "optCounter": {
-    "message": "Sequential numbering"
+    "message": "連番"
   },
   "optCounterReset": {
-    "message": "Reset counter"
+    "message": "カウンターをリセット"
   },
   "optJpeg": {
-    "message": "JPEG quality"
+    "message": "JPEG 品質"
   },
   "optScrollWait": {
-    "message": "Scroll delay per step (ms)"
+    "message": "スクロール 1 段あたりの待ち時間 (ms)"
   },
   "optPdfFormat": {
-    "message": "PDF format"
+    "message": "PDF 形式"
   },
   "optSinglePage": {
-    "message": "One continuous page (default — no visible seams)"
+    "message": "連続した 1 ページ（既定 — 継ぎ目なし）"
   },
   "optMultiPage": {
-    "message": "Multiple pages (for printing)"
+    "message": "複数ページ（印刷用）"
   },
   "optPageHeight": {
-    "message": "Page height for multi-page (pixels)"
+    "message": "複数ページ時のページ高さ (ピクセル)"
   },
   "optTileHeight": {
-    "message": "Tile height for single-page (pixels)"
+    "message": "連続ページ時のタイル高さ (ピクセル)"
   },
   "optHideSticky": {
-    "message": "Hide sticky/fixed elements"
+    "message": "固定要素を隠す"
   },
   "optHideStickyHint": {
     "message": "Hide sidebars and top bars before capture. Navigation columns are kept once at the top."
   },
   "optAppLayout": {
-    "message": "App layouts (Gmail, Outlook, Notion …)"
+    "message": "アプリ画面 (Gmail、Outlook、Notion …)"
   },
   "optLayoutContext": {
-    "message": "Menu once at the top, content below (default)"
+    "message": "メニューは上部に一度だけ、その下に内容（既定）"
   },
   "optLayoutCrop": {
-    "message": "Content area only — narrowest PDF"
+    "message": "内容領域のみ — 最も狭い PDF"
   },
   "optLayoutFull": {
-    "message": "Capture everything — menu repeats"
+    "message": "すべて取得 — メニューが繰り返される"
   },
   "optAppLayoutHint": {
     "message": "On pages that scroll their content in a separate area, the header and sidebar stay in place and would otherwise appear in every section of the PDF. Has no effect on ordinary pages."
   },
   "optAfter": {
-    "message": "After capture"
+    "message": "取得後"
   },
   "optAfterNone": {
-    "message": "Do nothing"
+    "message": "何もしない"
   },
   "optAfterOpen": {
-    "message": "Open the PDF automatically"
+    "message": "PDF を自動的に開く"
   },
   "optAfterShow": {
-    "message": "Show folder (file preselected)"
+    "message": "フォルダーを表示（ファイルを選択済み）"
   },
   "optAfterBoth": {
-    "message": "Show folder and open the PDF"
+    "message": "フォルダーを表示して PDF を開く"
   },
   "optAfterHint": {
     "message": "Default is \"Show folder\": after saving, the download folder opens with the file preselected. \"Open the PDF\" starts the PDF viewer instead, \"Both\" does one after the other."
   },
   "optScale": {
-    "message": "Capture scaling (resolution)"
+    "message": "取得倍率（解像度）"
   },
   "optScale10": {
-    "message": "1.0x — exactly as on screen (default)"
+    "message": "1.0x — 画面のまま（既定）"
   },
   "optScale125": {
-    "message": "1.25x — slightly sharper"
+    "message": "1.25x — やや鮮明"
   },
   "optScale15": {
-    "message": "1.5x — noticeably sharper, about 50% longer"
+    "message": "1.5x — かなり鮮明、約 50% 長くかかる"
   },
   "optScale20": {
-    "message": "2.0x — maximum, for large prints"
+    "message": "2.0x — 最高、大判印刷向け"
   },
   "optScaleHint": {
     "message": "Default is 1.0x: the PDF shows the page exactly as it appears on screen — enough for normal printing at 144 dpi. Higher values sharpen the text but fit less into the window, so menus and sidebars end earlier."
   },
   "optLanguage": {
-    "message": "Language"
+    "message": "言語"
   },
   "optLanguageAuto": {
-    "message": "Automatic (browser language)"
+    "message": "自動（ブラウザーの言語）"
   },
   "optLanguageHint": {
     "message": "Interface language. \"Automatic\" follows the browser language, otherwise English. The name shown in the store always follows the browser language — an extension cannot influence that."
   },
   "optSave": {
-    "message": "Save"
+    "message": "保存"
   },
   "optSaved": {
-    "message": "Saved."
+    "message": "保存しました。"
   },
   "optSubfolderHint": {
     "message": "Default: Full Page PDF Snap. Leave empty to save directly into Downloads/. For security reasons the browser only allows subfolders."
