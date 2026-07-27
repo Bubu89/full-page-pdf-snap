@@ -1,0 +1,11 @@
+[
+  {
+    "id": "1d30eef5",
+    "ts": "2026-07-27T06:58:31",
+    "type": "BUILD",
+    "label": "Generic Error",
+    "command": "cp /home/holo/repos/full-page-pdf-snap-public/screenshots/*.png /mnt/c/Users/HOL...",
+    "excerpt": "Error: [Errno 2] No such file or directory: '/Claude_Max_Workspace/full-page-pdf-snap'",
+    "status": "open"
+  }
+]
