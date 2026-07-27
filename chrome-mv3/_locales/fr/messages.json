@@ -1,0 +1,89 @@
+{
+  "extName": {
+    "message": "Full Page PDF Snap – Enregistrer la page en PDF"
+  },
+  "extDescription": {
+    "message": "Enregistre n'importe quelle page web en un seul PDF haute résolution. Défilement automatique de toute la page, sans rognage ni boîte de dialogue d'impression."
+  },
+  "actionTitle": {
+    "message": "Full Page PDF Snap — enregistrer toute la page en PDF (Ctrl+Maj+Y)"
+  },
+  "commandCapture": {
+    "message": "Enregistrer toute la page en PDF"
+  },
+  "popupHeading": {
+    "message": "Enregistrer toute la page en PDF"
+  },
+  "popupCapture": {
+    "message": "Capturer maintenant"
+  },
+  "popupShortcut": {
+    "message": "Raccourci :"
+  },
+  "popupSettings": {
+    "message": "Paramètres"
+  },
+  "popupRunning": {
+    "message": "Capture en cours…"
+  },
+  "popupDone": {
+    "message": "Enregistré."
+  },
+  "busy": {
+    "message": "Une capture est déjà en cours"
+  },
+  "noTab": {
+    "message": "Aucun onglet actif."
+  },
+  "internalPage": {
+    "message": "Page interne du navigateur (paramètres, boutique, extensions) : passez à un site web normal (https://…)."
+  },
+  "protectedPage": {
+    "message": "Le navigateur protège cette page. Passez à un site web normal (p. ex. wikipedia.org)."
+  },
+  "noScripts": {
+    "message": "Cette page n'autorise pas les scripts d'extension."
+  },
+  "errTitle": {
+    "message": "Full Page PDF Snap — erreur"
+  },
+  "hintTitle": {
+    "message": "Full Page PDF Snap — information"
+  },
+  "incompleteHint": {
+    "message": "Certaines parties de la page n'ont pas pu être capturées entièrement :"
+  },
+  "menuCapture": {
+    "message": "Enregistrer toute la page en PDF"
+  },
+  "menuSaveAs": {
+    "message": "Demander où enregistrer à chaque fois"
+  },
+  "menuShowFolder": {
+    "message": "Après l'enregistrement : afficher le dossier"
+  },
+  "menuOpenPdf": {
+    "message": "Après l'enregistrement : ouvrir le PDF"
+  },
+  "menuHideSticky": {
+    "message": "Masquer les éléments fixes"
+  },
+  "menuQuality": {
+    "message": "Qualité de capture"
+  },
+  "menuScale10": {
+    "message": "1.0x — comme à l'écran"
+  },
+  "menuScale125": {
+    "message": "1.25x — équilibré"
+  },
+  "menuScale15": {
+    "message": "1.5x — net"
+  },
+  "menuScale20": {
+    "message": "2.0x — maximum"
+  },
+  "menuAllSettings": {
+    "message": "Tous les paramètres…"
+  }
+}

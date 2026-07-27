@@ -1,0 +1,89 @@
+{
+  "extName": {
+    "message": "Full Page PDF Snap – ウェブページを PDF として保存"
+  },
+  "extDescription": {
+    "message": "任意のウェブページを 1 つの高解像度 PDF として保存します。ページ全体を自動スクロールし、切り取りも印刷ダイアログも不要です。"
+  },
+  "actionTitle": {
+    "message": "Full Page PDF Snap — ページ全体を PDF として保存 (Ctrl+Shift+Y)"
+  },
+  "commandCapture": {
+    "message": "ページ全体を PDF として保存"
+  },
+  "popupHeading": {
+    "message": "ページ全体を PDF として保存"
+  },
+  "popupCapture": {
+    "message": "今すぐ取得"
+  },
+  "popupShortcut": {
+    "message": "ショートカット:"
+  },
+  "popupSettings": {
+    "message": "設定"
+  },
+  "popupRunning": {
+    "message": "取得中…"
+  },
+  "popupDone": {
+    "message": "保存しました。"
+  },
+  "busy": {
+    "message": "取得はすでに実行中です"
+  },
+  "noTab": {
+    "message": "アクティブなタブがありません。"
+  },
+  "internalPage": {
+    "message": "ブラウザーの内部ページ（設定、ストア、拡張機能）です。通常のウェブサイト (https://…) に切り替えてください。"
+  },
+  "protectedPage": {
+    "message": "ブラウザーがこのページを保護しています。通常のウェブサイト（例: wikipedia.org）に切り替えてください。"
+  },
+  "noScripts": {
+    "message": "このページでは拡張機能のスクリプトを実行できません。"
+  },
+  "errTitle": {
+    "message": "Full Page PDF Snap — エラー"
+  },
+  "hintTitle": {
+    "message": "Full Page PDF Snap — お知らせ"
+  },
+  "incompleteHint": {
+    "message": "ページの一部を完全に取得できませんでした:"
+  },
+  "menuCapture": {
+    "message": "ページ全体を PDF として保存"
+  },
+  "menuSaveAs": {
+    "message": "毎回保存先を確認する"
+  },
+  "menuShowFolder": {
+    "message": "保存後: フォルダーを表示"
+  },
+  "menuOpenPdf": {
+    "message": "保存後: PDF を開く"
+  },
+  "menuHideSticky": {
+    "message": "固定要素を隠す"
+  },
+  "menuQuality": {
+    "message": "取得品質"
+  },
+  "menuScale10": {
+    "message": "1.0x — 画面のまま"
+  },
+  "menuScale125": {
+    "message": "1.25x — バランス"
+  },
+  "menuScale15": {
+    "message": "1.5x — 鮮明"
+  },
+  "menuScale20": {
+    "message": "2.0x — 最高"
+  },
+  "menuAllSettings": {
+    "message": "すべての設定…"
+  }
+}

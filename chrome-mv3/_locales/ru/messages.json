@@ -1,0 +1,89 @@
+{
+  "extName": {
+    "message": "Full Page PDF Snap – Сохранить страницу в PDF"
+  },
+  "extDescription": {
+    "message": "Сохраняет любую веб-страницу в один PDF высокого разрешения. Автоматически прокручивает страницу целиком — без обрезки и диалога печати."
+  },
+  "actionTitle": {
+    "message": "Full Page PDF Snap — сохранить страницу целиком в PDF (Ctrl+Shift+Y)"
+  },
+  "commandCapture": {
+    "message": "Сохранить страницу целиком в PDF"
+  },
+  "popupHeading": {
+    "message": "Сохранить страницу целиком в PDF"
+  },
+  "popupCapture": {
+    "message": "Снять сейчас"
+  },
+  "popupShortcut": {
+    "message": "Сочетание клавиш:"
+  },
+  "popupSettings": {
+    "message": "Настройки"
+  },
+  "popupRunning": {
+    "message": "Идёт съёмка…"
+  },
+  "popupDone": {
+    "message": "Сохранено."
+  },
+  "busy": {
+    "message": "Съёмка уже выполняется"
+  },
+  "noTab": {
+    "message": "Нет активной вкладки."
+  },
+  "internalPage": {
+    "message": "Внутренняя страница браузера (настройки, магазин, расширения) — перейдите на обычный сайт (https://…)."
+  },
+  "protectedPage": {
+    "message": "Браузер защищает эту страницу. Перейдите на обычный сайт (например, wikipedia.org)."
+  },
+  "noScripts": {
+    "message": "Эта страница не допускает скрипты расширений."
+  },
+  "errTitle": {
+    "message": "Full Page PDF Snap — ошибка"
+  },
+  "hintTitle": {
+    "message": "Full Page PDF Snap — примечание"
+  },
+  "incompleteHint": {
+    "message": "Некоторые части страницы не удалось снять полностью:"
+  },
+  "menuCapture": {
+    "message": "Сохранить страницу целиком в PDF"
+  },
+  "menuSaveAs": {
+    "message": "Каждый раз спрашивать, куда сохранять"
+  },
+  "menuShowFolder": {
+    "message": "После сохранения: показать папку"
+  },
+  "menuOpenPdf": {
+    "message": "После сохранения: открыть PDF"
+  },
+  "menuHideSticky": {
+    "message": "Скрывать закреплённые элементы"
+  },
+  "menuQuality": {
+    "message": "Качество съёмки"
+  },
+  "menuScale10": {
+    "message": "1.0x — как на экране"
+  },
+  "menuScale125": {
+    "message": "1.25x — сбалансировано"
+  },
+  "menuScale15": {
+    "message": "1.5x — чётко"
+  },
+  "menuScale20": {
+    "message": "2.0x — максимум"
+  },
+  "menuAllSettings": {
+    "message": "Все настройки…"
+  }
+}

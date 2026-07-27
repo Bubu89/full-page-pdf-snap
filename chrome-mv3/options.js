@@ -12,6 +12,7 @@ const DEFAULTS = {
   pageHeightPx: 2400,
   tilePx: 4000,
   hideSticky: true,
+  uiLanguage: "auto",
   appLayout: "context",
   afterCapture: "show",
   captureScale: 1.0
@@ -97,6 +98,7 @@ async function load() {
   $("pageHeightPx").value = String(s.pageHeightPx || 2400);
   $("tilePx").value = String(s.tilePx || 4000);
   $("hideSticky").checked = s.hideSticky !== false;
+  $("uiLanguage").value = s.uiLanguage || "auto";
   $("appLayout").value = s.appLayout || "context";
   $("afterCapture").value = s.afterCapture || "show";
   $("captureScale").value = String(s.captureScale || 1.0);
@@ -126,6 +128,7 @@ $("save").addEventListener("click", async () => {
     pageHeightPx: Math.max(400, Math.min(8000, parseInt($("pageHeightPx").value, 10) || 2400)),
     tilePx: Math.max(800, Math.min(8000, parseInt($("tilePx").value, 10) || 4000)),
     hideSticky: $("hideSticky").checked,
+    uiLanguage: $("uiLanguage").value,
     appLayout: $("appLayout").value,
     afterCapture: $("afterCapture").value,
     captureScale: parseFloat($("captureScale").value) || 1.0

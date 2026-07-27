@@ -27,6 +27,7 @@ const DEFAULTS_DESKTOP = {
   pageHeightPx: 2400,
   tilePx: 4000,
   hideSticky: true,
+  uiLanguage: "auto",
   appLayout: "context",
   afterCapture: "show",
   // 1.0 = genau die Ansicht, die der Nutzer am Bildschirm sieht. Hoehere Werte

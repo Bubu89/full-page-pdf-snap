@@ -1,0 +1,89 @@
+{
+  "extName": {
+    "message": "Full Page PDF Snap – Salva pagina come PDF"
+  },
+  "extDescription": {
+    "message": "Salva qualsiasi pagina web come un unico PDF ad alta risoluzione. Scorre automaticamente l'intera pagina, senza ritagli né finestra di stampa."
+  },
+  "actionTitle": {
+    "message": "Full Page PDF Snap — salva l'intera pagina come PDF (Ctrl+Maiusc+Y)"
+  },
+  "commandCapture": {
+    "message": "Salva l'intera pagina come PDF"
+  },
+  "popupHeading": {
+    "message": "Salva l'intera pagina come PDF"
+  },
+  "popupCapture": {
+    "message": "Cattura ora"
+  },
+  "popupShortcut": {
+    "message": "Scorciatoia:"
+  },
+  "popupSettings": {
+    "message": "Impostazioni"
+  },
+  "popupRunning": {
+    "message": "Cattura in corso…"
+  },
+  "popupDone": {
+    "message": "Salvato."
+  },
+  "busy": {
+    "message": "Una cattura è già in corso"
+  },
+  "noTab": {
+    "message": "Nessuna scheda attiva."
+  },
+  "internalPage": {
+    "message": "Pagina interna del browser (impostazioni, store, estensioni): passa a un sito web normale (https://…)."
+  },
+  "protectedPage": {
+    "message": "Il browser protegge questa pagina. Passa a un sito web normale (es. wikipedia.org)."
+  },
+  "noScripts": {
+    "message": "Questa pagina non consente script delle estensioni."
+  },
+  "errTitle": {
+    "message": "Full Page PDF Snap — errore"
+  },
+  "hintTitle": {
+    "message": "Full Page PDF Snap — avviso"
+  },
+  "incompleteHint": {
+    "message": "Alcune parti della pagina non sono state catturate completamente:"
+  },
+  "menuCapture": {
+    "message": "Salva l'intera pagina come PDF"
+  },
+  "menuSaveAs": {
+    "message": "Chiedi ogni volta dove salvare"
+  },
+  "menuShowFolder": {
+    "message": "Dopo il salvataggio: mostra cartella"
+  },
+  "menuOpenPdf": {
+    "message": "Dopo il salvataggio: apri PDF"
+  },
+  "menuHideSticky": {
+    "message": "Nascondi elementi fissi"
+  },
+  "menuQuality": {
+    "message": "Qualità di cattura"
+  },
+  "menuScale10": {
+    "message": "1.0x — come sullo schermo"
+  },
+  "menuScale125": {
+    "message": "1.25x — bilanciato"
+  },
+  "menuScale15": {
+    "message": "1.5x — nitido"
+  },
+  "menuScale20": {
+    "message": "2.0x — massimo"
+  },
+  "menuAllSettings": {
+    "message": "Tutte le impostazioni…"
+  }
+}

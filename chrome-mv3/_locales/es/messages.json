@@ -1,0 +1,89 @@
+{
+  "extName": {
+    "message": "Full Page PDF Snap – Guardar página como PDF"
+  },
+  "extDescription": {
+    "message": "Guarda cualquier página web como un único PDF de alta resolución. Se desplaza automáticamente por toda la página, sin recortes ni diálogo de impresión."
+  },
+  "actionTitle": {
+    "message": "Full Page PDF Snap — guardar la página completa como PDF (Ctrl+Mayús+Y)"
+  },
+  "commandCapture": {
+    "message": "Guardar la página completa como PDF"
+  },
+  "popupHeading": {
+    "message": "Guardar la página completa como PDF"
+  },
+  "popupCapture": {
+    "message": "Capturar ahora"
+  },
+  "popupShortcut": {
+    "message": "Atajo:"
+  },
+  "popupSettings": {
+    "message": "Ajustes"
+  },
+  "popupRunning": {
+    "message": "Capturando…"
+  },
+  "popupDone": {
+    "message": "Guardado."
+  },
+  "busy": {
+    "message": "Ya hay una captura en curso"
+  },
+  "noTab": {
+    "message": "No hay pestaña activa."
+  },
+  "internalPage": {
+    "message": "Página interna del navegador (ajustes, tienda, extensiones): cambia a un sitio web normal (https://…)."
+  },
+  "protectedPage": {
+    "message": "El navegador protege esta página. Cambia a un sitio web normal (p. ej. wikipedia.org)."
+  },
+  "noScripts": {
+    "message": "Esta página no permite scripts de extensiones."
+  },
+  "errTitle": {
+    "message": "Full Page PDF Snap — error"
+  },
+  "hintTitle": {
+    "message": "Full Page PDF Snap — aviso"
+  },
+  "incompleteHint": {
+    "message": "Algunas partes de la página no se pudieron capturar por completo:"
+  },
+  "menuCapture": {
+    "message": "Guardar la página completa como PDF"
+  },
+  "menuSaveAs": {
+    "message": "Preguntar dónde guardar cada vez"
+  },
+  "menuShowFolder": {
+    "message": "Después de guardar: mostrar carpeta"
+  },
+  "menuOpenPdf": {
+    "message": "Después de guardar: abrir PDF"
+  },
+  "menuHideSticky": {
+    "message": "Ocultar elementos fijos"
+  },
+  "menuQuality": {
+    "message": "Calidad de captura"
+  },
+  "menuScale10": {
+    "message": "1.0x — como en pantalla"
+  },
+  "menuScale125": {
+    "message": "1.25x — equilibrado"
+  },
+  "menuScale15": {
+    "message": "1.5x — nítido"
+  },
+  "menuScale20": {
+    "message": "2.0x — máximo"
+  },
+  "menuAllSettings": {
+    "message": "Todos los ajustes…"
+  }
+}

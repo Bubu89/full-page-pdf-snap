@@ -1,10 +1,39 @@
-/* Ersetzt Texte mit data-i18n durch die Uebersetzung der Browsersprache.
- * Faellt automatisch auf Englisch zurueck (default_locale im Manifest). */
+/* Oberflaechen-Texte, mit eigener Sprachwahl.
+ *
+ * browser.i18n folgt starr der Browsersprache - eine Umschaltung in den
+ * Einstellungen ist damit nicht moeglich. Darum liest diese Schicht die
+ * gewaehlte Sprache aus storage.local und laedt die passende messages.json
+ * direkt aus dem Paket. Bei "auto" bleibt es bei browser.i18n, also der
+ * Browsersprache.
+ *
+ * Die Store-Metadaten (Name, Beschreibung) laufen weiterhin ueber _locales -
+ * die legt der Store anhand der Browsersprache fest, darauf hat eine
+ * Erweiterung keinen Einfluss.
+ */
 (function () {
-  const t = (k) => {
-    try { return browser.i18n.getMessage(k); } catch (_) { return ""; }
-  };
-  document.addEventListener("DOMContentLoaded", () => {
+  const FALLBACK = "en";
+  let table = null;              // gefuellt, wenn eine Sprache erzwungen wurde
+
+  async function loadTable(lang) {
+    if (!lang || lang === "auto") return null;
+    try {
+      const url = browser.runtime.getURL(`_locales/${lang}/messages.json`);
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(res.status);
+      return await res.json();
+    } catch (_) {
+      // Unbekannte Sprache oder fehlende Datei: lieber Englisch als leer
+      if (lang !== FALLBACK) return loadTable(FALLBACK);
+      return null;
+    }
+  }
+
+  function t(key) {
+    if (table && table[key] && table[key].message) return table[key].message;
+    try { return browser.i18n.getMessage(key) || ""; } catch (_) { return ""; }
+  }
+
+  function apply() {
     for (const el of document.querySelectorAll("[data-i18n]")) {
       const msg = t(el.dataset.i18n);
       if (msg) el.textContent = msg;
@@ -18,7 +47,26 @@
       const msg = t(titleKey);
       if (msg) document.title = msg;
     }
-    document.documentElement.lang = (browser.i18n.getUILanguage
-      ? browser.i18n.getUILanguage() : "en").slice(0, 2);
-  });
+  }
+
+  async function init() {
+    let lang = "auto";
+    try {
+      const s = await browser.storage.local.get({ uiLanguage: "auto" });
+      lang = s.uiLanguage || "auto";
+    } catch (_) { /* Standard bleibt auto */ }
+    table = await loadTable(lang);
+    document.documentElement.lang = lang !== "auto" ? lang.split("_")[0]
+      : ((browser.i18n.getUILanguage && browser.i18n.getUILanguage()) || FALLBACK).slice(0, 2);
+    apply();
+  }
+
+  // Nach aussen sichtbar, damit background.js dieselbe Wahl nutzen kann
+  window.PageShotI18n = { t, apply, init, load: loadTable };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();

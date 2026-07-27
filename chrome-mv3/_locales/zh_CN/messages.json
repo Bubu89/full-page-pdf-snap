@@ -1,0 +1,89 @@
+{
+  "extName": {
+    "message": "Full Page PDF Snap – 将网页保存为 PDF"
+  },
+  "extDescription": {
+    "message": "将任意网页保存为一个高分辨率 PDF。自动滚动整页，无裁剪，无需打印对话框。"
+  },
+  "actionTitle": {
+    "message": "Full Page PDF Snap — 将整页保存为 PDF (Ctrl+Shift+Y)"
+  },
+  "commandCapture": {
+    "message": "将整页保存为 PDF"
+  },
+  "popupHeading": {
+    "message": "将整页保存为 PDF"
+  },
+  "popupCapture": {
+    "message": "立即捕获"
+  },
+  "popupShortcut": {
+    "message": "快捷键："
+  },
+  "popupSettings": {
+    "message": "设置"
+  },
+  "popupRunning": {
+    "message": "正在捕获…"
+  },
+  "popupDone": {
+    "message": "已保存。"
+  },
+  "busy": {
+    "message": "已有捕获正在进行"
+  },
+  "noTab": {
+    "message": "没有活动标签页。"
+  },
+  "internalPage": {
+    "message": "浏览器内部页面（设置、商店、扩展页面）——请切换到普通网站 (https://…)。"
+  },
+  "protectedPage": {
+    "message": "浏览器保护此页面。请切换到普通网站（例如 wikipedia.org）。"
+  },
+  "noScripts": {
+    "message": "此页面不允许扩展脚本。"
+  },
+  "errTitle": {
+    "message": "Full Page PDF Snap — 错误"
+  },
+  "hintTitle": {
+    "message": "Full Page PDF Snap — 提示"
+  },
+  "incompleteHint": {
+    "message": "页面的部分内容无法完整捕获："
+  },
+  "menuCapture": {
+    "message": "将整页保存为 PDF"
+  },
+  "menuSaveAs": {
+    "message": "每次都询问保存位置"
+  },
+  "menuShowFolder": {
+    "message": "保存后：显示文件夹"
+  },
+  "menuOpenPdf": {
+    "message": "保存后：打开 PDF"
+  },
+  "menuHideSticky": {
+    "message": "隐藏固定元素"
+  },
+  "menuQuality": {
+    "message": "捕获质量"
+  },
+  "menuScale10": {
+    "message": "1.0x — 与屏幕一致"
+  },
+  "menuScale125": {
+    "message": "1.25x — 均衡"
+  },
+  "menuScale15": {
+    "message": "1.5x — 清晰"
+  },
+  "menuScale20": {
+    "message": "2.0x — 最高"
+  },
+  "menuAllSettings": {
+    "message": "所有设置…"
+  }
+}
