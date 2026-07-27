@@ -57,3 +57,22 @@ Store-Assets liegen in [`store-assets/`](store-assets/): Screenshots in 1280×80
 - **Datenschutz-URL** ist Pflicht: https://bubu89.github.io/full-page-pdf-snap/privacy.html
 - Im Privacy-Tab bleibt **jede** Datenkategorie unangehakt — die Erweiterung erhebt nichts
 - Für **jede** Berechtigung eine eigene Begründung eintragen; fehlende oder pauschale Begründungen sind der häufigste Ablehnungsgrund
+
+## Auslieferung — ein Befehl
+
+```bash
+python3 release.py            # Tests, Version hochstufen, beide Pakete
+python3 release.py --patch    # Patch- statt Minor-Sprung
+python3 release.py --check    # nur prüfen, nichts schreiben
+python3 release.py --keep     # Version lassen, nur neu bauen
+```
+
+Läuft der Reihe nach: Tests → Syntaxprüfung → Version gegen den Store → Chrome
+portieren und packen → Firefox packen → Gegenprobe an den fertigen Paketen
+(Version, Dateizahl, Sprachdateien). Bricht beim ersten Fehlschlag ab, statt ein
+halb gebautes Paket zu hinterlassen.
+
+Die Versionsnummer kommt aus `bump-version.py`, das die veröffentlichten
+Versionen bei AMO abfragt. Lokales Hochzählen reicht nicht: Zwischen Bauen und
+Hochladen liegt Zeit, und eine bereits veröffentlichte Nummer lehnt der Store
+erst beim Upload ab.
