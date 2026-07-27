@@ -21,7 +21,10 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 UPLOAD = Path("/mnt/c/Users/HOLO/Documents/FullPagePDFSnap_Chrome/upload")
 
-EXCLUDE_FILES = {"port.py", "pack.py", "README.md"}
+EXCLUDE_FILES = {"port.py", "pack.py"}
+# Doku und Notizen gehoeren nie ins Einreichungspaket - jede ueberfluessige
+# Datei erzeugt beim Review nur Rueckfragen.
+EXCLUDE_SUFFIX = {".md", ".txt", ".docx"}
 EXCLUDE_DIRS = {"store-assets", "tests", "__pycache__"}
 
 version = json.loads((HERE / "manifest.json").read_text())["version"]
@@ -31,7 +34,8 @@ for p in sorted(HERE.rglob("*")):
     if not p.is_file():
         continue
     rel = p.relative_to(HERE)
-    if rel.parts[0] in EXCLUDE_DIRS or rel.name in EXCLUDE_FILES or rel.suffix == ".zip":
+    if (rel.parts[0] in EXCLUDE_DIRS or rel.name in EXCLUDE_FILES
+            or rel.suffix in EXCLUDE_SUFFIX or rel.suffix == ".zip"):
         continue
     files.append((p, rel))
 
