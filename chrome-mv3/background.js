@@ -130,7 +130,7 @@ async function ensureContentInjected(tabId) {
       if (r && r.ok) { log("Content already there."); return; }
     } catch (_) { /* not yet injected */ }
     try {
-      await injectContentScript(tabId, "content.js");
+      await browser.scripting.executeScript({ target: { tabId }, files: ["content.js"] });
       log("Content injected (attempt " + (attempt + 1) + ").");
     } catch (e) {
       log("executeScript failed:", e);
@@ -374,7 +374,7 @@ async function captureFullPageInner(tab, settings) {
             message: `Erfasse Seite ... ${pctText}`
           });
         } catch (_) { /* ignore */ }
-        try { await browser.browserAction.setBadgeText({ text: String(segments.length) }); } catch (_) { /* ignore */ }
+        try { await browser.action.setBadgeText({ text: String(segments.length) }); } catch (_) { /* ignore */ }
       }
 
       const fresh = await browser.tabs.sendMessage(tab.id, { cmd: "currentTotalH" }).catch(() => null);
@@ -844,18 +844,18 @@ async function runAfterCapture(downloadId, mode) {
 let _captureInFlight = false;
 
 async function setBadge(text, color) {
-  if (!browser.browserAction) return;
+  if (!browser.action) return;
   try {
-    await browser.browserAction.setBadgeText({ text: text || "" });
-    if (color && browser.browserAction.setBadgeBackgroundColor) {
-      await browser.browserAction.setBadgeBackgroundColor({ color });
+    await browser.action.setBadgeText({ text: text || "" });
+    if (color && browser.action.setBadgeBackgroundColor) {
+      await browser.action.setBadgeBackgroundColor({ color });
     }
   } catch (_) { /* Android ignoriert badge-color u.U. */ }
 }
 
 async function setActionTitle(text) {
-  if (!browser.browserAction || !browser.browserAction.setTitle) return;
-  try { await browser.browserAction.setTitle({ title: text }); }
+  if (!browser.action || !browser.action.setTitle) return;
+  try { await browser.action.setTitle({ title: text }); }
   catch (_) { /* ignore */ }
 }
 
@@ -1064,9 +1064,9 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 });
 
 // Android: kein Popup — Icon-Tap loest direkten Capture aus.
-// Setzt browserAction.popup zur Laufzeit auf leer, damit onClicked feuert
+// Setzt action.popup zur Laufzeit auf leer, damit onClicked feuert
 // statt popup.html zu laden. Desktop bleibt unveraendert.
-browser.browserAction.onClicked.addListener(async () => {
+browser.action.onClicked.addListener(async () => {
   try { await runOnActiveTab(); }
   catch (e) { console.error(TAG, e); notifyError(e.message); }
 });
@@ -1075,7 +1075,7 @@ browser.browserAction.onClicked.addListener(async () => {
   const p = await getPlatform();
   if (p.isAndroid) {
     try {
-      await browser.browserAction.setPopup({ popup: "" });
+      await browser.action.setPopup({ popup: "" });
       log("Android detected — popup disabled, direct-capture mode active.");
     } catch (e) { log("setPopup failed:", e); }
   }
@@ -1176,10 +1176,10 @@ const MENU_IDS = {
 async function buildMenus() {
   if (!browser.menus) return;
   const p = await getPlatform();
-  if (p.isAndroid) return; // Android hat keine browser_action-Menues
+  if (p.isAndroid) return; // Android hat keine action-Menues
   try { await browser.menus.removeAll(); } catch (_) { /* ignore */ }
   const s = await getSettings();
-  const ctx = ["browser_action"];
+  const ctx = ["action"];
 
   browser.menus.create({ id: MENU_IDS.capture, title: "Ganze Seite als PDF speichern", contexts: ctx });
   browser.menus.create({ id: MENU_IDS.sep1, type: "separator", contexts: ctx });

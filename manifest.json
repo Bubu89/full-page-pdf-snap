@@ -1,8 +1,8 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "__MSG_extName__",
   "short_name": "PDFSnap",
-  "version": "2.14.0",
+  "version": "2.15.0",
   "description": "__MSG_extDescription__",
   "author": "Bubu89",
   "browser_specific_settings": {
@@ -30,13 +30,13 @@
     "downloads.open",
     "storage",
     "menus",
-    "notifications"
+    "notifications",
+    "scripting"
   ],
   "background": {
-    "page": "background.html",
-    "persistent": false
+    "page": "background.html"
   },
-  "browser_action": {
+  "action": {
     "default_icon": {
       "16": "icons/icon-16.png",
       "48": "icons/icon-48.png"

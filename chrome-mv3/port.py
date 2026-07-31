@@ -53,9 +53,8 @@ PATCHES = [
      re.compile(r"setTimeout\(\(\) => URL\.revokeObjectURL\(url\), 60_000\);"),
      "revokeDownloadUrl(url);", 1),
 
-    ("tabs.executeScript -> scripting.executeScript",
-     'await browser.tabs.executeScript(tabId, { file: "content.js" });',
-     'await injectContentScript(tabId, "content.js");', 1),
+    # scripting.executeScript braucht keinen Patch mehr: seit dem MV3-Port
+    # ruft die Firefox-Quelle dieselbe API mit derselben Signatur auf.
 
     # --- Meldungstexte: nennen Firefox, laufen aber in Chrome ---------------
     ("Meldung 'Interne Firefox-Seite' -> browserneutral",
@@ -97,7 +96,7 @@ MANIFEST = """{
   "name": "__MSG_extName__",
   "default_locale": "en",
   "short_name": "PDFSnap",
-  "version": "2.14.0",
+  "version": "2.15.0",
   "description": "__MSG_extDescription__",
   "author": "Bubu89",
   "minimum_chrome_version": "116",

@@ -1,5 +1,34 @@
 # Changelog
 
+## 2.15.0 — Manifest V3 (Firefox)
+
+Der Firefox-Zweig lief noch auf Manifest V2, während der Chrome-Zweig seit
+2.2.0 MV3 nutzt. MV2 ist die auslaufende Generation; eine Erweiterung, die
+sich für das Recommended-Programm bewerben soll, sollte nicht darauf stehen.
+
+Firefox setzt MV3 anders um als Chrome: Es bleibt bei einer Event Page statt
+eines Service Workers. Damit entfällt der gesamte Umbau, den der Chrome-Port
+gebraucht hat (OffscreenCanvas, createImageBitmap, data:-URLs) — das DOM ist
+in der Hintergrundseite weiterhin da. Übrig bleiben vier Umbenennungen:
+
+- `browser_action` → `action`, im Manifest und an 10 Stellen in `background.js`
+- `browser.tabs.executeScript` → `browser.scripting.executeScript`, dazu die
+  neue Berechtigung `scripting` (erzeugt keinen zusätzlichen Install-Prompt)
+- Menü-Kontext `"browser_action"` → `"action"`
+- `background.persistent` entfällt, MV3 kennt den Schlüssel nicht
+
+Der Chrome-Zweig wird dadurch kleiner, nicht größer: Weil die Firefox-Quelle
+jetzt dieselbe `scripting`-API mit derselben Signatur aufruft, entfallen der
+zugehörige Patch in `port.py`, der `browserAction`-Alias und die Hilfsfunktion
+`injectContentScript` in `compat.js`.
+
+Geprüft: `web-ext lint` meldet 0 Fehler und 0 Notices. Die zwei verbleibenden
+Warnungen betreffen `data_collection_permissions` (erst ab Firefox 140 bzw.
+Android 142 unterstützt, `strict_min_version` steht auf 109/127) und bestanden
+schon vor diesem Port — ältere Firefox-Versionen ignorieren den Schlüssel.
+Offen: Funktionstest einer langen Seite in echtem Firefox, insbesondere ob die
+Event Page über einen kompletten Capture hinweg am Leben bleibt.
+
 <!-- change-stream:auto-block:2026-07-29:START -->
 ### 2026-07-29 — Auto-Aggregat (change-stream)
 

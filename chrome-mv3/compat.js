@@ -12,15 +12,13 @@
 
 // --- 1. Namensraum ----------------------------------------------------------
 // Chrome liefert seit MV3 Promises fuer die hier genutzten APIs, ein Alias
-// genuegt also. Zwei APIs heissen anders und werden umgehaengt.
+// genuegt also. Nur menus heisst anders und wird umgehaengt - action und
+// scripting sprechen beide Browser seit dem MV3-Port gleich an.
 if (typeof globalThis.browser === "undefined") {
   globalThis.browser = chrome;
 }
 if (!globalThis.browser.menus && chrome.contextMenus) {
   globalThis.browser.menus = chrome.contextMenus;
-}
-if (!globalThis.browser.browserAction && chrome.action) {
-  globalThis.browser.browserAction = chrome.action;
 }
 
 // --- 1b. Drossel fuer captureVisibleTab -------------------------------------
@@ -95,13 +93,5 @@ async function blobToDataUrl(blob) {
  *  Aufrufe nicht ins Leere greifen. */
 function revokeDownloadUrl(_url) { /* nichts zu tun */ }
 
-// --- 4. Content-Script-Injection -------------------------------------------
-
-/** MV2: tabs.executeScript(tabId, {file}). MV3: scripting.executeScript
- *  mit target/files. */
-async function injectContentScript(tabId, file) {
-  await chrome.scripting.executeScript({
-    target: { tabId },
-    files: [file],
-  });
-}
+// Content-Script-Injection braucht keine Kapselung mehr: beide Browser
+// sprechen seit dem MV3-Port dieselbe scripting.executeScript-API.
