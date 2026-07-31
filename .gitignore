@@ -5,3 +5,7 @@ node_modules/
 WORK_LOG.md
 _ISSUES.md
 *.zip
+_ISSUES.json
+pack-firefox.py
+chrome-mv3/pack.py
+release.py

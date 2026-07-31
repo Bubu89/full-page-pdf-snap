@@ -97,7 +97,7 @@ MANIFEST = """{
   "name": "__MSG_extName__",
   "default_locale": "en",
   "short_name": "PDFSnap",
-  "version": "2.12.0",
+  "version": "2.14.0",
   "description": "__MSG_extDescription__",
   "author": "Bubu89",
   "minimum_chrome_version": "116",
@@ -108,7 +108,6 @@ MANIFEST = """{
   },
   "permissions": [
     "activeTab",
-    "tabs",
     "downloads",
     "downloads.open",
     "storage",
@@ -116,7 +115,6 @@ MANIFEST = """{
     "notifications",
     "scripting"
   ],
-  "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "background.js"
   },

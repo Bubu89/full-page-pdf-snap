@@ -4,17 +4,42 @@
 <meta charset="utf-8">
 <title>Full Page PDF Snap</title>
 <style>
-  body { font-family: system-ui, sans-serif; width: 260px; margin: 0; padding: 14px; background: #1f2937; color: #f3f4f6; }
+  /* Farben folgen dem Browser. Hell ist der Ausgangswert, der dunkle Satz
+     ueberschreibt ihn - so bleibt die Oberflaeche in beiden Faellen lesbar,
+     statt wie bisher fest dunkel in einem hellen Fenster zu stehen. */
+  :root {
+    --bg: #ffffff;
+    --fg: #111827;
+    --gedaempft: #6b7280;
+    --ghost-fg: #4b5563;
+    --kbd-bg: #f3f4f6;
+    --kbd-rand: #d1d5db;
+    --fehler: #b91c1c;
+    --gut: #15803d;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1f2937;
+      --fg: #f3f4f6;
+      --gedaempft: #9ca3af;
+      --ghost-fg: #d1d5db;
+      --kbd-bg: #374151;
+      --kbd-rand: #4b5563;
+      --fehler: #fca5a5;
+      --gut: #86efac;
+    }
+  }
+  body { font-family: system-ui, sans-serif; width: 260px; margin: 0; padding: 14px; background: var(--bg); color: var(--fg); }
   h1 { font-size: 14px; margin: 0 0 10px 0; }
   button { width: 100%; padding: 10px 12px; border: 0; border-radius: 6px; font-size: 13px; cursor: pointer; }
   .primary { background: #2563eb; color: #fff; font-weight: 600; }
   .primary:hover { background: #1d4ed8; }
-  .ghost { background: transparent; color: #d1d5db; margin-top: 8px; text-decoration: underline; }
-  .status { margin-top: 10px; font-size: 12px; color: #9ca3af; min-height: 16px; }
-  .err { color: #fca5a5; }
-  .ok { color: #86efac; }
-  .kbd { background: #374151; padding: 1px 6px; border-radius: 4px; font-family: monospace; font-size: 11px; }
-  p { font-size: 11px; color: #9ca3af; margin: 8px 0 0 0; }
+  .ghost { background: transparent; color: var(--ghost-fg); margin-top: 8px; text-decoration: underline; }
+  .status { margin-top: 10px; font-size: 12px; color: var(--gedaempft); min-height: 16px; }
+  .err { color: var(--fehler); }
+  .ok { color: var(--gut); }
+  .kbd { background: var(--kbd-bg); border: 1px solid var(--kbd-rand); padding: 1px 6px; border-radius: 4px; font-family: monospace; font-size: 11px; }
+  p { font-size: 11px; color: var(--gedaempft); margin: 8px 0 0 0; }
 </style>
 </head>
 <body>

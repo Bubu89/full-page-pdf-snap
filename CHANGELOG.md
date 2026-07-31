@@ -1,5 +1,223 @@
 # Changelog
 
+<!-- change-stream:auto-block:2026-07-29:START -->
+### 2026-07-29 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 7 Events, generiert 2026-07-30T09:00_
+
+**Aktivitaet:** 3 Datei(en), 7 Tool-Calls (6 Edit, 1 Bash), 1 Session(s).
+
+**Beruehrte Dateien:**
+- `CHANGELOG.md` (3x)
+- `manifest.json` (2x)
+- `pack-firefox.py` (1x)
+
+**Bemerkenswerte Commands:**
+- `cd ~/repos/full-page-pdf-snap-public && git add -A && git status --short && echo "=== diff stat"; git diff --cached --st`
+
+<!-- change-stream:auto-block:2026-07-29:END -->
+## 2.14.0 — 2026-07-31 (beide)
+
+**Was:** Popup und Einstellungen richten sich jetzt nach dem Farbschema des
+Browsers. Heller Browser → helle Oberfläche, dunkler Browser → dunkle.
+
+**Warum:** Die beiden Oberflächen waren fest verdrahtet — und zwar
+gegensätzlich. Das Popup war immer dunkel (`#1f2937`), die Einstellungsseite
+immer hell. Ein Nutzer mit hellem Browser bekam also ein dunkles Popup, das im
+Fenster wie ein Fremdkörper stand, und beim Klick auf „Settings" schlug ihm eine
+weiße Seite entgegen. Aufgefallen ist es beim Vergleich der neuen
+Store-Screenshots mit der tatsächlichen Oberfläche: Das Bild zeigte ein helles
+Popup, das es so gar nicht gab — Store-Bilder müssen aber die echte Oberfläche
+zeigen.
+
+**Wie:**
+- Farben laufen über CSS-Variablen. Hell ist der Ausgangswert, ein Block
+  `@media (prefers-color-scheme: dark)` überschreibt ihn.
+- `color-scheme: light dark` auf `:root` der Einstellungsseite. Ohne das bleiben
+  die browsereigenen Bedienelemente — Auswahlfelder, Bildlaufleisten — hell und
+  stechen im dunklen Fenster heraus.
+- Eingabefelder und Auswahlfelder bekommen Hintergrund und Textfarbe
+  ausdrücklich zugewiesen. Ohne das behalten sie ihre hellen Vorgabewerte, und
+  weiße Felder auf dunklem Grund sind der übliche Ausrutscher an dieser Stelle.
+- Auch die zehn Stellen mit fest im HTML stehenden Farben wurden umgestellt —
+  eine davon war die Diagnose-Box, die sonst weiß geblieben wäre.
+
+**Verifikation:** Automatisch in beiden Modi geprüft, gemessen an den
+**tatsächlich gerenderten** Farben, nicht am CSS. Der Test prüft sich zuerst am
+Referenzfall: Unterscheiden sich heller und dunkler Modus überhaupt? Täten sie
+es nicht, wäre jede weitere Aussage wertlos. Danach Helligkeit von Grund und
+Schrift sowie der Abstand zwischen beiden — auch für den grauen Nebentext, der
+sonst gern im Grund verschwindet. Ergebnis hell `rgb(255,255,255)`, dunkel
+`rgb(31,41,55)`, beide Seiten gleich. Zusätzlich beide Ansichten in Augenschein
+genommen.
+
+**Ergebnis:** Die Erweiterung fügt sich in beide Browser-Themen ein, Popup und
+Einstellungen sind endlich einheitlich — und das helle Store-Bild zeigt jetzt
+eine Oberfläche, die es wirklich gibt.
+
+## 2.13.0 — 2026-07-31 (beide)
+
+**Was:** Die Erweiterung fordert keinen Zugriff auf alle Websites mehr. Aus dem
+Chrome-Manifest sind `host_permissions: <all_urls>` und das `tabs`-Recht
+entfallen, aus dem Firefox-Manifest `<all_urls>` und `tabs`. Übrig bleibt
+`activeTab` — Zugriff auf genau den einen Tab, und nur nachdem der Nutzer die
+Erweiterung selbst ausgelöst hat.
+
+**Warum:** Chrome stufte die Erweiterung im erweiterten Safe Browsing als „nicht
+vertrauenswürdig" ein. Diese Einstufung hängt an Entwickler-Reputation und
+Store-Alter und lässt sich durch keine Code-Änderung abschalten — sie verfällt
+von selbst. Die Prüfung des Manifests förderte aber einen echten Missstand
+zutage: Die Erweiterung verlangte dauerhaften Lese- und Schreibzugriff auf
+**alle** Websites, obwohl sie ihn nie brauchte. Bei der Installation stand
+deshalb „Alle Ihre Daten auf allen Websites lesen und ändern" — direkt neben
+einer Vertrauenswarnung die wirksamste Abschreckung, die eine Store-Seite
+bieten kann. Für eine Erweiterung, die mit „keine Datensammlung" wirbt, war das
+zudem ein Widerspruch zwischen Anspruch und Manifest.
+
+**Wie:**
+- Alle drei Einstiegspunkte sind Nutzergesten: Klick auf das Symbol (mit oder
+  ohne Popup), Tastenkürzel über die `commands`-API und das Kontextmenü. Jede
+  dieser Gesten gewährt `activeTab` — dokumentiert für Chrome wie für Firefox.
+  Genau die drei APIs, die Rechte brauchen, sind davon abgedeckt:
+  `tabs.captureVisibleTab`, `scripting.executeScript` und der Zugriff auf
+  `tab.url`/`tab.title` für Blacklist-Prüfung und Dateinamen.
+- `tabs.sendMessage`, `tabs.create`, `tabs.getZoom`/`setZoom` und die
+  `downloads`-API brauchen ohnehin keine Host-Rechte — das `tabs`-Recht war
+  allein für `url`/`title` gesetzt, die `activeTab` mitliefert.
+- Version über `bump-version.py --set` gesetzt, nachdem die AMO-Abfrage 2.12.1
+  als bereits veröffentlicht meldete. Chrome-Zweig über `port.py` nachgezogen,
+  alle 14 Ersetzungen mit erwarteter Trefferzahl.
+
+**Verifikation:** In echtem Chrome 150 geladen (über CDP `Extensions.loadUnpacked`
+— `--load-extension` wird von aktuellen Chrome-Versionen ignoriert). Der Service
+Worker startet, die `importScripts`-Kette ist vollständig (`PageShotPdf`,
+`injectContentScript`, `createCanvas` alle definiert), `isCapturable` urteilt
+unverändert korrekt inklusive PDF-Direktmodus. Der Test prüft sich selbst am
+Referenzfall: **ohne** Geste liefert `tabs.query` keine `url`, und
+`captureVisibleTab` wie `executeScript` scheitern ausdrücklich am fehlenden
+Recht. Damit ist belegt, dass die Reduktion real wirkt und der Test nicht ins
+Leere misst.
+
+**Offen:** Der End-to-End-Klick mit echter Geste ist automatisiert nicht
+erreichbar — das Symbol einer Erweiterung lässt sich über CDP nicht anklicken.
+Vor dem Hochladen einmal von Hand prüfen: entpackte Fassung laden, eine
+beliebige Seite aufnehmen. Schlägt es fehl, wäre die Ursache eine fehlende
+`url` in `runOnActiveTab`; der Tab ließe sich dann aus den Event-Parametern von
+`onClicked`/`onCommand` durchreichen.
+
+**Ergebnis:** Der Installationsdialog nennt keinen Zugriff auf alle Websites
+mehr. Das Manifest deckt sich mit dem Versprechen der Store-Beschreibung, und
+die Erweiterung fällt bei künftigen Store-Prüfungen nicht mehr in die Kategorie
+mit weitreichenden Rechten.
+
+### Store-Bilder neu — richtiges Kürzel, hell, lesbar
+
+**Was:** Alle Store-Screenshots neu gebaut, erzeugt von
+`make-store-screenshots.py`. Dazu ein viertes Bild zum Thema kostenlos und
+datensparsam.
+
+**Warum:** In den alten Bildern stand **`Alt+Shift+P`** — ein Kürzel, das es seit
+dem Wechsel auf `Alt+Shift+Y` nicht mehr gibt. Es hat den Umstieg überlebt, weil
+die Bilder von Hand gepflegt wurden und das Kürzel an mehreren Stellen steht.
+Nutzer haben also monatelang eine Tastenkombination gesehen, die nichts tut.
+Dazu kam: dunkelblauer Hintergrund, rund 40 % ungenutzte Fläche und ein
+Einstellungsfenster, dessen Hilfetexte bei etwa 9 px im Store-Thumbnail
+unlesbar waren.
+
+**Wie:**
+- Das Kürzel steht jetzt an **einer** Stelle im Skript (`KUERZEL`) und wird in
+  alle Bilder eingesetzt. Der Fehler von Hand ist damit nicht wiederholbar.
+- Heller Verlauf statt Dunkelblau, Überschriften 52 px, Fließtext 25 px,
+  Bedienelemente im Mockup 19–27 px statt der Miniatur-Screenshots.
+- Zeilenumbrüche in den Überschriften fest gesetzt — sonst rutschen einzelne
+  Wörter je nach Schriftbreite in die nächste Zeile.
+- Statt eines abfotografierten Einstellungsfensters eine nachgebaute Karte mit
+  den drei Optionen, die den Unterschied ausmachen. Ein echter Screenshot ist
+  bei dieser Bildgröße nicht lesbar.
+- Viertes Bild: kostenlos, keine Werbung, kein Konto, kein Upload — samt dem
+  Punkt, dass die Erweiterung ab 2.13.0 keinen Zugriff auf alle Websites mehr
+  verlangt.
+
+**Ergebnis:** `screenshots/01_capture_en.png` bis `04_free_en.png`, je
+1280 × 800. Jedes Bild einzeln sichtgeprüft.
+
+Die beiden Promo-Kacheln (440 × 280 und 1400 × 560) sind aus demselben Skript
+nachgezogen — sie waren noch dunkelblau und hätten neben den hellen Screenshots
+wie eine fremde Erweiterung gewirkt. Sie tragen bewusst nur Logo, Namen und
+Kernnutzen: die kleine Kachel wird im Store so stark verkleinert, dass
+Fließtext darin nicht mehr lesbar ist. Alle sechs Bilder sind 24-Bit-RGB ohne
+Alphakanal, wie der Store es verlangt.
+
+## 2.12.1 — 2026-07-29 (beide)
+
+**Was:** Firefox zeigt jetzt dasselbe grün-gelbe Logo wie Chrome. Das blaue
+SVG-Icon ist ersatzlos entfernt. Der Chrome-Port ist auf dieselbe Version
+nachgezogen — dort war am Logo nichts zu korrigieren.
+
+**Warum:** Die Erweiterung hatte zwei verschiedene Logos, ohne dass es jemandem
+auffiel. In `icons/` lagen nebeneinander eine PNG-Familie (grün-gelber Verlauf,
+weißes Dokument, „PDF"-Label) und ein SVG mit einem völlig anderen Motiv
+(blauer Verlauf, Seite mit Textzeilen, grünes Schild, Schriftzug „PDF SNAP").
+Das Firefox-Manifest verwies ausschließlich auf das SVG, der Chrome-Port
+ersetzt es beim Portieren durch die PNGs, weil Chrome kein SVG rendert. Ergebnis:
+im Chrome-Dashboard das grün-gelbe Logo, in Firefox ein blaues. Die PNGs lagen
+zwar im Firefox-Paket, wurden aber von keiner Manifest-Zeile referenziert.
+
+**Wie:**
+- `icons` und `browser_action.default_icon` verweisen auf `icon-16/48/128.png`,
+  identisch zum Chrome-Manifest.
+- `icons/icon.svg` gelöscht und aus der Dateiliste von `pack-firefox.py`
+  genommen. Zwei Bildquellen für ein Logo waren genau die Ursache — eine davon
+  im Repo zu belassen, hätte den Fehler nur vertagt.
+- Version über `bump-version.py --patch` gesetzt. Die AMO-Abfrage meldete 2.12.0
+  als bereits veröffentlicht, daher 2.12.1 statt einer erneuten 2.12.0.
+- Chrome-Seite über `port.py` + `pack.py` auf 2.12.1 nachgezogen. Am Icon war
+  dort nichts zu tun: Ein Hash-Vergleich der PNGs im Repo, im eingereichten
+  2.2.0-Paket und im gebauten Paket ergab durchweg Byte-Gleichheit mit den
+  Firefox-PNGs, und kein Chrome-Paket enthielt je ein SVG. Der Port ersetzt
+  das SVG seit jeher, weil Chrome es nicht rendern kann — genau deshalb war
+  Chrome von dem Fehler nie betroffen.
+
+**Ergebnis:** Toolbar-Symbol, Add-on-Verwaltung und AMO-Listing zeigen in beiden
+Browsern dasselbe Logo. Das Paket enthält kein SVG mehr. Nebeneffekt: der
+Schriftzug „PDF SNAP" war bei 16 px ohnehin nur ein grauer Fleck — die PNGs sind
+für die kleinen Größen sauber gerastert.
+
+<!-- change-stream:auto-block:2026-07-27:START -->
+### 2026-07-27 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 51 Events, generiert 2026-07-29T09:56_
+
+**Aktivitaet:** 18 Datei(en), 51 Tool-Calls (37 Edit, 13 Write, 1 Bash), 1 Session(s).
+
+**Beruehrte Dateien:**
+- `background.js` (12x)
+- `chrome-mv3/port.py` (10x)
+- `content.js` (6x)
+- `docs/index.html` (2x)
+- `chrome-mv3/compat.js` (2x)
+- `chrome-mv3/README.md` (2x)
+- `chrome-mv3/pack.py` (2x)
+- `options.html` (2x)
+- `options.js` (2x)
+- `CHANGELOG.md` (2x)
+- `README.md` (1x)
+- `SUPPORT.md` (1x)
+- `docs/privacy.html` (1x)
+- `chrome-mv3/tests/README.md` (1x)
+- `pack-firefox.py` (1x)
+- `bump-version.py` (1x)
+- `release.py` (1x)
+- `popup.js` (1x)
+
+**Bemerkenswerte Commands:**
+- `cd . && git add -A && git commit -q -m "Default shortcut moves to Alt+Shift+Y
+
+`
+
+<!-- change-stream:auto-block:2026-07-27:END -->
+
+
 ## 2.12.0 — 2026-07-27 (beide)
 
 **Was:** Neues Standardkürzel `Alt+Shift+Y`, ein zweites `Ctrl+Shift+Y` für
