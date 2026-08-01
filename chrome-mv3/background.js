@@ -57,6 +57,10 @@ const DEFAULTS_ANDROID_OVERRIDES = {
 let _lastDownloadId = null;
 let _lastFilename = null;
 let _lastFallbackTabId = null;  // Wenn Save via Tab-Open Notfall lief
+// Blob-URL des zuletzt erzeugten PDF. Auf Android bleibt sie bis zur naechsten
+// Aufnahme gueltig, damit ein Tippen auf "Fertig" das PDF im Firefox-Viewer
+// zeigen kann — dort gibt es die Download-Option.
+let _lastPdfUrl = null;
 
 async function getDefaults() {
   const p = await getPlatform();
@@ -359,23 +363,9 @@ async function captureFullPageInner(tab, settings) {
         await sleep(60);
       }
 
-      // Progress-Feedback fuer Android (alle 2 Segmente Notification aktualisieren).
-      // Auf Desktop lassen wir es weg (Popup gibt sowieso Rueckmeldung).
-      const _p = await getPlatform();
-      if (_p.isAndroid && segments.length % 2 === 0) {
-        const pctText = maxScroll > 0
-          ? Math.min(99, Math.round((actualY / maxScroll) * 100)) + "%"
-          : segments.length + " Segmente";
-        try {
-          browser.notifications.create("pdfsnap-progress", {
-            type: "basic",
-            iconUrl: browser.runtime.getURL("icons/icon-48.png"),
-            title: "Full Page PDF Snap",
-            message: `Erfasse Seite ... ${pctText}`
-          });
-        } catch (_) { /* ignore */ }
-        try { await browser.action.setBadgeText({ text: String(segments.length) }); } catch (_) { /* ignore */ }
-      }
+      // Kein Fortschritts-Feedback waehrend der Aufnahme. Auf Android stapelten
+      // sich die Prozent-Meldungen im Benachrichtigungsbereich; der Nutzer will
+      // eine einzige Meldung, und zwar wenn das PDF fertig ist.
 
       const fresh = await browser.tabs.sendMessage(tab.id, { cmd: "currentTotalH" }).catch(() => null);
       if (fresh && fresh.totalH && fresh.totalH > totalH) {
@@ -655,6 +645,9 @@ async function captureFullPageInner(tab, settings) {
 
   const pdfBlob = new Blob([pdfBytes], { type: "application/pdf" });
   const url = await blobToDataUrl(pdfBlob);
+  // Merken, damit ein Tippen auf die Fertig-Meldung das PDF anzeigen kann.
+  // Freigegeben wird sie beim Start der naechsten Aufnahme (runOnActiveTab).
+  _lastPdfUrl = url;
   const platformForSave = await getPlatform();
 
   // Keine Zwischen-Notification "Speichere PDF ..." mehr — User bekommt
@@ -760,7 +753,7 @@ async function captureFullPageInner(tab, settings) {
       const fallbackHint = usedFilename === filename && subfolder
         ? " (Root Download-Ordner)"
         : "";
-      notifyInfo(`Fertig — ${pages.length} Seite${pages.length === 1 ? "" : "n"} gespeichert${fallbackHint}. Tippen zum Oeffnen.`);
+      notifyInfo(`Fertig — ${pages.length} Seite${pages.length === 1 ? "" : "n"} gespeichert${fallbackHint}. Tippen zum Anzeigen.`);
     }
 
     if (downloadComplete) {
@@ -776,7 +769,15 @@ async function captureFullPageInner(tab, settings) {
 
     return { ok: true, downloadId: id, filename: relPath, pages: pages.length, segments: segments.length };
   } finally {
-    revokeDownloadUrl(url);
+    // Auf Android bleibt die URL bestehen: der Nutzer tippt die Fertig-Meldung
+    // u.U. erst Minuten spaeter an, und dann muss das PDF noch anzeigbar sein.
+    // Freigegeben wird sie beim Start der naechsten Aufnahme.
+    if (!platformForSave.isAndroid) {
+      setTimeout(() => {
+        revokeDownloadUrl(url);
+        if (_lastPdfUrl === url) _lastPdfUrl = null;
+      }, 60_000);
+    }
   }
 }
 
@@ -814,15 +815,9 @@ function waitForDownloadComplete(id, timeoutMs) {
 async function runAfterCapture(downloadId, mode) {
   const p = await getPlatform();
   if (p.isAndroid) {
-    // Android: downloads.show existiert nicht — fallback auf downloads.open,
-    // unabhaengig vom Desktop-Mode (Nutzer erwartet PDF-Anzeige beim Tap).
-    try {
-      if (typeof browser.downloads.open === "function") {
-        await browser.downloads.open(downloadId);
-      }
-    } catch (e) {
-      log("Android afterCapture open error:", e);
-    }
+    // Android oeffnet nichts von selbst. Die Datei ist gespeichert, die
+    // Fertig-Meldung steht — angezeigt wird das PDF erst, wenn der Nutzer
+    // sie antippt (siehe notifications.onClicked).
     return;
   }
   try {
@@ -964,10 +959,13 @@ async function capturePdfDirect(tab, pdfUrl) {
   _lastDownloadId = id;
   _lastFilename = relPath;
   _lastFallbackTabId = null;
+  // Hier ist die Quelle das PDF selbst, keine Blob-URL — damit zeigt ein Tippen
+  // dasselbe wie nach einer normalen Aufnahme: das PDF im Browser.
+  _lastPdfUrl = pdfUrl;
 
   try { await browser.notifications.clear("pdfsnap-progress"); } catch (_) {}
   if (platform.isAndroid) {
-    notifyInfo(`PDF gespeichert: ${filename}. Tippen zum Oeffnen.`);
+    notifyInfo(`PDF gespeichert: ${filename}. Tippen zum Anzeigen.`);
   }
   return { ok: true, downloadId: id, filename: relPath, pages: null, segments: null, method: "pdf-direct" };
 }
@@ -996,21 +994,13 @@ async function runOnActiveTab() {
   _lastDownloadId = null;
   _lastFilename = null;
   _lastFallbackTabId = null;
-  const platform = await getPlatform();
+  // Auch die PDF-URL der Vorgaenger-Aufnahme faellt hier weg. Sonst wuerde ein
+  // Tippen auf eine Fehlermeldung noch das alte PDF anzeigen.
+  if (_lastPdfUrl) { revokeDownloadUrl(_lastPdfUrl); }
+  _lastPdfUrl = null;
   await setBadge("...", "#2563eb");
   await setActionTitle("Full Page PDF Snap — capture running …");
-  // Diese Start-Notification NUTZT die gleiche ID wie die Progress-Updates,
-  // damit sie nachher nicht doppelt neben der 64%-Anzeige stehen bleibt.
-  if (platform.isAndroid) {
-    try {
-      browser.notifications.create("pdfsnap-progress", {
-        type: "basic",
-        iconUrl: browser.runtime.getURL("icons/icon-48.png"),
-        title: "Full Page PDF Snap",
-        message: "Erfasse Seite ..."
-      });
-    } catch (_) { /* ignore */ }
-  }
+  // Keine Start-Notification: die einzige Meldung kommt, wenn das PDF fertig ist.
   try {
     const res = useDirectPdf
       ? await capturePdfDirect(tab, check.pdfUrl)
@@ -1105,10 +1095,25 @@ if (browser.notifications && browser.notifications.onClicked) {
       _lastFallbackTabId = null;
       return;
     }
+    // Regelfall: das PDF im Firefox-Viewer zeigen. Dort hat der Nutzer die
+    // Download-Option und bleibt im Browser, statt in einer fremden PDF-App
+    // zu landen.
+    if (_lastPdfUrl) {
+      try {
+        const tab = await browser.tabs.create({ url: _lastPdfUrl, active: true });
+        _lastFallbackTabId = tab && tab.id;
+        log("PDF im Viewer geoeffnet:", _lastFilename);
+        return;
+      } catch (e) {
+        log("tab open from notification failed:", e);
+      }
+    }
     if (_lastDownloadId == null) {
       notifyHint("Noch keine Aufnahme fertig. Tippe zuerst auf das Erweiterungs-Symbol.");
       return;
     }
+    // Rueckfallebene, wenn die Blob-URL nicht mehr lebt (z.B. weil der
+    // Hintergrund-Prozess zwischenzeitlich beendet wurde).
     try {
       if (typeof browser.downloads.open === "function") {
         await browser.downloads.open(_lastDownloadId);

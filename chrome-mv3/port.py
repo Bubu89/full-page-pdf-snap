@@ -49,9 +49,13 @@ PATCHES = [
      "const url = URL.createObjectURL(pdfBlob);",
      "const url = await blobToDataUrl(pdfBlob);", 1),
 
-    ("revokeObjectURL entfaellt bei data:-URLs",
-     re.compile(r"setTimeout\(\(\) => URL\.revokeObjectURL\(url\), 60_000\);"),
-     "revokeDownloadUrl(url);", 1),
+    # Im Service Worker gibt es keine Blob-URLs - dort sind es data:-URLs, die
+    # nicht freigegeben werden muessen. revokeDownloadUrl() ist die Attrappe
+    # aus compat.js. Beide Freigabe-Stellen (60-Sekunden-Timer nach dem Save,
+    # Reset beim Start der naechsten Aufnahme) werden gleich behandelt.
+    ("URL.revokeObjectURL -> revokeDownloadUrl",
+     re.compile(r"try \{ URL\.revokeObjectURL\((\w+)\); \} catch \(_\) \{ /\* ignore \*/ \}"),
+     r"revokeDownloadUrl(\1);", 2),
 
     # scripting.executeScript braucht keinen Patch mehr: seit dem MV3-Port
     # ruft die Firefox-Quelle dieselbe API mit derselben Signatur auf.
@@ -96,7 +100,7 @@ MANIFEST = """{
   "name": "__MSG_extName__",
   "default_locale": "en",
   "short_name": "PDFSnap",
-  "version": "2.15.0",
+  "version": "2.16.0",
   "description": "__MSG_extDescription__",
   "author": "Bubu89",
   "minimum_chrome_version": "116",

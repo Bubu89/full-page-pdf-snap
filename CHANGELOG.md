@@ -1,5 +1,32 @@
 # Changelog
 
+## 2.16.0 — Android: eine Meldung statt einer Reihe
+
+Auf Android meldete sich die Erweiterung während der Aufnahme alle zwei
+Segmente mit dem Fortschritt („Erfasse Seite … 61 %"), dazu eine beim Start.
+Im Benachrichtigungsbereich stapelte sich das, obwohl niemand währenddessen
+etwas tun kann. Jetzt kommt genau eine Meldung, und zwar wenn das PDF fertig
+ist: „Fertig — n Seiten gespeichert. Tippen zum Anzeigen."
+
+Das Antippen zeigt das PDF im Firefox-Viewer, wo die Download-Option direkt
+erreichbar ist. Vorher lief es über `downloads.open()`, was das PDF an eine
+fremde App übergab — und laut Kommentar im Code auf manchen Geräten still
+hängen blieb. Der Tab-Weg existierte bereits als Notfall-Zweig für den Fall,
+dass der Download scheitert; er ist jetzt der reguläre.
+
+Ebenfalls weg: das automatische Öffnen direkt nach dem Speichern. Die Datei
+liegt im Download-Ordner, angezeigt wird sie erst auf Wunsch.
+
+Damit das Antippen auch Minuten später noch funktioniert, bleibt die Blob-URL
+des PDF auf Android bestehen, statt nach 60 Sekunden freigegeben zu werden.
+Freigegeben wird sie beim Start der nächsten Aufnahme — auch dann, wenn diese
+fehlschlägt, damit ein Tippen auf eine Fehlermeldung nicht das alte PDF zeigt.
+Ist der Hintergrundprozess zwischenzeitlich beendet worden und die URL damit
+verloren, greift `downloads.open()` als Rückfallebene.
+
+Am Desktop ändert sich nichts: Die Fortschrittsmeldungen liefen dort ohnehin
+nie, das Rückmeldung gab das Popup.
+
 ## 2.15.0 — Manifest V3 (Firefox)
 
 Der Firefox-Zweig lief noch auf Manifest V2, während der Chrome-Zweig seit
