@@ -32,6 +32,25 @@
   td{color:var(--dim)}
   hr{border:none;border-top:1px solid var(--line);margin:52px 0}
   .back{display:inline-block;margin-bottom:28px;font-size:.92rem}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
 </style>
 <link rel="canonical" href="https://provinglab.dev/privacy.html">
 <meta property="og:type" content="website">
@@ -39,6 +58,16 @@
 <meta property="og:url" content="https://provinglab.dev/privacy.html">
 </head>
 <body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href=""><img src="icon-128.png" alt="">Proving&nbsp;Lab</a>
+    <a class="n" href="notes/">Notes</a>
+    <a class="n" href="measurements/">Measurements</a>
+    <a class="n" href="tools/full-page-pdf-snap/">Tools</a>
+    <a class="n" href="about/">About</a>
+  </div>
+</nav>
+
 <div class="wrap">
   <a class="back" href="./">← Full Page PDF Snap</a>
 
