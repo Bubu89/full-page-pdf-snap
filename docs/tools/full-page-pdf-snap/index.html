@@ -148,6 +148,25 @@
   .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
   .faq details[open] summary::before{content:"− "}
   .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+
+  /* --- Galerie: klein nebeneinander, Klick vergroessert --- */
+  .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+  @media (max-width:760px){ .shots{grid-template-columns:1fr;gap:14px} }
+  .shot{margin:0;cursor:zoom-in;border:0;padding:0;background:none;text-align:left;
+        font:inherit;color:inherit;display:block}
+  .shot img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;display:block;
+        border-radius:10px;border:1px solid var(--line);background:var(--card);
+        transition:transform .15s ease,border-color .15s ease}
+  .shot:hover img,.shot:focus-visible img{transform:translateY(-3px);border-color:var(--acc)}
+  .shot:focus-visible{outline:2px solid var(--acc);outline-offset:4px;border-radius:12px}
+  .shot figcaption{margin-top:9px;font-size:.85rem;color:var(--dim);line-height:1.45}
+  dialog.gross{border:0;padding:0;background:transparent;max-width:96vw;max-height:96vh}
+  dialog.gross::backdrop{background:rgba(0,0,0,.82)}
+  dialog.gross img{max-width:96vw;max-height:88vh;width:auto;height:auto;display:block;
+        border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  dialog.gross p{color:#f2f2f7;text-align:center;margin-top:12px;font-size:.9rem}
+  dialog.gross .zu{position:fixed;top:18px;right:22px;font:inherit;font-size:1.6rem;
+        background:none;border:0;color:#f2f2f7;cursor:pointer;line-height:1}
 </style>
 </head>
 <body>
@@ -261,28 +280,34 @@
       <p class="sub">Drei Klicks von der Installation bis zum fertigen PDF.</p>
     </div>
 
-    <figure>
-      <img id="s1" src="../../screenshots/01_capture_en.png" alt="Toolbar popup with the capture button" width="1280" height="800" loading="eager" decoding="sync">
-      <figcaption>
-        <span data-lang="en" class="on">One click captures the entire page — toolbar button, right-click menu or Alt+Shift+Y</span>
-        <span data-lang="de">Ein Klick erfasst die ganze Seite — Toolbar-Button, Rechtsklick-Menü oder Alt+Shift+Y</span>
-      </figcaption>
-    </figure>
-    <figure>
-      <img id="s2" src="../../screenshots/02_settings_en.png" alt="Settings page" width="1280" height="800" loading="eager" decoding="sync">
-      <figcaption>
-        <span data-lang="en" class="on">Filename templates, JPEG quality and scroll timing — all adjustable</span>
-        <span data-lang="de">Dateinamen-Vorlage, JPEG-Qualität und Scroll-Wartezeit — alles einstellbar</span>
-      </figcaption>
-    </figure>
-    <figure>
-      <img id="s3" src="../../screenshots/03_output_en.png" alt="Output and resolution settings" width="1280" height="800" loading="eager" decoding="sync">
-      <figcaption>
-        <span data-lang="en" class="on">One continuous page or multi-page output, with resolution scaling up to 2.0x</span>
-        <span data-lang="de">Eine fortlaufende Seite oder mehrseitige Ausgabe, Auflösung bis 2.0x skalierbar</span>
-      </figcaption>
-    </figure>
-  </div>
+    <div class="shots">
+  <button class="shot" onclick="zeig(1)" aria-label="Enlarge: Toolbar popup with the capture button">
+    <img src="../../screenshots/01_capture_en.png" alt="Toolbar popup with the capture button" width="1280" height="800" loading="eager" decoding="sync">
+    <figcaption><span data-lang="en" class="on">One click captures the entire page — toolbar button, right-click menu or Alt+Shift+Y</span><span data-lang="de">Ein Klick erfasst die ganze Seite — Toolbar-Button, Rechtsklick-Menü oder Alt+Shift+Y</span></figcaption>
+  </button>
+  <button class="shot" onclick="zeig(2)" aria-label="Enlarge: Settings page">
+    <img src="../../screenshots/02_settings_en.png" alt="Settings page" width="1280" height="800" loading="eager" decoding="sync">
+    <figcaption><span data-lang="en" class="on">Filename templates, JPEG quality and scroll timing — all adjustable</span><span data-lang="de">Dateinamen-Vorlage, JPEG-Qualität und Scroll-Wartezeit — alles einstellbar</span></figcaption>
+  </button>
+  <button class="shot" onclick="zeig(3)" aria-label="Enlarge: Output and resolution settings">
+    <img src="../../screenshots/03_output_en.png" alt="Output and resolution settings" width="1280" height="800" loading="eager" decoding="sync">
+    <figcaption><span data-lang="en" class="on">One continuous page or multi-page output, with resolution scaling up to 2.0x</span><span data-lang="de">Eine fortlaufende Seite oder mehrseitige Ausgabe, Auflösung bis 2.0x skalierbar</span></figcaption>
+  </button>
+</div>
+
+<dialog class="gross" id="lb" onclick="if(event.target===this)this.close()">
+  <button class="zu" onclick="lb.close()" aria-label="Close">&times;</button>
+  <img id="lbimg" src="" alt="">
+  <p id="lbcap"></p>
+</dialog>
+<script>
+const SHOTS=[null,
+ ["../../screenshots/01_capture_en.png","One click captures the entire page"],
+ ["../../screenshots/02_settings_en.png","Settings: filename, quality, timing"],
+ ["../../screenshots/03_output_en.png","Output and resolution settings"]];
+function zeig(n){const [s,c]=SHOTS[n];lbimg.src=s;lbimg.alt=c;lbcap.textContent=c;lb.showModal();}
+</script>
+</div>
 </section>
 
 <!-- ---------- Features ---------- -->
