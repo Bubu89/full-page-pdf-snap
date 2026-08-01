@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Notes — Proving Lab</title>
-<meta name="description" content="Build reports from real work on browser extensions and websites, including the parts that went wrong and which check caught them.">
-<link rel="canonical" href="https://provinglab.dev/notes/">
+<title>Data — Proving Lab</title>
+<meta name="description" content="Raw measurement data as JSON: OCR recall, declared extension permissions, print export against screen capture. CC BY 4.0.">
+<link rel="canonical" href="https://provinglab.dev/data/">
 <link rel="icon" href="../icon-128.png">
 <meta name="robots" content="index, follow">
 <style>
-  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+  :root{ --bg:#141320; --card:#232232; --line:#33324a;
     --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; }
   @media (prefers-color-scheme: light){
-    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+    :root{ --bg:#f7f7fb; --card:#ffffff; --line:#e2e2ee;
            --tx:#16162a; --dim:#5a5a72; --good:#17724f; } }
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--tx);line-height:1.65;
@@ -23,10 +23,9 @@
   h1{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.025em;margin-bottom:14px}
   .lead{color:var(--dim);font-size:1.05rem;max-width:60ch}
   .item{padding:24px 0;border-bottom:1px solid var(--line)}
-  .item h2{font-size:1.18rem;margin-bottom:8px;letter-spacing:-.01em}
+  .item h2{font-size:1.06rem;margin-bottom:8px;letter-spacing:-.01em;
+    font-family:ui-monospace,Menlo,Consolas,monospace}
   .item p{color:var(--dim);font-size:.96rem;margin-bottom:10px}
-  .date{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.75rem;
-    color:var(--dim);letter-spacing:.04em;margin-bottom:7px}
   .figures{display:flex;flex-wrap:wrap;gap:16px;font-family:ui-monospace,Menlo,Consolas,monospace;
     font-size:.8rem;color:var(--dim)}
   .figures b{color:var(--good);font-weight:600;font-variant-numeric:tabular-nums}
@@ -41,7 +40,6 @@
   .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
     border-bottom:2px solid transparent}
   .topnav a.n:hover{color:var(--tx);text-decoration:none}
-  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
   @media (max-width:640px){ .topnav .brand{width:100%;margin-right:0} }
 </style>
 </head>
@@ -49,7 +47,7 @@
 <nav class="topnav">
   <div class="inner">
     <a class="brand" href="../"><img src="../icon-128.png" alt="">Proving&nbsp;Lab</a>
-    <a class="n" href="../notes/" aria-current="page">Notes</a>
+    <a class="n" href="../notes/">Notes</a>
     <a class="n" href="../measurements/">Measurements</a>
     <a class="n" href="../tools/">Tools</a>
     <a class="n" href="../about/">About</a>
@@ -58,14 +56,26 @@
 
 <div class="wrap">
 <header>
-  <h1>Notes</h1>
-  <p class="lead">Build reports from real work — including the parts that went wrong, and which check caught them. A log that only lists solved problems is marketing.</p>
+  <h1>Data</h1>
+  <p class="lead">The raw numbers behind the measurements, as JSON — including the control runs. Licensed CC BY 4.0, so they can be reused with attribution.</p>
 </header>
+
 <div class="item">
-  <p class="date">1 August 2026</p>
-  <h2><a href="building-with-ai-what-went-wrong/">Six things went wrong building software with an AI assistant in one day</a></h2>
-  <p>A wrong assumption about browser engines, a false claim caught before publication, 22 local paths one commit from a public repository, and three more — sorted by what actually caught them.</p>
-  <div class="figures"><span><b>3 of 6</b> caught by an external check</span><span><b>1</b> still untested</span></div>
+  <h2><a href="2026-08-01-ocr-recall.json">2026-08-01-ocr-recall.json</a></h2>
+  <p>How much text survives when a full-page screenshot PDF goes through OCR, plus the full resolution series and a control run against unrelated text. <a href="../measurements/webpage-to-pdf-for-ocr/">Method and discussion</a>.</p>
+  <div class="figures"><span><b>92.6&nbsp;%</b> vocabulary recall</span><span><b>110 dpi</b> threshold</span><span><b>0.0&nbsp;%</b> control</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-extension-permissions.json">2026-08-01-extension-permissions.json</a></h2>
+  <p>Declared permissions, host permissions, user counts and ratings for eight PDF and capture extensions, as retrieved from the Mozilla add-ons API. <a href="../measurements/pdf-extension-permissions/">Method and discussion</a>.</p>
+  <div class="figures"><span><b>8</b> extensions</span><span>source: addons.mozilla.org API</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-print-vs-screenshot.json">2026-08-01-print-vs-screenshot.json</a></h2>
+  <p>The same article through the browser's print export and through full-page capture: page count, broken sentences, file size, recovered text. <a href="../measurements/print-to-pdf-vs-screenshot/">Method and discussion</a>.</p>
+  <div class="figures"><span><b>26</b> pages against <b>1</b></span><span><b>9</b> sentences cut</span><span><b>6×</b> file size</span></div>
 </div>
 
 <footer><a href="../">← Proving Lab</a></footer>

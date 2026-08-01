@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Measurements — Proving Lab</title>
-<meta name="description" content="Measurements on browser tools and document capture: OCR recall, print versus screenshot, declared extension permissions. Each with method, raw data and a control run.">
-<link rel="canonical" href="https://provinglab.dev/measurements/">
+<title>Tools — Proving Lab</title>
+<meta name="description" content="Browser tools built here and measured here: Full Page PDF Snap downloads an entire webpage as one seamless PDF, on the device, for Firefox and Chrome.">
+<link rel="canonical" href="https://provinglab.dev/tools/">
 <link rel="icon" href="../icon-128.png">
 <meta name="robots" content="index, follow">
 <style>
@@ -25,11 +25,14 @@
   .item{padding:24px 0;border-bottom:1px solid var(--line)}
   .item h2{font-size:1.18rem;margin-bottom:8px;letter-spacing:-.01em}
   .item p{color:var(--dim);font-size:.96rem;margin-bottom:10px}
-  .date{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.75rem;
-    color:var(--dim);letter-spacing:.04em;margin-bottom:7px}
   .figures{display:flex;flex-wrap:wrap;gap:16px;font-family:ui-monospace,Menlo,Consolas,monospace;
     font-size:.8rem;color:var(--dim)}
   .figures b{color:var(--good);font-weight:600;font-variant-numeric:tabular-nums}
+  .holen{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .holen a{display:inline-block;padding:9px 16px;border-radius:8px;font-size:.9rem;
+    font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--tx)}
+  .holen a.erst{background:var(--acc);border-color:var(--acc);color:#fff}
+  .holen a:hover{text-decoration:none}
   footer{padding:36px 0 60px;color:var(--dim);font-size:.85rem}
   .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
     border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
@@ -50,40 +53,36 @@
   <div class="inner">
     <a class="brand" href="../"><img src="../icon-128.png" alt="">Proving&nbsp;Lab</a>
     <a class="n" href="../notes/">Notes</a>
-    <a class="n" href="../measurements/" aria-current="page">Measurements</a>
-    <a class="n" href="../tools/">Tools</a>
+    <a class="n" href="../measurements/">Measurements</a>
+    <a class="n" href="./" aria-current="page">Tools</a>
     <a class="n" href="../about/">About</a>
   </div>
 </nav>
 
 <div class="wrap">
 <header>
-  <h1>Measurements</h1>
-  <p class="lead">Each one with the commands to repeat it, the raw data behind it, and a control run — because a method that does not fail where it should is not measuring anything.</p>
+  <h1>Tools</h1>
+  <p class="lead">Built here, and measured here under the same rules as everything else — including where they lose against an alternative.</p>
 </header>
+
 <div class="item">
-  <p class="date">1 August 2026</p>
-  <h2><a href="print-to-pdf-vs-screenshot/">Print to PDF or capture the screen? The same page measured both ways</a></h2>
-  <p>Firefox already exports PDFs for free. The same article through both routes — including where print wins.</p>
-  <div class="figures"><span><b>1 : 26</b> pages</span><span><b>9</b> breaks cut a sentence</span><span>print: <b>94.8 %</b> recall</span></div>
+  <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
+  <p>Downloads an entire webpage as one seamless PDF — the complete scrolling page on a single continuous sheet, no page breaks, nothing cropped. Runs entirely on the device: no upload, no account, no data collection, and <code>activeTab</code> instead of access to every site you visit. Works in Firefox on desktop and Android, and in Chrome.</p>
+  <div class="figures">
+    <span><b>92.6&nbsp;%</b> of text survives OCR</span>
+    <span><b>0</b> network requests</span>
+    <span><b>MIT</b> licence</span>
+  </div>
+  <div class="holen">
+    <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download for Firefox</a>
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Without any store</a>
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Chrome package</a>
+    <a href="full-page-pdf-snap/">Details and measurements</a>
+  </div>
 </div>
+
 <div class="item">
-  <p class="date">1 August 2026</p>
-  <h2><a href="webpage-to-pdf-for-ocr/">Webpage to PDF for OCR: how much text actually survives?</a></h2>
-  <p>A screenshot PDF through Tesseract, compared against the source text, plus the resolution threshold where recognition collapses.</p>
-  <div class="figures"><span><b>92.6 %</b> recovered</span><span><b>8/8</b> critical values</span><span><b>72 dpi</b> collapse</span></div>
-</div>
-<div class="item">
-  <p class="date">1 August 2026</p>
-  <h2><a href="pdf-extension-permissions/">Does your PDF extension upload the page?</a></h2>
-  <p>What eight capture extensions declare in their manifests, how to check it in 30 seconds, and why server-side converters cannot reach a login.</p>
-  <div class="figures"><span><b>8</b> extensions</span><span>raw data published</span></div>
-</div>
-<div class="item">
-  <p class="date">1 August 2026</p>
-  <h2><a href="extension-permissions-risk/">An extension is only as dangerous as its permissions allow</a></h2>
-  <p>One year after Mozilla warned about phished developer accounts: permission scope as blast radius, not as a trust signal.</p>
-  <div class="figures"><span>worst-case table</span><span>assessment checklist</span></div>
+  <p>Where a tool of ours appears in a measurement, that is stated on the page itself. A screen-capture PDF is not a qualified electronic document — see <a href="full-page-pdf-snap/#limits">the limits</a>.</p>
 </div>
 
 <footer><a href="../">← Proving Lab</a></footer>

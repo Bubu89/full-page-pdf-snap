@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — Proving Lab</title>
+<meta name="robots" content="noindex, follow">
+<link rel="icon" href="/icon-128.png">
+<style>
+  :root{ --bg:#141320; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.65;min-height:100vh;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    display:flex;flex-direction:column}
+  .wrap{max-width:640px;margin:0 auto;padding:0 24px;width:100%}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  main{flex:1;display:flex;align-items:center;padding:60px 0}
+  .kennung{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;
+    letter-spacing:.12em;color:var(--dim);margin-bottom:14px}
+  h1{font-size:clamp(1.6rem,4vw,2.2rem);letter-spacing:-.025em;margin-bottom:14px}
+  p{color:var(--dim);margin-bottom:26px}
+  ul{list-style:none;display:flex;flex-direction:column;gap:2px}
+  li a{display:block;padding:13px 16px;border:1px solid var(--line);
+    border-radius:10px;background:var(--card);color:var(--tx);font-weight:600}
+  li a:hover{text-decoration:none;border-color:var(--acc)}
+  li a span{display:block;font-weight:400;font-size:.88rem;color:var(--dim);margin-top:2px}
+  footer{padding:30px 0;color:var(--dim);font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+  <div class="wrap">
+    <p class="kennung">404</p>
+    <h1>That page is not here</h1>
+    <p>The address may be shortened, mistyped, or point to something that has moved. Everything on the site is reachable from these four:</p>
+    <ul>
+      <li><a href="/">Proving Lab<span>Measurements on browser tools, with method and raw data</span></a></li>
+      <li><a href="/tools/full-page-pdf-snap/">Full Page PDF Snap<span>Download an entire webpage as one seamless PDF — free, on your device</span></a></li>
+      <li><a href="/measurements/">Measurements<span>OCR recall, extension permissions, print against capture</span></a></li>
+      <li><a href="/notes/">Notes<span>Build reports, including what went wrong</span></a></li>
+    </ul>
+  </div>
+</main>
+<footer><div class="wrap"><a href="/about/">About and disclosure</a> · <a href="/privacy.html">Privacy</a></div></footer>
+</body>
+</html>
