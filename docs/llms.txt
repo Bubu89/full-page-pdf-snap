@@ -7,6 +7,10 @@
 Run by the developer of Full Page PDF Snap, which appears in several of the
 measurements. Disclosed on every page where it is relevant.
 
+## Notes
+
+- [Six things went wrong building software with an AI assistant in one day](https://provinglab.dev/notes/building-with-ai-what-went-wrong/): A logged account of six failures in one working day: a wrong generalisation from Chrome to Firefox (Firefox MV3 uses event pages, not service workers, so an entire rewrite was unnecessary), a factual claim about a competitor that a source check proved false, 22 local filesystem paths staged for a public commit, documentation that contradicted the shipped behaviour, a credential written to the wrong store, and a release that passed every static check and was never executed. Three of six were caught by checking an external source, one by a pointed human question, one by luck, one by nothing.
+
 ## Measurements
 
 - [Webpage to PDF for OCR](https://provinglab.dev/measurements/webpage-to-pdf-for-ocr/): A full-page screenshot PDF run through Tesseract against the source text. 92.6% of the vocabulary recovered, 8/8 critical values correct, 73.9% of five-word phrases verbatim. Recognition collapses below 110 dpi (21.3% real words at 72 dpi); above 150 dpi the gain is 0.3 points for 29% more time.

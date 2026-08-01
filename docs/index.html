@@ -91,11 +91,33 @@
     <h1>Measurements, not opinions.</h1>
     <p class="tagline">
       Everything published here has a <strong>method, raw data and a control run</strong>.
-      Where a number cannot be reproduced, it does not get written down — and where the
-      tool we build performs worse than an alternative, that is in the text too.
+      Where a number cannot be reproduced, it does not get written down. Where something
+      went wrong, that is the interesting part and gets written down first.
     </p>
   </div>
 </header>
+
+<section>
+  <div class="wrap">
+    <h2>Notes</h2>
+    <p class="sub">Build reports from real work — including the parts that went wrong.</p>
+    <div class="items">
+      <div class="item">
+        <p class="date">1 August 2026</p>
+        <h3><a href="notes/building-with-ai-what-went-wrong/">Six things went wrong building software with an AI assistant in one day</a></h3>
+        <p>
+          A wrong assumption about browser engines, a false claim caught before publication,
+          22 local paths one commit from a public repository, and three more. Sorted by what
+          actually caught them — two were caught by luck, one by nothing at all.
+        </p>
+        <div class="figures">
+          <span><b>3 of 6</b> caught by checking an external source</span>
+          <span><b>1</b> still untested in production</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section>
   <div class="wrap">
@@ -149,26 +171,6 @@
 
 <section>
   <div class="wrap">
-    <h2>Tools</h2>
-    <p class="sub">
-      Software built here. Documented like anything else on this site — including what it
-      cannot do.
-    </p>
-    <div class="items">
-      <div class="item">
-        <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
-        <p>
-          Firefox extension that saves a whole web page as one continuous PDF. Runs entirely
-          on the device, asks for <code>activeTab</code> rather than access to all sites, and
-          works on Firefox for Android. MIT licensed, source public.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
     <h2>How things are measured here</h2>
     <div class="principles">
       <div class="pr">
@@ -197,6 +199,26 @@
         <p>
           Every figure carries the date it was retrieved. Software changes; a measurement
           without a date quietly turns into a false claim.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Tools</h2>
+    <p class="sub">
+      Software built here, documented like anything else on this site — including what it
+      cannot do. It appears in some of the measurements above; that is disclosed on each of them.
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
+        <p>
+          Firefox extension that saves a whole web page as one continuous PDF. Runs on the
+          device, asks for <code>activeTab</code> rather than all-sites access, works on
+          Firefox for Android. MIT licensed.
         </p>
       </div>
     </div>

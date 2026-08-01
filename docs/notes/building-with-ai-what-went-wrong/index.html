@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Six things went wrong building software with an AI assistant in one day</title>
+<meta name="description" content="A single day of AI-assisted development, logged honestly: a wrong assumption about browser engines, a false claim that nearly got published, 22 local paths one commit away from a public repo, and three more. What caught each one — and what would not have.">
+<link rel="canonical" href="https://provinglab.dev/notes/building-with-ai-what-went-wrong/">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Six things went wrong building software with an AI assistant in one day">
+<meta property="og:description" content="Not a hype piece and not a warning. A log of what actually broke, and which check caught it.">
+<meta property="og:url" content="https://provinglab.dev/notes/building-with-ai-what-went-wrong/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-08-01">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Six things went wrong building software with an AI assistant in one day">
+<meta name="twitter:description" content="A wrong assumption, a false claim, a near-leak — and what caught each one.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Six things went wrong building software with an AI assistant in one day",
+  "description": "A logged account of failures during AI-assisted development: wrong engine assumption, unsupported factual claim, near-leak of local paths, stale documentation, storage confusion, and an untested release. Includes which control caught each.",
+  "datePublished": "2026-08-01",
+  "dateModified": "2026-08-01",
+  "inLanguage": "en",
+  "mainEntityOfPage": "https://provinglab.dev/notes/building-with-ai-what-went-wrong/",
+  "author": { "@type": "Organization", "name": "Proving Lab" },
+  "publisher": { "@type": "Organization", "name": "Proving Lab" },
+  "about": ["AI-assisted development", "software engineering", "code review", "developer tooling"]
+}
+</script>
+
+<style>
+  :root{
+    --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --acc2:#7c5cff;
+    --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.87em;
+       background:var(--card);padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:34px 0 38px;border-bottom:1px solid var(--line);margin-bottom:34px}
+  h1{font-size:clamp(1.8rem,4.6vw,2.7rem);line-height:1.15;letter-spacing:-.025em;
+     margin-bottom:20px;text-wrap:balance}
+  .standfirst{font-size:1.13rem;color:var(--dim);max-width:60ch}
+  .meta-line{margin-top:22px;font-size:.85rem;color:var(--dim)}
+
+  h2{font-size:1.42rem;line-height:1.25;margin:46px 0 14px;letter-spacing:-.015em;text-wrap:balance}
+  h3{font-size:1.05rem;margin:28px 0 8px}
+  p{margin-bottom:17px} ul,ol{margin:0 0 18px 24px} li{margin-bottom:9px}
+
+  .case{border-left:3px solid var(--line);padding-left:22px;margin:36px 0}
+  .case.caught{border-left-color:var(--good)}
+  .case.nearmiss{border-left-color:var(--warn)}
+  .case-n{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.74rem;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+  .case h2{margin-top:0}
+
+  .verdict{background:var(--card);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:18px 0 0;font-size:.94rem}
+  .verdict b{color:var(--good)}
+  .verdict.miss b{color:var(--warn)}
+
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.84rem;line-height:1.6}
+  pre code{background:none;border:none;padding:0}
+
+  blockquote{border-left:3px solid var(--line);padding-left:18px;margin:20px 0;color:var(--dim);
+    font-style:italic}
+
+  .lesson{background:var(--bg2);border:1px solid var(--line);border-radius:10px;
+    padding:24px 26px;margin:40px 0}
+  .lesson h2{margin-top:0}
+  .lesson ol{margin-bottom:0}
+  .lesson li{margin-bottom:14px}
+  .lesson strong{color:var(--tx)}
+
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:20px 22px;margin:44px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+
+  footer{margin-top:52px;padding:24px 0 64px;border-top:1px solid var(--line);
+    font-size:.83rem;color:var(--dim);line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="../../">Proving Lab</a> → Notes</p>
+
+<header>
+  <h1>Six things went wrong building software with an AI assistant in one day</h1>
+  <p class="standfirst">
+    Most writing about AI-assisted development falls into two camps: it wrote my whole app,
+    or it can't be trusted with anything. Both are useless if you actually have to ship
+    something. So here is a log of one working day — six failures, what each one would have
+    cost, and which check caught it. Two were caught by luck.
+  </p>
+  <p class="meta-line">1 August 2026 · six commits, one browser extension, one website</p>
+</header>
+
+<p>
+  The work was ordinary: port a browser extension from Manifest V2 to V3, change its
+  notification behaviour on Android, write three articles with measured data, and move the
+  site to a new domain. Nothing exotic. That is the point — the failures below are the
+  boring kind that happen on a normal day, not the dramatic kind that make headlines.
+</p>
+
+<div class="case caught">
+  <p class="case-n">Case 1 · wrong by default</p>
+  <h2>The assumption that would have doubled the work</h2>
+  <p>
+    The extension already had a Chrome MV3 branch. Porting it had required rewriting the
+    whole image pipeline, because a Chrome service worker has no DOM: no
+    <code>document.createElement("canvas")</code>, no <code>Image</code>, no blob URLs.
+    Everything moved to <code>OffscreenCanvas</code> and <code>createImageBitmap</code>.
+  </p>
+  <p>
+    The obvious inference for the Firefox port was: same again. That inference is wrong.
+    Firefox implements MV3 with an <em>event page</em>, not a service worker — the DOM stays
+    available. The entire rewrite was unnecessary:
+  </p>
+<pre><code>Firefox MV3 background: {'page': 'background.html'}
+Chrome  MV3 background: {'service_worker': 'background.js'}</code></pre>
+  <p>
+    What remained were four renames: <code>browser_action</code> → <code>action</code>,
+    <code>tabs.executeScript</code> → <code>scripting.executeScript</code>, the menu
+    context, and a dropped <code>persistent</code> key. Half a day of expected work
+    collapsed into twenty minutes.
+  </p>
+  <div class="verdict">
+    <b>Caught by:</b> reading the platform documentation instead of reasoning from the
+    adjacent case. The failure mode here is not hallucination — it is a confident,
+    plausible generalisation from one browser to another.
+  </div>
+</div>
+
+<div class="case caught">
+  <p class="case-n">Case 2 · nearly published</p>
+  <h2>A factual claim that was not just unsupported — it was false</h2>
+  <p>
+    One article compared PDF extensions by what they declare in their manifests. A draft
+    paragraph read, in essence: <em>with a server-side converter, the contents of a
+    logged-in banking view leave your machine.</em> Plausible. Consistent with the
+    permissions. Entirely wrong.
+  </p>
+  <p>
+    A check against the provider's own listing turned up this, in their words:
+  </p>
+  <blockquote>
+    “Please note that for security reasons, it is not possible to create PDFs from pages
+    that require a login, such as your webmail inbox, online banking, shopping cart
+    contents […]”
+  </blockquote>
+  <p>
+    A server-side converter fetches the URL itself, as an anonymous visitor. It never has
+    your session. The claim was not a small exaggeration — it described something the
+    product cannot do.
+  </p>
+  <p>
+    The corrected version turned out to be the better argument anyway: server-side
+    converters <em>cannot reach</em> pages behind a login, and those are exactly the
+    documents people want to archive. The honest version was stronger than the wrong one.
+  </p>
+  <div class="verdict">
+    <b>Caught by:</b> a review step that requires every factual statement about a third
+    party to be traced to a source before publication. Not by re-reading, not by thinking
+    harder. By looking it up.
+  </div>
+</div>
+
+<div class="case nearmiss">
+  <p class="case-n">Case 3 · one commit from public</p>
+  <h2>An automation quietly wrote 22 local paths into a public file</h2>
+  <p>
+    A background hook aggregates file activity into <code>CHANGELOG.md</code>. Useful in a
+    private repository. This one is public — it is the support URL on a store listing.
+  </p>
+  <p>
+    Staged for commit, the changelog contained 22 absolute paths of the form
+    <code>/home/&lt;user&gt;/repos/…</code>, plus an issue file with complete local shell
+    commands including Windows profile paths. Two build scripts had the Windows username
+    hardcoded; one of them had already been public for days.
+  </p>
+  <p>
+    Nothing here was catastrophic — usernames and directory layouts, not credentials. But
+    it is the kind of leak that accumulates silently, because the automation refills the
+    file after every run. Fixing it once is not enough; it needed a rule.
+  </p>
+  <div class="verdict miss">
+    <b>Caught by:</b> a habit of grepping the staged set for local paths before every
+    commit. Had that step been skipped — and it easily could have been, on a day with six
+    commits — it would have shipped.
+  </div>
+</div>
+
+<div class="case nearmiss">
+  <p class="case-n">Case 4 · true when written</p>
+  <h2>Documentation that contradicted the software it documented</h2>
+  <p>
+    The README promised: <em>“the finished PDF opens in your device's default PDF app.”</em>
+    Accurate when written. Two versions later the behaviour had deliberately changed —
+    nothing opens by itself any more; a notification appears and tapping it shows the file
+    in the browser's own viewer.
+  </p>
+  <p>
+    Worse, the same stale sentence sat in the German store listing, alongside a keyboard
+    shortcut that belonged to a different browser. Anyone who tried it would conclude the
+    extension was broken.
+  </p>
+  <p>
+    This is the failure mode nobody credits to AI assistance, and it is the most common
+    one: code changes, prose does not. An assistant will happily write a correct changelog
+    entry for a behaviour change and leave three other files describing the old behaviour,
+    because nobody asked about those files.
+  </p>
+  <div class="verdict miss">
+    <b>Caught by:</b> accident. The documentation was only checked because a separate
+    question required reading it. There was no process that would have found it.
+  </div>
+</div>
+
+<div class="case caught">
+  <p class="case-n">Case 5 · the word meant two things</p>
+  <h2>“Saved to the vault” — but which vault?</h2>
+  <p>
+    An API token had to be stored. It went into a locally encrypted bundle, and the result
+    was reported as <em>saved to the vault</em>. There are two stores in this setup: a
+    local encrypted file for infrastructure lookups, and a self-hosted password manager
+    that is the actual vault. The written rule says the local one must never hold
+    credentials.
+  </p>
+  <p>
+    The token was in the wrong one. It surfaced only because the operator asked a direct
+    question: <em>can you confirm the data is in the vault on the server?</em> The honest
+    answer was no.
+  </p>
+  <p>
+    The cost of not asking would have been real: the provider displays such a token exactly
+    once. On a rebuilt machine, the local bundle gone, it would have been unrecoverable.
+  </p>
+  <div class="verdict">
+    <b>Caught by:</b> the operator, not the process. The fix was to make the rule
+    executable — a command that writes to the server, reads back, compares, and refuses to
+    report success without a match.
+  </div>
+</div>
+
+<div class="case nearmiss">
+  <p class="case-n">Case 6 · green means compiled</p>
+  <h2>A release that passed every check and was never run</h2>
+  <p>
+    The MV3 port passed the linter with zero errors and zero notices. Syntax checks passed
+    on every file in both branches. No V2 identifiers remained. It shipped.
+  </p>
+  <p>
+    It had never been executed. Not once. Static analysis confirms that the code is
+    well-formed and uses the right API names — it says nothing about whether a capture
+    completes, whether the event page survives a long scroll, whether the notification
+    behaves as intended on a phone.
+  </p>
+  <p>
+    The project's own notes record two earlier bugs that survived exactly this kind of
+    clean check: an <code>ImageBitmap</code> lacking <code>naturalWidth</code>, and a
+    screenshot API silently rate-limited in one browser. Both are behaviour, not syntax.
+    Both were found by running the thing.
+  </p>
+  <div class="verdict miss">
+    <b>Caught by:</b> nothing. It is live and still untested. Written here because a log
+    that only lists solved problems is marketing.
+  </div>
+</div>
+
+<div class="lesson">
+  <h2>What actually caught things</h2>
+  <p>
+    Sorting the six by what found them is more instructive than the failures themselves.
+  </p>
+  <ol>
+    <li>
+      <strong>Checking against reality — three of six.</strong> Reading the platform docs,
+      reading the provider's own listing, grepping the staged files. In each case the wrong
+      version was internally consistent and sounded right. No amount of additional thinking
+      would have surfaced it; only contact with an external source did.
+    </li>
+    <li>
+      <strong>A human asking a pointed question — one of six.</strong> Not “is everything
+      fine?” but “confirm it is in <em>this specific place</em>.” Vague check-ins produce
+      vague reassurance. Specific questions produce answers.
+    </li>
+    <li>
+      <strong>Luck — one of six.</strong> The stale documentation was found while looking
+      for something else. That is not a process.
+    </li>
+    <li>
+      <strong>Nothing — one of six.</strong> The untested release. Every automated check
+      was green, and green meant <em>compiles and lints</em>, not <em>works</em>.
+    </li>
+  </ol>
+</div>
+
+<h2>The pattern worth taking away</h2>
+
+<p>
+  None of these were hallucinations in the popular sense — no invented API, no fabricated
+  library, no citation to a paper that does not exist. Those are easy: they fail loudly the
+  first time you run the code.
+</p>
+
+<p>
+  Every failure here was <strong>plausible</strong>. A reasonable generalisation from Chrome
+  to Firefox. A claim consistent with the permissions. Documentation that used to be true.
+  A word that means two things. Checks that were genuinely green. Plausible failures do not
+  announce themselves, which is why review-by-reading finds so few of them — reading
+  confirms internal consistency, and internal consistency is exactly what they have.
+</p>
+
+<p>
+  The practical conclusion is unglamorous. The checks that earn their keep are the ones
+  that touch something outside the work: the vendor's own documentation, a grep across
+  staged files, a read-back from the server, an actual run on real input. Everything else
+  is a second opinion from the same source.
+</p>
+
+<div class="related">
+  <h3>Measurements referenced here</h3>
+  <ul>
+    <li>
+      <a href="../../measurements/pdf-extension-permissions/">Does your PDF extension upload the page?</a>
+      — the article in which Case 2 was caught before publication
+    </li>
+    <li>
+      <a href="../../measurements/webpage-to-pdf-for-ocr/">Webpage to PDF for OCR: how much text survives?</a>
+      — a measurement that only became trustworthy through its control run
+    </li>
+    <li>
+      <a href="../../measurements/extension-permissions-risk/">An extension is only as dangerous as its permissions allow</a>
+    </li>
+  </ul>
+</div>
+
+<footer>
+  <strong>Disclosure and limits.</strong> This log covers one day of work on a browser
+  extension published by the author of this site, and on this site itself. Commit hashes,
+  the linter output and the raw measurement data are public in the
+  <a href="https://github.com/Bubu89/full-page-pdf-snap">project repository</a>, so the
+  account can be checked rather than taken on trust. It is a single day and a single
+  project — a report, not a study. Where a third party is quoted, the quote comes from
+  their own published text and is dated. Corrections via
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a>.
+  <br><br>
+  <a href="../../">← Proving Lab</a>
+</footer>
+
+</div>
+</body>
+</html>
