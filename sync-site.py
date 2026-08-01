@@ -82,6 +82,16 @@ def main():
          rf"\g<1>{v}\g<2>{v}\g<3>", "GitHub-Release-XPI"),
     ])
 
+    # Startseite: seit dem Umbau steht der Installationsknopf auch dort, mit
+    # demselben versionsgebundenen XPI-Link. Ohne diesen Block friert er auf
+    # dem Stand ein, an dem er eingebaut wurde.
+    aenderungen += patch("index.html", [
+        (r"https://addons\.mozilla\.org/firefox/downloads/file/\d+/[\w.\-]+", xpi,
+         "XPI-Direktlink Startseite"),
+        (r"(Version )\d+\.\d+\.\d+( — signed by Mozilla)", rf"\g<1>{v}\g<2>",
+         "Versionsangabe Startseite"),
+    ])
+
     # llms.txt: Versionsangabe, falls vorhanden
     aenderungen += patch("llms.txt", [
         (r"(Full Page PDF Snap[^\n]*?)version [\d.]+", rf"\g<1>version {v}", "Version"),

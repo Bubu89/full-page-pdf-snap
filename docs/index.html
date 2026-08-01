@@ -97,10 +97,48 @@
     border-bottom:2px solid transparent}
   .topnav a.n:hover{color:var(--tx);text-decoration:none}
   .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+
+  /* --- Direkter Download-Bereich --- */
+  .direkt{padding:34px 0 8px}
+  .dkarte{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:28px;display:flex;gap:30px;align-items:center;flex-wrap:wrap}
+  .dtext{flex:1 1 340px;min-width:0}
+  .dmark{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.72rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:7px}
+  .dkarte h2{font-size:1.4rem;letter-spacing:-.015em;margin-bottom:9px}
+  .dtext p{color:var(--dim);font-size:.96rem}
+  .dzahlen{display:flex;flex-wrap:wrap;gap:16px;margin-top:14px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.78rem;color:var(--dim)}
+  .dzahlen b{color:var(--acc);font-weight:600;font-variant-numeric:tabular-nums}
+  .dknopf{flex:0 1 270px;display:flex;flex-direction:column;gap:9px}
+  .dprim{display:block;text-align:center;padding:14px 22px;border-radius:10px;
+    background:var(--acc);color:#fff;font-weight:600;font-size:1rem;text-decoration:none}
+  .dprim:hover{text-decoration:none;filter:brightness(1.08)}
+  .dklein{font-size:.8rem;color:var(--dim);line-height:1.5}
+  @media (max-width:640px){ .dkarte{padding:22px;gap:20px} .dknopf{flex:1 1 100%} }
   @media (max-width:640px){
     .topnav .inner{gap:14px;padding:10px 18px}
     .topnav .brand{width:100%;margin-right:0}
     .topnav a.n{font-size:.85rem}
+    /* Auf dem Handy lag der Installationsknopf sonst knapp unterhalb des
+       ersten Bildschirms — gemessen y=939 bei 915 px Hoehe. Der Kopfbereich
+       gibt den Platz her, ohne dass Text wegfaellt. */
+    header{padding:34px 0 26px}
+    h1{margin-bottom:14px}
+    .tagline{font-size:1rem}
+    .direkt{padding:18px 0 4px}
+  }
+  /* Sehr kleine Geraete: die Belegzahlen weichen, der Knopf bleibt. Auf
+     780 px Hoehe passen Kopfbereich und Karte nicht zusammen in den ersten
+     Bildschirm — dort traegt der Knopf in der Kopfleiste, der immer steht. */
+  @media (max-width:400px){
+    .dzahlen{display:none}
+    .dkarte{padding:18px;gap:16px}
+    header{padding:26px 0 20px}
   }
 </style>
 </head>
@@ -112,6 +150,7 @@
     <a class="n" href="measurements/">Measurements</a>
     <a class="n" href="tools/">Tools</a>
     <a class="n" href="about/">About</a>
+    <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
   </div>
 </nav>
 
@@ -127,6 +166,36 @@
     </p>
   </div>
 </header>
+
+<!-- Direkter Weg zum Download. Stand hier vorher erst ganz unten, hinter
+     zwei Klicks — der Weg zum Werkzeug war laenger als der zu jedem Text. -->
+<section class="direkt">
+  <div class="wrap">
+    <div class="dkarte">
+      <div class="dtext">
+        <p class="dmark">The tool built here</p>
+        <h2>Full Page PDF Snap</h2>
+        <p>Download an entire webpage as one seamless PDF — the whole scrolling page on a
+        single sheet, no page breaks, nothing cropped. Runs on your device: no upload,
+        no account, no data collection. Free, MIT licensed, Firefox and Chrome.</p>
+        <p class="dzahlen">
+          <span><b>92.6&nbsp;%</b> of text survives OCR</span>
+          <span><b>0</b> network requests</span>
+          <span><b>activeTab</b> only</span>
+        </p>
+      </div>
+      <div class="dknopf">
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4931761/full_page_pdf_snap_webpagesave-2.16.0.xpi">Download for Firefox</a>
+        <p class="dklein">Version 2.16.0 — signed by Mozilla. Installs in one step, desktop and Android.</p>
+        <p class="dklein">
+          <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Without any store</a> ·
+          <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Chrome package</a> ·
+          <a href="tools/full-page-pdf-snap/">What it does</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section>
   <div class="wrap">

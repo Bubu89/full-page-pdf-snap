@@ -137,6 +137,10 @@
   .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
     border-bottom:2px solid transparent}
   .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
   .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
   @media (max-width:640px){
     .topnav .inner{gap:14px;padding:10px 18px}
@@ -198,6 +202,7 @@
     <a class="n" href="../../measurements/" aria-current="page">Measurements</a>
     <a class="n" href="../../tools/">Tools</a>
     <a class="n" href="../../about/">About</a>
+    <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
   </div>
 </nav>
 
