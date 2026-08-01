@@ -26,12 +26,14 @@ eigenstndige App — auf dem Telefon duft sie innerhalb von Firefox fiir Android
 funktioniert genau wie am Desktop: den Firefox-Knopf oben antippen, am Telefon.
 So sieht es aus
 Drei Klicks von der Installation bis zum fertigen PDF.
-“Toolbar popup with the capture button
-Ein Klick erfasst die ganze Seite — Toolbar-Button, Rechtsklick-Mend oder Alt+Shift+Y
-“Settings page
-Dateinamen-Vorlage, JPEG-Qualitat und Scroll-Wartezeit — alles einstellbar
-Output and resolution settings
-Eine fortlaufende Seite oder mehrseitige Ausgabe, Auflésung bis 2.0x skalierbar
+a = = o> sore tenn
+‘One click saves sro he whol page mPOF Tuned exactly ee ‘One seamless page,
+the entire page == the way you want ae not a print job
+tein ee + tinned cape Been
+RE oo eee == ome rece
+© sep en a es _ herein | genanmmemnn a -
+Ein Klick erfasst die ganze Seite — Toolbar-Button, Dateinamen-Vorlage, JPEG-Qualitat und Scroll- Eine fortlaufende Seite oder mehrseitige Ausgabe,
+Rechtsklick-Menii oder Alt+Shift+Y Wartezeit — alles einstellbar Auflosung bis 2.0x skalierbar
 Funktionen
 Gebaut fiir Seiten, mit denen ein normaler Screenshot nicht zurechtkommt.
 Vollseiten-Erfassung Kommt mit Lazy Loading klar Keine sichtbaren Kanten
@@ -44,13 +46,13 @@ Skalierung von 1.0x bis 2.0x fur scharfe Namen aus Seite, Datum, Uhrzeit, Zahler
 Schrift und Bilder auch bei langen und Seitentitel zusammensetzen. schwebende Leisten verschwinden vor
 Dokumenten. der Aufnahme.
 Keine Datenerhebung — technisch bedingt
-Die Erweiterung enthalt keine technische Funktion zur Erhebung, Speicherung oder Ubertragung
+Die Erweiterung enthait keine technische Funktion zur Erhebung, Speicherung oder Ubertragung
 von Nutzungsdaten, Jeder Schritt — Scrollen, Screenshots, PDF-Erzeugung, Speichern —
 passiert lokal im Firefox-Prozess.
 Der Anbieter erfahrt nie, welche Seiten du erfasst
-Y_ Keine Screenshots und keine PDF-Dateien verlassen dein Gerat
+Keine Screenshots und keine PDF-Dateien verlassen dein Gerat
 Y_ Keine Analytics-Bibliothek, keine Telemetrie, keine Fehlerberichte
-Y_ Keine technische Verbindung zu einem Server des Anbieters
+¥_ Keine technische Verbindung zu einem Server des Anbieters
 Y_ Vollstandiger Quellcode unter MIT-Lizenz — selbst iberpriifbar
 Standard-Einstellungen
 Sinnvoll voreingestell, alles veranderbar.
@@ -86,7 +88,7 @@ Upload Keiner. Die Verarbeitung findet im Browser statt.
 Berechtigungen  activeTab, downloads, downloads.open, storage, menus, notifications, scripting — keine Host-Berechtigungen.
 ‘Sprachen Neun: Deutsch, Englisch, Spanisch, Franzésisch, Italienisch, Portugiesisch (BR), Russisch, Japanisch, Chinesisch (vereinfacht).
 lizenz MIT. Die eingereichten Dateien sind die Quelidateien — kein Bundler, keine Minifizierung.
-Plattformen Firefox 109+ am Desktop, Firefox fir Android 127+.
+Plattformen Firefox 109+ am Desktop, Firefox fur Android 127+.
 Wer es wofiir einsetzt
 Wiederkehrende Faille aus Riickmeldungen und Issues.
 Eine Seite fiir die eigenen Sichern, bevor es verschwindet Eine Seite an OCR oder ein KI-

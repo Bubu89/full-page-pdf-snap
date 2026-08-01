@@ -44,9 +44,10 @@ SEITEN = {
     },
     "tools/full-page-pdf-snap/": {
         "name": "Produktseite",
-        "text": ["Full Page PDF Snap", "Install", "Alt+Shift+Y",
-                 "activeTab", "not a qualified electronic document"],
-        "nicht": ["Ctrl+Shift+Y", "APK"],
+        "text": ["Full Page PDF Snap", "Install", "activeTab", "qualified electronic document"],
+        # "APK" allein waere falsch: die Seite sagt legitim "there is no Android APK".
+        # Geprueft wird das FALSCHE Kuerzel und ein Versprechen, das es nicht gibt.
+        "nicht": ["Ctrl+Shift+Y", "Download APK", "APK herunterladen"],
         "bilder": 3,
     },
     "measurements/webpage-to-pdf-for-ocr/": {
@@ -73,6 +74,11 @@ SEITEN = {
 def chrome_starten():
     if not Path(CHROME).exists():
         sys.exit(f"Chrome nicht gefunden: {CHROME}")
+    # Profil verwerfen. Ohne das liefert Chrome aus dem Cache und die Pruefung
+    # bewertet einen alten Stand — am 01.08. zeigte sie deshalb leere Bilder und
+    # ein altes Layout, obwohl beides live in Ordnung war.
+    import shutil as _sh
+    _sh.rmtree("/mnt/c/Temp/pdfsnap-vischeck", ignore_errors=True)
     # Profil muss ein Windows-Pfad sein — Chrome laeuft dort, nicht in WSL.
     p = subprocess.Popen([CHROME, "--headless=new", "--disable-gpu",
                           f"--remote-debugging-port={PORT}",
@@ -99,10 +105,20 @@ def seite_aufnehmen(page, pfad, ziel):
     schlicht nie. Playwright empfaengt die Bilddaten ueber das Protokoll und
     schreibt sie selbst, deshalb funktioniert der Pfad dort.
     """
-    page.goto(f"{BASIS}/{pfad}", wait_until="networkidle", timeout=45000)
+    # Cache-Buster: sonst greift trotz frischem Profil der CDN-Zwischenspeicher
+    trenner = "&" if "?" in pfad else "?"
+    page.goto(f"{BASIS}/{pfad}{trenner}_vc={int(time.time())}",
+              wait_until="networkidle", timeout=45000)
     # Bilder brauchen einen Moment, sonst misst man leere Rahmen —
     # genau der Fehler, den diese Pruefung finden soll.
-    page.wait_for_timeout(2500)
+    # Auf tatsaechlich dekodierte Bilder warten, nicht auf eine Wartezeit hoffen
+    try:
+        page.wait_for_function(
+            "Array.from(document.images).every(i => i.complete && i.naturalHeight > 0)",
+            timeout=20000)
+    except Exception:
+        pass
+    page.wait_for_timeout(800)
     page.screenshot(path=str(ziel), full_page=True)
     return ziel.exists() and ziel.stat().st_size > 5000
 
