@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About &amp; disclosure — Proving Lab</title>
+<meta name="description" content="A private, non-commercial publication of measurements and build reports. Who runs it, how figures are produced, what it explicitly does not provide, and how to reach the operator.">
+<link rel="canonical" href="https://provinglab.dev/about/">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/about/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/about/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/about/">
+<link rel="icon" href="../icon-128.png">
+<meta name="robots" content="index, follow">
+<style>
+  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+         --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --warn:#e0a24f; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --warn:#8a5a12; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:720px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.87em;background:var(--card);
+       padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:30px 0 34px;border-bottom:1px solid var(--line);margin-bottom:26px}
+  h1{font-size:clamp(1.7rem,4vw,2.3rem);letter-spacing:-.02em;margin-bottom:14px}
+  h2{font-size:1.28rem;margin:38px 0 12px;letter-spacing:-.01em}
+  h3{font-size:1.02rem;margin:22px 0 8px}
+  p{margin-bottom:16px} ul{margin:0 0 18px 24px} li{margin-bottom:8px}
+  .lead{color:var(--dim);font-size:1.06rem}
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:20px 22px;margin:24px 0}
+  .box.warn{border-left-color:var(--warn)}
+  .box h3{margin-top:0} .box p:last-child{margin-bottom:0}
+  .lang{display:flex;gap:8px;margin:0 0 28px}
+  .lang button{font:inherit;font-size:.85rem;font-weight:600;padding:7px 16px;cursor:pointer;
+    background:var(--card);color:var(--dim);border:1px solid var(--line);border-radius:8px}
+  .lang button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
+  [data-lang]{display:none} [data-lang].on{display:block}
+  dl{margin:0 0 18px} dt{font-weight:600;margin-top:14px} dd{margin:2px 0 0;color:var(--dim)}
+  footer{margin-top:46px;padding:22px 0 60px;border-top:1px solid var(--line);
+    font-size:.85rem;color:var(--dim)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="crumb"><a href="../">Proving Lab</a> → About</p>
+
+<header>
+  <h1>About &amp; disclosure</h1>
+  <p class="lead">A private, non-commercial publication. Who runs it, how the figures are produced, and what it deliberately does not offer.</p>
+</header>
+
+<div class="lang">
+  <button id="b-en" aria-pressed="true" onclick="setLang('en')">English</button>
+  <button id="b-de" aria-pressed="false" onclick="setLang('de')">Deutsch</button>
+</div>
+
+<!-- ══════════════ ENGLISH ══════════════ -->
+<div data-lang="en" class="on">
+
+  <h2>What this site is</h2>
+  <p>
+    A personal notebook, published openly. It contains measurements on browser tools and
+    reports from building software. It exists because the results are more useful public
+    than private — not as a business.
+  </p>
+
+  <div class="box">
+    <h3>Non-commercial, and structurally so</h3>
+    <ul>
+      <li>Nothing is sold here, and nothing is offered for sale.</li>
+      <li>No advertising, no sponsored content, no affiliate links, no tracking, no newsletter.</li>
+      <li>The software discussed is free of charge and published under the MIT licence.</li>
+      <li>No payment is accepted in any form, and no service is offered against payment.</li>
+      <li>No contract comes into existence through use of this site.</li>
+    </ul>
+  </div>
+
+  <h2>Who runs it</h2>
+  <dl>
+    <dt>Operator</dt>
+    <dd>Published under the pseudonym <strong>Silence</strong> — the same handle used for the
+        software on addons.mozilla.org and on GitHub as <code>Bubu89</code>.</dd>
+    <dt>Contact</dt>
+    <dd><a href="mailto:chris.vis@goldfishgateway.com">chris.vis@goldfishgateway.com</a><br>
+        Messages are read and answered. For anything concerning the published content,
+        <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">an issue in the repository</a>
+        is faster and leaves a public record.</dd>
+    <dt>Legal contact</dt>
+    <dd>For matters requiring the operator's full identity — legal notices, formal
+        requests, right-of-reply claims — write to the address above. Identity and postal
+        details are disclosed to a legitimate requester without delay.</dd>
+  </dl>
+
+  <h2>Disclosure</h2>
+  <p>
+    This site is run by the developer of
+    <a href="../tools/full-page-pdf-snap/">Full Page PDF Snap</a>, which appears in several
+    of the published measurements. That connection is stated in every article where it is
+    relevant, and the software sits openly under <code>/tools/</code> rather than behind
+    neutral framing.
+  </p>
+  <p>
+    No product mentioned here has sponsored, reviewed or approved its coverage. Nobody pays
+    for placement, because there is no placement to buy.
+  </p>
+
+  <h2>How the figures are produced</h2>
+  <ul>
+    <li>Every figure carries the date it was obtained and the tool that produced it.</li>
+    <li>Raw data is published alongside, so numbers can be checked rather than believed.</li>
+    <li>Each method runs against a reference case first — a method that does not fail where it should is not measuring anything.</li>
+    <li>Statements about third-party products come exclusively from publicly declared data: manifests, listing descriptions, public APIs, and the providers' own words. Retrieval date always given.</li>
+    <li>Nothing has been decompiled. No claim is made about any provider's intentions or about data actually transmitted — only about what is publicly declared.</li>
+  </ul>
+
+  <div class="box warn">
+    <h3>What this site does not provide</h3>
+    <p>
+      Nothing here is legal, security, tax or financial advice. Measurements are single runs
+      on specific inputs on a specific day — reports, not studies. Software changes
+      continuously; a figure from August 2026 may be wrong three months later. Verify
+      against the live source before relying on anything.
+    </p>
+    <p>
+      In particular: a PDF produced by screen capture is <strong>not a qualified electronic
+      document</strong>. It carries no qualified signature, no trusted timestamp and no
+      chain of custody. It records what a browser displayed at a moment in time — suitable
+      for your own records, not equivalent to notarised or court-grade preservation of
+      evidence.
+    </p>
+    <p>
+      No liability is accepted for decisions taken on the basis of content published here,
+      to the extent permitted by law. Statutory liability for intent and gross negligence
+      remains unaffected.
+    </p>
+  </div>
+
+  <h2>External links</h2>
+  <p>
+    Links point to content operated by others. Their content is their responsibility; at the
+    time of linking no infringement was apparent. If a linked page later becomes unlawful,
+    a note to the contact above removes the link.
+  </p>
+
+  <h2>Corrections</h2>
+  <p>
+    If something here is wrong, say so and it gets corrected — in the article itself, not as
+    an appended footnote. <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">Open an issue</a>
+    or use the contact address. Substantive corrections are noted with their date.
+  </p>
+
+  <h2>Reuse</h2>
+  <p>
+    Text and data may be reused with attribution and a link. The software is published under
+    the MIT licence.
+  </p>
+</div>
+
+<!-- ══════════════ DEUTSCH ══════════════ -->
+<div data-lang="de">
+
+  <h2>Was diese Seite ist</h2>
+  <p>
+    Ein persönliches Notizbuch, offen veröffentlicht. Es enthält Messungen zu Browser-Werkzeugen
+    und Berichte aus der Softwareentwicklung. Es existiert, weil die Ergebnisse öffentlich mehr
+    nützen als privat — nicht als Geschäft.
+  </p>
+
+  <div class="box">
+    <h3>Nicht-kommerziell, und zwar strukturell</h3>
+    <ul>
+      <li>Hier wird nichts verkauft und nichts zum Verkauf angeboten.</li>
+      <li>Keine Werbung, keine bezahlten Beiträge, keine Affiliate-Links, kein Tracking, kein Newsletter.</li>
+      <li>Die besprochene Software ist kostenlos und steht unter der MIT-Lizenz.</li>
+      <li>Es werden keinerlei Zahlungen entgegengenommen und keine Leistungen gegen Entgelt angeboten.</li>
+      <li>Durch die Nutzung dieser Seite kommt kein Vertrag zustande.</li>
+    </ul>
+  </div>
+
+  <h2>Wer sie betreibt</h2>
+  <dl>
+    <dt>Betreiber</dt>
+    <dd>Veröffentlichung unter dem Pseudonym <strong>Silence</strong> — dasselbe Kürzel wie für
+        die Software auf addons.mozilla.org und auf GitHub als <code>Bubu89</code>.</dd>
+    <dt>Kontakt</dt>
+    <dd><a href="mailto:chris.vis@goldfishgateway.com">chris.vis@goldfishgateway.com</a><br>
+        Nachrichten werden gelesen und beantwortet. Für alles, was die veröffentlichten Inhalte
+        betrifft, ist <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">ein Issue im Repository</a>
+        schneller und öffentlich nachvollziehbar.</dd>
+    <dt>Rechtlicher Kontakt</dt>
+    <dd>Für Angelegenheiten, die die vollständige Identität des Betreibers erfordern —
+        rechtliche Hinweise, förmliche Aufforderungen, Gegendarstellungsbegehren — genügt eine
+        Nachricht an die obige Adresse. Identität und Anschrift werden einem berechtigten
+        Anfragenden unverzüglich mitgeteilt.</dd>
+  </dl>
+
+  <h2>Offenlegung</h2>
+  <p>
+    Diese Seite wird vom Entwickler der Erweiterung
+    <a href="../tools/full-page-pdf-snap/">Full Page PDF Snap</a> betrieben, die in mehreren der
+    veröffentlichten Messungen vorkommt. Dieser Zusammenhang wird in jedem Artikel genannt, in
+    dem er eine Rolle spielt, und die Software liegt offen unter <code>/tools/</code> statt hinter
+    neutraler Aufmachung.
+  </p>
+  <p>
+    Kein hier erwähntes Produkt hat seine Erwähnung gesponsert, gegengelesen oder freigegeben.
+    Niemand zahlt für eine Platzierung, weil es keine zu kaufen gibt.
+  </p>
+
+  <h2>Wie die Zahlen entstehen</h2>
+  <ul>
+    <li>Jede Zahl trägt das Datum der Erhebung und das verwendete Werkzeug.</li>
+    <li>Die Rohdaten werden mitveröffentlicht — Zahlen sollen prüfbar sein, nicht geglaubt werden müssen.</li>
+    <li>Jede Methode läuft zuerst gegen einen Referenzfall: Ein Verfahren, das dort nicht durchfällt, wo es durchfallen muss, misst nichts.</li>
+    <li>Aussagen über fremde Produkte stammen ausschließlich aus öffentlich deklarierten Daten: Manifeste, Store-Beschreibungen, offene Schnittstellen und die eigenen Angaben der Anbieter. Das Abrufdatum wird stets genannt.</li>
+    <li>Es wurde nichts dekompiliert. Es wird keine Aussage über Absichten eines Anbieters oder über tatsächlich übertragene Daten getroffen — nur darüber, was öffentlich deklariert ist.</li>
+  </ul>
+
+  <div class="box warn">
+    <h3>Was diese Seite ausdrücklich nicht leistet</h3>
+    <p>
+      Nichts hier ist Rechts-, Sicherheits-, Steuer- oder Finanzberatung. Messungen sind
+      Einzelläufe mit bestimmten Eingaben an einem bestimmten Tag — Berichte, keine Studien.
+      Software ändert sich laufend; eine Zahl von August 2026 kann drei Monate später falsch
+      sein. Vor jeder Verwendung gegen die Live-Quelle prüfen.
+    </p>
+    <p>
+      Insbesondere: Ein durch Bildschirmaufnahme erzeugtes PDF ist <strong>kein qualifiziertes
+      elektronisches Dokument</strong>. Es trägt keine qualifizierte Signatur, keinen
+      vertrauenswürdigen Zeitstempel und keine lückenlose Nachweiskette. Es hält fest, was ein
+      Browser zu einem Zeitpunkt angezeigt hat — geeignet für die eigenen Unterlagen, nicht
+      gleichzusetzen mit notarieller oder gerichtsfester Beweissicherung.
+    </p>
+    <p>
+      Für Entscheidungen, die auf hier veröffentlichten Inhalten beruhen, wird im gesetzlich
+      zulässigen Rahmen keine Haftung übernommen. Die gesetzliche Haftung für Vorsatz und grobe
+      Fahrlässigkeit bleibt unberührt.
+    </p>
+  </div>
+
+  <h2>Externe Verweise</h2>
+  <p>
+    Verweise führen zu Inhalten, die andere betreiben. Für deren Inhalte sind ausschließlich
+    diese verantwortlich; zum Zeitpunkt der Verlinkung war kein Rechtsverstoß erkennbar. Wird
+    eine verlinkte Seite später rechtswidrig, genügt ein Hinweis an die obige Adresse und der
+    Verweis wird entfernt.
+  </p>
+
+  <h2>Korrekturen</h2>
+  <p>
+    Wenn hier etwas falsch ist, sagen Sie es — es wird korrigiert, und zwar im Artikel selbst,
+    nicht als angehängte Fußnote.
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">Issue eröffnen</a> oder die
+    Kontaktadresse nutzen. Inhaltliche Korrekturen werden mit Datum vermerkt.
+  </p>
+
+  <h2>Weiterverwendung</h2>
+  <p>
+    Texte und Daten dürfen mit Quellenangabe und Link weiterverwendet werden. Die Software steht
+    unter der MIT-Lizenz.
+  </p>
+</div>
+
+<footer>
+  <a href="../">← Proving Lab</a> · <a href="../privacy.html">Privacy</a>
+</footer>
+
+<script>
+function setLang(l){
+  document.querySelectorAll('[data-lang]').forEach(function(e){
+    e.classList.toggle('on', e.getAttribute('data-lang') === l);
+  });
+  document.getElementById('b-en').setAttribute('aria-pressed', l === 'en');
+  document.getElementById('b-de').setAttribute('aria-pressed', l === 'de');
+  document.documentElement.lang = l;
+}
+if ((navigator.language || '').slice(0,2) === 'de') setLang('de');
+</script>
+
+</div>
+</body>
+</html>

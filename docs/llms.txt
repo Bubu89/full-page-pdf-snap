@@ -27,5 +27,6 @@ measurements. Disclosed on every page where it is relevant.
 
 ## Optional
 
+- [About and disclosure](https://provinglab.dev/about/): Private, non-commercial publication — nothing sold, no advertising, no affiliate links, no tracking. Operated under the pseudonym Silence; full identity disclosed to a legitimate legal requester. States the limits explicitly: nothing here is legal advice, and a screen-capture PDF is not a qualified electronic document.
 - [Privacy policy](https://provinglab.dev/privacy.html)
 - [Source code](https://github.com/Bubu89/full-page-pdf-snap)
