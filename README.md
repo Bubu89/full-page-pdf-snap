@@ -32,6 +32,30 @@ The extension has **no technical capability to collect data**. All processing �
 - No analytics library, no telemetry, no error reporting
 - The author never learns which pages you capture
 
+### It cannot see the pages you browse
+
+Most extensions in this category request `<all_urls>` — permanent read access to
+every site you visit. This one does not. The full permission list from
+[`manifest.json`](manifest.json):
+
+| Permission | What it allows |
+|---|---|
+| `activeTab` | Read the current tab — only while you start a capture on it |
+| `downloads` | Write the finished PDF to your download folder |
+| `downloads.open` | Open that file afterwards, if you ask for it |
+| `storage` | Keep your settings on this device |
+| `menus` | The context-menu entry and its quick switches |
+| `notifications` | Report that a capture finished or failed |
+| `scripting` | Inject the capture script into that one tab |
+
+No `host_permissions`, no `content_scripts` entry, and
+`data_collection_permissions: ["none"]` — which is how Firefox 140+ states in the
+install dialog that nothing is collected.
+
+The single `fetch()` in the source reads a `data:` URL to turn the finished PDF
+into a blob ([`background.js`](background.js), `dataUrlToBlob`). It is not a
+network call; there is no other one anywhere in the code.
+
 The full source is in this repository under the MIT license, so you can verify all of the above.
 
 ## How to use it
@@ -44,7 +68,7 @@ The full source is in this repository under the MIT license, so you can verify a
 
 **Android**
 
-Open the menu, tap the extension — the capture starts immediately without an intermediate popup. The finished PDF opens in your device's default PDF app.
+Open the menu, tap the extension — the capture starts immediately without an intermediate popup. Nothing reports progress while it runs; a single notification appears once the PDF is ready. Tapping that notification shows the PDF in Firefox's own viewer, where the download control sits next to it. Either way the file is already in your download folder.
 
 ![Settings](screenshots/02_settings_en.png)
 
@@ -100,10 +124,21 @@ Speichert eine komplette Webseite als hochauflösendes PDF. Auto-Scroll erfasst 
 
 Die Erweiterung enthält **technisch keine Funktion zur Datenerhebung**. Die gesamte Verarbeitung findet lokal im Firefox-Prozess statt: kein Server des Autors wird kontaktiert, keine Analytics, keine Telemetrie. Der Autor erfährt zu keinem Zeitpunkt, welche Seiten erfasst werden. Der Quellcode liegt vollständig in diesem Repository (MIT-Lizenz) und ist überprüfbar.
 
+Vor allem aber: Die Erweiterung **sieht die Seiten nicht, die Sie besuchen**. Die
+meisten Erweiterungen dieser Kategorie verlangen `<all_urls>` — dauerhaften
+Lesezugriff auf jede Website. Diese nicht. Sie kommt mit `activeTab` aus, also
+Zugriff auf genau den einen Tab, und das nur in dem Moment, in dem Sie dort eine
+Aufnahme starten. Keine `host_permissions`, kein `content_scripts`-Eintrag. Die
+vollständige Liste steht oben im englischen Teil und in
+[`manifest.json`](manifest.json).
+
 ## Auslösen
 
 - **Desktop:** Toolbar-Icon → **Jetzt aufnehmen**, Tastenkürzel `Alt+Shift+Y`, oder Rechtsklick auf das Toolbar-Icon
-- **Android:** Menü → Erweiterung antippen, die Aufnahme startet sofort
+- **Android:** Menü → Erweiterung antippen, die Aufnahme startet sofort. Während
+  der Aufnahme meldet sich nichts; erst wenn das PDF fertig ist, kommt eine
+  einzige Benachrichtigung. Ein Tippen darauf zeigt das PDF im Firefox-Viewer,
+  wo die Download-Schaltfläche daneben sitzt. Gespeichert ist es ohnehin schon.
 
 ## Support
 
