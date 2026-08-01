@@ -496,6 +496,75 @@
   </div>
 </section>
 
+
+<!-- ---------- Erfahrungsberichte ---------- -->
+<section id="reports">
+  <div class="wrap">
+    <div data-lang="en" class="on">
+      <h2>User reports</h2>
+      <p class="sub">
+        There is no rating widget here and no comment box that collects your email. Reports
+        live in the project's public discussion board, where they stay readable, searchable
+        and editable by their authors — and where an answer is a conversation rather than a
+        reply nobody sees.
+      </p>
+      <div class="grid">
+        <div class="card">
+          <h3>Share how you use it</h3>
+          <p>Which pages you capture, what settings you settled on, where it saved you time. Concrete cases help more people than a star rating.</p>
+          <p style="margin-top:10px"><a href="https://github.com/Bubu89/full-page-pdf-snap/discussions/categories/show-and-tell"><strong>Post a report →</strong></a></p>
+        </div>
+        <div class="card">
+          <h3>Ask something</h3>
+          <p>Anything about settings, Android, OCR workflows or why a specific page misbehaves. Answers stay public, so the next person finds them.</p>
+          <p style="margin-top:10px"><a href="https://github.com/Bubu89/full-page-pdf-snap/discussions/categories/q-a"><strong>Ask a question →</strong></a></p>
+        </div>
+        <div class="card">
+          <h3>Suggest a feature</h3>
+          <p>What is missing, what gets in your way. Suggestions with a concrete use case behind them tend to get built.</p>
+          <p style="margin-top:10px"><a href="https://github.com/Bubu89/full-page-pdf-snap/discussions/categories/ideas"><strong>Suggest →</strong></a></p>
+        </div>
+        <div class="card">
+          <h3>Rate it in the store</h3>
+          <p>A short review on the add-on listing helps people who will never read this page. It takes a minute and needs no account beyond a Firefox one.</p>
+          <p style="margin-top:10px"><a href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/reviews/"><strong>Write a review →</strong></a></p>
+        </div>
+      </div>
+    </div>
+    <div data-lang="de">
+      <h2>Erfahrungsberichte</h2>
+      <p class="sub">
+        Hier gibt es kein Bewertungs-Widget und kein Kommentarfeld, das Ihre E-Mail-Adresse
+        einsammelt. Berichte stehen im öffentlichen Diskussionsbereich des Projekts — dort
+        bleiben sie lesbar, durchsuchbar und von den Verfassern selbst änderbar, und eine
+        Antwort ist ein Gespräch statt einer Rückmeldung, die niemand sieht.
+      </p>
+      <div class="grid">
+        <div class="card">
+          <h3>Schildern Sie Ihren Einsatz</h3>
+          <p>Welche Seiten Sie erfassen, welche Einstellungen sich bewährt haben, wo es Zeit gespart hat. Konkrete Fälle helfen mehr als Sterne.</p>
+          <p style="margin-top:10px"><a href="https://github.com/Bubu89/full-page-pdf-snap/discussions/categories/show-and-tell"><strong>Bericht schreiben →</strong></a></p>
+        </div>
+        <div class="card">
+          <h3>Etwas fragen</h3>
+          <p>Zu Einstellungen, Android, OCR-Abläufen oder dazu, warum eine bestimmte Seite zickt. Antworten bleiben öffentlich, damit der Nächste sie findet.</p>
+          <p style="margin-top:10px"><a href="https://github.com/Bubu89/full-page-pdf-snap/discussions/categories/q-a"><strong>Frage stellen →</strong></a></p>
+        </div>
+        <div class="card">
+          <h3>Funktion vorschlagen</h3>
+          <p>Was fehlt, was im Weg steht. Vorschläge mit einem konkreten Anwendungsfall dahinter werden am ehesten umgesetzt.</p>
+          <p style="margin-top:10px"><a href="https://github.com/Bubu89/full-page-pdf-snap/discussions/categories/ideas"><strong>Vorschlagen →</strong></a></p>
+        </div>
+        <div class="card">
+          <h3>Im Store bewerten</h3>
+          <p>Eine kurze Bewertung im Add-on-Verzeichnis erreicht Menschen, die diese Seite nie lesen werden. Eine Minute, und es braucht nur ein Firefox-Konto.</p>
+          <p style="margin-top:10px"><a href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/reviews/"><strong>Bewertung schreiben →</strong></a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ---------- Support ---------- -->
 <section style="border-bottom:none">
   <div class="wrap" style="text-align:center">
@@ -512,14 +581,27 @@
   </div>
 </section>
 
+<section class="faqsec">
+  <div class="wrap">
 <div class="faq">
-<h2>Questions</h2>
-  <details><summary>Is it really free, or is there a paid tier later?</summary><p>Free, with no paid tier. No ads, no account, no watermark, no page limit, no expiring trial. It is published under the MIT licence, so the source stays available regardless of what happens to the project.</p></details>
+<h2><span data-lang="en" class="on">Questions</span><span data-lang="de">Häufige Fragen</span></h2>
+  <div data-lang="en" class="on">
+<details><summary>Is it really free, or is there a paid tier later?</summary><p>Free, with no paid tier. No ads, no account, no watermark, no page limit, no expiring trial. It is published under the MIT licence, so the source stays available regardless of what happens to the project.</p></details>
   <details><summary>Does the page get uploaded to a server?</summary><p>No. Capture and PDF assembly happen in the browser. The extension declares no host permissions and makes no network requests. You can verify this yourself: about:debugging → Inspect → Network, then run a capture and watch that nothing appears.</p></details>
   <details><summary>Does it work on a phone?</summary><p>Yes, on Firefox for Android 127 and later. Tap the icon, wait for the completion notification, tap that to view the PDF in Firefox itself. The file is in the download folder either way.</p></details>
   <details><summary>Which permissions does it request, and why?</summary><p>activeTab, downloads, downloads.open, storage, menus, notifications and scripting — and no host permissions. activeTab means it can read a page only while you start a capture on it, unlike extensions that request access to every site you visit.</p></details>
   <details><summary>Can I use the PDF as legal evidence?</summary><p>It is not a qualified electronic document: no qualified signature, no trusted timestamp, no chain of custody. It documents what a browser displayed at a moment in time, which is suitable for your own records. Where evidentiary weight matters, use a service built for that purpose.</p></details>
 </div>
+<div data-lang="de" class="faqde">
+  <details><summary>Ist es wirklich kostenlos, oder kommt später eine Bezahlstufe?</summary><p>Kostenlos, ohne Bezahlstufe. Keine Werbung, kein Konto, kein Wasserzeichen, kein Seitenlimit, keine ablaufende Testphase. Veröffentlicht unter der MIT-Lizenz — der Quellcode bleibt verfügbar, unabhängig davon, was mit dem Projekt geschieht.</p></details>
+  <details><summary>Wird die Seite auf einen Server hochgeladen?</summary><p>Nein. Aufnahme und PDF-Erzeugung finden im Browser statt. Die Erweiterung deklariert keine Host-Berechtigungen und stellt keine Netzwerkanfragen. Sie können es selbst prüfen: about:debugging → Untersuchen → Netzwerkanalyse, dann eine Aufnahme starten und beobachten, dass nichts erscheint.</p></details>
+  <details><summary>Funktioniert es am Telefon?</summary><p>Ja, auf Firefox für Android ab Version 127. Symbol antippen, auf die Fertig-Meldung warten, diese antippen — dann steht das PDF im Firefox-Viewer. Im Download-Ordner liegt es ohnehin.</p></details>
+  <details><summary>Welche Berechtigungen verlangt es, und wofür?</summary><p>activeTab, downloads, downloads.open, storage, menus, notifications und scripting — keine Host-Berechtigungen. activeTab bedeutet: Die Erweiterung kann eine Seite nur lesen, während Sie dort eine Aufnahme starten. Anders als Erweiterungen, die Zugriff auf jede besuchte Seite verlangen.</p></details>
+  <details><summary>Kann ich das PDF als Beweismittel verwenden?</summary><p>Es ist kein qualifiziertes elektronisches Dokument: keine qualifizierte Signatur, kein vertrauenswürdiger Zeitstempel, keine lückenlose Nachweiskette. Es dokumentiert, was ein Browser zu einem Zeitpunkt angezeigt hat — geeignet für die eigenen Unterlagen. Wo es auf Beweiskraft ankommt, gehört ein dafür gebauter Dienst eingesetzt.</p></details>
+</div>
+</div>
+  </div>
+</section>
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
