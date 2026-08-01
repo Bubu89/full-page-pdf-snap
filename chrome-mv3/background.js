@@ -61,6 +61,11 @@ let _lastFallbackTabId = null;  // Wenn Save via Tab-Open Notfall lief
 // Aufnahme gueltig, damit ein Tippen auf "Fertig" das PDF im Firefox-Viewer
 // zeigen kann — dort gibt es die Download-Option.
 let _lastPdfUrl = null;
+// Einmalige, abschaltbare Bitte um eine Bewertung. Kein Netzwerkzugriff:
+// gezaehlt wird lokal, und geoeffnet wird nur, wenn der Nutzer antippt.
+const BEWERTUNG_AB = 5;                    // ab der wievielten Aufnahme
+const BEWERTUNG_URL = "https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/reviews/";
+let _reviewNotifId = null;
 
 async function getDefaults() {
   const p = await getPlatform();
@@ -767,6 +772,7 @@ async function captureFullPageInner(tab, settings) {
       if (!platform.isAndroid) notifyError("Download nicht rechtzeitig fertig.");
     }
 
+    vielleichtNachBewertungFragen();
     return { ok: true, downloadId: id, filename: relPath, pages: pages.length, segments: segments.length };
   } finally {
     // Auf Android bleibt die URL bestehen: der Nutzer tippt die Fertig-Meldung
@@ -1076,6 +1082,11 @@ browser.action.onClicked.addListener(async () => {
 // Wenn noch nichts fertig ist: Feedback geben statt still zu bleiben.
 if (browser.notifications && browser.notifications.onClicked) {
   browser.notifications.onClicked.addListener(async (notifId) => {
+    if (notifId === "pdfsnap-review") {
+      try { await browser.tabs.create({ url: BEWERTUNG_URL, active: true }); }
+      catch (e) { log("review tab failed:", e); }
+      return;
+    }
     if (_captureInFlight && _lastDownloadId == null && _lastFallbackTabId == null) {
       try {
         browser.notifications.create("pdfsnap-progress", {
@@ -1126,6 +1137,32 @@ if (browser.notifications && browser.notifications.onClicked) {
       notifyError("Konnte PDF nicht oeffnen. Datei: " + _lastFilename);
     }
   });
+}
+
+/* Fragt genau EINMAL nach einer Bewertung, fruehestens nach BEWERTUNG_AB
+ * erfolgreichen Aufnahmen. Danach nie wieder — der Merker bleibt gesetzt,
+ * auch wenn der Nutzer nicht reagiert. Abschaltbar in den Einstellungen.
+ *
+ * Bewusst eine Notification und kein Popup: Ein Dialog mitten im Ablauf waere
+ * genau die Sorte Unterbrechung, die diese Erweiterung sonst vermeidet. */
+async function vielleichtNachBewertungFragen() {
+  try {
+    const s = await browser.storage.local.get({
+      counter: 0, askedForReview: false, reviewPromptOff: false
+    });
+    if (s.reviewPromptOff || s.askedForReview) return;
+    if ((s.counter || 0) < BEWERTUNG_AB) return;
+    await browser.storage.local.set({ askedForReview: true });
+    await sleep(2500);                       // nicht ueber die Fertig-Meldung legen
+    const id = "pdfsnap-review";
+    _reviewNotifId = id;
+    browser.notifications?.create(id, {
+      type: "basic",
+      iconUrl: browser.runtime.getURL("icons/icon-48.png"),
+      title: "Full Page PDF Snap",
+      message: `Schon ${s.counter} Seiten aufgenommen. Wenn es taugt: eine kurze Bewertung hilft anderen beim Finden. Tippen zum Oeffnen — sonst einfach wegwischen.`
+    });
+  } catch (_) { /* Benachrichtigungen ggf. nicht erlaubt — dann eben nicht */ }
 }
 
 function notifyError(text) {

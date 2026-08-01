@@ -30,7 +30,8 @@ const DEFAULTS = {
   uiLanguage: "auto",
   appLayout: "context",
   afterCapture: "show",
-  captureScale: 1.0
+  captureScale: 1.0,
+  reviewPromptOff: false
 };
 
 const $ = id => document.getElementById(id);
@@ -112,6 +113,7 @@ async function load() {
   $("singlePagePdf").value = s.singlePagePdf ? "true" : "false";
   $("pageHeightPx").value = String(s.pageHeightPx || 2400);
   $("tilePx").value = String(s.tilePx || 4000);
+  $("reviewPromptOff").checked = !!s.reviewPromptOff;
   $("hideSticky").checked = s.hideSticky !== false;
   $("uiLanguage").value = s.uiLanguage || "auto";
   $("appLayout").value = s.appLayout || "context";
@@ -145,6 +147,7 @@ $("save").addEventListener("click", async () => {
     pageHeightPx: Math.max(400, Math.min(8000, parseInt($("pageHeightPx").value, 10) || 2400)),
     tilePx: Math.max(800, Math.min(8000, parseInt($("tilePx").value, 10) || 4000)),
     hideSticky: $("hideSticky").checked,
+    reviewPromptOff: $("reviewPromptOff").checked,
     uiLanguage: $("uiLanguage").value,
     appLayout: $("appLayout").value,
     afterCapture: $("afterCapture").value,
