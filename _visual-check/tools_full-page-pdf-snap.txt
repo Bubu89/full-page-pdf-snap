@@ -2,23 +2,24 @@ Speichert jede Webseite als ein nahtloses, hochauflésendes PDF.
 Auto-Scroll erfasst die ganze Seite — kein Zuschneiden, kein
 Druckdialog, kein Upload.
 Zu Firefox hinzufiigen Quellcode ansehen
-Firefox 109+ Android 127+ » MIT - Keine Datenerhebung
+Firefox 109+ - Android 127+ - MIT - Keine Datenerhebung
 Installation
-Fur keinen dieser Wege braucht es ein Konto — weder bei Firefox noch im Store. Drei Wege, je
+Fiir keinen dieser Wege braucht es ein Konto — weder bei Firefox noch im Store. Drei Wege, je
 nachdem, wie viel Store Ihnen recht ist.
 Firefox — Desktop und Android Firefox — ganz ohne Store Chrome — vorerst von Hand
-Ein Klick Offnet direkt den Dieselbe signierte Datei, ausgeliefert Der Chrome Web Store unterbindet
-Installationsdialog. Die Datei liegt bei ber die Release-Seite des Projekts. Installationen von auBerhalb, deshalb
-Mozilla und ist von dort signiert — Firefox pruft Mozillas Signatur, nicht die muss das Paket manuel geladen werden:
-dadurch funktionieren die automatischen Herkunft — die Installation lauft 1, Herunterladen und entpacken - 2.
-Updates weiter. identisch. Kein Konto, kein Store chrome: //extensions offnen -3.
-dazwischen. Entwicklermodus einschalten - 4. Entpackte
+Ein Klick offnet direkt den Ebenfalls ein Klick — dieselbe signierte Der Chrome Web Store unterbindet
+Installationsdialog. Die Datei liegt bei Datei, ausgeliefert uber die Release-Seite Installationen von auBerhalb, deshalb
+Mozilla und ist von dort signiert — des Projekts. Firefox pruft Mozillas muss das Paket manuell geladen werden:
+dadurch funktionieren die automatischen Signatur, nicht die Herkunft; der 1. Herunterladen und entpacken - 2
+Updates weiter. Installationsdialog offnet sich genau wie chrome: //extensions 6ffnen - 3.
+oben. Kein Konto, kein Store dazwischen, Entwicklermodus einschalten - 4. Entpackte
 Version 2.16.0 installieren Erweiterung laden, Ordner wahlen
-Signiertes XPI herunterladen
+Ohne Store installieren
 Lieber iiber das Verzeichnis? Auf Chrome-Paket herunterladen
-addons.mozilla.org offnen — dieselbe Datei, Der Preis dafiir: So installiert, aktualisiert sie
-dazu Bewertungen und Berechtigungsdetails. sich nicht selbst. Fair die nachste Version ‘So geladen aktualisiert es sich nicht selbst.
-kamen Sie wieder hierher. Die Store-Fassung liegt in Priifung; sobald sie
+addons.mozilla.org 6ffnen — dieselbe Datei, Der Preis dafiir So installiert, aktualisiert sie (ziP)
+dazu Bewertungen und Berechtigungsdetails. sich nicht selbst — fiir die nachste Version
+kamen Sie wieder hierher. Alles andere ist So geladen aktualisiert es sich nicht selbst.
+identisch. Die Store-Fassung liegt in Prifung; sobald sie
 freigegeben ist, ist der Weg dariiber der
 bessere.
 Ein Android-APK gibt es nicht und wird es nicht geben. Dies ist eine Browser-Erweiterung, keine
@@ -26,21 +27,21 @@ eigenstndige App — auf dem Telefon duft sie innerhalb von Firefox fiir Android
 funktioniert genau wie am Desktop: den Firefox-Knopf oben antippen, am Telefon.
 So sieht es aus
 Drei Klicks von der Installation bis zum fertigen PDF.
-a = = o> sore tenn
-‘One click saves sro he whol page mPOF Tuned exactly ee ‘One seamless page,
-the entire page == the way you want ae not a print job
-tein ee + tinned cape Been
-RE oo eee == ome rece
-© sep en a es _ herein | genanmmemnn a -
+=> = . = es => — —s
+One click saves seth pge srr Tuned exactly co One seamless page,
+the entire page the way you want cata not a print job
++ fobercoton mens ot os | lename tmp mi te, ae, ime caee tn ae 1+ The page ena ayo sa
+one nr—— a) + tenet es ed
+eee + haeenttteretiyem | ayn oes .
 Ein Klick erfasst die ganze Seite — Toolbar-Button, Dateinamen-Vorlage, JPEG-Qualitat und Scroll- Eine fortlaufende Seite oder mehrseitige Ausgabe,
 Rechtsklick-Menii oder Alt+Shift+Y Wartezeit — alles einstellbar Auflosung bis 2.0x skalierbar
 Funktionen
 Gebaut fiir Seiten, mit denen ein normaler Screenshot nicht zurechtkommt.
 Vollseiten-Erfassung Kommt mit Lazy Loading klar Keine sichtbaren Kanten
-Die komplette scrollbare Seite in einem Auto-Scroll mit einstellbarer Wartezeit Die Single-Page-Ausgabe fugt alle
+Die komplette scrollbare Seite in einem Auto-Scroll mit einstellbarer Wartezeit Die Single-Page-Ausgabe fuigt alle
 PDF, nicht nur der sichtbare Bereich. erfasst Inhalte, die erst beim Scrollen Abschnitte zu einer fortlaufenden Seite
-laden — LinkedIn, X/Twitter, zusammen, Ideal fur OCR und KI-
-Nachrichtenportale, Werkzeuge.
+laden — Linkedin, X/Twitter, zusammen. Ideal fiir OCR und KI-
+Nachrichtenportale. Werkzeuge.
 Hohe Auflésung Dateinamen-Vorlagen Sticky-Elemente ausblenden
 Skalierung von 1.0x bis 2.0x fur scharfe Namen aus Seite, Datum, Uhrzeit, Zahler Cookie-Banner, Chat-Widgets und
 Schrift und Bilder auch bei langen und Seitentitel zusammensetzen. schwebende Leisten verschwinden vor
@@ -50,10 +51,10 @@ Die Erweiterung enthait keine technische Funktion zur Erhebung, Speicherung oder
 von Nutzungsdaten, Jeder Schritt — Scrollen, Screenshots, PDF-Erzeugung, Speichern —
 passiert lokal im Firefox-Prozess.
 Der Anbieter erfahrt nie, welche Seiten du erfasst
-Keine Screenshots und keine PDF-Dateien verlassen dein Gerat
+VY Keine Screenshots und keine PDF-Dateien verlassen dein Gert
 Y_ Keine Analytics-Bibliothek, keine Telemetrie, keine Fehlerberichte
-¥_ Keine technische Verbindung zu einem Server des Anbieters
-Y_ Vollstandiger Quellcode unter MIT-Lizenz — selbst iberpriifbar
+Y_ Keine technische Verbindung zu einem Server des Anbieters
+Y_ Vollstandiger Quellcode unter MIT-Lizenz — selbst diberprifbar
 Standard-Einstellungen
 Sinnvoll voreingestell, alles veranderbar.
 Einstellung Desktop Android
@@ -65,10 +66,10 @@ Sticky ausblenden An An
 Nach der Aufnahme Ordner zeigen PDF offnen
 Capture-Skalierung 15x 1.0x
 Messungen
-Selbst durchgefiihrte Tests, mit Zahlen und den Befehlen zum Nachvollziehen.
-Webseite als PDF fiir OCR: wie viel Text iiberlebt?
+Selbst durchgefilhrte Tests, mit Zahlen und den Befehlen zum Nachvollziehen.
+Webseite als PDF fiir OCR: wie viel Text tiberlebt?
 Ein Screenshot-PDF gegen den Originaltext gemessen: 92,6 % des Wortschatzes kommen
-zurlick, alle acht kritischen Werte korrekt gelesen — und eine harte Auflésungsschwelle
+zuriick, alle acht kritischen Werte korrekt gelesen — und eine harte Auflésungsschwelle
 zwischen 72 und 110 dpi, an der die Erkennung kippt.
 Ladt deine PDF-Erweiterung die Seite hoch? So priifst du es selbst
 Eine Priifung in 30 Sekunden, was die aktuellen PDF-Erweiterungen in ihren Manifesten
@@ -76,7 +77,7 @@ deklarieren — und die Folge, die niemand erwahnt: Server-Konverter erreichen k
 hinter einem Login.
 Eine Erweiterung ist nur so gefahrlich, wie ihre Berechtigungen es zulassen
 Ein Jahr nach Mozillas Warnung vor gephishten Entwicklerkonten: warum die richtige Frage nicht
-lautet, wem man vertraut, sondern was eine dibernommene Erweiterung erreichen kénnte.
+lautet, wem man vertraut, sondern was eine tibernommene Erweiterung erreichen kénnte.
 Was Sie bekommen
 Dieselben Angaben wie im Store-Eintrag — nicht mehr und nicht weniger.
 Preis Kostenlos. Keine Bezahistufe, keine ablaufende Testphase.
@@ -86,35 +87,35 @@ Wasserzeichen _Keines, bei keiner Auflésung.
 Seitenlimit Keines. Kein Tageskontingent.
 Upload Keiner. Die Verarbeitung findet im Browser statt.
 Berechtigungen  activeTab, downloads, downloads.open, storage, menus, notifications, scripting — keine Host-Berechtigungen.
-‘Sprachen Neun: Deutsch, Englisch, Spanisch, Franzésisch, Italienisch, Portugiesisch (BR), Russisch, Japanisch, Chinesisch (vereinfacht).
-lizenz MIT. Die eingereichten Dateien sind die Quelidateien — kein Bundler, keine Minifizierung.
-Plattformen Firefox 109+ am Desktop, Firefox fur Android 127+.
+Sprachen Neun: Deutsch, Englisch, Spanisch, Franzésisch, Italienisch, Portugiesisch (BR), Russisch, Japanisch, Chinesisch (vereinfacht).
+lizenz MIT. Die eingereichten Dateien sind die Quelldateien — kein Bundler, keine Minifizierung.
+Plattformen Firefox 109+ am Desktop, Firefox fir Android 127+.
 Wer es wofiir einsetzt
-Wiederkehrende Faille aus Riickmeldungen und Issues.
+Wiederkehrende Fille aus Riickmeldungen und Issues.
 Eine Seite fiir die eigenen Sichern, bevor es verschwindet Eine Seite an OCR oder ein KI-
 Unterlagen festhalten Artikel werden berarbeitet, Anzeigen Werkzeug iibergeben
 Bestellbestatigung, Portalnachricht, verschwinden, Bedingungen werden neu Ein durchgehendes Blatt statt A4-
 Schreiben einer Versicherung, Support- geschrieben. Die Aufnahme halt fest, was Scheiben — kein Seitenumbruch mitten
 Verlauf — als eine durchgehende Seite am Bildschirm stand — mit dem Layout durch eine Tabelle. Gemessen: 92,6 %
 erfasst und zu den Ubrigen Unterlagen und zu einem bekannten Datum. des Textes tiberstehen die OCR, samt der
-gelegt. Funktioniert auch hinter einem Auflésungsschwelle, die man kennen
+gelegt. Funktioniert auch hinter einem Auflosungsschwelle, die man kennen
 Login, weil die Aufnahme im eigenen sollte.
 Browser stattfindet.
 Kostenlose Software, die
 weiterlauft
 Kein Konto, kein Kontingent, keine
 ablaufende Testphase, kein
-Wasserzeichen. MIT-Lizenz, offener
+Wasserzeichen. MiT-Lizenz, offener
 Quellcode, und die eingereichten
 Dateien sind die Quelldateien — sollte
 die Entwicklung je enden, bliebe der
-Code zum Weiterfuhren.
+Code zum Weiterfuihren.
 Was es nicht ist
 Ein durch Bildschirmaufnahme erzeugtes PDF ist kein qualifiziertes elektronisches Dokument.
 Es tragt keine qualifizierte Signatur, keinen vertrauenswiirdigen Zeitstempel und keine
 liickenlose Nachweiskette. Es halt fest, was ein Browser zu einem Zeitpunkt angezeigt hat —
 geeignet fiir die eigenen Unterlagen, nicht gleichzusetzen mit notarieller oder gerichtsfester
-Beweissicherung. Wo es darauf ankommt, gehért ein dafiir gebauter Dienst eingesetzt.
+Beweissicherung. Wo es darauf ankommt, gehért ein daftir gebauter Dienst eingesetzt.
 Ebenso wenig verschliisselt es das PDF, vergibt kein Passwort, entfernt keine Metadaten und
 anonymisiert nichts. Das Ergebnis ist eine gewohnliche Datei im Download-Ordner.
 Erfahrungsberichte
@@ -125,22 +126,22 @@ statt einer Riickmeldung, die niemand sieht.
 Schildern Sie Ihren Einsatz Etwas fragen Funktion vorschlagen
 Welche Seiten Sie erfassen, welche Zu Einstellungen, Android, OCR-Ablaufen Was fehit, was im Weg steht. Vorschlage
 Einstellungen sich bewahrt haben, wo es oder dazu, warum eine bestimmte Seite mit einem konkreten Anwendungsfall
-Zeit gespart hat. Konkrete Falle helfen zickt. Antworten bleiben ffentlich, damit dahinter werden am ehesten umgesetzt.
-mehr als Sterne der Nachste sie findet.
-Vorschlagen >
-Bericht schreiben > Frage stellen >
+Zeit gespart hat. Konkrete Falle helfen Zickt. Antworten bleiben 6ffentlich, damit dahinter werden am ehesten umgesetzt.
+mehr als Sterne. der Nachste sie findet.
+Vorschlagen ~
+Bericht schreiben — Frage stellen ~
 Im Store bewerten
 Eine kurze Bewertung im Add-on-
 Verzeichnis erreicht Menschen, die diese
 Seite nie lesen werden. Eine Minute, und
 es braucht nur ein Firefox-Konto.
-Bewertung schreiben
+Bewertung schreiben ~
 Support
 Fehler gefunden oder Funktion vermisst? Eréffne ein Issue — bitte mit Firefox-Version,
 Betriebssystem und der betroffenen Seite.
-Issue erdffnen
+Issue eréffnen
 Haufige Fragen
-+ Ist es wirklich kostenlos, oder kommt spater eine Bezahlstufe?
++ Ist es wirklich kostenlos, oder kommt spatter eine Bezahlstufe?
 + Wird die Seite auf einen Server hochgeladen?
 + Funktioniert es am Telefon?
 + Welche Berechtigungen verlangt es, und wofiir?

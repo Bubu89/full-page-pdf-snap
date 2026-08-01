@@ -1,10 +1,10 @@
 # Visuelle Pruefung
 
-Stand: 2026-08-01 11:40
+Stand: 2026-08-01 11:49
 
 | Seite | Ergebnis | Bildflaechen |
 |---|---|---|
-| [Produktseite](https://provinglab.dev/tools/full-page-pdf-snap/) | Aufnahme fehlgeschlagen | 0 |
+| [Produktseite](https://provinglab.dev/tools/full-page-pdf-snap/) | fehlt sichtbar: „qualified electronic document“; nur 0 sichtbare Bildflaechen, erwartet 3 | 0 |
 
 Aufnahmen liegen in `_visual-check/`.
 
