@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Full Page PDF Snap — Save any webpage as a single PDF</title>
+<meta name="description" content="Firefox extension that saves any webpage as one seamless high-resolution PDF. Auto-scrolls the whole page. Runs entirely on your device — no upload, no account, no data collection.">
+<link rel="icon" href="../../icon-128.png">
+<link rel="canonical" href="https://provinglab.dev/tools/full-page-pdf-snap/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Full Page PDF Snap">
+<meta property="og:description" content="Save any webpage as a single high-resolution PDF. Runs entirely on your device.">
+<meta property="og:url" content="https://provinglab.dev/tools/full-page-pdf-snap/">
+<meta property="og:image" content="https://provinglab.dev/tools/full-page-pdf-snap/screenshots/01_capture_en.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Full Page PDF Snap",
+  "alternateName": "Full Page PDF Snap – Save Webpage as PDF",
+  "applicationCategory": "BrowserApplication",
+  "applicationSubCategory": "Browser Extension",
+  "operatingSystem": "Firefox 109+ (Windows, macOS, Linux), Firefox for Android 127+",
+  "browserRequirements": "Firefox 109 or later",
+  "softwareVersion": "2.16.0",
+  "url": "https://provinglab.dev/tools/full-page-pdf-snap/",
+  "downloadUrl": "https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/",
+  "installUrl": "https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/",
+  "codeRepository": "https://github.com/Bubu89/full-page-pdf-snap",
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+  "inLanguage": ["en","de","es","fr","it","ja","pt-BR","ru","zh-Hans"],
+  "privacyPolicy": "https://provinglab.dev/privacy.html",
+  "description": "Firefox extension that saves a whole web page as one seamless high-resolution PDF. Auto-scrolls the entire page — no cropping, no print dialog, no upload. Runs entirely on the device with no network requests, and works on Firefox for Android.",
+  "featureList": [
+    "Full-page capture into a single continuous PDF",
+    "Auto-scroll for lazy-loading pages",
+    "Resolution scaling from 1.0x to 2.0x",
+    "Runs on Firefox for Android",
+    "No network requests, no account, no data collection",
+    "activeTab permission only — no access to all websites"
+  ]
+}
+</script>
+<style>
+  :root{
+    --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --acc2:#7c5cff;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--tx); line-height:1.65;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* --- Header --- */
+  header{
+    padding:80px 0 64px; text-align:center;
+    background:radial-gradient(ellipse 900px 500px at 50% -10%,rgba(76,122,255,.22),transparent 70%);
+    border-bottom:1px solid var(--line);
+  }
+  header img.logo{width:88px;height:88px;margin-bottom:20px}
+  h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.15;letter-spacing:-.02em;margin-bottom:16px}
+  .tagline{font-size:clamp(1.05rem,2.4vw,1.3rem);color:var(--dim);max-width:640px;margin:0 auto 34px}
+  .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn{
+    display:inline-block;padding:14px 30px;border-radius:10px;font-weight:600;
+    font-size:1.02rem;border:1px solid transparent;transition:transform .12s ease;
+  }
+  .btn:hover{text-decoration:none;transform:translateY(-2px)}
+  .btn-primary{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff}
+  .btn-ghost{border-color:var(--line);color:var(--tx);background:var(--card)}
+  .meta{margin-top:24px;font-size:.9rem;color:var(--dim)}
+  .meta span{margin:0 10px;white-space:nowrap}
+
+  /* --- Sprachumschalter --- */
+  .lang{display:flex;gap:6px;justify-content:center;margin-bottom:36px}
+  .lang button{
+    font:inherit;font-size:.86rem;font-weight:600;padding:7px 18px;cursor:pointer;
+    background:var(--card);color:var(--dim);border:1px solid var(--line);border-radius:8px;
+  }
+  .lang button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
+
+  section{padding:72px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:clamp(1.5rem,3.4vw,2.1rem);letter-spacing:-.01em;margin-bottom:12px}
+  .sub{color:var(--dim);margin-bottom:40px;max-width:680px}
+
+  /* --- Screenshots --- */
+  figure{margin-bottom:56px}
+  figure img{
+    width:100%;height:auto;border-radius:14px;border:1px solid var(--line);
+    box-shadow:0 20px 50px rgba(0,0,0,.35);display:block;
+  }
+  figcaption{margin-top:14px;color:var(--dim);font-size:.95rem;text-align:center}
+
+  /* --- Features --- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px}
+  .card h3{font-size:1.06rem;margin-bottom:8px}
+  .card p{color:var(--dim);font-size:.95rem}
+
+  /* --- Privacy --- */
+  .privacy{
+    background:linear-gradient(135deg,rgba(76,122,255,.1),rgba(124,92,255,.1));
+    border:1px solid var(--line);border-radius:16px;padding:38px;
+  }
+  .privacy ul{list-style:none;margin-top:18px;display:grid;gap:11px}
+  .privacy li{padding-left:30px;position:relative;color:var(--dim)}
+  .privacy li::before{
+    content:"✓";position:absolute;left:0;color:var(--acc);font-weight:700;
+  }
+
+  table{width:100%;border-collapse:collapse;margin-top:22px;font-size:.94rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+  th{color:var(--dim);font-weight:600}
+  .tw{overflow-x:auto}
+
+  footer{padding:52px 0;text-align:center;color:var(--dim);font-size:.9rem}
+  footer p{margin-bottom:8px}
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on,span[data-lang].on{display:list-item}
+  span[data-lang].on{display:inline}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <img src="../../icon-128.png" alt="" class="logo">
+    <h1>Full Page PDF Snap</h1>
+
+    <p class="tagline" data-lang="en">Save any webpage as one seamless, high-resolution PDF. Auto-scrolls the entire page — no cropping, no print dialog, no upload.</p>
+    <p class="tagline" data-lang="de">Speichert jede Webseite als ein nahtloses, hochauflösendes PDF. Auto-Scroll erfasst die ganze Seite — kein Zuschneiden, kein Druckdialog, kein Upload.</p>
+
+    <div class="cta">
+      <a class="btn btn-primary" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">
+        <span data-lang="en" class="on">Add to Firefox</span><span data-lang="de">Zu Firefox hinzufügen</span>
+      </a>
+      <a class="btn btn-ghost" href="https://github.com/Bubu89/full-page-pdf-snap">
+        <span data-lang="en" class="on">View source</span><span data-lang="de">Quellcode ansehen</span>
+      </a>
+    </div>
+
+    <p class="meta">
+      <span>Firefox 109+</span>·<span>Android 127+</span>·<span>MIT</span>·<span data-lang="en" class="on">No data collection</span><span data-lang="de">Keine Datenerhebung</span>
+    </p>
+  </div>
+</header>
+
+<div class="wrap" style="padding-top:34px">
+  <div class="lang">
+    <button id="b-en" aria-pressed="true" onclick="setLang('en')">English</button>
+    <button id="b-de" aria-pressed="false" onclick="setLang('de')">Deutsch</button>
+  </div>
+</div>
+
+<!-- ---------- Screenshots ---------- -->
+<section>
+  <div class="wrap">
+    <div data-lang="en" class="on">
+      <h2>What it looks like</h2>
+      <p class="sub">Three clicks from install to a finished PDF.</p>
+    </div>
+    <div data-lang="de">
+      <h2>So sieht es aus</h2>
+      <p class="sub">Drei Klicks von der Installation bis zum fertigen PDF.</p>
+    </div>
+
+    <figure>
+      <img id="s1" src="../../screenshots/01_capture_en.png" alt="Toolbar popup with the capture button">
+      <figcaption>
+        <span data-lang="en" class="on">One click captures the entire page — toolbar button, right-click menu or Alt+Shift+Y</span>
+        <span data-lang="de">Ein Klick erfasst die ganze Seite — Toolbar-Button, Rechtsklick-Menü oder Alt+Shift+Y</span>
+      </figcaption>
+    </figure>
+    <figure>
+      <img id="s2" src="../../screenshots/02_settings_en.png" alt="Settings page">
+      <figcaption>
+        <span data-lang="en" class="on">Filename templates, JPEG quality and scroll timing — all adjustable</span>
+        <span data-lang="de">Dateinamen-Vorlage, JPEG-Qualität und Scroll-Wartezeit — alles einstellbar</span>
+      </figcaption>
+    </figure>
+    <figure>
+      <img id="s3" src="../../screenshots/03_output_en.png" alt="Output and resolution settings">
+      <figcaption>
+        <span data-lang="en" class="on">One continuous page or multi-page output, with resolution scaling up to 2.0x</span>
+        <span data-lang="de">Eine fortlaufende Seite oder mehrseitige Ausgabe, Auflösung bis 2.0x skalierbar</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ---------- Features ---------- -->
+<section>
+  <div class="wrap">
+    <div data-lang="en" class="on">
+      <h2>Features</h2>
+      <p class="sub">Built for pages that a normal screenshot cannot handle.</p>
+      <div class="grid">
+        <div class="card"><h3>Full-page capture</h3><p>The complete scrollable page in a single PDF, not just the visible viewport.</p></div>
+        <div class="card"><h3>Handles lazy loading</h3><p>Auto-scroll with adjustable delay picks up content that loads while scrolling — LinkedIn, X/Twitter, news portals.</p></div>
+        <div class="card"><h3>No visible seams</h3><p>Single-page output stitches all segments into one continuous page. Ideal for OCR and AI tools.</p></div>
+        <div class="card"><h3>High resolution</h3><p>Scaling from 1.0x to 2.0x for sharp text and images on long documents.</p></div>
+        <div class="card"><h3>Filename templates</h3><p>Compose names from site, date, time, counter and page title.</p></div>
+        <div class="card"><h3>Hide sticky elements</h3><p>Cookie banners, chat widgets and floating top bars are removed before capture.</p></div>
+      </div>
+    </div>
+    <div data-lang="de">
+      <h2>Funktionen</h2>
+      <p class="sub">Gebaut für Seiten, mit denen ein normaler Screenshot nicht zurechtkommt.</p>
+      <div class="grid">
+        <div class="card"><h3>Vollseiten-Erfassung</h3><p>Die komplette scrollbare Seite in einem PDF, nicht nur der sichtbare Bereich.</p></div>
+        <div class="card"><h3>Kommt mit Lazy Loading klar</h3><p>Auto-Scroll mit einstellbarer Wartezeit erfasst Inhalte, die erst beim Scrollen laden — LinkedIn, X/Twitter, Nachrichtenportale.</p></div>
+        <div class="card"><h3>Keine sichtbaren Kanten</h3><p>Die Single-Page-Ausgabe fügt alle Abschnitte zu einer fortlaufenden Seite zusammen. Ideal für OCR und KI-Werkzeuge.</p></div>
+        <div class="card"><h3>Hohe Auflösung</h3><p>Skalierung von 1.0x bis 2.0x für scharfe Schrift und Bilder auch bei langen Dokumenten.</p></div>
+        <div class="card"><h3>Dateinamen-Vorlagen</h3><p>Namen aus Seite, Datum, Uhrzeit, Zähler und Seitentitel zusammensetzen.</p></div>
+        <div class="card"><h3>Sticky-Elemente ausblenden</h3><p>Cookie-Banner, Chat-Widgets und schwebende Leisten verschwinden vor der Aufnahme.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- Privacy ---------- -->
+<section>
+  <div class="wrap">
+    <div class="privacy">
+      <div data-lang="en" class="on">
+        <h2>No data collection — by design</h2>
+        <p class="sub" style="margin-bottom:0">This extension contains no technical function to collect, store or transmit usage data. Every step — scrolling, screenshots, PDF generation, saving — happens locally in the Firefox process.</p>
+        <ul>
+          <li>The developer never learns which pages you capture</li>
+          <li>No screenshots or PDF files ever leave your device</li>
+          <li>No analytics library, no telemetry, no crash reporting</li>
+          <li>No technical connection to any server of the developer</li>
+          <li>Full source under the MIT license — verify it yourself</li>
+        </ul>
+      </div>
+      <div data-lang="de">
+        <h2>Keine Datenerhebung — technisch bedingt</h2>
+        <p class="sub" style="margin-bottom:0">Die Erweiterung enthält keine technische Funktion zur Erhebung, Speicherung oder Übertragung von Nutzungsdaten. Jeder Schritt — Scrollen, Screenshots, PDF-Erzeugung, Speichern — passiert lokal im Firefox-Prozess.</p>
+        <ul>
+          <li>Der Anbieter erfährt nie, welche Seiten du erfasst</li>
+          <li>Keine Screenshots und keine PDF-Dateien verlassen dein Gerät</li>
+          <li>Keine Analytics-Bibliothek, keine Telemetrie, keine Fehlerberichte</li>
+          <li>Keine technische Verbindung zu einem Server des Anbieters</li>
+          <li>Vollständiger Quellcode unter MIT-Lizenz — selbst überprüfbar</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- Defaults ---------- -->
+<section>
+  <div class="wrap">
+    <div data-lang="en" class="on">
+      <h2>Default settings</h2>
+      <p class="sub">Sensible out of the box, all of it adjustable.</p>
+      <div class="tw"><table>
+        <tr><th>Setting</th><th>Desktop</th><th>Android</th></tr>
+        <tr><td>JPEG quality</td><td>0.92</td><td>0.92</td></tr>
+        <tr><td>Scroll delay</td><td>400 ms</td><td>400 ms</td></tr>
+        <tr><td>PDF format</td><td>Single page</td><td>Single page</td></tr>
+        <tr><td>Tile height</td><td>4000 px</td><td>2000 px</td></tr>
+        <tr><td>Hide sticky elements</td><td>On</td><td>On</td></tr>
+        <tr><td>After capture</td><td>Show folder</td><td>Open PDF</td></tr>
+        <tr><td>Capture scaling</td><td>1.5x</td><td>1.0x</td></tr>
+      </table></div>
+    </div>
+    <div data-lang="de">
+      <h2>Standard-Einstellungen</h2>
+      <p class="sub">Sinnvoll voreingestellt, alles veränderbar.</p>
+      <div class="tw"><table>
+        <tr><th>Einstellung</th><th>Desktop</th><th>Android</th></tr>
+        <tr><td>JPEG-Qualität</td><td>0,92</td><td>0,92</td></tr>
+        <tr><td>Scroll-Wartezeit</td><td>400 ms</td><td>400 ms</td></tr>
+        <tr><td>PDF-Format</td><td>Eine Seite</td><td>Eine Seite</td></tr>
+        <tr><td>Kachelhöhe</td><td>4000 px</td><td>2000 px</td></tr>
+        <tr><td>Sticky ausblenden</td><td>An</td><td>An</td></tr>
+        <tr><td>Nach der Aufnahme</td><td>Ordner zeigen</td><td>PDF öffnen</td></tr>
+        <tr><td>Capture-Skalierung</td><td>1.5x</td><td>1.0x</td></tr>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- Measurements / Articles ---------- -->
+<section>
+  <div class="wrap">
+    <div data-lang="en" class="on">
+      <h2>Measurements</h2>
+      <p class="sub" style="margin:0 0 24px">Tests we ran ourselves, with the numbers and the commands to reproduce them.</p>
+      <p style="margin-bottom:10px">
+        <a href="../../measurements/webpage-to-pdf-for-ocr/"><strong>Webpage to PDF for OCR: how much text actually survives?</strong></a>
+      </p>
+      <p class="sub" style="margin:0">
+        A full-page screenshot PDF measured against the original article text: 92.6&nbsp;% of the
+        vocabulary comes back, all eight critical values read correctly — and a hard resolution
+        threshold between 72 and 110&nbsp;dpi that decides whether OCR works at all.
+      </p>
+      <p style="margin:22px 0 10px">
+        <a href="../../measurements/pdf-extension-permissions/"><strong>Does your PDF extension upload the page? How to check it yourself</strong></a>
+      </p>
+      <p class="sub" style="margin:0">
+        A 30-second check anyone can run, what the current PDF extensions declare in their
+        manifests — and the consequence nobody mentions: server-side converters cannot reach
+        pages behind a login.
+      </p>
+      <p style="margin:22px 0 10px">
+        <a href="../../measurements/extension-permissions-risk/"><strong>An extension is only as dangerous as its permissions allow</strong></a>
+      </p>
+      <p class="sub" style="margin:0">
+        One year after Mozilla warned about phished developer accounts: why the right
+        question is not who you trust, but what a compromised extension could reach.
+      </p>
+    </div>
+    <div data-lang="de">
+      <h2>Messungen</h2>
+      <p class="sub" style="margin:0 0 24px">Selbst durchgeführte Tests, mit Zahlen und den Befehlen zum Nachvollziehen.</p>
+      <p style="margin-bottom:10px">
+        <a href="../../measurements/webpage-to-pdf-for-ocr/"><strong>Webseite als PDF für OCR: wie viel Text überlebt?</strong></a>
+      </p>
+      <p class="sub" style="margin:0">
+        Ein Screenshot-PDF gegen den Originaltext gemessen: 92,6&nbsp;% des Wortschatzes kommen
+        zurück, alle acht kritischen Werte korrekt gelesen — und eine harte Auflösungsschwelle
+        zwischen 72 und 110&nbsp;dpi, an der die Erkennung kippt.
+      </p>
+      <p style="margin:22px 0 10px">
+        <a href="../../measurements/pdf-extension-permissions/"><strong>Lädt deine PDF-Erweiterung die Seite hoch? So prüfst du es selbst</strong></a>
+      </p>
+      <p class="sub" style="margin:0">
+        Eine Prüfung in 30 Sekunden, was die aktuellen PDF-Erweiterungen in ihren Manifesten
+        deklarieren — und die Folge, die niemand erwähnt: Server-Konverter erreichen keine
+        Seiten hinter einem Login.
+      </p>
+      <p style="margin:22px 0 10px">
+        <a href="../../measurements/extension-permissions-risk/"><strong>Eine Erweiterung ist nur so gefährlich, wie ihre Berechtigungen es zulassen</strong></a>
+      </p>
+      <p class="sub" style="margin:0">
+        Ein Jahr nach Mozillas Warnung vor gephishten Entwicklerkonten: warum die richtige
+        Frage nicht lautet, wem man vertraut, sondern was eine übernommene Erweiterung
+        erreichen könnte.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- Support ---------- -->
+<section style="border-bottom:none">
+  <div class="wrap" style="text-align:center">
+    <div data-lang="en" class="on">
+      <h2>Support</h2>
+      <p class="sub" style="margin:0 auto 30px">Found a bug or missing a feature? Open an issue — please include your Firefox version, operating system and the page where it happened.</p>
+      <a class="btn btn-ghost" href="https://github.com/Bubu89/full-page-pdf-snap/issues">Open an issue</a>
+    </div>
+    <div data-lang="de">
+      <h2>Support</h2>
+      <p class="sub" style="margin:0 auto 30px">Fehler gefunden oder Funktion vermisst? Eröffne ein Issue — bitte mit Firefox-Version, Betriebssystem und der betroffenen Seite.</p>
+      <a class="btn btn-ghost" href="https://github.com/Bubu89/full-page-pdf-snap/issues">Issue eröffnen</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Full Page PDF Snap · MIT License</p>
+    <p>
+      <a href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Firefox Add-ons</a> ·
+      <a href="https://github.com/Bubu89/full-page-pdf-snap">GitHub</a> ·
+      <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">Support</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+function setLang(l){
+  document.documentElement.lang = l;
+  document.querySelectorAll('[data-lang]').forEach(function(el){
+    el.classList.toggle('on', el.dataset.lang === l);
+  });
+  ['s1','s2','s3'].forEach(function(id, i){
+    var base = ['01_capture_','02_settings_','03_output_'][i];
+    document.getElementById(id).src = 'screenshots/' + base + l + '.png';
+  });
+  document.getElementById('b-en').setAttribute('aria-pressed', l === 'en');
+  document.getElementById('b-de').setAttribute('aria-pressed', l === 'de');
+  try { localStorage.setItem('fpps-lang', l); } catch (e) {}
+}
+var saved = null;
+try { saved = localStorage.getItem('fpps-lang'); } catch (e) {}
+var browserLang = (navigator.language || '').slice(0, 2) === 'de' ? 'de' : 'en';
+setLang(saved === 'de' || saved === 'en' ? saved : browserLang);
+</script>
+</body>
+</html>

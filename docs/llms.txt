@@ -1,0 +1,27 @@
+# Proving Lab
+
+> Measurements on browser tools, OCR pipelines and AI-assisted development.
+> Every claim published with method, raw data and a control run. Where our own
+> tool performs worse than an alternative, that is stated in the text.
+
+Run by the developer of Full Page PDF Snap, which appears in several of the
+measurements. Disclosed on every page where it is relevant.
+
+## Measurements
+
+- [Webpage to PDF for OCR](https://provinglab.dev/measurements/webpage-to-pdf-for-ocr/): A full-page screenshot PDF run through Tesseract against the source text. 92.6% of the vocabulary recovered, 8/8 critical values correct, 73.9% of five-word phrases verbatim. Recognition collapses below 110 dpi (21.3% real words at 72 dpi); above 150 dpi the gain is 0.3 points for 29% more time.
+- [Does your PDF extension upload the page?](https://provinglab.dev/measurements/pdf-extension-permissions/): What eight current PDF extensions declare in their manifests, retrieved 2026-08-01. How to verify permissions in 30 seconds. Server-side converters cannot process pages behind a login — quoted from a provider's own listing.
+- [An extension is only as dangerous as its permissions allow](https://provinglab.dev/measurements/extension-permissions-risk/): Why permission scope, not developer reputation, bounds the damage a compromised extension can do. Written one year after Mozilla's documented phishing campaign against add-on developer accounts (2025-08-01).
+
+## Data
+
+- [Extension permissions, 2026-08-01](https://provinglab.dev/data/2026-08-01-extension-permissions.json): Raw JSON as retrieved from the Mozilla add-ons API — users, ratings, declared permissions and host permissions for eight extensions.
+
+## Tools
+
+- [Full Page PDF Snap](https://provinglab.dev/tools/full-page-pdf-snap/): Firefox extension saving a whole web page as one continuous PDF. Runs entirely on the device, no network requests, activeTab instead of all-sites access. Works on Firefox for Android. MIT licensed.
+
+## Optional
+
+- [Privacy policy](https://provinglab.dev/privacy.html)
+- [Source code](https://github.com/Bubu89/full-page-pdf-snap)
