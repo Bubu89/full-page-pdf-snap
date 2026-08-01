@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Does your PDF extension upload the page? How to check it yourself</title>
+<meta name="description" content="Browser extensions declare what they may access. Here is how to read that yourself in 30 seconds, what the current PDF extensions request as of 1 August 2026 — and why a permission is not proof of behaviour.">
+<link rel="canonical" href="https://bubu89.github.io/full-page-pdf-snap/pdf-extension-permissions/">
+<link rel="icon" href="../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Does your PDF extension upload the page? How to check it yourself">
+<meta property="og:description" content="How to read extension permissions in 30 seconds, and what the current PDF extensions request — with the limits of what that tells you.">
+<meta property="og:url" content="https://bubu89.github.io/full-page-pdf-snap/pdf-extension-permissions/">
+<meta property="og:image" content="https://bubu89.github.io/full-page-pdf-snap/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-08-01">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Does your PDF extension upload the page?">
+<meta name="twitter:description" content="A 30-second check anyone can do, and what the current extensions declare.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Does your PDF extension upload the page? How to check it yourself",
+  "description": "How to read WebExtension permissions, what current PDF extensions declare as of 1 August 2026, and why a declared permission is not evidence of behaviour.",
+  "datePublished": "2026-08-01",
+  "dateModified": "2026-08-01",
+  "inLanguage": "en",
+  "mainEntityOfPage": "https://bubu89.github.io/full-page-pdf-snap/pdf-extension-permissions/",
+  "author": { "@type": "Organization", "name": "Full Page PDF Snap" },
+  "publisher": { "@type": "Organization", "name": "Full Page PDF Snap" },
+  "about": ["browser extensions", "permissions", "privacy", "PDF", "WebExtensions"]
+}
+</script>
+
+<style>
+  :root{
+    --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --acc2:#7c5cff;
+    --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.68;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+       font-size:.88em;background:var(--card);padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:36px 0 40px;border-bottom:1px solid var(--line);margin-bottom:36px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.18;letter-spacing:-.02em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:62ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+
+  h2{font-size:1.5rem;line-height:1.25;margin:48px 0 14px;text-wrap:balance}
+  h3{font-size:1.08rem;margin:30px 0 10px}
+  p{margin-bottom:16px} ul,ol{margin:0 0 18px 22px} li{margin-bottom:8px}
+
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:560px;font-size:.92rem}
+  th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--bg2);font-size:.74rem;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .host{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.82rem}
+  .r-wide{color:var(--warn)} .r-narrow{color:var(--good);font-weight:600}
+  tr.own td{background:color-mix(in srgb,var(--acc) 10%,transparent)}
+
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.85rem;line-height:1.6}
+  pre code{background:none;border:none;padding:0}
+
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box.caution{border-left-color:var(--warn)}
+  .box h3{margin-top:0} .box p:last-child{margin-bottom:0}
+
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin:40px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+
+  footer{margin-top:56px;padding:24px 0 60px;border-top:1px solid var(--line);
+         font-size:.82rem;color:var(--dim);line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="../">Full Page PDF Snap</a> → PDF extension permissions</p>
+
+<header>
+  <h1>Does your PDF extension upload the page? Here is how to check</h1>
+  <p class="standfirst">
+    Turning a web page into a PDF sounds like something that happens on your own machine.
+    For some extensions it does not — one of the most popular states plainly that it is
+    “powered by the PDFCrowd HTML to PDF online service”. That is a legitimate design with
+    a real consequence, and it is worth knowing which kind you have installed. Every
+    extension declares what it may access, and reading that takes half a minute.
+  </p>
+  <p class="meta-line">1 August 2026 · figures pulled from the Mozilla add-ons API on that date</p>
+</header>
+
+<h2>The 30-second check</h2>
+
+<p>
+  You do not need any tools. Every listing on addons.mozilla.org has a
+  <strong>“Permissions and data”</strong> section near the bottom. What matters is one
+  distinction:
+</p>
+
+<ul>
+  <li>
+    <strong>“Access your data for all websites”</strong> — the extension may read every
+    page you visit, at any time, whether or not you asked it to do anything.
+  </li>
+  <li>
+    <strong>“Access your data for <em>the current website</em>” or nothing at all</strong>
+    — the extension only sees a page when you actively start it there.
+  </li>
+</ul>
+
+<p>
+  A named domain in that list is even more telling. If an extension declares access to
+  <code>https://example-converter.com/</code>, it talks to that server. That is not a
+  suspicion; it is what the declaration is for.
+</p>
+
+<h3>If you want to be sure rather than probable</h3>
+
+<p>
+  Permissions describe what is <em>possible</em>. To see what actually happens, watch the
+  traffic:
+</p>
+
+<pre><code>1. Open about:debugging → This Firefox
+2. Find the extension, click "Inspect"
+3. Switch to the Network tab
+4. Run a capture and watch what appears</code></pre>
+
+<p>
+  An extension that works locally shows nothing there. One that converts server-side shows
+  the upload. This is the only method that gives certainty, and it takes about two minutes.
+</p>
+
+<h2>What the current extensions declare</h2>
+
+<p>
+  Pulled from the Mozilla add-ons API on 1 August 2026. The “declared hosts” column lists
+  exactly what each extension states in its own manifest — no interpretation:
+</p>
+
+<div class="tblwrap">
+<table>
+  <thead>
+    <tr><th>Extension</th><th class="num">Users</th><th>Declared hosts</th><th class="num">Last update</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Save as PDF</td><td class="num">19,610</td>
+      <td class="host r-wide">https://pdfcrowd.com/</td><td class="num">2025-06-17</td>
+    </tr>
+    <tr>
+      <td>PDF Mage</td><td class="num">16,313</td>
+      <td class="host r-wide">&lt;all_urls&gt;</td><td class="num">2021-11-16</td>
+    </tr>
+    <tr>
+      <td>PDFmyURL</td><td class="num">390</td>
+      <td class="host r-wide">https://pdfmyurl.com/*, &lt;all_urls&gt;</td><td class="num">2019-06-03</td>
+    </tr>
+    <tr>
+      <td>FireShot</td><td class="num">169,961</td>
+      <td class="host r-wide">&lt;all_urls&gt;, *://getfireshot.com/activate.php?*</td><td class="num">2023-06-21</td>
+    </tr>
+    <tr>
+      <td>SingleFile</td><td class="num">84,954</td>
+      <td class="host r-wide">&lt;all_urls&gt;</td><td class="num">2026-03-06</td>
+    </tr>
+    <tr>
+      <td>Print Edit WE</td><td class="num">40,873</td>
+      <td class="host r-wide">&lt;all_urls&gt;</td><td class="num">2025-04-30</td>
+    </tr>
+    <tr>
+      <td>PageSaver</td><td class="num">2,178</td>
+      <td class="host r-wide">&lt;all_urls&gt;</td><td class="num">2026-07-24</td>
+    </tr>
+    <tr class="own">
+      <td>Full Page PDF Snap</td><td class="num">3</td>
+      <td class="host r-narrow">none — activeTab only</td><td class="num">2026-08-01</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="box caution">
+  <h3>What this table does not say</h3>
+  <p>
+    A declared permission shows what an extension <em>may</em> do, not what it does. An
+    extension with <code>&lt;all_urls&gt;</code> may well process everything locally and
+    never send a byte anywhere — that permission is also the simplest way to make a tool
+    work on every page, and plenty of well-regarded extensions use it for exactly that.
+    SingleFile, for instance, is open source and widely reviewed.
+  </p>
+  <p>
+    So this is not a ranking of trustworthiness. It is a list of what each extension
+    reserves the right to do, taken from its own manifest on one specific day. Versions
+    change; check the current listing before drawing conclusions. Where an extension is
+    open source, reading the code beats any inference from permissions.
+  </p>
+</div>
+
+<h2>The consequence nobody mentions: logged-in pages</h2>
+
+<p>
+  This is where the two designs stop being a matter of taste. A server-side converter
+  receives a URL and fetches the page itself — as an anonymous visitor. It has no access
+  to your session. The provider of “Save as PDF” states this openly in its own listing:
+</p>
+
+<blockquote style="border-left:3px solid var(--line);padding:4px 0 4px 18px;margin:18px 0;color:var(--dim)">
+  “Please note that for security reasons, it is not possible to create PDFs from pages
+  that require a login, such as your webmail inbox, online banking, shopping cart contents,
+  payment […]”
+  <br><span style="font-size:.85rem">— Save as PDF, own listing description, retrieved 1 August 2026</span>
+</blockquote>
+
+<p>
+  That is a fair and transparent statement, and it deserves credit rather than criticism.
+  But it defines the boundary precisely: the documents people most often want to keep —
+  an order confirmation, an invoice in a customer portal, insurance correspondence, a
+  booking record, a support conversation — are exactly the ones behind a login.
+</p>
+
+<p>
+  An extension that renders locally has no such limit, because it captures what your
+  browser already shows. That is a functional difference, not a moral one. Which side you
+  want depends on what you archive.
+</p>
+
+<h2>Reading a manifest yourself</h2>
+
+<p>
+  For a technically inclined reader, there is a faster route than any listing page. The
+  same API this article uses is public:
+</p>
+
+<pre><code>curl -s "https://addons.mozilla.org/api/v5/addons/addon/SLUG/?lang=en-US" \
+  | python3 -c "import sys,json; d=json.load(sys.stdin); \
+    print(d['current_version']['file']['permissions'])"</code></pre>
+
+<p>
+  Replace <code>SLUG</code> with the part of the listing URL after
+  <code>/addon/</code>. Anything containing <code>://</code> or
+  <code>&lt;all_urls&gt;</code> is a host permission. This is also how the table above was
+  produced — so you can reproduce it, and correct it if something has changed.
+</p>
+
+<div class="box">
+  <h3>A note on our own entry</h3>
+  <p>
+    We build one of the extensions in that table, so treat the framing accordingly. What
+    we can offer instead of a promise: the permission list is
+    <code>activeTab, downloads, downloads.open, storage, menus, notifications, scripting</code>
+    with no host permissions at all, the source is
+    <a href="https://github.com/Bubu89/full-page-pdf-snap">public under the MIT licence</a>,
+    and the submitted files are the source files — no bundler, no minification. The
+    network check described above is the honest way to verify that, and it works on our
+    extension exactly as it does on any other.
+  </p>
+</div>
+
+<div class="related">
+  <h3>Related</h3>
+  <ul>
+    <li>
+      <a href="../webpage-to-pdf-for-ocr/">Webpage to PDF for OCR: how much text actually survives?</a>
+      — a measured test: 92.6&nbsp;% of the vocabulary recovered from a screenshot PDF, and the
+      resolution threshold where recognition collapses.
+    </li>
+    <li>
+      <a href="../">Full Page PDF Snap</a> — the extension this site belongs to. Runs on
+      Firefox desktop and Android.
+    </li>
+    <li><a href="../privacy.html">Our privacy policy</a></li>
+  </ul>
+</div>
+
+<footer>
+  <strong>Sources and limitations.</strong> All figures were retrieved from the public
+  Mozilla add-ons API (<code>/api/v5/addons/</code>) on 1 August 2026 and reflect the state
+  of each extension's then-current version. Permission declarations are quoted verbatim
+  from the respective manifests. No extension was decompiled, and no claim is made about
+  any provider's intentions or about data actually transmitted — only about what each
+  extension declares. User counts and versions change continuously; verify against the
+  live listing before relying on any of this. Corrections are welcome via
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> and will
+  be applied.
+  <br><br>
+  <a href="../">← Back to Full Page PDF Snap</a>
+</footer>
+
+</div>
+</body>
+</html>

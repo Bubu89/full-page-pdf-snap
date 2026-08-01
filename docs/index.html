@@ -6,9 +6,46 @@
 <title>Full Page PDF Snap — Save any webpage as a single PDF</title>
 <meta name="description" content="Firefox extension that saves any webpage as one seamless high-resolution PDF. Auto-scrolls the whole page. Runs entirely on your device — no upload, no account, no data collection.">
 <link rel="icon" href="icon-128.png">
+<link rel="canonical" href="https://bubu89.github.io/full-page-pdf-snap/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta property="og:type" content="website">
 <meta property="og:title" content="Full Page PDF Snap">
 <meta property="og:description" content="Save any webpage as a single high-resolution PDF. Runs entirely on your device.">
-<meta property="og:image" content="screenshots/01_capture_en.png">
+<meta property="og:url" content="https://bubu89.github.io/full-page-pdf-snap/">
+<meta property="og:image" content="https://bubu89.github.io/full-page-pdf-snap/screenshots/01_capture_en.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Full Page PDF Snap",
+  "alternateName": "Full Page PDF Snap – Save Webpage as PDF",
+  "applicationCategory": "BrowserApplication",
+  "applicationSubCategory": "Browser Extension",
+  "operatingSystem": "Firefox 109+ (Windows, macOS, Linux), Firefox for Android 127+",
+  "browserRequirements": "Firefox 109 or later",
+  "softwareVersion": "2.16.0",
+  "url": "https://bubu89.github.io/full-page-pdf-snap/",
+  "downloadUrl": "https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/",
+  "installUrl": "https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/",
+  "codeRepository": "https://github.com/Bubu89/full-page-pdf-snap",
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+  "inLanguage": ["en","de","es","fr","it","ja","pt-BR","ru","zh-Hans"],
+  "privacyPolicy": "https://bubu89.github.io/full-page-pdf-snap/privacy.html",
+  "description": "Firefox extension that saves a whole web page as one seamless high-resolution PDF. Auto-scrolls the entire page — no cropping, no print dialog, no upload. Runs entirely on the device with no network requests, and works on Firefox for Android.",
+  "featureList": [
+    "Full-page capture into a single continuous PDF",
+    "Auto-scroll for lazy-loading pages",
+    "Resolution scaling from 1.0x to 2.0x",
+    "Runs on Firefox for Android",
+    "No network requests, no account, no data collection",
+    "activeTab permission only — no access to all websites"
+  ]
+}
+</script>
 <style>
   :root{
     --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
@@ -274,6 +311,14 @@
         vocabulary comes back, all eight critical values read correctly — and a hard resolution
         threshold between 72 and 110&nbsp;dpi that decides whether OCR works at all.
       </p>
+      <p style="margin:22px 0 10px">
+        <a href="pdf-extension-permissions/"><strong>Does your PDF extension upload the page? How to check it yourself</strong></a>
+      </p>
+      <p class="sub" style="margin:0">
+        A 30-second check anyone can run, what the current PDF extensions declare in their
+        manifests — and the consequence nobody mentions: server-side converters cannot reach
+        pages behind a login.
+      </p>
     </div>
     <div data-lang="de">
       <h2>Messungen</h2>
@@ -285,6 +330,14 @@
         Ein Screenshot-PDF gegen den Originaltext gemessen: 92,6&nbsp;% des Wortschatzes kommen
         zurück, alle acht kritischen Werte korrekt gelesen — und eine harte Auflösungsschwelle
         zwischen 72 und 110&nbsp;dpi, an der die Erkennung kippt.
+      </p>
+      <p style="margin:22px 0 10px">
+        <a href="pdf-extension-permissions/"><strong>Lädt deine PDF-Erweiterung die Seite hoch? So prüfst du es selbst</strong></a>
+      </p>
+      <p class="sub" style="margin:0">
+        Eine Prüfung in 30 Sekunden, was die aktuellen PDF-Erweiterungen in ihren Manifesten
+        deklarieren — und die Folge, die niemand erwähnt: Server-Konverter erreichen keine
+        Seiten hinter einem Login.
       </p>
     </div>
   </div>
