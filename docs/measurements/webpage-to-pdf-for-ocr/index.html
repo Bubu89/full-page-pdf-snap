@@ -114,7 +114,62 @@
   .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
     padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
   .privhint strong{color:var(--tx)}
+
+  .faq{margin:44px 0 0}
+  .faq h2{margin-bottom:8px}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;font-size:1rem;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
 </style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "OCR recall from a full-page screenshot PDF",
+  "description": "Tesseract OCR results for a full-page screenshot PDF measured against the source article text, plus a four-step resolution series (72/110/150/220 dpi) with accuracy, timing and file size.",
+  "url": "https://provinglab.dev/data/2026-08-01-ocr-recall.json",
+  "identifier": "https://provinglab.dev/data/2026-08-01-ocr-recall.json",
+  "datePublished": "2026-08-01",
+  "dateModified": "2026-08-01",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "keywords": [
+    "OCR",
+    "Tesseract",
+    "PDF",
+    "screenshot",
+    "resolution",
+    "dpi",
+    "text recognition"
+  ],
+  "variableMeasured": [
+    "recall percent",
+    "five-word phrase accuracy",
+    "real-word percentage per dpi",
+    "OCR seconds",
+    "image size"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "encodingFormat": "application/json",
+      "contentUrl": "https://provinglab.dev/data/2026-08-01-ocr-recall.json"
+    }
+  ],
+  "measurementTechnique": "Single measurement runs with a reference control; method and commands published in the accompanying article."
+}
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -332,6 +387,63 @@ python3 compare.py ground_truth.txt out.txt</code></pre>
     layout is part of the evidence.
   </p>
 </div>
+
+<div class="faq">
+<h2>Questions</h2>
+  <details><summary>What resolution do I need to OCR a screenshot PDF?</summary><p>150 dpi. Measured on this document, 150 dpi yielded 98.4 % real words against 92.7 % at 110 dpi and 21.3 % at 72 dpi. Going above 150 gained 0.3 percentage points for 29 % more processing time and nearly double the image size.</p></details>
+  <details><summary>Why does my OCR return nonsense from a screenshot?</summary><p>Almost always because the image was rendered too small. Below roughly 110 dpi recognition does not degrade gradually — it collapses. At 72 dpi, four out of five recognised words in this test were garbage.</p></details>
+  <details><summary>How much text survives the round trip from page to screenshot to OCR?</summary><p>92.6 % of the source vocabulary was recovered in this measurement, and all eight checked critical values (standard numbers, years, product names) came back correctly. Exact five-word phrases fared worse at 73.9 %, with most errors in navigation and interface fragments rather than body text.</p></details>
+  <details><summary>Can I search a screenshot PDF without OCR?</summary><p>No. A screenshot PDF has no text layer at all — pdftotext returned exactly one character for the test file. Everything has to be recovered from pixels first.</p></details>
+  <details><summary>Should I use a screenshot PDF or print to PDF?</summary><p>Print to PDF if you only need the words: it keeps the text layer, needs no OCR and produces a file roughly a hundredth the size. Screenshot capture if the layout itself matters, because printing rebuilds the page and moves things.</p></details>
+</div>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "What resolution do I need to OCR a screenshot PDF?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "150 dpi. Measured on this document, 150 dpi yielded 98.4 % real words against 92.7 % at 110 dpi and 21.3 % at 72 dpi. Going above 150 gained 0.3 percentage points for 29 % more processing time and nearly double the image size."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Why does my OCR return nonsense from a screenshot?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Almost always because the image was rendered too small. Below roughly 110 dpi recognition does not degrade gradually — it collapses. At 72 dpi, four out of five recognised words in this test were garbage."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How much text survives the round trip from page to screenshot to OCR?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "92.6 % of the source vocabulary was recovered in this measurement, and all eight checked critical values (standard numbers, years, product names) came back correctly. Exact five-word phrases fared worse at 73.9 %, with most errors in navigation and interface fragments rather than body text."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Can I search a screenshot PDF without OCR?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "No. A screenshot PDF has no text layer at all — pdftotext returned exactly one character for the test file. Everything has to be recovered from pixels first."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Should I use a screenshot PDF or print to PDF?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Print to PDF if you only need the words: it keeps the text layer, needs no OCR and produces a file roughly a hundredth the size. Screenshot capture if the layout itself matters, because printing rebuilds the page and moves things."
+   }
+  }
+ ]
+}
+</script>
 
 <div class="related">
   <h3>About the capture</h3>

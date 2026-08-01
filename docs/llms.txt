@@ -19,6 +19,7 @@ measurements. Disclosed on every page where it is relevant.
 
 ## Data
 
+- [OCR recall measurement, 2026-08-01](https://provinglab.dev/data/2026-08-01-ocr-recall.json): Raw JSON — recall 92.6 %, five-word phrases 73.9 %, control run 0.0 %, and the full resolution series: 72 dpi 21.3 % real words, 110 dpi 92.7 %, 150 dpi 98.4 %, 220 dpi 98.7 %. CC BY 4.0.
 - [Extension permissions, 2026-08-01](https://provinglab.dev/data/2026-08-01-extension-permissions.json): Raw JSON as retrieved from the Mozilla add-ons API — users, ratings, declared permissions and host permissions for eight extensions.
 
 ## Tools

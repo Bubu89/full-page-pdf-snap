@@ -136,6 +136,16 @@
   [data-lang].on{display:block}
   li[data-lang].on,span[data-lang].on{display:list-item}
   span[data-lang].on{display:inline}
+
+  .faq{margin:44px 0 0}
+  .faq h2{margin-bottom:8px}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;font-size:1rem;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
 </style>
 </head>
 <body>
@@ -501,6 +511,63 @@
     </div>
   </div>
 </section>
+
+<div class="faq">
+<h2>Questions</h2>
+  <details><summary>Is it really free, or is there a paid tier later?</summary><p>Free, with no paid tier. No ads, no account, no watermark, no page limit, no expiring trial. It is published under the MIT licence, so the source stays available regardless of what happens to the project.</p></details>
+  <details><summary>Does the page get uploaded to a server?</summary><p>No. Capture and PDF assembly happen in the browser. The extension declares no host permissions and makes no network requests. You can verify this yourself: about:debugging → Inspect → Network, then run a capture and watch that nothing appears.</p></details>
+  <details><summary>Does it work on a phone?</summary><p>Yes, on Firefox for Android 127 and later. Tap the icon, wait for the completion notification, tap that to view the PDF in Firefox itself. The file is in the download folder either way.</p></details>
+  <details><summary>Which permissions does it request, and why?</summary><p>activeTab, downloads, downloads.open, storage, menus, notifications and scripting — and no host permissions. activeTab means it can read a page only while you start a capture on it, unlike extensions that request access to every site you visit.</p></details>
+  <details><summary>Can I use the PDF as legal evidence?</summary><p>It is not a qualified electronic document: no qualified signature, no trusted timestamp, no chain of custody. It documents what a browser displayed at a moment in time, which is suitable for your own records. Where evidentiary weight matters, use a service built for that purpose.</p></details>
+</div>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "Is it really free, or is there a paid tier later?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Free, with no paid tier. No ads, no account, no watermark, no page limit, no expiring trial. It is published under the MIT licence, so the source stays available regardless of what happens to the project."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Does the page get uploaded to a server?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "No. Capture and PDF assembly happen in the browser. The extension declares no host permissions and makes no network requests. You can verify this yourself: about:debugging → Inspect → Network, then run a capture and watch that nothing appears."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Does it work on a phone?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Yes, on Firefox for Android 127 and later. Tap the icon, wait for the completion notification, tap that to view the PDF in Firefox itself. The file is in the download folder either way."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Which permissions does it request, and why?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "activeTab, downloads, downloads.open, storage, menus, notifications and scripting — and no host permissions. activeTab means it can read a page only while you start a capture on it, unlike extensions that request access to every site you visit."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Can I use the PDF as legal evidence?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "It is not a qualified electronic document: no qualified signature, no trusted timestamp, no chain of custody. It documents what a browser displayed at a moment in time, which is suitable for your own records. Where evidentiary weight matters, use a service built for that purpose."
+   }
+  }
+ ]
+}
+</script>
 
 <footer>
   <div class="wrap">

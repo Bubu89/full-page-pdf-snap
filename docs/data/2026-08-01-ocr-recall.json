@@ -1,0 +1,78 @@
+{
+ "title": "OCR recall from a full-page screenshot PDF",
+ "measured": "2026-08-01",
+ "source_document": "English Wikipedia article 'PDF', captured as one continuous PDF (700 x 11008 pt, no text layer)",
+ "ground_truth": {
+  "source": "Wikipedia REST API, same day",
+  "words": 10285,
+  "characters": 64319
+ },
+ "tools": {
+  "render": "poppler-utils pdftoppm",
+  "ocr": "Tesseract 5",
+  "flags": "--psm 6 -l eng, OMP_THREAD_LIMIT=1"
+ },
+ "full_page_run": {
+  "render_dpi": 150,
+  "render_seconds": 29.98,
+  "image_pixels": "1459x22934",
+  "image_bytes": 22105092,
+  "ocr_seconds": 90.23,
+  "ocr_words": 10343,
+  "normalised": {
+   "ground_truth_words": 8122,
+   "ground_truth_distinct": 2184,
+   "ocr_words": 8316,
+   "ocr_distinct": 2364
+  },
+  "recall_percent": 92.6,
+  "five_word_phrases_percent": 73.9,
+  "control_unrelated_vocabulary_percent": 0.0,
+  "critical_values_found": [
+   "iso",
+   "32000",
+   "1993",
+   "adobe",
+   "postscript",
+   "javascript",
+   "encryption",
+   "acrobat"
+  ]
+ },
+ "resolution_series": {
+  "excerpt": "1500 pt tall section of body text",
+  "runs": [
+   {
+    "dpi": 72,
+    "words": 860,
+    "real_word_percent": 21.3,
+    "ocr_seconds": 2.71,
+    "image_mb": 0.8
+   },
+   {
+    "dpi": 110,
+    "words": 1096,
+    "real_word_percent": 92.7,
+    "ocr_seconds": 3.13,
+    "image_mb": 1.6
+   },
+   {
+    "dpi": 150,
+    "words": 1099,
+    "real_word_percent": 98.4,
+    "ocr_seconds": 4.61,
+    "image_mb": 2.9
+   },
+   {
+    "dpi": 220,
+    "words": 1099,
+    "real_word_percent": 98.7,
+    "ocr_seconds": 5.94,
+    "image_mb": 5.2
+   }
+  ]
+ },
+ "limitations": "Single runs on one document, not averages. Times are orders of magnitude; accuracy figures are stable.",
+ "license": "CC BY 4.0 \u2014 reuse with attribution and a link",
+ "article": "https://provinglab.dev/measurements/webpage-to-pdf-for-ocr/"
+}
