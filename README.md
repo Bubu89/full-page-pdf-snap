@@ -1,13 +1,44 @@
-# Full Page PDF Snap
+# Full Page PDF Snap — save a webpage as PDF, on desktop and Android
 
-Save any webpage as a single high-resolution PDF. Auto-scrolls and captures the whole page — no cropping, no print dialog, no upload.
+Save any web page as one continuous high-resolution PDF. Auto-scrolls the whole
+page — no cropping, no print dialog, no upload. Runs entirely on your device:
+no account, no data collection, no server. Free and MIT licensed.
 
-[![Get it on Firefox Add-ons](https://img.shields.io/badge/Firefox-Add--ons-orange)](https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/)
+*Webseite als PDF speichern — die ganze Seite, komplett lokal, ohne Konto und
+ohne Upload. Läuft auch auf Firefox für Android.*
+
+[![Firefox Add-ons](https://img.shields.io/amo/v/full_page_pdf_snap_webpagesave?label=Firefox%20Add-ons&color=orange)](https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/)
+[![Users](https://img.shields.io/amo/users/full_page_pdf_snap_webpagesave?label=users)](https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Manifest V3](https://img.shields.io/badge/Manifest-V3-blue.svg)](manifest.json)
 
-**[→ Install from addons.mozilla.org](https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/)**
+**[→ Install for Firefox](https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/)**
+ · [Install without a store](https://github.com/Bubu89/full-page-pdf-snap/releases/latest)
+ · [Chrome package](https://github.com/Bubu89/full-page-pdf-snap/releases/latest)
+ · [Product page](https://provinglab.dev/tools/full-page-pdf-snap/)
 
 ![Capture the entire page](screenshots/01_capture_en.png)
+
+## What it is used for
+
+Archiving an invoice, an order confirmation, a portal message, an insurance
+letter or a support thread as documentation for your own records — one
+continuous page, captured behind a login, because it runs in your own browser.
+Web archiving before a page is edited or taken down. Feeding a long page into
+OCR or a language model as a single uninterrupted sheet.
+
+## Measured, not claimed
+
+Independent measurements on this extension and its alternatives, with raw data
+and the commands to reproduce them:
+
+- **[How much text survives OCR?](https://provinglab.dev/measurements/webpage-to-pdf-for-ocr/)**
+  — 92.6 % of the vocabulary recovered from a screenshot PDF, and the resolution
+  threshold below which recognition collapses
+- **[Does your PDF extension upload the page?](https://provinglab.dev/measurements/pdf-extension-permissions/)**
+  — what eight capture extensions declare in their manifests
+- **[Permissions as blast radius](https://provinglab.dev/measurements/extension-permissions-risk/)**
+  — why permission scope matters more than trust
 
 ---
 
