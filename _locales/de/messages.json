@@ -241,5 +241,50 @@
   },
   "optShortcutWhere": {
     "message": "Zum Ändern diese Adresse in einem neuen Tab öffnen:"
+  },
+  "resultTitle": {
+    "message": "Aufnahme fertig — Full Page PDF Snap"
+  },
+  "resultDownload": {
+    "message": "Herunterladen"
+  },
+  "resultShare": {
+    "message": "Weiterleiten"
+  },
+  "resultPage": {
+    "message": "Seite"
+  },
+  "resultPages": {
+    "message": "Seiten"
+  },
+  "resultSaved": {
+    "message": "gespeichert"
+  },
+  "resultNotSaved": {
+    "message": "noch nicht gespeichert"
+  },
+  "resultNoPreview": {
+    "message": "Die Vorschau lässt sich hier nicht anzeigen."
+  },
+  "resultOpenExternal": {
+    "message": "PDF öffnen"
+  },
+  "resultShareHint": {
+    "message": "Dieser Browser kann Dateien nicht direkt an andere Apps übergeben. Das PDF öffnet sich in der App-Auswahl — von dort weiterleiten."
+  },
+  "resultShareDone": {
+    "message": "Weitergeleitet."
+  },
+  "resultShareError": {
+    "message": "Datei konnte nicht weitergeleitet werden."
+  },
+  "resultDownloadDone": {
+    "message": "Im Download-Ordner gespeichert."
+  },
+  "resultDownloadError": {
+    "message": "Herunterladen fehlgeschlagen."
+  },
+  "resultGone": {
+    "message": "Keine Aufnahme vorhanden. Starte eine neue über das Erweiterungs-Symbol."
   }
 }

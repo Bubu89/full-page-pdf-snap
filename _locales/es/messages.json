@@ -241,5 +241,50 @@
   },
   "optShortcutWhere": {
     "message": "To change it, open this address in a new tab:"
+  },
+  "resultTitle": {
+    "message": "Captura lista — Full Page PDF Snap"
+  },
+  "resultDownload": {
+    "message": "Descargar"
+  },
+  "resultShare": {
+    "message": "Compartir"
+  },
+  "resultPage": {
+    "message": "página"
+  },
+  "resultPages": {
+    "message": "páginas"
+  },
+  "resultSaved": {
+    "message": "guardado"
+  },
+  "resultNotSaved": {
+    "message": "todavía sin guardar"
+  },
+  "resultNoPreview": {
+    "message": "La vista previa no puede mostrarse aquí."
+  },
+  "resultOpenExternal": {
+    "message": "Abrir PDF"
+  },
+  "resultShareHint": {
+    "message": "Este navegador no puede pasar archivos a otras aplicaciones directamente. El PDF se abre en el selector de aplicaciones — compártelo desde ahí."
+  },
+  "resultShareDone": {
+    "message": "Enviado."
+  },
+  "resultShareError": {
+    "message": "No se pudo compartir el archivo."
+  },
+  "resultDownloadDone": {
+    "message": "Guardado en la carpeta de descargas."
+  },
+  "resultDownloadError": {
+    "message": "La descarga ha fallado."
+  },
+  "resultGone": {
+    "message": "No hay ninguna captura. Inicia una nueva desde el icono de la extensión."
   }
 }

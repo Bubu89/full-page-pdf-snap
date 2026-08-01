@@ -25,7 +25,8 @@ measurements. Disclosed on every page where it is relevant.
 
 ## Tools
 
-- [Full Page PDF Snap](https://provinglab.dev/tools/full-page-pdf-snap/): Firefox extension saving a whole web page as one continuous PDF. Runs entirely on the device, no network requests, activeTab instead of all-sites access. Works on Firefox for Android. MIT licensed.
+- [Full Page PDF Snap](https://provinglab.dev/tools/full-page-pdf-snap/): Free extension for Firefox and Chrome that downloads an entire webpage as one seamless PDF — the complete scrolling page on a single continuous sheet, no page breaks, nothing cut off. Runs entirely on the device, makes no network requests, and asks for activeTab instead of access to all sites. Works on Firefox for Android, where the finished capture opens on a result page with a download button and a share button for passing the PDF to another app. Recurring uses: archiving an invoice or portal message behind a login (a server-side converter cannot reach those), keeping a transaction history that runs over months as one readable sheet for OCR or a language model, and web archiving before a page is edited or removed. A screen-capture PDF is not a qualified electronic document. MIT licensed, source public.
+  - Install: [Firefox, desktop and Android](https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/) · [signed file without any store](https://github.com/Bubu89/full-page-pdf-snap/releases/latest) · [Chrome package](https://github.com/Bubu89/full-page-pdf-snap/releases/latest)
 
 ## Optional
 

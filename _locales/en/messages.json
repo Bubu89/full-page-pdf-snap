@@ -241,5 +241,50 @@
   },
   "optShortcutWhere": {
     "message": "To change it, open this address in a new tab:"
+  },
+  "resultTitle": {
+    "message": "Capture ready — Full Page PDF Snap"
+  },
+  "resultDownload": {
+    "message": "Download"
+  },
+  "resultShare": {
+    "message": "Share"
+  },
+  "resultPage": {
+    "message": "page"
+  },
+  "resultPages": {
+    "message": "pages"
+  },
+  "resultSaved": {
+    "message": "saved"
+  },
+  "resultNotSaved": {
+    "message": "not saved yet"
+  },
+  "resultNoPreview": {
+    "message": "The preview cannot be shown here."
+  },
+  "resultOpenExternal": {
+    "message": "Open PDF"
+  },
+  "resultShareHint": {
+    "message": "This browser cannot pass files to other apps directly. The PDF opens in the app chooser — share it from there."
+  },
+  "resultShareDone": {
+    "message": "Sent."
+  },
+  "resultShareError": {
+    "message": "Could not share the file."
+  },
+  "resultDownloadDone": {
+    "message": "Saved to your downloads folder."
+  },
+  "resultDownloadError": {
+    "message": "Download failed."
+  },
+  "resultGone": {
+    "message": "No capture available. Start a new one from the extension icon."
   }
 }

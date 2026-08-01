@@ -34,7 +34,7 @@ PATCHES = [
 
     ("document.createElement(canvas) -> OffscreenCanvas",
      'document.createElement("canvas")',
-     "createCanvas()", 3),
+     "createCanvas()", 4),
 
     # createImageBitmap liefert ein ImageBitmap. Das kennt nur width/height -
     # naturalWidth/naturalHeight gibt es ausschliesslich bei HTMLImageElement.
@@ -49,13 +49,17 @@ PATCHES = [
      "const url = URL.createObjectURL(pdfBlob);",
      "const url = await blobToDataUrl(pdfBlob);", 1),
 
+    ("Vorschau-Blob -> data:-URL statt Blob-URL",
+     "_lastPreviewUrl = URL.createObjectURL(vorschauBlob);",
+     "_lastPreviewUrl = await blobToDataUrl(vorschauBlob);", 1),
+
     # Im Service Worker gibt es keine Blob-URLs - dort sind es data:-URLs, die
     # nicht freigegeben werden muessen. revokeDownloadUrl() ist die Attrappe
     # aus compat.js. Beide Freigabe-Stellen (60-Sekunden-Timer nach dem Save,
     # Reset beim Start der naechsten Aufnahme) werden gleich behandelt.
     ("URL.revokeObjectURL -> revokeDownloadUrl",
      re.compile(r"try \{ URL\.revokeObjectURL\((\w+)\); \} catch \(_\) \{ /\* ignore \*/ \}"),
-     r"revokeDownloadUrl(\1);", 2),
+     r"revokeDownloadUrl(\1);", 3),
 
     # scripting.executeScript braucht keinen Patch mehr: seit dem MV3-Port
     # ruft die Firefox-Quelle dieselbe API mit derselben Signatur auf.
@@ -93,7 +97,8 @@ PATCHES = [
 
 # Dateien, die unveraendert uebernommen werden
 COPY_AS_IS = ["content.js", "pdf-writer.js", "popup.html", "popup.js",
-              "options.html", "options.js", "i18n.js", "i18n-data.js"]
+              "options.html", "options.js", "i18n.js", "i18n-data.js",
+              "result.html", "result.js"]
 
 MANIFEST = """{
   "manifest_version": 3,

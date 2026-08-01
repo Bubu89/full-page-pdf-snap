@@ -241,5 +241,50 @@
   },
   "optShortcutWhere": {
     "message": "To change it, open this address in a new tab:"
+  },
+  "resultTitle": {
+    "message": "Acquisizione pronta — Full Page PDF Snap"
+  },
+  "resultDownload": {
+    "message": "Scarica"
+  },
+  "resultShare": {
+    "message": "Condividi"
+  },
+  "resultPage": {
+    "message": "pagina"
+  },
+  "resultPages": {
+    "message": "pagine"
+  },
+  "resultSaved": {
+    "message": "salvato"
+  },
+  "resultNotSaved": {
+    "message": "non ancora salvato"
+  },
+  "resultNoPreview": {
+    "message": "L’anteprima non può essere mostrata qui."
+  },
+  "resultOpenExternal": {
+    "message": "Apri il PDF"
+  },
+  "resultShareHint": {
+    "message": "Questo browser non può passare file direttamente ad altre app. Il PDF si apre nella scelta delle app — condividilo da lì."
+  },
+  "resultShareDone": {
+    "message": "Inviato."
+  },
+  "resultShareError": {
+    "message": "Impossibile condividere il file."
+  },
+  "resultDownloadDone": {
+    "message": "Salvato nella cartella dei download."
+  },
+  "resultDownloadError": {
+    "message": "Download non riuscito."
+  },
+  "resultGone": {
+    "message": "Nessuna acquisizione disponibile. Avviane una nuova dall’icona dell’estensione."
   }
 }

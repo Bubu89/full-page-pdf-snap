@@ -241,5 +241,50 @@
   },
   "optShortcutWhere": {
     "message": "To change it, open this address in a new tab:"
+  },
+  "resultTitle": {
+    "message": "截图完成 — Full Page PDF Snap"
+  },
+  "resultDownload": {
+    "message": "下载"
+  },
+  "resultShare": {
+    "message": "分享"
+  },
+  "resultPage": {
+    "message": "页"
+  },
+  "resultPages": {
+    "message": "页"
+  },
+  "resultSaved": {
+    "message": "已保存"
+  },
+  "resultNotSaved": {
+    "message": "尚未保存"
+  },
+  "resultNoPreview": {
+    "message": "无法在此处显示预览。"
+  },
+  "resultOpenExternal": {
+    "message": "打开 PDF"
+  },
+  "resultShareHint": {
+    "message": "此浏览器无法将文件直接传递给其他应用。PDF 将在应用选择器中打开 — 请从那里分享。"
+  },
+  "resultShareDone": {
+    "message": "已发送。"
+  },
+  "resultShareError": {
+    "message": "无法分享文件。"
+  },
+  "resultDownloadDone": {
+    "message": "已保存到下载文件夹。"
+  },
+  "resultDownloadError": {
+    "message": "下载失败。"
+  },
+  "resultGone": {
+    "message": "没有可用的截图。请从扩展图标重新开始。"
   }
 }

@@ -241,5 +241,50 @@
   },
   "optShortcutWhere": {
     "message": "To change it, open this address in a new tab:"
+  },
+  "resultTitle": {
+    "message": "キャプチャ完了 — Full Page PDF Snap"
+  },
+  "resultDownload": {
+    "message": "ダウンロード"
+  },
+  "resultShare": {
+    "message": "共有"
+  },
+  "resultPage": {
+    "message": "ページ"
+  },
+  "resultPages": {
+    "message": "ページ"
+  },
+  "resultSaved": {
+    "message": "保存済み"
+  },
+  "resultNotSaved": {
+    "message": "未保存"
+  },
+  "resultNoPreview": {
+    "message": "ここではプレビューを表示できません。"
+  },
+  "resultOpenExternal": {
+    "message": "PDF を開く"
+  },
+  "resultShareHint": {
+    "message": "このブラウザーはファイルを他のアプリに直接渡せません。PDF はアプリ選択画面で開きます — そこから共有してください。"
+  },
+  "resultShareDone": {
+    "message": "送信しました。"
+  },
+  "resultShareError": {
+    "message": "ファイルを共有できませんでした。"
+  },
+  "resultDownloadDone": {
+    "message": "ダウンロードフォルダーに保存しました。"
+  },
+  "resultDownloadError": {
+    "message": "ダウンロードに失敗しました。"
+  },
+  "resultGone": {
+    "message": "キャプチャがありません。拡張機能のアイコンから新しく開始してください。"
   }
 }

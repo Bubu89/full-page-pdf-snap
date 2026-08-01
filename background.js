@@ -57,6 +57,18 @@ let _lastFallbackTabId = null;  // Wenn Save via Tab-Open Notfall lief
 // Aufnahme gueltig, damit ein Tippen auf "Fertig" das PDF im Firefox-Viewer
 // zeigen kann — dort gibt es die Download-Option.
 let _lastPdfUrl = null;
+// Begleitdaten fuer die Ergebnisseite (result.html): sie zeigt Vorschau,
+// Herunterladen und Weiterleiten und holt sich das PDF ueber _lastPdfUrl.
+//
+// Bewusst die URL und nicht die Rohbytes: Chrome serialisiert Nachrichten
+// zwischen Erweiterungsteilen als JSON, ein Uint8Array kaeme dort als Objekt
+// mit Ziffernschluesseln an. Die URL ist in Firefox eine kurze blob:-Adresse,
+// in Chrome MV3 eine data:-Adresse - beide laesst sich die Seite per fetch()
+// selbst in einen Blob zurueckverwandeln.
+let _lastPages = 0;
+let _lastSaved = false;
+// Verkleinerte Gesamtansicht der Aufnahme - die Vorschau der Ergebnisseite.
+let _lastPreviewUrl = null;
 // Einmalige, abschaltbare Bitte um eine Bewertung. Kein Netzwerkzugriff:
 // gezaehlt wird lokal, und geoeffnet wird nur, wenn der Nutzer antippt.
 const BEWERTUNG_AB = 5;                    // ab der wievielten Aufnahme
@@ -649,6 +661,19 @@ async function captureFullPageInner(tab, settings) {
 
   if (pages.length === 0) throw new Error("Keine Seiten erzeugt");
 
+  // Vorschaubild fuer die Ergebnisseite: die ganze Seite auf Anzeigebreite
+  // verkleinert. Bewusst ein eigenes Bild und nicht das PDF in einem Rahmen -
+  // ob der eingebaute Betrachter dort etwas anzeigt, haengt am Geraet, und wenn
+  // er es nicht tut, bleibt eine leere Flaeche stehen. Ein Bild erscheint immer.
+  try {
+    const vorschauBytes = await baueVorschaubild(big, 720);
+    const vorschauBlob = new Blob([vorschauBytes], { type: "image/jpeg" });
+    _lastPreviewUrl = URL.createObjectURL(vorschauBlob);
+  } catch (e) {
+    log("Vorschaubild fehlgeschlagen:", e && e.message);
+    _lastPreviewUrl = null;
+  }
+
   const pdfBytes = PageShotPdf.buildPdf(pages, { dpi: 144 });
 
   const baseTitle = sanitizeFilename(tab.title || "page", settings.titleMaxLen);
@@ -672,6 +697,8 @@ async function captureFullPageInner(tab, settings) {
   // Merken, damit ein Tippen auf die Fertig-Meldung das PDF anzeigen kann.
   // Freigegeben wird sie beim Start der naechsten Aufnahme (runOnActiveTab).
   _lastPdfUrl = url;
+  _lastPages = pages.length;
+  _lastSaved = false;
   const platformForSave = await getPlatform();
 
   // Keine Zwischen-Notification "Speichere PDF ..." mehr — User bekommt
@@ -767,6 +794,7 @@ async function captureFullPageInner(tab, settings) {
     _lastDownloadId = id;
     _lastFilename = usedFilename;
     _lastFallbackTabId = null;
+    _lastSaved = true;
 
     // Progress-Notification aufraeumen, bevor Erfolgs-Notification kommt.
     try { await browser.notifications.clear("pdfsnap-progress"); } catch (_) { /* ignore */ }
@@ -804,6 +832,33 @@ async function captureFullPageInner(tab, settings) {
       }, 60_000);
     }
   }
+}
+
+/* Verkleinert die fertige Gesamtaufnahme auf Anzeigebreite.
+ *
+ * Die Hoehe wird gedeckelt: Canvas-Kanten sind je nach Engine bei rund 32.000
+ * Pixeln zu Ende, und darueber liefert drawImage stillschweigend eine leere
+ * Flaeche statt eines Fehlers. Lieber eine abgeschnittene Vorschau als eine
+ * weisse. */
+const VORSCHAU_MAX_HOEHE = 16000;
+
+async function baueVorschaubild(quelle, maxBreite) {
+  const skala = Math.min(1, maxBreite / quelle.width);
+  const breite = Math.max(1, Math.round(quelle.width * skala));
+  const volleHoehe = Math.round(quelle.height * skala);
+  const hoehe = Math.max(1, Math.min(VORSCHAU_MAX_HOEHE, volleHoehe));
+  // Nur so viel aus der Quelle nehmen, wie in die gedeckelte Hoehe passt -
+  // sonst wuerde die ganze Seite gestaucht statt beschnitten.
+  const quellHoehe = Math.round(hoehe / skala);
+
+  const leinwand = document.createElement("canvas");
+  leinwand.width = breite;
+  leinwand.height = hoehe;
+  leinwand.getContext("2d").drawImage(
+    quelle, 0, 0, quelle.width, quellHoehe, 0, 0, breite, hoehe);
+  // Niedrigere Qualitaet als beim PDF: das Bild wird nur betrachtet, nicht
+  // archiviert, und auf Android zaehlt jedes eingesparte Megabyte.
+  return canvasToJpegBytes(leinwand, 0.7);
 }
 
 function waitForDownloadComplete(id, timeoutMs) {
@@ -986,6 +1041,11 @@ async function capturePdfDirect(tab, pdfUrl) {
   _lastDownloadId = id;
   _lastFilename = relPath;
   _lastFallbackTabId = null;
+  // Ein bereits vorliegendes PDF wird nur geladen, nicht aufgenommen - es gibt
+  // also weder eine Seitenzahl noch ein Vorschaubild. Die Ergebnisseite zeigt
+  // dann ihren Ersatztext samt Schaltflaeche zum Oeffnen.
+  _lastSaved = id != null;
+  _lastPages = 0;
   // Hier ist die Quelle das PDF selbst, keine Blob-URL — damit zeigt ein Tippen
   // dasselbe wie nach einer normalen Aufnahme: das PDF im Browser.
   _lastPdfUrl = pdfUrl;
@@ -1024,7 +1084,11 @@ async function runOnActiveTab() {
   // Auch die PDF-URL der Vorgaenger-Aufnahme faellt hier weg. Sonst wuerde ein
   // Tippen auf eine Fehlermeldung noch das alte PDF anzeigen.
   if (_lastPdfUrl) { try { URL.revokeObjectURL(_lastPdfUrl); } catch (_) { /* ignore */ } }
+  if (_lastPreviewUrl) { try { URL.revokeObjectURL(_lastPreviewUrl); } catch (_) { /* ignore */ } }
   _lastPdfUrl = null;
+  _lastPreviewUrl = null;
+  _lastPages = 0;
+  _lastSaved = false;
   await setBadge("...", "#2563eb");
   await setActionTitle("Full Page PDF Snap — capture running …");
   // Keine Start-Notification: die einzige Meldung kommt, wenn das PDF fertig ist.
@@ -1078,7 +1142,70 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       .catch(e => { console.error(TAG, e); sendResponse({ ok: false, error: e.message }); });
     return true;
   }
+
+  // Stand der letzten Aufnahme fuer die Ergebnisseite.
+  if (msg && msg.type === "pdfsnap:last") {
+    const pfad = _lastFilename || "";
+    sendResponse({
+      ok: !!(_lastPdfUrl || _lastDownloadId != null),
+      url: _lastPdfUrl,
+      preview: _lastPreviewUrl,
+      filename: pfad.split("/").pop() || pfad,
+      path: pfad,
+      pages: _lastPages,
+      saved: _lastSaved,
+      downloadId: _lastDownloadId
+    });
+    return false;
+  }
+
+  // Datei im System oeffnen. Auf Android landet der Nutzer damit in der
+  // App-Auswahl und kann von dort weiterreichen - der Rueckfallweg fuer
+  // Browser ohne Datei-Teilen.
+  if (msg && msg.type === "pdfsnap:open") {
+    oeffneLetzteDatei()
+      .then(ok => sendResponse({ ok }))
+      .catch(e => { log("pdfsnap:open:", e); sendResponse({ ok: false, error: e.message }); });
+    return true;
+  }
 });
+
+async function oeffneLetzteDatei() {
+  if (_lastDownloadId != null && typeof browser.downloads.open === "function") {
+    try { await browser.downloads.open(_lastDownloadId); return true; }
+    catch (e) { log("downloads.open failed:", e.message); }
+  }
+  if (_lastDownloadId != null && typeof browser.downloads.show === "function") {
+    try { await browser.downloads.show(_lastDownloadId); return true; }
+    catch (e) { log("downloads.show failed:", e.message); }
+  }
+  if (_lastPdfUrl) {
+    try {
+      const tab = await browser.tabs.create({ url: _lastPdfUrl, active: true });
+      _lastFallbackTabId = tab && tab.id;
+      return true;
+    } catch (e) { log("tab fallback failed:", e.message); }
+  }
+  return false;
+}
+
+/* Oeffnet die Ergebnisseite - Vorschau, Herunterladen, Weiterleiten.
+ * Ein bereits offener Reiter wird wiederverwendet, damit nicht bei jeder
+ * Aufnahme ein weiterer aufgeht. */
+async function zeigeErgebnisseite() {
+  const seite = browser.runtime.getURL("result.html");
+  try {
+    const offen = await browser.tabs.query({ url: seite });
+    if (offen && offen.length) {
+      await browser.tabs.update(offen[0].id, { active: true, url: seite });
+      _lastFallbackTabId = offen[0].id;
+      return true;
+    }
+  } catch (_) { /* tabs.query mit url braucht keine Extra-Rechte fuer eigene Seiten */ }
+  const tab = await browser.tabs.create({ url: seite, active: true });
+  _lastFallbackTabId = tab && tab.id;
+  return true;
+}
 
 // Android: kein Popup — Icon-Tap loest direkten Capture aus.
 // Setzt action.popup zur Laufzeit auf leer, damit onClicked feuert
@@ -1127,17 +1254,17 @@ if (browser.notifications && browser.notifications.onClicked) {
       _lastFallbackTabId = null;
       return;
     }
-    // Regelfall: das PDF im Firefox-Viewer zeigen. Dort hat der Nutzer die
-    // Download-Option und bleibt im Browser, statt in einer fremden PDF-App
-    // zu landen.
-    if (_lastPdfUrl) {
+    // Regelfall: die Ergebnisseite zeigen. Sie enthaelt die Vorschau und
+    // darueber die beiden Schaltflaechen - Herunterladen und Weiterleiten.
+    // Der nackte Betrachter bot nur das Herunterladen; das Weiterreichen an
+    // Mail oder Messenger war von dort nicht erreichbar.
+    if (_lastPdfUrl || _lastDownloadId != null) {
       try {
-        const tab = await browser.tabs.create({ url: _lastPdfUrl, active: true });
-        _lastFallbackTabId = tab && tab.id;
-        log("PDF im Viewer geoeffnet:", _lastFilename);
+        await zeigeErgebnisseite();
+        log("Ergebnisseite geoeffnet:", _lastFilename);
         return;
       } catch (e) {
-        log("tab open from notification failed:", e);
+        log("result page open failed:", e);
       }
     }
     if (_lastDownloadId == null) {

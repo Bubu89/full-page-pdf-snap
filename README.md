@@ -99,7 +99,9 @@ The full source is in this repository under the MIT license, so you can verify a
 
 **Android**
 
-Open the menu, tap the extension — the capture starts immediately without an intermediate popup. Nothing reports progress while it runs; a single notification appears once the PDF is ready. Tapping that notification shows the PDF in Firefox's own viewer, where the download control sits next to it. Either way the file is already in your download folder.
+Open the menu, tap the extension — the capture starts immediately without an intermediate popup. Nothing reports progress while it runs; a single notification appears once the PDF is ready.
+
+Tapping that notification opens the result page: a preview of the whole capture, with **Download** and **Share** side by side above it. Share hands the PDF to another app — mail, a messenger, cloud storage. Firefox does not yet pass files to the system share sheet ([`files` is unimplemented](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share#browser_compatibility)), so there the button opens the app chooser instead; in Chrome the share sheet appears directly. Either way the file is already in your download folder.
 
 ![Settings](screenshots/02_settings_en.png)
 
@@ -168,8 +170,12 @@ vollständige Liste steht oben im englischen Teil und in
 - **Desktop:** Toolbar-Icon → **Jetzt aufnehmen**, Tastenkürzel `Alt+Shift+Y`, oder Rechtsklick auf das Toolbar-Icon
 - **Android:** Menü → Erweiterung antippen, die Aufnahme startet sofort. Während
   der Aufnahme meldet sich nichts; erst wenn das PDF fertig ist, kommt eine
-  einzige Benachrichtigung. Ein Tippen darauf zeigt das PDF im Firefox-Viewer,
-  wo die Download-Schaltfläche daneben sitzt. Gespeichert ist es ohnehin schon.
+  einzige Benachrichtigung. Ein Tippen darauf öffnet die Ergebnisseite: eine
+  Vorschau der ganzen Aufnahme, darüber nebeneinander **Herunterladen** und
+  **Weiterleiten** — an Mail, Messenger oder Cloud-Speicher. Firefox übergibt
+  Dateien noch nicht an das Teilen-Menü des Systems, dort öffnet der Knopf
+  stattdessen die App-Auswahl; in Chrome erscheint das Teilen-Menü direkt.
+  Gespeichert ist die Datei ohnehin schon.
 
 ## Support
 

@@ -241,5 +241,50 @@
   },
   "optShortcutWhere": {
     "message": "To change it, open this address in a new tab:"
+  },
+  "resultTitle": {
+    "message": "Capture prête — Full Page PDF Snap"
+  },
+  "resultDownload": {
+    "message": "Télécharger"
+  },
+  "resultShare": {
+    "message": "Partager"
+  },
+  "resultPage": {
+    "message": "page"
+  },
+  "resultPages": {
+    "message": "pages"
+  },
+  "resultSaved": {
+    "message": "enregistré"
+  },
+  "resultNotSaved": {
+    "message": "pas encore enregistré"
+  },
+  "resultNoPreview": {
+    "message": "L’aperçu ne peut pas être affiché ici."
+  },
+  "resultOpenExternal": {
+    "message": "Ouvrir le PDF"
+  },
+  "resultShareHint": {
+    "message": "Ce navigateur ne peut pas transmettre de fichiers directement à d’autres applications. Le PDF s’ouvre dans le sélecteur d’applications — partagez-le depuis là."
+  },
+  "resultShareDone": {
+    "message": "Envoyé."
+  },
+  "resultShareError": {
+    "message": "Impossible de partager le fichier."
+  },
+  "resultDownloadDone": {
+    "message": "Enregistré dans le dossier de téléchargement."
+  },
+  "resultDownloadError": {
+    "message": "Échec du téléchargement."
+  },
+  "resultGone": {
+    "message": "Aucune capture disponible. Lancez-en une nouvelle depuis l’icône de l’extension."
   }
 }

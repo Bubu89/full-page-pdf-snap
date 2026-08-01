@@ -72,8 +72,11 @@ def main():
         # Endung erneut an: .../name -> .../name-2.16.0.xpi -> ...xpi-2.16.0.xpi
         (r"https://addons\.mozilla\.org/firefox/downloads/file/\d+/[\w.\-]+", xpi,
          "XPI-Direktlink"),
-        (r"(Install version )\d+\.\d+\.\d+", rf"\g<1>{v}", "Knopftext EN"),
-        (r"(Version )\d+\.\d+\.\d+( installieren)", rf"\g<1>{v}\g<2>", "Knopftext DE"),
+        # Die Version steht neben dem Knopf, nicht darauf: der Knopftext traegt
+        # den Suchbegriff ("Download for Firefox"), die Fassung bleibt daneben
+        # und wird hier weiter gepflegt.
+        (r"(Version )\d+\.\d+\.\d+( — signed by Mozilla)", rf"\g<1>{v}\g<2>", "Versionsangabe EN"),
+        (r"(Version )\d+\.\d+\.\d+( — von Mozilla signiert)", rf"\g<1>{v}\g<2>", "Versionsangabe DE"),
         (r'("softwareVersion":\s*")[\d.]+(")', rf"\g<1>{v}\g<2>", "JSON-LD softwareVersion"),
         (r"(releases/download/v)[\d.]+(/full-page-pdf-snap-)[\d.]+(\.xpi)",
          rf"\g<1>{v}\g<2>{v}\g<3>", "GitHub-Release-XPI"),

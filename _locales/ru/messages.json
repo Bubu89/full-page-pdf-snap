@@ -241,5 +241,50 @@
   },
   "optShortcutWhere": {
     "message": "To change it, open this address in a new tab:"
+  },
+  "resultTitle": {
+    "message": "Снимок готов — Full Page PDF Snap"
+  },
+  "resultDownload": {
+    "message": "Скачать"
+  },
+  "resultShare": {
+    "message": "Поделиться"
+  },
+  "resultPage": {
+    "message": "страница"
+  },
+  "resultPages": {
+    "message": "стр."
+  },
+  "resultSaved": {
+    "message": "сохранено"
+  },
+  "resultNotSaved": {
+    "message": "ещё не сохранено"
+  },
+  "resultNoPreview": {
+    "message": "Предпросмотр здесь недоступен."
+  },
+  "resultOpenExternal": {
+    "message": "Открыть PDF"
+  },
+  "resultShareHint": {
+    "message": "Этот браузер не может передавать файлы другим приложениям напрямую. PDF откроется в выборе приложений — поделитесь оттуда."
+  },
+  "resultShareDone": {
+    "message": "Отправлено."
+  },
+  "resultShareError": {
+    "message": "Не удалось поделиться файлом."
+  },
+  "resultDownloadDone": {
+    "message": "Сохранено в папку загрузок."
+  },
+  "resultDownloadError": {
+    "message": "Не удалось скачать."
+  },
+  "resultGone": {
+    "message": "Снимков нет. Начните новый с значка расширения."
   }
 }

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html data-i18n-title="resultTitle">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Full Page PDF Snap</title>
+<style>
+  /* Gleiche Farbrollen wie Popup und Einstellungen, damit die Ergebnisseite
+     nicht wie ein Fremdkoerper wirkt. Hell ist der Ausgangswert. */
+  :root {
+    --bg: #ffffff;
+    --flaeche: #f3f4f6;
+    --fg: #111827;
+    --gedaempft: #6b7280;
+    --rand: #e5e7eb;
+    --ghost-fg: #374151;
+    --gut: #15803d;
+    --fehler: #b91c1c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1f2937;
+      --flaeche: #111827;
+      --fg: #f3f4f6;
+      --gedaempft: #9ca3af;
+      --rand: #374151;
+      --ghost-fg: #d1d5db;
+      --gut: #86efac;
+      --fehler: #fca5a5;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Kopfleiste bleibt stehen, damit die Schaltflaechen auch beim Blaettern
+     durch ein langes PDF erreichbar sind - auf dem Handy der Regelfall. */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--bg);
+    border-bottom: 1px solid var(--rand);
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .datei { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .name {
+    font-size: 14px; font-weight: 600;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .meta { font-size: 12px; color: var(--gedaempft); }
+  .meta .ok { color: var(--gut); }
+  .meta .warn { color: var(--fehler); }
+
+  .aktionen { display: flex; gap: 10px; }
+  button {
+    flex: 1;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    /* 44 px Mindesthoehe: darunter wird auf dem Handy danebengetippt. */
+    min-height: 44px;
+    padding: 10px 14px;
+    border: 0; border-radius: 8px;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer;
+  }
+  button:disabled { opacity: .5; cursor: default; }
+  .primaer { background: #2563eb; color: #fff; }
+  .primaer:hover:not(:disabled) { background: #1d4ed8; }
+  .zweit { background: var(--flaeche); color: var(--ghost-fg); border: 1px solid var(--rand); }
+  .zweit:hover:not(:disabled) { border-color: var(--gedaempft); }
+  button svg { width: 18px; height: 18px; flex: none; }
+  button:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
+
+  .hinweis { font-size: 12px; color: var(--gedaempft); min-height: 15px; }
+  .hinweis.fehler { color: var(--fehler); }
+
+  /* Vorschau fuellt den Rest des Fensters und scrollt fuer sich - bei einer
+     langen Seite ist das Bild um ein Vielfaches hoeher als das Fenster. */
+  .vorschau {
+    flex: 1; min-height: 0; position: relative;
+    overflow: auto; background: var(--flaeche);
+    -webkit-overflow-scrolling: touch;
+  }
+  .vorschau img {
+    display: block; width: 100%; height: auto;
+    background: #fff; cursor: zoom-in;
+  }
+  .ersatz {
+    position: absolute; inset: 0;
+    display: none; flex-direction: column;
+    align-items: center; justify-content: center; gap: 12px;
+    padding: 24px; text-align: center;
+    font-size: 13px; color: var(--gedaempft);
+  }
+  .ersatz button { flex: none; min-width: 200px; }
+  body.kein-embed .vorschau img { display: none; }
+  body.kein-embed .ersatz { display: flex; }
+
+  @media (min-width: 640px) {
+    header { flex-direction: row; align-items: center; justify-content: space-between; }
+    .aktionen { flex: none; }
+    button { flex: none; min-width: 150px; }
+    .hinweis { width: 100%; order: 3; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="datei">
+      <div class="name" id="name">…</div>
+      <div class="meta" id="meta"></div>
+    </div>
+    <div class="aktionen">
+      <button id="download" class="zweit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        <span data-i18n="resultDownload">Download</span>
+      </button>
+      <button id="share" class="primaer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="18" cy="5" r="3"/>
+          <circle cx="6" cy="12" r="3"/>
+          <circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
+        <span data-i18n="resultShare">Share</span>
+      </button>
+    </div>
+    <div class="hinweis" id="hinweis"></div>
+  </header>
+
+  <div class="vorschau">
+    <img id="bild" alt="" data-i18n-title="resultOpenExternal">
+    <div class="ersatz">
+      <div data-i18n="resultNoPreview">The preview cannot be shown here.</div>
+      <button id="extern" class="zweit" data-i18n="resultOpenExternal">Open PDF</button>
+    </div>
+  </div>
+
+  <script src="i18n-data.js"></script>
+  <script src="i18n.js"></script>
+  <script src="result.js"></script>
+</body>
+</html>
