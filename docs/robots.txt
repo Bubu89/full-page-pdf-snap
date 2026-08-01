@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bubu89.github.io/full-page-pdf-snap/sitemap.xml
