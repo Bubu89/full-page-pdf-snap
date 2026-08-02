@@ -1,0 +1,25 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema/2025-06-18/server-card.json",
+  "serverInfo": {
+    "name": "provinglab",
+    "version": "1.0.0",
+    "title": "Proving Lab",
+    "description": "Measurement datasets and reproducible methods on browser tools, OCR pipelines and AI-assisted development. Every dataset has a documented method and a control run."
+  },
+  "protocolVersion": "2025-06-18",
+  "transport": {
+    "type": "streamable-http",
+    "endpoint": "https://provinglab.dev/mcp"
+  },
+  "capabilities": {
+    "tools": { "listChanged": false }
+  },
+  "tools": [
+    { "name": "list_measurements", "description": "List the published measurements with dataset URLs and the pages documenting how each was measured." },
+    { "name": "get_measurement_data", "description": "Fetch one measurement dataset as JSON, including the control run." },
+    { "name": "get_method", "description": "Fetch a reproducible method published as a skill." }
+  ],
+  "authentication": { "type": "none" },
+  "documentation": "https://provinglab.dev/auth.md",
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}

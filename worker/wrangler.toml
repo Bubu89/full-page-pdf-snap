@@ -1,0 +1,17 @@
+# Deployment:  npx wrangler deploy   (im Ordner worker/)
+# Der Token braucht Account "Workers Scripts: Edit" und Zone "Workers Routes: Edit".
+name = "provinglab-mcp"
+main = "mcp.js"
+compatibility_date = "2026-08-02"
+account_id = "5b4b2a56eeb5ec2010547b575d3db3f1"
+
+# Die Route faengt die ganze Zone ab, weil die Markdown-Aushandlung auf jeder
+# Seite greifen muss. Der Worker reicht alles unveraendert durch, was weder
+# /mcp ist noch Markdown anfordert — und faellt bei jedem Fehler auf den
+# Ursprung zurueck.
+[[routes]]
+pattern = "provinglab.dev/*"
+zone_name = "provinglab.dev"
+
+[observability]
+enabled = true
