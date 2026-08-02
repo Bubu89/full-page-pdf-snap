@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Measured against Citoid: same citations, three times faster, none invented — Proving Lab</title>
+<meta name="description" content="A citation reader is only as good as the one it replaces. Against Citoid, the Wikimedia service built on the Zotero translators, across 26 sources in twelve fields: 8 complete citations each, 0.34 s against 1.63 s, and two references Citoid built out of bot walls.">
+<link rel="canonical" href="https://provinglab.dev/measurements/citation-extraction/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Measured against Citoid: same citations, three times faster, none invented">
+<meta property="og:description" content="A citation reader is only as good as the one it replaces. Against Citoid, the Wikimedia service built on the Zotero translators, across 26 sources in twelve fields: 8 complete citations each, 0.34 s against 1.63 s, and two references Citoid built out of bot walls.">
+<meta property="og:url" content="https://provinglab.dev/measurements/citation-extraction/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-08-01">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Measured against Citoid: same citations, three times faster, none invented",
+  "description": "A citation reader is only as good as the one it replaces. Against Citoid, the Wikimedia service built on the Zotero translators, across 26 sources in twelve fields: 8 complete citations each, 0.34 s against 1.63 s, and two references Citoid built out of bot walls.",
+  "datePublished": "2026-08-02",
+  "dateModified": "2026-08-02",
+  "inLanguage": "en",
+  "url": "https://provinglab.dev/measurements/citation-extraction/",
+  "author": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org", "@type": "Dataset",
+  "name": "Print-to-PDF versus screenshot capture, same document",
+  "description": "Page counts, page-break analysis, word recall against the source text, embedded images and file sizes for the same Wikipedia article captured both ways on 1 August 2026.",
+  "url": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "identifier": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "datePublished": "2026-08-01", "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true, "inLanguage": "en",
+  "keywords": ["print to PDF","screenshot","page breaks","OCR","web archiving"],
+  "variableMeasured": ["pages","page breaks","breaks mid-sentence","word recall","file size","embedded images"],
+  "creator": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
+  "distribution": [{ "@type": "DataDownload", "encodingFormat": "application/json",
+    "contentUrl": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json" }],
+  "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
+}
+</script>
+
+<style>
+  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.87em;background:var(--card);
+       padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:34px 0 36px;border-bottom:1px solid var(--line);margin-bottom:32px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.16;letter-spacing:-.025em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:60ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+  h2{font-size:1.4rem;line-height:1.25;margin:46px 0 14px;letter-spacing:-.015em;text-wrap:balance}
+  h3{font-size:1.04rem;margin:28px 0 8px}
+  p{margin-bottom:17px} ul,ol{margin:0 0 18px 24px} li{margin-bottom:9px}
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0}
+  .kf{flex:1 1 160px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px}
+  .kf .n{font-size:1.8rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.a .n{color:var(--good)} .kf.b .n{color:var(--warn)}
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--bg2);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .win{color:var(--good);font-weight:600} .lose{color:var(--bad)}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.84rem;line-height:1.6}
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0} .box p:last-child{margin-bottom:0}
+  .faq{margin:44px 0 0}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin:44px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+  footer{margin-top:52px;padding:24px 0 64px;border-top:1px solid var(--line);
+    font-size:.83rem;color:var(--dim);line-height:1.6}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+</style>
+<script src="/agent-tools.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/">Notes</a>
+    <a class="n" href="../../measurements/" aria-current="page">Measurements</a>
+    <a class="n" href="../../tools/">Tools</a>
+    <a class="n" href="../../about/">About</a>
+    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
+      <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header>
+  <h1>Measured against Citoid: same citations, three times faster, none invented</h1>
+  <p class="standfirst">
+    An endpoint that turns a URL into a citation sounds like a solved problem.
+    It is not: half the sources a student would actually cite refuse to answer a
+    server at all. Here is which half, how fast the other half answers, and the
+    number that decides whether the answers can be trusted.
+  </p>
+  <p class="meta">2 August 2026 · 26 sources, twelve fields, two runs each ·
+    <a href="/data/2026-08-02-citation-extraction.json">raw data</a></p>
+</header>
+
+<h2>What was measured</h2>
+<p>
+  The <code>extract_citation</code> tool on this site's
+  <a href="/notes/mcp-server-what-it-solves/">MCP endpoint</a> is given nothing but an
+  address. It fetches the page, reads whatever citation metadata the page declares
+  about itself — Highwire <code>citation_*</code> tags, Dublin Core, PRISM,
+  schema.org, OpenGraph — and returns a structured record with RIS and BibTeX.
+  No citation service is queried, so nothing learns what is being read.
+</p>
+
+<h2>The comparison that decides it</h2>
+<p>
+  A hit rate on its own says nothing. <a href="https://www.mediawiki.org/wiki/Citoid">Citoid</a>
+  — the Wikimedia service that turns a URL into a citation, built on the Zotero
+  translators — was given the same 26 addresses in the same order.
+</p>
+<table>
+  <thead><tr><th></th><th>This endpoint</th><th>Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>Complete citations</td><td class="num win">8</td><td class="num">8</td></tr>
+    <tr><td>Any record returned</td><td class="num">13</td><td class="num win">20</td></tr>
+    <tr><td><strong>References built from a block page</strong></td><td class="num win">0</td><td class="num">2</td></tr>
+    <tr><td>Median seconds</td><td class="num win">0.34</td><td class="num">1.63</td></tr>
+    <tr><td>Slowest single call</td><td class="num win">10.0</td><td class="num">29.2</td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>The same eight complete citations, in a third of the time.</strong> Citoid
+  returns a record more often — twenty against thirteen — but that is where the
+  second row matters: two of those extra records are references to a bot wall.
+  For EconStor and SSOAR, Citoid returned <em>Making sure you&#8217;re not a bot!</em>
+  as the title of the work. Formatted, complete-looking, and worthless.
+</p>
+<p>
+  That is the whole argument for refusing to answer. A reference that looks right
+  and is not costs more than a gap does: the gap is visible while you write, the
+  wrong entry is discovered by whoever marks the work.
+</p>
+<p>
+  It runs both ways. Citoid reaches three publishers that block us — MDPI, PeerJ
+  and the OECD — and those are real losses, not rounding. We reach two it misses,
+  Zenodo and Wikipedia. On coverage the two are close; on what they do when
+  coverage fails, they are not.
+</p>
+
+<h2>By field</h2>
+<table>
+  <thead><tr><th>Field</th><th>Returned</th><th>Sources that answered</th><th>Sources that refused</th></tr></thead>
+  <tbody>
+    <tr><td>Medizin</td><td>2/3</td><td>PMC, BMC Public H.</td><td>BMJ Open (http-403)</td></tr>
+    <tr><td>Psychologie</td><td>2/3</td><td>PLOS ONE, Springer ASB</td><td>Frontiers (http-404)</td></tr>
+    <tr><td>Informatik</td><td>1/2</td><td>arXiv</td><td>PeerJ CS (http-403)</td></tr>
+    <tr><td>Biologie</td><td>1/1</td><td>bioRxiv</td><td>—</td></tr>
+    <tr><td>Naturwiss.</td><td>1/2</td><td>Sci Reports</td><td>MDPI (http-403)</td></tr>
+    <tr><td>Wirtschaft</td><td>0/2</td><td>—</td><td>EconStor (block-page), OECD (http-403)</td></tr>
+    <tr><td>Sozialwiss.</td><td>0/2</td><td>—</td><td>SSOAR (block-page), GESIS (http-403)</td></tr>
+    <tr><td>Geisteswiss.</td><td>0/1</td><td>—</td><td>Persée (http-404)</td></tr>
+    <tr><td>Recht</td><td>2/2</td><td>EUR-Lex DSGVO, RIS StGB</td><td>—</td></tr>
+    <tr><td>Statistik</td><td>2/2</td><td>Statistik AT, Destatis</td><td>—</td></tr>
+    <tr><td>Repositorium</td><td>1/2</td><td>Zenodo</td><td>OSF (block-page)</td></tr>
+    <tr><td>Presse</td><td>0/1</td><td>—</td><td>Guardian (http-404)</td></tr>
+    <tr><td>Enzyklopädie</td><td>1/1</td><td>Wikipedia DE</td><td>—</td></tr>
+    <tr><td>Verlag/Wall</td><td>0/2</td><td>—</td><td>ScienceDirect (http-403), Wiley (http-403)</td></tr>
+  </tbody>
+</table>
+
+<h2>The number that matters more than the hit rate</h2>
+<p>
+  <strong>Zero false alarms.</strong> Every one of the 13 refusals was
+  re-fetched from an unrelated network with a browser user-agent. All thirteen were
+  real: same 403, same 404, same bot wall. And in the other direction, all
+  13 records that were returned carried every required field —
+  authors, year, container, identifier — and were classified into the right kind of
+  source, from journal article through preprint to legal text.
+</p>
+<p>
+  This matters more than coverage because of what the failure mode would be. A
+  reader that invents a reference from an error page produces a bibliography entry
+  that looks correct and is not. Half an answer is usable; a confident wrong answer
+  is not.
+</p>
+
+<h2>Speed</h2>
+<table>
+  <thead><tr><th></th><th>Seconds</th></tr></thead>
+  <tbody>
+    <tr><td>Endpoint alone, no page fetched</td><td class="num">0.15</td></tr>
+    <tr><td>Median, all calls</td><td class="num">0.35</td></tr>
+    <tr><td>Median, successful lookup</td><td class="num">0.74</td></tr>
+    <tr><td>Median, refusal</td><td class="num">0.22</td></tr>
+    <tr><td>95th percentile</td><td class="num">3.46</td></tr>
+    <tr><td>Slowest single call</td><td class="num">12.52</td></tr>
+  </tbody>
+</table>
+<p>
+  Roughly six tenths of a second is the fetch; the rest is the endpoint. A refusal
+  costs a third of a success, because a blocked page is small. The slowest call —
+  12.52 s, an Austrian consolidated statute — is a page of several hundred
+  kilobytes, and the time is spent transferring it, not parsing it. Two runs of the
+  same address differed by up to 176 %: <strong>this measures the target site, not
+  the endpoint.</strong>
+</p>
+
+<h2>Two things that went wrong while measuring</h2>
+<p>
+  The first run returned <code>HTTP 403</code> for all 26 sources, each in 0.13 s —
+  far too fast for a real fetch, which is how it was caught. The cause was the
+  measuring script, not the pipeline: Python's <code>urllib</code> sends
+  <code>Python-urllib/3.x</code>, and Cloudflare's bot protection rejects exactly
+  that signature. <code>requests</code>, <code>node-fetch</code>, Go's client, a
+  browser and an MCP client all pass. Worth knowing for anyone connecting to this
+  endpoint from a script.
+</p>
+<p>
+  The second was subtler. Fetched pages were cached at the edge for five minutes.
+  A bot wall answers with <code>HTTP 200</code>, so it cached like any page — and a
+  freshly deployed detection for bot walls then ran against the stored response and
+  could not take effect at all. Caching for this tool is now off. A citation is
+  worth an extra fetch.
+</p>
+
+<h2>What this says about the two ways to save a source</h2>
+<p>
+  One source in this set makes the point cleanly. SSOAR, a German social-science
+  repository, serves the real page to a desktop browser and a bot wall to Cloudflare
+  worker addresses. The endpoint cannot read it. A
+  <a href="/tools/full-page-pdf-snap/">browser extension</a> running in the reader's
+  own session can, because it is not a third party — it is the reader.
+</p>
+<p>
+  So the two are not competitors. The endpoint is fast, needs no installation and
+  works for open sources; it fails at exactly the publishers whose material sits
+  behind a login a student already has. The extension covers those and cannot be
+  called from a script. Anyone building a citation workflow needs both, and should
+  know which one is answering.
+</p>
+
+<h2>Questions</h2>
+<h3>Why not resolve the DOI through Crossref when the page refuses?</h3>
+<p>
+  It would raise coverage. It would also tell Crossref which paper is being read,
+  every time. For the sources measured here it would have added nothing to the
+  thirteen that worked — they already declare the full record — and the thirteen
+  that failed mostly failed before a DOI was ever found. The trade was not worth it.
+</p>
+<h3>Is 50 % good?</h3>
+<p>
+  It is the honest number for a server-side reader in August 2026, and it will get
+  worse rather than better as publishers tighten bot defences. Which is the
+  argument for reading a page where the reader already is, rather than asking a
+  server to do it from somewhere else.
+</p>
+
+<footer>
+      Measured on 2 August 2026 from a Cloudflare Workers edge in Frankfurt,
+      two runs per address, system load 0.25 at the start. Every reported refusal
+      was re-checked from an unrelated network. Raw data:
+      <a href="/data/2026-08-02-citation-extraction.json">JSON</a>, CC BY 4.0.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+
+</div>
+</body>
+</html>

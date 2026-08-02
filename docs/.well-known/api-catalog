@@ -83,6 +83,25 @@
       ]
     },
     {
+      "anchor": "https://provinglab.dev/data/2026-08-02-citation-extraction.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
       "anchor": "https://provinglab.dev/data/2026-08-02-quellen-archiv.json",
       "type": [
         {

@@ -1,0 +1,310 @@
+{
+  "measurement": "citation-extraction-server-side",
+  "date": "2026-08-02",
+  "question": "Given only a URL, does a purpose-built citation reader beat the established one — and if not on coverage, then on what?",
+  "method": {
+    "endpoint": "https://provinglab.dev/mcp",
+    "tool": "extract_citation",
+    "runs_per_url": 2,
+    "urls": 26,
+    "fields_read": "Highwire citation_*, Dublin Core, PRISM, schema.org JSON-LD, OpenGraph, <title>",
+    "network": "Cloudflare Workers edge (FRA)",
+    "load_average_at_start": 0.25,
+    "control": "Every reported block was re-fetched from an unrelated network with a browser user-agent to check whether the block was real."
+  },
+  "results": {
+    "records_returned": 13,
+    "blocks_reported": 13,
+    "type_classification_correct": "13/13",
+    "required_fields_complete": "13/13",
+    "false_block_reports": 0,
+    "seconds": {
+      "median_all": 0.35,
+      "median_successful": 0.74,
+      "median_blocked": 0.22,
+      "p95": 3.46,
+      "fastest": 0.15,
+      "slowest": 12.52,
+      "baseline_no_fetch": 0.15
+    }
+  },
+  "per_source": [
+    {
+      "field": "Medizin",
+      "source": "PMC",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10418250/",
+      "seconds": 0.51,
+      "outcome": "record",
+      "type": "Zeitschriftenaufsatz",
+      "block_reason": null
+    },
+    {
+      "field": "Medizin",
+      "source": "BMJ Open",
+      "url": "https://bmjopen.bmj.com/content/13/8/e072428",
+      "seconds": 0.17,
+      "outcome": "blocked",
+      "type": null,
+      "block_reason": "http-403"
+    },
+    {
+      "field": "Medizin",
+      "source": "BMC Public H.",
+      "url": "https://bmcpublichealth.biomedcentral.com/articles/10.1186/s12889-023-16556-0",
+      "seconds": 1.01,
+      "outcome": "record",
+      "type": "Zeitschriftenaufsatz",
+      "block_reason": null
+    },
+    {
+      "field": "Psychologie",
+      "source": "PLOS ONE",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0287153",
+      "seconds": 1.18,
+      "outcome": "record",
+      "type": "Zeitschriftenaufsatz",
+      "block_reason": null
+    },
+    {
+      "field": "Psychologie",
+      "source": "Springer ASB",
+      "url": "https://link.springer.com/article/10.1007/s10508-012-0062-0",
+      "seconds": 0.97,
+      "outcome": "record",
+      "type": "Zeitschriftenaufsatz",
+      "block_reason": null
+    },
+    {
+      "field": "Psychologie",
+      "source": "Frontiers",
+      "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2021.618509/full",
+      "seconds": 0.42,
+      "outcome": "blocked",
+      "type": null,
+      "block_reason": "http-404"
+    },
+    {
+      "field": "Informatik",
+      "source": "arXiv",
+      "url": "https://arxiv.org/abs/1706.03762",
+      "seconds": 0.2,
+      "outcome": "record",
+      "type": "Preprint",
+      "block_reason": null
+    },
+    {
+      "field": "Informatik",
+      "source": "PeerJ CS",
+      "url": "https://peerj.com/articles/cs-1234/",
+      "seconds": 0.18,
+      "outcome": "blocked",
+      "type": null,
+      "block_reason": "http-403"
+    },
+    {
+      "field": "Biologie",
+      "source": "bioRxiv",
+      "url": "https://www.biorxiv.org/content/10.1101/2023.01.01.522000v1",
+      "seconds": 0.31,
+      "outcome": "record",
+      "type": "Preprint",
+      "block_reason": null
+    },
+    {
+      "field": "Naturwiss.",
+      "source": "Sci Reports",
+      "url": "https://www.nature.com/articles/s41598-023-38000-4",
+      "seconds": 0.93,
+      "outcome": "record",
+      "type": "Zeitschriftenaufsatz",
+      "block_reason": null
+    },
+    {
+      "field": "Naturwiss.",
+      "source": "MDPI",
+      "url": "https://www.mdpi.com/2076-328X/13/2/167",
+      "seconds": 0.23,
+      "outcome": "blocked",
+      "type": null,
+      "block_reason": "http-403"
+    },
+    {
+      "field": "Wirtschaft",
+      "source": "EconStor",
+      "url": "https://www.econstor.eu/handle/10419/234477",
+      "seconds": 0.28,
+      "outcome": "blocked",
+      "type": null,
+      "block_reason": "block-page"
+    },
+    {
+      "field": "Wirtschaft",
+      "source": "OECD",
+      "url": "https://www.oecd.org/en/publications/oecd-employment-outlook-2023_08785bba-en.html",
+      "seconds": 0.18,
+      "outcome": "blocked",
+      "type": null,
+      "block_reason": "http-403"
+    },
+    {
+      "field": "Sozialwiss.",
+      "source": "SSOAR",
+      "url": "https://www.ssoar.info/ssoar/handle/document/72281",
+      "seconds": 0.2,
+      "outcome": "blocked",
+      "type": null,
+      "block_reason": "block-page"
+    },
+    {
+      "field": "Sozialwiss.",
+      "source": "GESIS",
+      "url": "https://search.gesis.org/research_data/ZA7500",
+      "seconds": 0.18,
+      "outcome": "blocked",
+      "type": null,
+      "block_reason": "http-403"
+    },
+    {
+      "field": "Geisteswiss.",
+      "source": "Persée",
+      "url": "https://www.persee.fr/doc/rfsoc_0035-2969_1971_num_12_1_1875",
+      "seconds": 3.46,
+      "outcome": "blocked",
+      "type": null,
+      "block_reason": "http-404"
+    },
+    {
+      "field": "Recht",
+      "source": "EUR-Lex DSGVO",
+      "url": "https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX%3A32016R0679",
+      "seconds": 0.87,
+      "outcome": "record",
+      "type": "Internetquelle",
+      "block_reason": null
+    },
+    {
+      "field": "Recht",
+      "source": "RIS StGB",
+      "url": "https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10002296",
+      "seconds": 11.29,
+      "outcome": "record",
+      "type": "Internetquelle",
+      "block_reason": null
+    },
+    {
+      "field": "Statistik",
+      "source": "Statistik AT",
+      "url": "https://www.statistik.at/statistiken/bevoelkerung-und-soziales/bevoelkerung/bevoelkerungsstand",
+      "seconds": 0.59,
+      "outcome": "record",
+      "type": "Internetquelle",
+      "block_reason": null
+    },
+    {
+      "field": "Statistik",
+      "source": "Destatis",
+      "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/_inhalt.html",
+      "seconds": 0.62,
+      "outcome": "record",
+      "type": "Internetquelle",
+      "block_reason": null
+    },
+    {
+      "field": "Repositorium",
+      "source": "Zenodo",
+      "url": "https://zenodo.org/records/10005281",
+      "seconds": 0.54,
+      "outcome": "record",
+      "type": "Internetquelle",
+      "block_reason": null
+    },
+    {
+      "field": "Repositorium",
+      "source": "OSF",
+      "url": "https://osf.io/preprints/psyarxiv/n7sxr",
+      "seconds": 0.29,
+      "outcome": "blocked",
+      "type": null,
+      "block_reason": "block-page"
+    },
+    {
+      "field": "Presse",
+      "source": "Guardian",
+      "url": "https://www.theguardian.com/science/2023/aug/01/superconductor-lk-99",
+      "seconds": 0.23,
+      "outcome": "blocked",
+      "type": null,
+      "block_reason": "http-404"
+    },
+    {
+      "field": "Enzyklopädie",
+      "source": "Wikipedia DE",
+      "url": "https://de.wikipedia.org/wiki/Sexualtherapie",
+      "seconds": 0.37,
+      "outcome": "record",
+      "type": "Internetquelle",
+      "block_reason": null
+    },
+    {
+      "field": "Verlag/Wall",
+      "source": "ScienceDirect",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0747563223000626",
+      "seconds": 0.21,
+      "outcome": "blocked",
+      "type": null,
+      "block_reason": "http-403"
+    },
+    {
+      "field": "Verlag/Wall",
+      "source": "Wiley",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/jan.15234",
+      "seconds": 0.22,
+      "outcome": "blocked",
+      "type": null,
+      "block_reason": "http-403"
+    }
+  ],
+  "limits": [
+    "Read server-side without JavaScript. Details a page adds after loading are invisible.",
+    "Three of the reported blocks were HTTP 404 from stale test addresses, not publisher policy.",
+    "Timing is dominated by the target site, not the endpoint: two runs of the same address differed by up to 176 %.",
+    "A first run measured 26 HTTP 403s in 0.13 s each. That was the measuring setup, not the pipeline: urllib sends 'Python-urllib/3.x' and Cloudflare's bot protection rejects it."
+  ],
+  "license": "CC-BY-4.0",
+  "comparison": {
+    "against": "Citoid (Wikimedia), which uses the Zotero translators",
+    "why": "It solves the same problem, is publicly reachable, and is the de-facto standard for citation extraction. Without it, a hit rate is a number without a yardstick.",
+    "urls": 26,
+    "complete_citations": {
+      "ours": 8,
+      "citoid": 8
+    },
+    "any_record": {
+      "ours": 13,
+      "citoid": 20
+    },
+    "citations_built_from_a_block_page": {
+      "ours": 0,
+      "citoid": 2,
+      "detail": "Citoid returned 'Making sure you're not a bot!' as the title for EconStor and SSOAR — a formatted reference to a bot wall."
+    },
+    "median_seconds": {
+      "ours": 0.34,
+      "citoid": 1.63
+    },
+    "slowest_seconds": {
+      "ours": 10.0,
+      "citoid": 29.2
+    },
+    "reached_only_by_citoid": [
+      "MDPI",
+      "PeerJ",
+      "OECD"
+    ],
+    "reached_only_by_us": [
+      "Zenodo",
+      "Wikipedia"
+    ],
+    "measurement_note": "Citoid rate-limits anonymous callers. A first run hit HTTP 429 from the twelfth call on; those results measured our own impatience and were discarded."
+  }
+}

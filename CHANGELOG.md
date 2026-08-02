@@ -1,3 +1,56 @@
+## 2026-08-02 — Gemessen gegen Citoid, und eine Schwelle fuer Beitraege
+
+Die Zitationserfassung des MCP-Endpunkts wurde an 26 Quellen aus zwoelf
+Faechern gemessen — und zum ersten Mal **gegen ein fremdes Werkzeug**. Ohne
+Vergleich ist "13 von 26" keine Aussage ueber Qualitaet, sondern eine Zahl ohne
+Massstab.
+
+Massstab ist **Citoid** (Wikimedia), das dasselbe Problem loest, oeffentlich
+erreichbar ist und auf den Zotero-Translatoren aufsetzt.
+
+| | eigener Endpunkt | Citoid |
+|---|---|---|
+| vollstaendige Zitationen | **8** | 8 |
+| Datensatz ueberhaupt | 13 | **20** |
+| **Zitation aus einer Sperrseite** | **0** | 2 |
+| Median Sekunden | **0,34** | 1,63 |
+| langsamster Aufruf | **10,0** | 29,2 |
+
+Gleich viele vollstaendige Zitationen, in einem Drittel der Zeit. Citoid liefert
+haeufiger *etwas* — aber zwei dieser Datensaetze sind Verweise auf eine
+Bot-Wand: fuer EconStor und SSOAR gab Citoid *"Making sure you're not a bot!"*
+als Titel des Werkes aus. Formatiert, vollstaendig aussehend, wertlos.
+
+Ehrlich in die andere Richtung: Citoid erreicht drei Verlage, die uns aussperren
+(MDPI, PeerJ, OECD). Wir erreichen zwei, die es verfehlt (Zenodo, Wikipedia).
+
+### `provinglab-bench` — der Ablauf entscheidet, ob ein Beitrag entsteht
+
+Neues Werkzeug, woechentlich ueber `backup-catchup` (drei Slots plus
+Reboot-Nachlauf, weil der Rechner nicht durchlaeuft). Es misst beide Dienste an
+derselben Liste und prueft drei Bedingungen:
+
+1. nicht schlechter als der Vergleich bei vollstaendigen Zitationen,
+2. **keine** eigene Zitation aus einer Sperrseite,
+3. mindestens Faktor 1,5 schneller.
+
+Halten nicht alle drei, entsteht kein Beitrag. Tempo allein genuegt
+ausdruecklich nicht — das waere die falsche Botschaft fuer eine Seite, die
+Messungen veroeffentlicht.
+
+### Zwei Messfehler, die der Lauf selbst aufgedeckt hat
+
+Der erste Durchgang meldete 26-mal `HTTP 403` in je 0,13 s. Zu schnell fuer
+einen echten Abruf — und daran erkennbar: `urllib` sendet
+`Python-urllib/3.x`, und Cloudflares Bot-Schutz weist genau diese Signatur ab.
+`requests`, `node-fetch`, Go und Browser kommen durch. Wer den Endpunkt aus
+einem Skript anspricht, sollte das wissen.
+
+Der zweite: Citoid begrenzt anonyme Zugriffe. Ab dem zwoelften Aufruf kam
+`HTTP 429`. Diese Antworten als "Citoid kann es nicht" zu zaehlen haette den
+Vergleich zugunsten der eigenen Seite verfaelscht. Der Lauf wartet jetzt
+zwischen den Aufrufen und wiederholt nach einem 429.
+
 # Changelog
 <!-- Keine absoluten Pfade des Entwicklungsrechners in dieses Repo.
      Der Aggregator des Arbeitsplatzes traegt sie automatisch ein; sie

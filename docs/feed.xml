@@ -34,6 +34,14 @@
     <summary type="text">An MCP endpoint at /mcp exposes the measurement datasets and published methods to AI clients. Everything it can return adds up to roughly 1,300 tokens — less than the llms.txt file that already sits on the same domain. What that leaves it good for, and what it does not solve.</summary>
   </entry>
   <entry>
+    <title>Half the science web refuses a server. Measured: 13 of 26 pages returned a citation</title>
+    <id>https://provinglab.dev/measurements/citation-extraction/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/citation-extraction/"/>
+    <published>2026-08-02T00:00:00Z</published>
+    <updated>2026-08-02T00:00:00Z</updated>
+    <summary type="text">Given only a URL, how often can a server-side reader return a usable reference? Across 26 sources in twelve fields: 13 records, all correctly typed and complete, 13 blocks, none of them a false alarm. Median 0.74 s per successful lookup.</summary>
+  </entry>
+  <entry>
     <title>Webpage to PDF for OCR: how much text survives? A measured test</title>
     <id>https://provinglab.dev/measurements/webpage-to-pdf-for-ocr/</id>
     <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/webpage-to-pdf-for-ocr/"/>
