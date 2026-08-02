@@ -1,5 +1,50 @@
 # Changelog
 
+## 2026-08-02 (Abend) — Agent-Discovery umgesetzt
+
+Sechs der elf Punkte aus dem isitagentready-Bericht sind live, mit echtem
+Inhalt statt Platzhaltern.
+
+**`/.well-known/agent-skills/index.json`** — die drei Methoden, die diese Seite
+ohnehin veroeffentlicht, jetzt als abrufbare Skills: Berechtigungen einer
+Erweiterung lesen, OCR-Recall mit Kontrolllauf messen, Druck gegen Bildschirm-
+aufnahme abwaegen. Die sha256-Summen werden aus den Dateien berechnet, nicht
+gepflegt — der Index kann nicht abdriften. Live gegengeprueft: alle drei stimmen.
+
+**`/.well-known/api-catalog`** (RFC 9727) — Linkset auf die drei Messdatensaetze,
+jeder mit `describedby` auf die Seite, die die Methode dokumentiert.
+
+**`/auth.md`** — die Auskunft, dass nichts geschuetzt ist, plus eine Tabelle
+aller ohne Zugangsdaten erreichbaren Ressourcen.
+
+**`agent-tools.js`** — WebMCP mit drei Werkzeugen: Messungen auflisten,
+Datensatz als JSON holen, Methode holen. Faellt still zurueck, wo
+`navigator.modelContext` fehlt, also derzeit ueberall ausser im Chrome-Trial.
+
+**DNS-AID** — `_index._agents.provinglab.dev` und `_a2a._agents.provinglab.dev`
+als HTTPS-Records mit `alpn`, `port` und `mandatory=alpn,port`, wie der Pruefer
+sie erwartet. Cloudflare lehnt den `endpoint`-SvcParam ab (nur registrierte
+Schluessel erlaubt); der Draft verlangt ihn nicht. Beide loesen oeffentlich auf.
+
+**DNSSEC** aktiviert, Algorithmus 13, Key-Tag 2371. Status noch `pending` —
+Registrar ist Cloudflare selbst, die DS-Uebernahme laeuft automatisch.
+
+**`.nojekyll` war die Voraussetzung fuer all das.** GitHub Pages baut mit Jekyll,
+und Jekyll ueberspringt Verzeichnisse mit fuehrendem Punkt und wandelt .md in
+HTML um — `/.well-known/` waere nie ausgeliefert und `/auth.md` als HTML
+gelandet. Die Seite nutzt weder Layouts noch Front Matter noch Liquid, also
+geht nichts verloren. Gemessen danach: `/auth.md` kommt als `text/markdown`.
+
+**Bekannte Einschraenkung:** `/.well-known/api-catalog` wird als
+`application/octet-stream` ausgeliefert statt `application/linkset+json`.
+GitHub Pages leitet den Typ aus der Dateiendung ab, und der von RFC 9727
+vorgeschriebene Pfad hat keine. Nur ueber eine Response-Header-Transform-Regel
+zu beheben — dasselbe fehlende Recht wie bei den Link-Headern.
+
+**Weiterhin offen:** Link-Header (Transform Rules noetig), Markdown-Aushandlung
+(Pro-Plan noetig). **Bewusst nicht angelegt:** OAuth- und OIDC-Metadaten sowie
+MCP Server Card — es gibt keine geschuetzten Endpunkte und keinen MCP-Server.
+
 ## 2026-08-02 (spaeter) — Agent-Readiness-Bericht bewertet, ein Punkt umgesetzt
 
 Ein Prueflauf von isitagentready.com meldete elf offene Punkte. Bewertet, nicht
