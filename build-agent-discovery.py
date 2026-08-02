@@ -122,62 +122,72 @@ def api_catalog():
 
 AUTH_MD = """# auth.md
 
-How an automated client authenticates with provinglab.dev. Short answer: it
-does not have to. This file exists so an agent can establish that in one
-request instead of probing for a login.
+How an automated client authenticates with provinglab.dev.
+
+**Short answer: it does not have to.** Every resource here is public. A full
+OAuth flow is offered anyway, because some clients refuse to connect without
+one — but a token grants no access that anonymous requests do not already have.
 
 ## Agent audience
 
-Any automated client that reads this site: crawlers, retrieval agents,
-language-model tooling and scripted readers. There is no separate class of
-client with additional access, because there is no restricted content.
+Any automated client that reads this site: crawlers, retrieval agents, MCP
+clients and scripted readers. There is no class of client with additional
+access, because there is no restricted content.
 
 ## Registration
 
-**No registration is required and no registration endpoint exists.** There is
-no `register_uri`, no client provisioning, no application form and no waiting
-list. An agent may begin fetching immediately.
+Not required. If your client needs it, register at
+`POST /oauth/register` (RFC 7591). Any request is accepted; you receive a
+stable `client_id`. No secret is issued and none is needed.
 
-Protected Resource Metadata is published at
-`/.well-known/oauth-protected-resource` (RFC 9728). Its
-`authorization_servers` list is empty, which states correctly that no
-authorization server issues tokens for this resource.
-
-No `/.well-known/oauth-authorization-server` is published. That document
-would have to name an issuer, an authorization endpoint and a token
-endpoint — none of which exist here. Inventing them would send every agent
-that follows them to a dead URL.
+```
+curl -X POST https://provinglab.dev/oauth/register \
+  -H 'content-type: application/json' \
+  -d '{"client_name":"my-agent"}'
+```
 
 ## Supported methods
 
 | Method | Supported | Note |
 |---|---|---|
-| Anonymous | yes | the only method; send no credentials |
-| OAuth 2.0 / OIDC | no | no authorization server exists |
-| API key | no | no key is issued or accepted |
+| Anonymous | yes | the normal case; send nothing |
+| OAuth 2.0 client credentials | yes | `POST /oauth/token`, returns a bearer token valid one hour |
+| Dynamic client registration | yes | `POST /oauth/register`, RFC 7591 |
+| Authorization code | advertised, refused | there is nothing to authorize; use client credentials |
+| API key | no | none is issued or accepted |
 | mTLS | no | client certificates are not requested |
-| HTTP Basic / Bearer | no | an `Authorization` header is ignored, not rejected |
+
+```
+curl -X POST https://provinglab.dev/oauth/token \
+  -d 'grant_type=client_credentials&client_id=pl_...'
+```
 
 ## Credential use
 
-None. Do not send an `Authorization` header, a cookie or a token — nothing
-reads them and nothing depends on them. No credential is ever issued, so none
-can expire, be revoked or be rotated. There is no revocation endpoint for the
-same reason.
+A bearer token may be sent on `/mcp`. It is read and accepted, and it changes
+nothing: the endpoint answers identically with and without it. Tokens expire
+after one hour and are not revocable, because there is nothing to revoke —
+losing one costs you nothing and gains an attacker nothing.
+
+Metadata: `/.well-known/oauth-authorization-server` and
+`/.well-known/oauth-protected-resource` (RFC 9728), the latter carrying
+`authentication_required: false`.
 
 ## Rate limits
 
-No identification-based limit. Ordinary Cloudflare protection applies to all
-clients equally. Requests that identify themselves as `Python-urllib` are
-rejected by the browser integrity check — use any other user agent.
+No identification-based limit. Ordinary Cloudflare protection applies to every
+client equally. Requests identifying as `Python-urllib` are rejected by the
+browser integrity check — use any other user agent.
 
-## What is available without credentials
+## What is available without any of this
 
 | Resource | Path |
 |---|---|
+| MCP endpoint (JSON-RPC over POST) | `/mcp` |
 | Site summary for language models | `/llms.txt` |
 | Published methods as skills | `/.well-known/agent-skills/index.json` |
 | Measurement datasets as a linkset | `/.well-known/api-catalog` |
+| Markdown of any page | any URL with `Accept: text/markdown` |
 | Updates | `/feed.xml` |
 | Crawl and usage preferences | `/robots.txt` |
 
@@ -207,9 +217,16 @@ def protected_resource():
     """
     return {
         "resource": BASIS,
-        "authorization_servers": [],
-        "scopes_supported": [],
-        "bearer_methods_supported": [],
+        # Seit 02.08.2026 gibt es den Server wirklich: der Worker beantwortet
+        # /.well-known/oauth-authorization-server, /oauth/register und
+        # /oauth/token. Der Eintrag ist damit wahr — vorher stand hier eine
+        # leere Liste, was ebenfalls wahr war, aber Clients half, die einen
+        # Autorisierungsserver voraussetzen, nicht weiter.
+        "authorization_servers": [BASIS],
+        "scopes_supported": ["read"],
+        "bearer_methods_supported": ["header"],
+        # Das Entscheidende, damit niemand mehr hineinliest als dasteht:
+        "authentication_required": False,
         "resource_documentation": f"{BASIS}/auth.md",
         "resource_policy_uri": f"{BASIS}/privacy.html",
         "resource_name": "Proving Lab",

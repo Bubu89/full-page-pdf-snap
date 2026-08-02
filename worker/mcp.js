@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.1.0";
+const VERSION = "1.2.0";
 const PROTOCOL = "2025-06-18";
 
 const TOOLS = [
@@ -252,6 +252,129 @@ function wantsMarkdown(request) {
   return q(md) >= q(ht);
 }
 
+
+/* --- OAuth: echt, aber nicht erforderlich ---------------------------------
+ *
+ * Nichts auf dieser Seite ist geschuetzt, und daran aendert sich nichts. Der
+ * Grund fuer diesen Teil ist ein anderer: Manche MCP-Clients erwarten einen
+ * Autorisierungsserver und verbinden sich sonst gar nicht erst. Fuer die
+ * bietet der Endpunkt einen vollstaendigen Weg an — dynamische Registrierung
+ * nach RFC 7591, Token nach Client Credentials, und der MCP-Endpunkt nimmt das
+ * Token entgegen.
+ *
+ * Was hier NICHT passiert: so zu tun, als wuerde damit etwas geschuetzt. Der
+ * MCP-Endpunkt antwortet mit und ohne Token identisch, jede Registrierung wird
+ * angenommen, und auth.md sagt das ausdruecklich. Ein Token, das nichts
+ * freischaltet, darf nicht so aussehen, als taete es das.
+ *
+ * Die Signatur verhindert nur, dass ein erfundenes Token als gueltig gilt —
+ * sie schuetzt keinen Zugang. Der Schluessel steht deshalb offen im Code;
+ * ihn geheim zu halten waere Theater.
+ */
+const OAUTH_KEY = "provinglab-public-endpoint-no-secret-needed";
+const TOKEN_TTL = 3600;
+
+async function hmac(daten) {
+  const k = await crypto.subtle.importKey("raw", new TextEncoder().encode(OAUTH_KEY),
+    { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const sig = await crypto.subtle.sign("HMAC", k, new TextEncoder().encode(daten));
+  return btoa(String.fromCharCode(...new Uint8Array(sig)))
+    .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+async function tokenErzeugen(clientId) {
+  const nutz = btoa(JSON.stringify({
+    sub: clientId, iss: "https://provinglab.dev", aud: "https://provinglab.dev",
+    iat: Math.floor(Date.now() / 1000), exp: Math.floor(Date.now() / 1000) + TOKEN_TTL,
+  })).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  return nutz + "." + (await hmac(nutz));
+}
+
+function autorisierungsserver() {
+  return {
+    issuer: "https://provinglab.dev",
+    authorization_endpoint: "https://provinglab.dev/oauth/authorize",
+    token_endpoint: "https://provinglab.dev/oauth/token",
+    registration_endpoint: "https://provinglab.dev/oauth/register",
+    jwks_uri: "https://provinglab.dev/oauth/jwks",
+    scopes_supported: ["read"],
+    response_types_supported: ["code"],
+    grant_types_supported: ["client_credentials", "authorization_code"],
+    token_endpoint_auth_methods_supported: ["none", "client_secret_post"],
+    code_challenge_methods_supported: ["S256"],
+    service_documentation: "https://provinglab.dev/auth.md",
+    // Der Block, nach dem die Auth.md-Spezifikation fragt.
+    agent_auth: {
+      skill: "https://provinglab.dev/.well-known/agent-skills/index.json",
+      register_uri: "https://provinglab.dev/oauth/register",
+      supported_identity_types: ["anonymous", "client"],
+      supported_credential_types: ["none", "bearer"],
+      claim_url: null,
+      revocation_url: null,
+      // Der wichtigste Eintrag: Es ist nicht noetig.
+      authentication_required: false,
+      note: "All resources are public. Credentials are accepted for clients that require an OAuth flow, and grant no additional access.",
+    },
+  };
+}
+
+async function handleOAuth(pfad, request) {
+  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
+
+  if (pfad === "/oauth/register") {
+    // RFC 7591: jede Registrierung wird angenommen, weil es nichts zu pruefen
+    // gibt. Der Client bekommt eine echte, stabile Kennung.
+    let wunsch = {};
+    try { wunsch = await request.json(); } catch { /* leerer Rumpf ist zulaessig */ }
+    const id = "pl_" + (await hmac(JSON.stringify(wunsch.client_name || "anonymous"))).slice(0, 24);
+    return json({
+      client_id: id,
+      client_id_issued_at: Math.floor(Date.now() / 1000),
+      client_name: wunsch.client_name || "anonymous",
+      grant_types: ["client_credentials"],
+      token_endpoint_auth_method: "none",
+      scope: "read",
+    }, 201);
+  }
+
+  if (pfad === "/oauth/token") {
+    let clientId = "anonymous";
+    try {
+      const ct = request.headers.get("content-type") || "";
+      if (ct.includes("json")) {
+        const b = await request.json();
+        clientId = b.client_id || clientId;
+      } else {
+        const f = new URLSearchParams(await request.text());
+        clientId = f.get("client_id") || clientId;
+      }
+    } catch { /* ohne Angabe: anonym */ }
+    return json({
+      access_token: await tokenErzeugen(clientId),
+      token_type: "Bearer",
+      expires_in: TOKEN_TTL,
+      scope: "read",
+    });
+  }
+
+  if (pfad === "/oauth/jwks") {
+    // Symmetrisch signiert — es gibt keinen oeffentlichen Schluessel zu zeigen.
+    return json({ keys: [] });
+  }
+
+  if (pfad === "/oauth/authorize") {
+    return json({
+      error: "not_required",
+      error_description:
+        "All resources on provinglab.dev are public. Use the token endpoint with " +
+        "grant_type=client_credentials if your client needs a token, or send no " +
+        "credentials at all.",
+    }, 400);
+  }
+
+  return json({ error: "not_found" }, 404);
+}
+
 export default {
   async fetch(request, env, ctx) {
     try {
@@ -259,6 +382,14 @@ export default {
 
       if (url.pathname === "/mcp" || url.pathname === "/mcp/") {
         return handleMcp(request, SITE);
+      }
+
+      if (url.pathname.startsWith("/oauth/")) {
+        return handleOAuth(url.pathname, request);
+      }
+
+      if (url.pathname === "/.well-known/oauth-authorization-server") {
+        return json(autorisierungsserver());
       }
 
       const upstream = await fetch(request);

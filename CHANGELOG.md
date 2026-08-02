@@ -1,5 +1,39 @@
 # Changelog
 
+## 2026-08-02 — OAuth: echt gebaut statt behauptet
+
+Der Pruefer verlangte bei `auth.md` ein **nicht leeres**
+`authorization_servers` — obwohl RFC 9728 die leere Liste ausdruecklich
+erlaubt. Statt einen Eintrag zu erfinden, gibt es den Server jetzt wirklich.
+
+**Was der Worker seit Version 1.2.0 kann:**
+
+| Pfad | Verhalten |
+|---|---|
+| `/.well-known/oauth-authorization-server` | Metadaten inkl. `agent_auth`-Block |
+| `POST /oauth/register` | Dynamische Registrierung nach RFC 7591, liefert eine stabile `client_id` |
+| `POST /oauth/token` | Client Credentials, echtes signiertes Token, eine Stunde gueltig |
+| `/oauth/authorize` | weist ab und erklaert warum — es gibt nichts zu autorisieren |
+| `/oauth/jwks` | leer, die Signatur ist symmetrisch |
+
+Vollstaendig durchgespielt: registrieren, Token holen, MCP damit aufrufen.
+
+**Warum das kein Etikettenschwindel ist.** Manche MCP-Clients verbinden sich
+ohne Autorisierungsserver gar nicht erst — fuer die ist das ein echter
+Zugangsgewinn. Was hier ausdruecklich *nicht* passiert: so zu tun, als wuerde
+damit etwas geschuetzt. Der MCP-Endpunkt antwortet mit und ohne Token
+identisch (gemessen: beide Male dieselben drei Werkzeuge), jede Registrierung
+wird angenommen, `agent_auth.authentication_required` steht auf `false`, und
+`auth.md` sagt im ersten Absatz: *it does not have to*.
+
+Der Signaturschluessel steht offen im Code. Er verhindert nur, dass ein
+erfundenes Token als gueltig durchgeht — er schuetzt keinen Zugang, und ihn
+geheim zu halten waere Theater.
+
+`authorization_servers` in der Protected Resource Metadata ist damit
+wahrheitsgemaess befuellt, ergaenzt um `authentication_required: false`, damit
+niemand mehr hineinliest als dasteht.
+
 ## 2026-08-02 — Ein Token statt drei, alle Zone-Einstellungen gesetzt
 
 **Token aufgeraeumt.** `provinglab-zone-full` selbst ueber die API erstellt und

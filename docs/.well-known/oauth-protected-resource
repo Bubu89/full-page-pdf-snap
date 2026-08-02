@@ -1,8 +1,15 @@
 {
   "resource": "https://provinglab.dev",
-  "authorization_servers": [],
-  "scopes_supported": [],
-  "bearer_methods_supported": [],
+  "authorization_servers": [
+    "https://provinglab.dev"
+  ],
+  "scopes_supported": [
+    "read"
+  ],
+  "bearer_methods_supported": [
+    "header"
+  ],
+  "authentication_required": false,
   "resource_documentation": "https://provinglab.dev/auth.md",
   "resource_policy_uri": "https://provinglab.dev/privacy.html",
   "resource_name": "Proving Lab",
