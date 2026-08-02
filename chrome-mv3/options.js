@@ -25,6 +25,10 @@ const DEFAULTS = {
   counter: 0,
   singlePagePdf: true,
   pageHeightPx: 2400,
+  pageFormat: "free",
+  breakAtLines: true,
+  sourceMetadata: true,
+  fetchOriginal: false,
   tilePx: 4000,
   hideSticky: true,
   provenanceFooter: false,
@@ -114,6 +118,10 @@ async function load() {
   $("counterVal").textContent = String(s.counter || 0).padStart(4, "0");
   $("singlePagePdf").value = s.singlePagePdf ? "true" : "false";
   $("pageHeightPx").value = String(s.pageHeightPx || 2400);
+  $("pageFormat").value = s.pageFormat === "a4" ? "a4" : "free";
+  $("breakAtLines").checked = s.breakAtLines !== false;
+  $("sourceMetadata").checked = s.sourceMetadata !== false;
+  $("fetchOriginal").checked = s.fetchOriginal === true;
   $("tilePx").value = String(s.tilePx || 4000);
   $("reviewPromptOff").checked = !!s.reviewPromptOff;
   $("hideSticky").checked = s.hideSticky !== false;
@@ -149,6 +157,10 @@ $("save").addEventListener("click", async () => {
     titleMaxLen: Math.max(10, Math.min(120, parseInt($("titleMaxLen").value, 10) || 40)),
     singlePagePdf: $("singlePagePdf").value === "true",
     pageHeightPx: Math.max(400, Math.min(8000, parseInt($("pageHeightPx").value, 10) || 2400)),
+    pageFormat: $("pageFormat").value === "a4" ? "a4" : "free",
+    breakAtLines: $("breakAtLines").checked,
+    sourceMetadata: $("sourceMetadata").checked,
+    fetchOriginal: $("fetchOriginal").checked,
     tilePx: Math.max(800, Math.min(8000, parseInt($("tilePx").value, 10) || 4000)),
     hideSticky: $("hideSticky").checked,
     provenanceFooter: $("provenanceFooter").checked,

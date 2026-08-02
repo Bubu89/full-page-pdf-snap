@@ -52,6 +52,120 @@
     return String(s).replace(/[\\()]/g, "\\$&").replace(/[\r\n]/g, " ");
   }
 
+  // --- Quellenangabe --------------------------------------------------------
+  //
+  // Formatiert wird nach APA 7, weil es im deutschsprachigen Studium die
+  // haeufigste Vorgabe ist. Wer eine andere Zitierweise braucht, nimmt den
+  // RIS-Satz und laesst das Literaturprogramm formatieren — deshalb liegt er
+  // dem PDF bei. Umgeschrieben wird nichts: liegt ein Feld nicht vor, fehlt
+  // es in der Ausgabe, statt geraten zu werden.
+
+  /** "Nachname, V." — nur wenn die Form erkennbar ist, sonst unveraendert. */
+  function autorKurz(name) {
+    var s = String(name || "").trim();
+    if (!s) return "";
+    if (s.indexOf(",") > 0) {
+      var t = s.split(",");
+      var nach = t[0].trim();
+      var vor = t.slice(1).join(" ").trim();
+      if (!vor) return nach;
+      var ini = vor.split(/[\s.]+/).filter(Boolean)
+                   .map(function (w) { return w.charAt(0).toUpperCase() + "."; }).join(" ");
+      return nach + ", " + ini;
+    }
+    // Ohne Komma steht ueblicherweise "Vorname(n) Nachname". Namenszusaetze
+    // wie "van der" oder "de la" gehoeren zum Nachnamen und lassen sich nicht
+    // sicher abtrennen — solche Namen bleiben unveraendert stehen. Ein falsch
+    // zerlegter Name ist schlimmer als ein nicht gekuerzter.
+    var w = s.split(/\s+/).filter(Boolean);
+    if (w.length < 2) return s;
+    if (w.some(function (x) {
+      return /^(van|von|de|der|den|del|della|di|da|dos|du|la|le|al|bin|ibn|ter|zu|zum)$/i.test(x);
+    })) return s;
+    var nachname = w[w.length - 1];
+    var ini = w.slice(0, -1).map(function (x) {
+      return x.charAt(0).toUpperCase() + ".";
+    }).join(" ");
+    return nachname + ", " + ini;
+  }
+
+  function autorenListe(autoren) {
+    var a = (autoren || []).map(autorKurz).filter(Boolean);
+    if (!a.length) return "";
+    if (a.length === 1) return a[0];
+    if (a.length > 20) return a.slice(0, 19).join(", ") + ", … " + a[a.length - 1];
+    return a.slice(0, -1).join(", ") + " & " + a[a.length - 1];
+  }
+
+  /** Eine Zeile im Literaturverzeichnis-Format. */
+  function zitation(q) {
+    if (!q || !q.titel) return "";
+    var t = [];
+    var au = autorenListe(q.autoren);
+    if (au) t.push(au + " ");
+    t.push("(" + (q.jahr || "o. J.") + "). ");
+    t.push(q.titel.replace(/\s+/g, " ").trim());
+    if (!/[.?!]$/.test(q.titel.trim())) t.push(".");
+    if (q.journal) {
+      t.push(" " + q.journal);
+      if (q.band) t.push(", " + q.band + (q.heft ? "(" + q.heft + ")" : ""));
+      if (q.seiteVon) t.push(", " + q.seiteVon + (q.seiteBis && q.seiteBis !== q.seiteVon ? "–" + q.seiteBis : ""));
+      t.push(".");
+    } else if (q.verlag) {
+      t.push(" " + q.verlag + ".");
+    }
+    if (q.doi) t.push(" https://doi.org/" + q.doi.replace(/^https?:\/\/(dx\.)?doi\.org\//i, ""));
+    else if (q.urlZitat || q.url) {
+      t.push(" " + (q.urlZitat || q.url));
+      // Ohne DOI haengt der Nachweis an der Adresse — und die kann sich
+      // aendern. Dann gehoert der Abrufzeitpunkt in die Angabe.
+      if (q.abrufdatum) t.push(" (abgerufen am " + q.abrufdatum + ")");
+    }
+    return t.join("");
+  }
+
+  /** RIS-Satz — das Austauschformat, das Citavi, Zotero und EndNote lesen. */
+  function risSatz(q) {
+    var typ = q.art === "Zeitschriftenaufsatz" ? "JOUR"
+            : q.art === "Buch" ? "BOOK"
+            : q.art === "Preprint" ? "UNPB" : "ELEC";
+    var z = ["TY  - " + typ];
+    var setze = function (k, v) { if (v) z.push(k + "  - " + String(v).replace(/[\r\n]+/g, " ")); };
+    (q.autoren || []).forEach(function (a) { setze("AU", a); });
+    setze("TI", q.titel);
+    setze("PY", q.jahr);
+    // RIS erwartet in DA das Format JJJJ/MM/TT. Verlagsangaben wie
+    // "Jun 23, 2023" wuerden Importprogramme stolpern lassen — dann bleibt
+    // es beim Jahr in PY, das jeder Importer versteht.
+    var iso = String(q.datum || "").match(/^(\d{4})[-/](\d{2})[-/](\d{2})/);
+    if (iso) setze("DA", iso[1] + "/" + iso[2] + "/" + iso[3]);
+    setze("JO", q.journal);
+    setze("VL", q.band);
+    setze("IS", q.heft);
+    setze("SP", q.seiteVon);
+    setze("EP", q.seiteBis);
+    setze("DO", q.doi);
+    setze("SN", q.isbn || q.issn);
+    setze("PB", q.verlag);
+    setze("LA", q.sprache);
+    setze("UR", q.urlZitat || q.url);
+    // Y2 ist im RIS-Standard das Abrufdatum. Die Uhrzeit gehoert dazu:
+    // Seiten aendern sich im Lauf eines Tages, und ein Beleg ohne Uhrzeit
+    // laesst sich einer Fassung nicht zuordnen.
+    setze("Y2", q.abrufzeit || q.abrufdatum);
+    if (q.fassung && q.fassung !== q.url) setze("L2", q.fassung);
+    (q.dateien || []).forEach(function (d) {
+      if (d.art === "pdf") setze("L1", d.url);
+    });
+    setze("C1", q.lizenz);
+    if (q.geaendert) setze("C2", "zuletzt geaendert: " + q.geaendert);
+    setze("N1", "Angaben aus: " + (q.herkunft || "der Seite") +
+                ". Bildschirmaufnahme, kein Verlagsdokument." +
+                (q.zeitzone ? " Zeitzone des Geraets: " + q.zeitzone + "." : ""));
+    z.push("ER  - ");
+    return z.join("\r\n") + "\r\n";
+  }
+
   // --- Textebene ------------------------------------------------------------
   //
   // Der Text stammt aus dem Dokument, nicht aus einer Erkennung des Bildes.
@@ -107,9 +221,15 @@
     return b;
   }
 
-  /** Erzeugt die PDF-Anweisungen fuer die unsichtbare Textebene einer Seite. */
-  function textebene(woerter, skala, seitenHoehePx, versatzYpt, pxToPt) {
+  /**
+   * Erzeugt die PDF-Anweisungen fuer die unsichtbare Textebene einer Seite.
+   * anfangYpx ist die Position dieser Seite im Gesamtbild — bei einer
+   * einzelnen Seite null, im mehrseitigen Modus der Beginn des Ausschnitts.
+   * Woerter ausserhalb des Ausschnitts gehoeren auf eine andere Seite.
+   */
+  function textebene(woerter, skala, seitenHoehePx, versatzYpt, pxToPt, anfangYpx) {
     var s = "";
+    var anfang = anfangYpx || 0;
     for (var i = 0; i < woerter.length; i++) {
       var wo = woerter[i];
       var txt = nachWinAnsi(String(wo.t || ""));
@@ -122,7 +242,8 @@
       // mittig. Helvetica hat 0.718 em Oberlaenge — so weit unter der Oberkante
       // des Textes liegt die Grundlinie.
       var ueberschuss = Math.max(0, (wo.h - wo.s)) * skala;
-      var grundlinieYpx = (wo.y * skala) + ueberschuss / 2 + (wo.s * skala * 0.718);
+      var grundlinieYpx = (wo.y * skala) + ueberschuss / 2 + (wo.s * skala * 0.718) - anfang;
+      if (grundlinieYpx < 0 || grundlinieYpx > seitenHoehePx) continue;
 
       var natuerlich = breiteEm(txt) * groessePt;
       var ziel = wo.w * skala * pxToPt;
@@ -190,6 +311,7 @@
     const pxToPt = 72 / dpi;                 // 1 pt = 1/72 inch
     const beleg = opts.provenance || null;   // { url, capturedAt:Date, sha256 }
     const woerter = opts.textLayer || null;  // [{t,x,y,w,h,s}] in CSS-Pixeln
+    const quelle = opts.source || null;      // Zitationsdaten aus der Seite
 
     const objects = [];                      // index 0 = unused
     objects.push(null);
@@ -208,7 +330,11 @@
     // immer, die sichtbare Zeile nur auf Wunsch — sie aendert das Bild, die
     // Metadaten nicht.
     const zeigeFuss = !!(beleg && beleg.footer);
-    const fussPt = zeigeFuss ? 30 : 0;
+    // Liegt eine Quellenangabe vor, bekommt sie eine eigene Zeile darueber:
+    // sie ist das, was in ein Literaturverzeichnis wandert, und darf nicht
+    // mit der Pruefsumme in einer Zeile zusammengedraengt werden.
+    const zitZeile = zeigeFuss && quelle && quelle.titel ? zitation(quelle) : "";
+    const fussPt = zeigeFuss ? (zitZeile ? 42 : 30) : 0;
     const brauchtFont = zeigeFuss || !!(woerter && woerter.length);
     let fontId = 0;
     if (brauchtFont) {
@@ -259,18 +385,21 @@
         contentStr += "q\n" + wptT + " 0 0 " + hptT + " " + xptT + " " + yptT + " cm\n/" + x.name + " Do\nQ\n";
       }
 
-      // Textebene: nur auf der ersten Seite, denn die Wortkoordinaten
-      // beziehen sich auf das ganze Dokument. Im mehrseitigen Modus wird die
-      // Aufnahme geschnitten — dann waere die Zuordnung falsch, und eine
-      // falsche Textebene ist schlechter als gar keine.
-      if (woerter && woerter.length && pages.length === 1) {
+      // Textebene. Die Wortkoordinaten beziehen sich auf das ganze Dokument;
+      // im mehrseitigen Modus sagt pg.yPx, wo dieser Ausschnitt beginnt, und
+      // jedes Wort landet auf der Seite, auf der es abgebildet ist. Fehlt die
+      // Angabe, gaebe es keine verlaessliche Zuordnung — dann lieber keine
+      // Textebene als eine falsche.
+      const zuordenbar = pages.length === 1 || typeof pg.yPx === "number";
+      if (woerter && woerter.length && zuordenbar) {
         const skala = pg.widthPx / (opts.textLayerPageWidth || pg.widthPx);
         // In q/Q geklammert: Textrendermodus und Laufweite gehoeren zum
         // Grafikzustand, nicht zum Textobjekt — sie ueberleben ET. Ohne die
         // Klammer erbt die Fusszeile das "3 Tr" des letzten Wortes und wird
         // unsichtbar. Der Fehler zeigt sich nur, wenn Textebene und Fuss
         // zusammen aktiv sind.
-        contentStr += "q\n" + textebene(woerter, skala, pg.heightPx, fussPt, pxToPt) + "Q\n";
+        contentStr += "q\n" +
+          textebene(woerter, skala, pg.heightPx, fussPt, pxToPt, pg.yPx || 0) + "Q\n";
       }
 
       if (zeigeFuss) {
@@ -283,7 +412,13 @@
           "  |  captured " + localIso(beleg.capturedAt) +
           (beleg.sha256 ? "  |  SHA-256 " + beleg.sha256.slice(0, 16) + "..." : "");
         contentStr +=
-          "q\n0.85 0.85 0.85 rg\n0 0 " + breite.toFixed(2) + " " + fussPt + " re\nf\nQ\n" +
+          "q\n0.85 0.85 0.85 rg\n0 0 " + breite.toFixed(2) + " " + fussPt + " re\nf\nQ\n";
+        if (zitZeile) {
+          contentStr +=
+            "BT /F1 7.5 Tf 0 0 0 rg 10 " + (fussPt - 12) + " Td (" +
+            pdfString(nachWinAnsi(kuerzen(zitZeile, platz + 6))) + ") Tj ET\n";
+        }
+        contentStr +=
           "BT /F1 7 Tf 0.15 0.15 0.15 rg 10 18 Td (" + pdfString(zeile1) + ") Tj ET\n" +
           "BT /F1 5.5 Tf 0.35 0.35 0.35 rg 10 7 Td (" + pdfString(kuerzen(HINWEIS, platz + 40)) + ") Tj ET\n";
       }
@@ -308,8 +443,33 @@
       "<< /Type /Pages /Count " + pageRefs.length +
       " /Kids [" + pageRefs.map(id => id + " 0 R").join(" ") + "] >>"
     );
+    // Der RIS-Satz wird als Anhang in die Datei gelegt. Damit traegt das PDF
+    // seine Herkunft selbst — wer es in einem Jahr wiederfindet, braucht
+    // weder die Aufnahme-Sitzung noch die Ursprungsseite, um es korrekt zu
+    // zitieren. Herausholen laesst er sich mit "pdfdetach -saveall" oder
+    // ueber die Anlagen-Ansicht des Betrachters.
+    let namesEintrag = "";
+    if (quelle && quelle.titel) {
+      const ris = strToBytes(risSatz(quelle));
+      const risId = addObject(concatBytes([
+        strToBytes("<< /Type /EmbeddedFile /Subtype /text#2Fplain /Length " +
+                   ris.length + " >>\nstream\n"),
+        ris,
+        strToBytes("\nendstream"),
+      ]));
+      const specId = addObject(strToBytes(
+        "<< /Type /Filespec /F (quelle.ris) /UF " + pdfTextString("quelle.ris") +
+        " /Desc " + pdfTextString("Zitationsdatensatz (RIS) fuer Citavi, Zotero, EndNote") +
+        " /EF << /F " + risId + " 0 R >> >>"
+      ));
+      const namesId = addObject(strToBytes(
+        "<< /Names [(quelle.ris) " + specId + " 0 R] >>"
+      ));
+      namesEintrag = " /Names << /EmbeddedFiles " + namesId + " 0 R >>";
+    }
+
     objects[catalogId] = strToBytes(
-      "<< /Type /Catalog /Pages " + pagesId + " 0 R >>"
+      "<< /Type /Catalog /Pages " + pagesId + " 0 R" + namesEintrag + " >>"
     );
 
     // Dokumentinformationen: dieselben Angaben wie in der Fussnote, aber
@@ -318,9 +478,16 @@
     let infoId = 0;
     if (beleg || opts.title) {
       const felder = ["/Producer " + pdfTextString("Full Page PDF Snap" + (opts.version ? " " + opts.version : ""))];
-      if (opts.title) felder.push("/Title " + pdfTextString(opts.title));
+      // Der Titel aus den Verlagsangaben ist genauer als der Fenstertitel:
+      // dieser traegt oft den Namen der Website und Zusaetze mit.
+      const titel = (quelle && quelle.titel) || opts.title;
+      if (titel) felder.push("/Title " + pdfTextString(titel));
+      if (quelle && quelle.autoren && quelle.autoren.length) {
+        felder.push("/Author " + pdfTextString(quelle.autoren.join("; ")));
+      }
       if (beleg) {
-        felder.push("/Subject " + pdfTextString("Screen capture of " + beleg.url));
+        felder.push("/Subject " + pdfTextString(
+          quelle && quelle.titel ? zitation(quelle) : "Screen capture of " + beleg.url));
         felder.push("/CreationDate (" + pdfDate(beleg.capturedAt) + ")");
         felder.push("/ModDate (" + pdfDate(beleg.capturedAt) + ")");
         if (beleg.sha256) {
@@ -331,7 +498,9 @@
             "; note=self-made screen capture, not a qualified electronic document (eIDAS)" +
             (woerter && woerter.length
               ? "; text-layer=extracted from the page's own DOM, not OCR"
-              : "")
+              : "") +
+            (quelle && quelle.doi ? "; doi=" + quelle.doi : "") +
+            (quelle && quelle.titel ? "; citation-source=" + quelle.herkunft : "")
           ));
         }
       }

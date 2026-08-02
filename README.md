@@ -62,6 +62,9 @@ The extension has **no technical capability to collect data**. All processing â€
 - No server of the author is ever contacted
 - No analytics library, no telemetry, no error reporting
 - The author never learns which pages you capture
+- Citation details are read from the page already open â€” no citation service is queried
+- The one optional network request, downloading the publisher's original file, is **off by
+  default** and goes only to the site you are capturing ([details](PRIVACY.md#network-activity))
 
 ### It cannot see the pages you browse
 

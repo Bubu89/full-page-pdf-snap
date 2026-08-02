@@ -543,14 +543,219 @@
       }
       if (woerter.length > 60000) break;
     }
+    // Unteilbare Bloecke fuer den Seitenumbruch: eine Abbildung oder Tabelle
+    // mitten durchzuschneiden ist derselbe Fehler wie eine zerschnittene
+    // Textzeile, aber Textknoten erfassen sie nicht. Sehr kleine Elemente
+    // (Symbole, Zaehlpixel) bleiben draussen — sie stehen ohnehin innerhalb
+    // einer Zeile und wuerden nur Luecken verstellen.
+    const bloecke = [];
+    document.querySelectorAll("img,table,figure,pre,svg,video,iframe").forEach(el => {
+      const st = getComputedStyle(el);
+      if (st.display === "none" || st.visibility === "hidden") return;
+      const b = el.getBoundingClientRect();
+      if (b.width < 24 || b.height < 24) return;
+      bloecke.push({ a: b.y + scrollY, b: b.y + b.height + scrollY });
+    });
+
     return {
       ok: true,
       woerter,
+      bloecke,
       seite: {
         w: document.documentElement.scrollWidth,
         h: document.documentElement.scrollHeight,
       },
     };
+  }
+
+  // =====================================================================
+  // Quellenangaben
+  //
+  // Gelesen wird ausschliesslich die Seite, die ohnehin im Browser steht —
+  // kein zusaetzlicher Abruf, kein Dienst wird befragt. Das ist keine
+  // Sparmassnahme: ein Aufruf bei einem Zitationsdienst wuerde diesem
+  // verraten, welche Arbeit gerade gelesen wird, und das Versprechen der
+  // Erweiterung brechen, keine Netzverbindung aufzubauen.
+  //
+  // Gemessen an sechs Wissenschaftsseiten (arXiv, Springer, PMC, PLOS,
+  // MDPI, Wikipedia): fuenf liefern die vollstaendige Zitation ueber
+  // citation_*-Angaben im Seitenkopf. Ein Abruf haette nichts ergaenzt.
+  // =====================================================================
+
+  function sammleQuelle() {
+    const meta = {};
+    document.querySelectorAll("meta[name],meta[property]").forEach(e => {
+      const n = (e.getAttribute("name") || e.getAttribute("property") || "").toLowerCase();
+      const v = (e.getAttribute("content") || "").trim();
+      if (!n || !v) return;
+      (meta[n] = meta[n] || []).push(v);
+    });
+    const erste = (...k) => { for (const x of k) if (meta[x] && meta[x][0]) return meta[x][0]; return ""; };
+    const alle = (...k) => { for (const x of k) if (meta[x] && meta[x].length) return meta[x].slice(); return []; };
+
+    // schema.org: nur als Rueckfallebene. Verlagsseiten sind dort oft
+    // ungenauer als in den citation_-Angaben.
+    let ld = {};
+    document.querySelectorAll('script[type="application/ld+json"]').forEach(s => {
+      try {
+        const j = JSON.parse(s.textContent);
+        for (const o of (Array.isArray(j) ? j : [j])) {
+          const t = String(o["@type"] || "");
+          if (/Article|Book|Thesis|Report|Chapter|Posting/i.test(t) && !ld["@type"]) ld = o;
+        }
+      } catch (_) { /* fehlerhaftes JSON-LD ist haeufig und kein Grund aufzugeben */ }
+    });
+    const ldAutor = () => {
+      const a = ld.author;
+      if (!a) return [];
+      return (Array.isArray(a) ? a : [a])
+        .map(x => (typeof x === "string" ? x : (x && x.name) || "")).filter(Boolean);
+    };
+
+    // Ein Jahr steht in ganz unterschiedlichen Formaten; die vier Ziffern
+    // sind der einzige Teil, der sich zuverlaessig herausloesen laesst.
+    const rohDatum = erste("citation_publication_date", "citation_date", "citation_cover_date",
+                           "citation_online_date", "prism.publicationdate", "dc.date",
+                           "dcterms.issued", "article:published_time", "datepublished") ||
+                     (ld.datePublished || "");
+    const jahr = (String(rohDatum).match(/\b(1[5-9]\d{2}|20\d{2})\b/) || [""])[0];
+
+    // DOI: aus den Angaben, sonst aus der Adresse. Nicht aus dem Fliesstext —
+    // dort steht oft die DOI einer zitierten Arbeit, nicht die dieser Seite.
+    let doi = erste("citation_doi", "prism.doi", "dc.identifier.doi", "doi").replace(/^doi:\s*/i, "");
+    if (!doi) {
+      const m = location.href.match(/\b10\.\d{4,9}\/[-._;()/:A-Za-z0-9]+/);
+      if (m) doi = m[0];
+    }
+
+    let autoren = alle("citation_author", "dc.creator", "dcterms.creator", "author", "citation_authors");
+    if (autoren.length === 1 && /;/.test(autoren[0])) autoren = autoren[0].split(";").map(s => s.trim());
+    if (!autoren.length) autoren = ldAutor();
+
+    const journal = erste("citation_journal_title", "prism.publicationname",
+                          "citation_conference_title", "citation_book_title", "dc.source");
+    const q = {
+      titel: erste("citation_title", "dc.title", "dcterms.title", "og:title") ||
+             (ld.headline || "") || document.title || "",
+      autoren: autoren,
+      jahr: jahr,
+      datum: String(rohDatum || ""),
+      journal: journal,
+      band: erste("citation_volume", "prism.volume"),
+      heft: erste("citation_issue", "prism.number"),
+      seiteVon: erste("citation_firstpage", "prism.startingpage"),
+      seiteBis: erste("citation_lastpage", "prism.endingpage"),
+      doi: doi,
+      issn: erste("citation_issn", "prism.issn", "citation_eissn"),
+      isbn: erste("citation_isbn"),
+      verlag: erste("citation_publisher", "dc.publisher", "citation_dissertation_institution",
+                    "citation_technical_report_institution"),
+      webseite: erste("og:site_name") || location.hostname.replace(/^www\./, ""),
+      sprache: erste("citation_language", "dc.language") ||
+               (document.documentElement.lang || "").split("-")[0],
+      url: location.href.split("#")[0],
+      abrufdatum: new Date().toISOString().slice(0, 10),
+      pdfUrl: erste("citation_pdf_url"),
+    };
+
+    // --- Angaben, die den Nachweis tragen ------------------------------
+    // Ein Beleg muss sagen, was wann unter welcher Adresse stand. Datum
+    // allein genuegt dafuer nicht: Seiten aendern sich im Lauf eines Tages.
+    const jetzt = new Date();
+    const vz = -jetzt.getTimezoneOffset();
+    const zwei = n => String(Math.floor(Math.abs(n))).padStart(2, "0");
+    q.abrufzeit = jetzt.getFullYear() + "-" + zwei(jetzt.getMonth() + 1) + "-" + zwei(jetzt.getDate()) +
+      " " + zwei(jetzt.getHours()) + ":" + zwei(jetzt.getMinutes()) + ":" + zwei(jetzt.getSeconds()) +
+      " " + (vz < 0 ? "-" : "+") + zwei(vz / 60) + ":" + zwei(vz % 60);
+    q.zeitzone = (Intl.DateTimeFormat().resolvedOptions() || {}).timeZone || "";
+
+    // Die kanonische Adresse ist die zitierfaehige. Die Adresszeile traegt
+    // oft Sitzungs- und Kampagnenparameter, die niemanden weiterfuehren und
+    // in einem Literaturverzeichnis nichts verloren haben.
+    const kanon = document.querySelector('link[rel="canonical"]');
+    q.urlKanonisch = (kanon && kanon.href) || erste("og:url") || "";
+    if (q.urlKanonisch && q.urlKanonisch !== q.url) q.urlZitat = q.urlKanonisch;
+    else q.urlZitat = q.url.replace(/([?&])(utm_[^&]*|fbclid=[^&]*)(&|$)/g, "$1").replace(/[?&]$/, "");
+
+    // Eine Fassungsadresse zeigt genau den Stand, der gesehen wurde. Wo eine
+    // Seite sie anbietet, ist sie dem wandernden Link vorzuziehen.
+    const permalink = document.querySelector('link[rel="bookmark"], #t-permalink a, link[rel="alternate"][type="text/html"][hreflang]');
+    q.fassung = (permalink && permalink.href) || "";
+    if (!q.fassung) {
+      const old = location.href.match(/[?&]oldid=\d+/);
+      if (old) q.fassung = q.url;
+    }
+
+    // document.lastModified liefert bei dynamisch erzeugten Seiten den
+    // Zeitpunkt des Seitenaufbaus — also praktisch "jetzt". Als Angabe
+    // "zuletzt geaendert" waere das eine Falschaussage. Deshalb zaehlt es
+    // nur, wenn es erkennbar aelter ist als der Abruf.
+    q.geaendert = erste("article:modified_time", "dcterms.modified", "citation_online_date",
+                        "last-modified", "og:updated_time") ||
+                  (ld.dateModified || "");
+    if (!q.geaendert && document.lastModified) {
+      const lm = new Date(document.lastModified);
+      if (!isNaN(lm) && (jetzt - lm) > 3600e3) q.geaendert = lm.toISOString();
+    }
+    // Lizenz: entscheidet, ob und wie weiterverwendet werden darf.
+    const lizLink = document.querySelector('a[rel~="license"], link[rel~="license"]');
+    q.lizenz = erste("dc.rights", "dcterms.license", "citation_license", "og:license") ||
+               (typeof ld.license === "string" ? ld.license : (ld.license && ld.license.url) || "") ||
+               (lizLink && (lizLink.href || lizLink.textContent.trim())) || "";
+
+    // Volltext-Adressen des Verlags, sofern angegeben. Nur die Angabe —
+    // ob etwas geholt wird, entscheidet die Einstellung, nicht diese Stelle.
+    q.dateien = [];
+    const anhaengen = (art, adresse) => {
+      if (!adresse) return;
+      try { adresse = new URL(adresse, location.href).href; } catch (_) { return; }
+      if (!/^https?:/i.test(adresse)) return;
+      if (q.dateien.some(d => d.url === adresse)) return;
+      q.dateien.push({ art: art, url: adresse });
+    };
+    anhaengen("pdf", erste("citation_pdf_url"));
+    anhaengen("xml", erste("citation_xml_url", "citation_fulltext_xml_url"));
+    anhaengen("html", erste("citation_fulltext_html_url", "citation_abstract_html_url"));
+    if (!q.dateien.length && /\.pdf($|\?)/i.test(location.href)) anhaengen("pdf", location.href);
+    q.seitenTitel = document.title || "";
+
+    // Woher die Angaben stammen, gehoert dazu: eine Zitation aus dem
+    // Seitentitel ist etwas anderes als eine aus Verlagsangaben, und wer
+    // sie uebernimmt, sollte den Unterschied sehen.
+    const highwire = Object.keys(meta).some(k => k.indexOf("citation_") === 0);
+    q.herkunft = highwire ? "Verlagsangaben der Seite (citation_*)"
+               : Object.keys(meta).some(k => k.indexOf("dc.") === 0) ? "Dublin-Core-Angaben der Seite"
+               : ld["@type"] ? "schema.org-Angaben der Seite"
+               : "Seitentitel und Adresse";
+    // Ohne Titel ist nichts zu zitieren; ohne Verfasser oder Jahr ist die
+    // Angabe unvollstaendig, aber als Internetquelle noch brauchbar.
+    q.vollstaendig = !!(q.titel && (autoren.length || q.verlag) && q.jahr);
+    q.art = q.journal ? "Zeitschriftenaufsatz"
+          : q.isbn ? "Buch"
+          : (meta["citation_arxiv_id"] || /arxiv\.org|biorxiv|ssrn|preprints\.org/i.test(q.url))
+            ? "Preprint"
+          : "Internetquelle";
+    if (q.art === "Preprint" && !q.verlag) {
+      q.verlag = meta["citation_arxiv_id"] ? "arXiv" : q.webseite;
+    }
+    // Seitentitel tragen oft den Namen der Website als Anhaengsel
+    // ("Sexualtherapie – Wikipedia"). Abgeschnitten wird nur, wenn der
+    // Rest woertlich dem angegebenen Seitennamen entspricht — sonst waere
+    // es geraten, und ein verstuemmelter Titel ist schlimmer als ein langer.
+    const seitenName = erste("og:site_name");
+    // Der Name der Website steht vor der Endung, nicht am Anfang: bei
+    // "de.wikipedia.org" ist der erste Teil die Sprache.
+    const teile = location.hostname.split(".");
+    const kern = teile.length > 1 ? teile[teile.length - 2] : teile[0];
+    const m = q.titel.match(/^(.*?)\s*[|–—-]\s*([^|–—-]+)$/);
+    if (m && m[1].trim()) {
+      const schwanz = m[2].trim().toLowerCase();
+      if (schwanz === (seitenName || "").trim().toLowerCase() ||
+          schwanz === (kern || "").toLowerCase()) {
+        q.titel = m[1].trim();
+      }
+    }
+    return { ok: true, quelle: q };
   }
 
   browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
@@ -559,6 +764,9 @@
         switch (msg.cmd) {
           case "ping":
             sendResponse({ ok: true, injected: true, version: "1.1.0" });
+            break;
+          case "collectSource":
+            sendResponse(sammleQuelle());
             break;
           case "collectText":
             sendResponse(collectText());

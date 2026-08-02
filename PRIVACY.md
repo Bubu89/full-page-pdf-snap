@@ -31,8 +31,24 @@ usage statistics are stored.
 
 ## Network activity
 
-The extension makes no network requests. The single external address in the source is the store's review page; it opens only when you tap the rating notice. It has no analytics, no telemetry, no
+The extension makes no network requests of its own. It has no analytics, no telemetry, no
 crash reporting, no advertising, and no accounts. It works fully offline.
+
+Two addresses can be opened, both only on your explicit action:
+
+- **The store's review page** — opens when you tap the rating notice.
+- **The publisher's original file** — only if you switch on *"Also download the
+  publisher's original file"*, which is **off by default**. It then downloads the
+  full-text address the page you are capturing declares in its own metadata
+  (`citation_pdf_url`). That is the same request your browser makes when you click
+  "PDF" on that page, with the same access rights and to the same server you are
+  already visiting. Nothing is sent to the author of this extension, and nothing
+  behind a paywall becomes reachable.
+
+Citation details — authors, journal, DOI, licence, access time — are read from the
+page that is already loaded in your browser. **No citation service is contacted.**
+This is deliberate: asking a service to resolve a DOI would tell that service which
+paper you are reading.
 
 ## Permissions and why they are needed
 

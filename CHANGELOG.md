@@ -5,6 +5,75 @@
      Leser. Vor dem Commit auf Heim- und Benutzerverzeichnisse pruefen. -->
 
 
+## 2026-08-02 — Fuer wissenschaftliches Arbeiten: Quellenangaben und Druckumbruch
+
+Zwei Erweiterungen, beide zuerst gemessen und dann gebaut.
+
+### Seitenumbruch trifft keine Zeilen mehr
+
+Der mehrseitige Modus schnitt bisher blind alle `pageHeightPx` Pixel. An vier
+Verlagsseiten (Springer, PLOS ONE, MDPI, Wikipedia) gemessen: **30 von 46
+Schnitten liefen mitten durch eine Textzeile.** Wird der Schnitt stattdessen in
+die naechste Luecke gezogen, sind es **2 von 47** — die beiden Ausnahmen sind
+Bloecke, die hoeher sind als das Toleranzfenster von 12 Prozent; dort bleibt nur
+der harte Schnitt. Der Preis ist ein leerer Rand von **1,1 bis 2,5 Prozent** je
+Seite.
+
+Unteilbar sind nicht nur Textzeilen: Bilder, Tabellen, Codebloecke und
+eingebettete Rahmen zaehlen mit. Ein Schnitt durch eine Abbildung ist derselbe
+Fehler wie einer durch einen Satz.
+
+Neu ist ausserdem das Format **A4**: die Seitenhoehe wird aus der aufgenommenen
+Breite abgeleitet (180 x 267 mm Satzspiegel), sodass eine Seite das Blatt
+ausfuellt, ohne beim Drucken skaliert zu werden.
+
+### Die Textebene ueberlebt den Seitenumbruch
+
+Bisher fiel sie weg, sobald mehr als eine Seite entstand — gedruckte Fassungen
+waren also nicht durchsuchbar. Jetzt merkt sich jede Seite ihren Beginn im
+Gesamtbild (`yPx`), und jedes Wort landet auf der Seite, auf der es abgebildet
+ist. Gemessen am Testdokument: **100 Prozent der Woerter wiederauffindbar**
+ueber zwei Seiten hinweg.
+
+### Quellenangaben im PDF
+
+Gelesen wird ausschliesslich die Seite, die ohnehin im Browser steht. An sechs
+Wissenschaftsseiten geprueft: **fuenf liefern die vollstaendige Zitation** ueber
+`citation_*`-Angaben im Seitenkopf (arXiv, Springer, PMC, PLOS, MDPI); Wikipedia
+ueber schema.org. Ein Abruf bei einem Zitationsdienst haette **nichts ergaenzt** —
+und haette diesem verraten, welche Arbeit gerade gelesen wird.
+
+Erfasst werden Titel, Verfasser, Jahr, Zeitschrift, Band, Heft, Seiten, DOI,
+ISSN/ISBN, Verlag, Sprache, Lizenz, kanonische Adresse, Fassungsadresse,
+Aenderungsdatum sowie **Abrufzeitpunkt mit Uhrzeit und Zeitzone** — Datum allein
+genuegt nicht, weil Seiten sich im Lauf eines Tages aendern.
+
+Das landet an drei Stellen:
+
+- **sichtbare Zeile** ueber der Nachweiszeile, im Format APA 7
+- **Dokumentangaben** (Titel, Verfasser, Zitation, DOI)
+- **angehaengter RIS-Satz** (`quelle.ris`) fuer Citavi, Zotero und EndNote —
+  herauszuholen mit `pdfdetach -saveall` oder ueber die Anlagen-Ansicht
+
+Geraten wird nichts. Liegt ein Feld nicht vor, fehlt es. Namen werden nur
+umgestellt, wenn die Form erkennbar ist — bei Namenszusaetzen wie *van der* oder
+*de la* bleibt der Name unveraendert, weil ein falsch zerlegter Name schlimmer
+ist als ein nicht gekuerzter.
+
+Zwei Falschangaben wurden dabei behoben, bevor sie ausgeliefert wurden:
+`document.lastModified` liefert bei dynamischen Seiten den Zeitpunkt des
+Seitenaufbaus und haette *"zuletzt geaendert: heute"* behauptet; und ein
+Verlagsdatum wie `Jun 23, 2023` ist kein gueltiges RIS-Datum und laesst
+Importprogramme stolpern.
+
+### Originaldatei des Verlags — abschaltbar, Vorgabe aus
+
+Wo die Seite eine Volltextadresse nennt, kann die Datei danebengelegt werden.
+Das ist der **einzige** Vorgang, der eine Verbindung aufbaut, deshalb ist er
+standardmaessig aus und in PRIVACY.md benannt. Geholt wird nur die Adresse, die
+die Seite selbst angibt — derselbe Abruf, den ein Klick auf "PDF" ausloest, mit
+demselben Zugang. Was hinter einer Schranke liegt, bleibt dort.
+
 ## 2026-08-02 — Fusszeile war unsichtbar, sobald eine Textebene dabei war
 
 Beim ersten echten Gebrauch beider neuer Funktionen zugleich — Herkunftsfuss

@@ -140,9 +140,35 @@
     <div class="hint"><span data-i18n="optPdfFormatHint">A single continuous page removes the visible seams between segments. Multi-page splits the result into pages of the height set below.</span></div>
   </label>
 
+  <label><span data-i18n="optPageFormat">Page size for multi-page</span>
+    <select id="pageFormat" style="width:100%; padding: 8px 10px; border: 1px solid var(--rand); border-radius: 6px; font-size: 13px; background: var(--feld-bg); color: var(--fg);">
+      <option value="free">Fixed height in pixels (set below)</option>
+      <option value="a4">A4 — pages fit printed paper</option>
+    </select>
+    <div class="hint"><span data-i18n="optPageFormatHint">A4 derives the page height from the captured width, so a printed page fills the sheet without scaling.</span></div>
+  </label>
+
+  <label class="row"><input id="breakAtLines" type="checkbox" checked>
+    <span><span data-i18n="optBreakAtLines">Break between lines, not through them</span>
+      <div class="hint"><span data-i18n="optBreakAtLinesHint">Moves each page break up to the nearest gap between text lines, images and tables. Measured on four publisher pages: 30 of 46 fixed-grid breaks cut through a line of text, 2 of 47 did with this setting on. Cost: 1–3 % empty margin per page.</span></div>
+    </span>
+  </label>
+
   <label><span data-i18n="optPageHeight">Page height for multi-page (pixels)</span>
     <input id="pageHeightPx" type="number" min="400" max="8000" step="100" value="2400">
-    <div class="hint"><span data-i18n="optPageHeightHint">Only relevant when "Multiple pages" is selected. Default 2400 px.</span></div>
+    <div class="hint"><span data-i18n="optPageHeightHint">Only relevant when "Multiple pages" and "Fixed height" are selected. Default 2400 px.</span></div>
+  </label>
+
+  <label class="row"><input id="sourceMetadata" type="checkbox" checked>
+    <span><span data-i18n="optSourceMetadata">Read citation details from the page</span>
+      <div class="hint"><span data-i18n="optSourceMetadataHint">Reads authors, journal, volume, DOI, licence and access time from the page that is already open, and writes them into the PDF metadata plus an attached RIS record for Citavi, Zotero and EndNote. No request is made to any service.</span></div>
+    </span>
+  </label>
+
+  <label class="row"><input id="fetchOriginal" type="checkbox">
+    <span><span data-i18n="optFetchOriginal">Also download the publisher's original file</span>
+      <div class="hint"><span data-i18n="optFetchOriginalHint">Off by default: this is the only feature that opens a network connection. It downloads the full-text address the page itself declares — the same request a click on "PDF" makes, with the same access rights. Nothing behind a paywall becomes reachable.</span></div>
+    </span>
   </label>
 
   <label><span data-i18n="optTileHeight">Tile height for single-page (pixels)</span>
