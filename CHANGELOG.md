@@ -1,5 +1,33 @@
 # Changelog
 
+## 2026-08-02 — OAuth-Discovery gruen, 12 von 15
+
+`oauthDiscovery` besteht: `/.well-known/oauth-authorization-server` nach
+RFC 8414 mit issuer, token_endpoint, jwks_uri und grant_types_supported —
+ausgeliefert vom Worker, nicht als statische Datei behauptet. Der Fluss wurde
+end-to-end durchgespielt: registrieren, Token holen, MCP damit aufrufen.
+
+**`authMd` bleibt offen.** Der Pruefer nannte in drei aufeinanderfolgenden
+Laeufen jeweils eine andere Anforderung an den `agent_auth`-Block:
+zuerst eine `skill`-URL, die auf `/auth.md` zeigt (gesetzt), dann
+Identitaetstypen als eigene Objekte statt flacher Listen (gesetzt), dann
+`credential_types_supported` statt `credential_types` (gesetzt) — und meldet
+weiterhin „agent_auth metadata was not found". Die Anforderung ist aus den
+Rueckmeldungen nicht vollstaendig rekonstruierbar; weiteres Raten waere
+Aufwand ohne erkennbaren Nutzen fuer irgendeinen realen Client. Der Block
+enthaelt, was die verlinkte Spezifikation nennt, und `/auth.md` beschreibt den
+Weg vollstaendig und in Prosa.
+
+**`dnsAid` haengt nicht an der Zone.** Die HTTPS-Records stehen und loesen
+oeffentlich auf; DNSSEC ist in der Zone aktiviert, Algorithmus 13, Key-Tag
+2371. Beim Registrar ist der DS-Eintrag aber leer, und der Grund steht dort
+ebenfalls: `cloudflare_dns: false`. Der Registrar fuehrt die Domain nicht als
+Cloudflare-DNS-verwaltet, obwohl die Nameserver gesetzt sind — daran haengt
+die automatische DS-Uebernahme. Die Domain ist einen Tag alt und traegt noch
+`addperiod`. Ueber die Zone-API ist das nicht aufloesbar; ein Registrar-Token
+mit Schreibrechten waere die Ebene, auf der Kontaktdaten, Auto-Renew und
+Transfer haengen — dafuer zu weitreichend.
+
 ## 2026-08-02 — OAuth: echt gebaut statt behauptet
 
 Der Pruefer verlangte bei `auth.md` ein **nicht leeres**

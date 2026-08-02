@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.2.0";
+const VERSION = "1.2.3";
 const PROTOCOL = "2025-06-18";
 
 const TOOLS = [
@@ -305,10 +305,30 @@ function autorisierungsserver() {
     service_documentation: "https://provinglab.dev/auth.md",
     // Der Block, nach dem die Auth.md-Spezifikation fragt.
     agent_auth: {
-      skill: "https://provinglab.dev/.well-known/agent-skills/index.json",
+      // Zeigt auf die Anleitung selbst, nicht auf den Skills-Index: Ein Agent,
+      // der hier nachsieht, will wissen wie er sich anmeldet — nicht, welche
+      // Methoden die Seite veroeffentlicht.
+      skill: "https://provinglab.dev/auth.md",
+      skills_index: "https://provinglab.dev/.well-known/agent-skills/index.json",
       register_uri: "https://provinglab.dev/oauth/register",
+      // Je Identitaetstyp ein eigener Block mit seinen Credential-Typen — eine
+      // flache Liste laesst offen, welche Kombination gilt.
       supported_identity_types: ["anonymous", "client"],
       supported_credential_types: ["none", "bearer"],
+      anonymous: {
+        credential_types_supported: ["none"],
+        credential_types: ["none"],
+        register_uri: null,
+        description: "Send no credentials. This is the normal case and grants full access.",
+      },
+      client: {
+        credential_types_supported: ["bearer"],
+        credential_types: ["bearer"],
+        register_uri: "https://provinglab.dev/oauth/register",
+        token_uri: "https://provinglab.dev/oauth/token",
+        grant_types: ["client_credentials"],
+        description: "For clients that require an OAuth flow. Grants no access beyond anonymous.",
+      },
       claim_url: null,
       revocation_url: null,
       // Der wichtigste Eintrag: Es ist nicht noetig.
