@@ -5,6 +5,50 @@
      Leser. Vor dem Commit auf Heim- und Benutzerverzeichnisse pruefen. -->
 
 
+## 2026-08-02 — Sicherheitspruefung: Repository, GitHub, Cloudflare
+
+**Repository.** Die vollstaendige Historie (104 Commits) auf Tokens, private
+Schluessel und API-Geheimnisse durchsucht — **nichts gefunden**.
+
+Zwei andere Funde:
+- **29 absolute Pfade des Entwicklungsrechners** in CHANGELOG.md, eingetragen
+  vom Aggregator des Arbeitsplatzes. In einem oeffentlichen Repository geben
+  sie Kontonamen und Verzeichnisstruktur preis und nuetzen keinem Leser. Jetzt
+  repo-relativ, mit Warnhinweis im Kopf der Datei.
+- **`__pycache__/*.pyc` war versioniert.** Ein Kompilat traegt den absoluten
+  Pfad seiner Quelldatei im Klartext. Aus der Versionierung entfernt und in
+  `.gitignore` aufgenommen.
+
+Die private Kontaktadresse in PRIVACY.md und about/ bleibt: Sie ist die
+bewusst gewaehlte Adresse der pseudonymen Publikation, kein Versehen.
+
+**GitHub.** Secret Scanning und Push-Schutz waren bereits aktiv — letzterer
+verhindert, dass ein Geheimnis ueberhaupt hochgeladen wird. Keine Actions,
+keine Repository-Secrets, also keine Angriffsflaeche dort. Ergaenzt:
+Schwachstellen-Warnungen und automatische Sicherheitsfixes (Dependabot).
+Wiki und Projects waren aktiv, aber ungenutzt — abgeschaltet, weil eine offene
+Flaeche ohne Zweck nur Angriffsflaeche ist.
+
+**Cloudflare.** HSTS, TLS 1.2 als Minimum, HTTPS-Zwang, Browser-Integritaet
+und die vier Sicherheits-Header standen bereits. Zwei Luecken geschlossen:
+
+- **Content-Security-Policy** ergaenzt. Gemessen: Die Seite laedt von keinem
+  fremden Host — kein Skript, kein Stil, keine Schrift, kein Bild. Die
+  Richtlinie ist entsprechend eng, mit `frame-ancestors 'none'` (ersetzt
+  x-frame-options), `object-src 'none'`, `base-uri 'self'`,
+  `form-action 'none'`. `'unsafe-inline'` bleibt noetig, weil CSP auch
+  `application/ld+json` erfasst und die strukturierten Daten sonst wegfielen.
+  Nach dem Setzen geprueft: null Konsolenfehler, JSON-LD unveraendert im DOM.
+- **SSL von „full" auf „full (strict)".** Vorher prueft Cloudflare das
+  Zertifikat des Ursprungs nicht — ein Angreifer zwischen Cloudflare und
+  GitHub Pages haette ein beliebiges Zertifikat vorzeigen koennen. GitHub hat
+  ein gueltiges Zertifikat fuer beide Hostnamen (Zustand „approved"), deshalb
+  traegt strict. Mit Rueckrollung getestet: alle Pfade 200.
+
+Der Signaturschluessel des OAuth-Endpunkts steht weiterhin offen im Code. Das
+ist dokumentiert und beabsichtigt: Er verhindert nur, dass ein erfundenes
+Token als gueltig gilt, und schuetzt keinen Zugang.
+
 ## 2026-08-02 — auth.md gruen, 13 von 15
 
 `authMd` besteht: „Auth.md support detected (anonymous)".
