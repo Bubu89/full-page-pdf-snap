@@ -31,7 +31,7 @@ usage statistics are stored.
 
 ## Network activity
 
-The extension makes no network requests. It has no analytics, no telemetry, no
+The extension makes no network requests. The single external address in the source is the store's review page; it opens only when you tap the rating notice. It has no analytics, no telemetry, no
 crash reporting, no advertising, and no accounts. It works fully offline.
 
 ## Permissions and why they are needed

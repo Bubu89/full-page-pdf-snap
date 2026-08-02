@@ -207,6 +207,38 @@ def pruefe_gegentests(befunde):
                             f"{gegentest!r}", ""))
 
 
+TEXTTYPEN = {"Article", "TechArticle", "BlogPosting", "NewsArticle", "FAQPage", "WebSite"}
+SOFTWARELIZENZ = re.compile(r"(opensource\.org/licenses|/MIT\b|Apache-2|GPL)", re.I)
+INHALTSLIZENZ = re.compile(r"creativecommons\.org", re.I)
+
+
+def pruefe_lizenzen(befunde):
+    """Eine Softwarelizenz deckt Code, keinen Fliesstext.
+
+    Ein Artikel unter MIT ist nicht bloss unsauber, sondern sagt dem Leser
+    nichts Verwertbares: MIT regelt Weitergabe und Haftung von Software.
+    Umgekehrt gehoert Code nicht unter CC BY. Beides kam hier vor.
+    """
+    for pfad in sorted(DOCS.rglob("*.html")):
+        html = pfad.read_text(encoding="utf-8")
+        rel = str(pfad.relative_to(DOCS))
+        for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S):
+            try:
+                d = json.loads(block)
+            except json.JSONDecodeError:
+                continue
+            typ, lizenz = d.get("@type"), d.get("license", "")
+            if not lizenz:
+                continue
+            if typ in TEXTTYPEN and SOFTWARELIZENZ.search(lizenz):
+                befunde.append(("FEHLER", rel, "lizenz-vertauscht",
+                                f"{typ} steht unter einer Softwarelizenz ({lizenz}). "
+                                "Fuer Texte gehoert eine Inhaltslizenz hin.", ""))
+            if typ == "SoftwareApplication" and INHALTSLIZENZ.search(lizenz):
+                befunde.append(("WARNUNG", rel, "lizenz-vertauscht",
+                                f"Software unter Inhaltslizenz ({lizenz}).", ""))
+
+
 def pruefe_maschinenebene(befunde):
     """.well-known, llms.txt und Feed sind Zusagen wie jeder andere Text auch."""
     wk = DOCS / ".well-known"
@@ -297,6 +329,7 @@ def main():
     for p in seiten:
         pruefe_seite(p, p.read_text(encoding="utf-8"), befunde)
     pruefe_maschinenebene(befunde)
+    pruefe_lizenzen(befunde)
     if a.live:
         pruefe_live(befunde)
 
