@@ -111,3 +111,125 @@ Stellen, an denen Menschen suchen. Alles Übrige auf dieser Seite — die
 Agent-Ebenen, der MCP-Server, die Discovery-Metadaten — wirkt erst, wenn es
 Systeme gibt, die danach fragen. Diese Reihenfolge umzudrehen wäre der
 teuerste Fehler.
+
+---
+
+# Teil 2: Keywords, Titel und Verlinkung
+
+Gemessen am 2. August 2026 an den Spitzenplätzen der AMO-Suche.
+
+## Der Befund: AMO rankt nach wörtlicher Titel-Übereinstimmung
+
+| Suchbegriff | Spitzenreiter | dessen Nutzer |
+|---|---|---|
+| `webpage to pdf` | **Webpage to PDF** | 410 |
+| `full page screenshot` | **Full Page Screenshot** | 210 |
+| `save page as pdf` | Save as PDF | 19.867 |
+| `screenshot to pdf` | Awesome Screenshot | 125.328 |
+
+Zwei Erweiterungen mit 410 und 210 Nutzern stehen vor Konkurrenten mit dem
+Hundertfachen an Nutzern — allein, weil ihr Titel der Suchanfrage wörtlich
+entspricht. Nutzerzahl schlägt Titel **nicht**.
+
+`PageSaver – Webpage to PDF or Image` (2.200 Nutzer) taucht bei **drei von
+fünf** Begriffen in den Top 5 auf: Markenname plus zwei Begriffspaare.
+
+## Der aktuelle Titel und was ihm fehlt
+
+    Full Page PDF Snap – Save Webpage as PDF     (40 Zeichen)
+
+| Begriff | im Titel | Rang heute |
+|---|---|---|
+| `full page pdf` | ja | **6** |
+| `save webpage as pdf` | ja | **11** |
+| `save page as pdf` | teilweise | 34 |
+| `webpage to pdf` | teilweise | 37 |
+| `full page screenshot` | **nein** | **>100** |
+| `screenshot to pdf` | **nein** | **>100** |
+
+Der Zusammenhang ist eindeutig: Wo der Begriff im Titel steht, steht die
+Erweiterung vorn. Wo er fehlt, ist sie unauffindbar. **Ein einziges fehlendes
+Wort kostet zwei von sechs Begriffen.**
+
+## Vorschlag für den Titel
+
+AMO erlaubt 50 Zeichen. Drei Möglichkeiten, nach abnehmender Wirkung auf die
+Suche und zunehmender Schonung des Markennamens:
+
+**A — maximale Abdeckung** (45 Zeichen)
+
+    Full Page Screenshot & PDF Snap – Save Webpage
+
+Enthält *full page screenshot* als zusammenhängende Wortfolge, dazu *pdf*,
+*save*, *webpage*. Deckt alle sechs gemessenen Begriffe ab. Preis: Der
+Markenname steht nicht mehr allein am Anfang.
+
+**B — Ausgleich** (46 Zeichen)
+
+    Full Page PDF Snap – Screenshot & Save Webpage
+
+Markenname bleibt vorn, *screenshot* kommt hinzu. `full page screenshot` wird
+nicht als Wortfolge getroffen, die Einzelwörter aber alle.
+
+**C — kleinster Eingriff** (47 Zeichen)
+
+    Full Page PDF Snap – Save Webpage Screenshot
+
+Ein Wort ergänzt, sonst unverändert.
+
+Empfehlung: **B**. Bei drei Nutzern ist der Markenname noch kein Kapital, das
+geschont werden müsste — aber B kostet nichts und lässt sich später zu A
+schärfen, wenn die Messreihe zeigt, dass es nicht reicht.
+
+## Zusammenfassung — Ersatzvorschlag
+
+Die derzeitige Fassung enthält *screenshot* nicht und behauptet, was unsere
+eigene veröffentlichte Messung widerlegt („one of the few"):
+
+    Save a whole web page as one high-resolution PDF — a full-page screenshot
+    without page breaks, on desktop and on Firefox for Android. Auto-scrolls
+    the entire page: no cropping, no print dialog, no account.
+
+204 von 250 Zeichen. Enthält *screenshot*, *full-page*, *PDF*, *save*,
+*web page*, *Android*, *scroll* — und keine Rangbehauptung.
+
+## Tags
+
+Aktuell `download, privacy, security`. AMO erlaubt weitere aus einer festen
+Liste; **productivity** passt und fehlt.
+
+## Verlinkung: die kaputte Kette
+
+    Store  ──✗──>  provinglab.dev  ──✓──>  Store
+
+Die Seite verlinkt sauber zum Store. Der Store verweist auf
+`bubu89.github.io` — eine alte Adresse, die von den Messungen nichts weiß.
+**Jeder Besucher, der im Store auf „Homepage" klickt, landet an der falschen
+Stelle.** Das ist die billigste Reparatur im ganzen Plan.
+
+## Interne Weiterführung
+
+Die Messungen stehen weitgehend für sich. Was fehlt, sind Querverweise
+zwischen thematisch benachbarten Beiträgen — wer über OCR liest, sollte den
+Weg zu *print vs capture* finden, und wer über verschwindende Quellen liest,
+den zur Erweiterung. Konkret:
+
+- `webpage-to-pdf-for-ocr` → `print-to-pdf-vs-screenshot` (beide messen
+  Textrückgewinnung)
+- `web-citations-that-vanish` → `tools/full-page-pdf-snap` (das Werkzeug für
+  genau dieses Problem)
+- `android-capture-extensions` → `tools/full-page-pdf-snap` (die Erweiterung
+  ist eine der 60)
+- Jede Messung → `/data/` (Rohdaten sind ein Grund zum Verlinken durch Dritte)
+
+## Reihenfolge
+
+1. AMO-Homepage korrigieren — ohne das wirkt nichts anderes
+2. Titel und Zusammenfassung ersetzen, `productivity` ergänzen
+3. Chrome Web Store einreichen
+4. Querverweise ergänzen
+5. Nach zwei Wochen `provinglab-growth --show`: Haben sich die Ränge bei
+   `full page screenshot` und `screenshot to pdf` bewegt?
+
+Schritt 1 bis 3 sind zusammen etwa zwanzig Minuten und betreffen ausschließlich
+Stellen, an denen Menschen suchen.
