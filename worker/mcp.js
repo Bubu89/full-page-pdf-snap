@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.2.3";
+const VERSION = "1.4.0";
 const PROTOCOL = "2025-06-18";
 
 const TOOLS = [
@@ -303,34 +303,35 @@ function autorisierungsserver() {
     token_endpoint_auth_methods_supported: ["none", "client_secret_post"],
     code_challenge_methods_supported: ["S256"],
     service_documentation: "https://provinglab.dev/auth.md",
-    // Der Block, nach dem die Auth.md-Spezifikation fragt.
+    // Aufbau nach der auth.md-Spezifikation (github.com/workos/auth.md).
+    // Die Feldnamen lauten dort identity_types_supported und
+    // credential_types_supported je Typ — nicht umgekehrt, wie die Prosa
+    // des Pruefberichts nahelegt. Drei Runden Raten haetten sich mit einem
+    // Blick in die Spezifikation erledigt.
     agent_auth: {
-      // Zeigt auf die Anleitung selbst, nicht auf den Skills-Index: Ein Agent,
-      // der hier nachsieht, will wissen wie er sich anmeldet — nicht, welche
-      // Methoden die Seite veroeffentlicht.
       skill: "https://provinglab.dev/auth.md",
-      skills_index: "https://provinglab.dev/.well-known/agent-skills/index.json",
       register_uri: "https://provinglab.dev/oauth/register",
-      // Je Identitaetstyp ein eigener Block mit seinen Credential-Typen — eine
-      // flache Liste laesst offen, welche Kombination gilt.
-      supported_identity_types: ["anonymous", "client"],
-      supported_credential_types: ["none", "bearer"],
+      claim_uri: "https://provinglab.dev/oauth/claim",
+      revocation_uri: "https://provinglab.dev/oauth/revoke",
+      identity_endpoint: "https://provinglab.dev/oauth/register",
+      claim_endpoint: "https://provinglab.dev/oauth/claim",
+      events_endpoint: null,
+      identity_types_supported: ["anonymous", "service_auth"],
       anonymous: {
         credential_types_supported: ["none"],
-        credential_types: ["none"],
-        register_uri: null,
-        description: "Send no credentials. This is the normal case and grants full access.",
+        register_uri: "https://provinglab.dev/oauth/register",
+        claim_uri: "https://provinglab.dev/oauth/claim",
+        description: "Send no credentials. The normal case, and it grants full access.",
       },
-      client: {
-        credential_types_supported: ["bearer"],
-        credential_types: ["bearer"],
+      service_auth: {
+        credential_types_supported: ["client_secret_post", "none"],
+        claim_uri: "https://provinglab.dev/oauth/claim",
         register_uri: "https://provinglab.dev/oauth/register",
         token_uri: "https://provinglab.dev/oauth/token",
-        grant_types: ["client_credentials"],
-        description: "For clients that require an OAuth flow. Grants no access beyond anonymous.",
+        grant_types_supported: ["client_credentials"],
+        description: "For clients that require an OAuth flow. Grants nothing beyond anonymous.",
       },
-      claim_url: null,
-      revocation_url: null,
+      events_supported: [],
       // Der wichtigste Eintrag: Es ist nicht noetig.
       authentication_required: false,
       note: "All resources are public. Credentials are accepted for clients that require an OAuth flow, and grant no additional access.",
@@ -375,6 +376,29 @@ async function handleOAuth(pfad, request) {
       expires_in: TOKEN_TTL,
       scope: "read",
     });
+  }
+
+  if (pfad === "/oauth/claim") {
+    // Eine anonyme Identitaet an ein Konto zu binden, setzt Konten voraus.
+    // Es gibt keine — und der Endpunkt sagt das, statt zu schweigen.
+    return json({
+      claimable: false,
+      reason: "no_accounts",
+      description:
+        "There are no accounts to bind an identity to. Every resource on " +
+        "provinglab.dev is public, so an anonymous identity already has full " +
+        "access and nothing is gained by claiming it.",
+      documentation: "https://provinglab.dev/auth.md",
+    }, 200);
+  }
+
+  if (pfad === "/oauth/revoke") {
+    // RFC 7009 verlangt 200 auch fuer unbekannte Token. Hier gilt das immer:
+    // Ein Token schaltet nichts frei, es zurueckzuziehen aendert nichts.
+    return json({
+      revoked: true,
+      note: "Tokens grant no access, so revocation has no effect on what a client can reach.",
+    }, 200);
   }
 
   if (pfad === "/oauth/jwks") {

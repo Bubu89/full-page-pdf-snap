@@ -1,5 +1,33 @@
 # Changelog
 
+## 2026-08-02 — auth.md gruen, 13 von 15
+
+`authMd` besteht: „Auth.md support detected (anonymous)".
+
+**Wie es dazu kam, und was daran lehrreich ist.** Ich habe vier Runden lang
+geraten, welche Struktur der `agent_auth`-Block braucht — jeweils aus der Prosa
+der Fehlermeldung abgeleitet. Jede Runde brachte eine neue Meldung und keinen
+Fortschritt. Erst der Blick in die Spezifikation selbst
+(github.com/workos/auth.md) zeigte, dass die Felder anders heissen als die
+Beschreibung nahelegt: **`identity_types_supported`**, nicht
+`supported_identity_types`; **`credential_types_supported`** je Identitaetstyp,
+nicht eine flache Liste daneben. Danach nannte der Pruefer die letzte Luecke
+praezise — `claim_uri` — und die war in einem Zug gefuellt.
+
+Vier Runden Raten gegen einen Blick in die Quelle. Die Quelle war schneller.
+
+**Zwei neue Endpunkte, beide echt:**
+
+`/oauth/claim` antwortet `claimable: false, reason: no_accounts` — eine anonyme
+Identitaet an ein Konto zu binden setzt Konten voraus, und es gibt keine.
+`/oauth/revoke` bestaetigt jeden Widerruf und sagt dazu, dass er nichts
+aendert, weil ein Token ohnehin nichts freischaltet. Beide sagen die Wahrheit,
+statt zu schweigen oder etwas vorzugeben.
+
+**Verbleibend:** `dnsAid` haengt am Registrar (`cloudflare_dns: false`,
+`ds_records: []`), nicht an der Zone. `a2aAgentCard` verlangt einen Agenten,
+der Aufgaben bearbeitet — eine Publikation tut das nicht.
+
 ## 2026-08-02 — OAuth-Discovery gruen, 12 von 15
 
 `oauthDiscovery` besteht: `/.well-known/oauth-authorization-server` nach
