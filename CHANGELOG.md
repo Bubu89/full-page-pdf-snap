@@ -1,5 +1,37 @@
 # Changelog
 
+## 2026-08-02 — Sicherheitspruefung der Agent-Ebenen: zwei Funde, beide behoben
+
+Nach dem Aufbau geprueft statt angenommen. Zwei echte Maengel:
+
+**1. Verfuegbarkeitsrisiko durch die Worker-Route (schwerwiegend).**
+Die Route `provinglab.dev/*` stand auf `request_limit_fail_open: false`. Ist
+das Worker-Kontingent erschoepft — im freien Tarif 100.000 Anfragen am Tag —
+antwortet damit die **ganze Website** mit einem Fehler, statt auf GitHub Pages
+zurueckzufallen. Ein einzelner Aufrufer haette die Seite fuer den Rest des
+Tages abschalten koennen. Das ist das Gegenteil dessen, wofuer Cache-Regel und
+`serve_stale` gebaut wurden. Jetzt `true`: bei Ueberlastung liefert der
+Ursprung weiter, nur die Zusatzfunktionen fallen aus.
+
+**2. Pfadumgehung im MCP-Werkzeug `get_measurement_data`.**
+Die Beschraenkung pruefte, ob der zusammengesetzte Pfad mit `/data/` beginnt.
+`"../.well-known/oauth-protected-resource"` erfuellt das — der Server
+normalisiert anschliessend, und die fremde Datei wurde ausgeliefert. Gemessen,
+nicht vermutet. Kein Datenabfluss moeglich, weil auf dieser Domain ohnehin
+alles oeffentlich ist und fremde Hosts korrekt abgewiesen wurden (nur der
+Pfadanteil einer URL wird uebernommen, kein SSRF). Trotzdem war die
+Beschraenkung wirkungslos. Jetzt wird der Dateiname geprueft statt der Pfad
+zusammengesetzt: `^[A-Za-z0-9._-]+\.json$`.
+
+**Ergaenzt: CORS.** Ohne `access-control-allow-origin` kommt kein
+browserbasierter MCP-Client an den Endpunkt. Der liefert ausschliesslich
+oeffentliche Daten und kennt keine Sitzung — ein weit gefasstes CORS gibt hier
+nichts preis und oeffnet erst den Zugang. `OPTIONS` beantwortet die
+Vorabanfrage mit 204.
+
+Worker jetzt Version 1.1.0. Alle drei Punkte gegen den laufenden Endpunkt
+nachgeprueft.
+
 ## 2026-08-02 — Durchsuchbares PDF: Textebene aus dem Dokument statt aus OCR
 
 Die Aufnahme war bisher reines Pixelbild. Wer den Text brauchte, musste ihn

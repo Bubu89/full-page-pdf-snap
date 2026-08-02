@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.0.1";
+const VERSION = "1.1.0";
 const PROTOCOL = "2025-06-18";
 
 const TOOLS = [
@@ -58,10 +58,20 @@ const TOOLS = [
   },
 ];
 
+// Der Endpunkt liefert ausschliesslich oeffentliche Daten und kennt keine
+// Sitzung — ein weit gefasstes CORS gibt hier nichts preis, oeffnet aber
+// browserbasierten Clients ueberhaupt erst den Zugang.
+const CORS = {
+  "access-control-allow-origin": "*",
+  "access-control-allow-methods": "POST, OPTIONS",
+  "access-control-allow-headers": "content-type, mcp-protocol-version",
+  "access-control-max-age": "86400",
+};
+
 const json = (body, status = 200, extra = {}) =>
   new Response(JSON.stringify(body), {
     status,
-    headers: { "content-type": "application/json; charset=utf-8", ...extra },
+    headers: { "content-type": "application/json; charset=utf-8", ...CORS, ...extra },
   });
 
 const rpcOk = (id, result) => json({ jsonrpc: "2.0", id, result });
@@ -98,11 +108,16 @@ async function runTool(origin, name, args) {
   if (name === "get_measurement_data") {
     const d = String((args && args.dataset) || "");
     if (!d) throw new Error("dataset is required");
-    const path = d.startsWith("http")
-      ? new URL(d).pathname
-      : "/data/" + d.replace(/^\/?(data\/)?/, "");
-    if (!path.startsWith("/data/")) throw new Error("only /data/ paths are served");
-    return textResult(JSON.stringify(await fetchJson(origin, path), null, 2));
+    // Nur der Dateiname zaehlt. Ein Praefixvergleich auf "/data/" reicht nicht:
+    // "/data/../beliebig" beginnt damit und wird vom Server trotzdem
+    // normalisiert — gemessen am 02.08.2026, es lieferte eine fremde Datei aus.
+    // Deshalb wird der Name geprueft, nicht der Pfad zusammengesetzt.
+    const roh = d.startsWith("http") ? new URL(d).pathname : d;
+    const name2 = roh.split("/").pop() || "";
+    if (!/^[A-Za-z0-9._-]+\.json$/.test(name2) || name2.includes("..")) {
+      throw new Error("dataset must be a plain .json filename from /data/");
+    }
+    return textResult(JSON.stringify(await fetchJson(origin, "/data/" + name2), null, 2));
   }
 
   if (name === "get_method") {
@@ -125,6 +140,9 @@ async function runTool(origin, name, args) {
 }
 
 async function handleMcp(request, origin) {
+  if (request.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: CORS });
+  }
   if (request.method === "GET") {
     // Kein SSE: der Server ist zustandslos, es gibt nichts zu streamen.
     return json(
