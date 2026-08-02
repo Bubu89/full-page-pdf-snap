@@ -1,4 +1,9 @@
 # Changelog
+<!-- Keine absoluten Pfade des Entwicklungsrechners in dieses Repo.
+     Der Aggregator des Arbeitsplatzes traegt sie automatisch ein; sie
+     verraten Benutzernamen und Verzeichnisstruktur und nuetzen keinem
+     Leser. Vor dem Commit auf /home/ und <lokaler Pfad> pruefen. -->
+
 
 ## 2026-08-02 — auth.md gruen, 13 von 15
 
@@ -524,29 +529,29 @@ _Quelle: change-stream, 102 Events, generiert 2026-08-02T10:08_
 **Aktivitaet:** 23 Datei(en), 102 Tool-Calls (84 Edit, 17 Write, 1 Bash), 1 Session(s).
 
 **Beruehrte Dateien:**
-- `/home/holo/repos/full-page-pdf-snap-public/background.js` (25x)
-- `/home/holo/repos/full-page-pdf-snap-public/docs/tools/full-page-pdf-snap/index.html` (14x)
-- `/home/holo/repos/full-page-pdf-snap-public/result-visual-check.py` (9x)
-- `/home/holo/repos/full-page-pdf-snap-public/docs/index.html` (7x)
-- `/home/holo/repos/full-page-pdf-snap-public/result.js` (7x)
-- `/home/holo/repos/full-page-pdf-snap-public/chrome-mv3/port.py` (5x)
-- `/home/holo/repos/full-page-pdf-snap-public/README.md` (5x)
-- `/home/holo/repos/full-page-pdf-snap-public/result.html` (5x)
-- `/home/holo/repos/full-page-pdf-snap-public/sync-site.py` (4x)
-- `/home/holo/repos/full-page-pdf-snap-public/docs/pdf-extension-permissions/index.html` (3x)
-- `/home/holo/repos/full-page-pdf-snap-public/pack-firefox.py` (3x)
-- `/home/holo/repos/full-page-pdf-snap-public/docs/about/index.html` (2x)
-- `/home/holo/repos/full-page-pdf-snap-public/site-visual-check.py` (2x)
-- `/home/holo/repos/full-page-pdf-snap-public/CHANGELOG.md` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/docs/webpage-to-pdf-for-ocr/index.html` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/docs/extension-permissions-risk/index.html` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/docs/notes/building-with-ai-what-went-wrong/index.html` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/ping-suchmaschinen.py` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/docs/measurements/print-to-pdf-vs-screenshot/index.html` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/docs/llms.txt` (1x)
+- `background.js` (25x)
+- `docs/tools/full-page-pdf-snap/index.html` (14x)
+- `result-visual-check.py` (9x)
+- `docs/index.html` (7x)
+- `result.js` (7x)
+- `chrome-mv3/port.py` (5x)
+- `README.md` (5x)
+- `result.html` (5x)
+- `sync-site.py` (4x)
+- `docs/pdf-extension-permissions/index.html` (3x)
+- `pack-firefox.py` (3x)
+- `docs/about/index.html` (2x)
+- `site-visual-check.py` (2x)
+- `CHANGELOG.md` (1x)
+- `docs/webpage-to-pdf-for-ocr/index.html` (1x)
+- `docs/extension-permissions-risk/index.html` (1x)
+- `docs/notes/building-with-ai-what-went-wrong/index.html` (1x)
+- `ping-suchmaschinen.py` (1x)
+- `docs/measurements/print-to-pdf-vs-screenshot/index.html` (1x)
+- `docs/llms.txt` (1x)
 
 **Bemerkenswerte Commands:**
-- `cd /home/holo/repos/full-page-pdf-snap-public && git add -A docs && git commit -q -F - <<'EOF'
+- `cd <lokaler Pfad> && git add -A docs && git commit -q -F - <<'EOF'
 Add /tools/, /data/ and a`
 
 <!-- change-stream:auto-block:2026-08-01:END -->
@@ -560,16 +565,16 @@ _Quelle: change-stream, 16 Events, generiert 2026-08-02T10:08_
 **Aktivitaet:** 7 Datei(en), 16 Tool-Calls (13 Edit, 2 Write, 1 Bash), 2 Session(s).
 
 **Beruehrte Dateien:**
-- `/home/holo/repos/full-page-pdf-snap-public/CHANGELOG.md` (5x)
-- `/home/holo/repos/full-page-pdf-snap-public/manifest.json` (3x)
-- `/home/holo/repos/full-page-pdf-snap-public/chrome-mv3/port.py` (2x)
-- `/home/holo/repos/full-page-pdf-snap-public/chrome-mv3/compat.js` (2x)
-- `/home/holo/repos/full-page-pdf-snap-public/make-store-screenshots.py` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/popup.html` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/PRIVACY.md` (1x)
+- `CHANGELOG.md` (5x)
+- `manifest.json` (3x)
+- `chrome-mv3/port.py` (2x)
+- `chrome-mv3/compat.js` (2x)
+- `make-store-screenshots.py` (1x)
+- `popup.html` (1x)
+- `PRIVACY.md` (1x)
 
 **Bemerkenswerte Commands:**
-- `cd /home/holo/repos/full-page-pdf-snap-public && git checkout -b mv3-firefox 2>&1 | tail -2 && git status --short | head`
+- `cd <lokaler Pfad> && git checkout -b mv3-firefox 2>&1 | tail -2 && git status --short | head`
 
 <!-- change-stream:auto-block:2026-07-31:END -->
 ## 2.16.0 — Android: eine Meldung statt einer Reihe

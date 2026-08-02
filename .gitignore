@@ -9,3 +9,5 @@ _ISSUES.json
 pack-firefox.py
 chrome-mv3/pack.py
 release.py
+__pycache__/    # Kompilate enthalten den absoluten Pfad der Quelldatei
+*.pyc    # dito
