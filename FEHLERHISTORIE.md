@@ -33,6 +33,7 @@ Diese Haelfte ist die unangenehmere, weil sie Ergebnisse verfaelscht haette.
 | D | `ER  - ` als "leeres RIS-Feld" beanstandet | vier von fuenf Stichproben gleich | ER ist der Endmarker und traegt per Definition keinen Wert |
 | E | **Auswahlverzerrung**: erste Messreihe ergab Gleichstand mit Citoid | Zufallsstichprobe ergab 4 zu 7 | die 26er-Liste enthielt Quellen, die zuvor als funktionierend ausgewaehlt worden waren |
 | F | PMC als "liefert keine Metadaten" gemessen | `curl` fand 13 Felder | Playwright lief in eine Bot-Wand |
+| G | Japanische und kyrillische Titel galten grundsaetzlich als Fehlschlag | ein "Fehlschlag" war zeichengleich mit der Referenz | Normalisierung loeschte alles ausser `a-z0-9`; jetzt bleiben Unicode-Buchstaben, HTML-Auszeichnung faellt weg. Korrigierte Genauigkeit: eigene 91 % → 100 %, Citoid 64 % → 79 % |
 
 Befund E ist der schwerwiegendste: Er hat einen bereits geschriebenen Beitrag
 entwertet, dessen Kernaussage "gleich viele vollstaendige Zitationen" lautete.
