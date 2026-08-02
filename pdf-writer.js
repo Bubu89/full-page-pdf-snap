@@ -265,7 +265,12 @@
       // falsche Textebene ist schlechter als gar keine.
       if (woerter && woerter.length && pages.length === 1) {
         const skala = pg.widthPx / (opts.textLayerPageWidth || pg.widthPx);
-        contentStr += textebene(woerter, skala, pg.heightPx, fussPt, pxToPt);
+        // In q/Q geklammert: Textrendermodus und Laufweite gehoeren zum
+        // Grafikzustand, nicht zum Textobjekt — sie ueberleben ET. Ohne die
+        // Klammer erbt die Fusszeile das "3 Tr" des letzten Wortes und wird
+        // unsichtbar. Der Fehler zeigt sich nur, wenn Textebene und Fuss
+        // zusammen aktiv sind.
+        contentStr += "q\n" + textebene(woerter, skala, pg.heightPx, fussPt, pxToPt) + "Q\n";
       }
 
       if (zeigeFuss) {

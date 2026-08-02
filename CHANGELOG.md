@@ -5,6 +5,25 @@
      Leser. Vor dem Commit auf Heim- und Benutzerverzeichnisse pruefen. -->
 
 
+## 2026-08-02 — Fusszeile war unsichtbar, sobald eine Textebene dabei war
+
+Beim ersten echten Gebrauch beider neuer Funktionen zugleich — Herkunftsfuss
+und unsichtbare Textebene — fehlte im Ergebnis der Fusstext. Der graue Balken
+war da, `pdftotext` fand den Text, sichtbar war er nicht.
+
+**Ursache.** Textrendermodus (`Tr`) und horizontale Laufweite (`Tz`) gehoeren
+nach ISO 32000 zum Grafikzustand, nicht zum Textobjekt. Sie ueberleben `ET`.
+Die Textebene setzt je Wort `3 Tr` (unsichtbar); die danach geschriebene
+Fusszeile erbte diesen Zustand vom letzten Wort — samt dessen Laufweite.
+
+**Behebung.** Die Textebene wird in `q`/`Q` geklammert. Das setzt den
+Grafikzustand zurueck und wirkt unabhaengig davon, was danach in den
+Inhaltsstrom geschrieben wird — anders als ein blosses `0 Tr` in der
+Fusszeile, das denselben Fehler beim naechsten Zusatz wiederholen wuerde.
+
+Der Fehler konnte vorher nicht auffallen: einzeln funktioniert jede der beiden
+Funktionen. Nur ihre Kombination war ungeprueft.
+
 ## 2026-08-02 — Sicherheitspruefung: Repository, GitHub, Cloudflare
 
 **Repository.** Die vollstaendige Historie (104 Commits) auf Tokens, private
