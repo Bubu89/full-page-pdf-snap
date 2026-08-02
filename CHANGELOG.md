@@ -2,7 +2,7 @@
 <!-- Keine absoluten Pfade des Entwicklungsrechners in dieses Repo.
      Der Aggregator des Arbeitsplatzes traegt sie automatisch ein; sie
      verraten Benutzernamen und Verzeichnisstruktur und nuetzen keinem
-     Leser. Vor dem Commit auf /home/ und <lokaler Pfad> pruefen. -->
+     Leser. Vor dem Commit auf Heim- und Benutzerverzeichnisse pruefen. -->
 
 
 ## 2026-08-02 — auth.md gruen, 13 von 15
