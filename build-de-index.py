@@ -32,17 +32,15 @@ def deutsche_seiten():
         titel = re.sub(r"\s*[—|]\s*Proving Lab\s*$", "", titel).strip()
         # Umfang: alles ab dem Anker bis zum Fuss. Der erste Versuch mass
         # nur bis zum ersten schliessenden Tag und war um Faktor drei zu klein.
-        ab = s[s.index('id="b-de"'):]
-        ab = ab[:ab.index("<footer")] if "<footer" in ab else ab
-        zeichen = len(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", ab)).strip())
+        # Keine Zeichenzahl — siehe unten. Sortiert wird nach Titel.
         # Erste deutsche Zeile als Vorschau
         vor = ""
         m = re.search(r'<p[^>]*\blang="de"[^>]*>(.*?)</p>', s, re.S)
         if m:
             vor = re.sub(r"<[^>]+>", "", m.group(1)).strip()
             vor = re.sub(r"\s+", " ", vor)[:190]
-        out.append({"url": url, "titel": titel, "zeichen": zeichen, "vorschau": vor})
-    out.sort(key=lambda x: -x["zeichen"])
+        out.append({"url": url, "titel": titel, "vorschau": vor})
+    out.sort(key=lambda x: x["titel"])
     return out
 
 
@@ -82,17 +80,15 @@ def inhalt(seiten):
         zeilen.append(f'''<div class="item">
   <h2><a href="{s['url']}#b-de">{s['titel']}</a></h2>
   <p>{s['vorschau']}</p>
-  <div class="figures"><span><b>{s['zeichen']:,}</b> Zeichen</span></div>
 </div>'''.replace(",", "."))
-    gesamt = sum(s["zeichen"] for s in seiten)
     return f'''<div class="wrap">
 
 <header>
   <h1>Deutschsprachige Fassungen</h1>
   <p class="standfirst">
     Diese Seite ist auf Englisch geschrieben. {len(seiten)} Beiträge tragen
-    zusätzlich eine vollständige deutsche Fassung auf derselben Seite —
-    zusammen rund {gesamt:,} Zeichen. Es sind keine Übersetzungen, sondern
+    zusätzlich eine vollständige deutsche Fassung auf derselben Seite.
+    Es sind keine Übersetzungen, sondern
     eigenständige Fassungen desselben Arguments, geschrieben für Leser in
     Österreich und Deutschland.
   </p>
@@ -125,10 +121,9 @@ def main():
     ziel = DOCS / "deutsch"
     ziel.mkdir(parents=True, exist_ok=True)
     (ziel / "index.html").write_text(anpassen(kopf) + inhalt(seiten) + fuss, encoding="utf-8")
-    print(f"  deutsch/index.html geschrieben — {len(seiten)} Fassungen, "
-          f"{sum(s['zeichen'] for s in seiten)} Zeichen")
+    print(f"  deutsch/index.html geschrieben — {len(seiten)} Fassungen")
     for s in seiten:
-        print(f"    {s['zeichen']:>6}  {s['url']}")
+        print(f"    {s['url']}")
 
 
 if __name__ == "__main__":
