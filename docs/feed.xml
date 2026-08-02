@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title>Proving Lab</title>
+  <subtitle>Measurements on browser tools, OCR pipelines and AI-assisted development</subtitle>
+  <id>https://provinglab.dev/</id>
+  <link rel="alternate" type="text/html" href="https://provinglab.dev/"/>
+  <link rel="self" type="application/atom+xml" href="https://provinglab.dev/feed.xml"/>
+  <updated>2026-08-01T00:00:00Z</updated>
+  <author><name>Proving Lab</name><uri>https://provinglab.dev/</uri></author>
+  <icon>https://provinglab.dev/icon-128.png</icon>
+  <rights>Content licensed for reading and quoting with attribution.</rights>
+  <entry>
+    <title>Webpage to PDF for OCR: how much text survives? A measured test</title>
+    <id>https://provinglab.dev/measurements/webpage-to-pdf-for-ocr/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/webpage-to-pdf-for-ocr/"/>
+    <published>2026-08-01T00:00:00Z</published>
+    <updated>2026-08-01T00:00:00Z</updated>
+    <summary type="text">A full-page screenshot PDF run through Tesseract and compared against the original article text. 92.6% of the vocabulary survives, and the resolution threshold sits between 72 and 110 dpi. Numbers, method and commands to reproduce it.</summary>
+  </entry>
+  <entry>
+    <title>Six things went wrong building software with an AI assistant in one day</title>
+    <id>https://provinglab.dev/notes/building-with-ai-what-went-wrong/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/building-with-ai-what-went-wrong/"/>
+    <published>2026-08-01T00:00:00Z</published>
+    <updated>2026-08-01T00:00:00Z</updated>
+    <summary type="text">A single day of AI-assisted development, logged honestly: a wrong assumption about browser engines, a false claim that nearly got published, 22 local paths one commit away from a public repo, and three more. What caught each one — and what would not have.</summary>
+  </entry>
+  <entry>
+    <title>Print to PDF or capture the screen? The same page measured both ways</title>
+    <id>https://provinglab.dev/measurements/print-to-pdf-vs-screenshot/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/print-to-pdf-vs-screenshot/"/>
+    <published>2026-08-01T00:00:00Z</published>
+    <updated>2026-08-01T00:00:00Z</updated>
+    <summary type="text">Firefox can already save a page as PDF. So when is a screenshot capture worth it? The same article through both routes: 26 pages against one, 9 sentences cut by page breaks, and a text layer that print keeps and capture loses.</summary>
+  </entry>
+  <entry>
+    <title>Does your PDF extension upload the page? How to check it yourself</title>
+    <id>https://provinglab.dev/measurements/pdf-extension-permissions/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/pdf-extension-permissions/"/>
+    <published>2026-08-01T00:00:00Z</published>
+    <updated>2026-08-01T00:00:00Z</updated>
+    <summary type="text">Browser extensions declare what they may access. Here is how to read that yourself in 30 seconds, what the current PDF extensions request as of 1 August 2026 — and why a permission is not proof of behaviour.</summary>
+  </entry>
+  <entry>
+    <title>An extension is only as dangerous as its permissions allow</title>
+    <id>https://provinglab.dev/measurements/extension-permissions-risk/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/extension-permissions-risk/"/>
+    <published>2026-08-01T00:00:00Z</published>
+    <updated>2026-08-01T00:00:00Z</updated>
+    <summary type="text">A year ago Mozilla warned that add-on developer accounts were being phished. That is why permissions matter more than trust: they decide what a compromised extension could do. A practical way to judge the risk before installing.</summary>
+  </entry>
+</feed>
