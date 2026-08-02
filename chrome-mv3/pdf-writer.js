@@ -441,9 +441,22 @@
         contentStr +=
           "q\n0.85 0.85 0.85 rg\n0 0 " + breite.toFixed(2) + " " + fussPt + " re\nf\nQ\n";
         if (zitZeile) {
+          // Die Standardschrift eines PDF kann nur WinAnsi. Bei kyrillischen,
+          // griechischen oder ostasiatischen Quellen bleibt von der Zitation
+          // nur Interpunktion uebrig — gemessen an einer russischen Arbeit:
+          // ", . . & , . . (2007)." Eine solche Zeile ist schlechter als
+          // keine, weil sie wie eine Angabe aussieht. Dann wird gesagt, wo
+          // die vollstaendige steht, statt sie zu verstuemmeln.
+          const sichtbar = nachWinAnsi(zitZeile);
+          const buchstaben = (zitZeile.match(/[^\s\p{P}\d]/gu) || []).length;
+          const erhalten = (sichtbar.match(/[^\s\p{P}\d]/gu) || []).length;
+          const text = (buchstaben > 0 && erhalten / buchstaben < 0.6)
+            ? "Citation omitted: it uses characters a standard PDF font cannot show. " +
+              "The full record is attached to this file as quelle.ris."
+            : kuerzen(sichtbar, platz + 6);
           contentStr +=
             "BT /F1 7.5 Tf 0 0 0 rg 10 " + (fussPt - 12) + " Td (" +
-            pdfString(nachWinAnsi(kuerzen(zitZeile, platz + 6))) + ") Tj ET\n";
+            pdfString(text) + ") Tj ET\n";
         }
         contentStr +=
           "BT /F1 7 Tf 0.15 0.15 0.15 rg 10 18 Td (" + pdfString(zeile1) + ") Tj ET\n" +

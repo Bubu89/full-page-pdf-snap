@@ -639,7 +639,10 @@
 
     let autoren = alle("citation_author", "dc.creator", "dcterms.creator", "author",
                        "citation_authors", "article:author", "twitter:creator");
-    if (autoren.length === 1 && /;/.test(autoren[0])) autoren = autoren[0].split(";").map(s => s.trim());
+    if (autoren.length === 1 && /;/.test(autoren[0])) autoren = autoren[0].split(";");
+    // Leere Namen aussortieren: eine Zeitschrift lieferte content=";;;;;",
+    // was sechs leere Verfasser ergab, die als vollständige Angabe galten.
+    autoren = autoren.map(s => String(s).trim()).filter(s => s.length > 1);
     if (!autoren.length) autoren = ldAutor();
 
     // Der uebergeordnete Titel — Zeitschrift, Sammelband oder Tagungsband.
@@ -762,8 +765,8 @@
     // "Error" allein sagt nichts: "Error Analysis in Second Language
     // Acquisition" ist ein Fachtitel. Erst was darauf folgt entscheidet.
     const fehlerwort = /^\W*error\s*(\d{3}|page|occurred|has occurred|[:.–—-]|$)/i;
-    if (nurSeitenname) {
-      q.warnung = "Als Titel steht nur der Name der Website da, kein Werktitel.";
+    if (nurSeitenname || nurNummer) {
+      q.warnung = "Als Titel steht nur der Name der Website oder eine bloße Datensatznummer da, kein Werktitel.";
     } else if (eindeutig.test(q.titel) || generisch.test(q.titel.trim()) || fehlerwort.test(q.titel.trim())) {
       q.warnung = "Die Seite sieht nach Fehlermeldung oder Zugangsschranke aus, nicht nach Inhalt.";
     } else if (!autoren.length && !q.journal && !q.verlag &&
@@ -822,6 +825,14 @@
     // kein Werktitel — bioRxiv liefert "| bioRxiv".
     const nurSeitenname = q.titel.toLowerCase() === (seitenName || "").trim().toLowerCase() ||
                           q.titel.toLowerCase() === (kern || "").toLowerCase();
+    // Ein Titel aus lauter Ziffern ist eine Datensatznummer, kein Werktitel.
+    const nurNummer = /^[\d\s.,;:\/-]{1,24}$/.test(q.titel.trim());
+    // Titel, der eine Kennung statt eines Werktitels trägt: korrekt
+    // wiedergegeben, aber als Literaturhinweis schwer benutzbar. Benannt,
+    // nicht korrigiert — eine Korrektur wäre geraten.
+    if (!nurNummer && /\b(10\.\d{4,9}\/|[A-Za-z]+ID:|accession)/i.test(q.titel)) {
+      q.titelHinweis = "Der Titel enthält eine Kennung statt einer Bezeichnung — vor dem Zitieren am Werk prüfen.";
+    }
 
     // Körperschaft als Urheber. Bei Behörden-, Statistik- und Rechtsquellen
     // gibt es keine Person, und das ist kein Mangel: nach APA ist dort die

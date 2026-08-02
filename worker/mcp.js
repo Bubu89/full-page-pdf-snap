@@ -19,8 +19,9 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.6.0";
+const VERSION = "1.7.0";
 const PROTOCOL = "2025-06-18";
+const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
 const TOOLS = [
   {
@@ -173,10 +174,15 @@ function quelleAusHtml(html, endgueltigeUrl) {
 
   let autoren = alle("citation_author", "dc.creator", "dcterms.creator", "author",
                      "citation_authors", "article:author");
-  if (autoren.length === 1 && /;/.test(autoren[0])) autoren = autoren[0].split(";").map((s) => s.trim());
+  if (autoren.length === 1 && /;/.test(autoren[0])) autoren = autoren[0].split(";");
+  // Leere Namen aussortieren. Eine koreanische Zeitschrift lieferte
+  // content=";;;;;" — daraus wurden sechs leere Verfasser, die als
+  // vollstaendige Angabe durchgingen und in BibTeX zu "{ and  and }" wurden.
+  autoren = autoren.map((s) => String(s).trim()).filter((s) => s.length > 1);
   if (!autoren.length && ld.author) {
     autoren = (Array.isArray(ld.author) ? ld.author : [ld.author])
-      .map((x) => (typeof x === "string" ? x : (x && x.name) || "")).filter(Boolean);
+      .map((x) => String(typeof x === "string" ? x : (x && x.name) || "").trim())
+      .filter((s) => s.length > 1);
   }
 
   const buchTitel = erste("citation_inbook_title", "citation_book_title", "citation_series_title");
@@ -258,6 +264,18 @@ function quelleAusHtml(html, endgueltigeUrl) {
   // bauen hiesse, den Namen des Servers als Titel der Arbeit auszugeben.
   const nurSeitenname = q.title.toLowerCase() === (erste("og:site_name") || "").trim().toLowerCase() ||
                         q.title.toLowerCase() === kern.toLowerCase();
+  // Ein Titel aus lauter Ziffern ist eine Datensatznummer, kein Werktitel.
+  // Ein Datenarchiv lieferte "1643858" als Titel einer Gesteinsprobe — als
+  // Quellenangabe waere das nicht wiederauffindbar.
+  const nurNummer = /^[\d\s.,;:\/-]{1,24}$/.test(q.title.trim());
+  // Traegt der Titel eine Kennung statt eines Werktitels, ist die Angabe zwar
+  // korrekt wiedergegeben, aber als Literaturhinweis schwer benutzbar. Ein
+  // Bakterienarchiv lieferte "Archive BacDiveID:10.13145/bacdive113535...".
+  // Nicht korrigiert — das waere geraten — sondern benannt.
+  if (!nurNummer && /\b(10\.\d{4,9}\/|[A-Za-z]+ID:|accession|record\s*(no|number))/i.test(q.title)) {
+    q.titleNote = "The title the page declares contains an identifier rather than a "
+                + "descriptive title. Check it against the work itself before citing.";
+  }
 
   // Koerperschaft als Urheber. Bei Behoerden-, Statistik- und Rechtsquellen
   // gibt es keine Person, und das ist kein Mangel: nach APA ist dort die
@@ -287,8 +305,8 @@ function quelleAusHtml(html, endgueltigeUrl) {
   // "Error" allein sagt nichts: "Error Analysis in Second Language
   // Acquisition" ist ein Fachtitel. Erst was darauf folgt entscheidet.
   const fehlerwort = /^\W*error\s*(\d{3}|page|occurred|has occurred|[:.–—-]|$)/i;
-  q.warning = nurSeitenname
-    ? "The only title the page declares is the name of the site itself, not of a work. Nothing here identifies a source."
+  q.warning = (nurSeitenname || nurNummer)
+    ? "The only title the page declares is the name of the site or a bare record number, not the title of a work. Nothing here identifies a source."
     : (eindeutig.test(q.title) || generisch.test(q.title.trim()) || fehlerwort.test(q.title.trim()))
     ? "The page looks like an error message or an access wall, not content. The details below are not usable as a reference."
     // Eine Schranke, die sich anders nennt, verraet sich an der Duennheit:
@@ -303,6 +321,79 @@ function quelleAusHtml(html, endgueltigeUrl) {
       : ldTyp ? "schema.org metadata in the page" : "page title and address";
   q.complete = !q.warning && !!(q.title && (q.authors.length || q.publisher) && q.year);
   return q;
+}
+
+// DOI-Registrierungsstelle. Wo eine DOI vorliegt, ist sie die bessere Quelle
+// als die Verlagsseite: sie ist autoritativ, offen und wird nicht gesperrt.
+// Gemessen am 02.08.2026: von neun Zufallsquellen wies der Verlag fuenf
+// serverseitige Abrufe mit HTTP 403 ab — unabhaengig davon, wie sich der
+// Leser nannte. Der Umweg ueber die Registrierungsstelle liefert genau dort.
+//
+// Das gilt nur fuer diesen Endpunkt. Die Erweiterung im Browser des Nutzers
+// fragt weiterhin niemanden: sie liest die Seite, die ohnehin offen ist, und
+// ein Abruf bei Crossref wuerde verraten, was gerade gelesen wird.
+async function ausRegistrierung(doi) {
+  const kopf = { accept: "application/json", "user-agent": AGENT };
+  try {
+    const r = await fetch("https://api.crossref.org/works/" + encodeURIComponent(doi),
+                          { headers: kopf, cf: { cacheTtl: 0 } });
+    if (r.ok) {
+      const m = (await r.json()).message || {};
+      const autoren = (m.author || [])
+        .map((a) => [a.family, a.given].filter(Boolean).join(", "))
+        .filter((x) => x.length > 1);
+      const jahr = (((m.issued || {})["date-parts"] || [[]])[0] || [])[0];
+      return {
+        title: (m.title || [])[0] || "",
+        authors: autoren,
+        year: jahr ? String(jahr) : "",
+        journal: (m["container-title"] || [])[0] || "",
+        volume: m.volume || "", issue: m.issue || "",
+        firstPage: (m.page || "").split("-")[0] || "",
+        lastPage: (m.page || "").split("-")[1] || "",
+        publisher: m.publisher || "",
+        issn: (m.ISSN || [])[0] || "", isbn: (m.ISBN || [])[0] || "",
+        doi: m.DOI || doi,
+        art: /journal-article/.test(m.type || "") ? "Zeitschriftenaufsatz"
+           : /book-chapter/.test(m.type || "") ? "Buchkapitel"
+           : /proceedings/.test(m.type || "") ? "Konferenzbeitrag"
+           : /^book/.test(m.type || "") ? "Buch"
+           : /posted-content/.test(m.type || "") ? "Preprint" : "Internetquelle",
+        source: "DOI registration agency (Crossref)",
+      };
+    }
+  } catch (_) { /* weiter zu DataCite */ }
+  try {
+    const r = await fetch("https://api.datacite.org/dois/" + encodeURIComponent(doi),
+                          { headers: kopf, cf: { cacheTtl: 0 } });
+    if (!r.ok) return null;
+    const a = ((await r.json()).data || {}).attributes || {};
+    return {
+      title: ((a.titles || [])[0] || {}).title || "",
+      authors: (a.creators || []).map((c) => c.name || "").filter((x) => x.length > 1),
+      year: a.publicationYear ? String(a.publicationYear) : "",
+      journal: ((a.container || {}).title) || "",
+      publisher: a.publisher || "", doi: a.doi || doi,
+      volume: "", issue: "", firstPage: "", lastPage: "", issn: "", isbn: "",
+      art: "Datensatz", source: "DOI registration agency (DataCite)",
+    };
+  } catch (_) { return null; }
+}
+
+/** Bringt einen Registrierungssatz auf dieselbe Form wie die Seitenauswertung. */
+function vervollstaendigen(reg, url) {
+  const jetzt = new Date().toISOString();
+  return {
+    art: reg.art, title: reg.title, authors: reg.authors, year: reg.year,
+    date: reg.year, journal: reg.journal, container: reg.art === "Buchkapitel" ? reg.journal : "",
+    volume: reg.volume, issue: reg.issue, firstPage: reg.firstPage, lastPage: reg.lastPage,
+    doi: reg.doi, issn: reg.issn, isbn: reg.isbn, publisher: reg.publisher,
+    language: "", licence: "", url: url, canonicalUrl: "",
+    fullTextUrls: [], retrievedAt: jetzt,
+    website: (() => { try { return new URL(url).hostname.replace(/^www\./, ""); } catch (_) { return ""; } })(),
+    warning: "", source: reg.source,
+    complete: !!(reg.title && reg.authors.length && reg.year),
+  };
 }
 
 function risAus(q) {
@@ -427,12 +518,29 @@ async function runTool(origin, name, args) {
       // dessen Ergebnis zitiert wird, ist Aktualitaet mehr wert als Ersparnis.
       cf: { cacheTtl: 0, cacheEverything: false },
     });
+    // DOI in der Adresse? Dann steht ein zweiter Weg offen, falls die Seite
+    // sperrt — die Registrierungsstelle antwortet immer.
+    const doiInUrl = (ziel.href.match(/\b10\.\d{4,9}\/[-._;()A-Za-z0-9]+/) || [])[0];
+
     if (!r.ok) {
+      if (doiInUrl) {
+        const reg = await ausRegistrierung(doiInUrl.replace(/[.,;)]+$/, ""));
+        if (reg && reg.title) {
+          const q2 = vervollstaendigen(reg, ziel.href);
+          return textResult(JSON.stringify({
+            ...q2, ris: risAus(q2), bibtex: bibtexAus(q2),
+            note: `The page itself answered ${r.status}; these details come from the DOI `
+                + `registration agency, which is authoritative for them. Nothing was read `
+                + `from the publisher's page.`,
+          }, null, 2));
+        }
+      }
       return textResult(JSON.stringify({
         url: ziel.href, httpStatus: r.status,
         warning: `The server answered ${r.status} ${r.statusText}. No citation data was read.`,
         hint: r.status === 403 || r.status === 503
-          ? "Publisher sites frequently block server-side readers. Open the page in a browser and read it there."
+          ? "Publisher sites frequently block server-side readers, and no DOI was available "
+            + "as a fallback. Open the page in a browser and read it there."
           : undefined,
       }, null, 2));
     }
@@ -446,7 +554,16 @@ async function runTool(origin, name, args) {
     // Gedeckelt, damit eine einzelne riesige Seite den Aufruf nicht sprengt;
     // die Angaben stehen im Kopf, lange vor dieser Grenze.
     const html = (await r.text()).slice(0, 1500000);
-    const q = quelleAusHtml(html, r.url);
+    let q = quelleAusHtml(html, r.url);
+    // Sperrseite oder taube Angaben? Dann zaehlt die Registrierungsstelle.
+    if ((q.warning || !q.authors.length) && (q.doi || doiInUrl)) {
+      const reg = await ausRegistrierung((q.doi || doiInUrl).replace(/[.,;)]+$/, ""));
+      if (reg && reg.title && reg.authors.length) {
+        q = vervollstaendigen(reg, r.url);
+        q.note = "The page declared no usable citation data; these details come from the "
+               + "DOI registration agency.";
+      }
+    }
     return textResult(JSON.stringify({
       ...q,
       ris: risAus(q),
