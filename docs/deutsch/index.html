@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tools — Proving Lab</title>
-<meta name="description" content="Browser tools built here and measured here: Full Page PDF Snap downloads an entire webpage as one seamless PDF, on the device, for Firefox and Chrome.">
-<link rel="canonical" href="https://provinglab.dev/tools/">
+<title>Deutschsprachige Fassungen — Proving Lab</title>
+<meta name="description" content="Fünf Beiträge auf provinglab.dev tragen eine vollständige deutsche Fassung: zum Werkzeug, zu verschwindenden Quellen, zu Nachweisen im Studium, zur Offenlegung und zum Haftungsausschluss.">
+<link rel="canonical" href="https://provinglab.dev/deutsch/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
 <link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
@@ -29,14 +29,11 @@
   .item{padding:24px 0;border-bottom:1px solid var(--line)}
   .item h2{font-size:1.18rem;margin-bottom:8px;letter-spacing:-.01em}
   .item p{color:var(--dim);font-size:.96rem;margin-bottom:10px}
+  .date{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.75rem;
+    color:var(--dim);letter-spacing:.04em;margin-bottom:7px}
   .figures{display:flex;flex-wrap:wrap;gap:16px;font-family:ui-monospace,Menlo,Consolas,monospace;
     font-size:.8rem;color:var(--dim)}
   .figures b{color:var(--good);font-weight:600;font-variant-numeric:tabular-nums}
-  .holen{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-  .holen a{display:inline-block;padding:9px 16px;border-radius:8px;font-size:.9rem;
-    font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--tx)}
-  .holen a.erst{background:var(--acc);border-color:var(--acc);color:#fff}
-  .holen a:hover{text-decoration:none}
   footer{padding:36px 0 60px;color:var(--dim);font-size:.85rem}
   .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
     border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
@@ -56,14 +53,17 @@
   @media (max-width:640px){ .topnav .brand{width:100%;margin-right:0} }
 </style>
 <script src="/agent-tools.js" defer></script>
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/deutsch/">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/">
 </head>
 <body>
 <nav class="topnav">
   <div class="inner">
     <a class="brand" href="../"><img src="../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
-    <a class="n" href="../notes/">Notes</a>
+    <a class="n" href="../notes/" aria-current="page">Notes</a>
     <a class="n" href="../measurements/">Measurements</a>
-    <a class="n" href="./" aria-current="page">Tools</a>
+    <a class="n" href="../tools/">Tools</a>
     <a class="n" href="../about/">About</a>
     <a class="n" href="../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
       <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
@@ -71,34 +71,56 @@
 </nav>
 
 <div class="wrap">
+
 <header>
-  <h1>Tools</h1>
-  <p class="lead">Built here, and measured here under the same rules as everything else — including where they lose against an alternative.</p>
+  <h1>Deutschsprachige Fassungen</h1>
+  <p class="standfirst">
+    Diese Seite ist auf Englisch geschrieben. 5 Beiträge tragen
+    zusätzlich eine vollständige deutsche Fassung auf derselben Seite —
+    zusammen rund 78.533 Zeichen. Es sind keine Übersetzungen. sondern
+    eigenständige Fassungen desselben Arguments. geschrieben für Leser in
+    Österreich und Deutschland.
+  </p>
+  <p class="meta">Der Link „Deutsch" im Menü führt auf diesen Seiten direkt zum
+    deutschen Teil. überall sonst hierher. ·
+    <a href="/" hreflang="en" lang="en">English site</a></p>
 </header>
 
 <div class="item">
-  <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
-  <p>Downloads an entire webpage as one seamless PDF — the complete scrolling page on a single continuous sheet, no page breaks, nothing cropped. Runs entirely on the device: no upload, no account, no data collection, and <code>activeTab</code> instead of access to every site you visit. Works in Firefox on desktop and Android, and in Chrome.</p>
-  <div class="figures">
-    <span><b>92.6&nbsp;%</b> of text survives OCR</span>
-    <span><b>0</b> network requests</span>
-    <span><b>MIT</b> licence</span>
-  </div>
-  <div class="holen">
-    <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download for Firefox</a>
-    <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Without any store</a>
-    <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Chrome package</a>
-    <a href="full-page-pdf-snap/">Details and measurements</a>
-  </div>
+  <h2><a href="/tools/full-page-pdf-snap/#b-de">Full Page PDF Snap — download an entire webpage as one seamless PDF</a></h2>
+  <p>Die gesamte Webseite nahtlos als PDF herunterladen — hochauflösend. in einer Datei. Auto-Scroll erfasst die ganze Seite: kein Zuschneiden. keine Seitenumbrüche. kein Druckdialog. kein Upload</p>
+  <div class="figures"><span><b>26.857</b> Zeichen</span></div>
+</div>
+<div class="item">
+  <h2><a href="/measurements/web-citations-that-vanish/#b-de">Web citations that vanish: what happens to a source after you cite it</a></h2>
+  <p>In jedem Literaturverzeichnis stehen Abrufdaten. und kaum jemandem wird gesagt. wozu. Der Grund: Eine Webquelle ist kein Buch. Sie kann nach dem Zitieren geändert. verschoben oder gelöscht w</p>
+  <div class="figures"><span><b>18.960</b> Zeichen</span></div>
+</div>
+<div class="item">
+  <h2><a href="/notes/pages-gone-before-you-need-them/#b-de">Pages that are gone before you need them: eight moments in a degree</a></h2>
+  <p>Eine eigene Messung auf dieser Seite hat untersucht. was mit Quellen nach dem Zitieren geschieht. Die meisten Momente im Studium. in denen ein Bildschirminhalt später zählt. haben mit dem Li</p>
+  <div class="figures"><span><b>13.490</b> Zeichen</span></div>
+</div>
+<div class="item">
+  <h2><a href="/disclaimer/#b-de">Disclaimer and limitation of liability</a></h2>
+  <p>Diese Seite legt fest. wofür eingestanden wird und wofür nicht — für die hier veröffentlichte Software ebenso wie für die Artikel und Messdaten dieser Seite. Sie gilt für alles unter proving</p>
+  <div class="figures"><span><b>10.555</b> Zeichen</span></div>
+</div>
+<div class="item">
+  <h2><a href="/about/#b-de">About &amp; disclosure</a></h2>
+  <p></p>
+  <div class="figures"><span><b>8.671</b> Zeichen</span></div>
 </div>
 
 <div class="item">
-  <p><strong>Disclosure.</strong> The tool listed here is developed by the author of this
-  site. It appears in several of the measurements published here, and that is stated on each
-  of those pages. Nothing is sold, there is no advertising and there are no affiliate links —
-  see <a href="../about/">About &amp; disclosure</a>.
-  Corrections: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a>.</p>
-  <p style="margin-top:10px">Where a tool of ours appears in a measurement, that is stated on the page itself. A screen-capture PDF is not a qualified electronic document — see <a href="full-page-pdf-snap/#limits">the limits</a>.</p>
+  <h2>Warum nicht die ganze Seite?</h2>
+  <p>
+    Weil eine halb gepflegte Übersetzung schlechter ist als eine ehrliche
+    Teilfassung. Die Messungen enthalten Zahlen. Methoden und Korrekturen. die
+    sich ändern; zwei Sprachfassungen davon auseinanderlaufen zu lassen wäre
+    genau die Art Fehler. über die hier sonst geschrieben wird. Übersetzt wird
+    daher. was auch auf Deutsch vollständig gepflegt werden kann.
+  </p>
 </div>
 
 <footer><a href="../">← Proving Lab</a> · <a href="../about/">About &amp; disclosure</a> · Corrections: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">Disclaimer</a></footer>
