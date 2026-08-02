@@ -10,12 +10,20 @@
   <icon>https://provinglab.dev/icon-128.png</icon>
   <rights>Content licensed for reading and quoting with attribution.</rights>
   <entry>
+    <title>Which page-saving extensions actually run on Firefox for Android?</title>
+    <id>https://provinglab.dev/measurements/android-capture-extensions/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/android-capture-extensions/"/>
+    <published>2026-08-02T00:00:00Z</published>
+    <updated>2026-08-02T00:00:00Z</updated>
+    <summary type="text">248 Firefox extensions for saving or capturing a page, checked against the add-ons API on 2 August 2026. 60 declare Android support — including SingleFile with 85,724 users. Declaration is not function, and that distinction is where most claims fall apart.</summary>
+  </entry>
+  <entry>
     <title>Web citations that vanish: what happens to a source after you cite it</title>
     <id>https://provinglab.dev/measurements/web-citations-that-vanish/</id>
     <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/web-citations-that-vanish/"/>
     <published>2026-08-02T00:00:00Z</published>
     <updated>2026-08-02T00:00:00Z</updated>
-    <summary type="text">150 web sources from real reference lists, checked: 19.3% are gone, 8.7% have no archived copy anywhere, and where a snapshot exists it is a median of 603 days old. With practical steps for students and a German version.</summary>
+    <summary type="text">150 web sources from reference lists, checked: 19.3% are gone, and the newest archived copy is a median of 603 days old. What that means for a thesis, and how to secure a source in the moment you cite it. Mit deutscher Fassung.</summary>
   </entry>
   <entry>
     <title>Webpage to PDF for OCR: how much text survives? A measured test</title>

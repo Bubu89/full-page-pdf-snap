@@ -58,6 +58,31 @@
       ]
     },
     {
+      "anchor": "https://provinglab.dev/data/2026-08-02-android-capture-extensions.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ],
+      "via": [
+        {
+          "href": "addons.mozilla.org API v5",
+          "type": "text/html"
+        }
+      ]
+    },
+    {
       "anchor": "https://provinglab.dev/data/2026-08-02-quellen-archiv.json",
       "type": [
         {

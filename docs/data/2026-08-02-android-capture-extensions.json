@@ -1,0 +1,612 @@
+{
+ "title": "Firefox extensions for saving or capturing a page that declare Android support",
+ "retrieved": "2026-08-02",
+ "source": "addons.mozilla.org API v5",
+ "method": "Eight search terms were run against the AMO search API, two result pages each, duplicates merged by slug. An extension counts as declaring Android support when current_version.compatibility contains an 'android' entry. Declaration is not function: it means the manifest permits installation on Firefox for Android, not that the capture works there. No extension was installed or tested on a device.",
+ "searched": 248,
+ "declaring_android": 60,
+ "extensions": [
+  {
+   "slug": "search_by_image",
+   "name": "Search by Image",
+   "users": 445512,
+   "rating": 4.61,
+   "reviews": 1818,
+   "android_min": "115.0",
+   "last_updated": "2026-06-12",
+   "url": "https://addons.mozilla.org/firefox/addon/search_by_image/"
+  },
+  {
+   "slug": "read-aloud",
+   "name": "Read Aloud: A Text to Speech Voice Reader",
+   "users": 214574,
+   "rating": 3.81,
+   "reviews": 1272,
+   "android_min": "113.0",
+   "last_updated": "2026-02-20",
+   "url": "https://addons.mozilla.org/firefox/addon/read-aloud/"
+  },
+  {
+   "slug": "youtube-addon",
+   "name": "'Improve YouTube!'  🎧 (For YouTube & Video)",
+   "users": 102005,
+   "rating": 4.28,
+   "reviews": 894,
+   "android_min": "120.0",
+   "last_updated": "2026-07-05",
+   "url": "https://addons.mozilla.org/firefox/addon/youtube-addon/"
+  },
+  {
+   "slug": "single-file",
+   "name": "SingleFile",
+   "users": 85724,
+   "rating": 4.76,
+   "reviews": 1029,
+   "android_min": "113.0",
+   "last_updated": "2026-03-06",
+   "url": "https://addons.mozilla.org/firefox/addon/single-file/"
+  },
+  {
+   "slug": "turn-off-the-lights",
+   "name": "Turn Off the Lights for Firefox",
+   "users": 63144,
+   "rating": 4.57,
+   "reviews": 700,
+   "android_min": "120.0",
+   "last_updated": "2026-07-19",
+   "url": "https://addons.mozilla.org/firefox/addon/turn-off-the-lights/"
+  },
+  {
+   "slug": "pdf-mage",
+   "name": "PDF Mage",
+   "users": 16526,
+   "rating": 3.31,
+   "reviews": 315,
+   "android_min": "48.0",
+   "last_updated": "2021-11-16",
+   "url": "https://addons.mozilla.org/firefox/addon/pdf-mage/"
+  },
+  {
+   "slug": "print-to-pdf-document",
+   "name": "Print to PDF",
+   "users": 13328,
+   "rating": 3.45,
+   "reviews": 129,
+   "android_min": "57.0",
+   "last_updated": "2022-08-08",
+   "url": "https://addons.mozilla.org/firefox/addon/print-to-pdf-document/"
+  },
+  {
+   "slug": "savescreenshot",
+   "name": "Save Screenshot",
+   "users": 10802,
+   "rating": 4.48,
+   "reviews": 126,
+   "android_min": "120.0",
+   "last_updated": "2025-05-29",
+   "url": "https://addons.mozilla.org/firefox/addon/savescreenshot/"
+  },
+  {
+   "slug": "save-chatgpt-as-pdf",
+   "name": "ChatGPT to PDF",
+   "users": 9548,
+   "rating": 4.45,
+   "reviews": 51,
+   "android_min": "120.0",
+   "last_updated": "2026-07-17",
+   "url": "https://addons.mozilla.org/firefox/addon/save-chatgpt-as-pdf/"
+  },
+  {
+   "slug": "webscrapbook",
+   "name": "WebScrapBook",
+   "users": 6792,
+   "rating": 4.01,
+   "reviews": 144,
+   "android_min": "120.0",
+   "last_updated": "2026-05-10",
+   "url": "https://addons.mozilla.org/firefox/addon/webscrapbook/"
+  },
+  {
+   "slug": "save-pdf",
+   "name": "Save PDF",
+   "users": 5573,
+   "rating": 3.3,
+   "reviews": 115,
+   "android_min": "56.0",
+   "last_updated": "2024-04-25",
+   "url": "https://addons.mozilla.org/firefox/addon/save-pdf/"
+  },
+  {
+   "slug": "print-for-firefox",
+   "name": "Print for Firefox",
+   "users": 3839,
+   "rating": 3.82,
+   "reviews": 22,
+   "android_min": "120.0",
+   "last_updated": "2025-12-09",
+   "url": "https://addons.mozilla.org/firefox/addon/print-for-firefox/"
+  },
+  {
+   "slug": "page-saver-webpage-to-pdf",
+   "name": "PageSaver - Webpage to PDF or Image",
+   "users": 2200,
+   "rating": 3.67,
+   "reviews": 9,
+   "android_min": "120.0",
+   "last_updated": "2026-07-24",
+   "url": "https://addons.mozilla.org/firefox/addon/page-saver-webpage-to-pdf/"
+  },
+  {
+   "slug": "sprint-ускорение-youtube",
+   "name": "Sprint — YouTube Speed Booster",
+   "users": 2166,
+   "rating": 3.93,
+   "reviews": 30,
+   "android_min": "120.0",
+   "last_updated": "2026-02-28",
+   "url": "https://addons.mozilla.org/firefox/addon/sprint-ускорение-youtube/"
+  },
+  {
+   "slug": "diigo-web-collector",
+   "name": "Diigo Web Collector - Capture and Annotate",
+   "users": 1915,
+   "rating": 3.83,
+   "reviews": 244,
+   "android_min": "48.0",
+   "last_updated": "2024-04-25",
+   "url": "https://addons.mozilla.org/firefox/addon/diigo-web-collector/"
+  },
+  {
+   "slug": "image-saver",
+   "name": "Image saver",
+   "users": 1676,
+   "rating": 3.65,
+   "reviews": 31,
+   "android_min": "48.0",
+   "last_updated": "2021-06-14",
+   "url": "https://addons.mozilla.org/firefox/addon/image-saver/"
+  },
+  {
+   "slug": "fullpage-capture",
+   "name": "FullPage Capture",
+   "users": 1556,
+   "rating": 4.0,
+   "reviews": 2,
+   "android_min": "142.0",
+   "last_updated": "2026-06-14",
+   "url": "https://addons.mozilla.org/firefox/addon/fullpage-capture/"
+  },
+  {
+   "slug": "save-image",
+   "name": "Save Image to Downloads",
+   "users": 1485,
+   "rating": 4.18,
+   "reviews": 22,
+   "android_min": "52.0",
+   "last_updated": "2019-07-28",
+   "url": "https://addons.mozilla.org/firefox/addon/save-image/"
+  },
+  {
+   "slug": "save-image-in-folder-ex",
+   "name": "Save Image In Folder",
+   "users": 1443,
+   "rating": 3.74,
+   "reviews": 65,
+   "android_min": "58.0a1",
+   "last_updated": "2024-04-25",
+   "url": "https://addons.mozilla.org/firefox/addon/save-image-in-folder-ex/"
+  },
+  {
+   "slug": "save-image-2-downloads",
+   "name": "Save Image to Downloads",
+   "users": 1200,
+   "rating": 3.35,
+   "reviews": 68,
+   "android_min": "48.0",
+   "last_updated": "2024-04-25",
+   "url": "https://addons.mozilla.org/firefox/addon/save-image-2-downloads/"
+  },
+  {
+   "slug": "screenshot-fullpage",
+   "name": "Screenshots Easy",
+   "users": 802,
+   "rating": 4.25,
+   "reviews": 4,
+   "android_min": "120.0",
+   "last_updated": "2026-06-22",
+   "url": "https://addons.mozilla.org/firefox/addon/screenshot-fullpage/"
+  },
+  {
+   "slug": "chatgpt-as-pdf",
+   "name": "Save ChatGPT as PDF",
+   "users": 783,
+   "rating": 4.53,
+   "reviews": 17,
+   "android_min": "120.0",
+   "last_updated": "2026-01-24",
+   "url": "https://addons.mozilla.org/firefox/addon/chatgpt-as-pdf/"
+  },
+  {
+   "slug": "save-tab-image",
+   "name": "save-tab-image",
+   "users": 589,
+   "rating": 2.31,
+   "reviews": 13,
+   "android_min": "52.0",
+   "last_updated": "2024-04-25",
+   "url": "https://addons.mozilla.org/firefox/addon/save-tab-image/"
+  },
+  {
+   "slug": "webcam-video-recorder-capture",
+   "name": "Webcam Video Recorder/Capture",
+   "users": 412,
+   "rating": 3.5,
+   "reviews": 4,
+   "android_min": "48.0",
+   "last_updated": "2019-11-05",
+   "url": "https://addons.mozilla.org/firefox/addon/webcam-video-recorder-capture/"
+  },
+  {
+   "slug": "pdfmyurl-save-webpages-as-pdf",
+   "name": "PDFmyURL save webpages as PDF",
+   "users": 393,
+   "rating": 2.31,
+   "reviews": 13,
+   "android_min": "48.0",
+   "last_updated": "2019-06-03",
+   "url": "https://addons.mozilla.org/firefox/addon/pdfmyurl-save-webpages-as-pdf/"
+  },
+  {
+   "slug": "print-button",
+   "name": "Print Button",
+   "users": 389,
+   "rating": 3.71,
+   "reviews": 7,
+   "android_min": "48.0",
+   "last_updated": "2019-04-07",
+   "url": "https://addons.mozilla.org/firefox/addon/print-button/"
+  },
+  {
+   "slug": "lingoes-text-capture-add-on",
+   "name": "Lingoes Text Capture Extension",
+   "users": 362,
+   "rating": 3.28,
+   "reviews": 18,
+   "android_min": "48.0",
+   "last_updated": "2024-04-25",
+   "url": "https://addons.mozilla.org/firefox/addon/lingoes-text-capture-add-on/"
+  },
+  {
+   "slug": "markdown-capturer-bibcit",
+   "name": "Markdown Capturer - BibCit",
+   "users": 234,
+   "rating": 5.0,
+   "reviews": 3,
+   "android_min": "120.0",
+   "last_updated": "2026-06-06",
+   "url": "https://addons.mozilla.org/firefox/addon/markdown-capturer-bibcit/"
+  },
+  {
+   "slug": "take-and-edit-screenshots",
+   "name": "Take And Edit Screenshots",
+   "users": 223,
+   "rating": 5.0,
+   "reviews": 2,
+   "android_min": "120.0",
+   "last_updated": "2025-02-17",
+   "url": "https://addons.mozilla.org/firefox/addon/take-and-edit-screenshots/"
+  },
+  {
+   "slug": "mybase-webcollect",
+   "name": "Webcollect",
+   "users": 221,
+   "rating": 4.14,
+   "reviews": 7,
+   "android_min": "55.0",
+   "last_updated": "2020-01-13",
+   "url": "https://addons.mozilla.org/firefox/addon/mybase-webcollect/"
+  },
+  {
+   "slug": "my-fingerprint",
+   "name": "My Fingerprint",
+   "users": 202,
+   "rating": 5.0,
+   "reviews": 7,
+   "android_min": "136.0",
+   "last_updated": "2026-06-25",
+   "url": "https://addons.mozilla.org/firefox/addon/my-fingerprint/"
+  },
+  {
+   "slug": "capturex",
+   "name": "CaptureX",
+   "users": 190,
+   "rating": 3.0,
+   "reviews": 1,
+   "android_min": "120.0",
+   "last_updated": "2025-05-02",
+   "url": "https://addons.mozilla.org/firefox/addon/capturex/"
+  },
+  {
+   "slug": "relingo",
+   "name": "Relingo - Master words from any webpage",
+   "users": 181,
+   "rating": 4.83,
+   "reviews": 23,
+   "android_min": "120.0",
+   "last_updated": "2026-06-13",
+   "url": "https://addons.mozilla.org/firefox/addon/relingo/"
+  },
+  {
+   "slug": "print-text-selected",
+   "name": "print-text-selected",
+   "users": 163,
+   "rating": 3.62,
+   "reviews": 8,
+   "android_min": "48.0",
+   "last_updated": "2024-04-25",
+   "url": "https://addons.mozilla.org/firefox/addon/print-text-selected/"
+  },
+  {
+   "slug": "web-to-pdf",
+   "name": "Web to PDF",
+   "users": 157,
+   "rating": 1.0,
+   "reviews": 1,
+   "android_min": "142.0",
+   "last_updated": "2026-07-19",
+   "url": "https://addons.mozilla.org/firefox/addon/web-to-pdf/"
+  },
+  {
+   "slug": "simple-print",
+   "name": "simple-print",
+   "users": 131,
+   "rating": 3.38,
+   "reviews": 13,
+   "android_min": "48.0",
+   "last_updated": "2024-04-25",
+   "url": "https://addons.mozilla.org/firefox/addon/simple-print/"
+  },
+  {
+   "slug": "fingerprint-shield",
+   "name": "fingerprint-shield",
+   "users": 120,
+   "rating": 3.12,
+   "reviews": 8,
+   "android_min": "48.0",
+   "last_updated": "2024-04-26",
+   "url": "https://addons.mozilla.org/firefox/addon/fingerprint-shield/"
+  },
+  {
+   "slug": "bookmark-in-webpage",
+   "name": "Bookmark in webpage",
+   "users": 114,
+   "rating": 4.0,
+   "reviews": 5,
+   "android_min": "120.0",
+   "last_updated": "2025-06-16",
+   "url": "https://addons.mozilla.org/firefox/addon/bookmark-in-webpage/"
+  },
+  {
+   "slug": "cirilizator",
+   "name": "Ћирилизатор / Serbian Latin to Cyrillic webpages",
+   "users": 108,
+   "rating": 4.93,
+   "reviews": 15,
+   "android_min": "120.0",
+   "last_updated": "2025-06-21",
+   "url": "https://addons.mozilla.org/firefox/addon/cirilizator/"
+  },
+  {
+   "slug": "zenhighlight",
+   "name": "Zen Highlight: Highlight webpage faster",
+   "users": 107,
+   "rating": 3.67,
+   "reviews": 3,
+   "android_min": "120.0",
+   "last_updated": "2024-09-20",
+   "url": "https://addons.mozilla.org/firefox/addon/zenhighlight/"
+  },
+  {
+   "slug": "green-print-preview",
+   "name": "green-print-preview",
+   "users": 107,
+   "rating": 3.67,
+   "reviews": 6,
+   "android_min": "48.0",
+   "last_updated": "2024-04-26",
+   "url": "https://addons.mozilla.org/firefox/addon/green-print-preview/"
+  },
+  {
+   "slug": "delaywebpage",
+   "name": "DelayWebpage",
+   "users": 93,
+   "rating": 4.64,
+   "reviews": 22,
+   "android_min": "48.0",
+   "last_updated": "2020-04-25",
+   "url": "https://addons.mozilla.org/firefox/addon/delaywebpage/"
+  },
+  {
+   "slug": "quick-video-screenshot",
+   "name": "Quick Video Screenshot",
+   "users": 68,
+   "rating": 3.0,
+   "reviews": 2,
+   "android_min": "120.0",
+   "last_updated": "2025-07-29",
+   "url": "https://addons.mozilla.org/firefox/addon/quick-video-screenshot/"
+  },
+  {
+   "slug": "print-to-pdf",
+   "name": "Print to PDF",
+   "users": 68,
+   "rating": 1.0,
+   "reviews": 2,
+   "android_min": "56.0",
+   "last_updated": "2022-07-07",
+   "url": "https://addons.mozilla.org/firefox/addon/print-to-pdf/"
+  },
+  {
+   "slug": "full-page-screenshot-record",
+   "name": "Full Page Screenshot Record",
+   "users": 67,
+   "rating": 0,
+   "reviews": 0,
+   "android_min": "142.0",
+   "last_updated": "2026-05-11",
+   "url": "https://addons.mozilla.org/firefox/addon/full-page-screenshot-record/"
+  },
+  {
+   "slug": "ultrascreen",
+   "name": "Screenshot",
+   "users": 58,
+   "rating": 5.0,
+   "reviews": 1,
+   "android_min": "142.0",
+   "last_updated": "2026-07-14",
+   "url": "https://addons.mozilla.org/firefox/addon/ultrascreen/"
+  },
+  {
+   "slug": "webpage-extractor",
+   "name": "Webpage Extractor",
+   "users": 49,
+   "rating": 4.0,
+   "reviews": 1,
+   "android_min": "120.0",
+   "last_updated": "2026-05-01",
+   "url": "https://addons.mozilla.org/firefox/addon/webpage-extractor/"
+  },
+  {
+   "slug": "hide-to-print",
+   "name": "hide-to-print",
+   "users": 38,
+   "rating": 3.33,
+   "reviews": 3,
+   "android_min": "51.0",
+   "last_updated": "2024-04-25",
+   "url": "https://addons.mozilla.org/firefox/addon/hide-to-print/"
+  },
+  {
+   "slug": "web2prdf-converter-save-as-pdf",
+   "name": "Save ChatGPT & Gemini to PDF – Save as PDF",
+   "users": 37,
+   "rating": 0,
+   "reviews": 0,
+   "android_min": "120.0",
+   "last_updated": "2026-06-12",
+   "url": "https://addons.mozilla.org/firefox/addon/web2prdf-converter-save-as-pdf/"
+  },
+  {
+   "slug": "webpage-to-text",
+   "name": "Webpage To Text",
+   "users": 30,
+   "rating": 0,
+   "reviews": 0,
+   "android_min": "142.0",
+   "last_updated": "2026-04-06",
+   "url": "https://addons.mozilla.org/firefox/addon/webpage-to-text/"
+  },
+  {
+   "slug": "webpage-eraser",
+   "name": "Webpage Eraser",
+   "users": 27,
+   "rating": 0,
+   "reviews": 0,
+   "android_min": "120.0",
+   "last_updated": "2024-09-16",
+   "url": "https://addons.mozilla.org/firefox/addon/webpage-eraser/"
+  },
+  {
+   "slug": "webpage-sidenotes",
+   "name": "webpage-sidenotes",
+   "users": 23,
+   "rating": 3.33,
+   "reviews": 12,
+   "android_min": "52.0a1",
+   "last_updated": "2024-04-25",
+   "url": "https://addons.mozilla.org/firefox/addon/webpage-sidenotes/"
+  },
+  {
+   "slug": "printer-for-gemini-chat",
+   "name": "printer-for-gemini-chat",
+   "users": 20,
+   "rating": 2.0,
+   "reviews": 1,
+   "android_min": "142.0",
+   "last_updated": "2026-02-14",
+   "url": "https://addons.mozilla.org/firefox/addon/printer-for-gemini-chat/"
+  },
+  {
+   "slug": "view",
+   "name": "VIEW: language learning on any webpage",
+   "users": 18,
+   "rating": 4.0,
+   "reviews": 3,
+   "android_min": "48.0",
+   "last_updated": "2024-04-25",
+   "url": "https://addons.mozilla.org/firefox/addon/view/"
+  },
+  {
+   "slug": "share-2-archive-webpage-today",
+   "name": "Share 2 Archive Webpage Today",
+   "users": 11,
+   "rating": 1.0,
+   "reviews": 1,
+   "android_min": "120.0",
+   "last_updated": "2024-08-31",
+   "url": "https://addons.mozilla.org/firefox/addon/share-2-archive-webpage-today/"
+  },
+  {
+   "slug": "full-page-screenshot-tool",
+   "name": "full-page-screenshot-tool",
+   "users": 5,
+   "rating": 0,
+   "reviews": 0,
+   "android_min": "120.0",
+   "last_updated": "2026-07-08",
+   "url": "https://addons.mozilla.org/firefox/addon/full-page-screenshot-tool/"
+  },
+  {
+   "slug": "new-swathub-page-capture-tool",
+   "name": "new-swathub-page-capture-tool",
+   "users": 4,
+   "rating": 0,
+   "reviews": 0,
+   "android_min": "48.0",
+   "last_updated": "2024-04-25",
+   "url": "https://addons.mozilla.org/firefox/addon/new-swathub-page-capture-tool/"
+  },
+  {
+   "slug": "full_page_pdf_snap_webpagesave",
+   "name": "Full Page PDF Snap – Save Webpage as PDF",
+   "users": 3,
+   "rating": 5.0,
+   "reviews": 1,
+   "android_min": "127.0",
+   "last_updated": "2026-08-01",
+   "url": "https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/"
+  },
+  {
+   "slug": "webpagetopdf",
+   "name": "Webpage to PDF",
+   "users": 1,
+   "rating": 5.0,
+   "reviews": 1,
+   "android_min": "142.0",
+   "last_updated": "2026-07-28",
+   "url": "https://addons.mozilla.org/firefox/addon/webpagetopdf/"
+  },
+  {
+   "slug": "fullshot-full-page-screenshot",
+   "name": "Fullshot - Full Page Screenshot",
+   "users": 0,
+   "rating": 0,
+   "reviews": 0,
+   "android_min": "142.0",
+   "last_updated": "2026-08-01",
+   "url": "https://addons.mozilla.org/firefox/addon/fullshot-full-page-screenshot/"
+  }
+ ],
+ "url": "https://provinglab.dev/measurements/android-capture-extensions/",
+ "license": "CC BY 4.0"
+}

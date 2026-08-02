@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Which page-saving extensions actually run on Firefox for Android? — Proving Lab</title>
+<meta name="description" content="248 Firefox extensions for saving or capturing a page, checked against the add-ons API on 2 August 2026. 60 declare Android support — including SingleFile with 85,724 users. Declaration is not function, and that distinction is where most claims fall apart.">
+<link rel="canonical" href="https://provinglab.dev/measurements/android-capture-extensions/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Which page-saving extensions actually run on Firefox for Android?">
+<meta property="og:description" content="248 Firefox extensions for saving or capturing a page, checked against the add-ons API on 2 August 2026. 60 declare Android support — including SingleFile with 85,724 users. Declaration is not function, and that distinction is where most claims fall apart.">
+<meta property="og:url" content="https://provinglab.dev/measurements/android-capture-extensions/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-08-01">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Which page-saving extensions actually run on Firefox for Android?",
+  "description": "248 Firefox extensions for saving or capturing a page, checked against the add-ons API on 2 August 2026. 60 declare Android support — including SingleFile with 85,724 users. Declaration is not function, and that distinction is where most claims fall apart.",
+  "datePublished": "2026-08-02",
+  "dateModified": "2026-08-02",
+  "inLanguage": "en",
+  "url": "https://provinglab.dev/measurements/android-capture-extensions/",
+  "author": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "about": {
+    "@type": "Dataset",
+    "name": "Firefox page-saving extensions declaring Android support, 2026-08-02",
+    "description": "248 extensions retrieved from the addons.mozilla.org API across eight search terms; 60 declare Android compatibility in their current version.",
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "distribution": [
+      {
+        "@type": "DataDownload",
+        "encodingFormat": "application/json",
+        "contentUrl": "https://provinglab.dev/data/2026-08-02-android-capture-extensions.json"
+      }
+    ]
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org", "@type": "Dataset",
+  "name": "Print-to-PDF versus screenshot capture, same document",
+  "description": "Page counts, page-break analysis, word recall against the source text, embedded images and file sizes for the same Wikipedia article captured both ways on 1 August 2026.",
+  "url": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "identifier": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "datePublished": "2026-08-01", "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true, "inLanguage": "en",
+  "keywords": ["print to PDF","screenshot","page breaks","OCR","web archiving"],
+  "variableMeasured": ["pages","page breaks","breaks mid-sentence","word recall","file size","embedded images"],
+  "creator": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
+  "distribution": [{ "@type": "DataDownload", "encodingFormat": "application/json",
+    "contentUrl": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json" }],
+  "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
+}
+</script>
+
+<style>
+  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.87em;background:var(--card);
+       padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:34px 0 36px;border-bottom:1px solid var(--line);margin-bottom:32px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.16;letter-spacing:-.025em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:60ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+  h2{font-size:1.4rem;line-height:1.25;margin:46px 0 14px;letter-spacing:-.015em;text-wrap:balance}
+  h3{font-size:1.04rem;margin:28px 0 8px}
+  p{margin-bottom:17px} ul,ol{margin:0 0 18px 24px} li{margin-bottom:9px}
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0}
+  .kf{flex:1 1 160px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px}
+  .kf .n{font-size:1.8rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.a .n{color:var(--good)} .kf.b .n{color:var(--warn)}
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--bg2);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .win{color:var(--good);font-weight:600} .lose{color:var(--bad)}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.84rem;line-height:1.6}
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0} .box p:last-child{margin-bottom:0}
+  .faq{margin:44px 0 0}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin:44px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+  footer{margin-top:52px;padding:24px 0 64px;border-top:1px solid var(--line);
+    font-size:.83rem;color:var(--dim);line-height:1.6}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+</style>
+<script src="/agent-tools.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/">Notes</a>
+    <a class="n" href="../../measurements/" aria-current="page">Measurements</a>
+    <a class="n" href="../../tools/">Tools</a>
+    <a class="n" href="../../about/">About</a>
+    <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header>
+  <h1>Which page-saving extensions actually run on Firefox for Android?</h1>
+  <p class="standfirst">
+    Firefox for Android has supported extensions since 2023, and that is the one thing
+    Chrome for Android still cannot do at all. So the interesting question is not whether
+    extensions run there — it is how many of the ones you would actually reach for do.
+    We checked 248 of them.
+  </p>
+  <p class="meta">Retrieved 2026-08-02 · addons.mozilla.org API v5 ·
+    <a href="/data/2026-08-02-android-capture-extensions.json">raw data</a></p>
+</header>
+
+<h2>What was measured</h2>
+<p>
+  Eight search terms were run against the add-ons search API — <em>full page screenshot</em>,
+  <em>save page as pdf</em>, <em>webpage to pdf</em>, <em>screenshot pdf</em>,
+  <em>capture page</em>, <em>print to pdf</em>, <em>save webpage</em>, <em>page capture</em> —
+  two result pages each, duplicates merged. An extension counts as declaring Android support
+  when the current version lists an <code>android</code> entry in its compatibility data.
+</p>
+
+<h2>Result</h2>
+<p>
+  Of 248 extensions, <strong>60 declare Android
+  support</strong>. Their combined user base is roughly 997,616
+  daily users, but that number is dominated by a handful of large ones — the median is
+  221 users.
+</p>
+
+<table>
+  <caption>The fifteen most-used extensions declaring Android support</caption>
+  <thead>
+    <tr><th>Extension</th><th class="num">Daily users</th><th class="num">Rating</th>
+        <th class="num">Min. Android version</th></tr>
+  </thead>
+  <tbody>
+      <tr><td><a href="https://addons.mozilla.org/firefox/addon/search_by_image/" rel="nofollow">Search by Image</a></td><td class="num">445,512</td><td class="num">4.6 (1818)</td><td class="num">115.0</td></tr>
+      <tr><td><a href="https://addons.mozilla.org/firefox/addon/read-aloud/" rel="nofollow">Read Aloud: A Text to Speech Voice Reader</a></td><td class="num">214,574</td><td class="num">3.8 (1272)</td><td class="num">113.0</td></tr>
+      <tr><td><a href="https://addons.mozilla.org/firefox/addon/youtube-addon/" rel="nofollow">'Improve YouTube!'  🎧 (For YouTube & Video)</a></td><td class="num">102,005</td><td class="num">4.3 (894)</td><td class="num">120.0</td></tr>
+      <tr><td><a href="https://addons.mozilla.org/firefox/addon/single-file/" rel="nofollow">SingleFile</a></td><td class="num">85,724</td><td class="num">4.8 (1029)</td><td class="num">113.0</td></tr>
+      <tr><td><a href="https://addons.mozilla.org/firefox/addon/turn-off-the-lights/" rel="nofollow">Turn Off the Lights for Firefox</a></td><td class="num">63,144</td><td class="num">4.6 (700)</td><td class="num">120.0</td></tr>
+      <tr><td><a href="https://addons.mozilla.org/firefox/addon/pdf-mage/" rel="nofollow">PDF Mage</a></td><td class="num">16,526</td><td class="num">3.3 (315)</td><td class="num">48.0</td></tr>
+      <tr><td><a href="https://addons.mozilla.org/firefox/addon/print-to-pdf-document/" rel="nofollow">Print to PDF</a></td><td class="num">13,328</td><td class="num">3.5 (129)</td><td class="num">57.0</td></tr>
+      <tr><td><a href="https://addons.mozilla.org/firefox/addon/savescreenshot/" rel="nofollow">Save Screenshot</a></td><td class="num">10,802</td><td class="num">4.5 (126)</td><td class="num">120.0</td></tr>
+      <tr><td><a href="https://addons.mozilla.org/firefox/addon/save-chatgpt-as-pdf/" rel="nofollow">ChatGPT to PDF</a></td><td class="num">9,548</td><td class="num">4.5 (51)</td><td class="num">120.0</td></tr>
+      <tr><td><a href="https://addons.mozilla.org/firefox/addon/webscrapbook/" rel="nofollow">WebScrapBook</a></td><td class="num">6,792</td><td class="num">4.0 (144)</td><td class="num">120.0</td></tr>
+      <tr><td><a href="https://addons.mozilla.org/firefox/addon/save-pdf/" rel="nofollow">Save PDF</a></td><td class="num">5,573</td><td class="num">3.3 (115)</td><td class="num">56.0</td></tr>
+      <tr><td><a href="https://addons.mozilla.org/firefox/addon/print-for-firefox/" rel="nofollow">Print for Firefox</a></td><td class="num">3,839</td><td class="num">3.8 (22)</td><td class="num">120.0</td></tr>
+      <tr><td><a href="https://addons.mozilla.org/firefox/addon/page-saver-webpage-to-pdf/" rel="nofollow">PageSaver - Webpage to PDF or Image</a></td><td class="num">2,200</td><td class="num">3.7 (9)</td><td class="num">120.0</td></tr>
+      <tr><td><a href="https://addons.mozilla.org/firefox/addon/sprint-ускорение-youtube/" rel="nofollow">Sprint — YouTube Speed Booster</a></td><td class="num">2,166</td><td class="num">3.9 (30)</td><td class="num">120.0</td></tr>
+      <tr><td><a href="https://addons.mozilla.org/firefox/addon/diigo-web-collector/" rel="nofollow">Diigo Web Collector - Capture and Annotate</a></td><td class="num">1,915</td><td class="num">3.8 (244)</td><td class="num">48.0</td></tr>
+  </tbody>
+</table>
+
+<h2>Declaration is not function</h2>
+<p>
+  This is the part that matters, and it is why the number above should not be read as a
+  ranking. A manifest entry means the extension <em>may be installed</em> on Firefox for
+  Android. It says nothing about whether the feature works there.
+</p>
+<p>
+  Capture extensions are especially exposed to this. A full-page capture needs to scroll the
+  document, wait for lazy-loaded images, stitch segments and hand the result to a file
+  picker — and every one of those steps behaves differently on Android. The
+  <code>min. Android version</code> column hints at the split: entries at 48 or 57 predate
+  the current extension platform on Android entirely and were carried over, while 113 and
+  above were set after Firefox reopened the platform in 2023.
+</p>
+<p>
+  <strong>We did not install or test any of these on a device.</strong> Verifying sixty
+  extensions on real hardware is a different piece of work, and until someone does it,
+  nobody — including us — can claim which of them actually deliver a usable file on a phone.
+</p>
+
+<h2>What this means for the claim "one of the few"</h2>
+<p>
+  It does not hold. 55 of the extensions found here are page-saving or capture
+  tools with Android in their manifest, together around 172,160 daily users. SingleFile
+  alone has 85,724. Our own extension, Full Page PDF Snap, is one entry among them, and its
+  three daily users put it at the very bottom of that list.
+</p>
+<p>
+  We had that claim in our own store listing until this measurement. It is being removed.
+  The accurate statement is narrower and still useful: the extension <em>does</em> run on
+  Firefox for Android, and that puts it in a minority of roughly a quarter of the tools
+  people search for when they want to save a page — not in a category of its own.
+</p>
+
+<h2>Why Chrome does not appear here</h2>
+<p>
+  Chrome for Android cannot install extensions at all. That is not a gap in this
+  measurement; it is the reason the measurement only covers Firefox. If you want a page
+  saved as a file on a phone, with an extension, Firefox is currently the only mainstream
+  browser where the question even arises.
+</p>
+
+<h2>Questions</h2>
+<h3>Does a higher minimum Android version mean better support?</h3>
+<p>
+  It means the entry was set recently, nothing more. An extension declaring 113 or 120 was
+  updated after Firefox reopened the Android platform, so its author at least saw the
+  current environment. An entry of 48 was written for a platform that no longer exists in
+  that form.
+</p>
+<h3>Which of these actually work?</h3>
+<p>
+  Unknown, and we will not guess. If you test any of them on a device and want the result
+  published here with your method, the
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue tracker</a> is open.
+</p>
+
+<footer>
+      Method: eight search terms against the addons.mozilla.org API v5, two result
+      pages each, duplicates merged by slug; Android support read from
+      <code>current_version.compatibility</code>. Retrieved 2 August 2026. No extension was
+      installed or tested on a device — declaration is not function. User counts are AMO
+      daily averages and fluctuate. The author develops one of the extensions listed.
+      <br><br>
+      <a href="../../">← Proving Lab</a>
+    </footer>
+
+</div>
+</body>
+</html>

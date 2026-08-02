@@ -19,11 +19,15 @@ measurements. Disclosed on every page where it is relevant.
 - [Web citations that vanish: what happens to a source after you cite it](https://provinglab.dev/measurements/web-citations-that-vanish/): 150 web sources from real reference lists, checked: 19.3% are gone, 8.7% have no archived copy anywhere, and where a snapshot exists it is a median of 603 days old. With practical steps for students and a German version. Reference rot and content drift are established in the literature (Klein et al. 2014; Jones et al. 2016 found content had drifted for 76.35% of references; Pew Research Center 2024). The article's own contribution is current archive coverage, plus a documented correction: a first run reported 38.7% gone and 57.3% unarchived because non-answers were counted as negative results.
 - [An extension is only as dangerous as its permissions allow](https://provinglab.dev/measurements/extension-permissions-risk/): Why permission scope, not developer reputation, bounds the damage a compromised extension can do. Written one year after Mozilla's documented phishing campaign against add-on developer accounts (2025-08-01).
 
+- [Which page-saving extensions actually run on Firefox for Android?](https://provinglab.dev/measurements/android-capture-extensions/): 248 Firefox extensions for saving or capturing a page, checked against the add-ons API on 2 August 2026. 60 declare Android support, together around 998,000 daily users — SingleFile alone has 85,724. Declaration is not function: a manifest entry permits installation, not working capture, and none were tested on a device. Chrome for Android cannot install extensions at all, which is why it does not appear. Includes the correction of our own store listing, which claimed to be "one of the few".
+
 ## Data
 
 - [OCR recall measurement, 2026-08-01](https://provinglab.dev/data/2026-08-01-ocr-recall.json): Raw JSON — recall 92.6 %, five-word phrases 73.9 %, control run 0.0 %, and the full resolution series: 72 dpi 21.3 % real words, 110 dpi 92.7 %, 150 dpi 98.4 %, 220 dpi 98.7 %. CC BY 4.0.
 - [Web citation availability, 2026-08-02](https://provinglab.dev/data/2026-08-02-quellen-archiv.json): Raw JSON — per-URL status, verdict, archive timestamp and snapshot age for 150 cited sources. CC BY 4.0.
 - [Extension permissions, 2026-08-01](https://provinglab.dev/data/2026-08-01-extension-permissions.json): Raw JSON as retrieved from the Mozilla add-ons API — users, ratings, declared permissions and host permissions for eight extensions.
+
+- [Android-capable capture extensions, 2026-08-02](https://provinglab.dev/data/2026-08-02-android-capture-extensions.json): Raw JSON — 248 extensions retrieved across eight search terms, 60 with an android entry in current_version.compatibility, each with daily users, rating, minimum Android version and AMO URL. CC BY 4.0.
 
 ## Tools
 
