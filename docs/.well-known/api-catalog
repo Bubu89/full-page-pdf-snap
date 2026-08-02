@@ -1,0 +1,86 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://provinglab.dev/data/2026-08-01-extension-permissions.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
+      "anchor": "https://provinglab.dev/data/2026-08-01-ocr-recall.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
+      "anchor": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
+      "anchor": "https://provinglab.dev/",
+      "service-doc": [
+        {
+          "href": "https://provinglab.dev/llms.txt",
+          "type": "text/plain"
+        },
+        {
+          "href": "https://provinglab.dev/about/",
+          "type": "text/html"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/.well-known/agent-skills/index.json",
+          "type": "application/json"
+        }
+      ],
+      "alternate": [
+        {
+          "href": "https://provinglab.dev/feed.xml",
+          "type": "application/atom+xml"
+        }
+      ]
+    }
+  ]
+}

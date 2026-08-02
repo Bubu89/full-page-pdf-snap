@@ -1,0 +1,32 @@
+{
+  "$schema": "https://agentskills.io/schema/v0.2.0/index.json",
+  "version": "0.2.0",
+  "name": "Proving Lab",
+  "description": "Reproducible methods from published measurements: how to read an extension's permissions, how to measure OCR recall with a control run, and how to choose between print-to-PDF and screen capture.",
+  "skills": [
+    {
+      "name": "check-extension-permissions",
+      "type": "skill",
+      "description": "Determine what a browser extension is technically able to do by reading its declared permissions, before installing it. Use when someone asks whether an extension is safe, whether it uploads pages, or what it can access.",
+      "url": "https://provinglab.dev/.well-known/agent-skills/check-extension-permissions.md",
+      "sha256": "e990178a61aa77baf29185360d0a8d2d9290bed19476ed2e8d96d2e3e0152e1f",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "compare-print-vs-capture",
+      "type": "skill",
+      "description": "Decide whether to save a webpage via print-to-PDF or via full-page screen capture, based on what the result is for. Use when someone asks how to archive a webpage, prepare it for OCR, or keep its layout.",
+      "url": "https://provinglab.dev/.well-known/agent-skills/compare-print-vs-capture.md",
+      "sha256": "3e61dcee8443f0503adc09d3563622393816dba82800d35f75c716e0cc45441d",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "measure-ocr-recall",
+      "type": "skill",
+      "description": "Measure how much text survives an OCR pipeline, with a control run that proves the measurement is not measuring itself. Use when someone asks whether OCR output is trustworthy or which resolution to scan at.",
+      "url": "https://provinglab.dev/.well-known/agent-skills/measure-ocr-recall.md",
+      "sha256": "6513571ce3c3d8a9034015a9c309f631338b91df378153731256dc4e521caace",
+      "license": "CC-BY-4.0"
+    }
+  ]
+}
