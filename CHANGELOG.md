@@ -1,5 +1,29 @@
 # Changelog
 
+## 2026-08-02 — Ein Token statt drei, alle Zone-Einstellungen gesetzt
+
+**Token aufgeraeumt.** `provinglab-zone-full` selbst ueber die API erstellt und
+gegen die Zone gemessen: DNS Write, Zone Settings Write, Cache Settings Write,
+Zone Transform Rules Write, Cache Purge, Zone Read, Workers Routes Write —
+alles auf provinglab.dev beschraenkt, Ablauf 2027-08-02. `rapid-night-d114`
+geloescht, nachdem der Ersatz nachweislich jeden Endpunkt erreicht; er hatte
+kein Ablaufdatum und stand am 01./02.08. im Chatverlauf.
+
+**Damit gesetzt, was bisher an fehlenden Rechten scheiterte:**
+Always Use HTTPS (http:// antwortet jetzt mit 301), HSTS ueber 180 Tage
+inklusive Subdomains, min. TLS 1.2 statt 1.0, Early Hints, 0-RTT und
+Always Online. Cache geleert, alles gegen die laufende Seite nachgemessen.
+
+**Registrar-Zugriff bewusst nicht ausgeweitet.** DNSSEC haengt auf `pending`,
+weil beim Registrar kein DS-Eintrag hinterlegt ist — mit einem Nur-Lese-Token
+geprueft: `ds_records: []`. Setzen liesse sich das nur mit
+„Registrar Domains Admin", also der Ebene, auf der Kontaktdaten, Auto-Renew
+und Transfer haengen. Fuer einen einzelnen Pruefpunkt steht das in keinem
+Verhaeltnis; der Lesetoken wurde nach der Diagnose sofort wieder geloescht.
+Ein Klick unter DNS → Settings erledigt es.
+
+Stand: 11 von 15, Level 5 (Agent-Native).
+
 ## 2026-08-02 — Sicherheitspruefung der Agent-Ebenen: zwei Funde, beide behoben
 
 Nach dem Aufbau geprueft statt angenommen. Zwei echte Maengel:
