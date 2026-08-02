@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web citations that vanish: what happens to a source after you cite it</title>
+<meta name="description" content="150 web sources from reference lists, checked: 19.3% are gone, and the newest archived copy is a median of 603 days old. What that means for a thesis, and how to secure a source in the moment you cite it. Mit deutscher Fassung.">
+<link rel="canonical" href="https://provinglab.dev/measurements/web-citations-that-vanish/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="author" content="Proving Lab">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/measurements/web-citations-that-vanish/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/measurements/web-citations-that-vanish/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/measurements/web-citations-that-vanish/">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web citations that vanish">
+<meta property="og:description" content="19.3% of checked web sources are gone; the newest archived copy is a median of 603 days old. What that means for your reference list.">
+<meta property="og:url" content="https://provinglab.dev/measurements/web-citations-that-vanish/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-08-02">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Web citations that vanish: what happens to a source after you cite it",
+  "description": "A check of 150 web sources drawn from reference lists: how many are gone, how many are archived anywhere, and how old the newest archived copy is. With practical steps for securing a source at the moment of citation.",
+  "datePublished": "2026-08-02",
+  "dateModified": "2026-08-02",
+  "inLanguage": ["en", "de"],
+  "mainEntityOfPage": "https://provinglab.dev/measurements/web-citations-that-vanish/",
+  "author": { "@type": "Organization", "name": "Proving Lab" },
+  "publisher": { "@type": "Organization", "name": "Proving Lab" },
+  "about": ["citation", "link rot", "reference rot", "web archiving", "academic writing",
+            "Quellennachweis", "Zitieren", "Literaturverzeichnis"],
+  "keywords": "link rot, reference rot, content drift, cite a website, retrieval date, Abrufdatum, Internetquellen zitieren, Quellen sichern, Literaturverzeichnis, Bachelorarbeit Quellen, Masterarbeit Internetquellen",
+  "citation": [
+    "Klein M, Van de Sompel H, Sanderson R, Shankar H, Balakireva L, Zhou K, Tobin R (2014). Scholarly Context Not Found: One in Five Articles Suffers from Reference Rot. PLoS ONE 9(12): e115253. https://doi.org/10.1371/journal.pone.0115253",
+    "Jones SM, Van de Sompel H, Shankar H, Klein M, Tobin R, Grover C (2016). Scholarly Context Adrift: Three out of Four URI References Lead to Changed Content. PLoS ONE 11(12): e0167475. https://doi.org/10.1371/journal.pone.0167475",
+    "Chapekis A, Bestvater S, Remy E, Rivero G (2024). When Online Content Disappears. Pew Research Center, 17 May 2024. https://www.pewresearch.org/data-labs/2024/05/17/when-online-content-disappears/"
+  ],
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Availability and archive coverage of 150 cited web sources, August 2026",
+  "description": "For each of 150 web sources drawn from the reference sections of German-language Wikipedia articles in economics and social policy: live HTTP status, verdict (reachable, gone, unresolved), whether the Internet Archive holds a snapshot, and the age of the newest snapshot.",
+  "url": "https://provinglab.dev/measurements/web-citations-that-vanish/",
+  "distribution": {
+    "@type": "DataDownload",
+    "encodingFormat": "application/json",
+    "contentUrl": "https://provinglab.dev/data/2026-08-02-quellen-archiv.json"
+  },
+  "temporalCoverage": "2026-08-02",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "creator": { "@type": "Organization", "name": "Proving Lab" },
+  "measurementTechnique": "HTTP HEAD with GET fallback and one retry; Internet Archive availability API with CDX cross-check and up to three retries. Cases where a service did not answer are reported separately rather than counted as negative results."
+}
+</script>
+
+<style>
+  :root{
+    --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --acc2:#7c5cff;
+    --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--tx); line-height:1.68;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+       font-size:.88em;background:var(--card);padding:2px 6px;border-radius:3px;
+       border:1px solid var(--line)}
+
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:36px 0 40px;border-bottom:1px solid var(--line);margin-bottom:36px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.18;letter-spacing:-.02em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:62ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+
+  h2{font-size:1.5rem;line-height:1.25;letter-spacing:-.01em;margin:48px 0 14px;
+     text-wrap:balance}
+  h3{font-size:1.08rem;margin:30px 0 10px}
+  p{margin-bottom:16px}
+  ul{margin:0 0 18px 22px} li{margin-bottom:7px}
+
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:28px 0}
+  .kf{flex:1 1 150px;background:var(--card);border:1px solid var(--line);
+      border-radius:8px;padding:18px 18px 16px}
+  .kf .n{font-size:1.85rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;
+         font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.good .n{color:var(--good)} .kf.bad .n{color:var(--bad)}
+
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:460px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+  thead th{background:var(--bg2);font-size:.76rem;letter-spacing:.07em;
+           text-transform:uppercase;color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;
+       white-space:nowrap}
+  .r-good{color:var(--good);font-weight:600}
+  .r-warn{color:var(--warn);font-weight:600}
+  .r-bad{color:var(--bad);font-weight:600}
+  tr.pick td{background:color-mix(in srgb,var(--good) 12%,transparent)}
+
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;
+      padding:16px 18px;overflow-x:auto;margin:18px 0;font-size:.85rem;line-height:1.6}
+  pre code{background:none;border:none;padding:0}
+
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0}
+  .box p:last-child{margin-bottom:0}
+
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+           padding:20px 22px;margin:40px 0 0}
+  .related h3{margin-top:0}
+  .related ul{margin-bottom:0}
+
+  footer{margin-top:56px;padding:24px 0 60px;border-top:1px solid var(--line);
+         font-size:.85rem;color:var(--dim)}
+
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+
+  .faq{margin:44px 0 0}
+  .faq h2{margin-bottom:8px}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;font-size:1rem;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+
+  /* --- Sprachumschaltung --- */
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
+  .lang{display:flex;gap:6px;margin:0 0 26px}
+  .lang button{font:inherit;font-size:.86rem;font-weight:600;padding:7px 18px;cursor:pointer;
+    background:var(--card);color:var(--dim);border:1px solid var(--line);border-radius:8px}
+  .lang button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
+  .quelle{font-size:.9rem;color:var(--dim);padding:12px 0;border-top:1px solid var(--line)}
+  .quelle b{color:var(--tx);font-weight:600}
+  ol.schritte{margin:0 0 20px 22px}
+  ol.schritte li{margin-bottom:14px}
+</style>
+<script src="/agent-tools.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/">Notes</a>
+    <a class="n" href="../../measurements/" aria-current="page">Measurements</a>
+    <a class="n" href="../../tools/">Tools</a>
+    <a class="n" href="../../about/">About</a>
+    <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header>
+  <h1 data-lang="en" class="on">Web citations that vanish</h1>
+  <h1 data-lang="de">Quellen, die verschwinden</h1>
+  <p class="standfirst on" data-lang="en">
+    Every reference list carries retrieval dates, and almost nobody is told why. The reason
+    is that a web source is not a book: it can be edited, moved or deleted after you cite
+    it, and then your citation points at something that no longer supports your sentence.
+    I checked 150 sources from real reference lists to see how bad it is.
+  </p>
+  <p class="standfirst" data-lang="de">
+    In jedem Literaturverzeichnis stehen Abrufdaten, und kaum jemandem wird gesagt, wozu.
+    Der Grund: Eine Webquelle ist kein Buch. Sie kann nach dem Zitieren geändert, verschoben
+    oder gelöscht werden — und dann zeigt der Beleg auf etwas, das den eigenen Satz nicht
+    mehr trägt. Ich habe 150 Quellen aus echten Literaturverzeichnissen geprüft.
+  </p>
+  <p class="meta-line">
+    <span data-lang="en" class="on">2 August 2026 · 150 sources · raw data (CC BY 4.0) and method included</span>
+    <span data-lang="de">2. August 2026 · 150 Quellen · Rohdaten (CC BY 4.0) und Methode dabei</span>
+  </p>
+</header>
+
+<div class="lang">
+  <button id="b-en" aria-pressed="true" onclick="setLang('en')">English</button>
+  <button id="b-de" aria-pressed="false" onclick="setLang('de')">Deutsch</button>
+</div>
+
+<div class="privhint">
+  <strong data-lang="en" class="on">A personal report.</strong>
+  <strong data-lang="de">Ein persönlicher Bericht.</strong>
+  <span data-lang="en" class="on">This is a private, non-commercial account by an individual — not
+  advice from an institution, and not legal advice. The measurement is a single run on a
+  stated date; the practical suggestions are the author's own opinion. Citation rules differ
+  between universities and style guides: what your department requires always wins over what
+  is written here. The author develops
+  <a href="../../tools/full-page-pdf-snap/">Full Page PDF Snap</a>, one of several ways to keep
+  a copy of a source; the alternatives below are named without it.
+  Corrections: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a>.</span>
+  <span data-lang="de">Dies ist ein privater, nicht kommerzieller Bericht einer Einzelperson —
+  keine Auskunft einer Institution und keine Rechtsberatung. Die Messung ist ein einzelner
+  Durchlauf zu einem genannten Datum; die praktischen Vorschläge sind die Meinung des Autors.
+  Zitierregeln unterscheiden sich zwischen Hochschulen und Zitierweisen: Was Ihr Institut
+  vorschreibt, geht dem hier Geschriebenen immer vor. Der Autor entwickelt
+  <a href="../../tools/full-page-pdf-snap/">Full Page PDF Snap</a>, eines von mehreren Mitteln,
+  eine Quelle zu sichern; die Alternativen unten stehen ohne dieses Mittel.
+  Korrekturen: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub-Issues</a>.</span>
+</div>
+
+<div class="keyfig">
+  <div class="kf bad"><div class="n">19.3 %</div>
+    <div class="l"><span data-lang="en" class="on">of the sources are gone — the server itself says so</span><span data-lang="de">der Quellen sind weg — der Server sagt es selbst</span></div></div>
+  <div class="kf warn"><div class="n">603</div>
+    <div class="l"><span data-lang="en" class="on">days: median age of the newest archived copy</span><span data-lang="de">Tage: mittleres Alter der jüngsten Archivkopie</span></div></div>
+  <div class="kf bad"><div class="n">2.0 %</div>
+    <div class="l"><span data-lang="en" class="on">gone and never archived — unrecoverable</span><span data-lang="de">weg und nie archiviert — unwiederbringlich</span></div></div>
+</div>
+
+<div data-lang="en" class="on">
+
+<h2>What the research already established</h2>
+
+<p>
+  This is not a new problem, and it is well measured. Three findings are worth knowing
+  before your own reference list gets long.
+</p>
+
+<p>
+  <b>One in five scholarly articles is affected.</b> Klein and colleagues examined more than
+  a million web references from roughly 3.5 million articles published between 1997 and 2012.
+  One in five articles suffered from what they named <em>reference rot</em>. Among articles
+  that contain web references at all, seven in ten were affected.
+</p>
+
+<p>
+  <b>The link often survives while the content does not.</b> This is the part that catches
+  people out. Jones and colleagues compared archived snapshots against the live page for
+  241,091 references: for <b>76.35 %</b> the content had drifted away from what was
+  originally referenced. The link still resolves, returns HTTP 200, looks perfectly healthy —
+  and no longer contains the sentence you cited. A broken link announces itself. Content
+  drift does not.
+</p>
+
+<p>
+  <b>And the web keeps shedding pages.</b> Pew Research Center found in 2024 that 38 % of the
+  pages that existed in 2013 were no longer accessible ten years later. In their sample,
+  54 % of Wikipedia articles contained at least one dead link in the references section.
+</p>
+
+<h2>What I measured</h2>
+
+<p>
+  Those studies stop between 2015 and 2023. I wanted current numbers on the question that
+  actually decides whether a lost source is recoverable: <b>is there a copy anywhere?</b>
+</p>
+
+<p>
+  I took the external links from the reference and further-reading sections of
+  German-language Wikipedia articles in five categories of economics and social policy —
+  the kind of source students cite most: agencies, associations, ministries, press. One link
+  per host, so a single much-linked government page could not dominate the result.
+  150 sources, checked on 2 August 2026 for two things: does the server still
+  answer, and does the Internet Archive hold a snapshot.
+</p>
+
+<div class="tblwrap">
+<table>
+  <tr><th>Result</th><th class="num">Count</th><th class="num">Share</th></tr>
+  <tr><td>Reachable</td><td class="num">95</td><td class="num">63.3 %</td></tr>
+  <tr><td>Gone (HTTP 404 or 410)</td><td class="num">29</td><td class="num">19.3 %</td></tr>
+  <tr><td>Unresolved (bot defence, misconfiguration, outage)</td><td class="num">26</td><td class="num">17.3 %</td></tr>
+  <tr><td>No archived snapshot at all</td><td class="num">13</td><td class="num">8.7 %</td></tr>
+  <tr><td><b>Gone and never archived</b></td><td class="num"><b>3</b></td><td class="num"><b>2.0 %</b></td></tr>
+</table>
+</div>
+
+<p>
+  The last row is the one that matters. Those sources cannot be recovered by anyone. If a
+  thesis rested on one of them, the evidence for that passage is simply not there any more.
+</p>
+
+<p>
+  The second number in the box above deserves as much attention. Where a snapshot does exist,
+  the newest one is a median of <b>603 days</b> old — about
+  1.7 years. For the oldest quarter it is
+  2773 days, roughly
+  7.6 years. So even when the Internet
+  Archive has your source, what it has is often not the version you read. Combined with the
+  76 % content-drift finding above, "it is in the Wayback Machine" is a weaker safety net
+  than it feels like.
+</p>
+
+<div class="box">
+  <p><strong>Where I got this wrong first.</strong> My initial run reported 38.7 % gone and
+  57.3 % unarchived. Both were wrong, and wrong in the direction that would have made the
+  article more dramatic. Two mistakes: I counted every non-answer as a dead link, although
+  HTTP 403 usually means bot defence on a page that opens fine in a browser; and I counted
+  a non-responding archive service as "not archived", which put <code>dejure.org</code> and
+  <code>bgbl.de</code> in that column — both archived for years. The archive API was simply
+  rate-limiting my parallel requests. The script now separates "the server says it is gone"
+  from "I could not find out", retries, and reports the unresolved cases as their own row.
+  A measurement that mistakes its own failures for findings measures nothing.</p>
+</div>
+
+<h2>What follows for your reference list</h2>
+
+<p>
+  The retrieval date is not decoration. It is the statement <em>this is what stood there on
+  this day</em>, and it is the only part of a web citation that stays true. But a date alone
+  does not let anyone check your claim. That takes a copy.
+</p>
+
+<p><b>Secure the source at the moment you cite it, not at the end.</b> This is the whole
+  advice in one sentence. At the end of a thesis, some of the sources will already have
+  moved. While writing, every one of them is still in front of you.</p>
+
+<ol class="schritte">
+  <li><b>Public archive, when the page is public.</b>
+    <a href="https://web.archive.org/save">Save Page Now</a> at the Internet Archive stores a
+    copy in seconds and gives you a dated permalink that anyone can open — the strongest
+    option for a reference list, because your reader verifies it without your help.
+    <a href="https://perma.cc/">Perma.cc</a> is a comparable service; ask your library whether
+    your institution provides access. Two limits worth knowing: a crawler without your
+    credentials cannot reach a page behind a login or a paywall, and archived copies are not
+    permanent by decree — the Internet Archive states that site owners may request exclusion
+    (&#8222;send us a request to info@archive.org&#8220;,
+    <a href="https://help.archive.org/help/how-do-i-request-to-remove-something-from-archive-org/">help.archive.org</a>,
+    retrieved 2 August 2026).</li>
+  <li><b>Your own copy, always.</b> Behind a login, behind a paywall, or on a page that
+    refuses archiving, the public route ends. A local copy — a PDF of the full page — still
+    works, because it is made in your own browser. Keep it in the same folder as the chapter
+    it belongs to, named so you can find it again: source, date, topic.</li>
+  <li><b>Both, for anything load-bearing.</b> If your argument stands or falls with a source,
+    spend the extra thirty seconds. The permalink proves it publicly; your copy survives even
+    if the archive is asked to remove it.</li>
+  <li><b>Note what you actually used.</b> Not just the URL: the retrieval date, the exact
+    page (not the homepage), the author or issuing body, and — if it is a document — the
+    version or date printed on it. Your citation style prescribes the form; these are the
+    parts you cannot reconstruct later.</li>
+</ol>
+
+<h2>What a saved copy is not</h2>
+
+<p>
+  A page saved as PDF is a picture of what a browser displayed. It carries no qualified
+  signature, no trusted timestamp, no chain of custody, and it does not prove that a page
+  ever existed — someone could have edited it. For scholarly work that is fine: your copy
+  documents what you read, and the retrieval date and archive permalink do the public part.
+  Where legal proof is at stake, that is a different task and needs a service built for it.
+</p>
+
+<p>
+  Copyright law in the German-speaking countries provides exceptions for private study and
+  for scientific use, which is the ground on which keeping a working copy usually stands.
+  What exactly they permit differs by country and by case, and redistributing or publishing
+  such copies is a separate question. This article does not determine any of that: for your
+  specific situation, your university library or legal advice service is the right place to
+  ask. Nothing here is legal advice.
+</p>
+
+<h2>Reproduce it</h2>
+
+<p>
+  The script and the raw data are public. Every checked URL is in the JSON with its status,
+  verdict, archive timestamp and snapshot age, so you can recount any number here.
+</p>
+
+<pre><code>python3 messung-quellen-archiv.py --stichprobe 150 --saat 20260802</code></pre>
+
+<p>
+  <a href="../../data/2026-08-02-quellen-archiv.json">Raw data (JSON, CC BY 4.0)</a> ·
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/messung-quellen-archiv.py">Script</a>
+</p>
+
+<p><b>Limits.</b> This is not a random sample of everything students cite. Wikipedia
+  references are maintained better than average — dead links get noticed and fixed there —
+  so the true figures for an unmaintained reference list are more likely worse than these,
+  not better. The categories are German-language economics and social policy; other fields
+  will differ. Single run, one day.</p>
+
+<div class="box">
+  <p><strong>Scope of these statements.</strong> The figures from the three cited studies are
+  quoted from the published articles, linked in full below. My own measurement was taken on
+  2 August 2026 and reflects that day; run the script again and the numbers will differ.
+  Statements about the Internet Archive and Perma.cc describe what those services publish
+  about themselves, with the retrieval date given — no claim is made about how they will
+  behave in future. Citation rules are set by your institution, not by this page.
+  Corrections via <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a>
+  are taken up.</p>
+</div>
+
+<h2>Sources</h2>
+
+<div class="quelle"><b>Klein, M., Van de Sompel, H., Sanderson, R., Shankar, H., Balakireva, L., Zhou, K., &amp; Tobin, R. (2014).</b>
+  Scholarly Context Not Found: One in Five Articles Suffers from Reference Rot.
+  <em>PLoS ONE, 9</em>(12), e115253.
+  <a href="https://doi.org/10.1371/journal.pone.0115253">https://doi.org/10.1371/journal.pone.0115253</a></div>
+
+<div class="quelle"><b>Jones, S. M., Van de Sompel, H., Shankar, H., Klein, M., Tobin, R., &amp; Grover, C. (2016).</b>
+  Scholarly Context Adrift: Three out of Four URI References Lead to Changed Content.
+  <em>PLoS ONE, 11</em>(12), e0167475.
+  <a href="https://doi.org/10.1371/journal.pone.0167475">https://doi.org/10.1371/journal.pone.0167475</a></div>
+
+<div class="quelle"><b>Chapekis, A., Bestvater, S., Remy, E., &amp; Rivero, G. (2024, 17 May).</b>
+  When Online Content Disappears. <em>Pew Research Center.</em>
+  <a href="https://www.pewresearch.org/data-labs/2024/05/17/when-online-content-disappears/">pewresearch.org</a>
+  (retrieved 2 August 2026)</div>
+
+</div>
+
+<div data-lang="de">
+
+<h2>Was die Forschung bereits gezeigt hat</h2>
+
+<p>
+  Das Problem ist nicht neu und gut vermessen. Drei Befunde sollte man kennen, bevor das
+  eigene Literaturverzeichnis lang wird.
+</p>
+
+<p>
+  <b>Jeder fünfte Fachartikel ist betroffen.</b> Klein und Kollegen untersuchten über eine
+  Million Weblinks aus rund 3,5 Millionen Artikeln der Jahre 1997 bis 2012. Jeder fünfte
+  Artikel litt unter dem, was sie <em>reference rot</em> nannten. Unter den Artikeln, die
+  überhaupt Weblinks enthalten, waren sieben von zehn betroffen.
+</p>
+
+<p>
+  <b>Oft überlebt der Link, nicht aber der Inhalt.</b> Das ist die Falle, die die wenigsten
+  auf dem Schirm haben. Jones und Kollegen verglichen für 241.091 Belege den archivierten
+  Stand mit der heutigen Seite: Bei <b>76,35 %</b> hatte sich der Inhalt von dem entfernt,
+  worauf ursprünglich verwiesen wurde. Der Link funktioniert weiterhin, liefert HTTP 200,
+  wirkt völlig gesund — und enthält den zitierten Satz nicht mehr. Ein toter Link meldet
+  sich. Ein veränderter Inhalt nicht.
+</p>
+
+<p>
+  <b>Und das Netz verliert laufend Seiten.</b> Das Pew Research Center stellte 2024 fest,
+  dass 38 % der 2013 vorhandenen Seiten zehn Jahre später nicht mehr erreichbar waren. In
+  deren Stichprobe enthielten 54 % der Wikipedia-Artikel mindestens einen toten Link im
+  Belegabschnitt.
+</p>
+
+<h2>Was ich gemessen habe</h2>
+
+<p>
+  Diese Studien enden zwischen 2015 und 2023. Mich interessierten aktuelle Zahlen zu der
+  Frage, die tatsächlich darüber entscheidet, ob eine verlorene Quelle wiederherstellbar
+  ist: <b>Gibt es irgendwo eine Kopie?</b>
+</p>
+
+<p>
+  Ich habe die externen Links aus den Beleg- und Weblink-Abschnitten deutschsprachiger
+  Wikipedia-Artikel aus fünf Kategorien der Wirtschafts- und Sozialwissenschaften genommen —
+  genau die Sorte Quelle, die Studierende am häufigsten zitieren: Behörden, Verbände,
+  Ministerien, Presse. Je Host nur ein Link, damit nicht eine einzelne, oft verlinkte
+  Behördenseite das Ergebnis bestimmt. 150 Quellen, geprüft am 2. August 2026
+  auf zwei Dinge: Antwortet der Server noch, und liegt im Internet Archive ein Schnappschuss?
+</p>
+
+<div class="tblwrap">
+<table>
+  <tr><th>Ergebnis</th><th class="num">Anzahl</th><th class="num">Anteil</th></tr>
+  <tr><td>Erreichbar</td><td class="num">95</td><td class="num">63.3 %</td></tr>
+  <tr><td>Verschwunden (HTTP 404 oder 410)</td><td class="num">29</td><td class="num">19.3 %</td></tr>
+  <tr><td>Ungeklärt (Bot-Abwehr, Fehlkonfiguration, Störung)</td><td class="num">26</td><td class="num">17.3 %</td></tr>
+  <tr><td>Überhaupt kein Archiv-Schnappschuss</td><td class="num">13</td><td class="num">8.7 %</td></tr>
+  <tr><td><b>Verschwunden und nie archiviert</b></td><td class="num"><b>3</b></td><td class="num"><b>2.0 %</b></td></tr>
+</table>
+</div>
+
+<p>
+  Die letzte Zeile ist die entscheidende. Diese Quellen kann niemand mehr beschaffen. Stünde
+  eine Arbeit auf einer davon, wäre der Beleg für diese Passage schlicht nicht mehr da.
+</p>
+
+<p>
+  Die zweite Zahl im Kasten oben verdient genauso viel Aufmerksamkeit. Wo es einen
+  Schnappschuss gibt, ist der jüngste im Median <b>603 Tage</b>
+  alt — rund 1,7 Jahre. Beim
+  ältesten Viertel sind es 2773 Tage, also etwa
+  7,6 Jahre. Selbst
+  wenn das Internet Archive Ihre Quelle hat, hat es also oft nicht die Fassung, die Sie
+  gelesen haben. Zusammen mit den 76 % veränderter Inhalte von oben heißt das: „Steht doch in
+  der Wayback Machine" trägt weniger weit, als es sich anfühlt.
+</p>
+
+<div class="box">
+  <p><strong>Wo ich zuerst danebenlag.</strong> Mein erster Durchlauf meldete 38,7 %
+  verschwunden und 57,3 % ohne Archiv. Beides war falsch — und zwar in die Richtung, die den
+  Artikel dramatischer gemacht hätte. Zwei Fehler: Ich zählte jede Nichtantwort als toten
+  Link, obwohl HTTP 403 meist Bot-Abwehr einer Seite ist, die im Browser einwandfrei lädt.
+  Und ich zählte einen nicht antwortenden Archivdienst als „nicht archiviert", wodurch
+  <code>dejure.org</code> und <code>bgbl.de</code> in dieser Spalte landeten — beide seit
+  Jahren archiviert. Der Dienst hatte lediglich meine parallelen Anfragen gedrosselt. Das
+  Skript trennt jetzt „der Server sagt, es ist weg" von „ich konnte es nicht klären", fasst
+  nach und weist die ungeklärten Fälle als eigene Zeile aus. Eine Messung, die eigene Pannen
+  für Befunde hält, misst nichts.</p>
+</div>
+
+<h2>Was daraus für Ihr Literaturverzeichnis folgt</h2>
+
+<p>
+  Das Abrufdatum ist kein Zierrat. Es ist die Aussage <em>so stand es an diesem Tag dort</em>,
+  und es ist der einzige Teil einer Webquellenangabe, der dauerhaft wahr bleibt. Nur: Ein
+  Datum allein erlaubt niemandem, Ihre Aussage zu prüfen. Dafür braucht es eine Kopie.
+</p>
+
+<p><b>Sichern Sie die Quelle in dem Moment, in dem Sie sie zitieren — nicht am Schluss.</b>
+  Das ist der ganze Rat in einem Satz. Am Ende einer Arbeit sind einige der Quellen bereits
+  umgezogen. Während des Schreibens liegt jede einzelne noch vor Ihnen.</p>
+
+<ol class="schritte">
+  <li><b>Öffentliches Archiv, solange die Seite öffentlich ist.</b>
+    <a href="https://web.archive.org/save">Save Page Now</a> beim Internet Archive legt in
+    Sekunden eine Kopie an und liefert einen datierten Dauerlink, den jede und jeder öffnen
+    kann — für ein Literaturverzeichnis die stärkste Variante, weil Ihre Leserschaft es ohne
+    Ihr Zutun nachprüfen kann. <a href="https://perma.cc/">Perma.cc</a> leistet dasselbe und
+    ist ein vergleichbarer Dienst; fragen Sie Ihre Bibliothek, ob Ihre Hochschule Zugang
+    bereitstellt. Zwei Grenzen sollte man kennen: Ein Crawler ohne Ihre Zugangsdaten kommt
+    nicht hinter einen Login oder eine Bezahlschranke, und archivierte Kopien sind nicht per
+    Dekret dauerhaft — das Internet Archive gibt an, dass Seitenbetreiber einen Ausschluss
+    beantragen können (&#8222;send us a request to info@archive.org&#8220;,
+    <a href="https://help.archive.org/help/how-do-i-request-to-remove-something-from-archive-org/">help.archive.org</a>,
+    abgerufen am 2. August 2026).</li>
+  <li><b>Eine eigene Kopie, immer.</b> Hinter einem Login, hinter einer Bezahlschranke oder
+    bei einer Seite, die Archivierung ablehnt, endet der öffentliche Weg. Eine lokale Kopie —
+    ein PDF der vollständigen Seite — funktioniert weiterhin, weil sie im eigenen Browser
+    entsteht. Legen Sie sie in denselben Ordner wie das Kapitel, zu dem sie gehört, und
+    benennen Sie sie so, dass Sie sie wiederfinden: Quelle, Datum, Thema.</li>
+  <li><b>Beides, wenn etwas tragend ist.</b> Steht und fällt Ihr Argument mit einer Quelle,
+    investieren Sie die zusätzlichen dreißig Sekunden. Der Dauerlink belegt öffentlich, Ihre
+    Kopie überlebt auch dann, wenn das Archiv die Aufnahme entfernen muss.</li>
+  <li><b>Notieren Sie, was Sie tatsächlich benutzt haben.</b> Nicht nur die URL: Abrufdatum,
+    die genaue Seite (nicht die Startseite), Urheber oder herausgebende Stelle und — bei einem
+    Dokument — die darauf gedruckte Fassung oder das Datum. Die Form gibt Ihre Zitierweise
+    vor; das sind die Angaben, die sich später nicht mehr rekonstruieren lassen.</li>
+</ol>
+
+<h2>Was eine gesicherte Kopie nicht ist</h2>
+
+<p>
+  Eine als PDF gesicherte Seite ist ein Bild dessen, was ein Browser angezeigt hat. Sie trägt
+  keine qualifizierte Signatur, keinen vertrauenswürdigen Zeitstempel, keine lückenlose
+  Nachweiskette, und sie beweist nicht, dass eine Seite je so existiert hat — verändern ließe
+  sie sich ebenso. Für wissenschaftliches Arbeiten genügt das: Ihre Kopie dokumentiert, was
+  Sie gelesen haben, und Abrufdatum samt Archiv-Dauerlink erledigen den öffentlichen Teil.
+  Wo es auf Beweiskraft ankommt, ist das eine andere Aufgabe und braucht einen dafür gebauten
+  Dienst.
+</p>
+
+<p>
+  Das Urheberrecht im deutschsprachigen Raum kennt Schranken für den eigenen Gebrauch und
+  für wissenschaftliche Zwecke — auf diesem Boden steht das Anlegen einer Arbeitskopie
+  üblicherweise. Was genau sie erlauben, unterscheidet sich nach Land und Einzelfall, und
+  die Weitergabe oder Veröffentlichung solcher Kopien ist eine eigene Frage. Dieser Artikel
+  entscheidet nichts davon: Für Ihren konkreten Fall sind Ihre Hochschulbibliothek oder eine
+  Rechtsberatung die richtige Adresse. Nichts hiervon ist Rechtsberatung.
+</p>
+
+<h2>Selbst nachmessen</h2>
+
+<p>
+  Skript und Rohdaten sind öffentlich. Jede geprüfte URL steht mit Status, Urteil,
+  Archivzeitstempel und Alter des Schnappschusses in der JSON-Datei, sodass sich jede Zahl
+  hier nachrechnen lässt.
+</p>
+
+<pre><code>python3 messung-quellen-archiv.py --stichprobe 150 --saat 20260802</code></pre>
+
+<p>
+  <a href="../../data/2026-08-02-quellen-archiv.json">Rohdaten (JSON, CC BY 4.0)</a> ·
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/messung-quellen-archiv.py">Skript</a>
+</p>
+
+<p><b>Grenzen.</b> Das ist keine Zufallsstichprobe aus allem, was Studierende zitieren.
+  Wikipedia-Belege werden besser gepflegt als der Durchschnitt — tote Links fallen dort auf
+  und werden ersetzt —, die echten Werte für ein ungepflegtes Literaturverzeichnis dürften
+  also eher schlechter ausfallen als diese, nicht besser. Die Kategorien stammen aus den
+  deutschsprachigen Wirtschafts- und Sozialwissenschaften; andere Fächer sehen anders aus.
+  Ein Durchlauf, ein Tag.</p>
+
+<div class="box">
+  <p><strong>Reichweite dieser Angaben.</strong> Die Zahlen der drei zitierten Studien sind
+  den veröffentlichten Aufsätzen entnommen, die unten vollständig verlinkt sind. Meine eigene
+  Messung stammt vom 2. August 2026 und gibt diesen Tag wieder; ein erneuter Lauf liefert
+  andere Werte. Aussagen über das Internet Archive und Perma.cc geben wieder, was diese
+  Dienste selbst veröffentlichen, mit Abrufdatum — über ihr künftiges Verhalten wird nichts
+  behauptet. Die Zitierregeln setzt Ihre Hochschule, nicht diese Seite. Korrekturen über
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub-Issues</a> werden
+  übernommen.</p>
+</div>
+
+<h2>Quellen</h2>
+
+<div class="quelle"><b>Klein, M., Van de Sompel, H., Sanderson, R., Shankar, H., Balakireva, L., Zhou, K. &amp; Tobin, R. (2014).</b>
+  Scholarly Context Not Found: One in Five Articles Suffers from Reference Rot.
+  <em>PLoS ONE, 9</em>(12), e115253.
+  <a href="https://doi.org/10.1371/journal.pone.0115253">https://doi.org/10.1371/journal.pone.0115253</a></div>
+
+<div class="quelle"><b>Jones, S. M., Van de Sompel, H., Shankar, H., Klein, M., Tobin, R. &amp; Grover, C. (2016).</b>
+  Scholarly Context Adrift: Three out of Four URI References Lead to Changed Content.
+  <em>PLoS ONE, 11</em>(12), e0167475.
+  <a href="https://doi.org/10.1371/journal.pone.0167475">https://doi.org/10.1371/journal.pone.0167475</a></div>
+
+<div class="quelle"><b>Chapekis, A., Bestvater, S., Remy, E. &amp; Rivero, G. (2024, 17. Mai).</b>
+  When Online Content Disappears. <em>Pew Research Center.</em>
+  <a href="https://www.pewresearch.org/data-labs/2024/05/17/when-online-content-disappears/">pewresearch.org</a>
+  (abgerufen am 2. August 2026)</div>
+
+</div>
+
+<div class="related">
+  <h2><span data-lang="en" class="on">Related measurements</span><span data-lang="de">Verwandte Messungen</span></h2>
+  <p><a href="../webpage-to-pdf-for-ocr/"><span data-lang="en" class="on">How much text survives OCR?</span><span data-lang="de">Wie viel Text übersteht die OCR?</span></a></p>
+  <p><a href="../print-to-pdf-vs-screenshot/"><span data-lang="en" class="on">Print to PDF or capture the screen?</span><span data-lang="de">Drucken oder Bildschirm aufnehmen?</span></a></p>
+  <p><a href="../pdf-extension-permissions/"><span data-lang="en" class="on">Does your PDF extension upload the page?</span><span data-lang="de">Lädt Ihre PDF-Erweiterung die Seite hoch?</span></a></p>
+</div>
+
+</div>
+
+<script>
+function setLang(l){
+  document.querySelectorAll('[data-lang]').forEach(function(e){
+    e.classList.toggle('on', e.dataset.lang === l);
+  });
+  document.getElementById('b-en').setAttribute('aria-pressed', l === 'en');
+  document.getElementById('b-de').setAttribute('aria-pressed', l === 'de');
+  document.documentElement.lang = l;
+  try { localStorage.setItem('pl-lang', l); } catch (e) {}
+}
+(function(){
+  var gespeichert = null;
+  try { gespeichert = localStorage.getItem('pl-lang'); } catch (e) {}
+  var l = gespeichert || ((navigator.language || 'en').slice(0,2) === 'de' ? 'de' : 'en');
+  if (l === 'de') setLang('de');
+})();
+</script>
+</body>
+</html>

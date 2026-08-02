@@ -219,24 +219,36 @@ def main():
 
     probe = je_host[:a.stichprobe]
     print(f"Pruefe {len(probe)} URLs (live + Archiv) ...")
-    with ThreadPoolExecutor(max_workers=6) as ex:   # hoeflich zu beiden Diensten
+    with ThreadPoolExecutor(max_workers=3) as ex:   # das Archiv drosselt bei mehr
         ergebnisse = list(ex.map(pruefe, probe))
 
     n = len(ergebnisse)
-    tot = [e for e in ergebnisse if not e["erreichbar"]]
-    ohne_archiv = [e for e in ergebnisse if not e["archiviert"]]
-    tot_ohne_archiv = [e for e in ergebnisse if not e["erreichbar"] and not e["archiviert"]]
-    alter = [e["archiv_alter_tage"] for e in ergebnisse if e["archiv_alter_tage"] is not None]
-    alter.sort()
+    weg = [e for e in ergebnisse if e["urteil"] == "verschwunden"]
+    unklar = [e for e in ergebnisse if e["urteil"] == "ungeklaert"]
+    ok = [e for e in ergebnisse if e["urteil"] == "erreichbar"]
+    # Nur ueber die Faelle sprechen, in denen das Archiv geantwortet hat.
+    archiv_geklaert = [e for e in ergebnisse if e["archiv_geklaert"]]
+    ohne_archiv = [e for e in archiv_geklaert if not e["archiviert"]]
+    weg_ohne_archiv = [e for e in archiv_geklaert
+                       if e["urteil"] == "verschwunden" and not e["archiviert"]]
+    alter = sorted(e["archiv_alter_tage"] for e in ergebnisse
+                   if e["archiv_alter_tage"] is not None)
+    a_n = len(archiv_geklaert)
 
     zus = {
         "geprueft": n,
-        "nicht_erreichbar": len(tot),
-        "nicht_erreichbar_prozent": round(100 * len(tot) / n, 1) if n else None,
+        "erreichbar": len(ok),
+        "verschwunden": len(weg),
+        "verschwunden_prozent": round(100 * len(weg) / n, 1) if n else None,
+        "ungeklaert": len(unklar),
+        "ungeklaert_hinweis": "Bot-Abwehr (403), Fehlkonfiguration oder Stoerung — "
+                              "nicht als verschwunden gezaehlt",
+        "archiv_beantwortet": a_n,
         "ohne_archiv": len(ohne_archiv),
-        "ohne_archiv_prozent": round(100 * len(ohne_archiv) / n, 1) if n else None,
-        "tot_und_ohne_archiv": len(tot_ohne_archiv),
-        "tot_und_ohne_archiv_prozent": round(100 * len(tot_ohne_archiv) / n, 1) if n else None,
+        "ohne_archiv_prozent": round(100 * len(ohne_archiv) / a_n, 1) if a_n else None,
+        "verschwunden_und_ohne_archiv": len(weg_ohne_archiv),
+        "verschwunden_und_ohne_archiv_prozent":
+            round(100 * len(weg_ohne_archiv) / a_n, 1) if a_n else None,
         "archivalter_median_tage": alter[len(alter) // 2] if alter else None,
         "archivalter_aeltestes_viertel_tage": alter[int(len(alter) * .75)] if alter else None,
     }
@@ -254,8 +266,12 @@ def main():
             "je_host": "hoechstens ein Link je Host",
             "stichprobe": n,
             "saat": a.saat,
-            "erreichbarkeit": "HEAD, bei 403/405/501 GET; erreichbar = Status 200-399",
-            "archiv": "archive.org/wayback/available, juengster Schnappschuss",
+            "erreichbarkeit": "HEAD, bei 403/405/501 GET, ein Wiederholungsversuch. "
+                              "verschwunden = Status 404 oder 410. 403/400/5xx und "
+                              "Verbindungsfehler zaehlen als ungeklaert, nicht als tot.",
+            "archiv": "archive.org/wayback/available mit CDX-Gegenprobe, bis zu drei "
+                      "Versuche. Faelle ohne Antwort des Dienstes gehen nicht in die "
+                      "Archivquote ein.",
             "grenzen": "Keine Zufallsstichprobe aus allen studentischen Quellen. "
                        "Wikipedia-Belege sind gepflegter als der Durchschnitt - "
                        "die Werte sind daher eher zu guenstig als zu streng.",

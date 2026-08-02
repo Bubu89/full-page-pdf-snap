@@ -5,10 +5,18 @@
   <id>https://provinglab.dev/</id>
   <link rel="alternate" type="text/html" href="https://provinglab.dev/"/>
   <link rel="self" type="application/atom+xml" href="https://provinglab.dev/feed.xml"/>
-  <updated>2026-08-01T00:00:00Z</updated>
+  <updated>2026-08-02T00:00:00Z</updated>
   <author><name>Proving Lab</name><uri>https://provinglab.dev/</uri></author>
   <icon>https://provinglab.dev/icon-128.png</icon>
   <rights>Content licensed for reading and quoting with attribution.</rights>
+  <entry>
+    <title>Web citations that vanish: what happens to a source after you cite it</title>
+    <id>https://provinglab.dev/measurements/web-citations-that-vanish/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/web-citations-that-vanish/"/>
+    <published>2026-08-02T00:00:00Z</published>
+    <updated>2026-08-02T00:00:00Z</updated>
+    <summary type="text">150 web sources from real reference lists, checked: 19.3% are gone, 8.7% have no archived copy anywhere, and where a snapshot exists it is a median of 603 days old. With practical steps for students and a German version.</summary>
+  </entry>
   <entry>
     <title>Webpage to PDF for OCR: how much text survives? A measured test</title>
     <id>https://provinglab.dev/measurements/webpage-to-pdf-for-ocr/</id>
