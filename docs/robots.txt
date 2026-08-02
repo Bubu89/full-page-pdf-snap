@@ -1,4 +1,20 @@
+# Content Signals — https://contentsignals.org/
+#
+# search    may be indexed and linked from search results
+# ai-input  may be retrieved at answer time and quoted with attribution
+# ai-train  may be used as training data for a model
+#
+# This site exists to be read and cited. Indexing and answer-time retrieval are
+# welcome: both send readers back here, and a quoted measurement with a link is
+# exactly what this publication is for. Training is declined — it consumes the
+# work without ever pointing back to it, and the point of publishing a method
+# alongside a result is that someone can follow it to the source.
+#
+# This declares a preference. It is not an access control, and a crawler that
+# ignores it is not blocked by it.
+
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 Sitemap: https://provinglab.dev/sitemap.xml
