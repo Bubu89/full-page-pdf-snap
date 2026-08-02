@@ -292,5 +292,11 @@
   },
   "optProvenanceHint": {
     "message": "Scrive l'indirizzo della pagina, l'ora dell'acquisizione e una somma di controllo SHA-256 dei dati immagine in una fascia sotto l'immagine. Utile quando il file deve essere archiviato o consegnato. Un'acquisizione dello schermo non è un documento elettronico qualificato: l'ora proviene dall'orologio del dispositivo e la somma di controllo dimostra che il file non è cambiato dalla sua creazione, non che la pagina avesse quell'aspetto. Gli stessi dati vengono sempre scritti nei metadati del PDF, con o senza questa opzione."
+  },
+  "optTextLayer": {
+    "message": "Rendere il PDF ricercabile (livello di testo invisibile)"
+  },
+  "optTextLayerHint": {
+    "message": "Riporta il testo della pagina nel PDF in modo invisibile, nella posizione in cui compare nell'immagine. Il PDF diventa ricercabile e il testo si può copiare, senza cambiarne l'aspetto. Il testo proviene dal documento e non viene riconosciuto dall'immagine: misurato su una pagina reale resta ogni parola, mentre l'OCR ne recuperava il 92,6 per cento. Vale solo per il formato a pagina continua."
   }
 }

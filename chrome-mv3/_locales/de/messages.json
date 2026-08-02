@@ -292,5 +292,11 @@
   },
   "optProvenanceHint": {
     "message": "Schreibt die Adresse der Seite, den Zeitpunkt der Aufnahme und eine SHA-256-Prüfsumme der Bilddaten in einen Streifen unter das Bild. Nützlich, wenn die Datei abgelegt oder weitergegeben wird. Eine Bildschirmaufnahme ist kein qualifiziertes elektronisches Dokument: Die Zeit stammt von der Uhr Ihres Geräts, und die Prüfsumme belegt, dass die Datei seit der Erstellung unverändert ist — nicht, dass die Seite so ausgesehen hat. Dieselben Angaben stehen mit und ohne diese Option immer in den PDF-Metadaten."
+  },
+  "optTextLayer": {
+    "message": "PDF durchsuchbar machen (unsichtbare Textebene)"
+  },
+  "optTextLayerHint": {
+    "message": "Übernimmt den Text der Seite unsichtbar ins PDF, an der Stelle, an der er im Bild steht. Das PDF wird durchsuchbar und der Text lässt sich kopieren — ohne dass sich am Aussehen etwas ändert. Der Text stammt aus dem Dokument und wird nicht aus dem Bild erkannt: An einer echten Seite gemessen bleibt jedes Wort erhalten, während OCR 92,6 Prozent wiedergab. Gilt nur für das Format „eine durchgehende Seite“."
   }
 }

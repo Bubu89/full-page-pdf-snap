@@ -49,6 +49,9 @@ const DEFAULTS_DESKTOP = {
   // Sichtbare Herkunftszeile unter der Aufnahme. Standard aus, weil sie das
   // Bild veraendert; die Metadaten im PDF stehen ohnehin immer drin.
   provenanceFooter: false,
+  // Unsichtbare Textebene aus dem Dokument. Standard an: sie macht das PDF
+  // durchsuchbar, ohne das Bild zu veraendern.
+  textLayer: true,
   uiLanguage: "auto",
   appLayout: "context",
   afterCapture: "show",
@@ -273,6 +276,9 @@ function verifyCoverage(label, positions, viewH, maxScroll) {
 }
 
 async function captureFullPageInner(tab, settings) {
+  // Textebene: wird im selben Seitenzustand gesammelt wie die Bilder.
+  let textWoerter = null;
+  let textSeiteBreite = 0;
   await ensureContentInjected(tab.id);
 
   const layout = await browser.tabs.sendMessage(tab.id, { cmd: "getLayout" });
@@ -436,6 +442,22 @@ async function captureFullPageInner(tab, settings) {
       y += stepCss;
       if (y > maxScroll) y = maxScroll;
       if (++safety > 400) throw new Error("Zu viele Scroll-Schritte");
+    }
+    // Text jetzt einsammeln — nach dem Ausblenden fixierter Elemente und
+    // bevor die Seite zurueckgesetzt wird. Spaeter waere der Zustand ein
+    // anderer als der, den die Bilder zeigen, und eine Textebene, die etwas
+    // anderes sagt als das Bild, ist schlechter als gar keine.
+    if (settings.textLayer !== false) {
+      try {
+        const tl = await browser.tabs.sendMessage(tab.id, { cmd: "collectText" });
+        if (tl && tl.ok && tl.woerter && tl.woerter.length) {
+          textWoerter = tl.woerter;
+          textSeiteBreite = tl.seite && tl.seite.w ? tl.seite.w : 0;
+          log("Textebene:", textWoerter.length, "Woerter, Seitenbreite", textSeiteBreite);
+        }
+      } catch (e) {
+        log("Textebene nicht verfuegbar:", e && e.message);
+      }
     }
   } finally {
     await browser.tabs.sendMessage(tab.id, { cmd: "restore" }).catch(() => {});
@@ -715,6 +737,8 @@ async function captureFullPageInner(tab, settings) {
     title: tab.title || "",
     version: (browser.runtime.getManifest() || {}).version || "",
     provenance: herkunft,
+    textLayer: textWoerter,
+    textLayerPageWidth: textSeiteBreite,
   });
 
   const baseTitle = sanitizeFilename(tab.title || "page", settings.titleMaxLen);

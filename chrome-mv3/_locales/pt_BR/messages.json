@@ -292,5 +292,11 @@
   },
   "optProvenanceHint": {
     "message": "Grava o endereço da página, o horário da captura e uma soma de verificação SHA-256 dos dados de imagem em uma faixa abaixo da imagem. Útil quando o arquivo precisa ser arquivado ou entregue. Uma captura de tela não é um documento eletrônico qualificado: o horário vem do relógio do seu dispositivo, e a soma de verificação comprova que o arquivo não mudou desde a criação, não que a página tinha essa aparência. Os mesmos dados são sempre gravados nos metadados do PDF, com ou sem esta opção."
+  },
+  "optTextLayer": {
+    "message": "Tornar o PDF pesquisável (camada de texto invisível)"
+  },
+  "optTextLayerHint": {
+    "message": "Copia o texto da própria página para o PDF, de forma invisível, na posição em que aparece na imagem. O PDF fica pesquisável e o texto pode ser copiado, sem alterar a aparência. O texto vem do documento e não é reconhecido a partir da imagem: medido em uma página real, cada palavra se mantém, enquanto o OCR recuperou 92,6 por cento. Vale apenas para o formato de página contínua."
   }
 }

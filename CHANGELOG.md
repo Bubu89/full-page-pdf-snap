@@ -1,5 +1,51 @@
 # Changelog
 
+## 2026-08-02 — Durchsuchbares PDF: Textebene aus dem Dokument statt aus OCR
+
+Die Aufnahme war bisher reines Pixelbild. Wer den Text brauchte, musste ihn
+erkennen lassen — und die eigene Messung zeigte genau dort die einzige
+Schwaeche: Druck gewann bei der Textrueckgewinnung, weil er eine echte
+Textebene mitbringt.
+
+Jetzt bringt die Aufnahme eine eigene mit, und zwar nicht aus Erkennung,
+sondern aus dem Dokument selbst. Jedes Wort wird per Range einzeln vermessen
+und unsichtbar (Textrendermodus 3) an seiner Stelle im PDF gesetzt.
+
+**Gemessen an einer echten Seite** (1280 x 4729 px, 1068 Woerter):
+
+| Verfahren | Wort-Recall | Fuenf-Wort-Folgen |
+|---|---|---|
+| OCR, Tesseract | 92,6 % | 73,9 % |
+| Textebene zeilenweise (erster Versuch) | 97,8 % | 80,8 % |
+| **Textebene wortgenau** | **100,0 %** | **91,8 %** |
+
+Kein einziges Wort fehlt. Die Extraktion dauert 14 ms.
+
+**Zwei eigene Messfehler auf dem Weg**, beide korrigiert:
+Zuerst gegen Latin-1 statt CP1252 geprueft — daher schienen nur 85,4 % der
+Zeichen darstellbar; `WinAnsiEncoding` kennt Gedankenstrich, typografische
+Anfuehrungszeichen und Auslassungspunkte, tatsaechlich sind es 100 %. Und die
+Laufweite wurde gegen eine Pauschale von 0,5 em gestaucht statt gegen die
+echten Helvetica-Breiten (Mittel 0,489 em, Spanne 0,222 bis 0,944) — daher
+sass der Text zwar auf der richtigen Zeile, aber nicht auf dem Wort.
+
+**Warum das rechtlich sauber bleiben muss.** Ein PDF, dessen unsichtbarer Text
+etwas anderes sagt als das sichtbare Bild, ist irrefuehrend — jemand kopiert
+Text, der so nie auf dem Schirm stand. Deshalb wird der Text im selben
+Seitenzustand gesammelt wie die Bilder: nach dem Ausblenden fixierter Elemente,
+vor der Wiederherstellung. Und die Metadaten halten fest, woher er stammt:
+`text-layer=extracted from the page's own DOM, not OCR`. Das ist keine
+Formalie — OCR verliest sich, eine DOM-Uebernahme kann umgekehrt Text
+mitnehmen, den eine Ueberdeckung im Bild verbirgt. Wer die Datei spaeter
+pruefen muss, braucht diesen Unterschied.
+
+Nur im Format „eine durchgehende Seite": im mehrseitigen Modus wird die
+Aufnahme geschnitten, die Wortkoordinaten beziehen sich aber auf das ganze
+Dokument. Eine falsch zugeordnete Textebene waere schlechter als gar keine.
+
+Standard **an** — sie macht das PDF durchsuchbar, ohne das Bild zu veraendern.
+Beide Zweige portiert, neun Sprachdateien auf 100 Eintraege.
+
 ## 2026-08-02 — Herkunftsangaben im PDF (Erweiterung)
 
 Bisher enthielt das erzeugte PDF ausser den Bilddaten nichts: keinen Titel,

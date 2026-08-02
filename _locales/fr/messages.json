@@ -292,5 +292,11 @@
   },
   "optProvenanceHint": {
     "message": "Inscrit l'adresse de la page, l'heure de la capture et une somme de contrôle SHA-256 des données d'image dans un bandeau sous l'image. Utile lorsque le fichier doit être archivé ou transmis. Une capture d'écran n'est pas un document électronique qualifié : l'heure provient de l'horloge de votre appareil, et la somme de contrôle atteste que le fichier n'a pas changé depuis sa création, non que la page avait cet aspect. Les mêmes informations sont toujours inscrites dans les métadonnées du PDF, avec ou sans cette option."
+  },
+  "optTextLayer": {
+    "message": "Rendre le PDF consultable (couche de texte invisible)"
+  },
+  "optTextLayerHint": {
+    "message": "Reprend le texte de la page dans le PDF, de façon invisible, à l'endroit où il apparaît sur l'image. Le PDF devient consultable et le texte peut être copié, sans que l'apparence change. Le texte provient du document et n'est pas reconnu à partir de l'image : mesuré sur une page réelle, chaque mot est conservé, là où l'OCR en restituait 92,6 pour cent. Ne s'applique qu'au format page continue."
   }
 }

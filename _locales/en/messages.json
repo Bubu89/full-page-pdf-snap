@@ -292,5 +292,11 @@
   },
   "optProvenanceHint": {
     "message": "Writes the page address, the time of capture and a SHA-256 checksum of the image data into a strip under the image. Useful when the file has to be filed or handed on. A screen capture is not a qualified electronic document: the time comes from your device clock, and the checksum shows the file has not changed since it was made — not that the page looked this way. The same details are always written into the PDF metadata, with or without this option."
+  },
+  "optTextLayer": {
+    "message": "Make the PDF searchable (invisible text layer)"
+  },
+  "optTextLayerHint": {
+    "message": "Copies the page's own text into the PDF, invisibly, at the position where it appears in the image. The PDF becomes searchable and the text can be copied — without changing how it looks. The text is taken from the document, not recognised from the image: measured on a real page, every word survives, where OCR recovered 92.6 percent. Only applies to the one-continuous-page format."
   }
 }

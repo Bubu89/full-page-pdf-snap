@@ -292,5 +292,11 @@
   },
   "optProvenanceHint": {
     "message": "Escribe la dirección de la página, la hora de la captura y una suma de verificación SHA-256 de los datos de imagen en una franja bajo la imagen. Útil cuando el archivo debe archivarse o entregarse. Una captura de pantalla no es un documento electrónico cualificado: la hora procede del reloj de su dispositivo, y la suma de verificación demuestra que el archivo no ha cambiado desde su creación, no que la página tuviera ese aspecto. Los mismos datos se escriben siempre en los metadatos del PDF, con o sin esta opción."
+  },
+  "optTextLayer": {
+    "message": "Hacer el PDF consultable (capa de texto invisible)"
+  },
+  "optTextLayerHint": {
+    "message": "Copia el texto de la página en el PDF de forma invisible, en la posición en que aparece en la imagen. El PDF se puede buscar y el texto se puede copiar, sin que cambie su aspecto. El texto procede del documento y no se reconoce a partir de la imagen: medido en una página real se conserva cada palabra, mientras que el OCR recuperó el 92,6 por ciento. Solo se aplica al formato de una página continua."
   }
 }

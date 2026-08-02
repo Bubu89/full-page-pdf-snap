@@ -28,6 +28,7 @@ const DEFAULTS = {
   tilePx: 4000,
   hideSticky: true,
   provenanceFooter: false,
+  textLayer: true,
   uiLanguage: "auto",
   appLayout: "context",
   afterCapture: "show",
@@ -117,6 +118,7 @@ async function load() {
   $("reviewPromptOff").checked = !!s.reviewPromptOff;
   $("hideSticky").checked = s.hideSticky !== false;
   $("provenanceFooter").checked = s.provenanceFooter === true;
+  $("textLayer").checked = s.textLayer !== false;
   $("uiLanguage").value = s.uiLanguage || "auto";
   $("appLayout").value = s.appLayout || "context";
   $("afterCapture").value = s.afterCapture || "show";
@@ -150,6 +152,7 @@ $("save").addEventListener("click", async () => {
     tilePx: Math.max(800, Math.min(8000, parseInt($("tilePx").value, 10) || 4000)),
     hideSticky: $("hideSticky").checked,
     provenanceFooter: $("provenanceFooter").checked,
+    textLayer: $("textLayer").checked,
     reviewPromptOff: $("reviewPromptOff").checked,
     uiLanguage: $("uiLanguage").value,
     appLayout: $("appLayout").value,
