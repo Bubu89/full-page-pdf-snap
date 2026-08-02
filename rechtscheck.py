@@ -79,11 +79,11 @@ BEHAUPTUNGEN = [
      "the only mainstream browser where the question even arises"),
 
     ("garantie",
-     re.compile(r"(?<!no )(?<!kein )(?<!keine )(?<!nicht )"
+     re.compile(r"(?<!no )(?<!not )(?<!kein )(?<!keine )(?<!nicht )"
                 r"\b(guarantees?|garantiert|100\s?% (sicher|secure|safe))\b", re.I),
      "WARNUNG",
      "Zusicherung, die im Streitfall eingehalten werden muss.",
-     "no guarantee is given"),
+     "measurements are measurements, not guarantees, and no guarantee is given"),
 ]
 
 # Auf Seiten, die Daten ueber fremde Produkte oder Dienste zeigen, muss ein
@@ -109,9 +109,9 @@ RECHTSTHEMA = wort("copyright", "Urheberrecht", "UrhG", "UWG", "licence", "Lizen
 # legal advice" stand. Ein Pruefer, der die richtige Formulierung nicht erkennt,
 # erzeugt Arbeit statt Sicherheit.
 RECHTSAUSSCHLUSS = re.compile(
-    r"(no(thing|t)\b[^.]{0,60}\blegal advice"
-    r"|legal advice\b[^.]{0,40}\bnot\b"
-    r"|(keine|nichts)\b[^.]{0,60}\bRechtsberatung)", re.I)
+    r"(no(thing|t)\b[^.]{0,140}\b(legal|professional) advice"
+    r"|(legal|professional) advice\b[^.]{0,40}\bnot\b"
+    r"|(keine|nichts|kein)\b[^.]{0,140}\b(Rechtsberatung|fachliche Beratung))", re.I)
 
 EIGENPRODUKT = re.compile(r"Full Page PDF Snap", re.I)
 OFFENLEGUNG = re.compile(r"(author develops|Der Autor entwickelt|disclos|Offenlegung|"
@@ -168,6 +168,12 @@ def pruefe_seite(pfad, html, befunde):
         if rel not in ("tools/full-page-pdf-snap/index.html",):   # dort ist es das Thema
             befunde.append(("FEHLER", rel, "keine-offenlegung",
                             "Eigenes Produkt genannt, aber keine Offenlegung der Beteiligung.", ""))
+
+    # Haftungshinweis muss von jeder Seite aus erreichbar sein — er nuetzt
+    # nichts, wenn er nur auf einer Unterseite steht, die niemand ansteuert.
+    if "disclaimer" not in html and rel != "disclaimer/index.html":
+        befunde.append(("FEHLER", rel, "kein-haftungshinweis",
+                        "Kein Verweis auf die Haftungs- und Hinweisseite.", ""))
 
     # Korrekturweg
     if not KORREKTURWEG.search(html) and rel not in ("404.html",):

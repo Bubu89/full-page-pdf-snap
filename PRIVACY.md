@@ -56,3 +56,8 @@ None. No data is shared with anyone, because none is collected.
 
 Questions: chris.vis@goldfishgateway.com
 Source code: https://github.com/Bubu89/full-page-pdf-snap
+
+## Liability
+
+See [Disclaimer and limitation of liability](https://provinglab.dev/disclaimer/) for the
+scope of warranty and liability for this extension.

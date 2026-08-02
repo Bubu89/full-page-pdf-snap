@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Disclaimer and limitation of liability — Proving Lab</title>
+<meta name="description" content="What is and is not warranted for the software and the content published here: no warranty, liability limited as far as the law allows, mandatory liability unaffected. Haftungsausschluss und Hinweise, zweisprachig.">
+<link rel="canonical" href="https://provinglab.dev/disclaimer/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../icon-128.png">
+<meta name="robots" content="index, follow">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/disclaimer/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/disclaimer/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/disclaimer/">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Disclaimer and limitation of liability",
+  "description": "Scope of warranty and liability for the software and the content published on provinglab.dev.",
+  "url": "https://provinglab.dev/disclaimer/",
+  "inLanguage": ["en", "de"],
+  "datePublished": "2026-08-02",
+  "dateModified": "2026-08-02",
+  "publisher": { "@type": "Organization", "name": "Proving Lab" },
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+
+<style>
+  :root{
+    --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --acc2:#7c5cff;
+    --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--tx); line-height:1.68;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+       font-size:.88em;background:var(--card);padding:2px 6px;border-radius:3px;
+       border:1px solid var(--line)}
+
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:36px 0 40px;border-bottom:1px solid var(--line);margin-bottom:36px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.18;letter-spacing:-.02em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:62ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+
+  h2{font-size:1.5rem;line-height:1.25;letter-spacing:-.01em;margin:48px 0 14px;
+     text-wrap:balance}
+  h3{font-size:1.08rem;margin:30px 0 10px}
+  p{margin-bottom:16px}
+  ul{margin:0 0 18px 22px} li{margin-bottom:7px}
+
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:28px 0}
+  .kf{flex:1 1 150px;background:var(--card);border:1px solid var(--line);
+      border-radius:8px;padding:18px 18px 16px}
+  .kf .n{font-size:1.85rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;
+         font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.good .n{color:var(--good)} .kf.bad .n{color:var(--bad)}
+
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:460px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+  thead th{background:var(--bg2);font-size:.76rem;letter-spacing:.07em;
+           text-transform:uppercase;color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;
+       white-space:nowrap}
+  .r-good{color:var(--good);font-weight:600}
+  .r-warn{color:var(--warn);font-weight:600}
+  .r-bad{color:var(--bad);font-weight:600}
+  tr.pick td{background:color-mix(in srgb,var(--good) 12%,transparent)}
+
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;
+      padding:16px 18px;overflow-x:auto;margin:18px 0;font-size:.85rem;line-height:1.6}
+  pre code{background:none;border:none;padding:0}
+
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0}
+  .box p:last-child{margin-bottom:0}
+
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+           padding:20px 22px;margin:40px 0 0}
+  .related h3{margin-top:0}
+  .related ul{margin-bottom:0}
+
+  footer{margin-top:56px;padding:24px 0 60px;border-top:1px solid var(--line);
+         font-size:.85rem;color:var(--dim)}
+
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+
+  .faq{margin:44px 0 0}
+  .faq h2{margin-bottom:8px}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;font-size:1rem;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+
+  /* --- Sprachumschaltung --- */
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
+  .lang{display:flex;gap:6px;margin:0 0 26px}
+  .lang button{font:inherit;font-size:.86rem;font-weight:600;padding:7px 18px;cursor:pointer;
+    background:var(--card);color:var(--dim);border:1px solid var(--line);border-radius:8px}
+  .lang button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
+  .quelle{font-size:.9rem;color:var(--dim);padding:12px 0;border-top:1px solid var(--line)}
+  .quelle b{color:var(--tx);font-weight:600}
+  ol.schritte{margin:0 0 20px 22px}
+  ol.schritte li{margin-bottom:14px}
+
+  .punkt{border-top:1px solid var(--line);padding:24px 0}
+  .punkt h3{font-size:1.05rem;margin-bottom:9px;letter-spacing:-.01em}
+  .punkt p{margin-bottom:10px}
+  .punkt p:last-child{margin-bottom:0}
+  .zitat{border-left:3px solid var(--line);padding:4px 0 4px 16px;margin:12px 0;
+    color:var(--dim);font-size:.93rem}
+  .wichtig{background:var(--card);border:1px solid var(--line);
+    border-left:3px solid var(--acc);border-radius:0 10px 10px 0;padding:20px 22px;margin:22px 0}
+</style>
+<script src="/agent-tools.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../"><img src="../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../notes/">Notes</a>
+    <a class="n" href="../measurements/">Measurements</a>
+    <a class="n" href="../tools/">Tools</a>
+    <a class="n" href="../about/">About</a>
+    <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header>
+  <h1 class="on" data-lang="en">Disclaimer and limitation of liability</h1>
+  <h1 data-lang="de">Haftungsausschluss und Hinweise</h1>
+  <p class="standfirst on" data-lang="en">
+    This page states what is warranted and what is not — for the software published here and
+    for the articles and measurement data on this site. It applies to everything under
+    provinglab.dev and to the extension distributed from it.
+  </p>
+  <p class="standfirst" data-lang="de">
+    Diese Seite legt fest, wofür eingestanden wird und wofür nicht — für die hier
+    veröffentlichte Software ebenso wie für die Artikel und Messdaten dieser Seite. Sie gilt
+    für alles unter provinglab.dev und für die darüber verbreitete Erweiterung.
+  </p>
+  <p class="meta-line">
+    <span class="on" data-lang="en">Version of 2 August 2026</span>
+    <span data-lang="de">Fassung vom 2. August 2026</span>
+  </p>
+</header>
+
+<div class="lang">
+  <button id="b-en" aria-pressed="true" onclick="setLang('en')">English</button>
+  <button id="b-de" aria-pressed="false" onclick="setLang('de')">Deutsch</button>
+</div>
+
+<div class="on" data-lang="en">
+
+<div class="wichtig">
+  <p><strong>In short.</strong> The software and the content are provided free of charge and
+  as they are. No warranty of any kind is given, and liability is excluded as far as the law
+  permits. What the law does not permit to exclude — intent, gross negligence, injury to life,
+  body or health, and any mandatory statutory liability — remains unaffected, and no wording
+  on this page changes that.</p>
+</div>
+
+<div class="punkt">
+  <h3>1. The software: no warranty</h3>
+  <p>
+    Full Page PDF Snap is published under the MIT licence. Its warranty clause is part of the
+    licence and applies in full:
+  </p>
+  <p class="zitat">
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+    PURPOSE AND NONINFRINGEMENT.
+  </p>
+  <p>
+    In particular, no assurance is given that the extension is fit for any specific purpose,
+    that it works on any specific page, browser version or device, or that it will remain
+    available.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>2. Check the result before you rely on it</h3>
+  <p>
+    A capture can be incomplete without saying so. Pages that load while scrolling, that
+    render differently at another window size, that hide content behind interaction, or that
+    change while the capture runs can all produce a PDF that is missing something. The
+    extension has no way to know what the page was supposed to contain.
+  </p>
+  <p>
+    Where the content matters — a confirmation, a deadline, an amount, a transaction row —
+    open the finished PDF and read the relevant part before you rely on it. That check takes
+    seconds and is the only thing that establishes the capture actually holds what you need.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>3. Not a qualified electronic document</h3>
+  <p>
+    A PDF produced by screen capture records what a browser displayed. It carries no qualified
+    electronic signature, no trusted timestamp and no chain of custody, and it does not by
+    itself prove that a page existed in that form. It is suitable for your own records. Where
+    evidentiary weight is required, a service built for that purpose is the right instrument.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>4. No professional advice</h3>
+  <p>
+    Nothing published here is legal, tax, financial, medical or any other form of professional
+    advice, and no client relationship arises from reading it. Articles touch on questions with
+    a legal dimension — permissions, licences, copyright, the evidentiary value of a record,
+    rules on citation and deadlines. Those passages describe how things are generally
+    understood; they do not decide your case. Institutional rules and applicable law take
+    precedence over anything written here, and for a specific situation, qualified advice is
+    the right route.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>5. Measurements are measurements, not guarantees</h3>
+  <p>
+    Figures published here come from single runs on stated inputs on a stated date, with the
+    method and the raw data published so they can be recounted. They are not averages over
+    many runs, not certified tests, and not a prediction of what you will measure on your
+    system. Where a measurement has been corrected after publication, the correction is stated
+    in the article rather than silently applied.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>6. Third-party products and external links</h3>
+  <p>
+    Statements about other products rest exclusively on what their providers publish about
+    themselves — manifests, listings, help pages — with the retrieval date given. Nothing was
+    decompiled, and no statement is made about any provider's intentions or about data
+    actually transmitted. Such declarations change; check against the live source before
+    relying on them.
+  </p>
+  <p>
+    External links lead to content that is not ours. Responsibility for it rests with the
+    respective operators. Links were checked when set; no continuous monitoring takes place.
+    On notice of an infringement, the link will be removed.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>7. Limitation of liability</h3>
+  <p>
+    To the extent permitted by law, no liability is accepted for damages arising from the use
+    of the software or from decisions taken on the basis of content published here — in
+    particular not for lost or incomplete data, missed deadlines, or consequences of a capture
+    being incomplete or unavailable.
+  </p>
+  <p>
+    <strong>This limitation does not apply</strong> to damages caused intentionally or by gross
+    negligence, to injury to life, body or health, and wherever mandatory statutory liability
+    applies. Those remain in force regardless of anything stated here.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>8. Changes and corrections</h3>
+  <p>
+    Content and software change. This page carries the date of its current version; earlier
+    versions are in the repository's history. Factual errors are corrected on notice —
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">open an issue</a>, and where
+    a published figure changes, the correction is noted in the article.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>9. Who publishes this</h3>
+  <p>
+    A private, non-commercial project by an individual, operated under a pseudonym. Nothing is
+    sold, there is no advertising, no affiliate link and no tracking. Contact and the extent
+    of the disclosure are described under <a href="../about/">About &amp; disclosure</a>; the
+    identity behind the pseudonym is disclosed to a legitimate legal requester.
+  </p>
+</div>
+
+</div>
+
+<div data-lang="de">
+
+<div class="wichtig">
+  <p><strong>Kurz gefasst.</strong> Software und Inhalte werden unentgeltlich und so, wie sie
+  sind, zur Verfügung gestellt. Es wird keinerlei Gewährleistung übernommen, und die Haftung
+  ist ausgeschlossen, soweit das Gesetz es zulässt. Was das Gesetz nicht auszuschließen
+  erlaubt — Vorsatz, grobe Fahrlässigkeit, Verletzung von Leben, Körper oder Gesundheit sowie
+  jede zwingende gesetzliche Haftung — bleibt unberührt, und daran ändert keine Formulierung
+  auf dieser Seite etwas.</p>
+</div>
+
+<div class="punkt">
+  <h3>1. Die Software: keine Gewährleistung</h3>
+  <p>
+    Full Page PDF Snap steht unter der MIT-Lizenz. Deren Gewährleistungsklausel ist Teil der
+    Lizenz und gilt uneingeschränkt — sinngemäß: Die Software wird ohne jede Gewährleistung
+    bereitgestellt, ausdrücklich oder stillschweigend, einschließlich der Gewährleistung der
+    Marktgängigkeit, der Eignung für einen bestimmten Zweck und der Nichtverletzung von
+    Rechten Dritter. Maßgeblich ist der englische Wortlaut der Lizenz:
+  </p>
+  <p class="zitat">
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+    PURPOSE AND NONINFRINGEMENT.
+  </p>
+  <p>
+    Insbesondere wird nicht zugesichert, dass die Erweiterung für einen bestimmten Zweck
+    geeignet ist, dass sie auf einer bestimmten Seite, Browserfassung oder einem bestimmten
+    Gerät funktioniert, oder dass sie weiterhin verfügbar bleibt.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>2. Das Ergebnis prüfen, bevor man sich darauf verlässt</h3>
+  <p>
+    Eine Aufnahme kann unvollständig sein, ohne das anzuzeigen. Seiten, die beim Scrollen
+    nachladen, die bei anderer Fenstergröße anders aufbauen, die Inhalte hinter einer
+    Interaktion verbergen oder sich während der Aufnahme verändern, können ein PDF ergeben,
+    in dem etwas fehlt. Die Erweiterung kann nicht wissen, was auf der Seite hätte stehen
+    sollen.
+  </p>
+  <p>
+    Wo es auf den Inhalt ankommt — eine Bestätigung, eine Frist, ein Betrag, eine
+    Transaktionszeile — öffnen Sie das fertige PDF und lesen Sie die betreffende Stelle,
+    bevor Sie sich darauf verlassen. Diese Prüfung dauert Sekunden und ist das Einzige, was
+    belegt, dass die Aufnahme tatsächlich enthält, was Sie brauchen.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>3. Kein qualifiziertes elektronisches Dokument</h3>
+  <p>
+    Ein durch Bildschirmaufnahme erzeugtes PDF hält fest, was ein Browser angezeigt hat. Es
+    trägt keine qualifizierte elektronische Signatur, keinen vertrauenswürdigen Zeitstempel
+    und keine lückenlose Nachweiskette, und es beweist für sich genommen nicht, dass eine
+    Seite in dieser Form existiert hat. Für die eigenen Unterlagen ist es geeignet. Wo es auf
+    Beweiskraft ankommt, ist ein dafür gebauter Dienst das richtige Mittel.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>4. Keine fachliche Beratung</h3>
+  <p>
+    Nichts von dem hier Veröffentlichten ist Rechts-, Steuer-, Finanz-, medizinische oder
+    sonstige fachliche Beratung, und durch das Lesen entsteht kein Mandats- oder
+    Beratungsverhältnis. Beiträge berühren Fragen mit rechtlichem Bezug — Berechtigungen,
+    Lizenzen, Urheberrecht, den Beweiswert von Aufzeichnungen, Regeln zu Zitation und Fristen.
+    Diese Passagen beschreiben, wie die Dinge allgemein verstanden werden; sie entscheiden
+    Ihren Fall nicht. Die Regeln Ihrer Einrichtung und das anwendbare Recht gehen allem hier
+    Geschriebenen vor, und für den konkreten Fall ist eine fachkundige Beratung der richtige
+    Weg.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>5. Messungen sind Messungen, keine Zusagen</h3>
+  <p>
+    Die hier veröffentlichten Zahlen stammen aus Einzeldurchläufen mit genannten Eingaben an
+    einem genannten Datum; Methode und Rohdaten sind veröffentlicht, damit sie nachgerechnet
+    werden können. Es sind keine Mittelwerte über viele Läufe, keine zertifizierten Prüfungen
+    und keine Vorhersage dessen, was Sie auf Ihrem System messen werden. Wo eine Messung nach
+    der Veröffentlichung korrigiert wurde, steht die Korrektur im Beitrag, statt still
+    eingearbeitet zu werden.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>6. Fremde Produkte und externe Verweise</h3>
+  <p>
+    Aussagen über andere Produkte stützen sich ausschließlich auf das, was deren Anbieter
+    selbst veröffentlichen — Manifeste, Store-Einträge, Hilfeseiten — jeweils mit Abrufdatum.
+    Es wurde nichts dekompiliert, und es wird keine Aussage über Absichten eines Anbieters
+    oder über tatsächlich übertragene Daten getroffen. Solche Angaben ändern sich; prüfen Sie
+    vor einer Verwendung gegen die Live-Quelle.
+  </p>
+  <p>
+    Externe Verweise führen zu Inhalten, die nicht von uns stammen. Für sie sind die
+    jeweiligen Betreiber verantwortlich. Die Verweise wurden bei der Aufnahme geprüft; eine
+    fortlaufende Überwachung findet nicht statt. Bei Kenntnis einer Rechtsverletzung wird der
+    Verweis entfernt.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>7. Haftungsbegrenzung</h3>
+  <p>
+    Soweit gesetzlich zulässig, wird keine Haftung für Schäden übernommen, die aus der
+    Verwendung der Software oder aus Entscheidungen aufgrund hier veröffentlichter Inhalte
+    entstehen — insbesondere nicht für verlorene oder unvollständige Daten, versäumte Fristen
+    oder Folgen einer unvollständigen oder nicht verfügbaren Aufnahme.
+  </p>
+  <p>
+    <strong>Diese Begrenzung gilt nicht</strong> für vorsätzlich oder grob fahrlässig
+    verursachte Schäden, für die Verletzung von Leben, Körper oder Gesundheit sowie überall
+    dort, wo zwingende gesetzliche Haftung greift. Diese bleibt unabhängig von allem hier
+    Gesagten bestehen.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>8. Änderungen und Korrekturen</h3>
+  <p>
+    Inhalte und Software ändern sich. Diese Seite trägt das Datum ihrer aktuellen Fassung;
+    frühere Fassungen stehen in der Historie des Repositorys. Sachliche Fehler werden bei
+    Kenntnis berichtigt — <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">ein
+    Issue eröffnen</a>; ändert sich eine veröffentlichte Zahl, wird die Korrektur im Beitrag
+    vermerkt.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>9. Wer das veröffentlicht</h3>
+  <p>
+    Ein privates, nicht kommerzielles Projekt einer Einzelperson, betrieben unter einem
+    Pseudonym. Es wird nichts verkauft, es gibt keine Werbung, keine Affiliate-Verweise und
+    kein Tracking. Kontakt und Umfang der Offenlegung stehen unter
+    <a href="../about/">Offenlegung</a>; die Identität hinter dem Pseudonym wird einer
+    berechtigten rechtlichen Anfrage gegenüber offengelegt.
+  </p>
+</div>
+
+</div>
+
+<footer style="padding:40px 0 60px;color:var(--dim);font-size:.86rem;
+               border-top:1px solid var(--line);margin-top:34px">
+  <p><a href="../">← Proving Lab</a> · <a href="../about/">About &amp; disclosure</a> ·
+     <a href="../privacy.html">Privacy</a> ·
+     <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">Corrections</a></p>
+</footer>
+
+</div>
+
+<script>
+function setLang(l){
+  document.querySelectorAll('[data-lang]').forEach(function(e){
+    e.classList.toggle('on', e.dataset.lang === l);
+  });
+  document.getElementById('b-en').setAttribute('aria-pressed', l === 'en');
+  document.getElementById('b-de').setAttribute('aria-pressed', l === 'de');
+  document.documentElement.lang = l;
+  try { localStorage.setItem('pl-lang', l); } catch (e) {}
+}
+(function(){
+  var gespeichert = null;
+  try { gespeichert = localStorage.getItem('pl-lang'); } catch (e) {}
+  var l = gespeichert || ((navigator.language || 'en').slice(0,2) === 'de' ? 'de' : 'en');
+  if (l === 'de') setLang('de');
+})();
+</script>
+</body>
+</html>

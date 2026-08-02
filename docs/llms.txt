@@ -38,5 +38,6 @@ measurements. Disclosed on every page where it is relevant.
 ## Optional
 
 - [About and disclosure](https://provinglab.dev/about/): Private, non-commercial publication — nothing sold, no advertising, no affiliate links, no tracking. Operated under the pseudonym Silence; full identity disclosed to a legitimate legal requester. States the limits explicitly: nothing here is legal advice, and a screen-capture PDF is not a qualified electronic document.
+- [Disclaimer and limitation of liability](https://provinglab.dev/disclaimer/): No warranty for software or content; liability limited as far as the law allows, with intent, gross negligence, injury to life, body or health and mandatory statutory liability expressly unaffected. States that a capture can be incomplete without indicating it, that a screen-capture PDF is not a qualified electronic document, and that nothing published is professional advice.
 - [Privacy policy](https://provinglab.dev/privacy.html)
 - [Source code](https://github.com/Bubu89/full-page-pdf-snap)

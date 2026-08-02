@@ -132,9 +132,20 @@ web-ext build --overwrite-dest
 
 Requires [web-ext](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/). Signed builds are distributed through addons.mozilla.org.
 
-## License
+## License and liability
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE). The licence's warranty clause applies in full: the
+software is provided **as is**, without warranty of any kind, and no assurance is
+given that it is fit for any particular purpose.
+
+A capture can be incomplete without saying so — pages that load while scrolling or
+change during the capture may produce a PDF that is missing something. Where the
+content matters, open the finished PDF and read the relevant part before relying
+on it.
+
+Full terms: [Disclaimer and limitation of liability](https://provinglab.dev/disclaimer/).
+Liability for intent, gross negligence and injury to life, body or health remains
+unaffected, as does any mandatory statutory liability.
 
 ---
 
