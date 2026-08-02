@@ -209,8 +209,8 @@ def haken(text):
 BILD4 = html(f"""
 <div class="inhalt">
   <div class="links">
-    <span class="marke" style="background:#16a34a">FREE</span>
-    <h1>Free — and it<br><em>stays free</em></h1>
+    <span class="marke">LICENSE</span>
+    <h1>Nothing to buy.<br><em>Nothing to sign up.</em></h1>
     <ul>
       <li>Everything runs <b>on your device</b></li>
       <li>Open source under the <b>MIT license</b></li>
@@ -225,7 +225,7 @@ BILD4 = html(f"""
       {haken("No analytics, no telemetry, no tracking")}
       <div style="margin-top:26px;padding-top:22px;border-top:2px solid #e2e8f0;
                   font-size:18px;color:#475569;line-height:1.5">
-        There is no premium version, because
+        There is no paid tier, because
         <b style="color:#0f172a">there is nothing to sell you</b>.</div>
     </div>
   </div></div>
@@ -251,7 +251,8 @@ KACHEL_KLEIN = html(f"""
     Full Page<br>PDF Snap</div>
   <div style="font-size:15px;color:#475569;margin-top:11px;font-weight:500">
     The whole webpage as one PDF</div>
-  <div style="margin-top:16px">{badge("FREE", "#16a34a")}{badge("NO TRACKING")}</div>
+  <div style="font-size:14px;color:#64748b;margin-top:14px;line-height:1.5">
+    Runs on your device · No tracking</div>
 </div>""", 440, 280)
 
 KACHEL_GROSS = html(f"""
@@ -265,14 +266,13 @@ KACHEL_GROSS = html(f"""
                 line-height:1.4">
       Save any webpage as <b style="color:#0f172a">one seamless PDF</b>.<br>
       Auto-scrolls the whole page — no cropping, no print dialog.</div>
-    <div style="margin-top:30px">
-      {badge("100% LOCAL", "#16a34a", True)}{badge("NO TRACKING", "#16a34a", True)}
-      {badge("OPEN SOURCE", "#2563eb", True)}</div>
+    <div style="margin-top:28px;font-size:21px;color:#64748b;font-weight:500">
+      Runs on your device · No tracking · Open source (MIT)</div>
   </div>
 </div>""", 1400, 560)
 
 BILDER = [("01_capture_en", BILD1, 1280, 800), ("02_settings_en", BILD2, 1280, 800),
-          ("03_output_en", BILD3, 1280, 800), ("04_free_en", BILD4, 1280, 800),
+          ("03_output_en", BILD3, 1280, 800), ("04_nocost_en", BILD4, 1280, 800),
           ("promo_tile_440x280", KACHEL_KLEIN, 440, 280),
           ("marquee_promo_1400x560", KACHEL_GROSS, 1400, 560)]
 

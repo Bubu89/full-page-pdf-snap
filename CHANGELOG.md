@@ -1,5 +1,39 @@
 # Changelog
 
+## 2026-08-02 (Nachmittag) — Feed, Edge-Cache, Suchmaschinen-Anstoss
+
+**Atom-Feed.** Die Seite hatte keinen. Wer Feedly, NetNewsWire, Miniflux oder
+Thunderbird benutzt, konnte ihr nicht folgen; Aggregatoren, die nur Feeds
+annehmen, konnten sie nicht aufgreifen. `build-feed.py` liest die Beitraege
+selbst — Titel aus `<title>`, Zusammenfassung aus der meta-description, Daten
+aus dem JSON-LD, das ohnehin auf jeder Seite steht. Damit kann der Feed nicht
+veralten, solange die Seiten stimmen. `<link rel="alternate">` in 16 Seiten
+ergaenzt, sonst findet ihn kein Leser.
+
+**Edge-Cache.** Cache-Regel ueber die Cloudflare-API gesetzt: HTML wird
+gecacht (Edge-TTL nach Origin-Vorgabe, also 600 s), `serve_stale` liefert bei
+Origin-Ausfall die letzte Kopie weiter. Vorher stand auf jeder HTML-Antwort
+`cf-cache-status: DYNAMIC` — jeder Abruf ging bis GitHub Pages durch, ein
+Ausfall dort schlug sofort auf Besucher durch. Nach der Regel: `HIT`.
+Bewusst `respect_origin` statt fester Stunde, damit Aenderungen nicht
+stundenlang unsichtbar bleiben.
+
+**Brand-Logo** mit `width`/`height` versehen — das einzige Bild der Seite ohne
+Groessenangabe und damit das einzige, das beim Laden das Layout verschieben
+konnte.
+
+**Nicht geaendert:** Die leeren `alt=""` am Logo bleiben. Das Logo steht im
+selben Link direkt neben dem Text „Proving Lab" — ein gefuellter alt wuerde
+Screenreadern den Namen doppelt vorlesen. Ein erster Pruefdurchlauf hatte das
+faelschlich als Mangel gemeldet.
+
+**IndexNow** fuer alle 14 URLs angestossen, HTTP 200. Erreicht Bing, Yandex,
+Seznam und Naver; Google nimmt nicht daran teil.
+
+**Offen:** `Zone Settings:Edit` fehlt dem Token weiterhin. Damit ungesetzt:
+Always Use HTTPS, HSTS, Always Online, Early Hints, 0-RTT. `cf-provinglab-tune`
+setzt sie, sobald das Recht da ist.
+
 ## 2026-08-02 — Erreichbarkeit provinglab.dev gemessen und nachgezogen
 
 **Warum:** Nach der Absicherung der Mail-Ebene am 01.08. sollte geprueft werden,

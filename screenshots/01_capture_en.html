@@ -1,0 +1,72 @@
+<!doctype html><meta charset='utf-8'><style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  width:1280px; height:800px; overflow:hidden;
+  font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+  background:linear-gradient(135deg,#ffffff 0%,#f4f7fb 55%,#e8eef7 100%);
+  color:#0f172a; display:flex; align-items:center;
+}
+.inhalt { display:flex; align-items:center; gap:56px; padding:0 64px; width:100%; }
+.links { width:520px; flex-shrink:0; }
+.marke {
+  display:inline-block; background:#2563eb; color:#fff; font-size:17px;
+  font-weight:700; letter-spacing:1.4px; padding:9px 20px; border-radius:999px;
+  margin-bottom:26px;
+}
+h1 { font-size:52px; line-height:1.13; font-weight:800; letter-spacing:-1px; margin-bottom:30px; }
+h1 em { font-style:normal; color:#2563eb; }
+ul { list-style:none; }
+li {
+  font-size:25px; line-height:1.42; color:#334155; margin-bottom:19px;
+  padding-left:34px; position:relative; font-weight:500;
+}
+li::before {
+  content:""; position:absolute; left:0; top:11px; width:13px; height:13px;
+  border-radius:50%; background:#2563eb;
+}
+li b { color:#0f172a; font-weight:700; }
+kbd {
+  font-family:"Cascadia Mono",Consolas,monospace; font-size:21px; font-weight:700;
+  background:#0f172a; color:#fff; padding:4px 12px; border-radius:7px;
+  white-space:nowrap;
+}
+.rechts { flex:1; display:flex; justify-content:center; }
+.karte {
+  background:#fff; border-radius:18px; width:100%; max-width:600px;
+  box-shadow:0 26px 60px rgba(15,23,42,.20), 0 0 0 1px rgba(15,23,42,.07);
+  overflow:hidden;
+}
+.leiste {
+  background:#f1f5f9; border-bottom:1px solid #e2e8f0; padding:13px 18px;
+  font-size:16px; color:#475569; font-weight:600; display:flex;
+  justify-content:space-between; align-items:center;
+}
+.punkte span { display:inline-block; width:12px; height:12px; border-radius:50%; margin-left:8px; }
+.rumpf { padding:32px; }
+</style>
+<div class="inhalt">
+  <div class="links">
+    <span class="marke">CAPTURE</span>
+    <h1>One click saves<br>the <em>entire page</em></h1>
+    <ul>
+      <li>Toolbar button, menu or <kbd>Alt+Shift+Y</kbd></li>
+      <li>Auto-scrolls through <b>lazy-loading</b> pages</li>
+      <li>No print dialog, no upload, <b>no account</b></li>
+    </ul>
+  </div>
+  <div class="rechts"><div class="karte" style="max-width:470px">
+    <div class="leiste"><span>Full Page PDF Snap</span>
+      <span class="punkte"><span style="background:#cbd5e1"></span>
+      <span style="background:#cbd5e1"></span><span style="background:#f87171"></span></span></div>
+    <div class="rumpf" style="text-align:center;padding:42px 36px">
+      <div style="font-size:27px;font-weight:800;margin-bottom:26px">Save the whole page as PDF</div>
+      <div style="background:#2563eb;color:#fff;font-size:26px;font-weight:700;
+                  padding:20px;border-radius:12px;box-shadow:0 8px 22px rgba(37,99,235,.34)">
+        Capture now</div>
+      <div style="margin-top:26px;font-size:20px;color:#475569">
+        Shortcut: <kbd style="font-size:19px">Alt+Shift+Y</kbd></div>
+      <div style="margin-top:22px;font-size:19px;color:#2563eb;font-weight:600;
+                  text-decoration:underline">Settings</div>
+    </div>
+  </div></div>
+</div>

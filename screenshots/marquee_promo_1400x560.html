@@ -1,0 +1,60 @@
+<!doctype html><meta charset='utf-8'><style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  width:1400px; height:560px; overflow:hidden;
+  font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+  background:linear-gradient(135deg,#ffffff 0%,#f4f7fb 55%,#e8eef7 100%);
+  color:#0f172a; display:flex; align-items:center;
+}
+.inhalt { display:flex; align-items:center; gap:56px; padding:0 64px; width:100%; }
+.links { width:520px; flex-shrink:0; }
+.marke {
+  display:inline-block; background:#2563eb; color:#fff; font-size:17px;
+  font-weight:700; letter-spacing:1.4px; padding:9px 20px; border-radius:999px;
+  margin-bottom:26px;
+}
+h1 { font-size:52px; line-height:1.13; font-weight:800; letter-spacing:-1px; margin-bottom:30px; }
+h1 em { font-style:normal; color:#2563eb; }
+ul { list-style:none; }
+li {
+  font-size:25px; line-height:1.42; color:#334155; margin-bottom:19px;
+  padding-left:34px; position:relative; font-weight:500;
+}
+li::before {
+  content:""; position:absolute; left:0; top:11px; width:13px; height:13px;
+  border-radius:50%; background:#2563eb;
+}
+li b { color:#0f172a; font-weight:700; }
+kbd {
+  font-family:"Cascadia Mono",Consolas,monospace; font-size:21px; font-weight:700;
+  background:#0f172a; color:#fff; padding:4px 12px; border-radius:7px;
+  white-space:nowrap;
+}
+.rechts { flex:1; display:flex; justify-content:center; }
+.karte {
+  background:#fff; border-radius:18px; width:100%; max-width:600px;
+  box-shadow:0 26px 60px rgba(15,23,42,.20), 0 0 0 1px rgba(15,23,42,.07);
+  overflow:hidden;
+}
+.leiste {
+  background:#f1f5f9; border-bottom:1px solid #e2e8f0; padding:13px 18px;
+  font-size:16px; color:#475569; font-weight:600; display:flex;
+  justify-content:space-between; align-items:center;
+}
+.punkte span { display:inline-block; width:12px; height:12px; border-radius:50%; margin-left:8px; }
+.rumpf { padding:32px; }
+</style>
+<div style="width:1400px;height:560px;display:flex;align-items:center;
+            justify-content:center;gap:52px;padding:0 80px">
+  <img src="icon-128.png" style="width:186px;height:186px;flex-shrink:0">
+  <div>
+    <div style="font-size:66px;font-weight:800;letter-spacing:-1.5px;line-height:1.1">
+      Full Page PDF Snap</div>
+    <div style="font-size:29px;color:#334155;margin-top:18px;font-weight:500;
+                line-height:1.4">
+      Save any webpage as <b style="color:#0f172a">one seamless PDF</b>.<br>
+      Auto-scrolls the whole page — no cropping, no print dialog.</div>
+    <div style="margin-top:28px;font-size:21px;color:#64748b;font-weight:500">
+      Runs on your device · No tracking · Open source (MIT)</div>
+  </div>
+</div>
