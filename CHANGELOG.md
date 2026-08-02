@@ -1,5 +1,40 @@
 # Changelog
 
+## 2026-08-02 (spaeter) — Agent-Readiness-Bericht bewertet, ein Punkt umgesetzt
+
+Ein Prueflauf von isitagentready.com meldete elf offene Punkte. Bewertet, nicht
+abgehakt — die Liste ist generisch, und der groessere Teil verlangt Metadaten
+fuer Infrastruktur, die es hier nicht gibt.
+
+**Umgesetzt:** Content Signals in robots.txt.
+`search=yes, ai-input=yes, ai-train=no`. Indexierung und Abruf zur Antwortzeit
+sind erwuenscht — beide schicken Leser hierher, und eine zitierte Messung mit
+Link ist der Zweck dieser Seite. Training ist abgelehnt: es verbraucht die
+Arbeit, ohne je auf sie zurueckzuverweisen.
+
+**Nicht umgesetzt, weil es Fassade waere:** API-Katalog (RFC 9727) ohne API,
+OAuth- und OIDC-Discovery ohne geschuetzte Endpunkte, auth.md ohne Registrierung,
+MCP Server Card ohne MCP-Server, Agent-Skills-Index ohne Skills, DNS-AID ohne
+Agent-Endpunkt, WebMCP ohne Aktionen auf einer reinen Leseseite. Ein Agent, der
+`/.well-known/api-catalog` findet und darin nichts Nutzbares vorfindet, hat Zeit
+verloren — leere Metadaten sind schlechter als keine.
+
+**Blockiert durch Rechte:** Link-Header (RFC 8288) brauchen Response-Header-
+Transform-Regeln. Gemessen: `http_response_headers_transform` antwortet mit
+HTTP 403, der Token hat nur Cache Rules. Dieselbe Regel wuerde auch die heute
+komplett fehlenden `x-content-type-options`, `referrer-policy` und
+`permissions-policy` setzen, die GitHub Pages nicht liefern kann.
+
+**Blockiert durch Plan:** Markdown for Agents setzt Pro oder Business voraus,
+die Zone laeuft auf Free. Das vorhandene llms.txt deckt den Zweck weitgehend ab
+— es enthaelt bereits eine Zusammenfassung jedes Beitrags.
+
+**Nebenwirkung der Cache-Regel bemerkt:** robots.txt zeigte nach dem Deployment
+zehn Minuten lang die alte Fassung (`cf-cache-status: HIT`, `age: 588`). Das ist
+die Origin-TTL von 600 s und damit erwartbar. Ein gezielter Purge ist mit dem
+Token nicht moeglich (`Cache Purge` fehlt); bei dringenden Aenderungen hilft ein
+Abruf mit Zufallsparameter zur Kontrolle, oder schlicht abwarten.
+
 ## 2026-08-02 (Nachmittag) — Feed, Edge-Cache, Suchmaschinen-Anstoss
 
 **Atom-Feed.** Die Seite hatte keinen. Wer Feedly, NetNewsWire, Miniflux oder
