@@ -1,177 +1,178 @@
 {
- "erhoben": "2026-08-01T09:09:57+0200",
- "quelle": "AMO API v5",
- "daten": [
-  {
-   "slug": "save-as-pdf",
-   "name": "Save as PDF",
-   "users": 19610,
-   "rating": 2.6466,
-   "reviews": 283,
-   "last_updated": "2025-06-17",
-   "version": "2.2",
-   "permissions": [
-    "https://pdfcrowd.com/",
-    "tabs",
-    "storage",
-    "downloads"
-   ],
-   "hosts": [
-    "https://pdfcrowd.com/"
-   ],
-   "summary": "Download web pages as PDF in one click."
-  },
-  {
-   "slug": "pdf-mage",
-   "name": "PDF Mage",
-   "users": 16313,
-   "rating": 3.3111,
-   "reviews": 315,
-   "last_updated": "2021-11-16",
-   "version": "2.1.11",
-   "permissions": [
-    "tabs",
-    "downloads",
-    "storage",
-    "activeTab",
-    "contextMenus",
-    "<all_urls>"
-   ],
-   "hosts": [
-    "<all_urls>"
-   ],
-   "summary": "Save any page as PDF"
-  },
-  {
-   "slug": "pdfmyurl-save-webpages-as-pdf",
-   "name": "PDFmyURL save webpages as PDF",
-   "users": 390,
-   "rating": 2.3077,
-   "reviews": 13,
-   "last_updated": "2019-06-03",
-   "version": "1.32",
-   "permissions": [
-    "tabs",
-    "downloads",
-    "storage",
-    "activeTab",
-    "https://pdfmyurl.com/*",
-    "<all_urls>"
-   ],
-   "hosts": [
-    "https://pdfmyurl.com/*",
-    "<all_urls>"
-   ],
-   "summary": "Saves any WebPage as PDF quickly with a click on the PDFmyURL button."
-  },
-  {
-   "slug": "fireshot",
-   "name": "Full Page Screen Capture — FireShot",
-   "users": 169961,
-   "rating": 4.633,
-   "reviews": 2632,
-   "last_updated": "2023-06-21",
-   "version": "1.12.18",
-   "permissions": [
-    "activeTab",
-    "<all_urls>",
-    "contextMenus",
-    "nativeMessaging",
-    "downloads",
-    "storage",
-    "*://getfireshot.com/activate.php?*"
-   ],
-   "hosts": [
-    "<all_urls>",
-    "*://getfireshot.com/activate.php?*"
-   ],
-   "summary": "FireShot is a Full page screen capture tool that also makes precise Selections even that extend beyond the screen — unlike the standard tool. Fast, simple, private, offline, reliable for research, work, and documentation"
-  },
-  {
-   "slug": "single-file",
-   "name": "SingleFile",
-   "users": 84954,
-   "rating": 4.7629,
-   "reviews": 1029,
-   "last_updated": "2026-03-06",
-   "version": "1.22.98",
-   "permissions": [
-    "identity",
-    "menus",
-    "downloads",
-    "storage",
-    "tabs",
-    "<all_urls>"
-   ],
-   "hosts": [
-    "<all_urls>"
-   ],
-   "summary": "Save an entire web page—including images and styling—as a single HTML file."
-  },
-  {
-   "slug": "print-edit-we",
-   "name": "Print Edit WE",
-   "users": 40873,
-   "rating": 4.1525,
-   "reviews": 472,
-   "last_updated": "2025-04-30",
-   "version": "29.7",
-   "permissions": [
-    "<all_urls>",
-    "tabs",
-    "webNavigation",
-    "webRequest",
-    "webRequestBlocking",
-    "contextMenus",
-    "notifications",
-    "storage"
-   ],
-   "hosts": [
-    "<all_urls>"
-   ],
-   "summary": "Edit the contents of a web page prior to printing or saving. Elements in the web page can be edited, formatted, hidden or deleted. Unwanted content, such as adverts and sidebars, can easily be removed."
-  },
-  {
-   "slug": "page-saver-webpage-to-pdf",
-   "name": "PageSaver - Webpage to PDF or Image",
-   "users": 2178,
-   "rating": 3.6667,
-   "reviews": 9,
-   "last_updated": "2026-07-24",
-   "version": "2.5.8",
-   "permissions": [
-    "activeTab",
-    "downloads",
-    "contextMenus",
-    "tabs",
-    "storage",
-    "clipboardWrite",
-    "<all_urls>"
-   ],
-   "hosts": [
-    "<all_urls>"
-   ],
-   "summary": "Webpage to PDF converter with full page support and reader mode. Save web pages as PDF document or image with professional formatting."
-  },
-  {
-   "slug": "full_page_pdf_snap_webpagesave",
-   "name": "Full Page PDF Snap – Save Webpage as PDF",
-   "users": 3,
-   "rating": 5.0,
-   "reviews": 1,
-   "last_updated": "2026-08-01",
-   "version": "2.16.0",
-   "permissions": [
-    "activeTab",
-    "downloads",
-    "downloads.open",
-    "storage",
-    "menus",
-    "notifications",
-    "scripting"
-   ],
-   "hosts": [],
-   "summary": "Save a whole web page as one high-resolution PDF — on your phone as well. One of the few capture add-ons that run on Firefox for Android: auto-scrolls the full page, no cropping, no print dialog. No account, no ads, noth"
-  }
- ]
+  "erhoben": "2026-08-01T09:09:57+0200",
+  "quelle": "AMO API v5",
+  "daten": [
+    {
+      "slug": "save-as-pdf",
+      "name": "Save as PDF",
+      "users": 19610,
+      "rating": 2.6466,
+      "reviews": 283,
+      "last_updated": "2025-06-17",
+      "version": "2.2",
+      "permissions": [
+        "https://pdfcrowd.com/",
+        "tabs",
+        "storage",
+        "downloads"
+      ],
+      "hosts": [
+        "https://pdfcrowd.com/"
+      ],
+      "summary": "Download web pages as PDF in one click."
+    },
+    {
+      "slug": "pdf-mage",
+      "name": "PDF Mage",
+      "users": 16313,
+      "rating": 3.3111,
+      "reviews": 315,
+      "last_updated": "2021-11-16",
+      "version": "2.1.11",
+      "permissions": [
+        "tabs",
+        "downloads",
+        "storage",
+        "activeTab",
+        "contextMenus",
+        "<all_urls>"
+      ],
+      "hosts": [
+        "<all_urls>"
+      ],
+      "summary": "Save any page as PDF"
+    },
+    {
+      "slug": "pdfmyurl-save-webpages-as-pdf",
+      "name": "PDFmyURL save webpages as PDF",
+      "users": 390,
+      "rating": 2.3077,
+      "reviews": 13,
+      "last_updated": "2019-06-03",
+      "version": "1.32",
+      "permissions": [
+        "tabs",
+        "downloads",
+        "storage",
+        "activeTab",
+        "https://pdfmyurl.com/*",
+        "<all_urls>"
+      ],
+      "hosts": [
+        "https://pdfmyurl.com/*",
+        "<all_urls>"
+      ],
+      "summary": "Saves any WebPage as PDF quickly with a click on the PDFmyURL button."
+    },
+    {
+      "slug": "fireshot",
+      "name": "Full Page Screen Capture — FireShot",
+      "users": 169961,
+      "rating": 4.633,
+      "reviews": 2632,
+      "last_updated": "2023-06-21",
+      "version": "1.12.18",
+      "permissions": [
+        "activeTab",
+        "<all_urls>",
+        "contextMenus",
+        "nativeMessaging",
+        "downloads",
+        "storage",
+        "*://getfireshot.com/activate.php?*"
+      ],
+      "hosts": [
+        "<all_urls>",
+        "*://getfireshot.com/activate.php?*"
+      ],
+      "summary": "FireShot is a Full page screen capture tool that also makes precise Selections even that extend beyond the screen — unlike the standard tool. Fast, simple, private, offline, reliable for research, work, and documentation"
+    },
+    {
+      "slug": "single-file",
+      "name": "SingleFile",
+      "users": 84954,
+      "rating": 4.7629,
+      "reviews": 1029,
+      "last_updated": "2026-03-06",
+      "version": "1.22.98",
+      "permissions": [
+        "identity",
+        "menus",
+        "downloads",
+        "storage",
+        "tabs",
+        "<all_urls>"
+      ],
+      "hosts": [
+        "<all_urls>"
+      ],
+      "summary": "Save an entire web page—including images and styling—as a single HTML file."
+    },
+    {
+      "slug": "print-edit-we",
+      "name": "Print Edit WE",
+      "users": 40873,
+      "rating": 4.1525,
+      "reviews": 472,
+      "last_updated": "2025-04-30",
+      "version": "29.7",
+      "permissions": [
+        "<all_urls>",
+        "tabs",
+        "webNavigation",
+        "webRequest",
+        "webRequestBlocking",
+        "contextMenus",
+        "notifications",
+        "storage"
+      ],
+      "hosts": [
+        "<all_urls>"
+      ],
+      "summary": "Edit the contents of a web page prior to printing or saving. Elements in the web page can be edited, formatted, hidden or deleted. Unwanted content, such as adverts and sidebars, can easily be removed."
+    },
+    {
+      "slug": "page-saver-webpage-to-pdf",
+      "name": "PageSaver - Webpage to PDF or Image",
+      "users": 2178,
+      "rating": 3.6667,
+      "reviews": 9,
+      "last_updated": "2026-07-24",
+      "version": "2.5.8",
+      "permissions": [
+        "activeTab",
+        "downloads",
+        "contextMenus",
+        "tabs",
+        "storage",
+        "clipboardWrite",
+        "<all_urls>"
+      ],
+      "hosts": [
+        "<all_urls>"
+      ],
+      "summary": "Webpage to PDF converter with full page support and reader mode. Save web pages as PDF document or image with professional formatting."
+    },
+    {
+      "slug": "full_page_pdf_snap_webpagesave",
+      "name": "Full Page PDF Snap – Save Webpage as PDF",
+      "users": 3,
+      "rating": 5.0,
+      "reviews": 1,
+      "last_updated": "2026-08-01",
+      "version": "2.16.0",
+      "permissions": [
+        "activeTab",
+        "downloads",
+        "downloads.open",
+        "storage",
+        "menus",
+        "notifications",
+        "scripting"
+      ],
+      "hosts": [],
+      "summary": "Save a whole web page as one high-resolution PDF — on your phone as well. One of the few capture add-ons that run on Firefox for Android: auto-scrolls the full page, no cropping, no print dialog. No account, no ads, noth"
+    }
+  ],
+  "license": "CC BY 4.0"
 }

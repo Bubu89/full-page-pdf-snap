@@ -25,10 +25,84 @@
     return out;
   }
 
+  // --- Nachweiszeile und Metadaten -----------------------------------------
+  //
+  // Eine Bildschirmaufnahme ist KEIN qualifiziertes elektronisches Dokument im
+  // Sinne der eIDAS-Verordnung. Sie traegt keine Signatur und keinen
+  // vertrauenswuerdigen Zeitstempel, und niemand ausser dem Erzeuger bezeugt
+  // sie. Was sie leisten kann, ist Selbstdokumentation: festhalten, welche
+  // Adresse wann abgerufen wurde und dass die Datei seither unveraendert ist.
+  //
+  // Genau das — und nichts darueber hinaus — sagt die Fussnote. Der Wortlaut
+  // ist bewusst zurueckhaltend: Der Zeitstempel stammt von der Geraeteuhr, die
+  // Pruefsumme deckt die Bilddaten dieser Datei ab, nicht den Inhalt der
+  // Website. Wer mehr braucht, braucht einen qualifizierten Zeitstempeldienst.
+  //
+  // Die Zeile steht auf Englisch, auch wenn die Oberflaeche uebersetzt ist:
+  // Standard-PDF-Schriften koennen nur WinAnsi darstellen, und eine Fussnote,
+  // die auf Japanisch oder Russisch zu Kaestchen zerfaellt, dokumentiert
+  // nichts. Englisch ist im Zweifel lesbar.
+  const HINWEIS =
+    "Self-made screen capture. Not a qualified electronic document (eIDAS). " +
+    "Time from device clock. Checksum covers this file's image data only, " +
+    "not the authenticity of the page.";
+
+  function pdfString(s) {
+    // Klammern und Backslash sind in PDF-Literalstrings Steuerzeichen.
+    return String(s).replace(/[\\()]/g, "\\$&").replace(/[\r\n]/g, " ");
+  }
+
+  function pdfTextString(s) {
+    // Nicht-ASCII in Dokumentinformationen: UTF-16BE mit Byte-Order-Mark.
+    // eslint-disable-next-line no-control-regex
+    if (/^[\x20-\x7e]*$/.test(s)) return "(" + pdfString(s) + ")";
+    let hex = "FEFF";
+    for (const ch of String(s)) {
+      const c = ch.codePointAt(0);
+      if (c > 0xffff) {
+        const v = c - 0x10000;
+        hex += (0xd800 + (v >> 10)).toString(16).padStart(4, "0");
+        hex += (0xdc00 + (v & 0x3ff)).toString(16).padStart(4, "0");
+      } else {
+        hex += c.toString(16).padStart(4, "0");
+      }
+    }
+    return "<" + hex.toUpperCase() + ">";
+  }
+
+  function pdfDate(d) {
+    // PDF-Datum nach ISO 32000: D:YYYYMMDDHHmmSSOHH'mm — mit Zeitzonenversatz,
+    // damit "wann" ohne Kenntnis des Geraets nachvollziehbar bleibt.
+    const p = (n) => String(Math.abs(n)).padStart(2, "0");
+    const off = -d.getTimezoneOffset();
+    const sign = off === 0 ? "Z" : (off > 0 ? "+" : "-");
+    return "D:" + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) +
+      p(d.getHours()) + p(d.getMinutes()) + p(d.getSeconds()) +
+      (off === 0 ? "Z" : sign + p(off / 60) + "'" + p(off % 60) + "'");
+  }
+
+  function localIso(d) {
+    const p = (n) => String(Math.abs(n)).padStart(2, "0");
+    const off = -d.getTimezoneOffset();
+    const tz = off === 0 ? "Z"
+      : (off > 0 ? "+" : "-") + p(off / 60) + ":" + p(off % 60);
+    return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()) +
+      " " + p(d.getHours()) + ":" + p(d.getMinutes()) + ":" + p(d.getSeconds()) + " " + tz;
+  }
+
+  /** Kuerzt eine URL mittig, damit Anfang und Ende lesbar bleiben. */
+  function kuerzen(s, max) {
+    s = String(s || "");
+    if (s.length <= max) return s;
+    const kopf = Math.ceil((max - 3) * 0.6);
+    return s.slice(0, kopf) + "..." + s.slice(-(max - 3 - kopf));
+  }
+
   function buildPdf(pages, opts) {
     opts = opts || {};
     const dpi = opts.dpi || 144;            // 144 dpi = 2x Standard, gut fuer OCR
     const pxToPt = 72 / dpi;                 // 1 pt = 1/72 inch
+    const beleg = opts.provenance || null;   // { url, capturedAt:Date, sha256 }
 
     const objects = [];                      // index 0 = unused
     objects.push(null);
@@ -41,10 +115,21 @@
     const catalogId = addObject(null);
     const pagesId = addObject(null);
 
+    // Die Nachweiszeile bekommt eigenen Platz unter dem Bild, statt darueber zu
+    // liegen: Sie darf nichts verdecken, sonst waere sie eine Veraenderung der
+    // Aufnahme statt einer Angabe darueber.
+    const fussPt = beleg ? 30 : 0;
+    let fontId = 0;
+    if (beleg) {
+      fontId = addObject(strToBytes(
+        "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>"
+      ));
+    }
+
     const pageRefs = [];
     for (const pg of pages) {
       const wPt = (pg.widthPx * pxToPt).toFixed(2);
-      const hPt = (pg.heightPx * pxToPt).toFixed(2);
+      const hPt = (pg.heightPx * pxToPt + fussPt).toFixed(2);
 
       // Normalisiere: legacy einzelnes Bild -> Tile-Liste mit einem Eintrag.
       const tiles = pg.tiles && pg.tiles.length
@@ -79,9 +164,25 @@
         const wptT = (x.t.wPx * pxToPt).toFixed(2);
         const hptT = (x.t.hPx * pxToPt).toFixed(2);
         const xptT = (x.t.xPx * pxToPt).toFixed(2);
-        const yptT = ((pg.heightPx - x.t.yPx - x.t.hPx) * pxToPt).toFixed(2);
+        const yptT = ((pg.heightPx - x.t.yPx - x.t.hPx) * pxToPt + fussPt).toFixed(2);
         contentStr += "q\n" + wptT + " 0 0 " + hptT + " " + xptT + " " + yptT + " cm\n/" + x.name + " Do\nQ\n";
       }
+
+      if (beleg) {
+        const breite = pg.widthPx * pxToPt;
+        // Wieviele Zeichen bei 7 pt Helvetica in die Breite passen — grob 0.5 em
+        // je Zeichen, mit Rand. Lieber zu kurz kuerzen als ueber den Rand laufen.
+        const platz = Math.max(40, Math.floor((breite - 20) / 3.4));
+        const zeile1 =
+          kuerzen(beleg.url, Math.max(24, platz - 62)) +
+          "  |  captured " + localIso(beleg.capturedAt) +
+          (beleg.sha256 ? "  |  SHA-256 " + beleg.sha256.slice(0, 16) + "..." : "");
+        contentStr +=
+          "q\n0.85 0.85 0.85 rg\n0 0 " + breite.toFixed(2) + " " + fussPt + " re\nf\nQ\n" +
+          "BT /F1 7 Tf 0.15 0.15 0.15 rg 10 18 Td (" + pdfString(zeile1) + ") Tj ET\n" +
+          "BT /F1 5.5 Tf 0.35 0.35 0.35 rg 10 7 Td (" + pdfString(kuerzen(HINWEIS, platz + 40)) + ") Tj ET\n";
+      }
+
       const contentBytes = strToBytes(
         "<< /Length " + contentStr.length + " >>\nstream\n" + contentStr + "endstream"
       );
@@ -91,7 +192,8 @@
       const pageDict =
         "<< /Type /Page /Parent " + pagesId + " 0 R " +
         "/MediaBox [0 0 " + wPt + " " + hPt + "] " +
-        "/Resources << /XObject << " + xobjEntries + " >> >> " +
+        "/Resources << /XObject << " + xobjEntries + " >>" +
+        (beleg ? " /Font << /F1 " + fontId + " 0 R >>" : "") + " >> " +
         "/Contents " + contentId + " 0 R >>";
       const pageId = addObject(strToBytes(pageDict));
       pageRefs.push(pageId);

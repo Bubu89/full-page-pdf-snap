@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pages that are gone before you need them: eight moments in a degree</title>
+<meta name="description" content="Submission receipts, course rooms after the semester ends, the version of an examination regulation that applied when you enrolled: eight situations in a degree where a screen matters later and is no longer there. With what to keep, what not to keep, and why. Mit deutscher Fassung.">
+<link rel="canonical" href="https://provinglab.dev/notes/pages-gone-before-you-need-them/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="author" content="Proving Lab">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/notes/pages-gone-before-you-need-them/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/notes/pages-gone-before-you-need-them/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/notes/pages-gone-before-you-need-them/">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pages that are gone before you need them">
+<meta property="og:description" content="Eight situations in a degree where a screen matters later and is no longer there — and what to keep instead.">
+<meta property="og:url" content="https://provinglab.dev/notes/pages-gone-before-you-need-them/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-08-02">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Pages that are gone before you need them: eight moments in a degree",
+  "description": "Eight recurring situations in a degree programme where something on screen becomes evidence later — submission receipts, course rooms that close, regulations that change — and what is worth keeping, what is not, and why.",
+  "datePublished": "2026-08-02",
+  "dateModified": "2026-08-02",
+  "inLanguage": ["en", "de"],
+  "mainEntityOfPage": "https://provinglab.dev/notes/pages-gone-before-you-need-them/",
+  "author": { "@type": "Organization", "name": "Proving Lab" },
+  "publisher": { "@type": "Organization", "name": "Proving Lab" },
+  "about": ["students", "university", "documentation", "archiving", "Studium",
+            "Prüfungsordnung", "Abgabebestätigung", "Lernplattform"],
+  "keywords": "Abgabebestätigung sichern, Moodle Kurs sichern, Prüfungsordnung Fassung, Studienplan Stand, Praktikumsausschreibung dokumentieren, Statistik Abfrage archivieren, save submission receipt, course page before access ends, keep a copy for your records",
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "Proving Lab Notes",
+    "url": "https://provinglab.dev/notes/"
+  },
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+
+<style>
+  :root{
+    --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --acc2:#7c5cff;
+    --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--tx); line-height:1.68;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+       font-size:.88em;background:var(--card);padding:2px 6px;border-radius:3px;
+       border:1px solid var(--line)}
+
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:36px 0 40px;border-bottom:1px solid var(--line);margin-bottom:36px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.18;letter-spacing:-.02em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:62ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+
+  h2{font-size:1.5rem;line-height:1.25;letter-spacing:-.01em;margin:48px 0 14px;
+     text-wrap:balance}
+  h3{font-size:1.08rem;margin:30px 0 10px}
+  p{margin-bottom:16px}
+  ul{margin:0 0 18px 22px} li{margin-bottom:7px}
+
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:28px 0}
+  .kf{flex:1 1 150px;background:var(--card);border:1px solid var(--line);
+      border-radius:8px;padding:18px 18px 16px}
+  .kf .n{font-size:1.85rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;
+         font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.good .n{color:var(--good)} .kf.bad .n{color:var(--bad)}
+
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:460px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+  thead th{background:var(--bg2);font-size:.76rem;letter-spacing:.07em;
+           text-transform:uppercase;color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;
+       white-space:nowrap}
+  .r-good{color:var(--good);font-weight:600}
+  .r-warn{color:var(--warn);font-weight:600}
+  .r-bad{color:var(--bad);font-weight:600}
+  tr.pick td{background:color-mix(in srgb,var(--good) 12%,transparent)}
+
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;
+      padding:16px 18px;overflow-x:auto;margin:18px 0;font-size:.85rem;line-height:1.6}
+  pre code{background:none;border:none;padding:0}
+
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0}
+  .box p:last-child{margin-bottom:0}
+
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+           padding:20px 22px;margin:40px 0 0}
+  .related h3{margin-top:0}
+  .related ul{margin-bottom:0}
+
+  footer{margin-top:56px;padding:24px 0 60px;border-top:1px solid var(--line);
+         font-size:.85rem;color:var(--dim)}
+
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+
+  .faq{margin:44px 0 0}
+  .faq h2{margin-bottom:8px}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;font-size:1rem;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+
+  /* --- Sprachumschaltung --- */
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
+  .lang{display:flex;gap:6px;margin:0 0 26px}
+  .lang button{font:inherit;font-size:.86rem;font-weight:600;padding:7px 18px;cursor:pointer;
+    background:var(--card);color:var(--dim);border:1px solid var(--line);border-radius:8px}
+  .lang button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
+  .quelle{font-size:.9rem;color:var(--dim);padding:12px 0;border-top:1px solid var(--line)}
+  .quelle b{color:var(--tx);font-weight:600}
+  ol.schritte{margin:0 0 20px 22px}
+  ol.schritte li{margin-bottom:14px}
+
+  .fall{border-top:1px solid var(--line);padding:26px 0}
+  .fall h3{font-size:1.1rem;margin-bottom:6px;letter-spacing:-.01em}
+  .fall .wann{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.74rem;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin-bottom:9px}
+  .fall p{margin-bottom:10px}
+  .fall p:last-child{margin-bottom:0}
+  .warum{color:var(--dim);font-size:.95rem}
+</style>
+<script src="/agent-tools.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/" aria-current="page">Notes</a>
+    <a class="n" href="../../measurements/">Measurements</a>
+    <a class="n" href="../../tools/">Tools</a>
+    <a class="n" href="../../about/">About</a>
+    <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header>
+  <h1 class="on" data-lang="en">Pages that are gone before you need them</h1>
+  <h1 data-lang="de">Seiten, die weg sind, bevor man sie braucht</h1>
+  <p class="standfirst on" data-lang="en">
+    A separate measurement here looked at what happens to sources after you cite them.
+    But most of the moments in a degree where a screen matters later have nothing to do with
+    a reference list. They have to do with deadlines, access that expires, and rules that
+    were different when you enrolled. Eight of them, and what is worth keeping.
+  </p>
+  <p class="standfirst" data-lang="de">
+    Eine eigene Messung auf dieser Seite hat untersucht, was mit Quellen nach dem Zitieren
+    geschieht. Die meisten Momente im Studium, in denen ein Bildschirminhalt später zählt,
+    haben mit dem Literaturverzeichnis aber gar nichts zu tun. Sie haben mit Fristen zu tun,
+    mit Zugängen, die erlöschen, und mit Regeln, die bei der Zulassung andere waren. Acht
+    davon — und was sich zu sichern lohnt.
+  </p>
+  <p class="meta-line">
+    <span class="on" data-lang="en">2 August 2026 · a practical note, not a measurement</span>
+    <span data-lang="de">2. August 2026 · eine Handreichung, keine Messung</span>
+  </p>
+</header>
+
+<div class="lang">
+  <button id="b-en" aria-pressed="true" onclick="setLang('en')">English</button>
+  <button id="b-de" aria-pressed="false" onclick="setLang('de')">Deutsch</button>
+</div>
+
+<div class="privhint">
+  <strong class="on" data-lang="en">A personal report.</strong>
+  <strong data-lang="de">Ein persönlicher Bericht.</strong>
+  <span class="on" data-lang="en">This is a private, non-commercial account by an individual —
+  not guidance from any university, and not legal advice. Rules on deadlines, examination
+  regulations and what counts as proof are set by your institution and differ between them;
+  what your registrar's office says always wins over what is written here. The author
+  develops <a href="../../tools/full-page-pdf-snap/">Full Page PDF Snap</a>, one of several
+  ways to keep a copy of a page.
+  Corrections: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a>.</span>
+  <span data-lang="de">Dies ist ein privater, nicht kommerzieller Bericht einer Einzelperson —
+  keine Auskunft einer Hochschule und keine Rechtsberatung. Regeln zu Fristen, Prüfungsordnungen
+  und dazu, was als Nachweis gilt, setzt Ihre Hochschule, und sie unterscheiden sich; was Ihre
+  Studienabteilung sagt, geht dem hier Geschriebenen immer vor. Der Autor entwickelt
+  <a href="../../tools/full-page-pdf-snap/">Full Page PDF Snap</a>, eines von mehreren Mitteln,
+  eine Seite zu sichern.
+  Korrekturen: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub-Issues</a>.</span>
+</div>
+
+<div class="on" data-lang="en">
+
+<h2>Eight situations</h2>
+<p>
+  None of these is exotic. They are the ones that come up again and again, and the pattern is
+  always the same: the screen exists once, matters later, and by then it is behind a login
+  that expired or on a page that has been rewritten.
+</p>
+
+<div class="fall">
+  <p class="wann">At submission</p>
+  <h3>The receipt after you upload</h3>
+  <p>The confirmation screen after an upload — timestamp, file name, sometimes a checksum — is the one artefact that says the file arrived before the deadline. It is shown once. If a submission is later recorded as missing or late, the discussion is much shorter when you can produce that screen.</p>
+  <p class="warum">Systems send a confirmation email too, sometimes. Sometimes they do not, and sometimes it lands in a spam folder you clean out.</p>
+</div>
+<div class="fall">
+  <p class="wann">Before the semester closes</p>
+  <h3>Course rooms that are archived or deleted</h3>
+  <p>Slides, exercise sheets, recorded sessions, the reading list: a course room usually stays open for a while after the semester and then closes. Access ends completely when you graduate or leave. Everything you might want for the next module, for a thesis, or for a job interview two years later sits behind that login.</p>
+  <p class="warum">Keep this for your own study only. Teaching material is someone's copyright; passing it on to others, uploading it to a sharing site or selling it is a different matter entirely.</p>
+</div>
+<div class="fall">
+  <p class="wann">At enrolment</p>
+  <h3>The version of the regulations that applies to you</h3>
+  <p>Examination regulations and curricula change. Which version applies to you is normally the one in force when you enrolled — but the website shows the current one, and the old one may not be linked at all. If a required credit, a deadline or a permitted attempt count is ever in question, the version that mattered is the one you can no longer find.</p>
+  <p class="warum">Save it once at the start with the date visible on screen, and again whenever you hear that something changed.</p>
+</div>
+<div class="fall">
+  <p class="wann">Every registration</p>
+  <h3>Course and exam sign-ups, waiting list positions</h3>
+  <p>Registration windows are short and the confirmation is often a single line on a page you navigate away from. Waiting-list positions move. If a place is later disputed, or an attempt is counted that you withdrew from in time, this is the evidence.</p>
+  <p class="warum">The withdrawal confirmation matters as much as the registration — arguably more.</p>
+</div>
+<div class="fall">
+  <p class="wann">While applying</p>
+  <h3>Job and internship postings</h3>
+  <p>A posting disappears the moment applications close, and you may need it much later: for a compulsory-internship approval, for the report, or to show that the tasks you performed matched what was advertised.</p>
+  <p class="warum">Keep the posting together with your application, not in a downloads folder you empty.</p>
+</div>
+<div class="fall">
+  <p class="wann">For any figure</p>
+  <h3>Statistics portals and database queries</h3>
+  <p>A query against a statistics portal produces a table that exists only for that moment. Figures get revised; the same query next year returns different numbers, legitimately. Without a copy showing the query, the date and the result, you cannot explain the difference to a supervisor — or to yourself.</p>
+  <p class="warum">Keep the parameters visible in the capture. A table without its query is unusable.</p>
+</div>
+<div class="fall">
+  <p class="wann">For anything conditional</p>
+  <h3>Grants, allowances and their conditions</h3>
+  <p>Eligibility rules, income limits and deadlines for student support change between years. The conditions that applied when you were assessed are the relevant ones, and portals show only what is current.</p>
+  <p class="warum">Same for scholarship terms and for anything that says &#8222;subject to change&#8220;.</p>
+</div>
+<div class="fall">
+  <p class="wann">When it breaks</p>
+  <h3>Error messages during a deadline</h3>
+  <p>A system that fails at 23:50 on the submission day is a specific claim that someone will ask you to substantiate. The error, the URL and the clock in the same image is what makes that claim checkable.</p>
+  <p class="warum">Send the report immediately as well — a copy made at the time, sent at the time, is a different thing from a copy produced a week later.</p>
+</div>
+
+<h2>What not to keep</h2>
+
+<p>
+  Two limits are worth being deliberate about, because getting them wrong creates a problem
+  instead of solving one.
+</p>
+
+<p>
+  <b>Other people's data.</b> Notice boards with names and grades, forum threads with
+  classmates' contributions, group chats, participant lists. A copy of a page that carries
+  other people's personal data is a copy you are then responsible for. If you only need proof
+  of your own entry, capture only what shows it.
+</p>
+
+<p>
+  <b>Teaching material beyond your own use.</b> Slides and scripts are protected work. Keeping
+  a copy for your own study is one thing; putting it on a sharing platform, sending it to a
+  cohort chat or selling it is another, and it is the kind of thing that ends in a letter from
+  a lawyer. If you are unsure where the line runs for your situation, your university library
+  or student union advice service will know — nothing here is legal advice.
+</p>
+
+<h2>Making it a habit rather than a rescue operation</h2>
+
+<p>
+  All of this only works if it costs seconds. Three things make the difference:
+</p>
+
+<ul>
+  <li><b>Capture the whole page, not a screenshot of the visible part.</b> A confirmation
+    screen usually needs the header with your name and the footer with the timestamp, and
+    those are rarely on screen together.</li>
+  <li><b>Put the date and the topic in the file name.</b> <code>2026-08-02_abgabe_modul7.pdf</code>
+    is findable in three years. <code>Screenshot_2026-08-02_at_23.51.07.png</code> is not.</li>
+  <li><b>File it where it belongs immediately</b> — with the module, the application, the
+    chapter. A folder called <em>Downloads</em> is where evidence goes to be lost.</li>
+</ul>
+
+<p>
+  For sources you cite, there is a second and stronger step: a public archive copy, so that a
+  reader can verify it without you. That case, with the measurements behind it, is
+  <a href="../../measurements/web-citations-that-vanish/">in a separate article</a>.
+</p>
+
+<div class="box">
+  <p><strong>Scope.</strong> This is a practical note, not a measurement — there are no figures
+  here to reproduce. The situations come from ordinary study experience and from what people
+  ask about; your institution's rules decide what actually counts as proof in each of them.
+  A page saved as a PDF documents what a browser displayed. It is not a qualified electronic
+  document and does not by itself prove that a page existed. Nothing here is legal advice.
+  Corrections via <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a>
+  are taken up.</p>
+</div>
+
+</div>
+
+<div data-lang="de">
+
+<h2>Acht Situationen</h2>
+<p>
+  Keine davon ist ausgefallen. Es sind die, die immer wieder vorkommen, und das Muster ist
+  jedes Mal dasselbe: Der Bildschirminhalt existiert einmal, zählt später — und liegt dann
+  hinter einem erloschenen Zugang oder auf einer Seite, die neu geschrieben wurde.
+</p>
+
+<div class="fall">
+  <p class="wann">Bei der Abgabe</p>
+  <h3>Die Bestätigung nach dem Hochladen</h3>
+  <p>Die Bestätigungsseite nach einem Upload — Zeitstempel, Dateiname, manchmal eine Prüfsumme — ist der eine Beleg dafür, dass die Datei vor der Frist angekommen ist. Sie wird einmal angezeigt. Wird eine Abgabe später als fehlend oder verspätet geführt, ist das Gespräch deutlich kürzer, wenn man diese Seite vorlegen kann.</p>
+  <p class="warum">Manche Systeme schicken zusätzlich eine Bestätigungsmail. Manche nicht, und manchmal landet sie im Spam-Ordner, den man aufräumt.</p>
+</div>
+<div class="fall">
+  <p class="wann">Vor Semesterschluss</p>
+  <h3>Kursräume, die archiviert oder gelöscht werden</h3>
+  <p>Folien, Übungsblätter, Aufzeichnungen, die Literaturliste: Ein Kursraum bleibt meist noch eine Weile nach dem Semester offen und schließt dann. Mit dem Abschluss oder der Exmatrikulation endet der Zugang vollständig. Alles, was man für das nächste Modul, für eine Abschlussarbeit oder zwei Jahre später für ein Bewerbungsgespräch brauchen könnte, liegt hinter diesem Login.</p>
+  <p class="warum">Nur für das eigene Lernen sichern. Lehrmaterial steht unter dem Urheberrecht der Verfassenden; es weiterzugeben, auf ein Portal hochzuladen oder zu verkaufen, ist etwas völlig anderes.</p>
+</div>
+<div class="fall">
+  <p class="wann">Bei der Zulassung</p>
+  <h3>Die Fassung der Ordnung, die für Sie gilt</h3>
+  <p>Prüfungsordnungen und Curricula ändern sich. Für Sie gilt in der Regel die Fassung, die bei Ihrer Zulassung in Kraft war — die Website zeigt aber die aktuelle, und die alte ist oft gar nicht mehr verlinkt. Steht irgendwann eine Pflichtleistung, eine Frist oder eine zulässige Antrittszahl in Frage, ist genau die Fassung entscheidend, die man nicht mehr findet.</p>
+  <p class="warum">Einmal zu Studienbeginn sichern, mit sichtbarem Datum, und erneut, sobald man hört, dass sich etwas geändert hat.</p>
+</div>
+<div class="fall">
+  <p class="wann">Bei jeder Anmeldung</p>
+  <h3>Lehrveranstaltungs- und Prüfungsanmeldungen, Wartelistenplätze</h3>
+  <p>Anmeldefenster sind kurz, und die Bestätigung ist oft eine einzelne Zeile auf einer Seite, von der man gleich weiterklickt. Wartelistenplätze verschieben sich. Wird später ein Platz strittig oder ein Antritt gezählt, von dem man fristgerecht zurückgetreten ist, ist das der Nachweis.</p>
+  <p class="warum">Die Rücktrittsbestätigung zählt genauso — eher noch mehr als die Anmeldung.</p>
+</div>
+<div class="fall">
+  <p class="wann">Beim Bewerben</p>
+  <h3>Stellen- und Praktikumsausschreibungen</h3>
+  <p>Eine Ausschreibung verschwindet mit dem Bewerbungsschluss, und man braucht sie unter Umständen viel später: für die Anerkennung eines Pflichtpraktikums, für den Bericht oder um zu zeigen, dass die tatsächlichen Aufgaben dem entsprachen, was ausgeschrieben war.</p>
+  <p class="warum">Die Ausschreibung zur Bewerbung legen, nicht in einen Download-Ordner, den man leert.</p>
+</div>
+<div class="fall">
+  <p class="wann">Bei jeder Zahl</p>
+  <h3>Statistikportale und Datenbankabfragen</h3>
+  <p>Eine Abfrage in einem Statistikportal erzeugt eine Tabelle, die es nur in diesem Moment gibt. Werte werden revidiert; dieselbe Abfrage liefert im nächsten Jahr berechtigterweise andere Zahlen. Ohne eine Kopie, auf der Abfrage, Datum und Ergebnis stehen, lässt sich der Unterschied weder der Betreuung noch einem selbst erklären.</p>
+  <p class="warum">Die Parameter müssen mit im Bild sein. Eine Tabelle ohne ihre Abfrage ist unbrauchbar.</p>
+</div>
+<div class="fall">
+  <p class="wann">Bei allem Bedingten</p>
+  <h3>Beihilfen, Förderungen und ihre Voraussetzungen</h3>
+  <p>Anspruchsvoraussetzungen, Zuverdienstgrenzen und Fristen bei Studienförderungen ändern sich von Jahr zu Jahr. Maßgeblich sind die Bedingungen, die bei der Beurteilung galten — Portale zeigen nur den aktuellen Stand.</p>
+  <p class="warum">Dasselbe gilt für Stipendienbedingungen und für alles, wo „Änderungen vorbehalten“ steht.</p>
+</div>
+<div class="fall">
+  <p class="wann">Wenn etwas ausfällt</p>
+  <h3>Fehlermeldungen während einer Frist</h3>
+  <p>Ein System, das am Abgabetag um 23:50 versagt, ist eine konkrete Behauptung, für die jemand einen Beleg sehen will. Die Fehlermeldung, die Adresse und die Uhrzeit im selben Bild machen diese Behauptung überprüfbar.</p>
+  <p class="warum">Die Meldung sofort abschicken. Eine Kopie, die zum Zeitpunkt entsteht und zum Zeitpunkt verschickt wird, ist etwas anderes als eine, die eine Woche später auftaucht.</p>
+</div>
+
+<h2>Was man nicht sichern sollte</h2>
+
+<p>
+  Bei zwei Grenzen lohnt es sich, bewusst zu sein, weil man sich sonst ein Problem einhandelt,
+  statt eines zu lösen.
+</p>
+
+<p>
+  <b>Daten anderer Personen.</b> Aushänge mit Namen und Noten, Forenverläufe mit Beiträgen von
+  Mitstudierenden, Gruppenchats, Teilnahmelisten. Eine Kopie einer Seite mit personenbezogenen
+  Daten anderer ist eine Kopie, für die man dann verantwortlich ist. Wer nur den Nachweis des
+  eigenen Eintrags braucht, sichert nur das, was ihn zeigt.
+</p>
+
+<p>
+  <b>Lehrmaterial über den eigenen Gebrauch hinaus.</b> Folien und Skripten sind geschützte
+  Werke. Eine Kopie für das eigene Lernen ist das eine; sie auf ein Portal zu stellen, in einen
+  Jahrgangschat zu schicken oder zu verkaufen, ist etwas anderes — und die Sorte Sache, die mit
+  einem Anwaltsschreiben endet. Wenn unklar ist, wo die Grenze im eigenen Fall verläuft, wissen
+  das die Hochschulbibliothek oder die Rechtsberatung der Studierendenvertretung. Nichts hiervon
+  ist Rechtsberatung.
+</p>
+
+<h2>Gewohnheit statt Rettungsaktion</h2>
+
+<p>
+  Das alles funktioniert nur, wenn es Sekunden kostet. Drei Dinge machen den Unterschied:
+</p>
+
+<ul>
+  <li><b>Die ganze Seite sichern, nicht den sichtbaren Ausschnitt.</b> Eine Bestätigungsseite
+    braucht meist den Kopf mit dem eigenen Namen und den Fuß mit dem Zeitstempel — und die
+    stehen selten gleichzeitig am Bildschirm.</li>
+  <li><b>Datum und Thema in den Dateinamen.</b> <code>2026-08-02_abgabe_modul7.pdf</code> findet
+    man in drei Jahren wieder. <code>Screenshot_2026-08-02_um_23.51.07.png</code> nicht.</li>
+  <li><b>Sofort dorthin legen, wo es hingehört</b> — zum Modul, zur Bewerbung, zum Kapitel. Ein
+    Ordner namens <em>Downloads</em> ist der Ort, an dem Nachweise verloren gehen.</li>
+</ul>
+
+<p>
+  Für Quellen, die man zitiert, kommt ein zweiter, stärkerer Schritt dazu: eine öffentliche
+  Archivkopie, damit die Leserschaft ohne einen selbst nachprüfen kann. Dieser Fall steht samt
+  den Messungen dahinter <a href="../../measurements/web-citations-that-vanish/">in einem
+  eigenen Artikel</a>.
+</p>
+
+<div class="box">
+  <p><strong>Reichweite.</strong> Das ist eine Handreichung, keine Messung — es gibt hier keine
+  Zahlen zum Nachrechnen. Die Situationen stammen aus gewöhnlicher Studienerfahrung und aus dem,
+  wonach gefragt wird; was in jeder einzelnen tatsächlich als Nachweis gilt, entscheiden die
+  Regeln Ihrer Hochschule. Eine als PDF gesicherte Seite dokumentiert, was ein Browser angezeigt
+  hat. Sie ist kein qualifiziertes elektronisches Dokument und beweist für sich genommen nicht,
+  dass eine Seite existiert hat. Nichts hiervon ist Rechtsberatung. Korrekturen über
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub-Issues</a> werden
+  übernommen.</p>
+</div>
+
+</div>
+
+<div class="related">
+  <h2><span class="on" data-lang="en">Related</span><span data-lang="de">Verwandt</span></h2>
+  <p><a href="../../measurements/web-citations-that-vanish/"><span class="on" data-lang="en">Web citations that vanish — 150 cited sources checked</span><span data-lang="de">Quellen, die verschwinden — 150 zitierte Quellen geprüft</span></a></p>
+  <p><a href="../../measurements/print-to-pdf-vs-screenshot/"><span class="on" data-lang="en">Print to PDF or capture the screen?</span><span data-lang="de">Drucken oder Bildschirm aufnehmen?</span></a></p>
+</div>
+
+</div>
+
+<script>
+function setLang(l){
+  document.querySelectorAll('[data-lang]').forEach(function(e){
+    e.classList.toggle('on', e.dataset.lang === l);
+  });
+  document.getElementById('b-en').setAttribute('aria-pressed', l === 'en');
+  document.getElementById('b-de').setAttribute('aria-pressed', l === 'de');
+  document.documentElement.lang = l;
+  try { localStorage.setItem('pl-lang', l); } catch (e) {}
+}
+(function(){
+  var gespeichert = null;
+  try { gespeichert = localStorage.getItem('pl-lang'); } catch (e) {}
+  var l = gespeichert || ((navigator.language || 'en').slice(0,2) === 'de' ? 'de' : 'en');
+  if (l === 'de') setLang('de');
+})();
+</script>
+</body>
+</html>

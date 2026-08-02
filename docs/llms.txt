@@ -9,6 +9,7 @@ measurements. Disclosed on every page where it is relevant.
 
 ## Notes
 
+- [Pages that are gone before you need them: eight moments in a degree](https://provinglab.dev/notes/pages-gone-before-you-need-them/): Eight recurring situations in a degree where something on screen becomes evidence later — the submission receipt, a course room that closes, the version of an examination regulation that applied at enrolment, a statistics query that returns different figures next year. With what not to keep: other people's data, and teaching material beyond your own use. German version on the same page.
 - [Six things went wrong building software with an AI assistant in one day](https://provinglab.dev/notes/building-with-ai-what-went-wrong/): A logged account of six failures in one working day: a wrong generalisation from Chrome to Firefox (Firefox MV3 uses event pages, not service workers, so an entire rewrite was unnecessary), a factual claim about a competitor that a source check proved false, 22 local filesystem paths staged for a public commit, documentation that contradicted the shipped behaviour, a credential written to the wrong store, and a release that passed every static check and was never executed. Three of six were caught by checking an external source, one by a pointed human question, one by luck, one by nothing.
 
 ## Measurements
