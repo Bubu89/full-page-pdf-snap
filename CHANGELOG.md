@@ -1,5 +1,96 @@
 # Changelog
 
+## 2026-08-02 — Erreichbarkeit provinglab.dev gemessen und nachgezogen
+
+**Warum:** Nach der Absicherung der Mail-Ebene am 01.08. sollte geprueft werden,
+wie gut die Domain tatsaechlich erreichbar ist — nicht nur ob sie antwortet.
+
+**Gemessen:** apex und www liefern HTTP 200 bei ~0,26 s TTFB, HTTP/2 und HTTP/3,
+Brotli aktiv, IPv6 vorhanden, HTTPS-RR mit ECH, zwei Nameserver, robots.txt und
+sitemap.xml korrekt, alle 13 Sitemap-URLs erreichbar.
+
+**Zwei echte Luecken gefunden:**
+
+1. `/favicon.ico` und `/apple-touch-icon.png` antworteten mit 404. Beide Pfade
+   werden von Browsern, Googles Favicon-Crawler und iOS per Konvention abgefragt,
+   unabhaengig vom `<link rel="icon">` im HTML. In den Suchergebnissen blieb der
+   Favicon-Platz dadurch leer. Erzeugt aus `icon-128.png`: ICO mit 16/32/48/64/128 px,
+   apple-touch-icon auf Weiss geflacht, weil iOS Alpha als Schwarz rendert.
+   Bewusst ohne HTML-Aenderung — die Konvention greift ueber den Pfad.
+
+2. HTML liegt am Cloudflare-Edge als `cf-cache-status: DYNAMIC`, jeder Abruf geht
+   bis GitHub Pages durch. Ein Origin-Ausfall schlaegt sofort auf Besucher durch.
+   Die Cache-Regel dagegen braucht Rechte, die der API-Token nicht hat (HTTP 403).
+
+**Weiter geaendert:** GitHub Pages `https_enforced` von False auf True.
+Null-MX (`MX 0 "."`, RFC 7505) ergaenzt — vervollstaendigt SPF `-all` und DMARC
+`reject`, damit Zustellversuche schon vor dem SMTP-Dialog scheitern.
+
+**Einordnung .dev:** Die gesamte TLD steht in der HSTS-Preload-Liste. Browser
+sprechen mit dieser Domain ohnehin nie unverschluesselt — der fehlende
+HTTP->HTTPS-Redirect trifft nur Nicht-Browser-Clients und ist kein akuter Mangel.
+
+**Offen:** Der Zone-Token hat nur `DNS:Edit`. Fuer Cache-Regel, Always Online,
+Early Hints, 0-RTT und HSTS fehlen `Zone Settings:Edit` und `Cache Rules:Edit`.
+Werkzeug dafuer liegt bereit: `~/.local/bin/cf-provinglab-tune` (idempotent,
+`--dry-run` zeigt den Unterschied). Anleitung im Vault-Eintrag.
+
+<!-- change-stream:auto-block:2026-08-01:START -->
+### 2026-08-01 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 102 Events, generiert 2026-08-02T10:08_
+
+**Aktivitaet:** 23 Datei(en), 102 Tool-Calls (84 Edit, 17 Write, 1 Bash), 1 Session(s).
+
+**Beruehrte Dateien:**
+- `/home/holo/repos/full-page-pdf-snap-public/background.js` (25x)
+- `/home/holo/repos/full-page-pdf-snap-public/docs/tools/full-page-pdf-snap/index.html` (14x)
+- `/home/holo/repos/full-page-pdf-snap-public/result-visual-check.py` (9x)
+- `/home/holo/repos/full-page-pdf-snap-public/docs/index.html` (7x)
+- `/home/holo/repos/full-page-pdf-snap-public/result.js` (7x)
+- `/home/holo/repos/full-page-pdf-snap-public/chrome-mv3/port.py` (5x)
+- `/home/holo/repos/full-page-pdf-snap-public/README.md` (5x)
+- `/home/holo/repos/full-page-pdf-snap-public/result.html` (5x)
+- `/home/holo/repos/full-page-pdf-snap-public/sync-site.py` (4x)
+- `/home/holo/repos/full-page-pdf-snap-public/docs/pdf-extension-permissions/index.html` (3x)
+- `/home/holo/repos/full-page-pdf-snap-public/pack-firefox.py` (3x)
+- `/home/holo/repos/full-page-pdf-snap-public/docs/about/index.html` (2x)
+- `/home/holo/repos/full-page-pdf-snap-public/site-visual-check.py` (2x)
+- `/home/holo/repos/full-page-pdf-snap-public/CHANGELOG.md` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/docs/webpage-to-pdf-for-ocr/index.html` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/docs/extension-permissions-risk/index.html` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/docs/notes/building-with-ai-what-went-wrong/index.html` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/ping-suchmaschinen.py` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/docs/measurements/print-to-pdf-vs-screenshot/index.html` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/docs/llms.txt` (1x)
+
+**Bemerkenswerte Commands:**
+- `cd /home/holo/repos/full-page-pdf-snap-public && git add -A docs && git commit -q -F - <<'EOF'
+Add /tools/, /data/ and a`
+
+<!-- change-stream:auto-block:2026-08-01:END -->
+
+
+<!-- change-stream:auto-block:2026-07-31:START -->
+### 2026-07-31 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 16 Events, generiert 2026-08-02T10:08_
+
+**Aktivitaet:** 7 Datei(en), 16 Tool-Calls (13 Edit, 2 Write, 1 Bash), 2 Session(s).
+
+**Beruehrte Dateien:**
+- `/home/holo/repos/full-page-pdf-snap-public/CHANGELOG.md` (5x)
+- `/home/holo/repos/full-page-pdf-snap-public/manifest.json` (3x)
+- `/home/holo/repos/full-page-pdf-snap-public/chrome-mv3/port.py` (2x)
+- `/home/holo/repos/full-page-pdf-snap-public/chrome-mv3/compat.js` (2x)
+- `/home/holo/repos/full-page-pdf-snap-public/make-store-screenshots.py` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/popup.html` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/PRIVACY.md` (1x)
+
+**Bemerkenswerte Commands:**
+- `cd /home/holo/repos/full-page-pdf-snap-public && git checkout -b mv3-firefox 2>&1 | tail -2 && git status --short | head`
+
+<!-- change-stream:auto-block:2026-07-31:END -->
 ## 2.16.0 — Android: eine Meldung statt einer Reihe
 
 Auf Android meldete sich die Erweiterung während der Aufnahme alle zwei
