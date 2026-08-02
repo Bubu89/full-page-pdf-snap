@@ -80,7 +80,7 @@ def inhalt(seiten):
         zeilen.append(f'''<div class="item">
   <h2><a href="{s['url']}#b-de">{s['titel']}</a></h2>
   <p>{s['vorschau']}</p>
-</div>'''.replace(",", "."))
+</div>''')
     return f'''<div class="wrap">
 
 <header>
@@ -110,7 +110,7 @@ def inhalt(seiten):
   </p>
 </div>
 
-'''.replace(",", ".")
+'''
 
 
 def main():
