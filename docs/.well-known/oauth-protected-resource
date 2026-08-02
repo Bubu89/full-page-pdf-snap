@@ -1,0 +1,10 @@
+{
+  "resource": "https://provinglab.dev",
+  "authorization_servers": [],
+  "scopes_supported": [],
+  "bearer_methods_supported": [],
+  "resource_documentation": "https://provinglab.dev/auth.md",
+  "resource_policy_uri": "https://provinglab.dev/privacy.html",
+  "resource_name": "Proving Lab",
+  "tls_client_certificate_bound_access_tokens": false
+}

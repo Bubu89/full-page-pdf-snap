@@ -138,11 +138,15 @@ client with additional access, because there is no restricted content.
 no `register_uri`, no client provisioning, no application form and no waiting
 list. An agent may begin fetching immediately.
 
-Because nothing is protected, this site publishes no
-`/.well-known/oauth-authorization-server` and no
-`/.well-known/oauth-protected-resource`. Those documents would describe
-authorization servers and token issuers that do not exist, and every agent
-following them would spend a request to learn nothing.
+Protected Resource Metadata is published at
+`/.well-known/oauth-protected-resource` (RFC 9728). Its
+`authorization_servers` list is empty, which states correctly that no
+authorization server issues tokens for this resource.
+
+No `/.well-known/oauth-authorization-server` is published. That document
+would have to name an issuer, an authorization endpoint and a token
+endpoint — none of which exist here. Inventing them would send every agent
+that follows them to a dead URL.
 
 ## Supported methods
 
@@ -191,6 +195,28 @@ https://github.com/Bubu89/full-page-pdf-snap/issues
 """
 
 
+def protected_resource():
+    """RFC 9728 — und zwar wahrheitsgemaess.
+
+    Die Spezifikation verlangt nur 'resource'. 'authorization_servers' ist
+    optional; eine leere Liste sagt korrekt aus, dass kein Autorisierungsserver
+    Tokens fuer diese Ressource ausstellt. Damit steht in der Datei nichts
+    Falsches — anders als bei einer erfundenen
+    /.well-known/oauth-authorization-server, die Endpunkte behaupten wuerde,
+    die es nicht gibt. Die wird deshalb weiterhin nicht angelegt.
+    """
+    return {
+        "resource": BASIS,
+        "authorization_servers": [],
+        "scopes_supported": [],
+        "bearer_methods_supported": [],
+        "resource_documentation": f"{BASIS}/auth.md",
+        "resource_policy_uri": f"{BASIS}/privacy.html",
+        "resource_name": "Proving Lab",
+        "tls_client_certificate_bound_access_tokens": False,
+    }
+
+
 def schreiben(pfad, inhalt, pruefen):
     if isinstance(inhalt, (dict, list)):
         neu = json.dumps(inhalt, indent=2, ensure_ascii=False) + "\n"
@@ -217,6 +243,8 @@ def main():
     abweichung = False
     abweichung |= schreiben(SKILLS / "index.json", idx, a.check)
     abweichung |= schreiben(DOCS / ".well-known" / "api-catalog", api_catalog(), a.check)
+    abweichung |= schreiben(DOCS / ".well-known" / "oauth-protected-resource",
+                            protected_resource(), a.check)
     abweichung |= schreiben(DOCS / "auth.md", AUTH_MD, a.check)
 
     print(f"  {len(idx['skills'])} Skills, {len(datensaetze())} Datensaetze")

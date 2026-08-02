@@ -16,11 +16,15 @@ client with additional access, because there is no restricted content.
 no `register_uri`, no client provisioning, no application form and no waiting
 list. An agent may begin fetching immediately.
 
-Because nothing is protected, this site publishes no
-`/.well-known/oauth-authorization-server` and no
-`/.well-known/oauth-protected-resource`. Those documents would describe
-authorization servers and token issuers that do not exist, and every agent
-following them would spend a request to learn nothing.
+Protected Resource Metadata is published at
+`/.well-known/oauth-protected-resource` (RFC 9728). Its
+`authorization_servers` list is empty, which states correctly that no
+authorization server issues tokens for this resource.
+
+No `/.well-known/oauth-authorization-server` is published. That document
+would have to name an issuer, an authorization endpoint and a token
+endpoint — none of which exist here. Inventing them would send every agent
+that follows them to a dead URL.
 
 ## Supported methods
 
