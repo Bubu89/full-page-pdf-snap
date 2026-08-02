@@ -234,6 +234,28 @@ def protected_resource():
     }
 
 
+
+def mcp_karte():
+    """Server Card mit der Version aus dem Worker — nicht doppelt gepflegt.
+
+    Sie stand einmal auf 1.0.0, waehrend der Worker 1.4.0 auslieferte. Eine
+    Karte, die eine andere Version nennt als der Server, ist schlimmer als
+    keine: Ein Client glaubt ihr.
+    """
+    quelle = DOCS.parent / "worker" / "mcp.js"
+    version = "1.0.0"
+    if quelle.exists():
+        m = re.search(r'const VERSION = "([^"]+)"', quelle.read_text(encoding="utf-8"))
+        if m:
+            version = m.group(1)
+    ziel = DOCS / ".well-known" / "mcp" / "server-card.json"
+    if not ziel.exists():
+        return None
+    d = json.loads(ziel.read_text(encoding="utf-8"))
+    d["serverInfo"]["version"] = version
+    return d
+
+
 def schreiben(pfad, inhalt, pruefen):
     if isinstance(inhalt, (dict, list)):
         neu = json.dumps(inhalt, indent=2, ensure_ascii=False) + "\n"
@@ -262,6 +284,10 @@ def main():
     abweichung |= schreiben(DOCS / ".well-known" / "api-catalog", api_catalog(), a.check)
     abweichung |= schreiben(DOCS / ".well-known" / "oauth-protected-resource",
                             protected_resource(), a.check)
+    karte = mcp_karte()
+    if karte:
+        abweichung |= schreiben(DOCS / ".well-known" / "mcp" / "server-card.json",
+                                karte, a.check)
     abweichung |= schreiben(DOCS / "auth.md", AUTH_MD, a.check)
 
     print(f"  {len(idx['skills'])} Skills, {len(datensaetze())} Datensaetze")

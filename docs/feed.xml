@@ -26,6 +26,14 @@
     <summary type="text">150 web sources from reference lists, checked: 19.3% are gone, and the newest archived copy is a median of 603 days old. What that means for a thesis, and how to secure a source in the moment you cite it. Mit deutscher Fassung.</summary>
   </entry>
   <entry>
+    <title>This site runs an MCP server. Measured: it is smaller than the file it competes with</title>
+    <id>https://provinglab.dev/notes/mcp-server-what-it-solves/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/mcp-server-what-it-solves/"/>
+    <published>2026-08-02T00:00:00Z</published>
+    <updated>2026-08-02T00:00:00Z</updated>
+    <summary type="text">An MCP endpoint at /mcp exposes the measurement datasets and published methods to AI clients. Everything it can return adds up to roughly 1,300 tokens — less than the llms.txt file that already sits on the same domain. What that leaves it good for, and what it does not solve.</summary>
+  </entry>
+  <entry>
     <title>Webpage to PDF for OCR: how much text survives? A measured test</title>
     <id>https://provinglab.dev/measurements/webpage-to-pdf-for-ocr/</id>
     <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/webpage-to-pdf-for-ocr/"/>

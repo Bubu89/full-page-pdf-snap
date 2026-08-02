@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>This site runs an MCP server. Measured: it is smaller than the file it competes with — Proving Lab</title>
+<meta name="description" content="An MCP endpoint at /mcp exposes the measurement datasets and published methods to AI clients. Everything it can return adds up to roughly 1,300 tokens — less than the llms.txt file that already sits on the same domain. What that leaves it good for, and what it does not solve.">
+<link rel="canonical" href="https://provinglab.dev/notes/mcp-server-what-it-solves/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="This site runs an MCP server. Measured: it is smaller than the file it competes with">
+<meta property="og:description" content="An MCP endpoint at /mcp exposes the measurement datasets and published methods to AI clients. Everything it can return adds up to roughly 1,300 tokens — less than the llms.txt file that already sits on the same domain. What that leaves it good for, and what it does not solve.">
+<meta property="og:url" content="https://provinglab.dev/notes/mcp-server-what-it-solves/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-08-01">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "This site runs an MCP server. Measured: it is smaller than the file it competes with",
+  "description": "An MCP endpoint at /mcp exposes the measurement datasets and published methods to AI clients. Everything it can return adds up to roughly 1,300 tokens — less than the llms.txt file that already sits on the same domain. What that leaves it good for, and what it does not solve.",
+  "datePublished": "2026-08-02",
+  "dateModified": "2026-08-02",
+  "inLanguage": "en",
+  "url": "https://provinglab.dev/notes/mcp-server-what-it-solves/",
+  "author": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org", "@type": "Dataset",
+  "name": "Print-to-PDF versus screenshot capture, same document",
+  "description": "Page counts, page-break analysis, word recall against the source text, embedded images and file sizes for the same Wikipedia article captured both ways on 1 August 2026.",
+  "url": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "identifier": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "datePublished": "2026-08-01", "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true, "inLanguage": "en",
+  "keywords": ["print to PDF","screenshot","page breaks","OCR","web archiving"],
+  "variableMeasured": ["pages","page breaks","breaks mid-sentence","word recall","file size","embedded images"],
+  "creator": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
+  "distribution": [{ "@type": "DataDownload", "encodingFormat": "application/json",
+    "contentUrl": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json" }],
+  "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
+}
+</script>
+
+<style>
+  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.87em;background:var(--card);
+       padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:34px 0 36px;border-bottom:1px solid var(--line);margin-bottom:32px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.16;letter-spacing:-.025em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:60ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+  h2{font-size:1.4rem;line-height:1.25;margin:46px 0 14px;letter-spacing:-.015em;text-wrap:balance}
+  h3{font-size:1.04rem;margin:28px 0 8px}
+  p{margin-bottom:17px} ul,ol{margin:0 0 18px 24px} li{margin-bottom:9px}
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0}
+  .kf{flex:1 1 160px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px}
+  .kf .n{font-size:1.8rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.a .n{color:var(--good)} .kf.b .n{color:var(--warn)}
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--bg2);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .win{color:var(--good);font-weight:600} .lose{color:var(--bad)}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.84rem;line-height:1.6}
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0} .box p:last-child{margin-bottom:0}
+  .faq{margin:44px 0 0}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin:44px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+  footer{margin-top:52px;padding:24px 0 64px;border-top:1px solid var(--line);
+    font-size:.83rem;color:var(--dim);line-height:1.6}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+</style>
+<script src="/agent-tools.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/">Notes</a>
+    <a class="n" href="../../measurements/" aria-current="page">Measurements</a>
+    <a class="n" href="../../tools/">Tools</a>
+    <a class="n" href="../../about/">About</a>
+    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
+      <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header>
+  <h1>This site runs an MCP server. Measured: it is smaller than the file it competes with</h1>
+  <p class="standfirst">
+    Since 2 August 2026 there is an endpoint at <code>/mcp</code> that hands the
+    measurement datasets and the published methods to an AI client on request.
+    Before recommending that anyone else build one, here is what it actually
+    returns — and the number that decides whether it was worth it.
+  </p>
+  <p class="meta">2 August 2026 · Protocol MCP 2025-06-18 · transport streamable HTTP ·
+    <a href="/.well-known/mcp/server-card.json">server card</a></p>
+</header>
+
+<h2>What it can do</h2>
+<p>
+  Three tools, no authentication, no state:
+</p>
+<table>
+  <thead><tr><th>Tool</th><th>Input</th><th>Returns</th></tr></thead>
+  <tbody>
+    <tr><td><code>list_measurements</code></td><td>none</td>
+        <td>every measurement with its dataset URL and the page documenting the method</td></tr>
+    <tr><td><code>get_measurement_data</code></td><td><code>dataset</code></td>
+        <td>one dataset as JSON — measured values, control run, conditions</td></tr>
+    <tr><td><code>get_method</code></td><td><code>name</code> (optional)</td>
+        <td>a reproducible method, or the list of them</td></tr>
+  </tbody>
+</table>
+
+<h2>The number that matters</h2>
+<p>
+  Everything the server can return, added together, is about
+  <strong>1,300 tokens</strong>. The <a href="/llms.txt">llms.txt</a> file on the
+  same domain — a plain text summary any model can read in one request — is about
+  <strong>1,988 tokens</strong>.
+</p>
+<p>
+  So a model that simply reads one text file ends up with <em>more</em> context than
+  one that calls all three tools. The protocol solves a size problem this site does
+  not have. That is worth saying plainly, because the opposite is usually implied:
+  an MCP server sounds like capability, and here it mostly is not.
+</p>
+
+<h2>Where it earns its place anyway</h2>
+<p>
+  One thing it does that a text file cannot: <strong>it makes a number
+  checkable at the moment of use.</strong> Asked how much text survives OCR on a
+  screenshot, a model can either recall something approximate or call
+  <code>get_measurement_data</code> and read 92.6&nbsp;% out of the dataset, along
+  with the control run that makes the figure meaningful. The second answer can be
+  verified; the first cannot.
+</p>
+<p>
+  Two smaller advantages follow from the same property. The data is structured —
+  JSON rather than prose, so it can go straight into a calculation. And it is
+  current: llms.txt is maintained by hand and drifts, the endpoint reads the same
+  files the site serves.
+</p>
+
+<h2>What it does not solve</h2>
+<ul>
+  <li><strong>Reach.</strong> No one finds a site because it has an MCP endpoint.
+    The server has served a few dozen calls, essentially all of them our own tests.</li>
+  <li><strong>Discovery.</strong> A client has to be told the address. The
+    <a href="/.well-known/mcp/server-card.json">server card</a> helps only clients
+    that already look there.</li>
+  <li><strong>Anything at scale.</strong> Five datasets and three methods fit in
+    any context window. At fifty the calculus reverses — that is when the endpoint
+    starts to pay for itself.</li>
+</ul>
+
+<h2>How to connect it</h2>
+<p>
+  The endpoint speaks JSON-RPC 2.0 over HTTP POST. Authentication is offered but
+  <strong>not required</strong>; anonymous requests get identical answers.
+</p>
+<pre><code>curl -X POST https://provinglab.dev/mcp \
+  -H 'content-type: application/json' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'</code></pre>
+<p>
+  In a client that supports remote MCP servers, add
+  <code>https://provinglab.dev/mcp</code> as a streamable-HTTP connector. A
+  <code>GET</code> on the endpoint answers 405: the server is stateless and opens no
+  server-initiated stream, which the specification permits.
+</p>
+
+<h2>Questions</h2>
+<h3>Why build it if the numbers say it barely helps?</h3>
+<p>
+  Because the cost was one file and the failure mode is bounded: if the worker
+  breaks, it falls back to serving the site unchanged. And because the claim
+  "measurements you can verify" should survive contact with an agent that wants to
+  verify them. What would not have been defensible is publishing the endpoint and
+  implying it does more than it does.
+</p>
+<h3>Is anything protected behind it?</h3>
+<p>
+  No. Every resource on this domain is public. An OAuth flow exists because some
+  clients refuse to connect without one — it grants no access beyond anonymous, and
+  <a href="/auth.md">auth.md</a> says so in its first paragraph.
+</p>
+
+<footer>
+      Token counts are estimates at four characters per token, measured on the
+      responses of 2 August 2026. The endpoint is operated by the author of this
+      site; the figures it returns come from the measurements published here.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+
+</div>
+</body>
+</html>
