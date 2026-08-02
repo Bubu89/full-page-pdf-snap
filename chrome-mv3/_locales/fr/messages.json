@@ -286,5 +286,11 @@
   },
   "resultGone": {
     "message": "Aucune capture disponible. Lancez-en une nouvelle depuis l’icône de l’extension."
+  },
+  "optProvenance": {
+    "message": "Ajouter une ligne de provenance sous la capture"
+  },
+  "optProvenanceHint": {
+    "message": "Inscrit l'adresse de la page, l'heure de la capture et une somme de contrôle SHA-256 des données d'image dans un bandeau sous l'image. Utile lorsque le fichier doit être archivé ou transmis. Une capture d'écran n'est pas un document électronique qualifié : l'heure provient de l'horloge de votre appareil, et la somme de contrôle atteste que le fichier n'a pas changé depuis sa création, non que la page avait cet aspect. Les mêmes informations sont toujours inscrites dans les métadonnées du PDF, avec ou sans cette option."
   }
 }

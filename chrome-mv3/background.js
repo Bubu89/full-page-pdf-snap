@@ -8,6 +8,25 @@ const TAG = "[PDFSnap/bg]";
 const log = (...a) => console.log(TAG, ...a);
 
 let _platformCache = null;
+/* Pruefsumme ueber die Bilddaten in genau der Reihenfolge, in der sie im PDF
+ * stehen. Sie belegt, dass die Datei seit ihrer Erstellung unveraendert ist —
+ * nicht, dass die Seite so ausgesehen hat. Diesen Unterschied nennt die
+ * Fussnote im PDF ausdruecklich. */
+async function bilddatenPruefsumme(pages) {
+  const teile = [];
+  for (const pg of pages) {
+    if (pg.tiles && pg.tiles.length) for (const t of pg.tiles) teile.push(t.jpegBytes);
+    else if (pg.jpegBytes) teile.push(pg.jpegBytes);
+  }
+  let n = 0;
+  for (const t of teile) n += t.length;
+  const alles = new Uint8Array(n);
+  let off = 0;
+  for (const t of teile) { alles.set(t, off); off += t.length; }
+  const digest = await crypto.subtle.digest("SHA-256", alles);
+  return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
 async function getPlatform() {
   if (_platformCache) return _platformCache;
   try {
@@ -31,6 +50,9 @@ const DEFAULTS_DESKTOP = {
   pageHeightPx: 2400,
   tilePx: 4000,
   hideSticky: true,
+  // Sichtbare Herkunftszeile unter der Aufnahme. Standard aus, weil sie das
+  // Bild veraendert; die Metadaten im PDF stehen ohnehin immer drin.
+  provenanceFooter: false,
   uiLanguage: "auto",
   appLayout: "context",
   afterCapture: "show",
@@ -655,7 +677,26 @@ async function captureFullPageInner(tab, settings) {
     _lastPreviewUrl = null;
   }
 
-  const pdfBytes = PageShotPdf.buildPdf(pages, { dpi: 144 });
+  // Herkunftsangaben: Adresse, Zeitpunkt und Pruefsumme. Die Metadaten stehen
+  // immer im PDF, die sichtbare Zeile nur wenn eingeschaltet.
+  let herkunft = null;
+  try {
+    herkunft = {
+      url: tab.url || "",
+      capturedAt: new Date(),
+      sha256: await bilddatenPruefsumme(pages),
+      footer: !!settings.provenanceFooter,
+    };
+  } catch (e) {
+    log("Pruefsumme fehlgeschlagen:", e && e.message);
+  }
+
+  const pdfBytes = PageShotPdf.buildPdf(pages, {
+    dpi: 144,
+    title: tab.title || "",
+    version: (browser.runtime.getManifest() || {}).version || "",
+    provenance: herkunft,
+  });
 
   const baseTitle = sanitizeFilename(tab.title || "page", settings.titleMaxLen);
   const site = siteFromUrl(tab.url);

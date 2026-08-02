@@ -286,5 +286,11 @@
   },
   "resultGone": {
     "message": "No capture available. Start a new one from the extension icon."
+  },
+  "optProvenance": {
+    "message": "Add a provenance line below the capture"
+  },
+  "optProvenanceHint": {
+    "message": "Writes the page address, the time of capture and a SHA-256 checksum of the image data into a strip under the image. Useful when the file has to be filed or handed on. A screen capture is not a qualified electronic document: the time comes from your device clock, and the checksum shows the file has not changed since it was made — not that the page looked this way. The same details are always written into the PDF metadata, with or without this option."
   }
 }

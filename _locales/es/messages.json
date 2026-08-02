@@ -286,5 +286,11 @@
   },
   "resultGone": {
     "message": "No hay ninguna captura. Inicia una nueva desde el icono de la extensión."
+  },
+  "optProvenance": {
+    "message": "Añadir una línea de procedencia bajo la captura"
+  },
+  "optProvenanceHint": {
+    "message": "Escribe la dirección de la página, la hora de la captura y una suma de verificación SHA-256 de los datos de imagen en una franja bajo la imagen. Útil cuando el archivo debe archivarse o entregarse. Una captura de pantalla no es un documento electrónico cualificado: la hora procede del reloj de su dispositivo, y la suma de verificación demuestra que el archivo no ha cambiado desde su creación, no que la página tuviera ese aspecto. Los mismos datos se escriben siempre en los metadatos del PDF, con o sin esta opción."
   }
 }

@@ -113,6 +113,16 @@
     <div class="hint">Default 400 ms — covers lazy-loading pages such as LinkedIn, X/Twitter and news portals. Only reduce it if speed matters more to you than completeness.</div>
   </label>
 
+  <label class="check"><input id="provenanceFooter" type="checkbox">
+    <span data-i18n="optProvenance">Add a provenance line below the capture</span>
+    <div class="hint" data-i18n="optProvenanceHint">Writes the page address, the time of capture
+      and a SHA-256 checksum of the image data into a strip under the image. Useful when the file
+      has to be filed or handed on. A screen capture is not a qualified electronic document: the
+      time comes from your device clock, and the checksum shows the file has not changed since it
+      was made — not that the page looked this way. The same details are always written into the
+      PDF metadata, with or without this option.</div>
+  </label>
+
   <label><span data-i18n="optPdfFormat">PDF format</span>
     <select id="singlePagePdf" style="width:100%; padding: 8px 10px; border: 1px solid var(--rand); border-radius: 6px; font-size: 13px; background: var(--feld-bg); color: var(--fg);">
       <option value="true">One continuous page (default — no visible seams)</option>

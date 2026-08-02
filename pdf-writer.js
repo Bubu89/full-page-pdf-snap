@@ -117,10 +117,13 @@
 
     // Die Nachweiszeile bekommt eigenen Platz unter dem Bild, statt darueber zu
     // liegen: Sie darf nichts verdecken, sonst waere sie eine Veraenderung der
-    // Aufnahme statt einer Angabe darueber.
-    const fussPt = beleg ? 30 : 0;
+    // Aufnahme statt einer Angabe darueber. Die Metadaten schreibt der Writer
+    // immer, die sichtbare Zeile nur auf Wunsch — sie aendert das Bild, die
+    // Metadaten nicht.
+    const zeigeFuss = !!(beleg && beleg.footer);
+    const fussPt = zeigeFuss ? 30 : 0;
     let fontId = 0;
-    if (beleg) {
+    if (zeigeFuss) {
       fontId = addObject(strToBytes(
         "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>"
       ));
@@ -168,7 +171,7 @@
         contentStr += "q\n" + wptT + " 0 0 " + hptT + " " + xptT + " " + yptT + " cm\n/" + x.name + " Do\nQ\n";
       }
 
-      if (beleg) {
+      if (zeigeFuss) {
         const breite = pg.widthPx * pxToPt;
         // Wieviele Zeichen bei 7 pt Helvetica in die Breite passen — grob 0.5 em
         // je Zeichen, mit Rand. Lieber zu kurz kuerzen als ueber den Rand laufen.
@@ -193,7 +196,7 @@
         "<< /Type /Page /Parent " + pagesId + " 0 R " +
         "/MediaBox [0 0 " + wPt + " " + hPt + "] " +
         "/Resources << /XObject << " + xobjEntries + " >>" +
-        (beleg ? " /Font << /F1 " + fontId + " 0 R >>" : "") + " >> " +
+        (zeigeFuss ? " /Font << /F1 " + fontId + " 0 R >>" : "") + " >> " +
         "/Contents " + contentId + " 0 R >>";
       const pageId = addObject(strToBytes(pageDict));
       pageRefs.push(pageId);
@@ -206,6 +209,29 @@
     objects[catalogId] = strToBytes(
       "<< /Type /Catalog /Pages " + pagesId + " 0 R >>"
     );
+
+    // Dokumentinformationen: dieselben Angaben wie in der Fussnote, aber
+    // maschinenlesbar. Wer die Datei archiviert, findet Adresse und Zeitpunkt
+    // damit auch dann noch, wenn die letzte Seite abgeschnitten wurde.
+    let infoId = 0;
+    if (beleg || opts.title) {
+      const felder = ["/Producer " + pdfTextString("Full Page PDF Snap" + (opts.version ? " " + opts.version : ""))];
+      if (opts.title) felder.push("/Title " + pdfTextString(opts.title));
+      if (beleg) {
+        felder.push("/Subject " + pdfTextString("Screen capture of " + beleg.url));
+        felder.push("/CreationDate (" + pdfDate(beleg.capturedAt) + ")");
+        felder.push("/ModDate (" + pdfDate(beleg.capturedAt) + ")");
+        if (beleg.sha256) {
+          felder.push("/Keywords " + pdfTextString(
+            "source-url=" + beleg.url +
+            "; captured=" + localIso(beleg.capturedAt) +
+            "; image-sha256=" + beleg.sha256 +
+            "; note=self-made screen capture, not a qualified electronic document (eIDAS)"
+          ));
+        }
+      }
+      infoId = addObject(strToBytes("<< " + felder.join(" ") + " >>"));
+    }
 
     const chunks = [];
     chunks.push(strToBytes("%PDF-1.4\n%\xFF\xFF\xFF\xFF\n"));
@@ -230,7 +256,8 @@
 
     const trailer =
       "trailer\n<< /Size " + objects.length +
-      " /Root " + catalogId + " 0 R >>\n" +
+      " /Root " + catalogId + " 0 R" +
+      (infoId ? " /Info " + infoId + " 0 R" : "") + " >>\n" +
       "startxref\n" + xrefOffset + "\n%%EOF\n";
     chunks.push(strToBytes(trailer));
 

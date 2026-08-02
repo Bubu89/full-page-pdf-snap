@@ -286,5 +286,11 @@
   },
   "resultGone": {
     "message": "Keine Aufnahme vorhanden. Starte eine neue über das Erweiterungs-Symbol."
+  },
+  "optProvenance": {
+    "message": "Herkunftszeile unter der Aufnahme einfügen"
+  },
+  "optProvenanceHint": {
+    "message": "Schreibt die Adresse der Seite, den Zeitpunkt der Aufnahme und eine SHA-256-Prüfsumme der Bilddaten in einen Streifen unter das Bild. Nützlich, wenn die Datei abgelegt oder weitergegeben wird. Eine Bildschirmaufnahme ist kein qualifiziertes elektronisches Dokument: Die Zeit stammt von der Uhr Ihres Geräts, und die Prüfsumme belegt, dass die Datei seit der Erstellung unverändert ist — nicht, dass die Seite so ausgesehen hat. Dieselben Angaben stehen mit und ohne diese Option immer in den PDF-Metadaten."
   }
 }

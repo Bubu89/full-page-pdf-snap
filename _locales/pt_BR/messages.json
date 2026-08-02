@@ -286,5 +286,11 @@
   },
   "resultGone": {
     "message": "Nenhuma captura disponível. Inicie uma nova pelo ícone da extensão."
+  },
+  "optProvenance": {
+    "message": "Adicionar uma linha de procedência abaixo da captura"
+  },
+  "optProvenanceHint": {
+    "message": "Grava o endereço da página, o horário da captura e uma soma de verificação SHA-256 dos dados de imagem em uma faixa abaixo da imagem. Útil quando o arquivo precisa ser arquivado ou entregue. Uma captura de tela não é um documento eletrônico qualificado: o horário vem do relógio do seu dispositivo, e a soma de verificação comprova que o arquivo não mudou desde a criação, não que a página tinha essa aparência. Os mesmos dados são sempre gravados nos metadados do PDF, com ou sem esta opção."
   }
 }

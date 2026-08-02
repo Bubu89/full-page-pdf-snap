@@ -286,5 +286,11 @@
   },
   "resultGone": {
     "message": "Nessuna acquisizione disponibile. Avviane una nuova dall’icona dell’estensione."
+  },
+  "optProvenance": {
+    "message": "Aggiungi una riga di provenienza sotto l'acquisizione"
+  },
+  "optProvenanceHint": {
+    "message": "Scrive l'indirizzo della pagina, l'ora dell'acquisizione e una somma di controllo SHA-256 dei dati immagine in una fascia sotto l'immagine. Utile quando il file deve essere archiviato o consegnato. Un'acquisizione dello schermo non è un documento elettronico qualificato: l'ora proviene dall'orologio del dispositivo e la somma di controllo dimostra che il file non è cambiato dalla sua creazione, non che la pagina avesse quell'aspetto. Gli stessi dati vengono sempre scritti nei metadati del PDF, con o senza questa opzione."
   }
 }

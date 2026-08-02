@@ -1,5 +1,44 @@
 # Changelog
 
+## 2026-08-02 — Herkunftsangaben im PDF (Erweiterung)
+
+Bisher enthielt das erzeugte PDF ausser den Bilddaten nichts: keinen Titel,
+keine Quelle, keinen Zeitpunkt. Wer eine Aufnahme drei Monate spaeter im
+Ordner fand, konnte nicht mehr sagen, woher sie stammte.
+
+**Immer geschrieben — PDF-Metadaten:** `/Title` (Seitentitel), `/Subject`
+(Quell-URL), `/CreationDate` und `/ModDate` mit Zeitzonenversatz, `/Producer`
+mit Version, `/Keywords` mit Adresse, Zeitpunkt und SHA-256 der Bilddaten in
+maschinenlesbarer Form. Unsichtbar, aendert die Aufnahme nicht, kostet nichts.
+Nicht-ASCII wird als UTF-16BE mit BOM kodiert — geprueft mit Umlauten und
+japanischer Schrift im Titel.
+
+**Optional — sichtbare Herkunftszeile** unter der Aufnahme: Adresse,
+Aufnahmezeitpunkt mit Zeitzone, SHA-256. Standard **aus**, weil sie das Bild
+veraendert; die Seite waechst dann um 30 pt. Ohne die Option bleibt das PDF
+bitgleich zu vorher.
+
+**Zur Formulierung.** Die Zeile traegt den Hinweis: *„Self-made screen capture.
+Not a qualified electronic document (eIDAS). Time from device clock. Checksum
+covers this file's image data only, not the authenticity of the page."* Das ist
+bewusst zurueckhaltend und deckt genau die drei Grenzen ab, die sonst
+missverstanden werden — es gibt keine Signatur, die Zeit stammt von der
+Geraeteuhr, und die Pruefsumme belegt Unveraendertheit der Datei ab Erstellung,
+nicht wie die Seite aussah. Die Einstellung sagt dasselbe ausfuehrlicher, in
+allen neun Sprachen.
+
+Der Hinweis im PDF steht auf Englisch, auch bei uebersetzter Oberflaeche:
+Standard-PDF-Schriften koennen nur WinAnsi darstellen, und eine Fussnote, die
+auf Japanisch oder Russisch zu Kaestchen zerfaellt, dokumentiert nichts.
+
+Beide Zweige (Firefox, Chrome MV3) ueber `port.py` synchronisiert, neun
+Sprachdateien auf 98 Eintraege, Schrift und Textobjekte im PDF-Writer ergaenzt.
+Drei Betriebsarten gegen echte PDFs geprueft und die Fussnote visuell
+kontrolliert.
+
+**Nicht erledigt:** Versionsnummer und Veroeffentlichung. Das gehoert in den
+Release-Lauf, nicht in diesen Commit.
+
 ## 2026-08-02 (Abschluss II) — Android-Messung veroeffentlicht, eigene Behauptung korrigiert
 
 Neuer Beitrag `/measurements/android-capture-extensions/` samt Datensatz.
