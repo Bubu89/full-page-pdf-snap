@@ -762,7 +762,9 @@
     // "Error" allein sagt nichts: "Error Analysis in Second Language
     // Acquisition" ist ein Fachtitel. Erst was darauf folgt entscheidet.
     const fehlerwort = /^\W*error\s*(\d{3}|page|occurred|has occurred|[:.–—-]|$)/i;
-    if (eindeutig.test(q.titel) || generisch.test(q.titel.trim()) || fehlerwort.test(q.titel.trim())) {
+    if (nurSeitenname) {
+      q.warnung = "Als Titel steht nur der Name der Website da, kein Werktitel.";
+    } else if (eindeutig.test(q.titel) || generisch.test(q.titel.trim()) || fehlerwort.test(q.titel.trim())) {
       q.warnung = "Die Seite sieht nach Fehlermeldung oder Zugangsschranke aus, nicht nach Inhalt.";
     } else if (!autoren.length && !q.journal && !q.verlag &&
                (document.body.innerText || "").trim().length < 600) {
@@ -815,6 +817,26 @@
       }
       if (!q.verlag) q.verlag = q.webseite;
     }
+    q.titel = q.titel.replace(/^[\s|–—-]+|[\s|–—-]+$/g, "").trim();
+    // Bleibt nach der Bereinigung nur der Name der Website stehen, ist das
+    // kein Werktitel — bioRxiv liefert "| bioRxiv".
+    const nurSeitenname = q.titel.toLowerCase() === (seitenName || "").trim().toLowerCase() ||
+                          q.titel.toLowerCase() === (kern || "").toLowerCase();
+
+    // Körperschaft als Urheber. Bei Behörden-, Statistik- und Rechtsquellen
+    // gibt es keine Person, und das ist kein Mangel: nach APA ist dort die
+    // herausgebende Einrichtung der Urheber. Ohne diese Regel blieben
+    // amtliche Quellen unvollständig, obwohl die Angabe vorliegt.
+    if (!q.autoren.length && !q.doi) {
+      const koerper =
+        (ld.publisher && (ld.publisher.name || (typeof ld.publisher === "string" ? ld.publisher : ""))) ||
+        erste("og:site_name", "dc.publisher", "publisher");
+      if (koerper && String(koerper).trim().length > 1) {
+        q.autoren = [String(koerper).trim()];
+        q.koerperschaft = true;
+      }
+    }
+
     q.vollstaendig = !q.warnung &&
       !!(q.titel && (q.autoren.length || q.verlag) && q.jahr);
     // Seitentitel tragen oft den Namen der Website als Anhaengsel
@@ -827,7 +849,10 @@
     const teile = location.hostname.split(".");
     const kern = teile.length > 1 ? teile[teile.length - 2] : teile[0];
     const m = q.titel.match(/^(.*?)\s*[|–—-]\s*([^|–—-]+)$/);
-    if (m && m[1].trim()) {
+    // Mindestlänge, sonst bleibt nichts übrig: bioRxiv liefert "| bioRxiv"
+    // als Titel, und ohne die Prüfung entstünde ein leerer Titel mit
+    // angehängtem Seitennamen — schlechter als der Rohwert.
+    if (m && m[1].trim().length >= 3) {
       const schwanz = m[2].trim().toLowerCase();
       if (schwanz === (seitenName || "").trim().toLowerCase() ||
           schwanz === (kern || "").toLowerCase()) {

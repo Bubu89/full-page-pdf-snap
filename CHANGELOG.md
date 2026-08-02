@@ -1,3 +1,48 @@
+## 2026-08-02 — Was die Konkurrenz besser macht, und was davon uebertragbar war
+
+Geprueft, wie Zotero es loest — der Unterbau von Citoid. Zotero arbeitet eine
+Prioritaetskette ab: seitenspezifische Uebersetzer (100), unAPI (300), COinS
+(310), DOI (320), eingebettete Angaben (400). **Wir implementieren nur die
+unterste Stufe.**
+
+Naheliegend waere gewesen, COinS und unAPI nachzuruesten. Gemessen an zehn
+Seiten, darunter vier Bibliothekskataloge: **unAPI kommt nirgends vor, COinS nur
+bei Wikipedia** — und dort beschreiben die Spans die *zitierten* Quellen des
+Artikels, nicht den Artikel selbst. Fuer "diese Seite zitieren" also wertlos.
+Ein negatives Ergebnis, das Arbeit an einer toten Ebene erspart hat.
+
+Zotero holt seine Abdeckung aus 600 seitenspezifischen Uebersetzern. Das ist
+kein Verfahren, das sich abkuerzen laesst — es ist gepflegte Handarbeit.
+
+### Was tatsaechlich uebertragbar war
+
+**Koerperschaft als Urheber.** Bei Behoerden-, Statistik- und Rechtsquellen gibt
+es keine Person, und das ist kein Mangel: nach APA ist dort die herausgebende
+Einrichtung der Urheber. Statistik Austria, Statistisches Bundesamt, EUR-Lex —
+die Angabe steht in der Seite, wurde aber verworfen.
+
+**Zwei echte Fehler, gefunden beim Vergleich der unvollstaendigen Datensaetze:**
+
+- bioRxiv liefert `| bioRxiv` als Seitentitel. Das Abschneiden des
+  Seitennamen-Anhaengsels machte daraus erst einen leeren, dann einen Titel, der
+  nur noch aus dem Namen des Servers bestand. Jetzt: Mindestlaenge beim
+  Abschneiden, und wenn nur der Seitenname uebrig bleibt, ist es keine
+  Quellenangabe, sondern eine Warnung.
+- Damit sinkt die Zahl gelieferter Datensaetze von 13 auf 12 — **eine
+  Verbesserung, obwohl die Zahl faellt.** Ein Datensatz, dessen Titel der Name
+  des Servers ist, war nie einer.
+
+### Was offen bleibt
+
+Die Koerperschaftsregel hat die Zahl vollstaendiger Zitationen nicht erhoeht,
+weil bei diesen Quellen weiterhin das Jahr fehlt. Fuer eine laufend
+aktualisierte Statistikseite ist "o. J." mit Abrufdatum aber die *richtige*
+Zitierweise — hier misst die eigene Kennzahl am Zweck vorbei, nicht die Daten.
+Das ist als naechstes zu klaeren, nicht durch Nachbessern der Extraktion.
+
+Stand nach den Aenderungen, gegen Citoid: 8 zu 7 vollstaendige Zitationen,
+0 zu 2 Zitationen aus Sperrseiten, Faktor 3,6 schneller.
+
 ## 2026-08-02 — Gemessen gegen Citoid, und eine Schwelle fuer Beitraege
 
 Die Zitationserfassung des MCP-Endpunkts wurde an 26 Quellen aus zwoelf

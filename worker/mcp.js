@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.5.2";
+const VERSION = "1.6.0";
 const PROTOCOL = "2025-06-18";
 
 const TOOLS = [
@@ -243,10 +243,35 @@ function quelleAusHtml(html, endgueltigeUrl) {
   const teile = u.hostname.split(".");
   const kern = teile.length > 1 ? teile[teile.length - 2] : teile[0];
   const tm = q.title.match(/^(.*?)\s*[|–—-]\s*([^|–—-]+)$/);
-  if (tm && tm[1].trim()) {
+  if (tm && tm[1].trim().length >= 3) {
+    // Mindestlaenge, weil sonst nichts uebrig bleibt: bioRxiv liefert
+    // "| bioRxiv" als Titel, und ohne die Pruefung wurde daraus ein leerer
+    // Titel mit angehaengtem Seitennamen — schlechter als der Rohwert.
     const schwanz = tm[2].trim().toLowerCase();
     if (schwanz === (erste("og:site_name") || "").trim().toLowerCase() ||
         schwanz === kern.toLowerCase()) q.title = tm[1].trim();
+  }
+  // Bleibt nur der Seitenname stehen, ist der Titel unbrauchbar.
+  q.title = q.title.replace(/^[\s|–—-]+|[\s|–—-]+$/g, "").trim();
+  // Bleibt nach der Bereinigung nur der Name der Website stehen, ist das kein
+  // Werktitel. bioRxiv liefert "| bioRxiv" — daraus eine Quellenangabe zu
+  // bauen hiesse, den Namen des Servers als Titel der Arbeit auszugeben.
+  const nurSeitenname = q.title.toLowerCase() === (erste("og:site_name") || "").trim().toLowerCase() ||
+                        q.title.toLowerCase() === kern.toLowerCase();
+
+  // Koerperschaft als Urheber. Bei Behoerden-, Statistik- und Rechtsquellen
+  // gibt es keine Person, und das ist kein Mangel: nach APA ist dort die
+  // herausgebende Einrichtung der Urheber. Ohne diese Regel blieb die Haelfte
+  // der amtlichen Quellen unvollstaendig, obwohl die Angabe vorliegt.
+  if (!q.authors.length && !q.doi) {
+    const koerper =
+      (typeof ld.publisher === "object" && ld.publisher && ld.publisher.name) ||
+      (typeof ld.publisher === "string" ? ld.publisher : "") ||
+      erste("og:site_name", "dc.publisher", "publisher", "author", "twitter:site");
+    if (koerper && koerper.trim().length > 1) {
+      q.authors = [koerper.trim().replace(/^@/, "")];
+      q.corporateAuthor = true;
+    }
   }
 
   // Zugangsschranken formulieren sich sehr unterschiedlich; ein Muster, das
@@ -262,7 +287,9 @@ function quelleAusHtml(html, endgueltigeUrl) {
   // "Error" allein sagt nichts: "Error Analysis in Second Language
   // Acquisition" ist ein Fachtitel. Erst was darauf folgt entscheidet.
   const fehlerwort = /^\W*error\s*(\d{3}|page|occurred|has occurred|[:.–—-]|$)/i;
-  q.warning = (eindeutig.test(q.title) || generisch.test(q.title.trim()) || fehlerwort.test(q.title.trim()))
+  q.warning = nurSeitenname
+    ? "The only title the page declares is the name of the site itself, not of a work. Nothing here identifies a source."
+    : (eindeutig.test(q.title) || generisch.test(q.title.trim()) || fehlerwort.test(q.title.trim()))
     ? "The page looks like an error message or an access wall, not content. The details below are not usable as a reference."
     // Eine Schranke, die sich anders nennt, verraet sich an der Duennheit:
     // kaum Auszeichnung und keine einzige Verlagsangabe.
