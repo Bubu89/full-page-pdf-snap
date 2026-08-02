@@ -752,8 +752,17 @@
     // werden. Erkannt wird das am Titel und an der Duennheit der Seite; wo es
     // zutrifft, wird die Angabe als unbrauchbar gekennzeichnet.
     q.warnung = "";
-    const verdacht = /^(404|403|error|not found|page not found|just a moment|attention required|access denied|zugriff verweigert|seite nicht gefunden|are you a robot|checking your browser|bitte bestätigen)/i;
-    if (verdacht.test(q.titel.trim())) {
+    // Zwei Gruppen: eindeutige Schranken-Formulierungen dürfen überall im
+    // Titel stehen ("Making sure you're not a bot!" kam am 02.08.2026 durch
+    // ein Muster durch, das nur den Anfang prüfte), generische Wörter nur am
+    // Anfang — "Error Analysis in Second Language Acquisition" ist ein
+    // Fachtitel und keine Fehlerseite.
+    const eindeutig = /(just a moment|attention required|access denied|checking your browser|are you (a )?(robot|human)|not a bot|verify you are (human|not)|security check required|please enable javascript)/i;
+    const generisch = /^\W*(40[0-9]|41[0-9]|50[0-9]|not found|page not found|forbidden|unauthorized|zugriff verweigert|seite nicht gefunden|bitte bestätigen)\b/i;
+    // "Error" allein sagt nichts: "Error Analysis in Second Language
+    // Acquisition" ist ein Fachtitel. Erst was darauf folgt entscheidet.
+    const fehlerwort = /^\W*error\s*(\d{3}|page|occurred|has occurred|[:.–—-]|$)/i;
+    if (eindeutig.test(q.titel) || generisch.test(q.titel.trim()) || fehlerwort.test(q.titel.trim())) {
       q.warnung = "Die Seite sieht nach Fehlermeldung oder Zugangsschranke aus, nicht nach Inhalt.";
     } else if (!autoren.length && !q.journal && !q.verlag &&
                (document.body.innerText || "").trim().length < 600) {

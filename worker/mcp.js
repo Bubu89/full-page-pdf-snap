@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.5.0";
+const VERSION = "1.5.2";
 const PROTOCOL = "2025-06-18";
 
 const TOOLS = [
@@ -249,10 +249,26 @@ function quelleAusHtml(html, endgueltigeUrl) {
         schwanz === kern.toLowerCase()) q.title = tm[1].trim();
   }
 
-  const verdacht = /^(404|403|error|not found|page not found|just a moment|attention required|access denied|zugriff verweigert|seite nicht gefunden|are you a robot|checking your browser)/i;
-  q.warning = verdacht.test(q.title)
+  // Zugangsschranken formulieren sich sehr unterschiedlich; ein Muster, das
+  // nur am Zeilenanfang sucht, uebersieht die meisten. Am 02.08.2026 kam
+  // SSOAR mit "Making sure you're not a bot!" durch und erzeugte einen leeren
+  // BibTeX-Satz mit dem Schluessel "anon".
+  // Zwei Gruppen, und das ist der Punkt: eindeutige Schranken-Formulierungen
+  // duerfen ueberall im Titel stehen, generische Woerter nur am Anfang.
+  // "Error Analysis in Second Language Acquisition" ist ein Fachtitel, keine
+  // Fehlerseite — ein Muster mit \berror\b haette ihn verworfen.
+  const eindeutig = /(just a moment|attention required|access denied|checking your browser|are you (a )?(robot|human)|not a bot|verify you are (human|not)|security check required|please enable javascript)/i;
+  const generisch = /^\W*(40[0-9]|41[0-9]|50[0-9]|not found|page not found|forbidden|unauthorized|zugriff verweigert|seite nicht gefunden|bitte bestätigen)\b/i;
+  // "Error" allein sagt nichts: "Error Analysis in Second Language
+  // Acquisition" ist ein Fachtitel. Erst was darauf folgt entscheidet.
+  const fehlerwort = /^\W*error\s*(\d{3}|page|occurred|has occurred|[:.–—-]|$)/i;
+  q.warning = (eindeutig.test(q.title) || generisch.test(q.title.trim()) || fehlerwort.test(q.title.trim()))
     ? "The page looks like an error message or an access wall, not content. The details below are not usable as a reference."
-    : "";
+    // Eine Schranke, die sich anders nennt, verraet sich an der Duennheit:
+    // kaum Auszeichnung und keine einzige Verlagsangabe.
+    : (html.length < 6000 && !q.authors.length && !q.doi && !q.journal)
+      ? "The page carries almost no content and declares no citation metadata. It is more likely an interstitial or a block page than the source itself."
+      : "";
   q.source = Object.keys(meta).some((k) => k.startsWith("citation_"))
     ? "publisher metadata in the page (citation_*)"
     : Object.keys(meta).some((k) => k.startsWith("dc."))
@@ -377,7 +393,12 @@ async function runTool(origin, name, args) {
         accept: "text/html,application/xhtml+xml",
         "accept-language": "en,de;q=0.8",
       },
-      cf: { cacheTtl: 300, cacheEverything: false },
+      // Nicht zwischenspeichern. Eine Zugangsschranke antwortet mit HTTP 200
+      // und landete damit fuer fuenf Minuten im Edge-Cache — die Pruefung auf
+      // Schrankenseiten lief danach gegen die gespeicherte Antwort und konnte
+      // gar nicht greifen. Bei einem Werkzeug, das selten aufgerufen wird und
+      // dessen Ergebnis zitiert wird, ist Aktualitaet mehr wert als Ersparnis.
+      cf: { cacheTtl: 0, cacheEverything: false },
     });
     if (!r.ok) {
       return textResult(JSON.stringify({
