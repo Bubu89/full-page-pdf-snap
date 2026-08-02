@@ -15,7 +15,11 @@
  * Worker darf die Seite nicht ausknipsen.
  */
 
-const VERSION = "1.0.0";
+// Die Daten liegen immer auf der Publikation — nicht auf der Domain, unter der
+// dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
+// sonst auf den Worker selbst und jede Datenabfrage endete im 404.
+const SITE = "https://provinglab.dev";
+const VERSION = "1.0.1";
 const PROTOCOL = "2025-06-18";
 
 const TOOLS = [
@@ -65,8 +69,14 @@ const rpcErr = (id, code, message) => json({ jsonrpc: "2.0", id, error: { code, 
 const textResult = (s) => ({ content: [{ type: "text", text: s }] });
 
 async function fetchJson(origin, path) {
-  const r = await fetch(origin + path, { headers: { accept: "application/json" } });
-  if (!r.ok) throw new Error(`${path} returned ${r.status}`);
+  const url = origin + path;
+  const r = await fetch(url, {
+    headers: { accept: "application/json", "user-agent": "provinglab-mcp/1.0" },
+    // Der Subrequest darf nicht am Edge-Cache haengen bleiben: die Discovery-
+    // Dateien aendern sich haeufiger als der Rest und muessen aktuell sein.
+    cf: { cacheTtl: 60, cacheEverything: false },
+  });
+  if (!r.ok) throw new Error(`GET ${url} -> ${r.status} ${r.statusText}`);
   return r.json();
 }
 
@@ -230,7 +240,7 @@ export default {
       const url = new URL(request.url);
 
       if (url.pathname === "/mcp" || url.pathname === "/mcp/") {
-        return handleMcp(request, url.origin);
+        return handleMcp(request, SITE);
       }
 
       const upstream = await fetch(request);
