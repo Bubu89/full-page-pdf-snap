@@ -1,5 +1,42 @@
 # Changelog
 
+## 2026-08-02 (Abschluss) — Worker live, Level 5 erreicht
+
+Der Worker `provinglab-mcp` laeuft auf der Route `provinglab.dev/*` und
+erledigt beides:
+
+- **MCP ueber `POST /mcp`**, JSON-RPC 2.0, zustandslos. Gegen echte Aufrufe
+  geprueft: `initialize`, `tools/list` und alle drei Werkzeuge liefern
+  Messdaten, Datensaetze und Methoden. Unbekannte Werkzeuge antworten sauber
+  als `isError`.
+- **Markdown-Aushandlung.** Eine Messungsseite faellt von 24.418 B HTML auf
+  9.306 B Markdown, `x-markdown-tokens: 1320`. Browser bekommen unveraendert
+  HTML. Cloudflares eigenes „Markdown for Agents" verlangt dafuer Pro — dieser
+  Weg kostet nichts.
+
+**Zwei Fehler auf dem Weg, beide gemessen statt vermutet:**
+
+1. Die Datenquelle wurde aus der Request-URL abgeleitet. Auf einer
+   workers.dev-Adresse zeigte sie auf den Worker selbst, jede Datenabfrage
+   endete im 404. Jetzt fest auf die Publikation gesetzt.
+2. Die Subrequests trugen keinen `user-agent`. Cloudflares Integritaetspruefung
+   wies sie ab — dieselbe Regel, die auf dieser Zone `Python-urllib` mit
+   Fehler 1010 blockiert. Auffaellig war, dass ein Aufruf funktionierte und
+   zwei nicht; der Unterschied lag nicht am Pfad, sondern am Header.
+
+**Stand: 11 von 15, Level 5 (Agent-Native)** — heute frueh: 4 von 15, Level 2.
+
+Nach dem Verschieben der Server Card meldete der Pruefer sie zunaechst weiter
+als fehlend. Ursache war ein **gecachter 404** (`cf-cache-status: HIT`,
+`age: 154`) aus der Zeit vor dem Deployment. Negative Antworten liegen genauso
+im Edge-Cache wie positive.
+
+**Offen und ehrlich nicht erreichbar:** `oauthDiscovery`, `authMd` und
+`a2aAgentCard` verlangen einen Autorisierungsserver, einen Registrierungsablauf
+und einen A2A-Agenten. `dnsAid` wartet auf DNSSEC (`pending`, Registrar ist
+Cloudflare, laeuft ohne Zutun) — damit waeren 12 von 15 das Maximum ohne
+Falschangaben.
+
 ## 2026-08-02 (Nacht) — Antwort-Header gesetzt, Grenze des Erreichbaren erreicht
 
 **Transform Rules** wurden am Token ergaenzt, damit ist gesetzt:
