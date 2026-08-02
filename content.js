@@ -624,8 +624,12 @@
     // dort steht oft die DOI einer zitierten Arbeit, nicht die dieser Seite.
     let doi = erste("citation_doi", "prism.doi", "dc.identifier.doi", "doi").replace(/^doi:\s*/i, "");
     if (!doi) {
-      const m = location.href.match(/\b10\.\d{4,9}\/[-._;()/:A-Za-z0-9]+/);
-      if (m) doi = m[0];
+      // Aus der Adresse geraten wird nur der DOI-Kern. Verlagsseiten haengen
+      // Wegstuecke an ("/full", "/abstract", "/pdf"), die nicht zur DOI
+      // gehoeren — mit ihnen loest sie nicht auf, und eine falsche DOI im
+      // Literaturverzeichnis ist schaedlicher als gar keine.
+      const m = location.href.match(/\b10\.\d{4,9}\/[-._;()A-Za-z0-9]+/);
+      if (m) doi = m[0].replace(/[.,;)]+$/, "");
     }
 
     let autoren = alle("citation_author", "dc.creator", "dcterms.creator", "author", "citation_authors");
@@ -729,7 +733,21 @@
                : "Seitentitel und Adresse";
     // Ohne Titel ist nichts zu zitieren; ohne Verfasser oder Jahr ist die
     // Angabe unvollstaendig, aber als Internetquelle noch brauchbar.
-    q.vollstaendig = !!(q.titel && (autoren.length || q.verlag) && q.jahr);
+    // Fehlerseiten und Zugangsschranken sehen fuer den Auslesevorgang aus wie
+    // gewoehnliche Seiten — sie haben einen Titel und eine Adresse. Aus
+    // "Just a moment..." oder "404 Not found" darf aber keine Quellenangabe
+    // werden. Erkannt wird das am Titel und an der Duennheit der Seite; wo es
+    // zutrifft, wird die Angabe als unbrauchbar gekennzeichnet.
+    q.warnung = "";
+    const verdacht = /^(404|403|error|not found|page not found|just a moment|attention required|access denied|zugriff verweigert|seite nicht gefunden|are you a robot|checking your browser|bitte bestätigen)/i;
+    if (verdacht.test(q.titel.trim())) {
+      q.warnung = "Die Seite sieht nach Fehlermeldung oder Zugangsschranke aus, nicht nach Inhalt.";
+    } else if (!autoren.length && !q.journal && !q.verlag &&
+               (document.body.innerText || "").trim().length < 600) {
+      q.warnung = "Sehr wenig Text und keine Verlagsangaben — moeglicherweise eine Zwischenseite.";
+    }
+
+    q.vollstaendig = !q.warnung && !!(q.titel && (autoren.length || q.verlag) && q.jahr);
     q.art = q.journal ? "Zeitschriftenaufsatz"
           : q.isbn ? "Buch"
           : (meta["citation_arxiv_id"] || /arxiv\.org|biorxiv|ssrn|preprints\.org/i.test(q.url))

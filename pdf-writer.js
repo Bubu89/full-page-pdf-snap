@@ -100,6 +100,10 @@
   /** Eine Zeile im Literaturverzeichnis-Format. */
   function zitation(q) {
     if (!q || !q.titel) return "";
+    // Sieht die Seite nach Fehlermeldung oder Zugangsschranke aus, waere eine
+    // formatierte Quellenangabe eine Behauptung ueber etwas, das gar nicht
+    // erfasst wurde. Dann steht dort der Hinweis statt der Zitation.
+    if (q.warnung) return "Keine belastbare Quellenangabe: " + q.warnung;
     var t = [];
     var au = autorenListe(q.autoren);
     if (au) t.push(au + " ");
@@ -159,7 +163,8 @@
     });
     setze("C1", q.lizenz);
     if (q.geaendert) setze("C2", "zuletzt geaendert: " + q.geaendert);
-    setze("N1", "Angaben aus: " + (q.herkunft || "der Seite") +
+    setze("N1", (q.warnung ? "ACHTUNG: " + q.warnung + " " : "") +
+                "Angaben aus: " + (q.herkunft || "der Seite") +
                 ". Bildschirmaufnahme, kein Verlagsdokument." +
                 (q.zeitzone ? " Zeitzone des Geraets: " + q.zeitzone + "." : ""));
     z.push("ER  - ");
