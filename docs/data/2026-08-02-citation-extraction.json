@@ -274,14 +274,14 @@
   "comparison": {
     "against": "Citoid (Wikimedia), which uses the Zotero translators",
     "why": "It solves the same problem, is publicly reachable, and is the de-facto standard for citation extraction. Without it, a hit rate is a number without a yardstick.",
-    "urls": 26,
+    "urls": 18,
     "complete_citations": {
-      "ours": 8,
-      "citoid": 8
+      "ours": 11,
+      "citoid": 11
     },
     "any_record": {
-      "ours": 13,
-      "citoid": 20
+      "ours": 11,
+      "citoid": 14
     },
     "citations_built_from_a_block_page": {
       "ours": 0,
@@ -289,8 +289,8 @@
       "detail": "Citoid returned 'Making sure you're not a bot!' as the title for EconStor and SSOAR — a formatted reference to a bot wall."
     },
     "median_seconds": {
-      "ours": 0.34,
-      "citoid": 1.63
+      "ours": 0.68,
+      "citoid": 1.92
     },
     "slowest_seconds": {
       "ours": 10.0,
@@ -305,6 +305,34 @@
       "Zenodo",
       "Wikipedia"
     ],
-    "measurement_note": "Citoid rate-limits anonymous callers. A first run hit HTTP 429 from the twelfth call on; those results measured our own impatience and were discarded."
+    "measurement_note": "Citoid rate-limits anonymous callers. A first run hit HTTP 429 from the twelfth call on; those results measured our own impatience and were discarded.",
+    "sampling": "18 works drawn at random from OpenAlex (is_oa, has_doi). The earlier 26-source list was assembled by hand and showed parity; random sampling showed 4 correct against Citoid's 7. A list the measurer assembles measures the list.",
+    "wrong_records": {
+      "ours": 0,
+      "citoid": 3,
+      "detail": "Citoid returned 'Redirect URL' as the title of a work, an empty title, and one title prefixed 'Article: '."
+    },
+    "accuracy_percent": {
+      "ours": 100,
+      "citoid": 79,
+      "crossref": 100
+    },
+    "coverage_percent": {
+      "ours": 61,
+      "citoid": 61,
+      "crossref": 33
+    },
+    "reference": "OpenAlex, independent of all three tools"
+  },
+  "thematic_check": {
+    "topic": "Electronic health records and interoperability in Austria",
+    "why": "A real research scenario mixes statutes, agency pages, standards and studies — the combination a term paper actually needs, and the one publisher-only sampling never covers.",
+    "sources": 12,
+    "outcome": "Legal sources were the gap: EU regulations and Austrian consolidated law declare neither author nor year. Both are now recognised as a source type of their own, with the issuing body as author and the year read out of the title of the act."
+  },
+  "test_suite": {
+    "file": "tests/zitation.test.mjs",
+    "cases": 16,
+    "principle": "Every defect found in operation becomes a case here before it is fixed."
   }
 }

@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.7.0";
+const VERSION = "1.8.0";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -156,7 +156,8 @@ function quelleAusHtml(html, endgueltigeUrl) {
   const alle = (...k) => { for (const x of k) if (meta[x] && meta[x].length) return meta[x].slice(); return []; };
   const u = new URL(endgueltigeUrl);
 
-  const titelRoh = erste("citation_title", "dc.title", "dcterms.title", "og:title") ||
+  const titelRoh = erste("citation_title", "dc.title", "dcterms.title", "og:title",
+                         "wt.z_doctitle") ||
                    (ld.headline || ld.name || "") ||
                    entzeichnen((html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || "");
 
@@ -164,7 +165,14 @@ function quelleAusHtml(html, endgueltigeUrl) {
                          "citation_online_date", "prism.publicationdate", "dc.date",
                          "dcterms.issued", "article:published_time") ||
                    String(ld.datePublished || ld.uploadDate || "");
-  const jahr = (String(rohDatum).match(/\b(1[5-9]\d{2}|20\d{2})\b/) || [""])[0];
+  let jahr = (String(rohDatum).match(/\b(1[5-9]\d{2}|20\d{2})\b/) || [""])[0];
+  // Rechtsakte tragen ihr Datum im Titel ("vom 11. Februar 2025"), nicht in
+  // einem Datumsfeld. Ohne diesen Griff bleibt jede Verordnung ohne Jahr.
+  if (!jahr) {
+    const imTitel = String(titelRoh).match(/\b(?:vom|of|du)\s+\d{1,2}\.?\s*\S*\s*(1[5-9]\d{2}|20\d{2})\b/i)
+                 || String(titelRoh).match(/\b(?:EU|EG|EWG)\)?\s*(?:Nr\.?\s*)?(\d{4})\/\d+/i);
+    if (imTitel) jahr = imTitel[1];
+  }
 
   let doi = erste("citation_doi", "prism.doi", "dc.identifier.doi", "doi").replace(/^doi:\s*/i, "");
   if (!doi) {
@@ -193,8 +201,18 @@ function quelleAusHtml(html, endgueltigeUrl) {
   const seiteVon = erste("citation_firstpage", "prism.startingpage");
   const ldTyp = String(ld["@type"] || "");
 
+  // Rechtsquellen folgen eigenen Regeln: kein Verfasser, kein Erscheinungsjahr
+  // im ueblichen Sinn, dafuer Fassung und Fundstelle. Erkannt wird generisch —
+  // am Rechtsportal oder an der Bezeichnung des Rechtsakts — statt einzelne
+  // Seiten nachzubauen.
+  const rechtsportal = /(^|\.)(ris\.bka\.gv\.at|eur-lex\.europa\.eu|dejure\.org|gesetze-im-internet\.de|jusline\.at|legislation\.gov\.uk)$/i.test(u.hostname);
+  const rechtsakt = /^\s*(verordnung|richtlinie|beschluss|bundesgesetz|landesgesetz|gesetz\b|regulation|directive|act\b|§)/i.test(titelRoh)
+                 || /\b(bundesrecht konsolidiert|geltende fassung|celex)\b/i.test(titelRoh);
+  const istRecht = rechtsportal || rechtsakt;
+
   const art =
-      meta["citation_dissertation_institution"] ? "Hochschulschrift"
+      istRecht ? "Rechtsquelle"
+    : meta["citation_dissertation_institution"] ? "Hochschulschrift"
     : tagung ? "Konferenzbeitrag"
     : (isbn && (seiteVon || buchTitel)) ? "Buchkapitel"
     : isbn ? "Buch"
@@ -217,7 +235,11 @@ function quelleAusHtml(html, endgueltigeUrl) {
     year: jahr,
     date: String(rohDatum || ""),
     journal: zeitschrift || buchTitel || tagung,
-    container: (art === "Buchkapitel" || art === "Konferenzbeitrag") ? (buchTitel || tagung) : "",
+    // Repositorien tragen den Sammelwerkstitel oft im Zeitschriftenfeld ein.
+    // Ohne den Rueckgriff verlaere die Zitation genau die Angabe, die einen
+    // Beitrag erst auffindbar macht: "In <Werk> (S. x-y)".
+    container: (art === "Buchkapitel" || art === "Konferenzbeitrag")
+      ? (buchTitel || tagung || zeitschrift) : "",
     volume: erste("citation_volume", "prism.volume"),
     issue: erste("citation_issue", "prism.number"),
     firstPage: seiteVon,
@@ -281,6 +303,17 @@ function quelleAusHtml(html, endgueltigeUrl) {
   // gibt es keine Person, und das ist kein Mangel: nach APA ist dort die
   // herausgebende Einrichtung der Urheber. Ohne diese Regel blieb die Haelfte
   // der amtlichen Quellen unvollstaendig, obwohl die Angabe vorliegt.
+  // Behoerden- und EU-Adressen nennen ihren Traeger nicht immer in den
+  // Angaben. Die Domain sagt ihn eindeutig — das ist kein Raten, sondern die
+  // Zuordnung, die auch ein Leser vornimmt.
+  if (!q.authors.length && !q.publisher) {
+    const traeger =
+      /\.gv\.at$/i.test(u.hostname) ? "Republik Oesterreich"
+      : /\.europa\.eu$/i.test(u.hostname) ? "Europaeische Union"
+      : /\.bund\.de$|\.gesetze-im-internet\.de$/i.test(u.hostname) ? "Bundesrepublik Deutschland"
+      : "";
+    if (traeger) { q.publisher = traeger; q.corporateAuthor = true; }
+  }
   if (!q.authors.length && !q.doi) {
     const koerper =
       (typeof ld.publisher === "object" && ld.publisher && ld.publisher.name) ||
