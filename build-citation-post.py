@@ -15,9 +15,9 @@ ZIEL = DOCS / "measurements" / "citation-extraction"
 DATEN = DOCS / "data" / "2026-08-02-citation-extraction.json"
 
 URL = "https://provinglab.dev/measurements/citation-extraction/"
-TITEL = "Measured against Citoid: same citations, three times faster, none invented"
+TITEL = "Measured against Citoid on random samples: same coverage, nothing invented"
 BESCHREIBUNG = (
-    "A citation reader is only as good as the one it replaces. Against Citoid, the Wikimedia service built on the Zotero translators, across 26 sources in twelve fields: 8 complete citations each, 0.34 s against 1.63 s, and two references Citoid built out of bot walls."
+    "A citation reader is only as good as the one it replaces. Against Citoid — the Wikimedia service built on the Zotero translators — across 18 works drawn at random: the same coverage, 100 % accuracy against 79 %, and 2.8x faster. The earlier hand-picked sample flattered us; this one does not."
 )
 
 
@@ -67,8 +67,12 @@ def tabelle(d):
 
 
 def inhalt(d):
-    r0 = d["results"]; s = r0["seconds"]; c = d["comparison"]
-    r = {"records_complete_ours": c["complete_citations"]["ours"],
+    c = d["comparison"]
+    r0 = d["results"]; s = r0["seconds"]
+    r = {"acc_ours": c["accuracy_percent"]["ours"], "acc_citoid": c["accuracy_percent"]["citoid"],
+         "cov_ours": c["coverage_percent"]["ours"], "cov_citoid": c["coverage_percent"]["citoid"],
+         "wrong_ours": c["wrong_records"]["ours"], "wrong_citoid": c["wrong_records"]["citoid"],
+         "records_complete_ours": c["complete_citations"]["ours"],
          "records_complete_citoid": c["complete_citations"]["citoid"],
          "any_ours": c["any_record"]["ours"], "any_citoid": c["any_record"]["citoid"],
          "med_ours": c["median_seconds"]["ours"], "med_citoid": c["median_seconds"]["citoid"],
@@ -86,7 +90,7 @@ def inhalt(d):
     server at all. Here is which half, how fast the other half answers, and the
     number that decides whether the answers can be trusted.
   </p>
-  <p class="meta">2 August 2026 · {len(d['per_source'])} sources, twelve fields, two runs each ·
+  <p class="meta">2 August 2026 · {c['urls']} works drawn at random, plus a thematic run on 12 sources ·
     <a href="/data/2026-08-02-citation-extraction.json">raw data</a></p>
 </header>
 
@@ -116,8 +120,21 @@ def inhalt(d):
     <tr><td>Slowest single call</td><td class="num win">{r['slow_ours']}</td><td class="num">{r['slow_citoid']}</td></tr>
   </tbody>
 </table>
+<div class="kf-row">
+  <div class="kf b"><div class="n">{r['acc_ours']} %</div><div class="l">accuracy, ours</div></div>
+  <div class="kf"><div class="n">{r['acc_citoid']} %</div><div class="l">accuracy, Citoid</div></div>
+  <div class="kf"><div class="n">{r['cov_ours']} %</div><div class="l">coverage, both</div></div>
+</div>
+<h3>The earlier measurement was wrong, and how</h3>
 <p>
-  <strong>The same eight complete citations, in a third of the time.</strong> Citoid
+  A first run used 26 sources chosen by hand and reported parity. Nine works drawn at
+  random from OpenAlex reported 4 correct against Citoid&#8217;s 7. The list had been
+  assembled by the person doing the measuring, from sources already known to work.
+  <strong>A list assembled that way measures the list.</strong> Everything below uses
+  random draws.
+</p>
+<p>
+  <strong>The same coverage, nothing invented, in a third of the time.</strong> Citoid
   returns a record more often — twenty against thirteen — but that is where the
   second row matters: two of those extra records are references to a bot wall.
   For EconStor and SSOAR, Citoid returned <em>Making sure you&#8217;re not a bot!</em>
