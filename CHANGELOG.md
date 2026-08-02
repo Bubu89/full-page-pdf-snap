@@ -1,5 +1,31 @@
 # Changelog
 
+## 2026-08-02 (Abschluss II) — Android-Messung veroeffentlicht, eigene Behauptung korrigiert
+
+Neuer Beitrag `/measurements/android-capture-extensions/` samt Datensatz.
+248 Erweiterungen ueber acht AMO-Suchbegriffe geprueft, **60 deklarieren
+Android-Unterstuetzung** — zusammen rund 998.000 taegliche Nutzer, SingleFile
+allein 85.724. Der Median liegt bei 221.
+
+**Damit ist die eigene Store-Behauptung widerlegt.** Das AMO-Listing sagt
+„One of the few capture add-ons that run on Firefox for Android". Rund ein
+Viertel der Werkzeuge, nach denen Leute suchen, deklariert es. Der Beitrag
+sagt das ausdruecklich und nennt die eigene Erweiterung mit ihren drei
+taeglichen Nutzern am unteren Ende derselben Liste.
+
+Der Text trennt sauber zwischen Deklaration und Funktion: Ein Manifest-Eintrag
+erlaubt die Installation, er belegt keine funktionierende Aufnahme. Nichts
+davon wurde auf einem Geraet getestet, und das steht so im Text — wer diese
+Arbeit macht, kann das Ergebnis ueber den Issue-Tracker beisteuern.
+
+Warum das hier steht und nicht nur im Listing: Die Frage „welche Erweiterung
+speichert auf dem Handy eine Seite" wird gesucht, und es gibt dazu keinen
+oeffentlichen Datensatz. Chrome fuer Android kann ueberhaupt keine
+Erweiterungen installieren — deshalb taucht Chrome in der Messung nicht auf.
+
+Verknuepft in sitemap.xml, llms.txt, feed.xml und der Messungs-Uebersicht.
+IndexNow fuer alle 18 URLs angestossen, HTTP 200. Visuell geprueft.
+
 ## 2026-08-02 (Abschluss) — Worker live, Level 5 erreicht
 
 Der Worker `provinglab-mcp` laeuft auf der Route `provinglab.dev/*` und
