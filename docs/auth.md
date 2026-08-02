@@ -1,4 +1,6 @@
-# Authentication
+# auth.md
+
+Agent audience: any automated client reading this site.
 
 Nothing on provinglab.dev is protected. There is no registration, no API key,
 no OAuth flow and no rate limit that requires identification.
