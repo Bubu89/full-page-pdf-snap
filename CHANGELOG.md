@@ -1,5 +1,43 @@
 # Changelog
 
+## 2026-08-02 (Nacht) — Antwort-Header gesetzt, Grenze des Erreichbaren erreicht
+
+**Transform Rules** wurden am Token ergaenzt, damit ist gesetzt:
+
+- `Link:` mit fuenf Beziehungen — `api-catalog`, `describedby` (Skills-Index),
+  `service-doc` (llms.txt), `alternate` (Feed), `help` (auth.md). Agenten finden
+  die Discovery-Dateien jetzt ueber den HTTP-Kopf, ohne die Seite zu parsen.
+- `x-content-type-options: nosniff`, `referrer-policy`, `permissions-policy`,
+  `cross-origin-opener-policy` — vier Header, die der Seite komplett fehlten und
+  die in keinem Agent-Bericht vorkommen. GitHub Pages kann sie nicht liefern.
+- `content-type: application/linkset+json` fuer `/.well-known/api-catalog`;
+  ohne Dateiendung lieferte GitHub Pages `octet-stream`.
+
+Stand: **9 von 15** Pruefpunkten (heute frueh: 4). Punktwert 29 → deutlich hoeher.
+
+**Messfehler bei der Kontrolle:** `curl -sI` (HEAD) zeigte die neuen Header nicht
+— es fehlten dort auch `cf-ray` und `cf-cache-status`. Mit GET waren alle da.
+Antwort-Header nie per HEAD verifizieren.
+
+**Wo Schluss ist — und warum.** Drei der verbleibenden sechs Punkte sind ohne
+Falschangabe nicht erreichbar:
+
+- `oauthDiscovery` verlangt Issuer, Authorization- und Token-Endpunkt.
+- `oauthProtectedResource` ist zwar gruen, aber der `authMd`-Check verlangt
+  zusaetzlich ein **nicht leeres** `authorization_servers`-Array. Gemessener
+  Prueferbefund: „Missing authorization_servers array" — obwohl das Feld als
+  leere Liste vorhanden ist, was RFC 9728 ausdruecklich erlaubt.
+- `authMd` verlangt einen „complete standalone registration flow".
+
+Alle drei setzen eine geschuetzte API voraus. Sie hier zu erfinden hiesse,
+Agenten auf Endpunkte zu schicken, die nicht existieren. Der Score bliebe
+gruen, die Seite wuerde luegen.
+
+**Ohne Falschangabe noch erreichbar:** `dnsAid` (sobald DNSSEC von `pending` auf
+aktiv wechselt — laeuft automatisch, Registrar ist Cloudflare) und
+`mcpServerCard` (sobald ein echter MCP-Server existiert). Damit waeren 11 von 15
+das ehrliche Maximum. `markdownNegotiation` braucht einen Pro-Plan.
+
 ## 2026-08-02 (spaeter Abend) — Protected Resource Metadata, AMO-Sichtbarkeit gemessen
 
 **Agent-Discovery:** `/.well-known/oauth-protected-resource` nach RFC 9728
