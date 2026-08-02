@@ -1,5 +1,40 @@
 # Changelog
 
+## 2026-08-02 (spaeter Abend) — Protected Resource Metadata, AMO-Sichtbarkeit gemessen
+
+**Agent-Discovery:** `/.well-known/oauth-protected-resource` nach RFC 9728
+ergaenzt. Die Spezifikation verlangt nur `resource`; `authorization_servers`
+ist optional, und eine leere Liste sagt korrekt aus, dass kein
+Autorisierungsserver Tokens ausstellt. Damit steht nichts Falsches in der
+Datei. `/.well-known/oauth-authorization-server` bleibt bewusst aus — sie
+muesste Issuer, Authorization- und Token-Endpunkt nennen, die es nicht gibt.
+Score dadurch 8/15 (Ausgangslage am Morgen: 4/15, Punktwert 29 → 57).
+
+**Zwei Messungen zur Auffindbarkeit im Firefox-Store:**
+
+1. Rang in der AMO-Suche, gemessen bis Platz 100: `full page pdf snap` 1,
+   `pdf snap` 2, `full page pdf` 6, `save webpage as pdf` 11,
+   `save page as pdf` 34, `webpage to pdf` 37 — und
+   **`full page screenshot` gar nicht unter den ersten 100 von 361 Treffern.**
+   Ursache: Das Wort *screenshot* kommt weder im Titel noch in der
+   Zusammenfassung vor, nur in der Langbeschreibung. AMO gewichtet Titel und
+   Zusammenfassung am staerksten.
+
+2. 121 Erweiterungen aus sechs Capture-/PDF-Suchbegriffen geprueft:
+   **33 davon deklarieren Android-Kompatibilitaet**, darunter PDF Mage (16.526
+   Nutzer), Print to PDF (13.328), Save Screenshot (10.802), Save PDF (5.573),
+   PageSaver (2.200) und FullPage Capture (1.556). Die AMO-Zusammenfassung
+   behauptet derzeit *„One of the few capture add-ons that run on Firefox for
+   Android"*. Deklaration ist nicht Funktion — aber ohne eigene Messung auf dem
+   Geraet ist die Aussage in dieser Form nicht belegt und passt nicht zu einer
+   Seite, die jede Behauptung mit einer Methode hinterlegt.
+
+**Ebenfalls gemessen:** Die AMO-Homepage-Angabe zeigt auf
+`bubu89.github.io/full-page-pdf-snap/` statt auf provinglab.dev. Der
+AMO-JWT im Vault gehoert zu einem anderen Konto (Projekt SentinelX) und
+bekommt beim Schreiben HTTP 403 — die Korrektur muss im Developer Hub
+erfolgen.
+
 ## 2026-08-02 (Abend) — Agent-Discovery umgesetzt
 
 Sechs der elf Punkte aus dem isitagentready-Bericht sind live, mit echtem
