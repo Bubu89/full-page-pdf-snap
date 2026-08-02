@@ -110,11 +110,24 @@
     t.push("(" + (q.jahr || "o. J.") + "). ");
     t.push(q.titel.replace(/\s+/g, " ").trim());
     if (!/[.?!]$/.test(q.titel.trim())) t.push(".");
-    if (q.journal) {
+    var seiten = q.seiteVon
+      ? q.seiteVon + (q.seiteBis && q.seiteBis !== q.seiteVon ? "–" + q.seiteBis : "")
+      : "";
+    if (q.sammelwerk) {
+      // Beitrag in einem Sammel- oder Tagungsband: "In <Werk> (S. x–y). Verlag."
+      t.push(" In " + q.sammelwerk);
+      if (seiten) t.push(" (S. " + seiten + ")");
+      t.push(".");
+      if (q.verlag) t.push(" " + q.verlag + ".");
+    } else if (q.journal) {
       t.push(" " + q.journal);
       if (q.band) t.push(", " + q.band + (q.heft ? "(" + q.heft + ")" : ""));
-      if (q.seiteVon) t.push(", " + q.seiteVon + (q.seiteBis && q.seiteBis !== q.seiteVon ? "–" + q.seiteBis : ""));
+      if (seiten) t.push(", " + seiten);
       t.push(".");
+    } else if (q.art === "Hochschulschrift") {
+      t.push(" [Hochschulschrift]." + (q.verlag ? " " + q.verlag + "." : ""));
+    } else if (q.art === "Video") {
+      t.push(" [Video]." + (q.verlag ? " " + q.verlag + "." : ""));
     } else if (q.verlag) {
       t.push(" " + q.verlag + ".");
     }
@@ -131,7 +144,13 @@
   /** RIS-Satz — das Austauschformat, das Citavi, Zotero und EndNote lesen. */
   function risSatz(q) {
     var typ = q.art === "Zeitschriftenaufsatz" ? "JOUR"
+            : q.art === "Buchkapitel" ? "CHAP"
             : q.art === "Buch" ? "BOOK"
+            : q.art === "Konferenzbeitrag" ? "CPAPER"
+            : q.art === "Hochschulschrift" ? "THES"
+            : q.art === "Bericht" ? "RPRT"
+            : q.art === "Datensatz" ? "DATA"
+            : q.art === "Video" ? "VIDEO"
             : q.art === "Preprint" ? "UNPB" : "ELEC";
     var z = ["TY  - " + typ];
     var setze = function (k, v) { if (v) z.push(k + "  - " + String(v).replace(/[\r\n]+/g, " ")); };
@@ -143,7 +162,10 @@
     // es beim Jahr in PY, das jeder Importer versteht.
     var iso = String(q.datum || "").match(/^(\d{4})[-/](\d{2})[-/](\d{2})/);
     if (iso) setze("DA", iso[1] + "/" + iso[2] + "/" + iso[3]);
-    setze("JO", q.journal);
+    // Bei Beitraegen in Sammelbaenden gehoert der Werktitel in T2, nicht in
+    // JO — Literaturprogramme setzen JO nur bei Periodika.
+    if (q.sammelwerk) setze("T2", q.sammelwerk);
+    else setze("JO", q.journal);
     setze("VL", q.band);
     setze("IS", q.heft);
     setze("SP", q.seiteVon);

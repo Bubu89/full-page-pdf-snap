@@ -601,7 +601,12 @@
         const j = JSON.parse(s.textContent);
         for (const o of (Array.isArray(j) ? j : [j])) {
           const t = String(o["@type"] || "");
-          if (/Article|Book|Thesis|Report|Chapter|Posting/i.test(t) && !ld["@type"]) ld = o;
+          // Auch Videos, Datensaetze und Berichte zaehlen — sie werden
+          // zitiert wie alles andere, tragen aber keine citation_-Felder.
+          // WebPage und Organization bleiben draussen: sie beschreiben die
+          // Website, nicht das Werk.
+          if (/Article|Book|Thesis|Chapter|Posting|VideoObject|Dataset|Report|Course|Map|SoftwareSource/i.test(t) &&
+              !ld["@type"]) ld = o;
         }
       } catch (_) { /* fehlerhaftes JSON-LD ist haeufig und kein Grund aufzugeben */ }
     });
@@ -624,16 +629,28 @@
     // dort steht oft die DOI einer zitierten Arbeit, nicht die dieser Seite.
     let doi = erste("citation_doi", "prism.doi", "dc.identifier.doi", "doi").replace(/^doi:\s*/i, "");
     if (!doi) {
-      const m = location.href.match(/\b10\.\d{4,9}\/[-._;()/:A-Za-z0-9]+/);
-      if (m) doi = m[0];
+      // Aus der Adresse geraten wird nur der DOI-Kern. Verlagsseiten haengen
+      // Wegstuecke an ("/full", "/abstract", "/pdf"), die nicht zur DOI
+      // gehoeren — mit ihnen loest sie nicht auf, und eine falsche DOI im
+      // Literaturverzeichnis ist schaedlicher als gar keine.
+      const m = location.href.match(/\b10\.\d{4,9}\/[-._;()A-Za-z0-9]+/);
+      if (m) doi = m[0].replace(/[.,;)]+$/, "");
     }
 
-    let autoren = alle("citation_author", "dc.creator", "dcterms.creator", "author", "citation_authors");
+    let autoren = alle("citation_author", "dc.creator", "dcterms.creator", "author",
+                       "citation_authors", "article:author", "twitter:creator");
     if (autoren.length === 1 && /;/.test(autoren[0])) autoren = autoren[0].split(";").map(s => s.trim());
     if (!autoren.length) autoren = ldAutor();
 
-    const journal = erste("citation_journal_title", "prism.publicationname",
-                          "citation_conference_title", "citation_book_title", "dc.source");
+    // Der uebergeordnete Titel — Zeitschrift, Sammelband oder Tagungsband.
+    // Getrennt gehalten, weil davon die Art der Quelle abhaengt: dieselbe
+    // Seitenangabe bedeutet bei einer ISBN ein Kapitel und bei einer ISSN
+    // einen Aufsatz.
+    const buchTitel = erste("citation_inbook_title", "citation_book_title",
+                            "citation_series_title");
+    const tagung = erste("citation_conference_title", "citation_conference");
+    const journal = erste("citation_journal_title", "prism.publicationname", "dc.source") ||
+                    buchTitel || tagung;
     const q = {
       titel: erste("citation_title", "dc.title", "dcterms.title", "og:title") ||
              (ld.headline || "") || document.title || "",
@@ -729,15 +746,68 @@
                : "Seitentitel und Adresse";
     // Ohne Titel ist nichts zu zitieren; ohne Verfasser oder Jahr ist die
     // Angabe unvollstaendig, aber als Internetquelle noch brauchbar.
-    q.vollstaendig = !!(q.titel && (autoren.length || q.verlag) && q.jahr);
-    q.art = q.journal ? "Zeitschriftenaufsatz"
-          : q.isbn ? "Buch"
-          : (meta["citation_arxiv_id"] || /arxiv\.org|biorxiv|ssrn|preprints\.org/i.test(q.url))
-            ? "Preprint"
-          : "Internetquelle";
+    // Fehlerseiten und Zugangsschranken sehen fuer den Auslesevorgang aus wie
+    // gewoehnliche Seiten — sie haben einen Titel und eine Adresse. Aus
+    // "Just a moment..." oder "404 Not found" darf aber keine Quellenangabe
+    // werden. Erkannt wird das am Titel und an der Duennheit der Seite; wo es
+    // zutrifft, wird die Angabe als unbrauchbar gekennzeichnet.
+    q.warnung = "";
+    const verdacht = /^(404|403|error|not found|page not found|just a moment|attention required|access denied|zugriff verweigert|seite nicht gefunden|are you a robot|checking your browser|bitte bestätigen)/i;
+    if (verdacht.test(q.titel.trim())) {
+      q.warnung = "Die Seite sieht nach Fehlermeldung oder Zugangsschranke aus, nicht nach Inhalt.";
+    } else if (!autoren.length && !q.journal && !q.verlag &&
+               (document.body.innerText || "").trim().length < 600) {
+      q.warnung = "Sehr wenig Text und keine Verlagsangaben — moeglicherweise eine Zwischenseite.";
+    }
+
+    // Die Vollstaendigkeit wird erst nach der Art bestimmt — dort werden bei
+    // manchen Quellenarten Verfasser und Jahr noch ergaenzt.
+    // Die Art bestimmt, wie zitiert wird. Entschieden wird nach dem
+    // eindeutigsten vorliegenden Merkmal, nicht nach dem erstbesten:
+    // eine ISBN weist einen Sammelband aus, auch wenn die Seite daneben
+    // ein Feld fuer Zeitschriftentitel gefuellt hat — Repositorien tun das
+    // regelmaessig. Eine ISSN gibt es nur bei Periodika.
+    const ldTyp = String(ld["@type"] || "");
+    q.art =
+        meta["citation_dissertation_institution"] ? "Hochschulschrift"
+      : tagung ? "Konferenzbeitrag"
+      : (q.isbn && (q.seiteVon || buchTitel)) ? "Buchkapitel"
+      : q.isbn ? "Buch"
+      : (q.issn || erste("citation_journal_title", "prism.publicationname"))
+          ? "Zeitschriftenaufsatz"
+      : (meta["citation_arxiv_id"] || /arxiv\.org|biorxiv|medrxiv|ssrn|psyarxiv|preprints\.org|osf\.io/i.test(q.url))
+          ? "Preprint"
+      : /VideoObject/i.test(ldTyp) ? "Video"
+      : /(^|[^a-z])Dataset/i.test(ldTyp) ? "Datensatz"
+      : /Report/i.test(ldTyp) ? "Bericht"
+      : "Internetquelle";
+    if (q.art === "Buchkapitel" || q.art === "Konferenzbeitrag") {
+      q.sammelwerk = buchTitel || tagung || q.journal;
+    }
     if (q.art === "Preprint" && !q.verlag) {
       q.verlag = meta["citation_arxiv_id"] ? "arXiv" : q.webseite;
     }
+    if (q.art === "Hochschulschrift" && !q.verlag) {
+      q.verlag = erste("citation_dissertation_institution");
+    }
+    // Video: Urheber ist der Kanal, Datum das Hochladedatum. Beides steht
+    // nicht in den citation_-Feldern, die es hier nicht gibt.
+    if (q.art === "Video") {
+      if (!q.autoren.length) {
+        const kanal = document.querySelector('link[itemprop="name"], span[itemprop="author"] link[itemprop="name"]');
+        const name = (kanal && kanal.getAttribute("content")) ||
+                     (ld.author && (ld.author.name || ld.author)) || "";
+        if (name) q.autoren = [String(name)];
+      }
+      if (!q.jahr) {
+        const hoch = String(ld.uploadDate || erste("uploaddate") || "");
+        const j = hoch.match(/\b(19|20)\d{2}\b/);
+        if (j) { q.jahr = j[0]; q.datum = hoch; }
+      }
+      if (!q.verlag) q.verlag = q.webseite;
+    }
+    q.vollstaendig = !q.warnung &&
+      !!(q.titel && (q.autoren.length || q.verlag) && q.jahr);
     // Seitentitel tragen oft den Namen der Website als Anhaengsel
     // ("Sexualtherapie – Wikipedia"). Abgeschnitten wird nur, wenn der
     // Rest woertlich dem angegebenen Seitennamen entspricht — sonst waere

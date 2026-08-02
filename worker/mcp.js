@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.4.0";
+const VERSION = "1.5.0";
 const PROTOCOL = "2025-06-18";
 
 const TOOLS = [
@@ -56,6 +56,24 @@ const TOOLS = [
       additionalProperties: false,
     },
   },
+  {
+    name: "extract_citation",
+    description:
+      "Read the citation details a web page declares about itself and return them as " +
+      "a structured record plus ready-to-import RIS and BibTeX. Covers journal " +
+      "articles, book chapters, conference papers, preprints, theses, reports, " +
+      "datasets, videos and plain web pages. Use when a source has to be cited, " +
+      "archived, or added to a reference manager. Says so plainly when a page turns " +
+      "out to be an error page or an access wall, instead of inventing a reference.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        url: { type: "string", description: "Address of the page to read" },
+      },
+      required: ["url"],
+      additionalProperties: false,
+    },
+  },
 ];
 
 // Der Endpunkt liefert ausschliesslich oeffentliche Daten und kennt keine
@@ -77,6 +95,221 @@ const json = (body, status = 200, extra = {}) =>
 const rpcOk = (id, result) => json({ jsonrpc: "2.0", id, result });
 const rpcErr = (id, code, message) => json({ jsonrpc: "2.0", id, error: { code, message } });
 const textResult = (s) => ({ content: [{ type: "text", text: s }] });
+
+// ---------------------------------------------------------------------------
+// Zitationsangaben aus einer fremden Seite
+//
+// Dieselben Regeln wie in der Erweiterung, aber ohne Dokumentbaum: hier steht
+// nur der ausgelieferte Quelltext zur Verfuegung. Was eine Seite per
+// JavaScript nachtraegt, ist damit unsichtbar — das ist eine Grenze und wird
+// als solche gemeldet, nicht ueberspielt.
+//
+// Geraten wird nichts. Liegt ein Feld nicht vor, fehlt es in der Ausgabe.
+// ---------------------------------------------------------------------------
+
+function entzeichnen(s) {
+  return String(s || "")
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n))
+    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCharCode(parseInt(n, 16)))
+    .replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&nbsp;/g, " ")
+    .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&")
+    .replace(/\s+/g, " ").trim();
+}
+
+/** Alle meta-Angaben als { name: [werte] }. */
+function metaLesen(html) {
+  const m = {};
+  const kopf = html.slice(0, 400000);   // Angaben stehen im Kopf; der Rest waere Ballast
+  const re = /<meta\b([^>]*)>/gi;
+  let t;
+  while ((t = re.exec(kopf)) !== null) {
+    const attr = t[1];
+    const n = (attr.match(/\b(?:name|property)\s*=\s*["']([^"']+)["']/i) || [])[1];
+    const v = (attr.match(/\bcontent\s*=\s*["']([^"']*)["']/i) || [])[1];
+    if (!n || !v) continue;
+    const k = n.toLowerCase();
+    (m[k] = m[k] || []).push(entzeichnen(v));
+  }
+  return m;
+}
+
+function jsonLdLesen(html) {
+  const re = /<script[^>]+type\s*=\s*["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let t;
+  while ((t = re.exec(html)) !== null) {
+    try {
+      const j = JSON.parse(t[1].trim());
+      for (const o of (Array.isArray(j) ? j : [j])) {
+        const typ = String((o && o["@type"]) || "");
+        if (/Article|Book|Thesis|Chapter|Posting|VideoObject|Dataset|Report|Map/i.test(typ)) return o;
+      }
+    } catch (_) { /* fehlerhaftes JSON-LD ist haeufig und kein Grund aufzugeben */ }
+  }
+  return {};
+}
+
+function quelleAusHtml(html, endgueltigeUrl) {
+  const meta = metaLesen(html);
+  const ld = jsonLdLesen(html);
+  const erste = (...k) => { for (const x of k) if (meta[x] && meta[x][0]) return meta[x][0]; return ""; };
+  const alle = (...k) => { for (const x of k) if (meta[x] && meta[x].length) return meta[x].slice(); return []; };
+  const u = new URL(endgueltigeUrl);
+
+  const titelRoh = erste("citation_title", "dc.title", "dcterms.title", "og:title") ||
+                   (ld.headline || ld.name || "") ||
+                   entzeichnen((html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || "");
+
+  const rohDatum = erste("citation_publication_date", "citation_date", "citation_cover_date",
+                         "citation_online_date", "prism.publicationdate", "dc.date",
+                         "dcterms.issued", "article:published_time") ||
+                   String(ld.datePublished || ld.uploadDate || "");
+  const jahr = (String(rohDatum).match(/\b(1[5-9]\d{2}|20\d{2})\b/) || [""])[0];
+
+  let doi = erste("citation_doi", "prism.doi", "dc.identifier.doi", "doi").replace(/^doi:\s*/i, "");
+  if (!doi) {
+    const t = endgueltigeUrl.match(/\b10\.\d{4,9}\/[-._;()A-Za-z0-9]+/);
+    if (t) doi = t[0].replace(/[.,;)]+$/, "");
+  }
+
+  let autoren = alle("citation_author", "dc.creator", "dcterms.creator", "author",
+                     "citation_authors", "article:author");
+  if (autoren.length === 1 && /;/.test(autoren[0])) autoren = autoren[0].split(";").map((s) => s.trim());
+  if (!autoren.length && ld.author) {
+    autoren = (Array.isArray(ld.author) ? ld.author : [ld.author])
+      .map((x) => (typeof x === "string" ? x : (x && x.name) || "")).filter(Boolean);
+  }
+
+  const buchTitel = erste("citation_inbook_title", "citation_book_title", "citation_series_title");
+  const tagung = erste("citation_conference_title", "citation_conference");
+  const issn = erste("citation_issn", "prism.issn", "citation_eissn");
+  const isbn = erste("citation_isbn");
+  const zeitschrift = erste("citation_journal_title", "prism.publicationname", "dc.source");
+  const seiteVon = erste("citation_firstpage", "prism.startingpage");
+  const ldTyp = String(ld["@type"] || "");
+
+  const art =
+      meta["citation_dissertation_institution"] ? "Hochschulschrift"
+    : tagung ? "Konferenzbeitrag"
+    : (isbn && (seiteVon || buchTitel)) ? "Buchkapitel"
+    : isbn ? "Buch"
+    : (issn || zeitschrift) ? "Zeitschriftenaufsatz"
+    : (meta["citation_arxiv_id"] || /arxiv\.org|biorxiv|medrxiv|ssrn|psyarxiv|preprints\.org|osf\.io/i.test(endgueltigeUrl))
+        ? "Preprint"
+    : /VideoObject/i.test(ldTyp) ? "Video"
+    : /(^|[^a-z])Dataset/i.test(ldTyp) ? "Datensatz"
+    : /Report/i.test(ldTyp) ? "Bericht"
+    : "Internetquelle";
+
+  const kanon = entzeichnen(
+    (html.match(/<link[^>]+rel\s*=\s*["']canonical["'][^>]*>/i) || [""])[0]
+      .match(/href\s*=\s*["']([^"']+)["']/i)?.[1] || "");
+
+  const q = {
+    art,
+    title: titelRoh,
+    authors: autoren,
+    year: jahr,
+    date: String(rohDatum || ""),
+    journal: zeitschrift || buchTitel || tagung,
+    container: (art === "Buchkapitel" || art === "Konferenzbeitrag") ? (buchTitel || tagung) : "",
+    volume: erste("citation_volume", "prism.volume"),
+    issue: erste("citation_issue", "prism.number"),
+    firstPage: seiteVon,
+    lastPage: erste("citation_lastpage", "prism.endingpage"),
+    doi,
+    issn,
+    isbn,
+    publisher: erste("citation_publisher", "dc.publisher", "citation_dissertation_institution",
+                     "citation_technical_report_institution") ||
+               (art === "Preprint" && meta["citation_arxiv_id"] ? "arXiv" : ""),
+    language: erste("citation_language", "dc.language") ||
+              (html.match(/<html[^>]+lang\s*=\s*["']([^"'-]+)/i) || [])[1] || "",
+    licence: erste("dc.rights", "dcterms.license", "citation_license") ||
+             (typeof ld.license === "string" ? ld.license : (ld.license && ld.license.url) || ""),
+    url: endgueltigeUrl,
+    canonicalUrl: kanon || erste("og:url") || "",
+    fullTextUrls: [],
+    retrievedAt: new Date().toISOString(),
+    website: erste("og:site_name") || u.hostname.replace(/^www\./, ""),
+  };
+  for (const [k, art2] of [["citation_pdf_url", "pdf"], ["citation_xml_url", "xml"],
+                           ["citation_fulltext_html_url", "html"]]) {
+    const v = erste(k);
+    if (v) { try { q.fullTextUrls.push({ type: art2, url: new URL(v, endgueltigeUrl).href }); } catch (_) {} }
+  }
+
+  // Seitenname als Anhaengsel im Titel abschneiden — aber nur im Abgleich mit
+  // dem angegebenen Seitennamen oder dem Namen der Domain, nie geraten.
+  const teile = u.hostname.split(".");
+  const kern = teile.length > 1 ? teile[teile.length - 2] : teile[0];
+  const tm = q.title.match(/^(.*?)\s*[|–—-]\s*([^|–—-]+)$/);
+  if (tm && tm[1].trim()) {
+    const schwanz = tm[2].trim().toLowerCase();
+    if (schwanz === (erste("og:site_name") || "").trim().toLowerCase() ||
+        schwanz === kern.toLowerCase()) q.title = tm[1].trim();
+  }
+
+  const verdacht = /^(404|403|error|not found|page not found|just a moment|attention required|access denied|zugriff verweigert|seite nicht gefunden|are you a robot|checking your browser)/i;
+  q.warning = verdacht.test(q.title)
+    ? "The page looks like an error message or an access wall, not content. The details below are not usable as a reference."
+    : "";
+  q.source = Object.keys(meta).some((k) => k.startsWith("citation_"))
+    ? "publisher metadata in the page (citation_*)"
+    : Object.keys(meta).some((k) => k.startsWith("dc."))
+      ? "Dublin Core metadata in the page"
+      : ldTyp ? "schema.org metadata in the page" : "page title and address";
+  q.complete = !q.warning && !!(q.title && (q.authors.length || q.publisher) && q.year);
+  return q;
+}
+
+function risAus(q) {
+  const typ = { Zeitschriftenaufsatz: "JOUR", Buchkapitel: "CHAP", Buch: "BOOK",
+                Konferenzbeitrag: "CPAPER", Hochschulschrift: "THES", Bericht: "RPRT",
+                Datensatz: "DATA", Video: "VIDEO", Preprint: "UNPB" }[q.art] || "ELEC";
+  const z = ["TY  - " + typ];
+  const s = (k, v) => { if (v) z.push(k + "  - " + String(v).replace(/[\r\n]+/g, " ")); };
+  q.authors.forEach((a) => s("AU", a));
+  s("TI", q.title);
+  s("PY", q.year);
+  const iso = String(q.date || "").match(/^(\d{4})[-/](\d{2})[-/](\d{2})/);
+  if (iso) s("DA", `${iso[1]}/${iso[2]}/${iso[3]}`);
+  if (q.container) s("T2", q.container); else s("JO", q.journal);
+  s("VL", q.volume); s("IS", q.issue); s("SP", q.firstPage); s("EP", q.lastPage);
+  s("DO", q.doi); s("SN", q.isbn || q.issn); s("PB", q.publisher); s("LA", q.language);
+  s("UR", q.canonicalUrl || q.url);
+  s("Y2", q.retrievedAt);
+  (q.fullTextUrls || []).forEach((d) => { if (d.type === "pdf") s("L1", d.url); });
+  s("C1", q.licence);
+  s("N1", (q.warning ? "WARNING: " + q.warning + " " : "") +
+          "Fields taken from " + q.source + ", read server-side without JavaScript.");
+  z.push("ER  - ");
+  return z.join("\r\n") + "\r\n";
+}
+
+function bibtexAus(q) {
+  const typ = { Zeitschriftenaufsatz: "article", Buchkapitel: "incollection", Buch: "book",
+                Konferenzbeitrag: "inproceedings", Hochschulschrift: "phdthesis",
+                Bericht: "techreport", Datensatz: "misc", Video: "misc",
+                Preprint: "misc" }[q.art] || "misc";
+  const ersterNachname = (q.authors[0] || "anon").split(",")[0].split(/\s+/).pop()
+    .replace(/[^A-Za-z]/g, "").toLowerCase() || "anon";
+  const schluessel = ersterNachname + (q.year || "");
+  const esc = (v) => String(v).replace(/[{}]/g, "");
+  const f = [];
+  const add = (k, v) => { if (v) f.push(`  ${k} = {${esc(v)}}`); };
+  add("author", q.authors.join(" and "));
+  add("title", q.title);
+  add("year", q.year);
+  if (q.container) add("booktitle", q.container); else add("journal", q.journal);
+  add("volume", q.volume); add("number", q.issue);
+  if (q.firstPage) add("pages", q.firstPage + (q.lastPage && q.lastPage !== q.firstPage ? "--" + q.lastPage : ""));
+  add("doi", q.doi); add("issn", q.issn); add("isbn", q.isbn);
+  add("publisher", q.publisher); add("language", q.language);
+  add("url", q.canonicalUrl || q.url);
+  add("urldate", q.retrievedAt.slice(0, 10));
+  add("note", q.warning || "");
+  return `@${typ}{${schluessel},\n${f.join(",\n")}\n}\n`;
+}
 
 async function fetchJson(origin, path) {
   const url = origin + path;
@@ -118,6 +351,62 @@ async function runTool(origin, name, args) {
       throw new Error("dataset must be a plain .json filename from /data/");
     }
     return textResult(JSON.stringify(await fetchJson(origin, "/data/" + name2), null, 2));
+  }
+
+  if (name === "extract_citation") {
+    const roh = String((args && args.url) || "").trim();
+    if (!roh) throw new Error("url is required");
+    let ziel;
+    try { ziel = new URL(roh); } catch (_) { throw new Error("url is not a valid address"); }
+    // Nur oeffentliche Adressen. Ein Worker sitzt in fremdem Netz; ohne diese
+    // Pruefung liesse sich der Endpunkt als Sprungbrett auf interne Dienste
+    // verwenden — die klassische serverseitige Anfragefaelschung.
+    if (!/^https?:$/.test(ziel.protocol)) throw new Error("only http and https are supported");
+    if (/^(localhost|127\.|10\.|192\.168\.|169\.254\.|0\.|\[?::1)/i.test(ziel.hostname) ||
+        /^172\.(1[6-9]|2\d|3[01])\./.test(ziel.hostname) ||
+        /\.(local|internal|localdomain)$/i.test(ziel.hostname)) {
+      throw new Error("only public addresses can be read");
+    }
+
+    const r = await fetch(ziel.href, {
+      redirect: "follow",
+      headers: {
+        // Offen benennen, wer anfragt. Wer den Zugriff nicht wuenscht, kann
+        // ihn so unterscheiden und aussperren.
+        "user-agent": "provinglab-mcp/1.5 (+https://provinglab.dev/; citation metadata reader)",
+        accept: "text/html,application/xhtml+xml",
+        "accept-language": "en,de;q=0.8",
+      },
+      cf: { cacheTtl: 300, cacheEverything: false },
+    });
+    if (!r.ok) {
+      return textResult(JSON.stringify({
+        url: ziel.href, httpStatus: r.status,
+        warning: `The server answered ${r.status} ${r.statusText}. No citation data was read.`,
+        hint: r.status === 403 || r.status === 503
+          ? "Publisher sites frequently block server-side readers. Open the page in a browser and read it there."
+          : undefined,
+      }, null, 2));
+    }
+    const typ = r.headers.get("content-type") || "";
+    if (!/html|xml/i.test(typ)) {
+      return textResult(JSON.stringify({
+        url: r.url, contentType: typ,
+        warning: "The address does not return an HTML page, so it declares no citation metadata.",
+      }, null, 2));
+    }
+    // Gedeckelt, damit eine einzelne riesige Seite den Aufruf nicht sprengt;
+    // die Angaben stehen im Kopf, lange vor dieser Grenze.
+    const html = (await r.text()).slice(0, 1500000);
+    const q = quelleAusHtml(html, r.url);
+    return textResult(JSON.stringify({
+      ...q,
+      ris: risAus(q),
+      bibtex: bibtexAus(q),
+      limits: "Read server-side without JavaScript: details a page adds after loading are " +
+              "invisible here, and sites that block non-browser clients return nothing. " +
+              "Neither is reported as success.",
+    }, null, 2));
   }
 
   if (name === "get_method") {

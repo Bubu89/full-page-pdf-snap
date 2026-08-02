@@ -5,6 +5,45 @@
      Leser. Vor dem Commit auf Heim- und Benutzerverzeichnisse pruefen. -->
 
 
+## 2026-08-02 — MCP-Server bekommt ein Werkzeug: `extract_citation`
+
+Bisher konnte der Endpunkt unter `/mcp` Auskunft geben, aber nichts tun: drei
+Werkzeuge, alle nur lesend auf die eigenen Messdaten. Ein fremder Agent mit der
+Aufgabe „diese Quelle zitierfaehig sichern" fand dort nichts.
+
+`extract_citation(url)` liest die Zitationsangaben, die eine beliebige Seite
+ueber sich selbst erklaert, und liefert einen strukturierten Datensatz samt
+fertigem **RIS** und **BibTeX**. Erkannt werden Zeitschriftenaufsatz,
+Buchkapitel, Buch, Konferenzbeitrag, Hochschulschrift, Preprint, Bericht,
+Datensatz, Video und Internetquelle.
+
+An elf Quellen geprueft: **acht von acht erreichbaren korrekt eingeordnet**.
+Drei Verlage (MDPI, ScienceDirect, Wiley) sperren serverseitige Leser mit
+HTTP 403 aus — das wird als 403 gemeldet, nicht als leeres Ergebnis. Genau
+dort hilft die Erweiterung, die im Browser des Nutzers laeuft: die beiden Wege
+ergaenzen sich, und keiner ersetzt den anderen.
+
+Grenzen stehen in der Antwort selbst: serverseitig gelesen, ohne JavaScript;
+was eine Seite nachtraegt, ist unsichtbar. Ziel-Adressen werden auf oeffentliche
+Hosts eingeschraenkt, damit der Endpunkt kein Sprungbrett auf interne Dienste
+wird, und der Leser nennt sich im User-Agent, damit ihn aussperren kann, wer
+das moechte.
+
+### Typerkennung: ISBN schlaegt Zeitschriftentitel
+
+Repositorien fuellen fuer einen Sammelbandbeitrag oft beide Felder. Bisher
+gewann der Zeitschriftentitel, und ein Handwoerterbuch-Artikel wurde als
+Zeitschriftenaufsatz zitiert. Jetzt entscheidet das eindeutigere Merkmal: eine
+ISBN mit Seitenangabe ist ein Kapitel, eine ISSN ein Periodikum. Belegt an
+SSOAR.
+
+Weiter erkannt: Dissertationen ueber `citation_dissertation_institution`,
+Tagungsbaende ueber `citation_conference_title`, Videos ueber schema.org
+`VideoObject` — dort ist der Kanal der Urheber und das Hochladedatum das Jahr,
+weil `citation_*`-Felder fehlen. Beitraege in Sammelbaenden erscheinen als
+„In <Werk> (S. x–y)" und im RIS unter `T2` statt `JO`, weil
+Literaturprogramme `JO` nur bei Periodika auswerten.
+
 ## 2026-08-02 — Fuer wissenschaftliches Arbeiten: Quellenangaben und Druckumbruch
 
 Zwei Erweiterungen, beide zuerst gemessen und dann gebaut.
