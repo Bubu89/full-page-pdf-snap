@@ -142,6 +142,12 @@ Der Sinn ist nicht Abgrenzung, sondern Nachvollziehbarkeit: Wer in einem halben
 Jahr in die Historie sieht, soll finden, *warum* eine Zeile so aussieht — und
 das steht in der Commit-Nachricht, die zu ihr gehoert.
 
+**Vor dem Anfangen kurz Bescheid geben.** Wer ein Issue uebernimmt, schreibt
+vorher einen Zweizeiler hinein — „arbeite dran, voraussichtlich X". Am
+3. August wurde dasselbe Issue von beiden Prozessen bearbeitet und doppelt
+kommentiert. Zwei Zeilen haetten das erspart.
+
+
 ## Ein Beitrag gilt als fertig, wenn
 
 - `rechtscheck.py` 0 Fehler meldet,
