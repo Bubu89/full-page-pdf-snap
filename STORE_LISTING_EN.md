@@ -31,39 +31,36 @@ Save any webpage as a single high-resolution PDF. Auto-scrolls the whole page �
 ## Description
 
 ```
-Save any webpage as a single high-resolution PDF. Auto-scrolls the whole page — no cropping, no print dialog.
+Save any webpage as a single high-resolution PDF — or select just the part you need. Auto-scrolls the whole page: no cropping, no print dialog.
 
-Full Page PDF Snap scrolls the page, captures every viewport and stitches all segments into one seamless, high-resolution PDF on your device.
+Full Page PDF Snap scrolls the page, captures every viewport and stitches all segments into one seamless PDF on your device. Nothing is uploaded.
 
 HOW IT WORKS
 
-Click the toolbar button, use the context menu or press Alt+Shift+Y. The extension scrolls to the bottom, waits for lazy-loaded images, captures each viewport and assembles everything into one continuous PDF page — no seams, no page breaks cutting through your content.
+Click the toolbar button, use the context menu or press Alt+Shift+Y for the whole page. For part of it, choose "Select an area" and drag the rectangle — Escape cancels.
 
 WHAT YOU GET
 
 • One continuous page instead of a print job chopped into A4 sheets
-• Or the visible area only — one click, same PDF, same details
-• Consent dialogs, banners and floating bars hidden before capture, with a
-  switch right in the popup
+• Or just the area you drag with the mouse, same PDF and same details
 • Real, searchable text taken from the page itself — not read back from pixels
-• Page breaks that fall between lines, never through them, with an A4 setting
-  that fits printed paper
-• Citation details read from the page: authors, journal, DOI, licence and the
-  time of retrieval, written into the PDF and attached as a RIS record for
-  Citavi, Zotero and EndNote
-• Resolution up to 2.0x for sharp text, ideal for OCR and AI processing
+• Page breaks that fall between lines, never through them, with an A4 setting for printing
+• Resolution up to 2.0x for sharp text, useful for OCR and language models
 • Filename templates with site, date, time and counter
 
-WHY THE HIDDEN BANNERS MATTER
+READY TO CITE
 
-Consent dialogs often lock scrolling. On one news site the page reported 900
-pixels of height instead of 43,101 — a full-page capture would have quietly
-collapsed to a single screen. Hiding them is not about tidiness; it is what
-makes the capture complete.
+Where a page declares them, the capture carries its citation details: authors, journal, volume, DOI, licence, and the time of retrieval including the time zone. They go into the PDF metadata, into a visible line at the foot, and into an RIS record attached to the file that Citavi, Zotero and EndNote import directly.
 
-Nothing is clicked away on your behalf. A click on "accept" or "reject" is a
-decision made in your name and sets cookies. This extension hides the dialog for
-the duration of the capture and puts everything back afterwards.
+Read only from the page already open in your browser. No citation service is contacted, so nothing learns what you are reading.
+
+BANNERS OUT OF THE WAY
+
+Consent dialogs and floating bars are hidden for the capture and restored afterwards, switchable in the popup.
+
+This is not cosmetic. Such dialogs often lock scrolling: on one news site the page reported 900 pixels of height instead of 43,101, so a full-page capture would have quietly collapsed to a single screen.
+
+Nothing is clicked away on your behalf. A click on "accept" or "reject" is a decision made in your name and sets cookies. This hides the dialog for the duration of the capture, and puts every change back.
 
 AVAILABLE IN 9 LANGUAGES
 
@@ -75,30 +72,16 @@ English · Deutsch · Español · Français · Italiano · 日本語 · Portugu�
 
 WHAT IT DOES NOT DO
 
-• No ads — not in the popup, not in the settings, not in your PDF
 • No watermark on the output, at any resolution
 • No page limit and no daily quota
 • No account, no email address, no sign-up
-• No subscription and no paid tier holding features back
 • No upload — the page never leaves your computer
 • No analytics, no telemetry, no tracking
+• No permission to read the sites you browse: it works on the tab you start it on
 
 OPEN SOURCE
 
 Released under the MIT license. The full source is on GitHub, so you can read
-exactly what the extension does before you install it:
-https://github.com/Bubu89/full-page-pdf-snap
-
-PERMISSIONS
-
-The extension asks only for what the capture needs. It has no access to your
-browsing history and no host permission for all websites — it acts on the tab
-you are on, when you trigger it.
-
-SUPPORT
-
-Questions, bug reports and feature requests:
-https://github.com/Bubu89/full-page-pdf-snap/issues
 ```
 
 ## Was gegenüber der abgelehnten Fassung entfernt wurde

@@ -1,0 +1,81 @@
+<!doctype html><meta charset='utf-8'><style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  width:1280px; height:800px; overflow:hidden;
+  font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+  background:linear-gradient(135deg,#ffffff 0%,#f4f7fb 55%,#e8eef7 100%);
+  color:#0f172a; display:flex; align-items:center;
+}
+.inhalt { display:flex; align-items:center; gap:56px; padding:0 64px; width:100%; }
+.links { width:520px; flex-shrink:0; }
+.marke {
+  display:inline-block; background:#2563eb; color:#fff; font-size:17px;
+  font-weight:700; letter-spacing:1.4px; padding:9px 20px; border-radius:999px;
+  margin-bottom:26px;
+}
+h1 { font-size:52px; line-height:1.13; font-weight:800; letter-spacing:-1px; margin-bottom:30px; }
+h1 em { font-style:normal; color:#2563eb; }
+ul { list-style:none; }
+li {
+  font-size:25px; line-height:1.42; color:#334155; margin-bottom:19px;
+  padding-left:34px; position:relative; font-weight:500;
+}
+li::before {
+  content:""; position:absolute; left:0; top:11px; width:13px; height:13px;
+  border-radius:50%; background:#2563eb;
+}
+li b { color:#0f172a; font-weight:700; }
+kbd {
+  font-family:"Cascadia Mono",Consolas,monospace; font-size:21px; font-weight:700;
+  background:#0f172a; color:#fff; padding:4px 12px; border-radius:7px;
+  white-space:nowrap;
+}
+.rechts { flex:1; display:flex; justify-content:center; }
+.karte {
+  background:#fff; border-radius:18px; width:100%; max-width:600px;
+  box-shadow:0 26px 60px rgba(15,23,42,.20), 0 0 0 1px rgba(15,23,42,.07);
+  overflow:hidden;
+}
+.leiste {
+  background:#f1f5f9; border-bottom:1px solid #e2e8f0; padding:13px 18px;
+  font-size:16px; color:#475569; font-weight:600; display:flex;
+  justify-content:space-between; align-items:center;
+}
+.punkte span { display:inline-block; width:12px; height:12px; border-radius:50%; margin-left:8px; }
+.rumpf { padding:32px; }
+</style>
+<div class="inhalt">
+  <div class="links">
+    <span class="marke">CITE</span>
+    <h1>Every capture,<br><em>ready to cite</em></h1>
+    <ul>
+      <li>Authors, journal, <b>DOI</b> and licence read from the page</li>
+      <li>Retrieval time <b>with time zone</b>, and a checksum</li>
+      <li><b>RIS record attached</b> — Citavi, Zotero, EndNote</li>
+      <li>Searchable text from the page, not from pixels</li>
+    </ul>
+  </div>
+  <div class="rechts" style="flex-direction:column;align-items:center">
+    <div style="width:392px;background:#fff;border-radius:11px;
+                box-shadow:0 18px 46px rgba(15,23,42,.20);overflow:hidden">
+      <div style="padding:19px 21px 15px">
+        <div style="height:12px;background:#0f172a;border-radius:3px;width:72%;
+                    margin-bottom:13px"></div>
+        <div style="height:7px;background:#e2e8f0;border-radius:3px;width:100%;margin-bottom:8px"></div><div style="height:7px;background:#e2e8f0;border-radius:3px;width:93%;margin-bottom:8px"></div><div style="height:7px;background:#e2e8f0;border-radius:3px;width:100%;margin-bottom:8px"></div><div style="height:7px;background:#e2e8f0;border-radius:3px;width:86%;margin-bottom:8px"></div><div style="height:7px;background:#e2e8f0;border-radius:3px;width:97%;margin-bottom:8px"></div>
+      </div>
+      <div style="background:#e2e8f0;padding:11px 21px 13px;border-top:1px solid #cbd5e1">
+        <div style="font-size:11.5px;color:#0f172a;font-weight:600;line-height:1.35">
+          Fr&uuml;hauf, S., Gerger, H. &amp; Barth, J. (2013). Efficacy of
+          Psychological Interventions. <i>Archives of Sexual Behavior, 42</i>(6).</div>
+        <div style="font-size:10px;color:#475569;margin-top:5px;font-family:ui-monospace,monospace">
+          captured 2026-08-03 09:14 +02:00 &nbsp;|&nbsp; SHA-256 5516fdd6&hellip;</div>
+      </div>
+    </div>
+    <div style="margin-top:15px;display:flex;align-items:center;gap:9px;
+                background:#fff;border-radius:8px;padding:10px 14px;
+                box-shadow:0 4px 14px rgba(15,23,42,.12)">
+      <span style="font-size:13px;font-weight:700;color:#2563eb">quelle.ris</span>
+      <span style="font-size:12px;color:#64748b">attached to the PDF</span>
+    </div>
+  </div>
+</div>

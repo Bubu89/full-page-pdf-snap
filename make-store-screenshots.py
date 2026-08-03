@@ -243,6 +243,47 @@ def badge(text, farbe="#2563eb", gross=False):
             f'border-radius:999px;margin-right:{10 if gross else 6}px">{text}</span>')
 
 
+# Neue Kategorie: was die Aufnahme zitierfaehig macht. Bewusst nicht "besser als
+# andere", sondern was im PDF steht — pruefbar und ohne Rangbehauptung, die
+# Google beanstanden koennte.
+BILD5 = html(f"""
+<div class="inhalt">
+  <div class="links">
+    <span class="marke">CITE</span>
+    <h1>Every capture,<br><em>ready to cite</em></h1>
+    <ul>
+      <li>Authors, journal, <b>DOI</b> and licence read from the page</li>
+      <li>Retrieval time <b>with time zone</b>, and a checksum</li>
+      <li><b>RIS record attached</b> — Citavi, Zotero, EndNote</li>
+      <li>Searchable text from the page, not from pixels</li>
+    </ul>
+  </div>
+  <div class="rechts" style="flex-direction:column;align-items:center">
+    <div style="width:392px;background:#fff;border-radius:11px;
+                box-shadow:0 18px 46px rgba(15,23,42,.20);overflow:hidden">
+      <div style="padding:19px 21px 15px">
+        <div style="height:12px;background:#0f172a;border-radius:3px;width:72%;
+                    margin-bottom:13px"></div>
+        {"".join(f'<div style="height:7px;background:#e2e8f0;border-radius:3px;width:{w}%;margin-bottom:8px"></div>' for w in (100, 93, 100, 86, 97))}
+      </div>
+      <div style="background:#e2e8f0;padding:11px 21px 13px;border-top:1px solid #cbd5e1">
+        <div style="font-size:11.5px;color:#0f172a;font-weight:600;line-height:1.35">
+          Fr&uuml;hauf, S., Gerger, H. &amp; Barth, J. (2013). Efficacy of
+          Psychological Interventions. <i>Archives of Sexual Behavior, 42</i>(6).</div>
+        <div style="font-size:10px;color:#475569;margin-top:5px;font-family:ui-monospace,monospace">
+          captured 2026-08-03 09:14 +02:00 &nbsp;|&nbsp; SHA-256 5516fdd6&hellip;</div>
+      </div>
+    </div>
+    <div style="margin-top:15px;display:flex;align-items:center;gap:9px;
+                background:#fff;border-radius:8px;padding:10px 14px;
+                box-shadow:0 4px 14px rgba(15,23,42,.12)">
+      <span style="font-size:13px;font-weight:700;color:#2563eb">quelle.ris</span>
+      <span style="font-size:12px;color:#64748b">attached to the PDF</span>
+    </div>
+  </div>
+</div>""")
+
+
 KACHEL_KLEIN = html(f"""
 <div style="width:440px;height:280px;display:flex;flex-direction:column;
             align-items:center;justify-content:center;text-align:center;padding:28px">
@@ -273,6 +314,7 @@ KACHEL_GROSS = html(f"""
 
 BILDER = [("01_capture_en", BILD1, 1280, 800), ("02_settings_en", BILD2, 1280, 800),
           ("03_output_en", BILD3, 1280, 800), ("04_nocost_en", BILD4, 1280, 800),
+          ("05_cite_en", BILD5, 1280, 800),
           ("promo_tile_440x280", KACHEL_KLEIN, 440, 280),
           ("marquee_promo_1400x560", KACHEL_GROSS, 1400, 560)]
 
