@@ -1,3 +1,48 @@
+## 2026-08-03 — Usability-Pruefung der Domain: der Arbeitsprozess fehlte
+
+Geprueft wurde, ob ein Aussenstehender auf provinglab.dev findet, wie man mit
+dem MCP-Server Quellen automatisch in Nachweise verwandelt. Ergebnis: nein.
+
+**Was gemessen wurde.** Startseite und `/tools/` erwaehnten den MCP-Server mit
+**null** Treffern — er war ausschliesslich ueber `/notes/` erreichbar, also
+ueber den Weg, den ein Leser zuletzt geht. Die Notiz selbst zaehlte **drei
+Werkzeuge**, waehrend `tools/list` seit dem 2. August **vier** liefert;
+`extract_citation` kam auf der Seite null Mal vor. `llms.txt` trug dieselbe
+veraltete Aufzaehlung. Die Produktseite der Erweiterung stand inhaltlich beim
+Stand vom 2. August 15:15 — ihre Funktionsliste endete bei „Sticky-Elemente
+ausblenden", waehrend der Store-Text bereits Quellenangaben, Bereichsauswahl
+und Pfad-in-die-Zwischenablage bewarb.
+
+Damit war ausgerechnet das Werkzeug unbeschrieben, das den gefragten
+Arbeitsprozess traegt.
+
+**Neu gemessen fuer den Beitrag.** Zehn Wissenschaftsquellen durch
+`extract_citation` am 3. August: **sieben vollstaendig** — Verfasser, Jahr, DOI,
+Zeitschrift, mit RIS und BibTeX — **drei abgelehnt** mit `complete: false` und
+einer Warnung, die die Sperre benennt. Zusammen 4,8 s, Median 0,45 s.
+
+**Zwei Defekte nebenbei gefunden.**
+
+1. Der CDN beantwortet Anfragen, die sich als `Python-urllib` ausweisen, mit
+   **HTTP 403**, bevor der Worker sie sieht — der naheliegendste Weg aus einem
+   Skript scheitert also stumm. Ein eigener User-Agent genuegt. Jetzt unter
+   „What it does not solve" dokumentiert.
+2. Ein abgelehnter Datensatz traegt trotzdem einen `title`, und der lautet dann
+   „Checking your browser". Beim ersten Testlauf habe ich genau das uebersehen
+   und PMC als Treffer gezaehlt. Der Beitrag sagt jetzt ausdruecklich: **das
+   Warnfeld lesen, nicht den Titel** — mit dem Hinweis, dass der Fehler beim
+   Schreiben des Absatzes gemacht wurde.
+
+**Was geaendert wurde.** Vier Werkzeuge statt drei, `extract_citation` in der
+Tabelle. Ein neuer Abschnitt „The workflow it was actually built for" mit der
+Schleife ueber eine Leseliste und den Zahlen von heute. Ein Abschnitt zur
+Arbeitsteilung: **der Endpunkt fuer die Menge, die Erweiterung fuer die, die er
+abweist** — er liefert den Nachweis, nie das Dokument, und sieht nur, was ein
+anonymer Besucher sieht. Beide schreiben dasselbe RIS-Format, also landet alles
+in einer Bibliothek. Der Endpunkt steht jetzt als eigener Eintrag auf `/tools/`
+und auf der Startseite; die Produktseite hat drei Funktionskarten und zwei
+Anwendungsfaelle mehr, zweisprachig.
+
 ## 2026-08-03 — Neuer Beitrag: Wo Zitationsdaten tatsaechlich liegen
 
 18 Wissenschaftsplattformen gemessen. **11 lieferten einen Datensatz, 10 davon
