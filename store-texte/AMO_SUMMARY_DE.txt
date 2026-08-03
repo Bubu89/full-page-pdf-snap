@@ -1,0 +1,1 @@
+Ganze Webseite als hochauflösendes PDF speichern — mit den Quellenangaben darin: Verfasser, DOI, Lizenz und Abrufzeit, dazu ein RIS-Satz für Zotero und Citavi. Läuft auch auf Firefox für Android. Nichts verlässt das Gerät.

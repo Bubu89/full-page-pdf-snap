@@ -1,0 +1,1 @@
+Save a whole web page as one high-resolution PDF — with its source details inside it: authors, DOI, licence and time of retrieval, plus an RIS record for Zotero and Citavi. Runs on Firefox for Android too. Nothing leaves your device.

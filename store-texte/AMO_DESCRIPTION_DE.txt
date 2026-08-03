@@ -1,0 +1,120 @@
+Speichert eine ganze Webseite als hochauflösendes PDF. Die Erweiterung scrollt die Seite selbst, nimmt jeden Abschnitt auf und fügt alles zusammen — kein Zuschneiden, kein Druckdialog, keine Seiteneinrichtung.
+
+Und sie schreibt auf Wunsch die Quellenangaben mit hinein: Verfasser, Titel, Zeitschrift, DOI, Lizenz und den genauen Zeitpunkt des Abrufs, im PDF und in einer RIS-Datei daneben. Beleg und Angabe an einem Ort.
+
+FÜR STUDIERENDE UND WISSENSCHAFT
+„Quellenangaben mitschreiben" einschalten, und jede Aufnahme kommt als zitierfähige Quelle an.
+• Verfasser, Titel, Zeitschrift, Jahr, Band, Seiten, DOI, ISSN und Lizenz, aus der Seite selbst gelesen — kein Zitationsdienst wird angefragt, also erfährt niemand, was Sie lesen
+• Eine RIS-Datei neben dem PDF, fertig für Zotero, Citavi, EndNote oder Mendeley
+• Der Abrufzeitpunkt mit Zeitzone und eine SHA-256-Prüfsumme des Bildes — genau das, was eine „zuletzt abgerufen am"-Zeile im Literaturverzeichnis braucht
+• Dieselben Felder in den PDF-Metadaten, sodass Dokumentenverwaltung und Systemsuche das Werk über Verfasser und Titel finden
+• Funktioniert auf PubMed, arXiv, SpringerLink, Wiley, ScienceDirect, JMIR, doi.org und vielen weiteren
+
+Quellen hinter einer Hochschulanmeldung sind der eigentliche Punkt. Ein serverseitiger Umwandler ruft die Adresse als anonymer Besucher ab und landet an der Bezahlschranke; diese Erweiterung nimmt auf, was Ihr eigener Browser bereits anzeigt — samt Lizenz.
+
+LESBAR AUCH FÜR KI-WERKZEUGE
+Das PDF trägt eine echte Textebene: den Text der Seite, unsichtbar an der Stelle, an der er im Bild steht. Ein Sprachmodell liest damit die Quelle, statt Pixel zu raten, und findet Verfasser und DOI dort, wo sie hingehören. Mit der Herkunftszeile stehen Abrufzeit und Prüfsumme zusätzlich unter der Aufnahme, wo ein Modell sie ebenfalls sieht.
+
+Ein Ordner solcher Aufnahmen ist ein Literaturverzeichnis, das ein KI-Werkzeug erstellen kann, ohne eine einzige der Ursprungsseiten zu öffnen.
+
+LÄUFT AUF DEM HANDY
+Die meisten Aufnahme-Erweiterungen gibt es nur für den Schreibtisch. Diese wurde auch für Firefox für Android gebaut: Symbol antippen, auf die Fertig-Meldung warten, diese antippen — das PDF erscheint direkt in Firefox, der Herunterladen-Knopf daneben. Gespeichert ist die Datei ohnehin schon.
+
+VOLLSTÄNDIG KOSTENLOS — UND SO GEBAUT, DASS ES SO BLEIBT
+Freie Software unter MIT-Lizenz, und kostenlos in jedem Sinn, der im Alltag zählt:
+• Keine Werbung, nirgends — nicht im Fenster, nicht in den Einstellungen, nicht im PDF
+• Kein Wasserzeichen auf der Ausgabe, bei keiner Auflösung
+• Keine Seitenbegrenzung, kein Tageskontingent, kein „3 Umwandlungen, dann anmelden"
+• Kein Konto, keine E-Mail-Adresse, keine Registrierung
+• Kein Abonnement, keine ablaufende Testphase, keine bezahlte Stufe, die Funktionen zurückhält
+• Kein Hochladen — die Seite verlässt Ihren Rechner nicht, es gibt also keinen Server, der Sie abrechnen könnte
+
+Alles hier Genannte ist enthalten. Es gibt keine Premium-Fassung, weil es nichts zu verkaufen gibt.
+
+VERLANGT FAST NICHTS
+Die meisten Aufnahme-Erweiterungen verlangen dauerhaften Zugriff auf jede Website, die Sie besuchen. Diese nicht. Sie kommt mit einer einzigen Berechtigung aus: Zugriff auf den einen Tab, in dem Sie gerade sind, erteilt genau in dem Moment, in dem Sie das Symbol anklicken oder das Tastenkürzel drücken, und nur für diesen Tab.
+
+Deshalb steht im Installationsdialog nicht „Auf alle Ihre Daten für alle Websites zugreifen". Die Erweiterung sieht die Seiten nicht, die Sie besuchen. Sie sieht die eine Seite, die Sie ihr bewusst übergeben.
+
+WAS SIE SEHEN, IST WAS SIE BEKOMMEN
+Eine Webseite zu drucken übergibt sie einem Satzprogramm, das sie von Grund auf neu aufbaut. Spalten brechen auseinander, Hintergrundfarben und Bilder fallen weg, Seitenumbrüche schneiden mitten durch Tabellen und Diagramme, Seitenleisten verschwinden oder wiederholen sich auf jedem Blatt. Das Ergebnis ähnelt der Seite selten, die Sie vor sich hatten.
+
+Diese Erweiterung geht den umgekehrten Weg. Sie scrollt die Seite in gleichmäßigem Takt und fotografiert sie genau so, wie der Browser sie zeichnet, und fügt die Abschnitte zu einem durchgehenden Bild. Schriften, Abstände, Farben, Diagramme, dunkler Modus, eigene Gestaltung — alles bleibt, wo es war. Nichts wird neu gesetzt, also verrutscht nichts.
+
+Der abgemessene Bildlauf zählt dabei ebenso viel wie das Zusammenfügen: Jeder Abschnitt wird erst aufgenommen, wenn die Seite zur Ruhe gekommen ist, damit nachgeladene Bilder und Bewegungen vollständig dastehen statt halb gezeichnet.
+
+WAS SIE KANN
+• Vollseiten-Erfassung — die komplette scrollbare Seite in einem PDF
+• Bereich auswählen — mit der Maus ein Rechteck ziehen und nur diese Abbildung, Tabelle oder diesen Absatz speichern, mit denselben Quellenangaben
+• Quellenangaben im PDF, dazu ein RIS-Satz für Literaturverwaltungen
+• Durchsuchbare Textebene — der Text der Seite selbst, nicht aus Pixeln zurückgewonnen, deshalb vollständig richtig
+• Auto-Scroll — kommt mit nachladenden Seiten wie LinkedIn, X/Twitter und Nachrichtenportalen zurecht
+• Einseitiges PDF als Vorgabe, ohne sichtbare Kanten zwischen den Abschnitten — ideal für OCR und KI-Werkzeuge
+• Mehrseitige Ausgabe wahlweise, mit A4-Einstellung und Umbrüchen, die zwischen die Zeilen fallen statt hindurch
+• Herkunftszeile — Seitenadresse, Aufnahmezeit und SHA-256-Prüfsumme unter dem Bild
+• Hohe Auflösung — Skalierung von 1.0x bis 2.0x für scharfe Schrift und Bilder
+• Dateinamen-Vorlagen mit Seite, Datum, Uhrzeit, Zähler und Seitentitel
+• Dateipfad nach dem Speichern in die Zwischenablage — als Windows-, WSL- oder POSIX-Pfad, zum Einfügen in ein Terminal oder einen Chat
+• Banner und Einblendungen ausblenden — Zustimmungsdialoge, Chat-Fenster und Kopfleisten werden für die Aufnahme versteckt und danach wiederhergestellt
+• Kachelweise JPEG-Kompression — kleine Dateien bei hoher Qualität
+
+WARUM DAS AUSBLENDEN WICHTIG IST
+Zustimmungsdialoge sperren oft den Bildlauf. Auf einer Nachrichtenseite meldete die Seite 900 Pixel Höhe statt 43.101 — eine Vollseiten-Aufnahme wäre stillschweigend auf einen einzigen Bildschirm zusammengefallen. Das Ausblenden ist keine Frage der Ordnung, es ist das, was die Aufnahme vollständig macht.
+
+Nichts wird für Sie weggeklickt. Ein Klick auf „Annehmen" oder „Ablehnen" ist eine Entscheidung in Ihrem Namen und setzt Cookies. Der Dialog wird für die Dauer der Aufnahme versteckt, und jede Änderung wird danach zurückgenommen.
+
+IN NEUN SPRACHEN
+Die Oberfläche folgt der Browsersprache und liegt auf Englisch, Deutsch, Spanisch, Französisch, Italienisch, Portugiesisch (Brasilien), Russisch, Japanisch und Chinesisch (vereinfacht) vor.
+Unter Einstellungen → Sprache lässt sich eine Sprache auch von Hand wählen, unabhängig von der Browsereinstellung.
+
+KOMMT MIT SCHWIERIGEN SEITEN ZURECHT
+• Web-Anwendungen wie Gmail, Outlook und Notion — das Menü erscheint einmal oben statt in jedem Abschnitt
+• Dokumentationsseiten auf VitePress oder Docusaurus — feste Navigationsspalten werden erkannt und vollständig durchgescrollt
+• Verschachtelte Scrollbereiche — jeder Bereich wird bis zu seinem Ende erfasst, die Seitenhöhe folgt dem längsten
+• Selbstprüfung nach jeder Aufnahme — jede Ebene wird auf erreichten Anfang, erreichtes Ende und Lücken dazwischen geprüft
+
+WIE MAN EINE AUFNAHME STARTET
+• Am Handy: Symbol in der Leiste antippen — mehr ist es nicht, kein Menü dazwischen
+• Am Schreibtisch: Symbol anklicken, dann „Ganze Seite aufnehmen"
+• Oder Alt+Umschalt+Y drücken
+• Rechtsklick auf das Symbol öffnet Schnellschalter für Skalierung, Ordner, Quellenangaben und Sticky-Elemente
+
+Hat der Browser das Kürzel bereits belegt, zeigt die Erweiterung die tatsächlich vergebene Kombination an, statt zu raten.
+
+KEINE DATENERHEBUNG — TECHNISCH BEDINGT
+Die Erweiterung enthält keine technische Funktion, um Nutzungsdaten zu erheben, zu speichern oder an den Entwickler oder Dritte zu übertragen.
+• Der Entwickler erfährt nie, welche Seiten Sie aufnehmen
+• Der Entwickler erhält keine Bildschirmaufnahmen und keine PDF-Dateien
+• Es gibt keine Analysebibliothek, keine Telemetrie, keine Absturzberichte
+• Es besteht keine technische Verbindung zu irgendeinem Server des Entwicklers
+• Quellenangaben werden aus der bereits geöffneten Seite gelesen — kein Zitationsdienst wird angefragt, also erfährt kein Dritter, welche Werke Sie sammeln
+
+Die gesamte Verarbeitung — Scrollen, Bildschirmaufnahmen, PDF-Erzeugung, Auslesen der Quellenangaben und Speichern — findet lokal im Browser statt. Das ist kein Versprechen auf einer Webseite, sondern im Quellcode überprüfbar, und es ist das, was die Berechtigungsliste überhaupt zulässt.
+
+TYPISCHE ANWENDUNGEN
+• Eine Quelle für Modularbeit, Thesis oder Seminararbeit zitierfähig sichern — mit dem Abrufdatum, das ein Literaturverzeichnis verlangt
+• Einen Zeitschriftenartikel, der über die Hochschullizenz zugänglich ist, als PDF behalten, das auch nach Semesterende lesbar bleibt
+• Eine Quelle an ein KI-Werkzeug übergeben, das Verfasser, DOI und Volltext aus dem Dokument selbst liest
+• Eine Rechnung oder Bestätigung aus einem Kundenportal sichern, bevor sie verschwindet
+• Einen Versicherungsbrief, eine Buchung oder eine Bestellbestätigung dokumentieren
+• Einen Support-Verlauf für die eigenen Unterlagen festhalten
+• Webseiten archivieren: einen Artikel, eine Anzeige oder Geschäftsbedingungen festhalten, bevor sie neu geschrieben werden
+• Eine lange Seite als durchgehendes Blatt an OCR übergeben — gemessen 92,6 % Textwiedergewinnung
+• Eine vollständige Seite an Anwalt, Steuerberatung oder Versicherung weitergeben
+• Einen Fehlerbericht mit der ganzen Seite belegen statt mit einem Ausschnitt
+
+Die meisten dieser Seiten liegen hinter einer Anmeldung. Genau dorthin kommt ein serverseitiger Umwandler nicht, weil er die Adresse als anonymer Besucher abruft. Diese Erweiterung nimmt auf, was Ihr eigener Browser bereits zeigt.
+
+GEMESSEN, NICHT BEHAUPTET
+Die Zahlen oben sind mit Methode, Rohdaten und einem Kontrolllauf veröffentlicht:
+https://provinglab.dev/measurements/
+
+WAS SIE NICHT IST
+Eine Bildschirmaufnahme ist ein Bild vom Bildschirm. Sie ist kein qualifiziertes elektronisches Dokument nach eIDAS und beweist nicht, dass eine Seite gesagt hat, was sie zeigt — die Uhrzeit stammt von Ihrer Geräteuhr, und die Prüfsumme zeigt nur, dass die Datei seither unverändert ist. Wo dieser Unterschied zählt, sagen Sie es dazu, wenn Sie die Datei weitergeben.
+
+QUELLOFFEN
+Der vollständige Quellcode ist unter MIT-Lizenz veröffentlicht und überprüfbar. Die eingereichten Dateien sind die Quelldateien — kein Bundler, keine Minifizierung, was Sie prüfen, ist was läuft.
+https://github.com/Bubu89/full-page-pdf-snap
+Produktseite: https://provinglab.dev/tools/full-page-pdf-snap/
+Datenschutzerklärung: https://provinglab.dev/privacy.html
+Support: https://github.com/Bubu89/full-page-pdf-snap/issues

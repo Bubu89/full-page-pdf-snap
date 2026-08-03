@@ -1,0 +1,120 @@
+Save a whole web page as one high-resolution PDF. The extension scrolls the page itself, captures every section and assembles them — no cropping, no print dialog, no page setup.
+
+And it can save the page's source details with it: authors, title, journal, DOI, licence and the exact time of retrieval, written into the PDF and into an RIS file beside it. Evidence and reference in one place.
+
+FOR STUDENTS AND RESEARCHERS
+Switch on "Add citation details" and every capture arrives as a citable source.
+• Authors, title, journal, year, volume, pages, DOI, ISSN and licence, read from the page itself — no citation service is contacted, so nobody learns what you are reading
+• An RIS file saved next to the PDF, ready to import into Zotero, Citavi, EndNote or Mendeley
+• The time of retrieval with your time zone, and a SHA-256 checksum of the image — the two things a "retrieved on" line in a bibliography actually needs
+• The same fields written into the PDF metadata, so your document manager and your operating system's search find the work by author and title
+• Works on PubMed, arXiv, SpringerLink, Wiley, ScienceDirect, JMIR, doi.org and many more
+
+Sources behind a university login are the point. A server-side converter fetches the URL as an anonymous visitor and hits the paywall; this extension captures what your own browser is already showing you, licence and all.
+
+READABLE BY AI TOOLS, NOT JUST BY PEOPLE
+The PDF carries a real text layer — the page's own text, invisibly placed where it appears in the image. That means a language model reads the source instead of guessing at pixels, and finds the authors and the DOI in the text where they belong. Turn on the provenance line and the retrieval time and checksum are printed under the capture as well, where a model can see them too.
+
+A folder of such captures is a bibliography an AI tool can compile without opening a single one of the original pages.
+
+WORKS ON YOUR PHONE
+Most capture add-ons are desktop-only. This one was built for Firefox for Android as well: tap the icon, wait for the "done" notification, then tap that notification to see the PDF right in Firefox, with the download option next to it. Either way the file is already in your download folder.
+
+COMPLETELY FREE — AND BUILT TO STAY THAT WAY
+This extension is free software under the MIT license, and it is free in every sense that matters day to day:
+• No ads, anywhere — not in the popup, not in the settings, not in your PDF
+• No watermark on the output, at any resolution
+• No page limit, no daily quota, no "3 free conversions then sign up"
+• No account, no email address, no sign-up of any kind
+• No subscription, no trial that expires, no paid tier holding features back
+• No upload — the page never leaves your computer, so there is no server to meter you
+
+Every feature listed here is included. There is no premium version, because there is nothing to sell you.
+
+ASKS FOR ALMOST NOTHING
+Most capture extensions request permanent access to every website you visit. This one does not. It works with a single permission — access to the one tab you are on, granted only at the moment you click the icon or press the shortcut, and only for that tab.
+
+That is why the install dialog does not say "read and change all your data on all websites". The extension cannot see the pages you browse. It sees the one page you deliberately hand to it.
+
+WHAT YOU SEE IS WHAT YOU GET
+Printing a web page hands it to a layout engine that rebuilds it from scratch. Columns break apart, background colours and images are dropped, page breaks cut straight through tables and diagrams, sidebars vanish or repeat on every sheet. The result rarely resembles the page you were looking at.
+
+This extension takes the opposite route. It scrolls the page at a steady pace and photographs it exactly as the browser renders it, then joins the segments into one continuous image. Fonts, spacing, colours, charts, dark mode, custom styling — everything stays where it was. Nothing is re-rendered, so nothing shifts.
+
+The measured scrolling matters as much as the stitching: each segment is taken only once the page has settled, so lazy-loaded images and animations are fully in place instead of half-drawn.
+
+WHAT IT DOES
+• Full-page capture — the complete scrollable page in a single PDF
+• Select an area — draw a rectangle with the mouse and save just that figure, table or paragraph, with the same source details
+• Citation details in the PDF, plus an RIS record for reference managers
+• Searchable text layer — the page's own text, not recovered from pixels, so it survives at full accuracy
+• Auto-scroll — handles lazy-loading pages such as LinkedIn, X/Twitter and news portals
+• Single-page PDF by default, with no visible seams between segments — ideal for OCR and AI tools
+• Multi-page output optionally, with an A4 setting and page breaks that fall between lines instead of through them
+• Provenance line — page address, time of capture and SHA-256 checksum printed under the image
+• High resolution — scaling from 1.0x to 2.0x for sharp text and images
+• Filename templates with site, date, time, counter and page title
+• Copy the file path to the clipboard after saving — as a Windows, WSL or POSIX path, ready to paste into a terminal or a chat
+• Hide banners and pop-ups — consent dialogs, chat widgets and top bars are hidden for the capture and restored afterwards
+• Tile-based JPEG compression — small files at high quality
+
+WHY HIDING THE BANNERS MATTERS
+Consent dialogs often lock scrolling. On one news site the page reported 900 pixels of height instead of 43,101 — a full-page capture would have quietly collapsed to a single screen. Hiding them is not about tidiness; it is what makes the capture complete.
+
+Nothing is clicked away on your behalf. A click on "accept" or "reject" is a decision made in your name and sets cookies. The dialog is hidden for the duration of the capture, and every change is put back afterwards.
+
+AVAILABLE IN NINE LANGUAGES
+The interface follows your browser language and is available in English, German, Spanish, French, Italian, Portuguese (Brazil), Russian, Japanese and Chinese (Simplified).
+You can also pick a language by hand under Settings → Language, independently of the browser setting.
+
+HANDLES DIFFICULT PAGES
+• Web apps such as Gmail, Outlook and Notion — the menu appears once at the top instead of repeating in every segment
+• Documentation sites built with VitePress or Docusaurus — fixed navigation columns are recognised and scrolled through completely
+• Nested scroll areas — every region is captured to its own end, and the page height follows the longest one
+• Self-check after each capture — every layer is verified for a reached top and bottom and for gaps in between
+
+HOW TO START A CAPTURE
+• On a phone: tap the toolbar icon — that is the whole gesture, no menu in between
+• On the desktop: click the toolbar icon, then "Capture whole page"
+• Or press Alt+Shift+Y
+• Right-click the toolbar icon for quick switches for scaling, folder, citation details and sticky handling
+
+If your browser has already claimed the shortcut, the extension shows you the combination that actually works instead of guessing.
+
+NO DATA COLLECTION — BY DESIGN
+This extension contains no technical function to collect, store or transmit usage data to the developer or to third parties.
+• The developer never learns which pages you capture
+• The developer receives no screenshots and no PDF files
+• There is no analytics library, no telemetry, no crash reporting
+• There is no technical connection to any server of the developer
+• Citation details are read from the page already open in your browser — no citation service is queried, so no third party learns which works you are collecting
+
+All processing — scrolling, screenshots, PDF generation, citation extraction and saving — happens locally in the browser. This is not a promise on a web page; it is verifiable in the source code, and it is what the permission list allows in the first place.
+
+TYPICAL USES
+• Cite a source for a thesis, a paper or a seminar assignment — with the retrieval date a bibliography asks for
+• Keep a journal article available behind your university licence as a PDF you can still read after the semester ends
+• Hand a source to an AI tool that can read the authors, the DOI and the full text out of the document itself
+• Archive an invoice or a receipt from a customer portal before it disappears
+• Keep documentation of an insurance letter, a booking or an order confirmation
+• Save a support conversation as a record for your own files
+• Web archiving: hold on to an article, a listing or a set of terms before they are rewritten
+• Feed a long page into OCR as one continuous page — measured at 92.6% text recovery
+• Hand a complete page to a lawyer, an accountant or an insurer
+• Document a bug report with the full page instead of a cropped view
+
+Most of these pages sit behind a login. That is where a server-side converter cannot follow, because it fetches the URL as an anonymous visitor. This extension captures what your own browser already shows.
+
+MEASURED, NOT CLAIMED
+The figures above are published with their method, their raw data and a control run:
+https://provinglab.dev/measurements/
+
+WHAT IT IS NOT
+A screen capture is a picture of a screen. It is not a qualified electronic document under eIDAS, and it does not prove that a page said what it shows — the time comes from your own device clock, and the checksum shows only that the file has not changed since it was made. Where that distinction matters, say so when you hand the file on.
+
+OPEN SOURCE
+The complete source code is published under the MIT license and can be verified. The submitted files are the source files — no bundler, no minification, so what you audit is what runs.
+https://github.com/Bubu89/full-page-pdf-snap
+Product page: https://provinglab.dev/tools/full-page-pdf-snap/
+Privacy policy: https://provinglab.dev/privacy.html
+Support: https://github.com/Bubu89/full-page-pdf-snap/issues
