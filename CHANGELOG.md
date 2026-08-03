@@ -1,3 +1,22 @@
+## 2026-08-03 — Der RIS-Satz liegt jetzt neben dem PDF, nicht nur darin
+
+Die Zitationsangaben standen an drei Stellen im PDF: in den Dokumentangaben, als
+angehaengte `quelle.ris` und in der sichtbaren Fusszeile. Zwei davon findet
+niemand: Die Fusszeile ist standardmaessig aus, und an den Anhang kommt man nur
+ueber die Anlagen-Ansicht des Betrachters oder ein Werkzeug auf der
+Kommandozeile.
+
+Fuer eine Funktion, die man einschaltet, um zitieren zu koennen, ist das die
+falsche Ablage. Der Datensatz wird jetzt **zusaetzlich als Datei neben das PDF**
+gelegt — gleicher Name, Endung `.ris`. Ein Doppelklick zieht ihn in Citavi oder
+Zotero.
+
+Im PDF bleibt er ebenfalls: Wer das PDF weitergibt, gibt die Angaben mit. Die
+Datei daneben ist fuer den, der gerade damit arbeitet.
+
+Scheitert das Schreiben, laeuft die Aufnahme weiter — die Angaben stehen ohnehin
+im PDF.
+
 ## 2026-08-03 — Ein Twitter-Handle ist kein Verfasser
 
 Eine ResearchGate-Diskussion ergab `@ResearchGate` als Autor — im RIS-Satz, in

@@ -578,5 +578,8 @@
     return concatBytes(chunks);
   }
 
-  root.PageShotPdf = { buildPdf };
+  // risSatz wird auch ausserhalb gebraucht: die Erweiterung legt den
+// Datensatz zusaetzlich als Datei neben das PDF, weil ihn im Anhang
+// niemand findet.
+  root.PageShotPdf = { buildPdf, risSatz, zitation };
 })(typeof window !== "undefined" ? window : globalThis);

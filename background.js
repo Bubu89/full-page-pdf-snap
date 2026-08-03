@@ -1110,6 +1110,27 @@ async function captureFullPageInner(tab, settings) {
     try { await waitForDownloadComplete(id, waitMs); }
     catch (e) { log("download wait:", e.message); downloadComplete = false; }
 
+    // RIS-Datei neben das PDF legen.
+    //
+    // Im PDF steckt sie bereits als Anhang, aber dort findet sie niemand: Es
+    // braucht die Anlagen-Ansicht des Betrachters oder ein Werkzeug auf der
+    // Kommandozeile. Eine Datei neben dem PDF laesst sich per Doppelklick in
+    // Citavi oder Zotero ziehen — das ist der Weg, den die Funktion meint.
+    if (settings.sourceMetadata !== false && quelle && quelle.titel && PageShotPdf.risSatz) {
+      try {
+        const ris = PageShotPdf.risSatz(quelle);
+        const risName = relPath.replace(/\.pdf$/i, "") + ".ris";
+        const risUrl = "data:text/plain;charset=utf-8," + encodeURIComponent(ris);
+        await browser.downloads.download({ url: risUrl, filename: risName,
+                                           conflictAction: "uniquify" });
+        log("RIS-Datei gespeichert:", risName);
+      } catch (e) {
+        // Kein Grund, die Aufnahme scheitern zu lassen — die Angaben stehen
+        // ohnehin im PDF.
+        log("RIS-Datei nicht gespeichert:", e && e.message);
+      }
+    }
+
     // Pfad in die Zwischenablage, sofern gewuenscht. Erst hier, weil der
     // vollstaendige Pfad erst nach dem Abschluss des Downloads feststeht —
     // der Browser haengt bei Namenskonflikten eine Zahl an.
