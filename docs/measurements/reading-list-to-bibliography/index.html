@@ -345,15 +345,54 @@
   as such</a>.
 </p>
 
+<h2>Counter-measurement: a second network, and what it did not change</h2>
+<p>
+  The section below said a home connection should produce a higher completion
+  rate. That claim has now been tested once — from a commercial VPN exit rather
+  than a home line — and it mostly did not hold.
+</p>
+<table>
+  <thead><tr><th></th><th>Data centre</th><th>VPN exit</th></tr></thead>
+  <tbody>
+    <tr><td>Complete records</td><td>10</td><td><strong>11</strong></td></tr>
+    <tr><td>Stopped by a bot defence</td><td>1</td><td>1</td></tr>
+    <tr><td>Refusing every client from this address</td><td><strong>4</strong></td><td><strong>4</strong></td></tr>
+    <tr><td>Answered in full, declared nothing</td><td>5</td><td>4</td></tr>
+    <tr><td>Seconds per source</td><td>0.4</td><td>0.7</td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>The four network-level refusals did not move.</strong> ScienceDirect,
+  SSRN, the OECD and EUR-Lex answered the second address exactly as they
+  answered the first. The likely reason is that a commercial VPN exit is itself
+  a data-centre range — so this run swapped one data centre for another rather
+  than testing the claim. <em>Whether a residential connection changes the
+  outcome is still open</em>, and this measurement does not close it.
+</p>
+<p>
+  The one source that changed is Zenodo, and not because of the network: it
+  returned <code>authors, doi, title</code> on the first run and
+  <code>authors, doi, publisher, title, year</code> on the second. The record
+  gained a year, which is the field that decides completeness. Either the
+  deposit was edited between the runs or Zenodo serves its metadata unevenly —
+  from outside, both look the same.
+</p>
+<p>
+  Raw data: <a href="/data/2026-08-03-reading-list-to-bibliography-vpn-ausgang.json">second
+  run</a>. Anyone with a residential line is invited to settle the open half —
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/3">issue 3</a>.
+</p>
+
 <h2>What this does not settle</h2>
 <ul>
   <li><strong>Twenty sources is a shape, not a study.</strong> For coverage
     against an established service on randomly drawn samples, the
     <a href="/measurements/citation-extraction/">Citoid comparison</a> is the
     measurement to cite. This one shows how the work divides.</li>
-  <li><strong>The address you measure from changes the result.</strong> Four
-    refusals here are refusals of a data centre. Anyone repeating this from a
-    home connection should expect a higher completion rate — and is welcome to
+  <li><strong>The address you measure from changes the result — less than
+    expected.</strong> A second run from a different address left all four
+    network-level refusals in place. A residential line might still differ, but
+    that is now an open question rather than an assumption — and is welcome to
     say so; the <a href="/data/2026-08-03-reading-list-to-bibliography.json">data</a> and the
     <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/messung-literaturverzeichnis.py">script</a>
     are both published.</li>

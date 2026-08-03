@@ -1,5 +1,5 @@
 {
-  "measurement": "reading-list-to-bibliography",
+  "measurement": "reading-list-to-bibliography-vpn-exit",
   "date": "2026-08-03",
   "question": "Twenty sources as a term paper collects them: how many become citable records without a human, which are handed back, and is the reason the page's wall or the reader's limit?",
   "method": {
@@ -7,7 +7,9 @@
     "tool": "extract_citation",
     "sources": 20,
     "selection": "Fixed before the run and not chosen for whether it works: five publishers, three open access, three repositories, one preprint server, three official bodies, grey literature, two reference works, a bare DOI and a news article.",
-    "control": "Every handed-back source was fetched twice — once with the reader's own user agent, once with a browser's. A source counts as walled only when the browser is answered and the reader is not."
+    "control": "Every handed-back source was fetched twice — once with the reader's own user agent, once with a browser's. A source counts as walled only when the browser is answered and the reader is not.",
+    "network": "Commercial VPN exit. NOT a home connection — VPN exit addresses are themselves data-centre ranges, which is why the four network-level refusals did not change. The open question from the first run remains open.",
+    "counterpart": "docs/data/2026-08-03-reading-list-to-bibliography.json"
   },
   "results": {
     "sources": 20,
