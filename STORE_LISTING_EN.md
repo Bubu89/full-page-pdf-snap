@@ -42,10 +42,28 @@ Click the toolbar button, use the context menu or press Alt+Shift+Y. The extensi
 WHAT YOU GET
 
 • One continuous page instead of a print job chopped into A4 sheets
+• Or the visible area only — one click, same PDF, same details
+• Consent dialogs, banners and floating bars hidden before capture, with a
+  switch right in the popup
+• Real, searchable text taken from the page itself — not read back from pixels
+• Page breaks that fall between lines, never through them, with an A4 setting
+  that fits printed paper
+• Citation details read from the page: authors, journal, DOI, licence and the
+  time of retrieval, written into the PDF and attached as a RIS record for
+  Citavi, Zotero and EndNote
 • Resolution up to 2.0x for sharp text, ideal for OCR and AI processing
 • Filename templates with site, date, time and counter
-• Optional multi-page output when you actually want to print
-• Cookie banners and sticky headers hidden before capture
+
+WHY THE HIDDEN BANNERS MATTER
+
+Consent dialogs often lock scrolling. On one news site the page reported 900
+pixels of height instead of 43,101 — a full-page capture would have quietly
+collapsed to a single screen. Hiding them is not about tidiness; it is what
+makes the capture complete.
+
+Nothing is clicked away on your behalf. A click on "accept" or "reject" is a
+decision made in your name and sets cookies. This extension hides the dialog for
+the duration of the capture and puts everything back afterwards.
 
 AVAILABLE IN 9 LANGUAGES
 

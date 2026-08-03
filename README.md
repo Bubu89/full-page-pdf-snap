@@ -39,6 +39,9 @@ and the commands to reproduce them:
   — what eight capture extensions declare in their manifests
 - **[Permissions as blast radius](https://provinglab.dev/measurements/extension-permissions-risk/)**
   — why permission scope matters more than trust
+- **[Citation extraction against Citoid](https://provinglab.dev/measurements/citation-extraction/)**
+  — 18 works drawn at random: same coverage as the Wikimedia service, full accuracy
+  against its 79 %, and what went wrong in the measurement before that
 
 ---
 
@@ -47,13 +50,27 @@ and the commands to reproduce them:
 Full Page PDF Snap scrolls the page from top to bottom, captures every viewport, and stitches all segments into one seamless PDF — entirely on your device.
 
 - **Full-page capture** — the complete scrollable page, not just the visible part
+- **Or the visible area only** — a second button in the popup, same PDF and same details
 - **Auto-scroll** — handles lazy-loading pages (LinkedIn, X/Twitter, news portals)
 - **Single-page PDF** by default, with no visible seams between segments — ideal for OCR and AI tools
-- **Multi-page output** optionally, for printing
+- **Multi-page output** optionally, with page breaks that fall between lines instead of through them, and an A4 setting that fits printed paper
+- **Real, searchable text** taken from the page itself rather than recovered from pixels — it survives the page breaks
+- **Citation details in the PDF** — authors, journal, DOI, licence and time of retrieval, plus an attached RIS record for Citavi, Zotero and EndNote
+- **Consent dialogs and banners hidden** before the capture and restored afterwards, with a switch in the popup
 - **Resolution scaling** from 1.0x to 2.0x
 - **Filename templates** with site, date, time, counter and page title
-- **Hide sticky elements** — cookie banners, chat widgets and top bars before capture
 - **Firefox for Android** — tap the extension icon and the capture starts immediately
+
+### Why hiding the banners matters
+
+Consent dialogs often lock scrolling. On one news site the page reported 900 pixels
+of height instead of 43,101 — a full-page capture would have quietly collapsed to a
+single screen. Hiding them is not about tidiness; it is what makes the capture
+complete.
+
+Nothing is clicked away on your behalf. A click on "accept" or "reject" is a
+decision made in your name and sets cookies. The dialog is hidden for the duration
+of the capture, and every change is put back afterwards.
 
 ## Privacy
 
@@ -116,7 +133,7 @@ Tapping that notification opens the result page: a preview of the whole capture,
 | Scroll delay | 400 ms | 400 ms |
 | PDF format | Single page | Single page |
 | Tile height | 4000 px | 2000 px |
-| Hide sticky elements | On | On |
+| Hide banners and pop-ups | On | On |
 | After capture | Show folder | Open PDF |
 | Capture scaling | 1.5x | 1.0x |
 
