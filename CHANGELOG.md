@@ -1,3 +1,41 @@
+## 2026-08-03 — Zweite Pruefung: stimmen die Verknuepfungen zur KI?
+
+Geprueft wurde, ob die Beschreibungen halten, was die Seiten sagen — und ob
+das, was eine Maschine liest, mit dem uebereinstimmt, was ein Mensch liest.
+Interne Verweise: **0 tot**, Zahlen ueber alle Seiten konsistent. Vier andere
+Sachen stimmten nicht.
+
+**Fuenf Seiten trugen denselben fremden Datensatz.** Aus einer Vorlage kopiert
+behauptete das JSON-LD auf den Zitations-Messungen, auf der Android-Erhebung
+und auf der MCP-Notiz, ihr Gegenstand sei die Print-gegen-Screenshot-Messung.
+Jede dieser Seiten verlinkt im Fliesstext ihren richtigen Datensatz — nur die
+maschinenlesbare Haelfte zeigte woanders hin. Jede erklaert jetzt den
+Datensatz, um den es tatsaechlich geht; die MCP-Notiz erklaert stattdessen
+eine `WebAPI`, denn das ist, was sie dokumentiert.
+
+**Die Beschreibung der MCP-Notiz war die alte.** `meta description`,
+`og:description` und `dateModified` beschrieben noch die Drei-Werkzeug-Fassung,
+`article:published_time` widersprach dem `datePublished` im JSON-LD um einen
+Tag. Genau diese Felder liest eine Vorschau oder ein Sprachmodell zuerst.
+
+**`/tools/` war maschinell unsichtbar.** Keine strukturierten Daten, obwohl
+zwei Werkzeuge gelistet sind, in der Sitemap **gar nicht vorhanden**, und die
+Beschreibung nannte nur die Erweiterung. Dazu fehlten drei Zitations-Datensaetze
+in der Sitemap, und der API-Katalog fuehrte die Datendateien, aber nicht die
+API, die sie ausliefert.
+
+**Die deutschen Schalternamen stimmten nicht.** Die Produktseite schrieb
+„Quellenangaben hinzufuegen" und „Nachweiszeile"; in der Erweiterung heissen
+sie **„Quellenangaben mitschreiben"** und **„Herkunftszeile"**. Wer danach
+gesucht haette, haette sie nicht gefunden — derselbe Fehlertyp wie bei „Wo ist
+die Funktion in der App?" am Vortag.
+
+**Nachgezogen:** WebMCP im Browser bot nur drei der vier Werkzeuge an. Es
+bietet jetzt auch `extract_citation` an, ueber denselben `/mcp`-Endpunkt
+(same-origin), damit es nur eine Umsetzung der Extraktion gibt. Die Warnung bei
+abgelehnten Quellen steht dort **ueber** den Feldern statt darin — weil ein
+abgelehnter Datensatz einen Titel traegt, der wie ein Werk aussieht.
+
 ## 2026-08-03 — Usability-Pruefung der Domain: der Arbeitsprozess fehlte
 
 Geprueft wurde, ob ein Aussenstehender auf provinglab.dev findet, wie man mit
