@@ -102,9 +102,21 @@ BILD1 = html(f"""
       <div style="font-size:27px;font-weight:800;margin-bottom:26px">Save the whole page as PDF</div>
       <div style="background:#2563eb;color:#fff;font-size:26px;font-weight:700;
                   padding:20px;border-radius:12px;box-shadow:0 8px 22px rgba(37,99,235,.34)">
-        Capture now</div>
+        Capture whole page</div>
+        <div style="background:#f1f5f9;color:#0f172a;font-size:22px;font-weight:600;
+                    padding:16px;border-radius:10px;border:1px solid #cbd5e1;
+                    margin-top:14px">Select an area&hellip;</div>
+        <div style="display:flex;align-items:center;gap:14px;margin-top:16px;
+                    background:#f1f5f9;border:1px solid #cbd5e1;border-radius:10px;
+                    padding:14px 16px;text-align:left">
+          <span style="width:46px;height:27px;border-radius:14px;background:#2563eb;
+                       position:relative;flex:0 0 auto">
+            <span style="position:absolute;top:3px;left:22px;width:21px;height:21px;
+                         border-radius:50%;background:#fff"></span></span>
+          <span style="font-size:19px;font-weight:700;color:#0f172a">Hide banners and pop-ups</span>
+        </div>
       <div style="margin-top:26px;font-size:20px;color:#475569">
-        Shortcut: <kbd style="font-size:19px">{KUERZEL}</kbd></div>
+        Whole page shortcut: <kbd style="font-size:19px">{KUERZEL}</kbd></div>
       <div style="margin-top:22px;font-size:19px;color:#2563eb;font-weight:600;
                   text-decoration:underline">Settings</div>
     </div>

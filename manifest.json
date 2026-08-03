@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "__MSG_extName__",
   "short_name": "PDFSnap",
-  "version": "2.21.0",
+  "version": "2.22.0",
   "description": "__MSG_extDescription__",
   "author": "Bubu89",
   "browser_specific_settings": {
@@ -31,7 +31,8 @@
     "storage",
     "menus",
     "notifications",
-    "scripting"
+    "scripting",
+    "clipboardWrite"
   ],
   "background": {
     "page": "background.html"

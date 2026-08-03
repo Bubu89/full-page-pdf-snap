@@ -328,5 +328,29 @@
   },
   "popupRegionCancelled": {
     "message": "Selection cancelled"
+  },
+  "popupCite": {
+    "message": "Add citation details"
+  },
+  "popupCiteHint": {
+    "message": "Authors, DOI, licence and retrieval time into the PDF, plus an RIS record for reference managers. Read from this page only."
+  },
+  "popupCiteOn": {
+    "message": "Citation details will be added"
+  },
+  "popupCiteOff": {
+    "message": "No citation details"
+  },
+  "optCopyPath": {
+    "message": "Copy the file path to the clipboard after saving"
+  },
+  "optCopyPathHint": {
+    "message": "For handing the file straight to a terminal or a language model: capture, then paste. Off by default."
+  },
+  "optCopyPathFormat": {
+    "message": "Path format"
+  },
+  "optCopyPathFormatHint": {
+    "message": "A Windows path pasted into a Linux shell under Windows leads nowhere. Choosing WSL converts it once here instead of every time by hand."
   }
 }

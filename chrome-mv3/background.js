@@ -51,6 +51,8 @@ const DEFAULTS_DESKTOP = {
   pageFormat: "free",     // "a4" bricht auf Druckseiten um
   breakAtLines: true,      // Schnitt in die naechste Luecke ziehen
   sourceMetadata: true,    // Quellenangaben aus der Seite lesen (kein Netz)
+  copyPath: false,         // Pfad nach dem Speichern in die Zwischenablage
+  copyPathFormat: "windows", // "windows" | "wsl" | "posix"
   fetchOriginal: false,    // Verlags-PDF holen — einziger Netzzugriff, daher aus
   tilePx: 4000,
   hideSticky: true,
@@ -172,6 +174,71 @@ function dataUrlToBlob(dataUrl) {
 }
 
 
+
+/* Pfad der gespeicherten Datei in die Zwischenablage.
+ *
+ * Gedacht fuer den Weg vom Browser in ein Terminal oder an ein Sprachmodell:
+ * Aufnehmen, Strg+V, fertig — statt den Pfad aus dem Download-Verzeichnis
+ * abzutippen.
+ *
+ * Drei Formen, weil derselbe Pfad je nach Ziel anders aussehen muss:
+ *   windows  C:\Users\Name\Downloads\seite.pdf
+ *   wsl      /mnt/c/Users/Name/Downloads/seite.pdf   (Linux unter Windows)
+ *   posix    /home/name/Downloads/seite.pdf          (macOS, Linux)
+ * Ein Windows-Pfad in einem WSL-Terminal fuehrt ins Leere; die Umrechnung
+ * hier zu machen erspart sie jedes Mal von Hand.
+ *
+ * Der Service Worker in Chrome hat keine Zwischenablage — dort wird das
+ * Schreiben an den aktiven Tab abgegeben. Scheitert beides, bleibt es beim
+ * gespeicherten PDF: die Zwischenablage ist Zugabe, kein Teil der Aufnahme.
+ */
+function pfadFormatieren(pfad, form) {
+  if (!pfad) return "";
+  if (form === "wsl") {
+    const m = pfad.match(/^([A-Za-z]):[\\/](.*)$/);
+    if (m) return "/mnt/" + m[1].toLowerCase() + "/" + m[2].replace(/\\/g, "/");
+    return pfad.replace(/\\/g, "/");
+  }
+  if (form === "posix") return pfad.replace(/\\/g, "/");
+  return pfad;
+}
+
+async function pfadInZwischenablage(pfad, form, tabId) {
+  const text = pfadFormatieren(pfad, form);
+  if (!text) return false;
+  // Firefox: der Hintergrund hat ein Dokument und darf selbst schreiben.
+  try {
+    if (typeof navigator !== "undefined" && navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+      log("Pfad in die Zwischenablage:", text);
+      return true;
+    }
+  } catch (e) {
+    log("Zwischenablage im Hintergrund nicht moeglich:", e && e.message);
+  }
+  // Chrome: ueber den Tab, in dem die Aufnahme lief.
+  try {
+    if (tabId != null) {
+      await browser.scripting.executeScript({
+        target: { tabId },
+        func: (t) => {
+          const f = document.createElement("textarea");
+          f.value = t;
+          f.style.cssText = "position:fixed;top:-9999px;opacity:0";
+          document.body.appendChild(f);
+          f.select();
+          try { document.execCommand("copy"); } finally { f.remove(); }
+        },
+        args: [text],
+      });
+      log("Pfad ueber den Tab in die Zwischenablage:", text);
+      return true;
+    }
+  } catch (e) {
+    log("Zwischenablage ueber den Tab nicht moeglich:", e && e.message);
+  }
+  return false;
+}
 
 async function ensureContentInjected(tabId) {
   for (let attempt = 0; attempt < 3; attempt++) {
@@ -1024,6 +1091,19 @@ async function captureFullPageInner(tab, settings) {
     try { await waitForDownloadComplete(id, waitMs); }
     catch (e) { log("download wait:", e.message); downloadComplete = false; }
 
+    // Pfad in die Zwischenablage, sofern gewuenscht. Erst hier, weil der
+    // vollstaendige Pfad erst nach dem Abschluss des Downloads feststeht —
+    // der Browser haengt bei Namenskonflikten eine Zahl an.
+    if (settings.copyPath) {
+      try {
+        const [eintrag] = await browser.downloads.search({ id });
+        const pfad = (eintrag && eintrag.filename) || "";
+        await pfadInZwischenablage(pfad, settings.copyPathFormat || "windows", tab.id);
+      } catch (e) {
+        log("Pfad nicht in die Zwischenablage:", e && e.message);
+      }
+    }
+
     // Zustand fuer Notification-Click merken (Tap oeffnet die letzte Datei).
     _lastDownloadId = id;
     _lastFilename = usedFilename;
@@ -1640,6 +1720,7 @@ const MENU_IDS = {
   afterShow: "ps-toggle-show",
   afterOpen: "ps-toggle-open",
   hideSticky: "ps-toggle-sticky",
+  sourceMetadata: "ps-toggle-cite",
   sep2: "ps-sep2",
   scaleParent: "ps-scale",
   scale1: "ps-scale-1",
@@ -1664,6 +1745,12 @@ async function buildMenus() {
   browser.menus.create({ id: MENU_IDS.afterShow, type: "checkbox", checked: s.afterCapture === "show" || s.afterCapture === "both", title: "Nach Save: Ordner zeigen", contexts: ctx });
   browser.menus.create({ id: MENU_IDS.afterOpen, type: "checkbox", checked: s.afterCapture === "open" || s.afterCapture === "both", title: "Nach Save: PDF oeffnen", contexts: ctx });
   browser.menus.create({ id: MENU_IDS.hideSticky, type: "checkbox", checked: !!s.hideSticky, title: "Sticky/Sidebar verstecken", contexts: ctx });
+  // Quellenangaben gehoeren neben das Ausblenden: beide veraendern das
+  // Ergebnis sichtbar und werden je nach Seite anders gewollt.
+  browser.menus.create({ id: MENU_IDS.sourceMetadata, type: "checkbox",
+    checked: s.sourceMetadata !== false,
+    title: browser.i18n.getMessage("popupCite") || "Quellenangaben mitschreiben",
+    contexts: ctx });
   browser.menus.create({ id: MENU_IDS.sep2, type: "separator", contexts: ctx });
   browser.menus.create({ id: MENU_IDS.scaleParent, title: "Capture-Qualitaet", contexts: ctx });
   const scale = Number(s.captureScale || 1.0);

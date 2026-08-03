@@ -50,8 +50,40 @@ $("region").addEventListener("click", () => {
  * Wert kommt aus demselben Speicher wie die Einstellungsseite und das
  * Kontextmenue; wer ihn an einer Stelle umlegt, sieht ihn ueberall umgelegt.
  */
+/* Ein Schalter, ein Speicherschluessel, eine Rueckmeldung — fuer beide gleich.
+   Zwei fast gleiche Bloecke nebeneinander waeren zwei Orte, an denen dasselbe
+   schiefgehen kann. */
+async function schalter(id, schluessel, anText, ausText) {
+  const box = $(id);
+  if (!box) return;
+  try {
+    const s = await browser.storage.local.get(schluessel);
+    box.checked = s[schluessel] !== false;
+  } catch (_) { /* Vorgabe bleibt: eingeschaltet */ }
+  box.addEventListener("change", async () => {
+    const st = $("status");
+    try {
+      await browser.storage.local.set({ [schluessel]: box.checked });
+      st.className = "status ok";
+      st.textContent = box.checked ? t(anText[0], anText[1]) : t(ausText[0], ausText[1]);
+      setTimeout(() => { if (st.textContent) { st.className = "status"; st.textContent = ""; } }, 1600);
+    } catch (e) {
+      st.className = "status err";
+      st.textContent = e.message || String(e);
+      box.checked = !box.checked;   // Anzeige nicht luegen lassen
+    }
+  });
+}
+
+schalter("hideSticky", "hideSticky",
+         ["popupHideOn", "Banners will be hidden"],
+         ["popupHideOff", "Banners will be captured as they are"]);
+schalter("sourceMetadata", "sourceMetadata",
+         ["popupCiteOn", "Citation details will be added"],
+         ["popupCiteOff", "No citation details"]);
+
 (async () => {
-  const box = $("hideSticky");
+  const box = null;
   if (!box) return;
   try {
     const s = await browser.storage.local.get("hideSticky");

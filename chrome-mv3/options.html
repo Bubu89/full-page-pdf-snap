@@ -159,6 +159,21 @@
     <div class="hint"><span data-i18n="optPageHeightHint">Only relevant when "Multiple pages" and "Fixed height" are selected. Default 2400 px.</span></div>
   </label>
 
+  <label class="row"><input id="copyPath" type="checkbox">
+    <span><span data-i18n="optCopyPath">Copy the file path to the clipboard after saving</span>
+      <div class="hint"><span data-i18n="optCopyPathHint">For handing the file straight to a terminal or a language model: capture, then paste. Off by default.</span></div>
+    </span>
+  </label>
+
+  <label><span data-i18n="optCopyPathFormat">Path format</span>
+    <select id="copyPathFormat" style="width:100%; padding: 8px 10px; border: 1px solid var(--rand); border-radius: 6px; font-size: 13px; background: var(--feld-bg); color: var(--fg);">
+      <option value="windows">Windows — C:\Users\You\Downloads\page.pdf</option>
+      <option value="wsl">WSL — /mnt/c/Users/You/Downloads/page.pdf</option>
+      <option value="posix">macOS / Linux — /home/you/Downloads/page.pdf</option>
+    </select>
+    <div class="hint"><span data-i18n="optCopyPathFormatHint">A Windows path pasted into a Linux shell under Windows leads nowhere. Choosing WSL converts it once here instead of every time by hand.</span></div>
+  </label>
+
   <label class="row"><input id="sourceMetadata" type="checkbox" checked>
     <span><span data-i18n="optSourceMetadata">Read citation details from the page</span>
       <div class="hint"><span data-i18n="optSourceMetadataHint">Reads authors, journal, volume, DOI, licence and access time from the page that is already open, and writes them into the PDF metadata plus an attached RIS record for Citavi, Zotero and EndNote. No request is made to any service.</span></div>

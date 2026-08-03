@@ -1,3 +1,39 @@
+## 2026-08-03 — Quellenangaben und Dateipfad dort, wo man sie braucht
+
+**Quellenangaben im Aufnahmefenster.** Die Funktion gab es seit dem 2. August,
+aber nur in den Einstellungen — beworben wurde sie im Store-Bild trotzdem. Ein
+Schalter, den man erst suchen muss, ist fuer eine Entscheidung, die je nach Seite
+anders ausfaellt, am falschen Ort. Jetzt im Popup neben dem Banner-Schalter und
+im Kontextmenue, alle drei auf demselben Speicher.
+
+Beide Schalter teilen sich eine Funktion. Zwei fast gleiche Bloecke nebeneinander
+waeren zwei Orte, an denen dasselbe schiefgehen kann.
+
+**Dateipfad in die Zwischenablage** (`copyPath`, Vorgabe aus). Gedacht fuer den
+Weg vom Browser ins Terminal oder an ein Sprachmodell: aufnehmen, Strg+V, fertig.
+
+Drei Formen, weil derselbe Pfad je nach Ziel anders aussehen muss:
+
+| | |
+|---|---|
+| Windows | `C:\Users\Name\Downloads\seite.pdf` |
+| WSL | `/mnt/c/Users/Name/Downloads/seite.pdf` |
+| macOS / Linux | `/home/name/Downloads/seite.pdf` |
+
+Ein Windows-Pfad in einer Linux-Shell unter Windows fuehrt ins Leere. Die
+Umrechnung einmal hier zu machen erspart sie jedes Mal von Hand — das ist der
+eigentliche Nutzen fuer eine KI mit Terminalzugriff.
+
+Geschrieben wird erst nach Abschluss des Downloads, weil der Browser bei
+Namenskonflikten eine Zahl anhaengt und der Pfad vorher nicht feststeht. In
+Firefox schreibt der Hintergrund selbst; in Chrome hat der Service Worker keine
+Zwischenablage, dort uebernimmt der Tab. Scheitert beides, bleibt es beim
+gespeicherten PDF — die Zwischenablage ist Zugabe, kein Teil der Aufnahme.
+
+**Store-Bild 01 zeigte noch die alte Oberflaeche** (`Capture now`, `Shortcut:`).
+Das Mockup ist handgebaut und wandert nicht automatisch mit. Jetzt mit beiden
+Aufnahmeknoepfen, dem Banner-Schalter und der praezisierten Kuerzel-Beschriftung.
+
 ## 2026-08-03 — Neuer Beitrag: Arbeitsteilung zwischen Agent und Mensch
 
 Eine gemischte Literaturliste durch den MCP-Endpunkt: **8 von 12 Quellen** wurden
@@ -336,7 +372,7 @@ zwischen den Aufrufen und wiederholt nach einem 429.
 <!-- change-stream:auto-block:2026-08-02:START -->
 ### 2026-08-02 — Auto-Aggregat (change-stream)
 
-_Quelle: change-stream, 91 Events, generiert 2026-08-03T07:02_
+_Quelle: change-stream, 91 Events, generiert 2026-08-03T09:00_
 
 **Aktivitaet:** 21 Datei(en), 91 Tool-Calls (76 Edit, 14 Write, 1 Bash), 2 Session(s).
 
@@ -366,7 +402,6 @@ _Quelle: change-stream, 91 Events, generiert 2026-08-03T07:02_
 - `cd /home/holo/repos/full-page-pdf-snap-public && timeout 200 python3 rechtscheck.py 2>&1 | tail -5 && git add -A && git `
 
 <!-- change-stream:auto-block:2026-08-02:END -->
-
 <!-- Keine absoluten Pfade des Entwicklungsrechners in dieses Repo.
      Der Aggregator des Arbeitsplatzes traegt sie automatisch ein; sie
      verraten Benutzernamen und Verzeichnisstruktur und nuetzen keinem

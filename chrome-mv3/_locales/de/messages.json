@@ -328,5 +328,29 @@
   },
   "popupRegionCancelled": {
     "message": "Auswahl abgebrochen"
+  },
+  "popupCite": {
+    "message": "Quellenangaben mitschreiben"
+  },
+  "popupCiteHint": {
+    "message": "Verfasser, DOI, Lizenz und Abrufzeit ins PDF, dazu ein RIS-Satz für Literaturprogramme. Gelesen wird nur diese Seite."
+  },
+  "popupCiteOn": {
+    "message": "Quellenangaben werden mitgeschrieben"
+  },
+  "popupCiteOff": {
+    "message": "Ohne Quellenangaben"
+  },
+  "optCopyPath": {
+    "message": "Dateipfad nach dem Speichern in die Zwischenablage"
+  },
+  "optCopyPathHint": {
+    "message": "Für den Weg ins Terminal oder an ein Sprachmodell: aufnehmen, einfügen. Standardmäßig aus."
+  },
+  "optCopyPathFormat": {
+    "message": "Pfadformat"
+  },
+  "optCopyPathFormatHint": {
+    "message": "Ein Windows-Pfad in einer Linux-Shell unter Windows führt ins Leere. Die Wahl WSL rechnet ihn einmal hier um statt jedes Mal von Hand."
   }
 }

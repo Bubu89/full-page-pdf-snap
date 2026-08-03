@@ -28,6 +28,8 @@ const DEFAULTS = {
   pageFormat: "free",
   breakAtLines: true,
   sourceMetadata: true,
+  copyPath: false,
+  copyPathFormat: "windows",
   fetchOriginal: false,
   tilePx: 4000,
   hideSticky: true,
@@ -121,6 +123,9 @@ async function load() {
   $("pageFormat").value = s.pageFormat === "a4" ? "a4" : "free";
   $("breakAtLines").checked = s.breakAtLines !== false;
   $("sourceMetadata").checked = s.sourceMetadata !== false;
+  $("copyPath").checked = s.copyPath === true;
+  $("copyPathFormat").value = ["windows","wsl","posix"].includes(s.copyPathFormat)
+    ? s.copyPathFormat : "windows";
   $("fetchOriginal").checked = s.fetchOriginal === true;
   $("tilePx").value = String(s.tilePx || 4000);
   $("reviewPromptOff").checked = !!s.reviewPromptOff;
@@ -160,6 +165,8 @@ $("save").addEventListener("click", async () => {
     pageFormat: $("pageFormat").value === "a4" ? "a4" : "free",
     breakAtLines: $("breakAtLines").checked,
     sourceMetadata: $("sourceMetadata").checked,
+    copyPath: $("copyPath").checked,
+    copyPathFormat: $("copyPathFormat").value,
     fetchOriginal: $("fetchOriginal").checked,
     tilePx: Math.max(800, Math.min(8000, parseInt($("tilePx").value, 10) || 4000)),
     hideSticky: $("hideSticky").checked,
