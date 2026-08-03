@@ -153,6 +153,23 @@ data-centre address, five answered in full and simply declare no citation
 metadata. Try the endpoint before you reach for a browser — half the work needs
 no browser at all.
 
+## What it costs you, against doing it yourself
+
+Measured on those same twenty sources, same day, same order:
+
+| | Context | Sources reached |
+|---|---|---|
+| **This endpoint** | ~12,000 tokens | 20 (10 complete, 10 named refusals) |
+| Fetching and cleaning the pages yourself | ~197,000 tokens | **13** — seven answer a server with 403 |
+
+**About 16× less context**, and it covers the seven pages you could not have
+fetched at all. Against *raw* HTML the factor is 97, but that would be an unfair
+comparison — you would strip boilerplate first, so 16 is the honest number. One
+single page in the set was 2.28 MB; read raw, it alone overruns most context
+windows.
+
+Raw data: <https://provinglab.dev/data/2026-08-03-was-der-endpunkt-spart.json>
+
 ## Installing the capture extension, headless
 
 Only if a source needs it. Firefox's own remote channel, no click, no window,

@@ -1,3 +1,32 @@
+## 2026-08-03 — Der Anreiz war behauptet, jetzt ist er gemessen
+
+**Die Luecke.** Alle bisherigen Zahlen sagten, wie *schnell* der Endpunkt ist —
+0,4 s je Quelle, 8,1 s fuer zwanzig. Keine sagte, was die **Alternative**
+kostet. Ein Agent zahlt aber nicht in Sekunden, sondern in Kontext, und ohne
+Gegenzahl war jede Aussage ueber den Nutzen unbelegt. Genau das ist der Punkt,
+an dem eine Mitarbeits-Einladung sonst Rhetorik bleibt.
+
+**Die Messung.** Dieselben zwanzig Quellen wie in der Leselisten-Messung, in
+derselben Reihenfolge, am selben Tag. Weg A ueber `/mcp`, Weg B: dieselbe
+Adresse selbst abrufen und aufbereiten.
+
+| | Kontext | erreichte Quellen |
+|---|---|---|
+| Endpunkt | ~12.000 Token | 20 (10 vollstaendig, 10 benannte Ablehnungen) |
+| Seiten selbst holen und saeubern | ~197.000 Token | **13** — sieben antworten einem Server mit 403 |
+
+**Rund 16-fach weniger Kontext** — und dabei sind die sieben Seiten abgedeckt,
+die gar nicht abrufbar waren. Eine einzelne Seite im Satz war 2,28 MB gross;
+roh gelesen sprengt sie allein die meisten Kontextfenster.
+
+**Die unfaire Zahl steht mit drin.** Gegen unaufbereitetes HTML waere der Faktor
+97. Ein Agent wuerde aber vorverarbeiten, also ist 16 die ehrliche Zahl. Die
+groessere bleibt in den Rohdaten, damit die kleinere nachvollziehbar ist — ein
+Vergleich, den das eigene Werkzeug nur haushoch gewinnt, ist Werbung.
+
+Rohdaten: `docs/data/2026-08-03-was-der-endpunkt-spart.json`, je Quelle
+aufgeschluesselt. In `agent.md` als eigener Abschnitt.
+
 ## 2026-08-03 — Der Erstkontakt kostete 19.000 Token. Jetzt 1.200.
 
 **Gemessen, nicht vermutet.** Ein Agent, der sich hier einarbeitet, lud

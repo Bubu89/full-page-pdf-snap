@@ -1,0 +1,226 @@
+{
+  "gemessen_am": "2026-08-03",
+  "lizenz": "CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/",
+  "frage": "Was kostet eine Literaturliste einen Agenten ueber den Endpunkt, und was kostet sie ihn, wenn er die Seiten selbst laedt und auswertet?",
+  "warum": "Die bisher veroeffentlichten Zahlen sagen, wie schnell der Endpunkt ist (0,4 s je Quelle). Sie sagen nicht, was die Alternative kostet. Ein Agent zahlt aber nicht in Sekunden, sondern in Kontext — und ohne diese Gegenzahl ist jede Aussage ueber den Nutzen unbelegt.",
+  "methode": {
+    "beschreibung": "Dieselben 20 Quellen wie in der Leselisten-Messung, in derselben Reihenfolge, am selben Tag. Weg A: extract_citation ueber /mcp, gezaehlt wird die Antwort. Weg B: dieselbe Adresse direkt abrufen, gezaehlt wird einmal das rohe HTML und einmal der Textanteil nach Entfernen von script, style, nav, footer, svg und allen Tags.",
+    "control": "Der Textanteil ist die eigentliche Vergleichszahl, nicht das rohe HTML. Ein Agent wuerde vorverarbeiten, und ein Vergleich gegen unaufbereitetes HTML haette den Endpunkt 97-fach gewinnen lassen — richtig, aber unfair. Nach Aufbereitung bleiben 16-fach. Die groessere Zahl steht hier trotzdem, damit die kleinere nachvollziehbar ist.",
+    "verification": "Token als Bytes durch vier geschaetzt, fuer beide Wege gleich. Die absoluten Werte sind damit ungenau, das Verhaeltnis ist es nicht.",
+    "werkzeug": "einmaliges Messskript, Ergebnis in dieser Datei"
+  },
+  "ergebnis": {
+    "quellen": 20,
+    "endpunkt_bytes": 49240,
+    "endpunkt_token_geschaetzt": 12310,
+    "vollstaendige_datensaetze": 12,
+    "seiten_erreichbar_fuer_server": 13,
+    "seiten_roh_bytes": 4760968,
+    "seiten_text_bytes": 786295,
+    "faktor_roh": 96.7,
+    "faktor_nach_aufbereitung": 16.0,
+    "groesste_einzelseite_bytes": 2284441
+  },
+  "befund": "Der Endpunkt liefert 20 Quellen in rund 12.000 Token. Wer dieselben Seiten selbst laedt und aufbereitet, zahlt rund 197.000 Token — und erreicht dabei nur 13 der 20, weil 7 dem Server-Abruf mit 403 antworten. Eine einzige Seite war 2,28 MB gross; roh gelesen sprengt sie allein die meisten Kontextfenster.",
+  "grenzen": [
+    "Einzelmessung an einer Liste, an einem Tag, aus einem Rechenzentrum.",
+    "Aus einem Heimnetz waeren mehr als 13 Seiten erreichbar — wie viele, ist ungemessen.",
+    "Der Endpunkt liefert nicht fuer jede Quelle einen vollstaendigen Datensatz; 12 von 20 tragen complete=true. Die uebrigen sind benannte Ablehnungen, keine stillen Luecken.",
+    "Die Token-Schaetzung ueber vier Bytes je Token ist grob. Fuer das Verhaeltnis spielt das keine Rolle, fuer die Absolutwerte schon."
+  ],
+  "je_quelle": [
+    {
+      "url": "https://www.sciencedirect.com/science/article/pii/S0148296319304564",
+      "endpunkt_bytes": 2002,
+      "complete": null,
+      "endpunkt_s": 0.3,
+      "selbst_bytes": 0,
+      "selbst_status": 403,
+      "selbst_s": 0.21
+    },
+    {
+      "url": "https://www.tandfonline.com/doi/full/10.1080/00207543.2020.1824085",
+      "endpunkt_bytes": 2315,
+      "complete": true,
+      "endpunkt_s": 0.34,
+      "selbst_bytes": 0,
+      "selbst_status": 403,
+      "selbst_s": 0.18
+    },
+    {
+      "url": "https://link.springer.com/article/10.1007/s11846-020-00426-9",
+      "endpunkt_bytes": 2781,
+      "complete": true,
+      "endpunkt_s": 1.04,
+      "selbst_bytes": 406166,
+      "selbst_status": 200,
+      "selbst_s": 1.16,
+      "selbst_text_bytes": 64257
+    },
+    {
+      "url": "https://onlinelibrary.wiley.com/doi/10.1002/bse.2882",
+      "endpunkt_bytes": 2385,
+      "complete": true,
+      "endpunkt_s": 0.44,
+      "selbst_bytes": 0,
+      "selbst_status": 403,
+      "selbst_s": 0.26
+    },
+    {
+      "url": "https://journals.sagepub.com/doi/10.1177/0008125619867910",
+      "endpunkt_bytes": 2114,
+      "complete": true,
+      "endpunkt_s": 0.32,
+      "selbst_bytes": 0,
+      "selbst_status": 403,
+      "selbst_s": 0.17
+    },
+    {
+      "url": "https://www.mdpi.com/2071-1050/12/16/6597",
+      "endpunkt_bytes": 1976,
+      "complete": null,
+      "endpunkt_s": 0.22,
+      "selbst_bytes": 0,
+      "selbst_status": 403,
+      "selbst_s": 0.16
+    },
+    {
+      "url": "https://www.frontiersin.org/articles/10.3389/fpsyg.2021.620766/full",
+      "endpunkt_bytes": 3012,
+      "complete": true,
+      "endpunkt_s": 0.96,
+      "selbst_bytes": 2284441,
+      "selbst_status": 200,
+      "selbst_s": 1.06,
+      "selbst_text_bytes": 172952
+    },
+    {
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0247139",
+      "endpunkt_bytes": 3127,
+      "complete": true,
+      "endpunkt_s": 1.04,
+      "selbst_bytes": 303365,
+      "selbst_status": 200,
+      "selbst_s": 0.62,
+      "selbst_text_bytes": 67146
+    },
+    {
+      "url": "https://www.ssoar.info/ssoar/handle/document/71234",
+      "endpunkt_bytes": 3185,
+      "complete": false,
+      "endpunkt_s": 0.2,
+      "selbst_bytes": 34330,
+      "selbst_status": 200,
+      "selbst_s": 0.32,
+      "selbst_text_bytes": 2643
+    },
+    {
+      "url": "https://arxiv.org/abs/1706.03762",
+      "endpunkt_bytes": 2031,
+      "complete": true,
+      "endpunkt_s": 0.18,
+      "selbst_bytes": 44193,
+      "selbst_status": 200,
+      "selbst_s": 0.18,
+      "selbst_text_bytes": 4758
+    },
+    {
+      "url": "https://zenodo.org/records/3832945",
+      "endpunkt_bytes": 1579,
+      "complete": true,
+      "endpunkt_s": 0.63,
+      "selbst_bytes": 58922,
+      "selbst_status": 200,
+      "selbst_s": 0.35,
+      "selbst_text_bytes": 1821
+    },
+    {
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3529682",
+      "endpunkt_bytes": 1994,
+      "complete": null,
+      "endpunkt_s": 0.17,
+      "selbst_bytes": 0,
+      "selbst_status": 403,
+      "selbst_s": 0.24
+    },
+    {
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679",
+      "endpunkt_bytes": 2276,
+      "complete": true,
+      "endpunkt_s": 0.87,
+      "selbst_bytes": 1069276,
+      "selbst_status": 200,
+      "selbst_s": 0.86,
+      "selbst_text_bytes": 355744
+    },
+    {
+      "url": "https://www.oecd.org/en/publications/oecd-digital-economy-outlook-2024-volume-1_a1689dc5-en.html",
+      "endpunkt_bytes": 2031,
+      "complete": null,
+      "endpunkt_s": 0.15,
+      "selbst_bytes": 0,
+      "selbst_status": 403,
+      "selbst_s": 0.25
+    },
+    {
+      "url": "https://www.statistik.at/statistiken/forschung-innovation-digitalisierung",
+      "endpunkt_bytes": 3740,
+      "complete": false,
+      "endpunkt_s": 0.44,
+      "selbst_bytes": 89876,
+      "selbst_status": 200,
+      "selbst_s": 0.41,
+      "selbst_text_bytes": 649
+    },
+    {
+      "url": "https://www.wko.at/eservices",
+      "endpunkt_bytes": 3405,
+      "complete": false,
+      "endpunkt_s": 0.53,
+      "selbst_bytes": 49544,
+      "selbst_status": 200,
+      "selbst_s": 0.46,
+      "selbst_text_bytes": 1693
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Digital_transformation",
+      "endpunkt_bytes": 1531,
+      "complete": true,
+      "endpunkt_s": 0.21,
+      "selbst_bytes": 249653,
+      "selbst_status": 200,
+      "selbst_s": 0.72,
+      "selbst_text_bytes": 20392
+    },
+    {
+      "url": "https://plato.stanford.edu/entries/computing-responsibility/",
+      "endpunkt_bytes": 1469,
+      "complete": true,
+      "endpunkt_s": 0.61,
+      "selbst_bytes": 110863,
+      "selbst_status": 200,
+      "selbst_s": 1.26,
+      "selbst_text_bytes": 93054
+    },
+    {
+      "url": "https://doi.org/10.1016/j.jbusres.2019.09.022",
+      "endpunkt_bytes": 2487,
+      "complete": true,
+      "endpunkt_s": 0.75,
+      "selbst_bytes": 2691,
+      "selbst_status": 200,
+      "selbst_s": 0.87,
+      "selbst_text_bytes": 11
+    },
+    {
+      "url": "https://www.derstandard.at/story/3000000200000/",
+      "endpunkt_bytes": 3800,
+      "complete": false,
+      "endpunkt_s": 0.36,
+      "selbst_bytes": 57648,
+      "selbst_status": 200,
+      "selbst_s": 0.41,
+      "selbst_text_bytes": 1175
+    }
+  ]
+}
