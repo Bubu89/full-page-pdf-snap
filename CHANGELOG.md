@@ -1,3 +1,43 @@
+## 2026-08-03 — Korrektur am Agenten-Artikel, und was auf fremden Rechnern nicht lief
+
+**Die Korrektur.** Der Beitrag `/notes/what-an-agent-can-do-with-an-extension/`
+sagte: „An agent can load an unpacked build into a browser it owns." Nach der
+Marionette-Messung desselben Tages ist das zu eng — ein Agent kann die
+**signierte Store-Fassung** dauerhaft ins echte Profil installieren, in 4,1 s,
+headless. Die Trennlinie laeuft nicht zwischen *laden* und *installieren*,
+sondern zwischen **Zugang zur Maschine haben** und nicht haben. Unveraendert
+gilt der Satz, auf den es ankam: in einen Browser, den man nicht erreicht,
+installiert niemand. Als Korrektur gekennzeichnet, nicht stillschweigend
+ersetzt. Die Kennzahl auf der Notes-Uebersicht lautete „0 ways to install for
+someone" und heisst jetzt „0 ways to install into a browser you cannot reach".
+
+**Zwei echte Lecks im oeffentlichen Stand.** `schnelllauf-agent-install.py` und
+`messung-agent-install-als-nutzer.py` trugen `C:\Users\HOLO\…` als feste
+Zeichenkette. Der Umbau auf Laufzeit-Aufloesung war frueher begonnen worden —
+die Linux-Fassung derselben Konstante war laengst aufgeloest, die
+Windows-Fassung stand unveraendert **oberhalb** der Funktion, die den
+Benutzernamen ermittelt. Ein halber Umbau sieht aus wie ein ganzer. Ebenso in
+`store-texte/ANLEITUNG_NAECHSTE_SCHRITTE.md` (jetzt `%USERPROFILE%`) und in
+den Testdaten von `tests/pfad.test.mjs`.
+
+**Warum es durchrutschte.** Die Pfad-Pruefung der Pipeline kannte nur
+`/home/holo/` und `/mnt/c/Users/HOLO/`, nicht die Windows-Schreibweise
+`C:\Users\HOLO`. Ein Pruefer, der eine Schreibweise nicht kennt, bestaetigt
+den halben Umbau als ganzen. Ergaenzt.
+
+**Portabilitaet des Werkzeugs.** `tools/erweiterung-fernsteuern.py` fand
+Firefox nur unter `Program Files`. Ohne Administratorrechte installiert
+Firefox aber nach `%LOCALAPPDATA%` — und dort sucht eine Program-Files-Liste
+nie. Ergaenzt um Benutzer-Installationen, `firefox-esr`, snap, flatpak,
+macOS-Benutzerordner, den Suchpfad und die Umgebungsvariable `FIREFOX`.
+Ebenso: der Windows-Interpreter heisst je nach Installationsart `python.exe`
+**oder** `py.exe`; wer nur einen Namen probiert, bekommt auf der Haelfte der
+Rechner „not recognized" und sucht den Fehler beim Skript.
+
+**Gegenprobe nach dem Umbau.** Rundlauf erneut gefahren: Deinstallation und
+Installation laufen weiter, Stand 2.26.0 aktiv. Rechtscheck, Schema-Pruefung,
+Tests und die CI-Pfadpruefung lokal gruen.
+
 ## 2026-08-03 — Installation und Deinstallation ohne Klick, ohne Fenster
 
 **Was.** Neues Werkzeug `tools/erweiterung-fernsteuern.py`, das die Erweiterung

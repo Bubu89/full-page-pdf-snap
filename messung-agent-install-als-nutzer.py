@@ -38,7 +38,6 @@ HIER = Path(__file__).resolve().parent
 DATUM = "2026-08-03"
 ZIEL = HIER / "docs" / "data" / f"{DATUM}-agent-install-and-capture.json"
 
-W_TEMP = r"C:\Users\HOLO\AppData\Local\Temp\pl-agent-meas"
 def _win_benutzer():
     """Windows-Benutzername aus der Interop, nicht aus einer festen Zeichenkette.
 
@@ -60,6 +59,11 @@ def _win_benutzer():
 
 
 _BENUTZER = _win_benutzer()
+
+# Stand frueher als feste Zeichenkette oberhalb von _win_benutzer() und
+# blieb beim Umbau zurueck: die Linux-Fassung war schon aufgeloest, die
+# Windows-Fassung nicht. Ein halber Umbau sieht aus wie ein ganzer.
+W_TEMP = rf"C:\Users\{_BENUTZER}\AppData\Local\Temp\pl-agent-meas"
 
 L_TEMP = Path(f"/mnt/c/Users/{_BENUTZER}/AppData/Local/Temp/pl-agent-meas")
 STATE = L_TEMP / "state.json"

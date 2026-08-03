@@ -63,6 +63,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import socket
 import subprocess
 import sys
@@ -76,12 +77,25 @@ KENNUNG = "provinglab-install/1.0 (+https://provinglab.dev/for-agents/)"
 PORT = 2828
 PROTOKOLL = []
 
+# Reihenfolge ist Absicht: ESR zuerst, weil auf der Messmaschine nur ESR lag
+# und ein Probieren des gewoehnlichen Pfades zuerst „Firefox nicht gefunden"
+# meldete, waehrend Firefox lief. Benutzer-Installationen stehen mit drin —
+# ohne Administratorrechte installiert Firefox nach %LOCALAPPDATA%, und genau
+# dort sucht eine Liste aus Program-Files-Pfaden nie.
 FF_KANDIDATEN = [
     r"C:\Program Files\Mozilla FirefoxESR\firefox.exe",
     r"C:\Program Files\Mozilla Firefox\firefox.exe",
     r"C:\Program Files (x86)\Mozilla Firefox\firefox.exe",
-    "/usr/bin/firefox", "/usr/lib/firefox/firefox",
+    os.path.expandvars(r"%LOCALAPPDATA%\Mozilla Firefox\firefox.exe"),
+    os.path.expandvars(r"%LOCALAPPDATA%\Programs\Mozilla Firefox\firefox.exe"),
+    "/usr/bin/firefox", "/usr/bin/firefox-esr",
+    "/usr/lib/firefox/firefox", "/usr/lib/firefox-esr/firefox-esr",
+    "/usr/local/bin/firefox",
+    "/snap/bin/firefox",
+    "/var/lib/flatpak/exports/bin/org.mozilla.firefox",
+    str(Path.home() / ".local/share/flatpak/exports/bin/org.mozilla.firefox"),
     "/Applications/Firefox.app/Contents/MacOS/firefox",
+    str(Path.home() / "Applications/Firefox.app/Contents/MacOS/firefox"),
 ]
 
 UNTER_WSL = sys.platform == "linux" and Path("/mnt/c/Windows").exists()
@@ -100,6 +114,25 @@ def schritt(name, ok, detail=""):
 
 
 # ----------------------------------------------------- WSL-Weiterreichung
+
+def _win_python():
+    """Der Windows-Interpreter heisst nicht ueberall gleich.
+
+    Eine Installation aus dem Microsoft Store legt `python.exe` in den
+    Suchpfad, eine aus dem Installer oft nur `py.exe`. Wer nur den einen
+    Namen probiert, bekommt auf der Haelfte der Rechner „not recognized"
+    und sucht den Fehler beim Skript.
+    """
+    for name in ("python.exe", "py.exe"):
+        r = subprocess.run(["powershell.exe", "-NoProfile", "-Command",
+                            f"(Get-Command {name} -EA SilentlyContinue).Source"],
+                           capture_output=True, text=True, errors="replace")
+        if r.stdout.strip():
+            return name
+    raise SystemExit("Kein Windows-Python gefunden (weder python.exe noch py.exe). "
+                     "Ohne das kann der Marionette-Client nicht auf der Seite "
+                     "des Browsers laufen.")
+
 
 def an_windows_weiterreichen():
     """Das Skript nach %TEMP% kopieren und dort mit dem Windows-Python starten.
@@ -120,7 +153,7 @@ def an_windows_weiterreichen():
     # Gedankenstrich und Umlaut als Fragezeichen ankommen.
     r = subprocess.run(["powershell.exe", "-NoProfile", "-Command",
                         f"$env:PYTHONIOENCODING='utf-8'; "
-                        f"python.exe '{ziel_w}\\erweiterung-fernsteuern.py' "
+                        f"{_win_python()} '{ziel_w}\\erweiterung-fernsteuern.py' "
                         + " ".join(sys.argv[1:])],
                        text=True, errors="replace")
     return r.returncode
@@ -129,10 +162,23 @@ def an_windows_weiterreichen():
 # ------------------------------------------------------------- Profil/XPI
 
 def firefox_exe():
+    eigen = os.environ.get("FIREFOX")
+    if eigen and Path(eigen).exists():
+        return eigen
     for k in FF_KANDIDATEN:
-        if Path(k).exists():
+        if k and Path(k).exists():
             return k
-    raise SystemExit("Firefox nicht gefunden — Pfad in FF_KANDIDATEN ergaenzen")
+    # Zuletzt der Suchpfad: eine Installation an einer Stelle, die niemand
+    # vorhersehen kann, ist immer noch auffindbar, wenn sie im PATH steht.
+    for name in ("firefox", "firefox-esr"):
+        gefunden = shutil.which(name)
+        if gefunden:
+            return gefunden
+    raise SystemExit(
+        "Firefox nicht gefunden. Gesucht wurde an "
+        f"{len(FF_KANDIDATEN)} ueblichen Orten und im Suchpfad. "
+        "Eigenen Pfad ueber die Umgebungsvariable FIREFOX setzen "
+        "oder in FF_KANDIDATEN ergaenzen.")
 
 
 def profil_pfad():

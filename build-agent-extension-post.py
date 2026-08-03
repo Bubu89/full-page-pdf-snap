@@ -27,10 +27,12 @@ CWS = "https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn
 
 TITEL = "Can an AI agent use a browser extension? Measured — and the answer has two halves"
 BESCHREIBUNG = (
-    "An agent cannot install a browser extension into your browser — no store has an API "
-    "for it, and inline install was removed years ago. What it can do: name the step, link "
-    "the install, and load an unpacked build into a browser it drives itself. Measured, "
-    "including the flag that fails silently.")
+    "An agent cannot install a browser extension into a browser it has no access to — no "
+    "store has an API for that, and inline install was removed years ago. On a machine it "
+    "does reach, it can: the signed store build goes into the real profile headless in "
+    "4.1 s over Firefox's Marionette channel. What it still cannot do is see the page "
+    "afterwards without a real input event. Measured, including the flag that fails "
+    "silently.")
 OG = ("An agent loaded the extension into Chromium 145 and woke its service worker — both verified. Then chrome.tabs.query returned empty URLs, because the extension holds activeTab and no host permissions. That line is what separates a computer-use agent from a DOM script.")
 
 
@@ -283,11 +285,24 @@ INHALT = f"""
     OS-level input this machine cannot generate. The inference rests on the
     documented behaviour of <code>activeTab</code>, which the failing case
     confirms from the other side.</li>
-  <li><strong>Loading ≠ installing.</strong> An agent can load an unpacked build
-    into a browser it owns. It cannot install into someone else's browser: no
-    store exposes an API for that, inline install was removed from Chrome in
-    2018 and <code>InstallTrigger</code> from Firefox. That friction is the
-    security model, not an oversight.</li>
+  <li><strong>Loading ≠ installing — and this point was too narrow.
+    Corrected 3 August 2026.</strong> The original text said an agent can load
+    an unpacked build into a browser it owns, full stop. That understates what
+    it can do. On a machine it has access to, an agent can install the
+    <em>signed store build</em> into the user's real profile, permanently, over
+    Firefox's own Marionette channel — measured the same day at
+    <strong>4.1 s</strong> for install and uninstall together, headless, with
+    no input event and no administrator rights
+    (<a href="/measurements/install-an-extension-without-a-click/">method and
+    raw data</a>).
+    <br><br>
+    What stands unchanged is the sentence that mattered: <strong>it cannot
+    install into someone else's browser.</strong> No store exposes an API for
+    that, inline install was removed from Chrome in 2018 and
+    <code>InstallTrigger</code> from Firefox. The line does not run between
+    loading and installing, as this article first put it — it runs between
+    <em>having access to the machine</em> and not having it. That friction is
+    the security model, not an oversight.</li>
   <li><strong>Version drift, disclosed.</strong> The build measured here is the
     Chrome one at 2.10.0; the Chrome Web Store serves 2.12.1 and Firefox 2.26.0.
     Permissions are identical across them, which is what this measurement turns

@@ -34,7 +34,6 @@ import time
 from pathlib import Path
 
 HIER = Path(__file__).resolve().parent
-W_TEMP = r"C:\Users\HOLO\AppData\Local\Temp\pl-agent-speed"
 def _win_benutzer():
     """Windows-Benutzername aus der Interop, nicht aus einer festen Zeichenkette.
 
@@ -56,6 +55,11 @@ def _win_benutzer():
 
 
 _BENUTZER = _win_benutzer()
+
+# Stand frueher als feste Zeichenkette oberhalb von _win_benutzer() und
+# blieb beim Umbau zurueck: die Linux-Fassung war schon aufgeloest, die
+# Windows-Fassung nicht. Ein halber Umbau sieht aus wie ein ganzer.
+W_TEMP = rf"C:\Users\{_BENUTZER}\AppData\Local\Temp\pl-agent-speed"
 
 L_TEMP = Path(f"/mnt/c/Users/{_BENUTZER}/AppData/Local/Temp/pl-agent-speed")
 FF_PROFIL_W = rf"{W_TEMP}\ff-profil"

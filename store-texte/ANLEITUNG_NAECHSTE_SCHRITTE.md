@@ -13,7 +13,7 @@ des MCP-Endpunkts — führt derzeit zu einer vierzehn Versionen alten Fassung.
 
 **Fertig vorbereitet:**
 
-    C:\Users\HOLO\Documents\FullPagePDFSnap_Chrome\upload\
+    %USERPROFILE%\Documents\FullPagePDFSnap_Chrome\upload\
       full-page-pdf-snap-chrome-2.27.0.zip     143 KB, 26 Dateien
       SHA-256: 86654df14b9d59fa…
 
@@ -40,7 +40,7 @@ Live steht 2.26.0.
 1. <https://addons.mozilla.org/developers/addon/full_page_pdf_snap_webpagesave/versions/submit/>
 2. Paket hochladen — liegt fertig:
 
-       C:\Users\HOLO\Documents\FullPagePDFSnap_Firefox\upload\
+       %USERPROFILE%\Documents\FullPagePDFSnap_Firefox\upload\
          full-page-pdf-snap-firefox-2.27.0.zip     146 KB
 
    (Mozilla nimmt das ZIP entgegen und signiert es zur XPI. `pack-firefox.py`
