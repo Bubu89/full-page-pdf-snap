@@ -1,3 +1,27 @@
+## 2026-08-03 — Bereichsauswahl lieferte ein zerstoertes Bild
+
+Gemeldet an einer Doku-Seite: waagrechte Streifen, senkrecht gestauchter Inhalt,
+untere Haelfte leer, kein durchsuchbarer Text. 194 KB Datei, null Woerter.
+
+**Ursache.** Der Zuschnitt tauschte die Zeichenflaeche gegen den Ausschnitt aus,
+liess aber `pxW` auf der alten Breite stehen. Alles Folgende — Kacheln, Seiten,
+PDF — rechnet mit `pxW`, las also mit 2000 Punkten Breite aus einer Flaeche, die
+nur noch 1000 breit war. Das Ergebnis ist genau das gemeldete Streifenmuster.
+
+**Behebung.** `pxW` und `bigH` beschreiben ab dem Zuschnitt den Ausschnitt.
+`big` ist keine Konstante mehr, sondern wird ersetzt.
+
+**Dazu.** Die Textebene wird jetzt **mitgeschnitten statt verworfen**: die
+Wortkoordinaten werden um den Ausschnitt versetzt, alles ausserhalb faellt weg.
+Ein Bild ohne Text ist fuer den Zweck dieser Erweiterung — Belege, OCR,
+Sprachmodelle — der halbe Nutzen. Zuvor war die Textebene beim Zuschnitt
+absichtlich verworfen worden; das war zu vorsichtig.
+
+**Verifikation.** `tests/zuschnitt.test.mjs`, acht Pruefungen am ausgelieferten
+Code: Breite und Hoehe folgen dem Ausschnitt, gelesen wird an der richtigen
+Stelle, die Textebene ueberlebt mit versetzten Koordinaten, und die Seitenbreite
+wird richtig auf CSS-Pixel umgerechnet.
+
 ## 2026-08-03 — Version 2.19.0: Bereich mit der Maus auswaehlen
 
 Statt eines festen Ausschnitts laesst sich der Bereich jetzt mit der Maus

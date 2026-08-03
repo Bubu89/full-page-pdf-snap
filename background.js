@@ -556,7 +556,9 @@ async function captureFullPageInner(tab, settings) {
   // Im Kontext-Modus bleibt die volle Fensterbreite stehen, und der Inhalt
   // beginnt erst unterhalb der Kopfzeile.
   const keepFrame = clipMode === "context";
-  const pxW = keepFrame ? segments[0].pxW : clipW;
+  // Nicht const: der Zuschnitt auf einen gewaehlten Bereich aendert die
+  // Breite, und alles Folgende — Kacheln, Seiten, PDF — rechnet mit pxW.
+  let pxW = keepFrame ? segments[0].pxW : clipW;
   const contentTop = keepFrame ? srcY : 0;
 
   /* Die Hoehe richtet sich nach dem LAENGSTEN Bereich, nicht nur nach dem
@@ -580,7 +582,8 @@ async function captureFullPageInner(tab, settings) {
 
   log("Big canvas size:", pxW, "x", bigH, "mode=" + clipMode);
 
-  const big = document.createElement("canvas");
+  // Nicht const: der Zuschnitt ersetzt die Flaeche.
+  let big = document.createElement("canvas");
   big.width = pxW;
   big.height = bigH;
   const bigCtx = big.getContext("2d");
@@ -794,14 +797,32 @@ async function captureFullPageInner(tab, settings) {
     const zu = document.createElement("canvas");
     zu.width = zw; zu.height = zh;
     zu.getContext("2d").drawImage(big, zx, zy, zw, zh, 0, 0, zw, zh);
-    big.width = zw; big.height = zh;
-    big.getContext("2d").drawImage(zu, 0, 0);
+    big = zu;
+    // pxW und bigH beschreiben ab hier den Ausschnitt. Wurde nur big getauscht
+    // und pxW stehen gelassen, las der Kachelcode mit der alten Breite aus der
+    // neuen Flaeche: das Ergebnis waren waagrechte Streifen und ein senkrecht
+    // gestauchtes Bild — gemeldet am 03.08.2026 an einer Doku-Seite.
+    pxW = zw;
     bigH = zh;
     log("Auf Bereich zugeschnitten:", zx, zy, zw, zh, "Faktor", f.toFixed(2));
-    // Die Textebene bezieht sich auf das ganze Dokument. Nach dem Zuschnitt
-    // stimmen ihre Koordinaten nicht mehr — eine falsche Textebene ist
-    // schlechter als gar keine.
-    textWoerter = null;
+
+    // Textebene mitnehmen statt verwerfen. Die Wortkoordinaten stehen in
+    // CSS-Pixeln des Dokuments; hier werden sie um den Ausschnitt versetzt und
+    // alles ausserhalb faellt weg. Ein Bild ohne Text waere fuer den Zweck der
+    // Erweiterung — Belege, OCR, Sprachmodelle — der halbe Nutzen.
+    if (textWoerter && textWoerter.length && textSeiteBreite) {
+      const versatzX = zx / f, versatzY = zy / f;
+      const breiteCss = zw / f, hoeheCss = zh / f;
+      const drin = [];
+      for (const w of textWoerter) {
+        const x = w.x - versatzX, y = w.y - versatzY;
+        if (x + w.w < 0 || y + w.h < 0 || x > breiteCss || y > hoeheCss) continue;
+        drin.push({ ...w, x, y });
+      }
+      log("Textebene beschnitten:", textWoerter.length, "->", drin.length, "Woerter");
+      textWoerter = drin.length ? drin : null;
+      textSeiteBreite = breiteCss;
+    }
   }
 
   const pages = [];
