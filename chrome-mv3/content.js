@@ -826,6 +826,29 @@
     // "Just a moment..." oder "404 Not found" darf aber keine Quellenangabe
     // werden. Erkannt wird das am Titel und an der Duennheit der Seite; wo es
     // zutrifft, wird die Angabe als unbrauchbar gekennzeichnet.
+    // Titel bereinigen und beurteilen, BEVOR die Warnung gesetzt wird.
+    // Zuvor standen diese Deklarationen darunter: die Warnungspruefung griff
+    // auf sie zu, bevor sie existierten, und brach mit einem ReferenceError ab.
+    // Der Listener fing ihn ab — dadurch lieferte collectSource in der
+    // Erweiterung ueberhaupt nichts, ohne dass es auffiel.
+    const seitenName = erste("og:site_name");
+    // Der Name der Website steht vor der Endung, nicht am Anfang: bei
+    // "de.wikipedia.org" ist der erste Teil die Sprache.
+    const teile = location.hostname.split(".");
+    const kern = teile.length > 1 ? teile[teile.length - 2] : teile[0];
+    q.titel = q.titel.replace(/^[\s|–—-]+|[\s|–—-]+$/g, "").trim();
+    // Bleibt nach der Bereinigung nur der Name der Website stehen, ist das
+    // kein Werktitel — bioRxiv liefert "| bioRxiv".
+    const nurSeitenname = q.titel.toLowerCase() === (seitenName || "").trim().toLowerCase() ||
+                          q.titel.toLowerCase() === (kern || "").toLowerCase();
+    // Ein Titel aus lauter Ziffern ist eine Datensatznummer, kein Werktitel.
+    const nurNummer = /^[\d\s.,;:\/-]{1,24}$/.test(q.titel.trim());
+    // Titel, der eine Kennung statt eines Werktitels trägt: korrekt
+    // wiedergegeben, aber als Literaturhinweis schwer benutzbar. Benannt,
+    // nicht korrigiert — eine Korrektur wäre geraten.
+    if (!nurNummer && /\b(10\.\d{4,9}\/|[A-Za-z]+ID:|accession)/i.test(q.titel)) {
+      q.titelHinweis = "Der Titel enthält eine Kennung statt einer Bezeichnung — vor dem Zitieren am Werk prüfen.";
+    }
     q.warnung = "";
     // Zwei Gruppen: eindeutige Schranken-Formulierungen dürfen überall im
     // Titel stehen ("Making sure you're not a bot!" kam am 02.08.2026 durch
@@ -892,19 +915,6 @@
       }
       if (!q.verlag) q.verlag = q.webseite;
     }
-    q.titel = q.titel.replace(/^[\s|–—-]+|[\s|–—-]+$/g, "").trim();
-    // Bleibt nach der Bereinigung nur der Name der Website stehen, ist das
-    // kein Werktitel — bioRxiv liefert "| bioRxiv".
-    const nurSeitenname = q.titel.toLowerCase() === (seitenName || "").trim().toLowerCase() ||
-                          q.titel.toLowerCase() === (kern || "").toLowerCase();
-    // Ein Titel aus lauter Ziffern ist eine Datensatznummer, kein Werktitel.
-    const nurNummer = /^[\d\s.,;:\/-]{1,24}$/.test(q.titel.trim());
-    // Titel, der eine Kennung statt eines Werktitels trägt: korrekt
-    // wiedergegeben, aber als Literaturhinweis schwer benutzbar. Benannt,
-    // nicht korrigiert — eine Korrektur wäre geraten.
-    if (!nurNummer && /\b(10\.\d{4,9}\/|[A-Za-z]+ID:|accession)/i.test(q.titel)) {
-      q.titelHinweis = "Der Titel enthält eine Kennung statt einer Bezeichnung — vor dem Zitieren am Werk prüfen.";
-    }
 
     // Körperschaft als Urheber. Bei Behörden-, Statistik- und Rechtsquellen
     // gibt es keine Person, und das ist kein Mangel: nach APA ist dort die
@@ -926,11 +936,6 @@
     // ("Sexualtherapie – Wikipedia"). Abgeschnitten wird nur, wenn der
     // Rest woertlich dem angegebenen Seitennamen entspricht — sonst waere
     // es geraten, und ein verstuemmelter Titel ist schlimmer als ein langer.
-    const seitenName = erste("og:site_name");
-    // Der Name der Website steht vor der Endung, nicht am Anfang: bei
-    // "de.wikipedia.org" ist der erste Teil die Sprache.
-    const teile = location.hostname.split(".");
-    const kern = teile.length > 1 ? teile[teile.length - 2] : teile[0];
     const m = q.titel.match(/^(.*?)\s*[|–—-]\s*([^|–—-]+)$/);
     // Mindestlänge, sonst bleibt nichts übrig: bioRxiv liefert "| bioRxiv"
     // als Titel, und ohne die Prüfung entstünde ein leerer Titel mit

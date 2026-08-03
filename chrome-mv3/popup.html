@@ -29,12 +29,34 @@
       --gut: #86efac;
     }
   }
-  body { font-family: system-ui, sans-serif; width: 260px; margin: 0; padding: 14px; background: var(--bg); color: var(--fg); }
+  body { font-family: system-ui, sans-serif; width: 268px; margin: 0; padding: 14px; background: var(--bg); color: var(--fg); }
   h1 { font-size: 14px; margin: 0 0 10px 0; }
   button { width: 100%; padding: 10px 12px; border: 0; border-radius: 6px; font-size: 13px; cursor: pointer; }
   .primary { background: #2563eb; color: #fff; font-weight: 600; }
   .primary:hover { background: #1d4ed8; }
+  .zweit { background: var(--kbd-bg); color: var(--fg); margin-top: 8px; border: 1px solid var(--kbd-rand); }
+  .zweit:hover { border-color: #2563eb; }
   .ghost { background: transparent; color: var(--ghost-fg); margin-top: 8px; text-decoration: underline; }
+
+  /* Schalter fuer stoerende Einblendungen.
+     Er sitzt zwischen den beiden Aufnahmeknoepfen, weil er beide betrifft —
+     und traegt seinen Zustand sichtbar, damit niemand raten muss, ob die
+     letzte Aufnahme mit oder ohne Zustimmungsdialog entstanden ist. */
+  .schalter { display: flex; align-items: center; gap: 10px; margin-top: 12px;
+              padding: 9px 10px; border-radius: 6px; background: var(--kbd-bg);
+              border: 1px solid var(--kbd-rand); cursor: pointer; user-select: none; }
+  .schalter:hover { border-color: #2563eb; }
+  .schalter input { appearance: none; width: 34px; height: 20px; border-radius: 10px;
+                    background: var(--kbd-rand); position: relative; cursor: pointer;
+                    flex: 0 0 auto; transition: background .15s; margin: 0; }
+  .schalter input::after { content: ""; position: absolute; top: 2px; left: 2px;
+                           width: 16px; height: 16px; border-radius: 50%; background: #fff;
+                           transition: transform .15s; }
+  .schalter input:checked { background: #2563eb; }
+  .schalter input:checked::after { transform: translateX(14px); }
+  .schalter-text { flex: 1; min-width: 0; }
+  .schalter-titel { font-size: 12.5px; font-weight: 600; line-height: 1.25; }
+  .schalter-hinweis { font-size: 10.5px; color: var(--gedaempft); margin-top: 2px; line-height: 1.3; }
   .status { margin-top: 10px; font-size: 12px; color: var(--gedaempft); min-height: 16px; }
   .err { color: var(--fehler); }
   .ok { color: var(--gut); }
@@ -44,7 +66,17 @@
 </head>
 <body>
   <h1 data-i18n="popupHeading">Save the whole page as PDF</h1>
-  <button id="go" class="primary" data-i18n="popupCapture">Capture now</button>
+  <button id="go" class="primary" data-i18n="popupCapture">Capture whole page</button>
+  <button id="visible" class="zweit" data-i18n="popupVisible">Capture visible area</button>
+
+  <label class="schalter" for="hideSticky">
+    <input type="checkbox" id="hideSticky" checked>
+    <span class="schalter-text">
+      <span class="schalter-titel" data-i18n="popupHideOverlays">Hide banners and pop-ups</span>
+      <span class="schalter-hinweis" id="hideStickyHint" data-i18n="popupHideOverlaysHint">Consent dialogs and floating bars are hidden for the capture and restored afterwards.</span>
+    </span>
+  </label>
+
   <p><span data-i18n="popupShortcut">Shortcut:</span> <span class="kbd" id="shortcut">…</span></p>
   <button id="opts" class="ghost" data-i18n="popupSettings">Settings</button>
   <div id="status" class="status"></div>

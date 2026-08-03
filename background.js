@@ -211,8 +211,13 @@ async function ensureContentInjected(tabId) {
   if (!r || !r.ok) throw new Error("Content-Script antwortet nicht.");
 }
 
-async function captureFullPage(tab) {
+async function captureFullPage(tab, wahl) {
   const settings = await getSettings();
+  // Der sichtbare Ausschnitt ist keine eigene Ausgabeform, sondern dieselbe
+  // Aufnahme mit einem einzigen Abschnitt: ein Bild, eine Seite, gleiche
+  // Textebene, gleiche Nachweiszeile. Alles andere waere ein zweiter Weg mit
+  // eigenen Fehlern.
+  if (wahl && wahl.visibleOnly) settings.visibleOnly = true;
   log("Start capture, tab=", tab.id, "url=", tab.url, "settings=", settings);
 
   let originalZoom = null;
@@ -436,6 +441,15 @@ async function captureFullPageInner(tab, settings) {
       // Kein Fortschritts-Feedback waehrend der Aufnahme. Auf Android stapelten
       // sich die Prozent-Meldungen im Benachrichtigungsbereich; der Nutzer will
       // eine einzige Meldung, und zwar wenn das PDF fertig ist.
+
+      // Nur der sichtbare Ausschnitt: nach dem ersten Abschnitt ist Schluss.
+      // Der Rest der Kette laeuft unveraendert weiter — ein Abschnitt ergibt
+      // ein Bild, eine Seite und dieselbe Nachweiszeile wie sonst. Eine
+      // eigene Ausgabeform waere ein zweiter Ort fuer dieselben Fehler.
+      if (settings.visibleOnly) {
+        log("Nur sichtbarer Ausschnitt — Aufnahme nach dem ersten Abschnitt beendet.");
+        break;
+      }
 
       const fresh = await browser.tabs.sendMessage(tab.id, { cmd: "currentTotalH" }).catch(() => null);
       if (fresh && fresh.totalH && fresh.totalH > totalH) {
@@ -1265,7 +1279,7 @@ function makeUserHintError(msg) {
   return e;
 }
 
-async function runOnActiveTab() {
+async function runOnActiveTab(wahl) {
   if (_captureInFlight) {
     log("Ignoring tap — capture already in flight.");
     return { ok: false, error: "Bereits laufend" };
@@ -1278,6 +1292,10 @@ async function runOnActiveTab() {
   }
   // Bereits geoeffnete PDF -> direkter Download-Zweig statt Screenshot-Pipeline.
   const useDirectPdf = check.mode === "pdf-direct";
+  // Nur der sichtbare Ausschnitt? Dann entfaellt das Scrollen, alles Weitere
+  // bleibt gleich: derselbe PDF-Schreiber, dieselbe Textebene, dieselbe
+  // Nachweiszeile. Eine zweite Ausgabeform waere ein zweiter Ort fuer Fehler.
+  const nurSichtbar = !!(wahl && wahl.visibleOnly);
   _captureInFlight = true;
   // Reset der letzten Save-Ergebnisse — der naechste Tap soll den NEUEN Capture betreffen.
   _lastDownloadId = null;
@@ -1297,7 +1315,7 @@ async function runOnActiveTab() {
   try {
     const res = useDirectPdf
       ? await capturePdfDirect(tab, check.pdfUrl)
-      : await captureFullPage(tab);
+      : await captureFullPage(tab, { visibleOnly: nurSichtbar });
     await setBadge("OK", "#059669");
     // Notification wird bereits aus captureFullPageInner gefeuert (vor downloads.open),
     // damit User auf Android auch dann Erfolg sieht wenn das Oeffnen haengt.
@@ -1335,7 +1353,7 @@ if (browser.commands && typeof browser.commands.onCommand?.addListener === "func
 
 browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg && msg.cmd === "capture") {
-    runOnActiveTab()
+    runOnActiveTab({ visibleOnly: !!msg.visibleOnly })
       .then(r => {
         // runOnActiveTab wirft nicht mehr — Fehler kommen als {ok:false,error}.
         if (r && r.ok === false) sendResponse({ ok: false, error: r.error });

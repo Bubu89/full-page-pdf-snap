@@ -2,29 +2,70 @@
 
 const $ = id => document.getElementById(id);
 
-$("go").addEventListener("click", async () => {
+const t = (schluessel, ersatz) =>
+  (window.PageShotI18n && window.PageShotI18n.t && window.PageShotI18n.t(schluessel)) || ersatz;
+
+async function aufnehmen(knopf, nurSichtbar) {
   const status = $("status");
   status.className = "status";
-  status.textContent = "Erfasse Seite ...";
+  status.textContent = t("popupWorking", "Capturing …");
   $("go").disabled = true;
+  $("visible").disabled = true;
 
   try {
-    const res = await browser.runtime.sendMessage({ cmd: "capture" });
+    const res = await browser.runtime.sendMessage({ cmd: "capture", visibleOnly: !!nurSichtbar });
     if (res && res.ok) {
       status.className = "status ok";
-      status.textContent = `Gespeichert (${res.result.pages} Seiten)`;
+      const n = (res.result && res.result.pages) || 1;
+      status.textContent = t("popupSaved", "Saved") + ` (${n})`;
       setTimeout(() => window.close(), 800);
     } else {
       status.className = "status err";
-      status.textContent = (res && res.error) || "Unbekannter Fehler";
+      status.textContent = (res && res.error) || t("popupUnknownError", "Unknown error");
     }
   } catch (e) {
     status.className = "status err";
     status.textContent = e.message || String(e);
   } finally {
     $("go").disabled = false;
+    $("visible").disabled = false;
   }
-});
+}
+
+$("go").addEventListener("click", () => aufnehmen($("go"), false));
+$("visible").addEventListener("click", () => aufnehmen($("visible"), true));
+
+/* Schalter fuer stoerende Einblendungen.
+ *
+ * Er sitzt im Hauptfenster, weil er die Aufnahme sichtbar veraendert — anders
+ * als die uebrigen Einstellungen, die einmal gesetzt und vergessen werden. Der
+ * Wert kommt aus demselben Speicher wie die Einstellungsseite und das
+ * Kontextmenue; wer ihn an einer Stelle umlegt, sieht ihn ueberall umgelegt.
+ */
+(async () => {
+  const box = $("hideSticky");
+  if (!box) return;
+  try {
+    const s = await browser.storage.local.get("hideSticky");
+    box.checked = s.hideSticky !== false;
+  } catch (_) { /* Vorgabe bleibt: eingeschaltet */ }
+  box.addEventListener("change", async () => {
+    try {
+      await browser.storage.local.set({ hideSticky: box.checked });
+      const st = $("status");
+      st.className = "status ok";
+      st.textContent = box.checked
+        ? t("popupHideOn", "Banners will be hidden")
+        : t("popupHideOff", "Banners will be captured as they are");
+      setTimeout(() => { if (st.textContent) { st.className = "status"; st.textContent = ""; } }, 1600);
+    } catch (e) {
+      const st = $("status");
+      st.className = "status err";
+      st.textContent = e.message || String(e);
+      box.checked = !box.checked;   // Anzeige nicht luegen lassen
+    }
+  });
+})();
 
 $("opts").addEventListener("click", () => {
   browser.runtime.openOptionsPage();

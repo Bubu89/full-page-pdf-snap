@@ -1,3 +1,50 @@
+## 2026-08-03 — Schalter im Hauptfenster, Einzelaufnahme, und ein Fehler, den nur der Integrationstest fand
+
+### Der Fehler zuerst
+
+Alle bisherigen Pruefungen liefen gegen **Ausschnitte** von `content.js` —
+einzelne Funktionen, aus der Datei geschnitten und im Seitenkontext aufgerufen.
+Ein Test, der die Datei als Ganzes laedt und ueber ihre echte
+Nachrichten-Schnittstelle anspricht, zeigte sofort: **`collectSource` lieferte
+nichts.**
+
+Ursache: `nurSeitenname` und `nurNummer` wurden in der Warnungspruefung benutzt,
+aber erst siebzig Zeilen weiter unten deklariert. JavaScript wirft dort einen
+`ReferenceError`, und das `try`/`catch` des Listeners verschluckte ihn. Die
+gesamte Quellenerfassung war in der Erweiterung tot, waehrend sie im
+MCP-Endpunkt einwandfrei lief — derselbe Code, andere Umgebung.
+
+`tests/integration.py` prueft das jetzt an drei Seitenarten: Skript laeuft ohne
+Laufzeitfehler, `hideSticky` antwortet, `collectText` liefert Woerter und
+Bloecke, `collectSource` liefert eine Quelle, und die Seitenhoehe wird nicht
+kaputtgemacht.
+
+### Schalter im Hauptfenster
+
+Bisher liess sich das Ausblenden nur ueber die Einstellungsseite oder das
+Kontextmenue umlegen. Es steht jetzt im Popup, weil es als einziges die
+**Aufnahme sichtbar veraendert** — alle uebrigen Einstellungen werden einmal
+gesetzt und vergessen. Der Wert liegt im selben Speicher wie zuvor: wer ihn im
+Popup umlegt, sieht ihn in den Einstellungen und im Kontextmenue umgelegt.
+
+Nach dem Umschalten erscheint eine kurze Rueckmeldung, welche Wirkung die
+naechste Aufnahme hat. Schlaegt das Speichern fehl, springt der Schalter
+zurueck — eine Anzeige, die etwas anderes behauptet als der Speicher, waere
+schlimmer als gar keine.
+
+### Sichtbaren Bereich aufnehmen
+
+Zweiter Knopf, ein einziger Abschnitt. Bewusst **kein zweiter Ausgabeweg**:
+dieselbe Kette, derselbe PDF-Schreiber, dieselbe Textebene, dieselbe
+Nachweiszeile mit Zitation, Adresse, Zeitpunkt und Pruefsumme. Ein eigener Pfad
+waere ein zweiter Ort fuer dieselben Fehler.
+
+### Ausgeliefert
+
+Beide Fassungen auf demselben Stand, Pakete gebaut:
+`full-page-pdf-snap-firefox-2.18.0.zip` und
+`full-page-pdf-snap-chrome-2.18.0.zip`.
+
 ## 2026-08-03 — Zustimmungsdialoge: nicht nur haesslich, sondern der Grund fuer abgebrochene Aufnahmen
 
 Bisher wurden nur `position: fixed` und `sticky` ausgeblendet. Gemessen an acht
