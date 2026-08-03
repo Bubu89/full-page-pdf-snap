@@ -10,6 +10,14 @@
   <icon>https://provinglab.dev/icon-128.png</icon>
   <rights>Content licensed for reading and quoting with attribution.</rights>
   <entry>
+    <title>Who actually reads this site: 24 hours of crawler logs, published</title>
+    <id>https://provinglab.dev/notes/who-actually-reads-this/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/who-actually-reads-this/"/>
+    <published>2026-08-03T00:00:00Z</published>
+    <updated>2026-08-03T00:00:00Z</updated>
+    <summary type="text">AI systems made more requests to this site than search engines did — 299 against 282 in 24 hours, on a domain two days old. ClaudeBot and GPTBot lead. Twenty requests carrying AI user agents were not reading at all but scanning for /keys.json and /.git/HEAD, and are counted separately. Self-reported figures with the query published.</summary>
+  </entry>
+  <entry>
     <title>Where citation data actually lives: 18 scholarly platforms measured</title>
     <id>https://provinglab.dev/measurements/citation-by-platform/</id>
     <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/citation-by-platform/"/>
@@ -79,7 +87,7 @@
     <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/"/>
     <published>2026-08-03T00:00:00Z</published>
     <updated>2026-08-03T00:00:00Z</updated>
-    <summary type="text">An agent cannot install a browser extension into your browser — no store has an API for it, and inline install was removed years ago. What it can do: name the step, link the install, and load an unpacked build into a browser it drives itself. Measured, including the flag that fails silently.</summary>
+    <summary type="text">An agent cannot install a browser extension into a browser it has no access to — no store has an API for that, and inline install was removed years ago. On a machine it does reach, it can: the signed store build goes into the real profile headless in 4.1 s over Firefox&#x27;s Marionette channel. What it still cannot do is see the page afterwards without a real input event. Measured, including the flag that fails silently.</summary>
   </entry>
   <entry>
     <title>An agent can cite eight of twelve sources. The useful part is knowing which four it cannot</title>

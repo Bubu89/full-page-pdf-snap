@@ -1,0 +1,128 @@
+{
+  "gemessen_am": "2026-08-03",
+  "stand": "2026-08-03T18:04:57Z",
+  "fenster_stunden": 23.9,
+  "lizenz": "CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/",
+  "methode": {
+    "quelle": "Cloudflare GraphQL Analytics, httpRequestsAdaptiveGroups, Zone provinglab.dev. Beide Abfragen stehen im Klartext in tools/crawler-bericht.py.",
+    "control": "Zwei getrennte Abfragen statt einer. Der erste Entwurf gruppierte nach Kennzeichen, Pfad und Status zugleich und schnitt bei limit:200 ab — er meldete ClaudeBot mit 62 und GPTBot mit null, waehrend das Dashboard zeitgleich 39 zeigte. Die Gegenprobe gegen die Oberflaeche des Anbieters deckte das auf.",
+    "verification": "Summen je Kennzeichen aus einer Abfrage mit nur einer Dimension, Pfade aus einer zweiten. Scan-Anfragen werden von den Lesezahlen abgezogen, nicht nur getrennt gezeigt."
+  },
+  "nicht_pruefbar": "Diese Zahlen stammen aus der Analytik des eigenen Anbieters und lassen sich von aussen nicht nachrechnen. Sie sind eine Selbstauskunft mit offengelegter Methode, keine Messung, die jemand wiederholen koennte. Ein User-Agent ist ausserdem kein Ausweis: er laesst sich frei setzen.",
+  "ki_systeme": {
+    "ClaudeBot (Anthropic)": {
+      "anfragen": 135,
+      "bytes": 813719,
+      "top_pfade": {
+        "/sitemap.xml": 32,
+        "/robots.txt": 30,
+        "/notes/sources-a-machine-cannot-cite": 5
+      }
+    },
+    "GPTBot (OpenAI)": {
+      "anfragen": 96,
+      "bytes": 817024,
+      "top_pfade": {
+        "/.well-known/api-catalog": 4,
+        "/measurements/reading-list-to-bibliography/": 4,
+        "/disclaimer/": 4
+      }
+    },
+    "PerplexityBot": {
+      "anfragen": 22,
+      "bytes": 217834,
+      "top_pfade": {}
+    },
+    "CCBot (Common Crawl)": {
+      "anfragen": 16,
+      "bytes": 70607,
+      "top_pfade": {}
+    },
+    "ChatGPT-User (OpenAI, im Auftrag eines Menschen)": {
+      "anfragen": 15,
+      "bytes": 155962,
+      "top_pfade": {}
+    },
+    "OAI-SearchBot (OpenAI)": {
+      "anfragen": 9,
+      "bytes": 43831,
+      "top_pfade": {
+        "/robots.txt": 5
+      }
+    },
+    "Amazonbot": {
+      "anfragen": 6,
+      "bytes": 45784,
+      "top_pfade": {}
+    }
+  },
+  "suchmaschinen": {
+    "Googlebot": {
+      "anfragen": 134,
+      "bytes": 2722065,
+      "top_pfade": {
+        "/robots.txt": 35,
+        "/sitemap.xml": 10,
+        "/notes/": 7,
+        "/notes/building-with-ai-what-went-wrong/": 7,
+        "/": 5
+      }
+    },
+    "YandexBot": {
+      "anfragen": 130,
+      "bytes": 1337321,
+      "top_pfade": {
+        "/robots.txt": 18,
+        "/deutsch/": 6,
+        "/measurements/citation-extraction/": 6,
+        "/notes/what-an-agent-can-do-with-an-extension/": 6,
+        "/notes/sources-a-machine-cannot-cite/": 6
+      }
+    },
+    "Bingbot": {
+      "anfragen": 10,
+      "bytes": 79998,
+      "top_pfade": {}
+    },
+    "Applebot": {
+      "anfragen": 8,
+      "bytes": 54361,
+      "top_pfade": {
+        "/": 5
+      }
+    }
+  },
+  "scans_mit_ki_kennzeichen": {
+    "Bingbot": {
+      "anfragen": 5,
+      "gesuchte_pfade": [
+        "/.env.prod"
+      ]
+    },
+    "PerplexityBot": {
+      "anfragen": 5,
+      "gesuchte_pfade": [
+        "/terraform.tfvars"
+      ]
+    },
+    "OAI-SearchBot (OpenAI)": {
+      "anfragen": 5,
+      "gesuchte_pfade": [
+        "/.git/HEAD"
+      ]
+    },
+    "ChatGPT-User (OpenAI, im Auftrag eines Menschen)": {
+      "anfragen": 5,
+      "gesuchte_pfade": [
+        "/keys.json"
+      ]
+    }
+  },
+  "summe": {
+    "ki_anfragen": 299,
+    "ki_bytes": 2164761,
+    "such_anfragen": 282,
+    "such_bytes": 4193745,
+    "scan_anfragen": 20
+  }
+}
