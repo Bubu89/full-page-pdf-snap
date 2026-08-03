@@ -168,11 +168,6 @@
     "beobachtung": "Firefox bindet Marionette an 127.0.0.1 des Windows-Hosts. Aus WSL2 ist dieser Port weder ueber 127.0.0.1 noch ueber die Host-Adresse erreichbar (Connection refused).",
     "folge": "Der Client muss auf derselben Seite laufen wie der Browser. Das Werkzeug reicht sich unter WSL selbst an das Windows-Python weiter."
   },
-  "reproduktion": {
-    "werkzeug": "tools/erweiterung-fernsteuern.py",
-    "befehl": "python3 tools/erweiterung-fernsteuern.py rundlauf --protokoll lauf.json",
-    "voraussetzung": "Firefox darf das Zielprofil nicht geoeffnet haben; das Werkzeug prueft die Profilsperre und bricht ab, statt einen fremden Firefox zu beenden."
-  },
   "grenzen": [
     "Einzelmessung auf einer Maschine, kein Mittelwert ueber mehrere Laeufe.",
     "Die Zeiten enthalten den Start und das Beenden von Firefox; ein bereits laufender Marionette-Firefox waere schneller.",
@@ -183,5 +178,13 @@
     "vorher": "Je Befehl eine eigene Firefox-Sitzung — 9,4 s fuer den Rundlauf.",
     "nachher": "Beide Befehle in einer Sitzung — 4,1 s, also 56 % der Zeit.",
     "erkenntnis": "Der Prozessstart ist der teure Teil, nicht die Arbeit. Das ist die uebliche Reihenfolge bei Werkzeugen, die pro Aufruf einen Browser hochfahren, und der erste Ort, an dem zu messen lohnt."
+  },
+  "methode": {
+    "beschreibung": "Je Weg ein Lauf auf einer Maschine. Fuer Marionette: Firefox mit -headless -no-remote -marionette auf das Standardprofil starten, WebDriver:NewSession, dann Addon:Uninstall und Addon:Install in derselben Sitzung. Fuer CDP: Chrome mit --headless=new --enable-unsafe-extension-debugging, Befehle ueber einen minimalen WebSocket-Client. Fuer die Richtlinie: Schreibversuch auf Zielpfad und Registry-Schluessel. Fuer die Oberflaeche: das vorhandene Klick-Skript unveraendert.",
+    "werkzeug": "tools/erweiterung-fernsteuern.py",
+    "befehl": "python3 tools/erweiterung-fernsteuern.py rundlauf --protokoll lauf.json",
+    "voraussetzung": "Firefox darf das Zielprofil nicht geoeffnet haben; das Werkzeug prueft die Profilsperre und bricht ab, statt einen fremden Firefox zu beenden.",
+    "verification": "Installation und Deinstallation werden gegen extensions.json des Profils geprueft — die Datei, die Firefox selbst fuehrt — nicht gegen die Antwort des Befehls. Genau diese Trennung deckte auf, dass die Klick-Route an jedem Schritt Erfolg meldete und nichts hinterliess.",
+    "control": "Die Klick-Route diente als Referenzfall: sie lief auf derselben Maschine, mit derselben Erweiterung, im selben Zeitraum und lieferte ein anderes Ergebnis. Ein Verfahren, das bei beiden Wegen dasselbe gemeldet haette, haette nichts gemessen. Zusaetzlich wurde der Marionette-Rundlauf zweimal gefahren: einmal mit nicht installierter Erweiterung (der Uninstall-Zweig meldet 'nichts zu tun') und einmal mit installierter (der Zweig laeuft wirklich durch) — sonst waere der Deinstallations-Pfad ungetestet geblieben und haette wie ein Erfolg ausgesehen."
   }
 }

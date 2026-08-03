@@ -20,9 +20,15 @@ kein Beitrag.
 
 ```bash
 python3 rechtscheck.py          # muss 0 Fehler melden
+python3 tools/daten-pruefen.py  # Rohdaten gegen das Schema
 node --test tests/*.mjs         # muss vollstaendig gruen sein
 python3 tools/links-pruefen.py  # interne Ziele und Store-Stände
 ```
+
+`daten-pruefen.py` stand hier zuerst nicht mit drin und fehlte deshalb im
+Vorab-Lauf — die Pipeline meldete am 3. August einen Datensatz ohne
+Methodenfeld, den ein lokaler Lauf in zwei Sekunden gefunden haette. Was in
+der Pipeline blockiert, gehoert in diese Liste.
 
 Läuft eines davon schon vorher rot, ist das der erste Befund — melde ihn, statt
 darauf aufzubauen.
