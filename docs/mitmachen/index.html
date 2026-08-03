@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>For AI agents: citations without a browser, and the step that needs one — Proving Lab</title>
-<meta name="description" content="An MCP endpoint that turns a URL into a citation record with RIS and BibTeX — no account, no key — plus the measured rule for the sources it hands back, and whether your agent can drive the capture extension itself.">
-<link rel="canonical" href="https://provinglab.dev/for-agents/">
+<title>Rechnen Sie eine Zahl nach — am liebsten die, die falsch ist — Proving Lab</title>
+<meta name="description" content="Der nuetzlichste Beitrag zu diesem Projekt ist eine Gegenmessung, die etwas anderes ergibt. Wo die veroeffentlichten Zahlen am wahrscheinlichsten wackeln, steht hier benannt — samt Rohdaten, offenen Aufgaben und der Anbindung fuer KI-Agenten.">
+<link rel="canonical" href="https://provinglab.dev/mitmachen/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
 <link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
@@ -14,9 +14,9 @@
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 
 <meta property="og:type" content="article">
-<meta property="og:title" content="For AI agents: citations without a browser, and the step that needs one">
-<meta property="og:description" content="Five tools, one hard rule (read the completeness flag, never the title), and the measured line between agents that can trigger a browser extension and agents that cannot.">
-<meta property="og:url" content="https://provinglab.dev/for-agents/">
+<meta property="og:title" content="Rechnen Sie eine Zahl nach — am liebsten die, die falsch ist">
+<meta property="og:description" content="Jede Angabe hier hat Methode, Rohdaten und Kontrolllauf, damit sie nachgerechnet werden kann. Vier Stellen, an denen eine Gegenmessung wahrscheinlich abweicht, sind ausdruecklich benannt.">
+<meta property="og:url" content="https://provinglab.dev/mitmachen/">
 <meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
 <meta property="article:published_time" content="2026-08-02">
 <meta property="article:modified_time" content="2026-08-03">
@@ -25,13 +25,13 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "TechArticle",
-  "headline": "For AI agents: citations without a browser, and the step that needs one",
-  "description": "An MCP endpoint that turns a URL into a citation record with RIS and BibTeX — no account, no key — plus the measured rule for the sources it hands back, and whether your agent can drive the capture extension itself.",
+  "@type": "Article",
+  "headline": "Rechnen Sie eine Zahl nach — am liebsten die, die falsch ist",
+  "description": "Der nuetzlichste Beitrag zu diesem Projekt ist eine Gegenmessung, die etwas anderes ergibt. Wo die veroeffentlichten Zahlen am wahrscheinlichsten wackeln, steht hier benannt — samt Rohdaten, offenen Aufgaben und der Anbindung fuer KI-Agenten.",
   "datePublished": "2026-08-03",
   "dateModified": "2026-08-03",
-  "inLanguage": "en",
-  "url": "https://provinglab.dev/for-agents/",
+  "inLanguage": "de",
+  "url": "https://provinglab.dev/mitmachen/",
   "author": {
     "@type": "Organization",
     "name": "Proving Lab",
@@ -61,7 +61,7 @@
     "url": "https://provinglab.dev/"
   },
   "isAccessibleForFree": true,
-  "inLanguage": "en",
+  "inLanguage": "de",
   "potentialAction": {
     "@type": "SearchAction",
     "target": {
@@ -166,7 +166,6 @@
     <a class="n" href="../how-to/save-a-webpage-as-pdf/">How&nbsp;to</a>
     <a class="n" href="../recipes/">Recipes</a>
     <a class="n" href="../for-agents/">For&nbsp;agents</a>
-    <a class="n" href="../mitmachen/">Mitmachen</a>
     <a class="n" href="../tools/">Tools</a>
     <a class="n" href="../about/">About</a>
     <a class="n" href="../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
@@ -176,133 +175,113 @@
 
 <div class="wrap">
 <header>
-  <h1>For AI agents: citations without a browser, and the step that needs one</h1>
+  <h1>Rechnen Sie eine Zahl nach. Am liebsten die, die falsch ist.</h1>
   <p class="standfirst">
-    An endpoint that turns a URL into a citation record, a skill index that
-    describes when to use it, and one measured rule for the cases it cannot
-    finish. No account, no key. If you are wiring an agent to handle sources,
-    this page is the whole surface.
+    Jede Angabe hier hat eine Methode, Rohdaten und einen Kontrolllauf — damit
+    sie nachgerechnet werden kann, nicht damit sie geglaubt wird. Der
+    nützlichste Beitrag zu diesem Projekt ist deshalb keine neue Messung,
+    sondern eine <strong>Gegenmessung, die etwas anderes ergibt</strong>.
   </p>
-  <p class="meta">3 August 2026 · everything below was run before it was written
-    down</p>
+  <p class="meta">3 August 2026 · offene Aufgaben:
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub</a> ·
+    maschinenlesbar über das Werkzeug <code>open_work</code> auf
+    <a href="/for-agents/">/mcp</a></p>
 </header>
 
-<h2>Connect in one line</h2>
+<h2>Wo es am wahrscheinlichsten hakt</h2>
+<p>
+  Das ist keine Bescheidenheitsfloskel — die Stellen sind benannt, weil sie
+  benannt gehören:
+</p>
+<table>
+  <thead><tr><th>Angabe</th><th>Warum sie wackeln könnte</th></tr></thead>
+  <tbody>
+    <tr><td><a href="/measurements/reading-list-to-bibliography/">10 von 20 Quellen</a>
+        werden zu Zitationsdatensätzen</td>
+        <td>Vier Ablehnungen sind Sperren gegen eine <em>Rechenzentrums-Adresse</em>.
+            Aus einem Heim- oder Campusnetz müsste die Quote höher liegen —
+            <strong>gemessen ist das nicht.</strong></td></tr>
+    <tr><td><a href="/measurements/citation-extraction/">100 % gegen 79 %</a>
+        gegenüber Citoid</td>
+        <td>18 zufällig gezogene Werke, eine Ziehung. Eine andere Stichprobe
+            kann eine andere Zahl ergeben.</td></tr>
+    <tr><td><a href="/measurements/webpage-to-pdf-for-ocr/">92,6 % Textausbeute</a>
+        aus der Texterkennung</td>
+        <td>Ein Artikel, eine Auflösungsreihe, ein Erkennungsprogramm. Andere
+            Schriften und Sprachen sind ungeprüft.</td></tr>
+    <tr><td><a href="/measurements/android-capture-extensions/">60 von 248</a>
+        Erweiterungen mit Android-Angabe</td>
+        <td>Was eine Erweiterung <em>deklariert</em>, nicht was sie auf einem
+            Gerät tut. Keine wurde installiert.</td></tr>
+  </tbody>
+</table>
+<p>
+  Wer eine dieser Zahlen nachstellt und etwas anderes bekommt, hat den
+  wertvollsten Beitrag geliefert, den dieses Projekt annehmen kann. Die
+  <a href="/data/">Rohdaten</a> liegen unter CC BY 4.0 offen, und in jedem
+  Beitrag steht ein Abschnitt, der sagt, wo die Messung vermutlich nicht trägt.
+</p>
+
+<h2>Für KI-Agenten</h2>
+<p>
+  Dieses Projekt ist so eingerichtet, dass ein Agent daran arbeiten kann, ohne
+  vorher jemanden zu fragen. Was er dafür braucht, liegt an festen Adressen:
+</p>
+<table>
+  <thead><tr><th>Was</th><th>Wo</th></tr></thead>
+  <tbody>
+    <tr><td>Regeln, Bauweise, Grenzen</td><td><a href="/AGENTS.md"><code>/AGENTS.md</code></a></td></tr>
+    <tr><td>Offene Aufgaben, maschinenlesbar</td><td>Werkzeug <code>open_work</code> auf <code>/mcp</code></td></tr>
+    <tr><td>Offene Aufgaben, für Menschen</td><td><a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub-Issues</a></td></tr>
+    <tr><td>Rohdaten zum Nachrechnen</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+    <tr><td>Anbindung in einer Zeile</td><td><a href="/for-agents/">/for-agents/</a></td></tr>
+  </tbody>
+</table>
 <pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
 <p>
-  Claude Desktop and other MCP clients: add
-  <code>https://provinglab.dev/mcp</code> as a remote server, transport
-  <em>streamable HTTP</em>. Clients that only accept local servers can bridge
-  with <code>npx -y mcp-remote https://provinglab.dev/mcp</code>. Authentication
-  is offered but not required; anonymous requests get identical answers.
-</p>
-<p style="font-size:.9rem">
-  One caveat that costs an afternoon: the CDN refuses the user agent Python's
-  <code>urllib</code> sends by default. Set any user agent of your own and it
-  answers normally.
+  Danach genügt: <em>„Sieh dir die offenen Aufgaben auf provinglab an und nimm
+  eine."</em> Das Werkzeug liefert Aufgaben mit Labels, Auszug und den fünf
+  Regeln, die hier anders sind als üblich.
 </p>
 
-<h2>Five tools</h2>
-<table>
-  <thead><tr><th>Tool</th><th>What it is for</th></tr></thead>
-  <tbody>
-    <tr><td><code>extract_citation</code></td>
-        <td>URL in, structured record out — authors, title, journal, year, DOI, licence,
-            plus RIS and BibTeX. Or a named refusal.</td></tr>
-    <tr><td><code>how_to_capture</code></td>
-        <td>What to do with a source this endpoint cannot read, resolved for your agent
-            type and target browser.</td></tr>
-    <tr><td><code>list_measurements</code></td>
-        <td>Everything published here, with dataset URLs.</td></tr>
-    <tr><td><code>get_measurement_data</code></td>
-        <td>One dataset as JSON, including the control run.</td></tr>
-    <tr><td><code>get_method</code></td>
-        <td>A reproducible method, to repeat a measurement rather than cite it.</td></tr>
-  </tbody>
-</table>
+<h2>Die fünf Regeln, kurz</h2>
+<ol>
+  <li><strong>Beleg vor Formulierung.</strong> Jede Tatsachenbehauptung braucht
+    Quelle und Abrufdatum, oder sie wird zur Meinung, oder sie fällt raus. Eine
+    Prüfung erzwingt das vor der Auslieferung.</li>
+  <li><strong>Keine Absicht Dritter behaupten.</strong> „Der Server antwortete
+    mit 403" ist eine Beobachtung. „Die sperren absichtlich" ist beweispflichtig
+    und nicht beweisbar.</li>
+  <li><strong>Ein Vergleich, den das eigene Werkzeug nur gewinnt, ist Werbung.</strong>
+    Deshalb steht auf dieser Seite, dass der Druckexport des Browsers beim Text
+    gewinnt.</li>
+  <li><strong>Kein Ergebnis ist ein Fehler, kein Nullwert.</strong> Wenn eine
+    Messung null liefert, ist zuerst die Messung verdächtig.</li>
+  <li><strong>Rohdaten werden nicht geglättet.</strong> Eine Korrektur wird als
+    Korrektur benannt, nicht stillschweigend eingearbeitet.</li>
+</ol>
 
-<h2>The one rule worth hard-coding</h2>
-<p>
-  <strong>Read <code>complete</code>, never the title alone.</strong> A refused
-  record still carries a title, and two of twenty measured sources returned a
-  title <em>and</em> an author while <code>complete</code> was false — a Zenodo
-  software release and a statistics portal page. Anything that files those as
-  sources has invented the missing half.
-</p>
-<pre><code>if not record["complete"]:
-    hand_back(url, record.get("warning"), record.get("nextStep"))</code></pre>
-<p>
-  Where the endpoint cannot finish, the reply carries <code>nextStep</code>: what
-  has to happen, why, both install links for the capture extension, and the
-  disclosure that the tool is ours.
-</p>
+<h2>Was hier nicht gebraucht wird</h2>
+<ul>
+  <li>Keine Beiträge, die eine Zahl ohne Beleg einführen. Das ist der eine
+    Fehler, der sich später nicht mehr reparieren lässt — eine einmal zitierte
+    Angabe wandert alleine weiter.</li>
+  <li>Kein automatisiertes Posten in Foren, auf Reddit oder in Kommentaren.
+    Wo Menschen erreicht werden, geschieht das von Hand und mit Namen.</li>
+  <li>Keine Umgehung fremder Schutzmaßnahmen. Wo eine Seite einen Leser
+    aussperrt, wird das berichtet, nicht umgangen.</li>
+</ul>
 
-<h2>What a reading list actually yields</h2>
-<div class="kf-row">
-  <div class="kf b"><div class="n">10/20</div><div class="l">complete records</div></div>
-  <div class="kf"><div class="n">0.4 s</div><div class="l">per source</div></div>
-  <div class="kf"><div class="n">1</div><div class="l">stopped by a bot defence</div></div>
-  <div class="kf"><div class="n">5</div><div class="l">declare no citation data</div></div>
-</div>
+<h2>Womit zu rechnen ist</h2>
 <p>
-  The split does not run between paid and free. It runs between pages built to
-  be cited and pages built to be read: journal publishers yield records either
-  way, statistics portals and newspapers yield none.
-  <a href="/measurements/reading-list-to-bibliography/">Method and raw data</a>
-</p>
-
-<h2>Can your agent drive the browser extension?</h2>
-<p>
-  Depends on one property, and it is measured. The extension declares
-  <code>activeTab</code> and no host permissions, so it sees a tab only after an
-  event reaches the browser's input layer. Tabs visible to it went from
-  <strong>0 to 1</strong> after a synthetic <code>Alt+Shift+Y</code> sent through
-  X11 XTEST. The browser does not ask who produced the gesture.
-</p>
-<table>
-  <thead><tr><th>Your agent acts through</th><th>Can trigger it</th></tr></thead>
-  <tbody>
-    <tr><td>Real input events — computer use, <code>xdotool</code>, an agent inside the
-        user's browser</td><td><strong>yes</strong></td></tr>
-    <tr><td>CDP and DOM only — Playwright, Puppeteer, Playwright MCP, Chrome DevTools MCP</td>
-        <td><strong>no</strong></td></tr>
-    <tr><td>No browser</td><td>not needed for half the work</td></tr>
-  </tbody>
-</table>
-<p>
-  <a href="/notes/what-an-agent-can-do-with-an-extension/">The measurement, both
-  halves</a> · <a href="/.well-known/agent-skills/capture-a-source.md">the skill
-  as Markdown</a>
-</p>
-
-<h2>Discovery, if you are indexing this site</h2>
-<table>
-  <thead><tr><th>What</th><th>Where</th></tr></thead>
-  <tbody>
-    <tr><td>Site summary for language models</td><td><a href="/llms.txt"><code>/llms.txt</code></a></td></tr>
-    <tr><td>Skills with checksums</td><td><a href="/.well-known/agent-skills/index.json"><code>/.well-known/agent-skills/index.json</code></a></td></tr>
-    <tr><td>API catalogue</td><td><a href="/.well-known/api-catalog"><code>/.well-known/api-catalog</code></a></td></tr>
-    <tr><td>Every page as Markdown</td><td><code>Accept: text/markdown</code></td></tr>
-    <tr><td>Raw data, CC BY 4.0</td><td><a href="/data/"><code>/data/</code></a></td></tr>
-  </tbody>
-</table>
-<p>
-  Content signals are set to <code>search=yes, ai-input=yes, ai-train=no</code>:
-  retrieval and quoting with attribution are welcome, training is not. Every
-  measurement carries its method and its raw data, so a figure taken from here
-  can be checked rather than trusted.
-</p>
-
-<h2>Please use it in proportion</h2>
-<p>
-  This is one small endpoint on a free tier, run by one person. A reading list is
-  a handful of calls; a crawl is not. Requests are fetched with our own user
-  agent, so unreasonable use lands in someone else's log with our name on it.
-  There is no hard limit today — that is a description of the current state, not
-  a promise.
+  Dies ist ein privates, nicht-kommerzielles Projekt einer einzelnen Person.
+  Es gibt kein Prämienprogramm, keine zugesagte Antwortzeit und keine
+  Gegenleistung außer der Nennung im Beitrag. Beiträge werden gelesen und
+  beantwortet; was zutrifft, wird übernommen und als Korrektur benannt.
+  Die Software steht unter MIT, die Messungen unter CC BY 4.0 — beides bleibt so.
 </p>
 <footer>
-      Every command on this page was run on 3 August 2026 before it was written down.
+      Offene Aufgaben stehen als GitHub-Issues und werden vom Werkzeug open_work auf /mcp maschinenlesbar ausgeliefert.
       <br><br>
       Corrections are welcome and are made in public: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">open an issue</a>.
       <br><br>

@@ -42,6 +42,14 @@
     <summary type="text">Ten of twenty sources came back uncited. Three different causes, three different responses — and only one is solved by opening the page in a browser. How to tell them apart, and how to cite a web source that declares nothing about itself.</summary>
   </entry>
   <entry>
+    <title>Rechnen Sie eine Zahl nach — am liebsten die, die falsch ist</title>
+    <id>https://provinglab.dev/mitmachen/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/mitmachen/"/>
+    <published>2026-08-03T00:00:00Z</published>
+    <updated>2026-08-03T00:00:00Z</updated>
+    <summary type="text">Der nuetzlichste Beitrag zu diesem Projekt ist eine Gegenmessung, die etwas anderes ergibt. Wo die veroeffentlichten Zahlen am wahrscheinlichsten wackeln, steht hier benannt — samt Rohdaten, offenen Aufgaben und der Anbindung fuer KI-Agenten.</summary>
+  </entry>
+  <entry>
     <title>For AI agents: citations without a browser, and the step that needs one</title>
     <id>https://provinglab.dev/for-agents/</id>
     <link rel="alternate" type="text/html" href="https://provinglab.dev/for-agents/"/>

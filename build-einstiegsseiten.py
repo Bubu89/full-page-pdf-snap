@@ -362,6 +362,116 @@ ANLEITUNG_DE = f"""
 </ul>
 """
 
+MITMACHEN = f"""
+<header>
+  <h1>Rechnen Sie eine Zahl nach. Am liebsten die, die falsch ist.</h1>
+  <p class="standfirst">
+    Jede Angabe hier hat eine Methode, Rohdaten und einen Kontrolllauf — damit
+    sie nachgerechnet werden kann, nicht damit sie geglaubt wird. Der
+    nützlichste Beitrag zu diesem Projekt ist deshalb keine neue Messung,
+    sondern eine <strong>Gegenmessung, die etwas anderes ergibt</strong>.
+  </p>
+  <p class="meta">{DATUM_LANG} · offene Aufgaben:
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub</a> ·
+    maschinenlesbar über das Werkzeug <code>open_work</code> auf
+    <a href="/for-agents/">/mcp</a></p>
+</header>
+
+<h2>Wo es am wahrscheinlichsten hakt</h2>
+<p>
+  Das ist keine Bescheidenheitsfloskel — die Stellen sind benannt, weil sie
+  benannt gehören:
+</p>
+<table>
+  <thead><tr><th>Angabe</th><th>Warum sie wackeln könnte</th></tr></thead>
+  <tbody>
+    <tr><td><a href="/measurements/reading-list-to-bibliography/">10 von 20 Quellen</a>
+        werden zu Zitationsdatensätzen</td>
+        <td>Vier Ablehnungen sind Sperren gegen eine <em>Rechenzentrums-Adresse</em>.
+            Aus einem Heim- oder Campusnetz müsste die Quote höher liegen —
+            <strong>gemessen ist das nicht.</strong></td></tr>
+    <tr><td><a href="/measurements/citation-extraction/">100 % gegen 79 %</a>
+        gegenüber Citoid</td>
+        <td>18 zufällig gezogene Werke, eine Ziehung. Eine andere Stichprobe
+            kann eine andere Zahl ergeben.</td></tr>
+    <tr><td><a href="/measurements/webpage-to-pdf-for-ocr/">92,6 % Textausbeute</a>
+        aus der Texterkennung</td>
+        <td>Ein Artikel, eine Auflösungsreihe, ein Erkennungsprogramm. Andere
+            Schriften und Sprachen sind ungeprüft.</td></tr>
+    <tr><td><a href="/measurements/android-capture-extensions/">60 von 248</a>
+        Erweiterungen mit Android-Angabe</td>
+        <td>Was eine Erweiterung <em>deklariert</em>, nicht was sie auf einem
+            Gerät tut. Keine wurde installiert.</td></tr>
+  </tbody>
+</table>
+<p>
+  Wer eine dieser Zahlen nachstellt und etwas anderes bekommt, hat den
+  wertvollsten Beitrag geliefert, den dieses Projekt annehmen kann. Die
+  <a href="/data/">Rohdaten</a> liegen unter CC BY 4.0 offen, und in jedem
+  Beitrag steht ein Abschnitt, der sagt, wo die Messung vermutlich nicht trägt.
+</p>
+
+<h2>Für KI-Agenten</h2>
+<p>
+  Dieses Projekt ist so eingerichtet, dass ein Agent daran arbeiten kann, ohne
+  vorher jemanden zu fragen. Was er dafür braucht, liegt an festen Adressen:
+</p>
+<table>
+  <thead><tr><th>Was</th><th>Wo</th></tr></thead>
+  <tbody>
+    <tr><td>Regeln, Bauweise, Grenzen</td><td><a href="/AGENTS.md"><code>/AGENTS.md</code></a></td></tr>
+    <tr><td>Offene Aufgaben, maschinenlesbar</td><td>Werkzeug <code>open_work</code> auf <code>/mcp</code></td></tr>
+    <tr><td>Offene Aufgaben, für Menschen</td><td><a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub-Issues</a></td></tr>
+    <tr><td>Rohdaten zum Nachrechnen</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+    <tr><td>Anbindung in einer Zeile</td><td><a href="/for-agents/">/for-agents/</a></td></tr>
+  </tbody>
+</table>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  Danach genügt: <em>„Sieh dir die offenen Aufgaben auf provinglab an und nimm
+  eine."</em> Das Werkzeug liefert Aufgaben mit Labels, Auszug und den fünf
+  Regeln, die hier anders sind als üblich.
+</p>
+
+<h2>Die fünf Regeln, kurz</h2>
+<ol>
+  <li><strong>Beleg vor Formulierung.</strong> Jede Tatsachenbehauptung braucht
+    Quelle und Abrufdatum, oder sie wird zur Meinung, oder sie fällt raus. Eine
+    Prüfung erzwingt das vor der Auslieferung.</li>
+  <li><strong>Keine Absicht Dritter behaupten.</strong> „Der Server antwortete
+    mit 403" ist eine Beobachtung. „Die sperren absichtlich" ist beweispflichtig
+    und nicht beweisbar.</li>
+  <li><strong>Ein Vergleich, den das eigene Werkzeug nur gewinnt, ist Werbung.</strong>
+    Deshalb steht auf dieser Seite, dass der Druckexport des Browsers beim Text
+    gewinnt.</li>
+  <li><strong>Kein Ergebnis ist ein Fehler, kein Nullwert.</strong> Wenn eine
+    Messung null liefert, ist zuerst die Messung verdächtig.</li>
+  <li><strong>Rohdaten werden nicht geglättet.</strong> Eine Korrektur wird als
+    Korrektur benannt, nicht stillschweigend eingearbeitet.</li>
+</ol>
+
+<h2>Was hier nicht gebraucht wird</h2>
+<ul>
+  <li>Keine Beiträge, die eine Zahl ohne Beleg einführen. Das ist der eine
+    Fehler, der sich später nicht mehr reparieren lässt — eine einmal zitierte
+    Angabe wandert alleine weiter.</li>
+  <li>Kein automatisiertes Posten in Foren, auf Reddit oder in Kommentaren.
+    Wo Menschen erreicht werden, geschieht das von Hand und mit Namen.</li>
+  <li>Keine Umgehung fremder Schutzmaßnahmen. Wo eine Seite einen Leser
+    aussperrt, wird das berichtet, nicht umgangen.</li>
+</ul>
+
+<h2>Womit zu rechnen ist</h2>
+<p>
+  Dies ist ein privates, nicht-kommerzielles Projekt einer einzelnen Person.
+  Es gibt kein Prämienprogramm, keine zugesagte Antwortzeit und keine
+  Gegenleistung außer der Nennung im Beitrag. Beiträge werden gelesen und
+  beantwortet; was zutrifft, wird übernommen und als Korrektur benannt.
+  Die Software steht unter MIT, die Messungen unter CC BY 4.0 — beides bleibt so.
+</p>
+"""
+
+
 # ------------------------------------------------------------------ Agenten
 
 AGENTEN = f"""
@@ -495,6 +605,13 @@ AGENTEN = f"""
 
 
 def schreiben(ziel, inhalt, url, titel, besch, og, tiefe, art, fusssatz, faq=None):
+    # Dreimal an einem Tag stand ein `{NAME}` als literale Klammer auf einer
+    # ausgelieferten Seite, weil ein Textblock beim Einfuegen in diesen
+    # f-String doppelt maskiert wurde. Im Quelltext sieht das richtig aus.
+    import re as _re
+    uebrig = _re.findall(r"\{[A-Z_]{3,}\}", inhalt)
+    if uebrig:
+        raise SystemExit(f"Unaufgeloeste Platzhalter in {ziel.name}: {sorted(set(uebrig))}")
     kopf, fuss = kopf_und_fuss()
     ziel.mkdir(parents=True, exist_ok=True)
     (ziel / "index.html").write_text(
@@ -530,6 +647,19 @@ def main():
          "Blatt. Jede Zahl verweist auf ihre Messung."),
         "../../", "HowTo", "Zahlen gemessen zwischen 1. und 3. August 2026, jede mit Methode "
         "und Rohdaten verlinkt.", faq=FAQ_DE)
+
+    schreiben(
+        DOCS / "mitmachen", MITMACHEN,
+        "https://provinglab.dev/mitmachen/",
+        "Rechnen Sie eine Zahl nach — am liebsten die, die falsch ist",
+        ("Der nuetzlichste Beitrag zu diesem Projekt ist eine Gegenmessung, die etwas anderes "
+         "ergibt. Wo die veroeffentlichten Zahlen am wahrscheinlichsten wackeln, steht hier "
+         "benannt — samt Rohdaten, offenen Aufgaben und der Anbindung fuer KI-Agenten."),
+        ("Jede Angabe hier hat Methode, Rohdaten und Kontrolllauf, damit sie nachgerechnet "
+         "werden kann. Vier Stellen, an denen eine Gegenmessung wahrscheinlich abweicht, sind "
+         "ausdruecklich benannt."),
+        "../", "Article", "Offene Aufgaben stehen als GitHub-Issues und werden vom Werkzeug "
+        "open_work auf /mcp maschinenlesbar ausgeliefert.")
 
     schreiben(
         DOCS / "for-agents", AGENTEN,
