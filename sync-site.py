@@ -36,6 +36,27 @@ def amo():
     }
 
 
+
+def neuestes_release():
+    """Tag des neuesten GitHub-Releases mit einer XPI-Datei, ohne fuehrendes v.
+
+    Ohne diese Abfrage schreibt das Skript die Store-Version in einen
+    Release-Pfad, den niemand veroeffentlicht hat.
+    """
+    r = urllib.request.Request(
+        "https://api.github.com/repos/Bubu89/full-page-pdf-snap/releases",
+        headers={"accept": "application/vnd.github+json",
+                 "user-agent": "provinglab-sync/1.0"})
+    try:
+        with urllib.request.urlopen(r, timeout=20) as a:
+            for rel in json.load(a):
+                if any(x["name"].endswith(".xpi") for x in rel.get("assets") or []):
+                    return rel["tag_name"].lstrip("v")
+    except Exception as e:
+        print(f"  Warnung: Releases nicht abrufbar ({type(e).__name__}); "
+              "der Release-Link bleibt unveraendert.")
+    return None
+
 def patch(pfad, ersetzungen):
     """Wendet (Regex, Ersatz, Beschreibung) an und meldet jede Aenderung."""
     p = DOCS / pfad
@@ -61,8 +82,11 @@ def main():
         return 2
 
     v, xpi = a["version"], a["xpi"]
+    release = neuestes_release() or v
     print(f"  Veroeffentlicht auf AMO: {v}")
     print(f"  Signiertes XPI         : {xpi}")
+    print(f"  Neuestes GitHub-Release: {release}"
+          + ("" if release == v else "   (bleibt hinter dem Store zurueck)"))
 
     aenderungen = []
 
@@ -78,8 +102,13 @@ def main():
         (r"(Version )\d+\.\d+\.\d+( — signed by Mozilla)", rf"\g<1>{v}\g<2>", "Versionsangabe EN"),
         (r"(Version )\d+\.\d+\.\d+( — von Mozilla signiert)", rf"\g<1>{v}\g<2>", "Versionsangabe DE"),
         (r'("softwareVersion":\s*")[\d.]+(")', rf"\g<1>{v}\g<2>", "JSON-LD softwareVersion"),
+        # Nur auf ein Release zeigen, das es gibt. Die Store-Fassung laeuft den
+        # GitHub-Releases voraus — am 03.08.2026 stand die Seite auf v2.26.0,
+        # veroeffentlicht war v2.16.0, und der Weg "ohne Store" endete im 404.
+        # Ein Link, der mit der Fassung mitwandert, muss der Fassung folgen, die
+        # tatsaechlich abrufbar ist.
         (r"(releases/download/v)[\d.]+(/full-page-pdf-snap-)[\d.]+(\.xpi)",
-         rf"\g<1>{v}\g<2>{v}\g<3>", "GitHub-Release-XPI"),
+         rf"\g<1>{release}\g<2>{release}\g<3>", "GitHub-Release-XPI"),
     ])
 
     # Startseite: seit dem Umbau steht der Installationsknopf auch dort, mit

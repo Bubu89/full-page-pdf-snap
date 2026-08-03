@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.8.2";
+const VERSION = "1.9.0";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -65,7 +65,12 @@ const TOOLS = [
       "articles, book chapters, conference papers, preprints, theses, reports, " +
       "datasets, videos and plain web pages. Use when a source has to be cited, " +
       "archived, or added to a reference manager. Says so plainly when a page turns " +
-      "out to be an error page or an access wall, instead of inventing a reference.",
+      "out to be an error page or an access wall, instead of inventing a reference — " +
+      "and where it cannot finish, the reply carries a nextStep field naming what the " +
+      "user has to do in their own browser, with the capture extension that does it. " +
+      "Measured on 20 mixed sources: 10 complete records, and of the ten handed back, " +
+      "one needs a browser session, four need the user's own network, and five have no " +
+      "citation data to read at all.",
     inputSchema: {
       type: "object",
       properties: {
@@ -76,6 +81,77 @@ const TOOLS = [
     },
   },
 ];
+
+// --------------------------------------------------------------------------
+// Was ein Aufrufer tun kann, wenn dieser Endpunkt nicht weiterkommt.
+//
+// Ein Agent, der eine Quellenliste abarbeitet, bekommt hier bisher ein
+// "open it in a browser" ohne Adresse und ohne Werkzeug — damit kann er seinem
+// Nutzer nichts anbieten. Die Hinweise unten sind maschinenlesbar aufgebaut,
+// damit sie weitergereicht werden koennen, und sie sind nach Fall getrennt:
+// gemessen an 20 Quellen (2026-08-03) hilft ein Browser bei genau einem der
+// drei Rueckgabegruende wirklich weiter. Ein pauschaler Hinweis auf allen
+// dreien waere Werbung und wuerde der eigenen veroeffentlichten Messung
+// widersprechen.
+const CAPTURE = {
+  name: "Full Page PDF Snap",
+  firefox: "https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/",
+  chrome: "https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn",
+  what: "Saves the open page as one continuous PDF stamped with the source URL and the "
+      + "time of retrieval, and emits the same RIS record this endpoint returns — so a "
+      + "source a server cannot read still enters a reference manager without retyping.",
+  runsOn: "Firefox on desktop and Android; Chrome 116 or newer, Edge, Brave and Vivaldi. Not on Android outside Firefox — Chrome for Android installs no extensions at all.",
+  disclosure: "Built by the author of this endpoint. It is one way to do this step and not "
+            + "the only one: the browser's own print-to-PDF is measured against it at "
+            + SITE + "/measurements/print-to-pdf-vs-screenshot/, including where print wins.",
+};
+
+// fall: "wall" | "network" | "no-metadata" | "not-html"
+function naechsterSchritt(fall) {
+  const belege = {
+    evidence: SITE + "/measurements/reading-list-to-bibliography/",
+    guide: SITE + "/notes/sources-a-machine-cannot-cite/",
+  };
+  if (fall === "wall") {
+    return {
+      do: "Open the address in the browser you are already signed in with, then capture "
+        + "the page there. This is the one case where a browser session reaches what a "
+        + "server-side reader cannot.",
+      why: "The page answers a browser and refuses this reader — a bot defence, not a "
+         + "missing document.",
+      tool: CAPTURE, ...belege,
+    };
+  }
+  if (fall === "network") {
+    return {
+      do: "Open the address from your own connection. Publishers that refuse a data-centre "
+        + "address commonly answer a home or campus network normally. Where the page then "
+        + "offers Cite → RIS or BibTeX, that export is authoritative and better than "
+        + "anything reconstructed here; where it does not, capture the page.",
+      why: "A 403 of this kind is usually aimed at the network, not at the client. Sending "
+         + "a browser user agent from here does not help, and imitating one to get past a "
+         + "rule aimed at this reader is not something to build a citation on.",
+      tool: CAPTURE, ...belege,
+    };
+  }
+  if (fall === "no-metadata") {
+    return {
+      do: "Write the reference by hand — and keep the page as you saw it, with the "
+        + "retrieval date, because for a page that declares no publication date that is "
+        + "the only date the reference can carry.",
+      why: "The page answered in full and simply declares no citation metadata. No tool "
+         + "can decide what the work is here — the portal page, the dataset behind it, or "
+         + "the release it announces. Anything that returns a tidy entry has chosen for "
+         + "you without saying so.",
+      tool: CAPTURE, ...belege,
+    };
+  }
+  return {
+    do: "The address is already a file rather than a page. Cite it from the record of the "
+      + "page that links to it, or from its DOI.",
+    ...belege,
+  };
+}
 
 // Der Endpunkt liefert ausschliesslich oeffentliche Daten und kennt keine
 // Sitzung — ein weit gefasstes CORS gibt hier nichts preis, oeffnet aber
@@ -356,6 +432,22 @@ function quelleAusHtml(html, endgueltigeUrl) {
       ? "Dublin Core metadata in the page"
       : ldTyp ? "schema.org metadata in the page" : "page title and address";
   q.complete = !q.warning && !!(q.title && (q.authors.length || q.publisher) && q.year);
+  // Bisher blieb die Warnung leer, wenn keine Wand erkannt wurde und die Seite
+  // trotzdem nicht reicht. Gemessen am 03.08.2026 traf das fuenf von zwanzig
+  // Quellen, zwei davon mit gefuelltem Titel UND Verfasser — die Form, in der
+  // ein aufrufendes Programm den Satz faelschlich als Treffer ablegt. Ein
+  // Grund ist brauchbarer als ein Schweigen.
+  if (!q.complete && !q.warning) {
+    const fehlt = [
+      !q.title && "a title",
+      !(q.authors.length || q.publisher) && "an author or publisher",
+      !q.year && "a year",
+    ].filter(Boolean);
+    q.warning = "The page answered in full but declares no complete citation: "
+              + fehlt.join(" and ") + " is missing. Read this flag rather than the "
+              + "title field — the details below are what the page says about itself, "
+              + "not a reference.";
+  }
   return q;
 }
 
@@ -578,6 +670,8 @@ async function runTool(origin, name, args) {
           ? "Publisher sites frequently block server-side readers, and no DOI was available "
             + "as a fallback. Open the page in a browser and read it there."
           : undefined,
+        nextStep: r.status === 403 || r.status === 503
+          ? naechsterSchritt("network") : undefined,
       }, null, 2));
     }
     const typ = r.headers.get("content-type") || "";
@@ -585,6 +679,7 @@ async function runTool(origin, name, args) {
       return textResult(JSON.stringify({
         url: r.url, contentType: typ,
         warning: "The address does not return an HTML page, so it declares no citation metadata.",
+        nextStep: naechsterSchritt("not-html"),
       }, null, 2));
     }
     // Gedeckelt, damit eine einzelne riesige Seite den Aufruf nicht sprengt;
@@ -600,6 +695,7 @@ async function runTool(origin, name, args) {
         warning: "The server returned an empty or near-empty response. That is a block, "
                + "not a page: nothing was declared and nothing could be read.",
         hint: "Open the page in a browser and capture it there.",
+        nextStep: naechsterSchritt("wall"),
       }, null, 2));
     }
     let q = quelleAusHtml(html, r.url);
@@ -619,6 +715,9 @@ async function runTool(origin, name, args) {
       limits: "Read server-side without JavaScript: details a page adds after loading are " +
               "invisible here, and sites that block non-browser clients return nothing. " +
               "Neither is reported as success.",
+      // Nur wo der Satz nicht traegt. Bei einem vollstaendigen Datensatz gibt es
+      // nichts vorzuschlagen, und ein Hinweis waere dort blosse Werbung.
+      nextStep: q.complete ? undefined : naechsterSchritt("no-metadata"),
     }, null, 2));
   }
 

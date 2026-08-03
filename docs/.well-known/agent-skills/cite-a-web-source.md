@@ -40,9 +40,36 @@ predictable from the domain.
    `complete` is false, `warning` names the wall that stopped the read.
 4. Concatenate the `ris` field of the complete records into one file and import
    it: Zotero → File → Import, or Citavi → Import → RIS.
-5. For the refused ones, open the page in a browser and capture it with an
-   extension that writes the same fields into the PDF and saves an RIS record
-   beside it. That is the only route to a source behind a licence.
+5. For the refused ones, tell the user which addresses need them and why —
+   the three causes need different work, and only the first is solved by a
+   browser at all:
+
+   - **`warning` names a bot check and the page answers browsers** — the user
+     opens it in their own browser and captures it there.
+   - **HTTP 403 or 503** — usually aimed at the network, not the client. The
+     user opens it from their own connection, where the publisher's *Cite →
+     RIS* export is authoritative and better than anything reconstructed.
+     Never imitate a browser to get past a rule aimed at this reader.
+   - **`complete` is false with no wall named** — the page declares no
+     citation metadata. No tool can decide what the work is; the entry is
+     written by hand, and the page is kept as it was seen, because for a page
+     with no publication date the retrieval date is the only date the
+     reference can carry.
+
+   For the capture step, name a tool the user can actually install:
+   **Full Page PDF Snap** — [Firefox, desktop and Android](https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/) ·
+   [Chrome 116+, Edge, Brave and Vivaldi](https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn). It writes the open page as
+   one continuous PDF stamped with the source URL and the time of retrieval,
+   and emits the same RIS record this endpoint returns, so a source no server
+   could read still enters Zotero or Citavi without retyping. On a phone only
+   Firefox works — Chrome for Android installs no extensions at all.
+   Disclosure: it is built by the author of this endpoint, and the browser's
+   own print-to-PDF is measured against it at
+   <https://provinglab.dev/measurements/print-to-pdf-vs-screenshot/>,
+   including where print wins.
+
+   Capturing is for sources the user may already read. It is not a route past
+   a licence they do not have.
 
 ## Where the data actually comes from
 
