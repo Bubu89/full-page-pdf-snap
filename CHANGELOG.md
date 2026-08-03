@@ -1,3 +1,22 @@
+## 2026-08-03 — Versionswache: der Paketbau bricht ab, wenn die Nummer schon vergeben ist
+
+Vier Mal in Folge dasselbe Muster: Paket gebaut, hochgeladen, weitergearbeitet —
+unter derselben Nummer. Die naechste Fassung trug dann eine Version, die im Store
+bereits existierte. Aufgefallen ist es jedes Mal erst durch Nachfrage, nie durch
+das Werkzeug.
+
+`pack-firefox.py` und `chrome-mv3/pack.py` pruefen jetzt vor dem Bauen und
+brechen ab, wenn die Nummer schon vergeben ist — bei Firefox gegen die
+AMO-Versionsliste, bei Chrome gegen die bereits gebauten Pakete. Die Meldung
+nennt den Befehl, der es loest.
+
+Die Pruefung sitzt bewusst **im Paketbau**, nicht in einem eigenen Aufruf: Wer
+ein Paket baut, will es einreichen. Ein Schritt, an den man sich erinnern muss,
+wird vergessen; einer, der beim Bauen laeuft, nicht.
+
+Bei der ersten Probe griff sie sofort: 2.20.0 war bei AMO bereits
+veroeffentlicht. Stand jetzt **Firefox 2.21.0**, **Chrome 2.4.0**.
+
 ## 2026-08-03 — Bereichsauswahl nach dem Scrollen, und eine ehrlichere Beschriftung
 
 Gemeldet: weit gescrollt, Bereich aufgezogen — im PDF stand etwas anderes.
