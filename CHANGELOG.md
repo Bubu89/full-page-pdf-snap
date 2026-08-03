@@ -12,7 +12,7 @@ ersetzt. Die Kennzahl auf der Notes-Uebersicht lautete „0 ways to install for
 someone" und heisst jetzt „0 ways to install into a browser you cannot reach".
 
 **Zwei echte Lecks im oeffentlichen Stand.** `schnelllauf-agent-install.py` und
-`messung-agent-install-als-nutzer.py` trugen `C:\Users\HOLO\…` als feste
+`messung-agent-install-als-nutzer.py` trugen `C:\Users\<name>\…` als feste
 Zeichenkette. Der Umbau auf Laufzeit-Aufloesung war frueher begonnen worden —
 die Linux-Fassung derselben Konstante war laengst aufgeloest, die
 Windows-Fassung stand unveraendert **oberhalb** der Funktion, die den
@@ -20,10 +20,12 @@ Benutzernamen ermittelt. Ein halber Umbau sieht aus wie ein ganzer. Ebenso in
 `store-texte/ANLEITUNG_NAECHSTE_SCHRITTE.md` (jetzt `%USERPROFILE%`) und in
 den Testdaten von `tests/pfad.test.mjs`.
 
-**Warum es durchrutschte.** Die Pfad-Pruefung der Pipeline kannte nur
-`/home/holo/` und `/mnt/c/Users/HOLO/`, nicht die Windows-Schreibweise
-`C:\Users\HOLO`. Ein Pruefer, der eine Schreibweise nicht kennt, bestaetigt
-den halben Umbau als ganzen. Ergaenzt.
+**Warum es durchrutschte.** Die Pfad-Pruefung der Pipeline kannte nur die
+beiden Linux-Schreibweisen des Heimatverzeichnisses, nicht die von Windows.
+Ein Pruefer, der eine Schreibweise nicht kennt, bestaetigt den halben Umbau
+als ganzen. Ergaenzt — und die Muster stehen bewusst nicht woertlich in dieser
+Datei, sonst faellt sie ueber die eigene Beschreibung, wie es der Workflow
+schon einmal tat.
 
 **Portabilitaet des Werkzeugs.** `tools/erweiterung-fernsteuern.py` fand
 Firefox nur unter `Program Files`. Ohne Administratorrechte installiert
