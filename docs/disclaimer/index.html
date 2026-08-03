@@ -197,8 +197,8 @@
     für alles unter provinglab.dev und für die darüber verbreitete Erweiterung.
   </p>
   <p class="meta-line">
-    <span class="on" data-lang="en" lang="en">Version of 2 August 2026</span>
-    <span data-lang="de" lang="de">Fassung vom 2. August 2026</span>
+    <span class="on" data-lang="en" lang="en">Version of 3 August 2026</span>
+    <span data-lang="de" lang="de">Fassung vom 3. August 2026</span>
   </p>
 </header>
 
@@ -285,7 +285,33 @@
 </div>
 
 <div class="punkt">
-  <h3>6. Third-party products and external links</h3>
+  <h3>6. The citation endpoint at <code>/mcp</code></h3>
+  <p>
+    The endpoint reads what a page declares about itself and returns it as a structured
+    record. It does not verify those declarations, and a page can declare something wrong,
+    outdated or incomplete. A record marked <code>complete: false</code> is not a reference:
+    it may still carry a title and an author, and it must not be filed as a source on that
+    basis. Every record is a starting point for a citation, never the finished citation —
+    check it against the work before it enters a bibliography, a thesis or anything submitted.
+  </p>
+  <p>
+    The endpoint is offered free of charge, without an account and without any assurance of
+    availability, correctness or continued existence. It may be changed, limited or withdrawn
+    at any time. No liability is accepted for consequences of relying on a record it returned
+    — in particular not for citation errors, rejected work, or deadlines missed because it was
+    unavailable. Where a publisher offers its own citation export, that file is authoritative
+    and this endpoint is not.
+  </p>
+  <p>
+    It fetches only addresses a caller supplies, as an anonymous visitor, and it reaches
+    nothing behind a login. Using it to place load on third-party servers is not permitted;
+    requests carry an identifying user agent so that operators can distinguish and refuse
+    them.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>7. Third-party products and external links</h3>
   <p>
     Statements about other products rest exclusively on what their providers publish about
     themselves — manifests, listings, help pages — with the retrieval date given. Nothing was
@@ -301,7 +327,7 @@
 </div>
 
 <div class="punkt">
-  <h3>7. Limitation of liability</h3>
+  <h3>8. Limitation of liability</h3>
   <p>
     To the extent permitted by law, no liability is accepted for damages arising from the use
     of the software or from decisions taken on the basis of content published here — in
@@ -316,7 +342,7 @@
 </div>
 
 <div class="punkt">
-  <h3>8. Changes and corrections</h3>
+  <h3>9. Changes and corrections</h3>
   <p>
     Content and software change. This page carries the date of its current version; earlier
     versions are in the repository's history. Factual errors are corrected on notice —
@@ -326,7 +352,7 @@
 </div>
 
 <div class="punkt">
-  <h3>9. Who publishes this</h3>
+  <h3>10. Who publishes this</h3>
   <p>
     A private, non-commercial project by an individual, operated under a pseudonym. Nothing is
     sold, there is no advertising, no affiliate link and no tracking. Contact and the extent
@@ -424,7 +450,35 @@
 </div>
 
 <div class="punkt">
-  <h3>6. Fremde Produkte und externe Verweise</h3>
+  <h3>6. Der Zitations-Endpunkt unter <code>/mcp</code></h3>
+  <p>
+    Der Endpunkt liest, was eine Seite über sich selbst angibt, und gibt es als
+    strukturierten Datensatz zurück. Er prüft diese Angaben nicht, und eine Seite kann
+    Falsches, Veraltetes oder Unvollständiges angeben. Ein Datensatz mit
+    <code>complete: false</code> ist keine Quellenangabe: Er kann trotzdem Titel und
+    Verfasser tragen und darf allein deshalb nicht als Quelle abgelegt werden. Jeder
+    Datensatz ist ein Ausgangspunkt für eine Quellenangabe, nie die fertige Angabe — vor
+    der Aufnahme in ein Literaturverzeichnis, eine Abschlussarbeit oder eine Einreichung
+    am Werk gegenprüfen.
+  </p>
+  <p>
+    Der Endpunkt wird unentgeltlich, ohne Konto und ohne jede Zusage zu Verfügbarkeit,
+    Richtigkeit oder Fortbestand bereitgestellt. Er kann jederzeit geändert, begrenzt oder
+    eingestellt werden. Für Folgen des Vertrauens auf einen zurückgegebenen Datensatz wird
+    keine Haftung übernommen — insbesondere nicht für fehlerhafte Zitationen, zurückgewiesene
+    Arbeiten oder versäumte Fristen wegen Nichterreichbarkeit. Wo ein Verlag einen eigenen
+    Zitations-Export anbietet, ist diese Datei maßgeblich und nicht dieser Endpunkt.
+  </p>
+  <p>
+    Er ruft ausschließlich Adressen ab, die ein Aufrufer nennt, als anonymer Besucher, und
+    erreicht nichts hinter einer Anmeldung. Ihn zu verwenden, um fremde Server zu belasten,
+    ist nicht gestattet; Abrufe tragen ein erkennbares Kennzeichen, damit Betreiber sie
+    unterscheiden und abweisen können.
+  </p>
+</div>
+
+<div class="punkt">
+  <h3>7. Fremde Produkte und externe Verweise</h3>
   <p>
     Aussagen über andere Produkte stützen sich ausschließlich auf das, was deren Anbieter
     selbst veröffentlichen — Manifeste, Store-Einträge, Hilfeseiten — jeweils mit Abrufdatum.
@@ -441,7 +495,7 @@
 </div>
 
 <div class="punkt">
-  <h3>7. Haftungsbegrenzung</h3>
+  <h3>8. Haftungsbegrenzung</h3>
   <p>
     Soweit gesetzlich zulässig, wird keine Haftung für Schäden übernommen, die aus der
     Verwendung der Software oder aus Entscheidungen aufgrund hier veröffentlichter Inhalte
@@ -457,7 +511,7 @@
 </div>
 
 <div class="punkt">
-  <h3>8. Änderungen und Korrekturen</h3>
+  <h3>9. Änderungen und Korrekturen</h3>
   <p>
     Inhalte und Software ändern sich. Diese Seite trägt das Datum ihrer aktuellen Fassung;
     frühere Fassungen stehen in der Historie des Repositorys. Sachliche Fehler werden bei
@@ -468,7 +522,7 @@
 </div>
 
 <div class="punkt">
-  <h3>9. Wer das veröffentlicht</h3>
+  <h3>10. Wer das veröffentlicht</h3>
   <p>
     Ein privates, nicht kommerzielles Projekt einer Einzelperson, betrieben unter einem
     Pseudonym. Es wird nichts verkauft, es gibt keine Werbung, keine Affiliate-Verweise und
