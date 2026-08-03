@@ -1,4 +1,4 @@
-## 2026-08-03 — Bereich mit der Maus auswaehlen
+## 2026-08-03 — Version 2.19.0: Bereich mit der Maus auswaehlen
 
 Statt eines festen Ausschnitts laesst sich der Bereich jetzt mit der Maus
 aufziehen. Die Auswahl liegt in einem eigenen Overlay ueber der Seite, nicht in
@@ -31,7 +31,7 @@ Pruefung: lieber ein Abbruch als eine Chrome-Fassung, in der eine Zeichenflaeche
 im Service Worker nicht existiert. Erwartungswert angepasst, beide Fassungen
 wieder deckungsgleich.
 
-## 2026-08-03 — Schalter im Hauptfenster, Einzelaufnahme, und ein Fehler, den nur der Integrationstest fand
+## 2026-08-03 — Version 2.19.0: Schalter im Hauptfenster und ein Fehler, den nur der Integrationstest fand
 
 ### Der Fehler zuerst
 
@@ -75,8 +75,8 @@ waere ein zweiter Ort fuer dieselben Fehler.
 ### Ausgeliefert
 
 Beide Fassungen auf demselben Stand, Pakete gebaut:
-`full-page-pdf-snap-firefox-2.18.0.zip` und
-`full-page-pdf-snap-chrome-2.18.0.zip`.
+`full-page-pdf-snap-firefox-2.19.0.zip` und
+`full-page-pdf-snap-chrome-2.19.0.zip`.
 
 ## 2026-08-03 — Zustimmungsdialoge: nicht nur haesslich, sondern der Grund fuer abgebrochene Aufnahmen
 
