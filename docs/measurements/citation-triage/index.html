@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>An agent can cite eight of twelve sources. The useful part is knowing which four it cannot — Proving Lab</title>
+<meta name="description" content="Given a mixed reading list, an MCP endpoint turned 8 of 12 sources into complete citations with RIS records in 13 seconds. The other four are blocked to any server-side reader — and saying so precisely is worth more than guessing.">
+<link rel="canonical" href="https://provinglab.dev/measurements/citation-triage/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="An agent can cite eight of twelve sources. The useful part is knowing which four it cannot">
+<meta property="og:description" content="Given a mixed reading list, an MCP endpoint turned 8 of 12 sources into complete citations with RIS records in 13 seconds. The other four are blocked to any server-side reader — and saying so precisely is worth more than guessing.">
+<meta property="og:url" content="https://provinglab.dev/measurements/citation-triage/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-08-01">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "An agent can cite eight of twelve sources. The useful part is knowing which four it cannot",
+  "description": "Given a mixed reading list, an MCP endpoint turned 8 of 12 sources into complete citations with RIS records in 13 seconds. The other four are blocked to any server-side reader — and saying so precisely is worth more than guessing.",
+  "datePublished": "2026-08-03",
+  "dateModified": "2026-08-03",
+  "inLanguage": "en",
+  "url": "https://provinglab.dev/measurements/citation-triage/",
+  "author": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org", "@type": "Dataset",
+  "name": "Print-to-PDF versus screenshot capture, same document",
+  "description": "Page counts, page-break analysis, word recall against the source text, embedded images and file sizes for the same Wikipedia article captured both ways on 1 August 2026.",
+  "url": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "identifier": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "datePublished": "2026-08-01", "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true, "inLanguage": "en",
+  "keywords": ["print to PDF","screenshot","page breaks","OCR","web archiving"],
+  "variableMeasured": ["pages","page breaks","breaks mid-sentence","word recall","file size","embedded images"],
+  "creator": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
+  "distribution": [{ "@type": "DataDownload", "encodingFormat": "application/json",
+    "contentUrl": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json" }],
+  "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
+}
+</script>
+
+<style>
+  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.87em;background:var(--card);
+       padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:34px 0 36px;border-bottom:1px solid var(--line);margin-bottom:32px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.16;letter-spacing:-.025em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:60ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+  h2{font-size:1.4rem;line-height:1.25;margin:46px 0 14px;letter-spacing:-.015em;text-wrap:balance}
+  h3{font-size:1.04rem;margin:28px 0 8px}
+  p{margin-bottom:17px} ul,ol{margin:0 0 18px 24px} li{margin-bottom:9px}
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0}
+  .kf{flex:1 1 160px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px}
+  .kf .n{font-size:1.8rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.a .n{color:var(--good)} .kf.b .n{color:var(--warn)}
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--bg2);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .win{color:var(--good);font-weight:600} .lose{color:var(--bad)}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.84rem;line-height:1.6}
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0} .box p:last-child{margin-bottom:0}
+  .faq{margin:44px 0 0}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin:44px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+  footer{margin-top:52px;padding:24px 0 64px;border-top:1px solid var(--line);
+    font-size:.83rem;color:var(--dim);line-height:1.6}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+</style>
+<script src="/agent-tools.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/">Notes</a>
+    <a class="n" href="../../measurements/" aria-current="page">Measurements</a>
+    <a class="n" href="../../tools/">Tools</a>
+    <a class="n" href="../../about/">About</a>
+    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
+      <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header>
+  <h1>An agent can cite eight of twelve sources. The useful part is knowing which four it cannot</h1>
+  <p class="standfirst">
+    A reading list goes in, citable records come out — for two thirds of it. The
+    remaining third is refused by the publishers to any server that asks. What
+    makes the endpoint useful is not the two thirds; it is that it names the
+    third precisely enough to act on.
+  </p>
+  <p class="meta">3 August 2026 · 12 sources, one pass ·
+    <a href="/data/2026-08-03-citation-triage.json">raw data</a></p>
+</header>
+
+<h2>The task</h2>
+<p>
+  An agent is handed a list of addresses and asked to prepare them for a
+  bibliography. For each one it calls <code>extract_citation</code> on this
+  site's <a href="/notes/mcp-server-what-it-solves/">MCP endpoint</a>, which
+  reads whatever citation data the page declares about itself and returns a
+  structured record with RIS and BibTeX.
+</p>
+
+<div class="kf-row">
+  <div class="kf b"><div class="n">8/12</div><div class="l">done by the agent</div></div>
+  <div class="kf"><div class="n">4</div><div class="l">handed back</div></div>
+  <div class="kf"><div class="n">1.09 s</div><div class="l">per source</div></div>
+</div>
+
+<h2>What came back for the eight</h2>
+<p>
+  Complete records — authors, year, container, identifier — each with an RIS
+  entry that imports into Citavi, Zotero or EndNote without retyping. A journal
+  article from Springer with five authors, a PLOS article, a PubMed Central
+  paper, an arXiv preprint, a Wikipedia entry, a Zenodo record, and a bare DOI
+  that resolved through the registration agency because the publisher's page
+  refused.
+</p>
+<p>
+  Two of the eight carry no author, because the page declares none. That is the
+  page's gap, not the reader's — and it is reported as an empty field rather than
+  filled in with a guess. A bibliography entry that looks complete and is wrong
+  costs more than one with a visible hole.
+</p>
+
+<h2>What was handed back, and why</h2>
+<table>
+  <thead><tr><th>Source</th><th>Reason</th></tr></thead>
+  <tbody>
+    <tr><td><code>www.mdpi.com</code></td><td>http-403</td></tr>
+    <tr><td><code>www.sciencedirect.com</code></td><td>http-403</td></tr>
+    <tr><td><code>www.ssoar.info</code></td><td>bot wall served to server-side readers</td></tr>
+    <tr><td><code>eur-lex.europa.eu</code></td><td>near-empty response to server-side readers</td></tr>
+  </tbody>
+</table>
+<p>
+  Every one of these was re-fetched from an unrelated network to check the block
+  is real rather than a fault at this end. All four are genuine.
+</p>
+
+<h2>Why the refusal is the valuable half</h2>
+<p>
+  A citation tool that returns something for every URL sounds better and is
+  worse. Fed a bot wall, it produces a reference whose title reads
+  <em>Making sure you're not a bot!</em> — formatted, complete-looking, and
+  worthless. We have <a href="/measurements/citation-extraction/">measured that
+  happening</a> to an established service on two of eighteen random sources.
+</p>
+<p>
+  A refusal, by contrast, is actionable. The agent can tell its user exactly
+  four addresses to open in a browser, where a
+  <a href="/tools/full-page-pdf-snap/">capture extension</a> reaches what no
+  server can: the page is loaded in the reader's own session, with the reader's
+  own access. The division of labour is not a workaround — it follows from who
+  is allowed to see what.
+</p>
+
+<h2>What this does not settle</h2>
+<ul>
+  <li><strong>The split moves.</strong> EUR-Lex began returning a near-empty
+    response to server-side readers between two runs on the same day. Any figure
+    here is a reading from one afternoon, not a constant.</li>
+  <li><strong>Twelve sources is a demonstration, not a study.</strong> The
+    <a href="/measurements/citation-extraction/">random-sample measurement</a>
+    is the one to cite for coverage; this one shows the shape of the workflow.</li>
+  <li><strong>Nothing here beats a publisher's own export.</strong> Where a page
+    offers a RIS or BibTeX download, that file is authoritative and this is not.</li>
+</ul>
+
+<h2>Trying it</h2>
+<pre><code>curl -X POST https://provinglab.dev/mcp \
+  -H 'content-type: application/json' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{
+       "name":"extract_citation",
+       "arguments":{"url":"https://arxiv.org/abs/1706.03762"}}}'</code></pre>
+<p>
+  No key, no account, no rate limit worth mentioning. A record comes back with a
+  <code>source</code> field saying where the details were read, and a
+  <code>warning</code> field that is empty when there is nothing to warn about.
+</p>
+
+<footer>
+      Measured on 3 August 2026 in a single pass from a Cloudflare Workers edge.
+      Every refusal was re-checked from an unrelated network. Raw data:
+      <a href="/data/2026-08-03-citation-triage.json">JSON</a>, CC BY 4.0.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+
+</div>
+</body>
+</html>

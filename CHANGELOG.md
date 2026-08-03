@@ -1,3 +1,27 @@
+## 2026-08-03 — Neuer Beitrag: Arbeitsteilung zwischen Agent und Mensch
+
+Eine gemischte Literaturliste durch den MCP-Endpunkt: **8 von 12 Quellen** wurden
+zu vollstaendigen Datensaetzen mit RIS-Eintrag, in 13 Sekunden. Die uebrigen vier
+sperren jeden serverseitigen Leser aus.
+
+Der Beitrag argumentiert, dass die **Verweigerung der wertvollere Teil** ist. Ein
+Werkzeug, das fuer jede Adresse etwas zurueckgibt, erzeugt aus einer Bot-Wand
+eine Quellenangabe mit dem Titel *"Making sure you're not a bot!"* — formatiert,
+vollstaendig aussehend, wertlos. Eine benannte Verweigerung dagegen sagt dem
+Nutzer genau vier Adressen, die er selbst im Browser sichern muss.
+
+Drei Einschraenkungen stehen ausdruecklich drin: die Aufteilung verschiebt sich
+(EUR-Lex fing zwischen zwei Laeufen desselben Tages an, leer zu antworten),
+zwoelf Quellen sind eine Vorfuehrung und keine Studie, und wo ein Verlag selbst
+einen RIS-Export anbietet, ist dieser massgeblich und nicht dieses Werkzeug.
+
+### Dabei behoben
+
+Eine leere Antwort wurde als Titelproblem gemeldet ("nur der Seitenname steht
+da") statt als das, was sie ist. EUR-Lex antwortet serverseitigen Lesern mit
+HTTP 202 und null Bytes. Der Grund wird jetzt benannt, statt ihn der Seite
+zuzuschieben.
+
 ## 2026-08-03 — Versionswache: der Paketbau bricht ab, wenn die Nummer schon vergeben ist
 
 Vier Mal in Folge dasselbe Muster: Paket gebaut, hochgeladen, weitergearbeitet —

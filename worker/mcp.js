@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.8.0";
+const VERSION = "1.8.1";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -587,6 +587,18 @@ async function runTool(origin, name, args) {
     // Gedeckelt, damit eine einzelne riesige Seite den Aufruf nicht sprengt;
     // die Angaben stehen im Kopf, lange vor dieser Grenze.
     const html = (await r.text()).slice(0, 1500000);
+    // Eine leere oder winzige Antwort ist keine Seite. EUR-Lex antwortet
+    // serverseitigen Lesern mit HTTP 202 und null Bytes — ohne diese Pruefung
+    // meldete das Werkzeug "nur der Seitenname steht da" und schob den Grund
+    // damit der Seite zu, statt die Sperre zu benennen.
+    if (html.trim().length < 500) {
+      return textResult(JSON.stringify({
+        url: r.url, httpStatus: r.status, bytes: html.length,
+        warning: "The server returned an empty or near-empty response. That is a block, "
+               + "not a page: nothing was declared and nothing could be read.",
+        hint: "Open the page in a browser and capture it there.",
+      }, null, 2));
+    }
     let q = quelleAusHtml(html, r.url);
     // Sperrseite oder taube Angaben? Dann zaehlt die Registrierungsstelle.
     if ((q.warning || !q.authors.length) && (q.doi || doiInUrl)) {

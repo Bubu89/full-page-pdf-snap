@@ -1,0 +1,43 @@
+{
+  "measurement": "citation-triage-agent-and-human",
+  "date": "2026-08-03",
+  "question": "Given a reading list, how much can an AI agent turn into citable records on its own, and what does it have to hand back?",
+  "method": {
+    "endpoint": "https://provinglab.dev/mcp",
+    "tool": "extract_citation",
+    "sources": 12,
+    "selection": "A mixed list as it would appear in a term paper: publishers behind bot defences, open access, a repository, a preprint server, EU law, an encyclopaedia and a bare DOI. Not chosen for whether they work.",
+    "control": "Every refusal was re-fetched from an unrelated network to confirm the block is real."
+  },
+  "results": {
+    "handled_by_the_agent": 8,
+    "handed_back_to_the_human": 4,
+    "seconds_total": 13.1,
+    "seconds_per_source": 1.09,
+    "records_complete_with_ris": 8,
+    "handed_back": [
+      {
+        "host": "www.mdpi.com",
+        "reason": "http-403"
+      },
+      {
+        "host": "www.sciencedirect.com",
+        "reason": "http-403"
+      },
+      {
+        "host": "www.ssoar.info",
+        "reason": "bot wall served to server-side readers"
+      },
+      {
+        "host": "eur-lex.europa.eu",
+        "reason": "near-empty response to server-side readers"
+      }
+    ]
+  },
+  "limits": [
+    "Read server-side without JavaScript; anything a page adds after loading is invisible.",
+    "The split is not stable over time — publishers tighten bot defences, and EUR-Lex began returning an empty response to server-side readers between two runs on the same day.",
+    "Two of the eight records carry no author because the page declares none. That is the page's gap, not the reader's, and it is reported rather than filled in."
+  ],
+  "license": "CC-BY-4.0"
+}
