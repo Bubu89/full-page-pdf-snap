@@ -34,7 +34,9 @@ PATCHES = [
 
     ("document.createElement(canvas) -> OffscreenCanvas",
      'document.createElement("canvas")',
-     "createCanvas()", 4),
+     "createCanvas()", 5),   # fuenf seit dem Zuschnitt auf einen gewaehlten
+                              # Bereich — der legt eine eigene Zeichenflaeche an,
+                              # die im Service Worker offscreen laufen muss
 
     # createImageBitmap liefert ein ImageBitmap. Das kennt nur width/height -
     # naturalWidth/naturalHeight gibt es ausschliesslich bei HTMLImageElement.

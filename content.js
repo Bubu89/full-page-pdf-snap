@@ -950,12 +950,99 @@
     return { ok: true, quelle: q };
   }
 
+  /* Bereich mit der Maus aufziehen.
+   *
+   * Die Auswahl liegt in einem eigenen Overlay ueber der Seite, nicht in ihr:
+   * so kann kein Klick versehentlich einen Link der Seite ausloesen, und der
+   * Zustand der Seite bleibt unberuehrt. Zurueckgegeben werden Fensterkoordinaten
+   * in CSS-Pixeln — der Aufrufer rechnet sie in Geraetepixel um, weil nur er die
+   * Skalierung der Aufnahme kennt.
+   *
+   * Abbruch ist ausdruecklich vorgesehen: Esc, rechte Maustaste, oder ein Zug,
+   * der zu klein zum Ablesen waere. Ein Werkzeug, das den Nutzer in eine
+   * angefangene Auswahl einsperrt, ist schlimmer als eines ohne Auswahl.
+   */
+  function selectRegion(hinweisText) {
+    return new Promise((fertig) => {
+      const zIndex = 2147483647;
+      const huelle = document.createElement("div");
+      huelle.style.cssText =
+        "position:fixed;inset:0;z-index:" + zIndex + ";cursor:crosshair;" +
+        "background:rgba(17,24,39,.34);";
+      const kasten = document.createElement("div");
+      kasten.style.cssText =
+        "position:fixed;border:2px solid #2563eb;background:rgba(37,99,235,.14);" +
+        "box-shadow:0 0 0 9999px rgba(17,24,39,.34);pointer-events:none;display:none;";
+      const masse = document.createElement("div");
+      masse.style.cssText =
+        "position:fixed;padding:3px 7px;border-radius:4px;background:#111827;color:#fff;" +
+        "font:12px/1.3 system-ui,sans-serif;pointer-events:none;display:none;white-space:nowrap;";
+      const hinweis = document.createElement("div");
+      hinweis.textContent = hinweisText || "Drag to select an area · Esc cancels";
+      hinweis.style.cssText =
+        "position:fixed;left:50%;top:18px;transform:translateX(-50%);padding:7px 14px;" +
+        "border-radius:6px;background:#111827;color:#fff;font:13px/1.3 system-ui,sans-serif;" +
+        "pointer-events:none;box-shadow:0 2px 10px rgba(0,0,0,.3);";
+      huelle.append(kasten, masse, hinweis);
+      document.documentElement.appendChild(huelle);
+
+      let startX = 0, startY = 0, zieht = false;
+      const rechteck = (e) => {
+        const x = Math.min(startX, e.clientX), y = Math.min(startY, e.clientY);
+        const w = Math.abs(e.clientX - startX), h = Math.abs(e.clientY - startY);
+        return { x, y, w, h };
+      };
+      const zeichnen = (r) => {
+        kasten.style.display = "block";
+        kasten.style.left = r.x + "px"; kasten.style.top = r.y + "px";
+        kasten.style.width = r.w + "px"; kasten.style.height = r.h + "px";
+        masse.style.display = "block";
+        masse.textContent = Math.round(r.w) + " × " + Math.round(r.h);
+        // Das Massband bleibt im Fenster, auch wenn am oberen Rand gezogen wird.
+        masse.style.left = Math.min(r.x, window.innerWidth - 90) + "px";
+        masse.style.top = (r.y > 30 ? r.y - 26 : r.y + r.h + 8) + "px";
+      };
+      const aufraeumen = () => {
+        window.removeEventListener("keydown", beiTaste, true);
+        try { huelle.remove(); } catch (_) { /* schon fort */ }
+      };
+      const beenden = (ergebnis) => { aufraeumen(); fertig(ergebnis); };
+      const beiTaste = (e) => {
+        if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); beenden(null); }
+      };
+
+      huelle.addEventListener("mousedown", (e) => {
+        if (e.button !== 0) { beenden(null); return; }   // rechte Taste bricht ab
+        e.preventDefault();
+        zieht = true; startX = e.clientX; startY = e.clientY;
+        hinweis.style.display = "none";
+      });
+      huelle.addEventListener("mousemove", (e) => { if (zieht) zeichnen(rechteck(e)); });
+      huelle.addEventListener("mouseup", (e) => {
+        if (!zieht) return;
+        const r = rechteck(e);
+        // Ein Zug unter 12 Pixeln war ein Klick, keine Auswahl.
+        beenden(r.w < 12 || r.h < 12 ? null : {
+          x: Math.max(0, r.x), y: Math.max(0, r.y),
+          w: Math.min(r.w, window.innerWidth - r.x),
+          h: Math.min(r.h, window.innerHeight - r.y),
+          dpr: window.devicePixelRatio || 1,
+        });
+      });
+      huelle.addEventListener("contextmenu", (e) => { e.preventDefault(); beenden(null); });
+      window.addEventListener("keydown", beiTaste, true);
+    });
+  }
+
   browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     (async () => {
       try {
         switch (msg.cmd) {
           case "ping":
             sendResponse({ ok: true, injected: true, version: "1.1.0" });
+            break;
+          case "selectRegion":
+            sendResponse(await selectRegion(msg.hint));
             break;
           case "collectSource":
             sendResponse(sammleQuelle());

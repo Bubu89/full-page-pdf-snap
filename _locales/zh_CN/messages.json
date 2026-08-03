@@ -15,7 +15,7 @@
     "message": "将整页保存为 PDF"
   },
   "popupCapture": {
-    "message": "立即捕获"
+    "message": "捕获整个页面"
   },
   "popupShortcut": {
     "message": "快捷键："
@@ -298,5 +298,35 @@
   },
   "optTextLayerHint": {
     "message": "将页面自身的文本以不可见的方式写入 PDF，位置与图像中显示的位置一致。PDF 因此可以检索，文本也可以复制，而外观不会改变。文本取自文档本身，而非从图像识别得来：在真实页面上测得每个词都得以保留，而 OCR 的召回率为 92.6%。仅适用于“单页连续”格式。"
+  },
+  "popupRegion": {
+    "message": "选择区域…"
+  },
+  "popupHideOverlays": {
+    "message": "Hide banners and pop-ups"
+  },
+  "popupHideOverlaysHint": {
+    "message": "Consent dialogs and floating bars are hidden for the capture and restored afterwards."
+  },
+  "popupHideOn": {
+    "message": "Banners will be hidden"
+  },
+  "popupHideOff": {
+    "message": "Banners will be captured as they are"
+  },
+  "popupWorking": {
+    "message": "Capturing …"
+  },
+  "popupSaved": {
+    "message": "Saved"
+  },
+  "popupUnknownError": {
+    "message": "Unknown error"
+  },
+  "regionHint": {
+    "message": "拖动鼠标选择区域 · Esc 取消"
+  },
+  "popupRegionCancelled": {
+    "message": "已取消选择"
   }
 }

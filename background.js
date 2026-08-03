@@ -217,7 +217,7 @@ async function captureFullPage(tab, wahl) {
   // Aufnahme mit einem einzigen Abschnitt: ein Bild, eine Seite, gleiche
   // Textebene, gleiche Nachweiszeile. Alles andere waere ein zweiter Weg mit
   // eigenen Fehlern.
-  if (wahl && wahl.visibleOnly) settings.visibleOnly = true;
+  if (wahl && wahl.region) settings.region = wahl.region;
   log("Start capture, tab=", tab.id, "url=", tab.url, "settings=", settings);
 
   let originalZoom = null;
@@ -446,8 +446,8 @@ async function captureFullPageInner(tab, settings) {
       // Der Rest der Kette laeuft unveraendert weiter — ein Abschnitt ergibt
       // ein Bild, eine Seite und dieselbe Nachweiszeile wie sonst. Eine
       // eigene Ausgabeform waere ein zweiter Ort fuer dieselben Fehler.
-      if (settings.visibleOnly) {
-        log("Nur sichtbarer Ausschnitt — Aufnahme nach dem ersten Abschnitt beendet.");
+      if (settings.region) {
+        log("Bereichsauswahl — Aufnahme nach dem ersten Abschnitt beendet.");
         break;
       }
 
@@ -769,6 +769,39 @@ async function captureFullPageInner(tab, settings) {
     }
     grenzen.push(bigH);
     return grenzen;
+  }
+
+  /* Auf den gewaehlten Bereich zuschneiden.
+   *
+   * Erst hier, nicht schon beim Aufnehmen: Das Zusammensetzen der Abschnitte,
+   * die Behandlung der Nebenbereiche und die Skalierung sind fuer alle
+   * Aufnahmearten dieselben. Ein eigener Zweig weiter oben waere ein zweiter
+   * Ort fuer dieselben Fehler.
+   *
+   * Die Auswahl kam in CSS-Pixeln aus der Seite; das Bild liegt in
+   * Geraetepixeln vor. Der Faktor ist derselbe, mit dem auch die Abschnitte
+   * gezeichnet wurden.
+   */
+  if (settings.region) {
+    const r = settings.region;
+    // dprY ist derselbe Faktor, mit dem die Abschnitte ins Gesamtbild gezeichnet
+    // wurden — CSS-Pixel der Seite zu Bildpunkten der Aufnahme.
+    const f = dprY || (r.dpr || 1);
+    const zx = Math.max(0, Math.round(r.x * f));
+    const zy = Math.max(0, Math.round(r.y * f));
+    const zw = Math.max(1, Math.min(Math.round(r.w * f), big.width - zx));
+    const zh = Math.max(1, Math.min(Math.round(r.h * f), big.height - zy));
+    const zu = document.createElement("canvas");
+    zu.width = zw; zu.height = zh;
+    zu.getContext("2d").drawImage(big, zx, zy, zw, zh, 0, 0, zw, zh);
+    big.width = zw; big.height = zh;
+    big.getContext("2d").drawImage(zu, 0, 0);
+    bigH = zh;
+    log("Auf Bereich zugeschnitten:", zx, zy, zw, zh, "Faktor", f.toFixed(2));
+    // Die Textebene bezieht sich auf das ganze Dokument. Nach dem Zuschnitt
+    // stimmen ihre Koordinaten nicht mehr — eine falsche Textebene ist
+    // schlechter als gar keine.
+    textWoerter = null;
   }
 
   const pages = [];
@@ -1295,7 +1328,32 @@ async function runOnActiveTab(wahl) {
   // Nur der sichtbare Ausschnitt? Dann entfaellt das Scrollen, alles Weitere
   // bleibt gleich: derselbe PDF-Schreiber, dieselbe Textebene, dieselbe
   // Nachweiszeile. Eine zweite Ausgabeform waere ein zweiter Ort fuer Fehler.
-  const nurSichtbar = !!(wahl && wahl.visibleOnly);
+  // Bereich mit der Maus: die Auswahl geschieht in der Seite, bevor irgendetwas
+  // aufgenommen wird. Bricht der Nutzer ab, endet der Vorgang ohne Datei und
+  // ohne Fehlermeldung — ein Abbruch ist kein Fehler.
+  const bereichGewuenscht = !!(wahl && wahl.region);
+  // Die Auswahl geschieht VOR jeder anderen Vorbereitung: Der Nutzer soll die
+  // Seite unveraendert sehen, waehrend er zieht. Erst danach wird ausgeblendet
+  // und gescrollt.
+  let gewaehlterBereich = null;
+  if (bereichGewuenscht) {
+    try {
+      await ensureContentInjected(tab.id);
+      const hinweis = browser.i18n.getMessage("regionHint")
+                   || "Drag to select an area \u00b7 Esc cancels";
+      gewaehlterBereich = await browser.tabs.sendMessage(
+        tab.id, { cmd: "selectRegion", hint: hinweis });
+    } catch (e) {
+      log("Bereichsauswahl nicht moeglich:", e && e.message);
+      return { ok: false, error: (e && e.message) || "Auswahl auf dieser Seite nicht moeglich." };
+    }
+    // Abbruch ist kein Fehler: keine Datei, keine Meldung, kein Fehlerzustand.
+    if (!gewaehlterBereich) {
+      log("Bereichsauswahl abgebrochen.");
+      return { ok: true, result: { cancelled: true, pages: 0 } };
+    }
+  }
+
   _captureInFlight = true;
   // Reset der letzten Save-Ergebnisse — der naechste Tap soll den NEUEN Capture betreffen.
   _lastDownloadId = null;
@@ -1315,7 +1373,7 @@ async function runOnActiveTab(wahl) {
   try {
     const res = useDirectPdf
       ? await capturePdfDirect(tab, check.pdfUrl)
-      : await captureFullPage(tab, { visibleOnly: nurSichtbar });
+      : await captureFullPage(tab, { region: gewaehlterBereich });
     await setBadge("OK", "#059669");
     // Notification wird bereits aus captureFullPageInner gefeuert (vor downloads.open),
     // damit User auf Android auch dann Erfolg sieht wenn das Oeffnen haengt.
@@ -1353,7 +1411,7 @@ if (browser.commands && typeof browser.commands.onCommand?.addListener === "func
 
 browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg && msg.cmd === "capture") {
-    runOnActiveTab({ visibleOnly: !!msg.visibleOnly })
+    runOnActiveTab({ region: !!msg.region })
       .then(r => {
         // runOnActiveTab wirft nicht mehr — Fehler kommen als {ok:false,error}.
         if (r && r.ok === false) sendResponse({ ok: false, error: r.error });

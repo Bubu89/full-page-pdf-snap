@@ -15,7 +15,7 @@
     "message": "Guardar la página completa como PDF"
   },
   "popupCapture": {
-    "message": "Capturar ahora"
+    "message": "Capturar la página completa"
   },
   "popupShortcut": {
     "message": "Atajo:"
@@ -298,5 +298,35 @@
   },
   "optTextLayerHint": {
     "message": "Copia el texto de la página en el PDF de forma invisible, en la posición en que aparece en la imagen. El PDF se puede buscar y el texto se puede copiar, sin que cambie su aspecto. El texto procede del documento y no se reconoce a partir de la imagen: medido en una página real se conserva cada palabra, mientras que el OCR recuperó el 92,6 por ciento. Solo se aplica al formato de una página continua."
+  },
+  "popupRegion": {
+    "message": "Seleccionar un área…"
+  },
+  "popupHideOverlays": {
+    "message": "Hide banners and pop-ups"
+  },
+  "popupHideOverlaysHint": {
+    "message": "Consent dialogs and floating bars are hidden for the capture and restored afterwards."
+  },
+  "popupHideOn": {
+    "message": "Banners will be hidden"
+  },
+  "popupHideOff": {
+    "message": "Banners will be captured as they are"
+  },
+  "popupWorking": {
+    "message": "Capturing …"
+  },
+  "popupSaved": {
+    "message": "Saved"
+  },
+  "popupUnknownError": {
+    "message": "Unknown error"
+  },
+  "regionHint": {
+    "message": "Arrastre para seleccionar un área · Esc cancela"
+  },
+  "popupRegionCancelled": {
+    "message": "Selección cancelada"
   }
 }

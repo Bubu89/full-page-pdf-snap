@@ -5,16 +5,20 @@ const $ = id => document.getElementById(id);
 const t = (schluessel, ersatz) =>
   (window.PageShotI18n && window.PageShotI18n.t && window.PageShotI18n.t(schluessel)) || ersatz;
 
-async function aufnehmen(knopf, nurSichtbar) {
+async function aufnehmen(knopf, bereich) {
   const status = $("status");
   status.className = "status";
   status.textContent = t("popupWorking", "Capturing …");
   $("go").disabled = true;
-  $("visible").disabled = true;
+  $("region").disabled = true;
 
   try {
-    const res = await browser.runtime.sendMessage({ cmd: "capture", visibleOnly: !!nurSichtbar });
-    if (res && res.ok) {
+    const res = await browser.runtime.sendMessage({ cmd: "capture", region: !!bereich });
+    if (res && res.ok && res.result && res.result.cancelled) {
+      // Abbruch ist kein Fehler und keine Erfolgsmeldung.
+      status.className = "status";
+      status.textContent = t("popupRegionCancelled", "Selection cancelled");
+    } else if (res && res.ok) {
       status.className = "status ok";
       const n = (res.result && res.result.pages) || 1;
       status.textContent = t("popupSaved", "Saved") + ` (${n})`;
@@ -28,12 +32,16 @@ async function aufnehmen(knopf, nurSichtbar) {
     status.textContent = e.message || String(e);
   } finally {
     $("go").disabled = false;
-    $("visible").disabled = false;
+    $("region").disabled = false;
   }
 }
 
 $("go").addEventListener("click", () => aufnehmen($("go"), false));
-$("visible").addEventListener("click", () => aufnehmen($("visible"), true));
+// Die Auswahl geschieht in der Seite; das Fenster muss dafuer aus dem Weg.
+$("region").addEventListener("click", () => {
+  browser.runtime.sendMessage({ cmd: "capture", region: true });
+  window.close();
+});
 
 /* Schalter fuer stoerende Einblendungen.
  *

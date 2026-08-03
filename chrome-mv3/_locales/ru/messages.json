@@ -15,7 +15,7 @@
     "message": "Сохранить страницу целиком в PDF"
   },
   "popupCapture": {
-    "message": "Снять сейчас"
+    "message": "Снимок всей страницы"
   },
   "popupShortcut": {
     "message": "Сочетание клавиш:"
@@ -298,5 +298,35 @@
   },
   "optTextLayerHint": {
     "message": "Переносит текст самой страницы в PDF невидимо, в том месте, где он расположен на изображении. По PDF можно искать, текст можно копировать — внешний вид при этом не меняется. Текст берётся из документа, а не распознаётся с изображения: при измерении на реальной странице сохранилось каждое слово, тогда как OCR восстановил 92,6 процента. Действует только для формата одной непрерывной страницы."
+  },
+  "popupRegion": {
+    "message": "Выбрать область…"
+  },
+  "popupHideOverlays": {
+    "message": "Hide banners and pop-ups"
+  },
+  "popupHideOverlaysHint": {
+    "message": "Consent dialogs and floating bars are hidden for the capture and restored afterwards."
+  },
+  "popupHideOn": {
+    "message": "Banners will be hidden"
+  },
+  "popupHideOff": {
+    "message": "Banners will be captured as they are"
+  },
+  "popupWorking": {
+    "message": "Capturing …"
+  },
+  "popupSaved": {
+    "message": "Saved"
+  },
+  "popupUnknownError": {
+    "message": "Unknown error"
+  },
+  "regionHint": {
+    "message": "Выделите область мышью · Esc — отмена"
+  },
+  "popupRegionCancelled": {
+    "message": "Выбор отменён"
   }
 }

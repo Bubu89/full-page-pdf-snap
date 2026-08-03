@@ -15,7 +15,7 @@
     "message": "ページ全体を PDF として保存"
   },
   "popupCapture": {
-    "message": "今すぐ取得"
+    "message": "ページ全体をキャプチャ"
   },
   "popupShortcut": {
     "message": "ショートカット:"
@@ -298,5 +298,35 @@
   },
   "optTextLayerHint": {
     "message": "ページ自身のテキストを、画像上に表示されている位置に合わせて不可視で PDF に取り込みます。見た目を変えることなく、PDF 内を検索でき、テキストをコピーできます。テキストは画像から認識するのではなく文書から取得します。実際のページで測定したところ、OCR の再現率が 92.6 パーセントだったのに対し、すべての単語が保持されました。「1 ページ連続」形式のみに適用されます。"
+  },
+  "popupRegion": {
+    "message": "範囲を選択…"
+  },
+  "popupHideOverlays": {
+    "message": "Hide banners and pop-ups"
+  },
+  "popupHideOverlaysHint": {
+    "message": "Consent dialogs and floating bars are hidden for the capture and restored afterwards."
+  },
+  "popupHideOn": {
+    "message": "Banners will be hidden"
+  },
+  "popupHideOff": {
+    "message": "Banners will be captured as they are"
+  },
+  "popupWorking": {
+    "message": "Capturing …"
+  },
+  "popupSaved": {
+    "message": "Saved"
+  },
+  "popupUnknownError": {
+    "message": "Unknown error"
+  },
+  "regionHint": {
+    "message": "ドラッグして範囲を選択 · Esc で中止"
+  },
+  "popupRegionCancelled": {
+    "message": "選択を中止しました"
   }
 }

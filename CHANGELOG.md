@@ -1,3 +1,36 @@
+## 2026-08-03 — Bereich mit der Maus auswaehlen
+
+Statt eines festen Ausschnitts laesst sich der Bereich jetzt mit der Maus
+aufziehen. Die Auswahl liegt in einem eigenen Overlay ueber der Seite, nicht in
+ihr: so kann kein Klick versehentlich einen Link ausloesen, und der Zustand der
+Seite bleibt unberuehrt. Waehrend des Ziehens steht die Groesse in Pixeln daneben.
+
+Abbrechen ist ausdruecklich vorgesehen — Esc, rechte Maustaste oder ein Zug
+unter zwoelf Pixeln. Ein Abbruch erzeugt keine Datei, keine Meldung und keinen
+Fehlerzustand; ein Werkzeug, das den Nutzer in eine angefangene Auswahl
+einsperrt, waere schlimmer als eines ohne Auswahl.
+
+Der Zuschnitt geschieht erst nach dem Zusammensetzen der Aufnahme, nicht davor:
+Abschnitte zusammenfuegen, Nebenbereiche behandeln, skalieren — das ist fuer
+alle Aufnahmearten dasselbe. Ein eigener Zweig weiter oben waere ein zweiter
+Ort fuer dieselben Fehler. Die Textebene faellt beim Zuschnitt weg, weil ihre
+Koordinaten sich auf das ganze Dokument beziehen; eine falsche Textebene waere
+schlechter als keine.
+
+### Zwei Fehler auf dem Weg dorthin
+
+**Der Knopf trug den alten Text.** Die neuen Bezeichnungen standen in
+`i18n-data.js`, aber `_locales/*/messages.json` hat Vorrang und trug weiter
+"Capture now". Jetzt in allen neun Sprachen gepflegt, `i18n-data.js` daraus
+erzeugt.
+
+**Die Chrome-Fassung blieb zurueck.** Der Portierungslauf bricht ab, wenn ein
+Patch nicht genau so oft greift wie erwartet — und der Zuschnitt legt eine
+fuenfte Zeichenflaeche an, wo vier erwartet waren. Das ist die Absicht dieser
+Pruefung: lieber ein Abbruch als eine Chrome-Fassung, in der eine Zeichenflaeche
+im Service Worker nicht existiert. Erwartungswert angepasst, beide Fassungen
+wieder deckungsgleich.
+
 ## 2026-08-03 — Schalter im Hauptfenster, Einzelaufnahme, und ein Fehler, den nur der Integrationstest fand
 
 ### Der Fehler zuerst

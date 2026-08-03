@@ -15,7 +15,7 @@
     "message": "Ganze Seite als PDF"
   },
   "popupCapture": {
-    "message": "Jetzt aufnehmen"
+    "message": "Ganze Seite aufnehmen"
   },
   "popupShortcut": {
     "message": "Tastenkürzel:"
@@ -298,5 +298,35 @@
   },
   "optTextLayerHint": {
     "message": "Übernimmt den Text der Seite unsichtbar ins PDF, an der Stelle, an der er im Bild steht. Das PDF wird durchsuchbar und der Text lässt sich kopieren — ohne dass sich am Aussehen etwas ändert. Der Text stammt aus dem Dokument und wird nicht aus dem Bild erkannt: An einer echten Seite gemessen bleibt jedes Wort erhalten, während OCR 92,6 Prozent wiedergab. Gilt nur für das Format „eine durchgehende Seite“."
+  },
+  "popupRegion": {
+    "message": "Bereich auswählen …"
+  },
+  "popupHideOverlays": {
+    "message": "Banner und Einblendungen ausblenden"
+  },
+  "popupHideOverlaysHint": {
+    "message": "Zustimmungsdialoge und mitwandernde Leisten werden nur für die Aufnahme ausgeblendet und danach wiederhergestellt."
+  },
+  "popupHideOn": {
+    "message": "Banner werden ausgeblendet"
+  },
+  "popupHideOff": {
+    "message": "Banner werden mit aufgenommen"
+  },
+  "popupWorking": {
+    "message": "Nehme auf …"
+  },
+  "popupSaved": {
+    "message": "Gespeichert"
+  },
+  "popupUnknownError": {
+    "message": "Unbekannter Fehler"
+  },
+  "regionHint": {
+    "message": "Bereich mit der Maus aufziehen · Esc bricht ab"
+  },
+  "popupRegionCancelled": {
+    "message": "Auswahl abgebrochen"
   }
 }

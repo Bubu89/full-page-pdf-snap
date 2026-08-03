@@ -15,7 +15,7 @@
     "message": "Enregistrer toute la page en PDF"
   },
   "popupCapture": {
-    "message": "Capturer maintenant"
+    "message": "Capturer toute la page"
   },
   "popupShortcut": {
     "message": "Raccourci :"
@@ -298,5 +298,35 @@
   },
   "optTextLayerHint": {
     "message": "Reprend le texte de la page dans le PDF, de façon invisible, à l'endroit où il apparaît sur l'image. Le PDF devient consultable et le texte peut être copié, sans que l'apparence change. Le texte provient du document et n'est pas reconnu à partir de l'image : mesuré sur une page réelle, chaque mot est conservé, là où l'OCR en restituait 92,6 pour cent. Ne s'applique qu'au format page continue."
+  },
+  "popupRegion": {
+    "message": "Sélectionner une zone…"
+  },
+  "popupHideOverlays": {
+    "message": "Hide banners and pop-ups"
+  },
+  "popupHideOverlaysHint": {
+    "message": "Consent dialogs and floating bars are hidden for the capture and restored afterwards."
+  },
+  "popupHideOn": {
+    "message": "Banners will be hidden"
+  },
+  "popupHideOff": {
+    "message": "Banners will be captured as they are"
+  },
+  "popupWorking": {
+    "message": "Capturing …"
+  },
+  "popupSaved": {
+    "message": "Saved"
+  },
+  "popupUnknownError": {
+    "message": "Unknown error"
+  },
+  "regionHint": {
+    "message": "Faites glisser pour sélectionner une zone · Échap annule"
+  },
+  "popupRegionCancelled": {
+    "message": "Sélection annulée"
   }
 }
