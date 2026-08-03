@@ -53,12 +53,12 @@ $("region").addEventListener("click", () => {
 /* Ein Schalter, ein Speicherschluessel, eine Rueckmeldung — fuer beide gleich.
    Zwei fast gleiche Bloecke nebeneinander waeren zwei Orte, an denen dasselbe
    schiefgehen kann. */
-async function schalter(id, schluessel, anText, ausText) {
+async function schalter(id, schluessel, anText, ausText, vorgabeAn = true) {
   const box = $(id);
   if (!box) return;
   try {
     const s = await browser.storage.local.get(schluessel);
-    box.checked = s[schluessel] !== false;
+    box.checked = vorgabeAn ? s[schluessel] !== false : s[schluessel] === true;
   } catch (_) { /* Vorgabe bleibt: eingeschaltet */ }
   box.addEventListener("change", async () => {
     const st = $("status");
@@ -78,6 +78,11 @@ async function schalter(id, schluessel, anText, ausText) {
 schalter("hideSticky", "hideSticky",
          ["popupHideOn", "Banners will be hidden"],
          ["popupHideOff", "Banners will be captured as they are"]);
+// copyPath ist der einzige Schalter, der ausgeschaltet als Vorgabe gilt: er
+// ueberschreibt die Zwischenablage, und das soll niemanden ueberraschen.
+schalter("copyPath", "copyPath",
+         ["popupCopyOn", "Path will be copied after saving"],
+         ["popupCopyOff", "Path will not be copied"], false);
 schalter("sourceMetadata", "sourceMetadata",
          ["popupCiteOn", "Citation details will be added"],
          ["popupCiteOff", "No citation details"]);

@@ -352,5 +352,17 @@
   },
   "optCopyPathFormatHint": {
     "message": "A Windows path pasted into a Linux shell under Windows leads nowhere. Choosing WSL converts it once here instead of every time by hand."
+  },
+  "popupCopyPath": {
+    "message": "Copy file path after saving"
+  },
+  "popupCopyPathHint": {
+    "message": "Paste the path straight into a terminal or a chat. Format for WSL and other shells in the settings."
+  },
+  "popupCopyOn": {
+    "message": "Path will be copied after saving"
+  },
+  "popupCopyOff": {
+    "message": "Path will not be copied"
   }
 }

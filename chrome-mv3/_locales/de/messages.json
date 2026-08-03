@@ -352,5 +352,17 @@
   },
   "optCopyPathFormatHint": {
     "message": "Ein Windows-Pfad in einer Linux-Shell unter Windows führt ins Leere. Die Wahl WSL rechnet ihn einmal hier um statt jedes Mal von Hand."
+  },
+  "popupCopyPath": {
+    "message": "Dateipfad nach dem Speichern kopieren"
+  },
+  "popupCopyPathHint": {
+    "message": "Den Pfad direkt ins Terminal oder in einen Chat einfügen. Format für WSL und andere Shells in den Einstellungen."
+  },
+  "popupCopyOn": {
+    "message": "Pfad wird nach dem Speichern kopiert"
+  },
+  "popupCopyOff": {
+    "message": "Pfad wird nicht kopiert"
   }
 }
