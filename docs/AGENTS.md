@@ -112,11 +112,15 @@ und der Endpunkt liefert sie maschinenlesbar über das Werkzeug `open_work`.
 
 ## Mehrere Agenten am selben Baum
 
-An diesem Repository arbeitet mehr als ein Prozess gleichzeitig. Am 3. August
-2026 sind dadurch zweimal fremde Aenderungen in einem Commit gelandet, der sie
-nicht meinte: ein Messdatensatz und eine Erweiterung des Endpunkts. Beide waren
-gut — aber sie wurden unter einer fremden Commit-Nachricht veroeffentlicht,
-ungelesen.
+An diesem Repository arbeitet **mehr als ein Prozess gleichzeitig** — Claude in
+diesem Fenster und Kimi in einem eigenen Terminal. Beide sind gleichberechtigt,
+und **Aenderungen des jeweils anderen sind gueltig.** Sie werden nicht
+zurueckgesetzt, nicht umgeschrieben und nicht ausgesperrt.
+
+Was schiefgehen kann, ist etwas anderes: Am 3. August 2026 landeten zweimal
+fremde Aenderungen in einem Commit, der sie nicht meinte — ein Messdatensatz und
+das `pageType`-Feld im Endpunkt. Beide waren gute Arbeit. Nur stand ueber ihnen
+eine Nachricht ueber etwas voellig anderes, und niemand hatte sie gelesen.
 
 **Deshalb: kein `git add -A` ohne vorherigen Blick.**
 
@@ -125,12 +129,18 @@ git status --short          # was liegt ueberhaupt da?
 git diff --cached --stat    # was nehme ich mit?
 ```
 
-Was nicht von der eigenen Arbeit stammt, wird **nicht mitgenommen**. Ein anderer
-Prozess ist womoeglich mitten in einer Aenderung; ein halbfertiger Stand, den
-jemand anders veroeffentlicht, ist schlimmer als ein spaeterer Commit.
+Findet sich fremde Arbeit im Baum, gilt der Reihe nach:
 
-Wer eine fremde, offensichtlich fertige Aenderung vorfindet, committet sie
-**einzeln und benennt sie als fremd** — nicht angehaengt an etwas anderes.
+1. **Ansehen.** Was tut die Aenderung, und ist sie lauffaehig? Ein Skript, das
+   noch nicht durchlaeuft, ist mitten in Arbeit.
+2. **Fertig?** Dann einen **eigenen Commit** mit einer Nachricht, die *ihre*
+   Aenderung beschreibt — nicht angehaengt an die eigene.
+3. **Halbfertig?** Stehen lassen. Der andere Prozess ist noch dran; ein von
+   aussen veroeffentlichter Zwischenstand hilft niemandem.
+
+Der Sinn ist nicht Abgrenzung, sondern Nachvollziehbarkeit: Wer in einem halben
+Jahr in die Historie sieht, soll finden, *warum* eine Zeile so aussieht — und
+das steht in der Commit-Nachricht, die zu ihr gehoert.
 
 ## Ein Beitrag gilt als fertig, wenn
 
