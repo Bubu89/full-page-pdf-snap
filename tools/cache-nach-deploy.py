@@ -41,6 +41,26 @@ BASIS = "https://provinglab.dev"
 # kurz genug, dass ein vergessener Purge sich von selbst aufloest.
 EDGE_TTL = 14400
 
+# Fehlerantworten werden NICHT gehalten. Die erste Fassung der Regel setzte die
+# Haltedauer ueber alle Statuscodes, und das hat sich am 3. August 2026 gerecht:
+# in 24 Stunden 850 Antworten mit 404, davon der groesste Teil mit
+# `cacheStatus=hit` — auf Seiten, die es gibt. Der Edge hatte waehrend eines
+# Neubaus von GitHub Pages ein 404 eingefangen und lieferte es danach vier
+# Stunden lang weiter aus. Eine Regel gegen Ausfaelle, die den Ausfall
+# konserviert, ist schlimmer als keine.
+#
+# Dazu 460 Antworten mit 504, alle mit `cacheStatus=miss`: keine Kopie am Edge,
+# also Gang zum Origin, und das baute gerade. Beides zeigt in dieselbe Richtung
+# — gehalten werden darf nur, was tatsaechlich eine Seite ist.
+# -1 heisst „no-store", 0 hiesse nur „revalidieren" — und revalidieren laesst
+# den Eintrag am Edge stehen. Mit 0 gemessen: der zweite Abruf derselben
+# fehlenden Adresse kam als `cf-cache-status: HIT` zurueck. Erst -1 verhindert
+# das Speichern wirklich.
+FEHLER_TTL = [
+    {"status_code_range": {"from": 400, "to": 499}, "value": -1},
+    {"status_code_range": {"from": 500, "to": 599}, "value": -1},
+]
+
 
 def token():
     sitzung = open("/dev/shm/bw-session").read().strip()
@@ -77,11 +97,14 @@ def regel_setzen(tok, trocken):
             continue
         ap = r.setdefault("action_parameters", {})
         ist = ap.get("edge_ttl", {})
-        if ist.get("mode") == "override_origin" and ist.get("default") == EDGE_TTL:
-            print(f"  = Edge-TTL bereits {EDGE_TTL}s")
+        if (ist.get("mode") == "override_origin" and ist.get("default") == EDGE_TTL
+                and ist.get("status_code_ttl") == FEHLER_TTL):
+            print(f"  = Edge-TTL bereits {EDGE_TTL}s, Fehlerseiten ausgenommen")
             return True
-        print(f"  ~ Edge-TTL {json.dumps(ist)} → override_origin {EDGE_TTL}s")
-        ap["edge_ttl"] = {"mode": "override_origin", "default": EDGE_TTL}
+        print(f"  ~ Edge-TTL {json.dumps(ist)} → override_origin {EDGE_TTL}s "
+              "(4xx/5xx ausgenommen)")
+        ap["edge_ttl"] = {"mode": "override_origin", "default": EDGE_TTL,
+                          "status_code_ttl": FEHLER_TTL}
         ap["serve_stale"] = {"disable_stale_while_updating": False}
         geaendert = True
     if not geaendert:

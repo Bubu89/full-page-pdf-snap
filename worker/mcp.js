@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.13.1";
+const VERSION = "1.14.0";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -177,6 +177,15 @@ function istOeffentlich(u) {
 // Hinweis, 301 eine Anweisung; fuer einen Menschen oder einen Agenten sieht 200
 // so aus, als gaebe es die Seite noch. GitHub Pages kann nicht weiterleiten,
 // dieser Worker schon — er liegt davor.
+// Die Werkzeugnamen als Menge, um sie auch dann zu erkennen, wenn jemand sie
+// fuer Adressen haelt. Handgefuehrt statt aus der Werkzeugliste abgeleitet:
+// die Liste entsteht weiter unten in der Datei, und eine Abhaengigkeit nach
+// vorn waere hier teurer als sechs Zeichenketten.
+const WERKZEUGNAMEN = new Set([
+  "list_measurements", "get_measurement_data", "get_method",
+  "extract_citation", "how_to_capture", "open_work",
+]);
+
 const UMGEZOGEN = {
   "/extension-permissions-risk/": "/measurements/extension-permissions-risk/",
   "/pdf-extension-permissions/":  "/measurements/pdf-extension-permissions/",
@@ -1546,6 +1555,38 @@ export default {
 
       if (url.pathname === "/mcp" || url.pathname === "/mcp/") {
         return handleMcp(request, SITE);
+      }
+
+      // Werkzeugname als Adresse aufgerufen. Gemessen am 3. August 2026:
+      // /open_work, /mcp/open_work und /tools/open_work zusammen ueber
+      // 70 Anfragen in 24 Stunden, alle mit 404 beantwortet. Das ist kein
+      // Angriff und kein Tippfehler, sondern ein Agent, der einen
+      // Werkzeugnamen fuer einen Endpunkt haelt — eine naheliegende Annahme,
+      // wenn man REST gewohnt ist. Ein 404 laesst ihn ratlos zurueck; die
+      // richtige Aufrufform kostet uns zwoelf Zeilen.
+      const werkzeug = url.pathname.replace(/^\/(mcp|tools)\//, "/").replace(/^\/|\/$/g, "");
+      if (WERKZEUGNAMEN.has(werkzeug)) {
+        return new Response(JSON.stringify({
+          error: "not_an_http_endpoint",
+          message: `'${werkzeug}' is an MCP tool, not a path. Tools are called `
+                 + `by JSON-RPC on ${SITE}/mcp, not by URL.`,
+          how_to_call: {
+            method: "POST",
+            url: `${SITE}/mcp`,
+            headers: { "content-type": "application/json" },
+            body: {
+              jsonrpc: "2.0", id: 1, method: "tools/call",
+              params: { name: werkzeug, arguments: {} },
+            },
+          },
+          connect: `claude mcp add --transport http provinglab ${SITE}/mcp`,
+          list_tools: `POST ${SITE}/mcp with method 'tools/list'`,
+          docs: `${SITE}/for-agents/`,
+        }, null, 2), {
+          status: 404,   // die Adresse gibt es wirklich nicht — nur der Koerper hilft weiter
+          headers: { "content-type": "application/json; charset=utf-8",
+                     "cache-control": "no-store" },
+        });
       }
 
       if (url.pathname.startsWith("/oauth/")) {
