@@ -29,12 +29,11 @@ und in sich schlüssig. Wer sie trennen wollte, müsste ein eigenes Konto oder
 eine Organisation verwenden — beides nur über die Web-Oberfläche anlegbar.
 Solange die Verknüpfung gewollt ist, gibt es hier nichts zu heilen.
 
-**Restrisiko, benannt:** `goldfishgateway.com` ist eine eigene Domain. Wer deren
-Registrierungsdaten abfragt, kann je nach Datenschutzeinstellung des Registrars
-weiterkommen als über die Seite selbst. **Prüfen:** ob dort ein
-Whois-Datenschutz aktiv ist. Das ist die einzige Stelle, an der die
-Pseudonymität von außen aufgehoben werden könnte, ohne dass es hier sichtbar
-wäre.
+**Geprüft am 3. August 2026:** Die RDAP-Abfrage zu `goldfishgateway.com` bei
+Verisign gibt als einzige Stelle den Registrar (EuroDNS S.A.) zurück — **keine
+Registrierungsdaten des Inhabers**, Status `client transfer prohibited`. Über
+diesen Weg fällt die Pseudonymität also nicht. Das war der einzige Kanal, der
+von außen mehr hätte preisgeben können als die Seite selbst.
 
 ---
 
@@ -179,11 +178,13 @@ Verbleibende Verarbeitung: Server-Logs bei Cloudflare und GitHub Pages als
 Auftragsverarbeiter, sowie die vom Nutzer selbst genannten Adressen beim Aufruf
 des Endpunkts.
 
-**Offener Punkt:** Es ist nicht dokumentiert, **wie lange** die
-Cloudflare-Worker-Logs (Observability ist in `wrangler.toml` aktiviert) die
-angefragten Adressen vorhalten. Eine angefragte URL kann verraten, woran jemand
-arbeitet. `privacy.html` sollte das benennen — oder die Aufbewahrung wird
-begrenzt.
+**Offener Punkt:** `wrangler.toml` setzt `[observability] enabled = true`, ohne
+eine Aufbewahrungsdauer festzulegen — es gilt die Voreinstellung von Cloudflare
+Workers Logs. Eine angefragte Adresse kann verraten, woran jemand arbeitet; das
+ist der einzige Datenpunkt mit Personenbezug, den der Endpunkt überhaupt
+erzeugt. **Zu tun:** entweder in `privacy.html` benennen, was gespeichert wird
+und wie lange, oder die Aufbewahrung ausdrücklich kurz setzen. Beides ist
+billiger als die Frage später beantworten zu müssen.
 
 ---
 
@@ -201,10 +202,11 @@ begrenzt.
 1. **Ratenbegrenzung auf `/mcp`** — braucht einen Cloudflare-Token mit
    Firewall-Rechten. Solange sie fehlt, ist der Endpunkt als Verstärker
    verwendbar.
-2. **Whois-Datenschutz für `goldfishgateway.com` prüfen** — die einzige Stelle,
-   an der die Pseudonymität von außen fallen könnte.
-3. **Log-Aufbewahrung in `privacy.html` benennen** oder begrenzen.
-4. **Wohnort in `/about/` ergänzen** (Option 2 aus Abschnitt 2).
-5. Die vier verbleibenden Befunde aus `rechtscheck.py` abarbeiten: fehlender
-   Haftungshinweis auf `404.html` und `/tools/full-page-pdf-snap/`, fehlende
-   Offenlegung auf `/recipes/` und der MCP-Notiz.
+2. **Log-Aufbewahrung in `privacy.html` benennen** oder ausdrücklich begrenzen —
+   die angefragten Adressen sind der einzige personenbeziehbare Datenpunkt.
+3. **Wohnort in `/about/` ergänzen** (Option 2 aus Abschnitt 2) — eine Zeile,
+   nimmt der Offenlegungsfrage die Grundlage.
+
+**Erledigt am 3. August:** Whois-Kanal geprüft (gibt nichts preis) und die vier
+Befunde aus `rechtscheck.py` abgearbeitet — der Prüfer meldet erstmals
+**0 Fehler**.
