@@ -1,3 +1,41 @@
+## 2026-08-03 — 262 Zeitueberschreitungen in 24 Stunden, und warum serve_stale nichts ausrichten konnte
+
+**Was.** Edge-Haltedauer fuer HTML von *Origin-TTL* auf **feste 4 Stunden**,
+dazu `tools/cache-nach-deploy.py`, das nach jeder Auslieferung gezielt leert.
+`cf-provinglab-tune` nachgezogen, damit der naechste Lauf es nicht zurueckdreht.
+
+**Der Befund.** Cloudflares Analytics ueber 24 Stunden, per GraphQL abgefragt:
+**262 Antworten mit HTTP 504** — und zwar auf Adressen, die es gibt: `/tools/`
+51 mal, die Startseite 36 mal, `/measurements/` 31 mal. Dazu 456 mal 404, davon
+der groessere Teil ebenfalls auf Seiten, die live sind. Beides faellt in die
+Zeitfenster, in denen GitHub Pages neu baut.
+
+**Warum der vorhandene Schutz nicht griff.** `serve_stale` und `always_online`
+waren eingeschaltet — sie hatten nur nichts auszuliefern. GitHub Pages sendet
+`max-age=600`, und die Cache-Regel folgte dem Origin. Zehn Minuten nach dem
+letzten Abruf lag am Edge keine Kopie mehr vor, die bei einem Ausfall haette
+einspringen koennen. Der Kommentar im Skript begruendete das ausdruecklich mit
+*„der Gewinn liegt ohnehin im serve_stale"* — diese Annahme ist jetzt gemessen
+widerlegt und im Skript durch die Zahlen ersetzt.
+
+**Wie.** Vier Stunden Haltedauer ueberbruecken jeden Pages-Neubau. Damit das
+kein Rueckschritt wird, gehoert der gezielte Purge dazu — beides steht in einer
+Datei, weil das eine ohne das andere ein Fehler waere.
+
+**Resultat.** Regel gesetzt, Cache geleert, gegengeprueft: alle vier
+Hauptadressen wieder `HIT`, Antwortzeiten 0,16 bis 0,34 s.
+
+**Was die Analytik sonst zeigte.** In 24 Stunden 3.606 Anfragen aus DE, 576 aus
+US. Meistgefragter Pfad ist `/mcp` mit 567 Anfragen — vor der Startseite mit
+430. GoogleBot 78, YandexBot 74, BingBot **3**, AppleBot **1**. Und der Punkt,
+der zur Einordnung von gestern passt: **Referral-Traffic ueber alle gecrawlten
+Pfade hinweg leer.** Die Maschinen lesen, und es kommt niemand zurueck.
+
+**Merkposten.** Zum zweiten Mal an einem Tag hat ein Pflege-Skript stillschweigend
+eine Verbesserung zurueckgedreht — erst `port.py` mit der Versionsnummer, jetzt
+beinahe `cf-provinglab-tune` mit der Cache-Regel. Wer eine Einstellung von Hand
+setzt, muss das Skript suchen, das sie ebenfalls schreibt.
+
 ## 2026-08-03 — Der Chrome-Rueckstand war kein Vergessen, sondern das Portierungsskript
 
 **Was.** `chrome-mv3/port.py` zieht die Fassung jetzt aus den Firefox-Quellen;
