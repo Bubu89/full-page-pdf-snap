@@ -1,3 +1,56 @@
+## 2026-08-03 — Kann eine KI die Erweiterung benutzen? Beide Haelften gemessen
+
+**Was.** Zwei Messungen und der Beitrag
+`/notes/what-an-agent-can-do-with-an-extension/`. Skripte
+`messung-agent-nutzt-erweiterung.py` und `messung-agent-echte-geste.py`,
+Datensaetze `2026-08-03-agent-uses-the-extension.json` und
+`2026-08-03-agent-real-gesture.json`.
+
+**Warum.** Der Endpunkt verweist neuerdings auf die Erweiterung. Damit stand die
+Frage im Raum, ob ein Agent sie nicht gleich selbst bedienen kann. Eine
+Behauptung dazu waere billig gewesen; die Seite lebt vom Gegenteil.
+
+**Wie und was dabei herauskam.** In einem agentengesteuerten Chromium 145 laedt
+die Erweiterung und ihr Hintergrundprozess laeuft — beides bestanden. Dann
+liefert `chrome.tabs.query` zwei Tabs mit **leerer** Adresse und leerem Titel:
+sie laeuft und ist blind. Ursache, in beiden Fassungen geprueft: sie fuehrt
+`activeTab` und **keine** Host-Rechte, sieht einen Tab also erst nach einer
+echten Nutzergeste.
+
+Zweite Messung, gleicher Aufbau, ein Unterschied — der Tastenbefehl kam nicht
+als Skript-Klick, sondern ueber den Eingabeweg des Fenstersystems (X11 XTEST,
+derselbe Mechanismus, den `xdotool` nutzt):
+
+| Zeitpunkt | Sichtbare Tabs |
+|---|---|
+| geladen, Worker wach, keine Geste | **0** |
+| nach `Alt+Shift+Y` als echtes Eingabeereignis | **1** |
+
+**Resultat.** Der Browser fragt nicht, *wer* die Geste gemacht hat, sondern ob
+ueberhaupt eine den Eingabeweg erreicht hat. Damit ist die Antwort keine
+Ja-Nein-Frage, sondern eine Trennlinie: Agenten, die ueber Eingabeereignisse
+handeln — Claude in Chrome, ChatGPT-Agentenmodus, Comet, Computer-Use-Modelle,
+pixelbasierte MCP-Server mit `xdotool`, Bruecken wie `chrome-use` — koennen sie
+bedienen. Agenten, die nur ueber CDP und das Dokument gehen — Playwright MCP,
+Chrome-DevTools-MCP, gewoehnliche Skripte — koennen es nicht.
+
+**Offengelegt im Beitrag.** Die Aufnahme selbst lief im zweiten Versuch nicht
+zu Ende, weil das Steuerprogramm den Browser mitten im Zusammenbau schloss
+(`TargetClosedError`). Das ist unsere Wartezeit, nicht die Erweiterung; die
+Aussage stuetzt sich auf den Berechtigungsuebergang, und der ist gemessen.
+
+**Was daran fuer die Erweiterung spricht.** Dass sie sich nicht heimlich von
+Software ausloesen laesst, ist kein Mangel, sondern die Folge der schmalen
+Berechtigung, fuer die wir in der
+[Berechtigungs-Messung](https://provinglab.dev/measurements/pdf-extension-permissions/)
+argumentieren.
+
+**Panne, vor dem Schaden bemerkt.** Beim Umbau des Beitrags blieben `{TITEL}`,
+`{AMO}`, `{CWS}` und `{ROHDATEN}` als literale Klammern stehen — die Seite ging
+kurzzeitig mit sichtbaren Platzhaltern und drei toten Installationslinks live.
+`rechtscheck.py` und `tools/links-pruefen.py` haben es gefunden, ein
+Nachfolge-Commit hat es behoben.
+
 ## 2026-08-03 — Wo der Endpunkt aufhoert, steht jetzt ein Werkzeug mit Adresse
 
 **Was.** Jede Antwort des Zitations-Endpunkts, die nicht durchkommt, traegt ein
