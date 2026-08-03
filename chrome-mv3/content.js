@@ -1022,10 +1022,18 @@
         if (!zieht) return;
         const r = rechteck(e);
         // Ein Zug unter 12 Pixeln war ein Klick, keine Auswahl.
+        // Fensterkoordinaten allein genuegen nicht: Die Aufnahme beginnt am
+        // Seitenanfang, die Auswahl geschah aber an der Stelle, an der der
+        // Nutzer gerade stand. Ohne den Scrollstand landet der Ausschnitt um
+        // genau diese Strecke zu weit oben — bei einer weit gescrollten Seite
+        // zeigt das PDF dann etwas voellig anderes als das Gewaehlte.
+        const versatzY = window.scrollY || document.documentElement.scrollTop || 0;
+        const versatzX = window.scrollX || document.documentElement.scrollLeft || 0;
         beenden(r.w < 12 || r.h < 12 ? null : {
-          x: Math.max(0, r.x), y: Math.max(0, r.y),
+          x: Math.max(0, r.x) + versatzX, y: Math.max(0, r.y) + versatzY,
           w: Math.min(r.w, window.innerWidth - r.x),
           h: Math.min(r.h, window.innerHeight - r.y),
+          scrollX: versatzX, scrollY: versatzY,
           dpr: window.devicePixelRatio || 1,
         });
       });

@@ -4,7 +4,9 @@
 import { readFileSync } from "node:fs";
 const bg = readFileSync(new URL("../background.js", import.meta.url), "utf8");
 // Der zweite Treffer ist der Zuschnitt; der erste ist der Schleifenabbruch.
-const von = bg.indexOf("  if (settings.region) {", bg.indexOf("Bereichsauswahl — Aufnahme"));
+// Der Zuschnitt-Block, eindeutig an seiner ersten Zeile erkannt — nicht an
+// einem Meldungstext, der sich mit jeder Aenderung verschiebt.
+const von = bg.indexOf("  if (settings.region) {\n    const r = settings.region;");
 const bis = bg.indexOf("\n  }", bg.indexOf("textSeiteBreite = breiteCss;")) + 4;
 const block = bg.slice(von, bis);
 
@@ -50,5 +52,19 @@ const pruef = [
 ];
 let fehl = 0;
 for (const [name, ok, wie] of pruef) { if (!ok) fehl++; console.log(`  ${ok ? "ok  " : "FEHL"} ${name.padEnd(34)} ${wie}`); }
-console.log(fehl ? `\n  ${fehl} fehlgeschlagen` : "\n  alle 8 Prüfungen bestanden");
+
+// Der gemeldete Fehler: weit gescrollt, dann einen Bereich gewaehlt. Die
+// Auswahl liefert Dokumentkoordinaten (Fensterposition plus Scrollstand); der
+// Zuschnitt muss genau dort greifen und nicht am Seitenanfang.
+const gescrollt = lauf(2000, 24000, 2,
+  { x: 100, y: 5200, w: 500, h: 300, scrollY: 5000, dpr: 2 }, woerter, 1000);
+const pruef2 = [
+  ["Zuschnitt an der gescrollten Stelle", gescrollt.gelesen.sy === 10400,
+   `sy=${gescrollt.gelesen.sy} (erwartet 10400 = 5200 CSS x 2)`],
+  ["nicht am Seitenanfang", gescrollt.gelesen.sy !== 0, `sy=${gescrollt.gelesen.sy}`],
+  ["Breite stimmt", gescrollt.pxW === 1000, `pxW=${gescrollt.pxW}`],
+];
+for (const [name, ok, wie] of pruef2) { if (!ok) fehl++; console.log(`  ${ok ? "ok  " : "FEHL"} ${name.padEnd(34)} ${wie}`); }
+
+console.log(fehl ? `\n  ${fehl} fehlgeschlagen` : "\n  alle 11 Prüfungen bestanden");
 process.exit(fehl ? 1 : 0);

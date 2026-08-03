@@ -446,9 +446,18 @@ async function captureFullPageInner(tab, settings) {
       // Der Rest der Kette laeuft unveraendert weiter — ein Abschnitt ergibt
       // ein Bild, eine Seite und dieselbe Nachweiszeile wie sonst. Eine
       // eigene Ausgabeform waere ein zweiter Ort fuer dieselben Fehler.
+      // Bereichsauswahl: nur so weit aufnehmen, wie der gewaehlte Ausschnitt
+      // reicht. Nach dem ersten Abschnitt abzubrechen war falsch — der zeigt
+      // den Seitenanfang, waehrend die Auswahl an der Stelle geschah, an der
+      // der Nutzer stand. Bei einer weit gescrollten Seite kam dadurch ein
+      // voellig anderer Bildteil ins PDF.
       if (settings.region) {
-        log("Bereichsauswahl — Aufnahme nach dem ersten Abschnitt beendet.");
-        break;
+        const untenCss = settings.region.y + settings.region.h;
+        const erfasstCss = actualY + layout.viewportH;
+        if (erfasstCss >= untenCss) {
+          log("Bereichsauswahl — Ausschnitt vollstaendig erfasst bei y=", actualY);
+          break;
+        }
       }
 
       const fresh = await browser.tabs.sendMessage(tab.id, { cmd: "currentTotalH" }).catch(() => null);

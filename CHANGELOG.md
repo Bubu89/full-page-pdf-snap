@@ -1,3 +1,20 @@
+## 2026-08-03 — Bereichsauswahl nach dem Scrollen, und eine ehrlichere Beschriftung
+
+Gemeldet: weit gescrollt, Bereich aufgezogen — im PDF stand etwas anderes.
+
+Zwei Ursachen uebereinander. Die Auswahl gab **Fensterkoordinaten** zurueck,
+waehrend die Aufnahme am Seitenanfang beginnt; und bei Bereichsauswahl brach die
+Aufnahme **nach dem ersten Abschnitt** ab, der genau diesen Seitenanfang zeigt.
+Alles unterhalb war nie im Bild, aus dem zugeschnitten wurde. Der erste Fehler
+allein haette den Ausschnitt verschoben, der zweite machte ihn unmoeglich.
+
+Die Auswahl liefert jetzt Dokumentkoordinaten, und die Aufnahme laeuft, bis der
+untere Rand des Bereichs erfasst ist — nicht laenger, aber auch nicht kuerzer.
+
+**`Shortcut:`** war eine schlechte Beschriftung: Das Kuerzel loest ausschliesslich
+die ganze Seite aus, nicht die Bereichsauswahl. Jetzt steht dort
+`Kuerzel fuer "Ganze Seite":`, in neun Sprachen.
+
 ## 2026-08-03 — Zwei Versionsreihen, und warum das Skript sie jetzt kennt
 
 Firefox stand bei 2.19.0, das Chrome-Paket bei 2.2.0. Das ist kein Versehen,
