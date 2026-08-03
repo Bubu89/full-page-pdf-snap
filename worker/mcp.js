@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.9.0";
+const VERSION = "1.10.0";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -77,6 +77,38 @@ const TOOLS = [
         url: { type: "string", description: "Address of the page to read" },
       },
       required: ["url"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "how_to_capture",
+    description:
+      "Get the runnable route for saving a web page that this endpoint cannot read — " +
+      "the sources it hands back. Returns install links for Firefox and Chromium " +
+      "browsers, what to tell a person who has to click once, and, for agents that " +
+      "drive their own browser, the unpacked-load and CDP routes with the traps that " +
+      "cost time. Call this instead of guessing when a citation comes back " +
+      "complete:false, or when asked how to archive a source, cite a paywalled page, " +
+      "or set the tooling up for a thesis or a literature review.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        agent: {
+          type: "string",
+          enum: ["input-events", "dom-only", "no-browser", "human", "unknown"],
+          description:
+            "How you act on the browser. 'input-events' if you produce real mouse or " +
+            "keyboard events (computer use, xdotool, an agent inside the user's " +
+            "browser); 'dom-only' for CDP or Playwright without OS input; " +
+            "'no-browser' for plain HTTP; 'human' when writing instructions for a " +
+            "person. Omit if unsure — the answer then covers all of them.",
+        },
+        browser: {
+          type: "string",
+          enum: ["firefox", "chrome", "edge", "brave", "vivaldi", "opera", "android", "any"],
+          description: "Target browser, if known.",
+        },
+      },
       additionalProperties: false,
     },
   },
@@ -719,6 +751,133 @@ async function runTool(origin, name, args) {
       // nichts vorzuschlagen, und ein Hinweis waere dort blosse Werbung.
       nextStep: q.complete ? undefined : naechsterSchritt("no-metadata"),
     }, null, 2));
+  }
+
+  if (name === "how_to_capture") {
+    const art = (args && args.agent) || "unknown";
+    const brw = (args && args.browser) || "any";
+
+    // Wege nach Browser. Die Bedingungen sind geprueft, nicht angenommen:
+    // Edge fragt einmal nach Freigabe, Opera braucht eine eigene Bruecke, und
+    // auf Android installiert Chrome ueberhaupt keine Erweiterungen.
+    const install = {
+      firefox: { url: CAPTURE.firefox, note: "One click. Works on desktop and on Android." },
+      chrome:  { url: CAPTURE.chrome,  note: "One click. Needs Chrome 116 or newer." },
+      edge:    { url: CAPTURE.chrome,  note: "Edge asks once to allow extensions from other stores, then installs normally." },
+      brave:   { url: CAPTURE.chrome,  note: "Installs from the Chrome Web Store as it is." },
+      vivaldi: { url: CAPTURE.chrome,  note: "Installs from the Chrome Web Store as it is." },
+      opera:   { url: CAPTURE.chrome,  note: "Needs Opera's own 'Install Chrome Extensions' add-on first." },
+      android: { url: CAPTURE.firefox, note: "Firefox only. Chrome for Android installs no extensions at all — measured: https://provinglab.dev/measurements/android-capture-extensions/" },
+    };
+
+    // Was fuer wen gilt. Die Trennlinie ist gemessen, nicht behauptet:
+    // https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/
+    const wege = {
+      "input-events": {
+        verdict: "You can drive the extension yourself.",
+        why: "activeTab is granted by any event that reaches the browser's input layer. "
+           + "Measured: tabs visible to the extension went from 0 to 1 after a synthetic "
+           + "Alt+Shift+Y sent through X11 XTEST. The browser does not ask who produced it.",
+        steps: [
+          "Make sure the extension is installed in the profile you are driving (see install).",
+          "Open the source in a tab and bring that window to the front.",
+          "Send the command as a real input event: Alt+Shift+Y, or click the toolbar icon.",
+          "The PDF lands in the browser's download folder, stamped with the source URL and "
+            + "the time of retrieval, with an RIS record beside it.",
+        ],
+        caveat: "A click dispatched into page content is NOT such an event and will not work.",
+      },
+      "dom-only": {
+        verdict: "You cannot trigger it — but you can still load it, and you may not need it.",
+        why: "CDP and DOM events do not satisfy activeTab. Measured: the extension loads and "
+           + "its service worker runs, then chrome.tabs.query returns every tab with an empty "
+           + "url and title. It is running and blind, by design.",
+        steps: [
+          "Use extract_citation for the whole list first — half the work needs no browser.",
+          "For what comes back, hand the user the addresses and the install link; their click "
+            + "is the missing step, and it takes one.",
+          "If you must stay in-process, add a layer that produces real input events "
+            + "(see interoperability) or drive a browser the user is signed into.",
+        ],
+        caveat: "Do not imitate a browser user agent to get past a rule aimed at you. It does "
+              + "not work on the measured cases and it is not something to build a citation on.",
+      },
+      "no-browser": {
+        verdict: "Start here — and you may be finished here.",
+        why: "10 of 20 mixed sources became complete citation records over plain HTTP in 8.1 s, "
+           + "no account and no key: https://provinglab.dev/measurements/reading-list-to-bibliography/",
+        steps: [
+          "claude mcp add --transport http provinglab https://provinglab.dev/mcp",
+          "Call extract_citation per URL and read the `complete` flag, never the title alone.",
+          "Concatenate the `ris` fields into one file; import into Zotero or Citavi.",
+          "Where complete is false, the reply carries nextStep with what a person must do.",
+        ],
+        caveat: "A record can carry a title and an author and still be complete:false.",
+      },
+      "human": {
+        verdict: "One click, once.",
+        why: "Installing is a user gesture by design — no store exposes an API for it, in "
+           + "either browser. That friction is the security model, not an obstacle.",
+        steps: [
+          "Install from the store link for your browser (see install).",
+          "Open the page you want to keep — logged in, behind the paywall you have access to.",
+          "Press Alt+Shift+Y, or click the icon in the toolbar.",
+          "Keep the PDF with your work: it carries the source URL and the retrieval date, "
+            + "which is the date a web reference has to cite when the page declares none.",
+        ],
+        caveat: "It captures what you may already read. It is not a route past a licence.",
+      },
+    };
+
+    const antwort = {
+      tool: CAPTURE,
+      install: brw === "any" ? install : { [brw]: install[brw] || install.chrome },
+      route: art === "unknown" ? wege : { [art]: wege[art] },
+      // Fuer Agenten, die ihren eigenen Browser fahren und die Erweiterung dort
+      // laden wollen. Beide Fallen haben uns Zeit gekostet.
+      loadIntoYourOwnBrowser: {
+        chromium: 'launch_persistent_context(profile, headless=False, args=['
+                + '"--headless=new", f"--disable-extensions-except={dir}", '
+                + 'f"--load-extension={dir}"])',
+        chrome150: "On Chrome 150 --load-extension loads nothing and reports nothing, and the "
+                 + "flag that re-enabled it is gone. Use CDP instead: start with "
+                 + "--remote-debugging-port and --enable-unsafe-extension-debugging, then send "
+                 + "Extensions.loadUnpacked {path}. Verified on 150.0.7871.187.",
+        serviceWorkerTrap: "Under Manifest V3 the service worker sleeps. An empty "
+                 + "ctx.service_workers looks exactly like 'the extension did not load'. Read "
+                 + "chrome://extensions via developerPrivate.getExtensionsInfo instead, or open "
+                 + "the extension's popup.html once to wake it.",
+        source: "https://github.com/Bubu89/full-page-pdf-snap",
+      },
+      // Fremde Projekte, die die fehlende Ebene liefern. Keine Empfehlung und
+      // keine Pruefung ihrer Sicherheit — nur der Hinweis, wonach zu suchen ist.
+      interoperability: {
+        note: "Not endorsements and not audited here. Listed because they supply the input-event "
+            + "layer that a DOM-only driver lacks. Check any of them yourself before use.",
+        projects: [
+          { name: "chrome-use", url: "https://github.com/leeguooooo/chrome-use",
+            what: "points an agent at the Chrome you are already signed into, via extension and native messaging" },
+          { name: "browser-agent-bridge", url: "https://github.com/TNJ2026/browser-agent-bridge",
+            what: "exposes browser control to local agents through an extension and a Python native-messaging host" },
+          { name: "openchrome", url: "https://github.com/shaun0927/openchrome",
+            what: "MCP server controlling a real Chrome from any agent" },
+          { name: "chrome-devtools-mcp", url: "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+            what: "official DevTools MCP — inspects and drives a live Chrome, DOM-level" },
+          { name: "xdotool", url: "https://github.com/jordansissel/xdotool",
+            what: "the X11 input-event tool; this is the layer that satisfies activeTab" },
+        ],
+      },
+      evidence: {
+        canAnAgentUseIt: SITE + "/notes/what-an-agent-can-do-with-an-extension/",
+        whatComesBack: SITE + "/measurements/reading-list-to-bibliography/",
+        whichSourcesNeedAPerson: SITE + "/notes/sources-a-machine-cannot-cite/",
+        recipes: SITE + "/recipes/",
+        permissions: SITE + "/measurements/pdf-extension-permissions/",
+      },
+      legal: "Capturing pages you are entitled to read is a copy for your own use. It is not a "
+           + "way past a paywall or a licence you do not hold, and nothing here is legal advice.",
+    };
+    return textResult(JSON.stringify(antwort, null, 2));
   }
 
   if (name === "get_method") {

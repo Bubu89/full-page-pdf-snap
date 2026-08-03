@@ -35,6 +35,14 @@
       "url": "https://provinglab.dev/.well-known/agent-skills/cite-a-web-source.md",
       "sha256": "51f21cf4e1f7c3215fd8300687e3646359eb35bc79f983c4b444ffcf28457452",
       "license": "CC-BY-4.0"
+    },
+    {
+      "name": "capture-a-source",
+      "type": "skill",
+      "description": "Save a web source a server-side reader cannot reach — behind a login, a bot wall or a paywall you have access to — as a PDF carrying the source URL and the retrieval date, with an RIS record beside it. Says which agent types can trigger a browser extension and which cannot, with the measurement behind it, install links per browser, the unpacked-load and CDP routes for agents driving their own browser, and what to hand a person when the automated route ends. Use when a citation comes back complete:false, or when asked to archive a source for a thesis, a literature review or a submission record.",
+      "url": "https://provinglab.dev/.well-known/agent-skills/capture-a-source.md",
+      "sha256": "a92a8a23b753e332cf6c3c41ee727795218849450508b9406e559d1dbb8e23e4",
+      "license": "CC-BY-4.0"
     }
   ]
 }
