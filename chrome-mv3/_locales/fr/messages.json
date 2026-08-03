@@ -333,7 +333,7 @@
     "message": "Add citation details"
   },
   "popupCiteHint": {
-    "message": "Authors, DOI, licence and retrieval time into the PDF, plus an RIS record for reference managers. Read from this page only."
+    "message": "Authors, DOI, licence and retrieval time into the PDF, plus an RIS record. For AI tools to read them too, also switch on the provenance line in the settings."
   },
   "popupCiteOn": {
     "message": "Citation details will be added"

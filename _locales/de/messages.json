@@ -333,7 +333,7 @@
     "message": "Quellenangaben mitschreiben"
   },
   "popupCiteHint": {
-    "message": "Verfasser, DOI, Lizenz und Abrufzeit ins PDF, dazu ein RIS-Satz für Literaturprogramme. Gelesen wird nur diese Seite."
+    "message": "Verfasser, DOI, Lizenz und Abrufzeit ins PDF, dazu ein RIS-Satz. Damit KI-Werkzeuge sie ebenfalls lesen, zusätzlich die Nachweiszeile in den Einstellungen einschalten."
   },
   "popupCiteOn": {
     "message": "Quellenangaben werden mitgeschrieben"
