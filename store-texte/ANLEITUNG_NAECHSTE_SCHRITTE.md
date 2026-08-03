@@ -38,8 +38,14 @@ Werbeaussage. Sachliche Verneinungen und Lizenzangaben sind zulässig.
 Live steht 2.26.0.
 
 1. <https://addons.mozilla.org/developers/addon/full_page_pdf_snap_webpagesave/versions/submit/>
-2. XPI hochladen — `pack-firefox.py` legt es unter
-   `Documents\FullPagePDFSnap_Firefox\upload\` ab.
+2. Paket hochladen — liegt fertig:
+
+       C:\Users\HOLO\Documents\FullPagePDFSnap_Firefox\upload\
+         full-page-pdf-snap-firefox-2.27.0.zip     146 KB
+
+   (Mozilla nimmt das ZIP entgegen und signiert es zur XPI. `pack-firefox.py`
+   verweigert einen zweiten Bau derselben Nummer — eine vergebene Version fällt
+   beim Upload durch, deshalb prüft das Skript vorher.)
 3. Bei der Gelegenheit **Titel und Zusammenfassung** ersetzen
    (`EINREICHEN_2026-08-03.md`). Das Wort *screenshot* fehlt bisher und kostet
    laut Messung zwei von sechs Suchbegriffen.
