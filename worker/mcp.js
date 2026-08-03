@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.13.0";
+const VERSION = "1.13.1";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -617,6 +617,157 @@ async function ausRegistrierung(doi) {
   } catch (_) { return null; }
 }
 
+// Letzter Rettungsweg vor der Rueckgabe: die Maschinenschnittstelle der
+// Plattform selbst. Deutsche Repositorien und die Nationalbibliothek bieten
+// OAI-PMH oder SRU an, deklarieren die Zitationsangaben aber nicht in der
+// HTML-Seite — gemessen am 03.08.2026 (docs/data/2026-08-03-de-plattformen.json)
+// lief genau dort die HTML-Strecke leer. Datenschutz: befragt wird nur DIESELBE
+// Institution, deren Seite ohnehin abgerufen wurde — kein Dritter lernt etwas
+// Neues. Alles laeuft ueber ausPlattform, das nie wirft: Schlaegt die
+// Schnittstelle fehl, bleibt es bei der bisherigen Antwort.
+//
+// Die Erkennung muss auf der ANGEFRAGTEN Adresse laufen, nicht auf der
+// Endadresse: d-nb.info/<idn> leitet mit 303 auf .../about/html weiter, und
+// danach ist die IDN aus dem Pfad nicht mehr lesbar (gemessen 03.08.2026).
+function plattformAbfrage(zielUrl) {
+  let u;
+  try { u = new URL(zielUrl); } catch (_) { return null; }
+  const host = u.hostname.toLowerCase();
+
+  // Deutsche Nationalbibliothek: d-nb.info/<idn> -> SRU derselben Institution.
+  // Verifiziert 03.08.2026 mit IDN 1279437049: vollstaendiger oai_dc-Satz.
+  let m = host === "d-nb.info" && u.pathname.match(/^\/(\d{6,12}[xX]?)\/?$/);
+  if (m) {
+    return {
+      abruf: "https://services.dnb.de/sru/dnb?version=1.1&operation=searchRetrieve"
+           + "&query=idn%3D" + m[1] + "&recordSchema=oai_dc&maximumRecords=1",
+      schnittstelle: "SRU interface of the German National Library (services.dnb.de)",
+    };
+  }
+
+  // OPUS 4: opus4.<domain>/opus4-<instanz>/frontdoor/index/index/docId/<n> ->
+  // OAI-PMH unter /<instanz>/oai. Das Kennungsschema oai:<resthost>-<instanz>:<n>
+  // ist am 03.08.2026 an opus4.kobv.de/opus4-zib verifiziert (oai:kobv.de-opus4-zib:1
+  // liefert einen Satz). Antwortet ein Server anders, meldet er idDoesNotExist —
+  // das wird unten als Fehlschlag gewertet, nicht als Satz.
+  m = host.startsWith("opus4.") &&
+      u.pathname.match(/^\/(opus4-[a-z0-9-]+)\/frontdoor\/index\/index\/docId\/(\d+)\/?$/i);
+  if (m) {
+    const resthost = host.replace(/^opus4\./, "");
+    const kennung = "oai:" + resthost + "-" + m[1] + ":" + m[2];
+    return {
+      abruf: "https://" + host + "/" + m[1] + "/oai?verb=GetRecord&identifier="
+           + encodeURIComponent(kennung) + "&metadataPrefix=oai_dc",
+      schnittstelle: "platform OAI-PMH interface (" + host + ")",
+    };
+  }
+
+  // PsychArchives (DSpace): Handle 20.500.12034/<n> -> OAI-PMH. Kennungsschema
+  // oai:psycharchives.org:<handle> am 03.08.2026 mit /handle/20.500.12034/2487
+  // verifiziert (Identify und GetRecord antworten).
+  m = /(^|\.)psycharchives\.org$/.test(host) &&
+      u.pathname.match(/^\/handle\/(20\.500\.12034\/\d+)\/?$/);
+  if (m) {
+    return {
+      abruf: "https://psycharchives.org/oai/request?verb=GetRecord&identifier="
+           + encodeURIComponent("oai:psycharchives.org:" + m[1]) + "&metadataPrefix=oai_dc",
+      schnittstelle: "platform OAI-PMH interface (psycharchives.org)",
+    };
+  }
+
+  return null;
+}
+
+// oai_dc ohne Dokumentbaum lesen — die Worker-Umgebung hat keinen XML-Parser.
+// Die Tag-Suche toleriert beliebige Namespace-Praefixe (dc:, oai_dc:, keins),
+// weil die Auslieferung darin zwischen den Plattformen variiert.
+function oaiDcAusXml(xml) {
+  if (!xml) return null;
+  // OAI-Fehler (idDoesNotExist, badArgument, ...) und ein leerer SRU-Treffer
+  // sind ein Fehlschlag, kein Datensatz.
+  if (/<error\s+code\s*=/.test(xml)) return null;
+  if (/<numberOfRecords>\s*0\s*<\/numberOfRecords>/.test(xml)) return null;
+
+  const werte = (tag) => {
+    const re = new RegExp("<(?:[A-Za-z0-9]+:)?" + tag + "(?:\\s[^>]*)?>([\\s\\S]*?)</(?:[A-Za-z0-9]+:)?" + tag + ">", "gi");
+    const aus = [];
+    let t;
+    while ((t = re.exec(xml)) !== null) {
+      aus.push(entzeichnen(t[1].replace(/<[^>]+>/g, "")));
+    }
+    return aus.filter((s) => s.length > 0);
+  };
+
+  const titel = werte("title")[0] || "";
+  // Die DNB haengt die Rolle an den Namen ("Pflaum, Michael [Verfasser]").
+  // Die Klammer ist keine Namensbestandteil und gehoert nicht in die Zitation.
+  const autoren = werte("creator")
+    .map((s) => s.replace(/(\s*\[[^\]]*\])+\s*$/, "").trim())
+    .filter((s) => s.length > 1);
+  let jahr = "";
+  for (const d of werte("date")) {
+    const t = d.match(/\b(1[5-9]\d{2}|20\d{2})\b/);
+    if (t) { jahr = t[1]; break; }
+  }
+  const kennungen = werte("identifier");
+  const doiTreffer = kennungen.map((x) => x.match(/\b10\.\d{4,9}\/[^\s<]+/)).find(Boolean);
+  const issn = (kennungen.map((x) => x.match(/^\d{4}-\d{3}[\dxX]$/)).find(Boolean) || [""])[0];
+  // ISBN-13 aus einem identifier, der Bindestriche und Preis-Anhaengsel tragen
+  // kann ("978-3-7347-2612-5 Paperback : EUR 25.99 ..."). Gezaehlt werden die
+  // ersten 13 Ziffern; was danach kommt, ist Zusatz, kein Bestandteil.
+  let isbn = "";
+  for (const x of kennungen) {
+    const t = x.match(/\b97[89][\d-]{8,20}/);
+    if (!t) continue;
+    let aus = "", n = 0;
+    for (const c of t[0]) {
+      if (/\d/.test(c)) { aus += c; n++; if (n === 13) break; }
+      else if (n > 0) aus += "-";
+    }
+    if (n === 13) { isbn = aus.replace(/-$/, ""); break; }
+  }
+  // dc:language liegt als zwei- oder dreistelliger Code vor ("en", "ger",
+  // "deu"). Nur die belegten Dreisteller werden auf zwei Stellen gebracht;
+  // alles andere bleibt weg, statt geraten zu werden.
+  const sprachKurz = { ger: "de", deu: "de", eng: "en", fre: "fr", fra: "fr",
+                       spa: "es", ita: "it", lat: "la" };
+  const sprachRoh = (werte("language")[0] || "").toLowerCase();
+  const sprache = /^[a-z]{2}$/.test(sprachRoh) ? sprachRoh : (sprachKurz[sprachRoh] || "");
+  const typen = werte("type").join(" ");
+  const art = isbn ? "Buch"
+            : issn || /\barticle\b/i.test(typen) ? "Zeitschriftenaufsatz"
+            : /preprint/i.test(typen) ? "Preprint"
+            : /thesis|dissertation|doctoral|masterarbeit|bachelor/i.test(typen) ? "Hochschulschrift"
+            : /report|working ?paper/i.test(typen) ? "Bericht"
+            : /conference|proceeding/i.test(typen) ? "Konferenzbeitrag"
+            : /book/i.test(typen) ? "Buch"
+            : "Internetquelle";
+  if (!titel) return null;
+  return {
+    title: titel, authors: autoren, year: jahr,
+    journal: "", volume: "", issue: "", firstPage: "", lastPage: "",
+    publisher: werte("publisher")[0] || "",
+    issn, isbn,
+    doi: doiTreffer ? doiTreffer[0].replace(/[.,;)]+$/, "") : "",
+    art, language: sprache, source: "",
+  };
+}
+
+async function ausPlattform(zielUrl) {
+  const p = plattformAbfrage(zielUrl);
+  if (!p) return null;
+  try {
+    const r = await fetch(p.abruf, {
+      headers: { accept: "application/xml,text/xml", "user-agent": AGENT },
+      cf: { cacheTtl: 0 },
+    });
+    if (!r.ok) return null;
+    const reg = oaiDcAusXml((await r.text()).slice(0, 300000));
+    if (reg && reg.title) reg.source = p.schnittstelle;
+    return reg;
+  } catch (_) { return null; }
+}
+
 /** Bringt einen Registrierungssatz auf dieselbe Form wie die Seitenauswertung. */
 function vervollstaendigen(reg, url) {
   const jetzt = new Date().toISOString();
@@ -625,7 +776,7 @@ function vervollstaendigen(reg, url) {
     date: reg.year, journal: reg.journal, container: reg.art === "Buchkapitel" ? reg.journal : "",
     volume: reg.volume, issue: reg.issue, firstPage: reg.firstPage, lastPage: reg.lastPage,
     doi: reg.doi, issn: reg.issn, isbn: reg.isbn, publisher: reg.publisher,
-    language: "", licence: "", url: url, canonicalUrl: "",
+    language: reg.language || "", licence: "", url: url, canonicalUrl: "",
     fullTextUrls: [], retrievedAt: jetzt,
     website: (() => { try { return new URL(url).hostname.replace(/^www\./, ""); } catch (_) { return ""; } })(),
     warning: "", source: reg.source,
@@ -836,6 +987,23 @@ async function runTool(origin, name, args) {
                + "DOI registration agency.";
       }
     }
+    // Letzter Rettungsweg vor der Rueckgabe: die Maschinenschnittstelle der
+    // Plattform selbst (OAI-PMH/SRU). Greift nur, wenn weder die Seite noch
+    // die Registrierungsstelle getragen haben. Befragt wird nur dieselbe
+    // Institution, deren Seite ohnehin abgerufen wurde — kein Dritter lernt
+    // etwas Neues. Die angefragte Adresse zaehlt, nicht die Endadresse:
+    // d-nb.info/<idn> leitet mit 303 weiter und die IDN waere sonst verloren.
+    // ausPlattform wirft nie; ohne Treffer bleibt q, wie es ist.
+    // Kein pageType: der Satz stammt nicht aus einer Seitendeklaration —
+    // genau wie beim DOI-Fallback bleibt das Feld weg, statt geraten zu werden.
+    if (q.warning || !q.authors.length) {
+      const reg = await ausPlattform(ziel.href);
+      if (reg && reg.title && reg.authors.length) {
+        q = vervollstaendigen(reg, ziel.href);
+        q.note = "The page itself yielded nothing readable; this record comes from the "
+               + "platform's own machine interface, which is authoritative for it.";
+      }
+    }
     return textResult(JSON.stringify({
       ...q,
       ris: risAus(q),
@@ -1011,6 +1179,28 @@ async function runTool(origin, name, args) {
                  + "chrome://extensions via developerPrivate.getExtensionsInfo instead, or open "
                  + "the extension's popup.html once to wake it.",
         source: "https://github.com/Bubu89/full-page-pdf-snap",
+      },
+      // Wer als Nutzer in der Store-Statistik zaehlen will, darf NICHT
+      // entpackt laden — die beiden Wege zur echten Store-Installation,
+      // beide am 2026-08-03 auf echten Windows-Browsern vermessen.
+      countedInstall: {
+        why: "An unpacked load (loadIntoYourOwnBrowser) never touches a store and counts "
+           + "nowhere. AMO usage figures come from Firefox telemetry and its download counts "
+           + "only from installs started on the listing page; CWS weekly users are browsers "
+           + "that checked for an update within the last week. Only a store install that "
+           + "stays installed appears there.",
+        routeUi: "Drive the store page with real input events — no admin needed, measured end "
+           + "to end: click Add to Firefox / Add to Chrome, confirm, verify extensions.json "
+           + "(pageshot-pdf@bubu89.local) resp. Default/Extensions/<id>/<version>/, trigger "
+           + "Alt+Shift+Y on a NORMAL page (the store pages themselves are restricted "
+           + "domains), and close the window cleanly — a hard kill between Add and a clean "
+           + "shutdown lost the whole install in the measurement.",
+        routePolicy: "For fleets: install-store-version.py in the repo writes ExtensionSettings "
+           + "(Firefox) / ExtensionInstallForcelist (Chrome) with --check and --remove. On "
+           + "machines where the per-user policy hive is ACL-locked, use routeUi — it needs "
+           + "no rights at all.",
+        skill: SITE + "/.well-known/agent-skills/install-as-a-counted-user.md",
+        rawData: SITE + "/data/2026-08-03-agent-install-and-capture.json",
       },
       // Fremde Projekte, die die fehlende Ebene liefern. Keine Empfehlung und
       // keine Pruefung ihrer Sicherheit — nur der Hinweis, wonach zu suchen ist.

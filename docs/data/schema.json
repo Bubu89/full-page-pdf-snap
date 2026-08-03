@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://provinglab.dev/data/schema.json",
+  "title": "Rohdatensatz provinglab.dev",
+  "$comment": "Aus dem Bestand abgeleitet, nicht erfunden (Stand 2026-08-03, 12 Datensaetze). Drei Formate wurden vorgefunden und werden abgebildet, statt sie aufzuweichen: (1) kanonisch — measurement/date/question/method/results/license, 7 Datensaetze ab 2026-08-02; (2) historisch-en — title + measured|retrieved + license, 3 Datensaetze vom 2026-08-01/02; (3) historisch-de — erhoben|gemessen_am + license|lizenz, 2 Datensaetze. Rohdaten werden laut AGENTS.md nicht nachtraeglich geglättet, deshalb bleiben die historischen Formate konform. NEUE Datensaetze sollen dem kanonischen Format folgen: wer eine measurement-Kennung traegt, zieht die volle Pflicht (date, question, method, results, license) nach sich (if/then unten).",
+  "type": "object",
+  "allOf": [
+    {
+      "$comment": "Lizenz ist Pflicht: die Datensaetze stehen unter CC BY 4.0, und ohne Lizenzfeld ist die Weiterverwendung nicht klärbar. Historisch gibt es die Schreibweisen 'CC BY 4.0', 'CC-BY-4.0' und 'CC BY 4.0 — reuse with attribution and a link' sowie den deutschen Schluessel 'lizenz' (quellen-archiv).",
+      "anyOf": [
+        { "required": ["license"] },
+        { "required": ["lizenz"] }
+      ]
+    },
+    {
+      "$comment": "Datum ist Pflicht: eine Messung ohne Erhebungszeitpunkt ist nicht einordbar. Der Bestand nutzt fuenf Schluessel (date, measured, retrieved, erhoben, gemessen_am); 'erhoben' traegt zusaetzlich Uhrzeit und Zone.",
+      "anyOf": [
+        { "required": ["date"] },
+        { "required": ["measured"] },
+        { "required": ["retrieved"] },
+        { "required": ["erhoben"] },
+        { "required": ["gemessen_am"] }
+      ]
+    },
+    {
+      "$comment": "Methode ist Pflicht: jede Zahl braucht ihre Methode (AGENTS.md). Aliase aus dem Bestand: method/methode; 'tools' bei ocr-recall (Werkzeug + ground_truth tragen dort die Methode); 'quelle' bei extension-permissions (reine API-Abfrage — dort IST die Quellenangabe die Methode, ein Kontrolllauf gegen einen Inventar-Dump hat keinen Gegenstand).",
+      "anyOf": [
+        { "required": ["method"] },
+        { "required": ["methode"] },
+        { "required": ["tools"] },
+        { "required": ["quelle"] }
+      ]
+    },
+    {
+      "$comment": "Kanonisches Format: die measurement-Kennung ist das Versprechen des neuen Formats. Wer sie traegt, muss die vollen Pflichtfelder aus dem Issue liefern: date (ISO), question, method, results, license.",
+      "if": { "required": ["measurement"] },
+      "then": {
+        "required": ["date", "question", "method", "results", "license"]
+      }
+    }
+  ],
+  "properties": {
+    "measurement": {
+      "type": "string",
+      "minLength": 1,
+      "$comment": "Kennung der Messung, z.B. 'reading-list-to-bibliography'."
+    },
+    "question": {
+      "type": "string",
+      "minLength": 1,
+      "$comment": "Die Frage, die die Messung beantwortet. Wortgleiche Fragen in zwei Datensaetzen sind ein Kopierbefund und werden von tools/daten-pruefen.py gemeldet (Ausnahme: ausgewiesene Gegenmessung per counterpart)."
+    },
+    "method": {
+      "type": ["object", "string"],
+      "$comment": "Werkzeug, Bedingungen, Kontrolllauf. Objekt im kanonischen Format, Fliesstext bei android-capture-extensions (historisch)."
+    },
+    "results": {
+      "type": ["object", "array"]
+    },
+    "license": {
+      "type": "string",
+      "pattern": "CC[ -]BY[ -]4\\.0"
+    },
+    "lizenz": {
+      "type": "string",
+      "pattern": "CC[ -]BY[ -]4\\.0"
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "measured": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "retrieved": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "gemessen_am": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "erhoben": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}",
+      "$comment": "Darf Uhrzeit und Zone tragen ('2026-08-01T09:09:57+0200')."
+    }
+  }
+}

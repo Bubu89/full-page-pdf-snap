@@ -49,10 +49,13 @@ def kopf_und_fuss():
     return s[:s.index('<div class="wrap">')], s[s.index("<footer"):]
 
 
-def anpassen(kopf):
+def anpassen(kopf, anzahl):
     URL = "https://provinglab.dev/deutsch/"
     TITEL = "Deutschsprachige Fassungen"
-    BESCHR = ("Acht Beiträge auf provinglab.dev tragen eine vollständige deutsche "
+    # Die Zahl muss mitgerechnet werden: Sie stand fest im Text, und nach der
+    # neunten Fassung haette die Seite von acht Beitraegen gesprochen, waehrend
+    # darunter neun gelistet waren.
+    BESCHR = (f"{anzahl} Beiträge auf provinglab.dev tragen eine vollständige deutsche "
               "Fassung: zum Werkzeug, zu verschwindenden Quellen, zu Zitationsdaten "
               "und Literaturverzeichnissen, zu Nachweisen im Studium, zur "
               "Offenlegung und zum Haftungsausschluss.")
@@ -121,7 +124,7 @@ def main():
     kopf, fuss = kopf_und_fuss()
     ziel = DOCS / "deutsch"
     ziel.mkdir(parents=True, exist_ok=True)
-    (ziel / "index.html").write_text(anpassen(kopf) + inhalt(seiten) + fuss, encoding="utf-8")
+    (ziel / "index.html").write_text(anpassen(kopf, len(seiten)) + inhalt(seiten) + fuss, encoding="utf-8")
     print(f"  deutsch/index.html geschrieben — {len(seiten)} Fassungen")
     for s in seiten:
         print(f"    {s['url']}")

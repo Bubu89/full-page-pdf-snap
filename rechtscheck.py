@@ -350,8 +350,12 @@ def pruefe_maschinenebene(befunde):
                     befunde.append(("FEHLER", "agent-skills/index.json", "pruefsumme",
                                     f"{s['name']}: Pruefsumme weicht ab.", ""))
 
-    # Lizenzangaben: wer CC BY verspricht, muss es auf der Seite auch sagen
+    # Lizenzangaben: wer CC BY verspricht, muss es auf der Seite auch sagen.
+    # schema.json ist kein Datensatz, sondern das Pruefschema der Datensaetze
+    # (tools/daten-pruefen.py) — es traegt bewusst kein Lizenzfeld.
     for datei in DOCS.glob("data/*.json"):
+        if datei.name == "schema.json":
+            continue
         d = json.loads(datei.read_text(encoding="utf-8"))
         if "lizenz" not in d and "license" not in d:
             befunde.append(("WARNUNG", f"data/{datei.name}", "keine-lizenz",

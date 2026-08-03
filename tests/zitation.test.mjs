@@ -21,7 +21,7 @@ const src = readFileSync(join(HIER, "..", "worker", "mcp.js"), "utf8");
 const von = src.indexOf("function entzeichnen(");
 const bisEnde = src.indexOf("\n}\n", src.indexOf("function bibtexAus(")) + 3;
 const F = new Function('const AGENT = "test";\n' + src.slice(von, bisEnde) +
-                       "\n return { quelleAusHtml, risAus, bibtexAus };")();
+                       "\n return { quelleAusHtml, risAus, bibtexAus, plattformAbfrage, oaiDcAusXml };")();
 
 const seite = (kopf, koerper = "x".repeat(9000)) =>
   `<html><head>${kopf}</head><body>${koerper}</body></html>`;
@@ -286,6 +286,110 @@ const FAELLE = [
   },
 ];
 
+// --- Maschinenschnittstelle der Plattform (OAI-PMH/SRU) ---------------------
+// Die Faelle oben pruefen die HTML-Strecke; hier der letzte Rettungsweg davor,
+// die Schnittstelle der Plattform selbst. Die Fixtures sind woertliche Auszuege
+// der Live-Antworten vom 03.08.2026 (Abruf mit der Kennung des Endpunkts):
+//   - DNB-SRU fuer IDN 1279437049: vollstaendiger oai_dc-Satz.
+//   - OPUS opus4.kobv.de/opus4-zib: docId 1 liefert einen Satz, docId 8138 den
+//     OAI-Fehler idDoesNotExist — beides hier als Verhalten verankert.
+//   - PsychArchives /handle/20.500.12034/2487: GetRecord mit dem Identifier
+//     oai:psycharchives.org:20.500.12034/2487 liefert den Satz.
+// peDOCS faellt raus: pedocs.de/oai und www.pedocs.de/oai antworteten am
+// 03.08.2026 beide mit HTTP 404, es gibt keine verifizierbare Schnittstelle.
+
+const DNB_SRU = `<?xml version="1.0" encoding="UTF-8"?>
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/"><version>1.1</version><numberOfRecords>1</numberOfRecords><records><record><recordData><dc xmlns="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <dc:title>Deleuze - seine philosophischen Welten für Einsteiger 3. Band / Michael Pflaum</dc:title>
+  <dc:creator>Pflaum, Michael [Verfasser]</dc:creator>
+  <dc:publisher>Norderstedt : BoD – Books on Demand</dc:publisher>
+  <dc:date>2023</dc:date>
+  <dc:language>ger</dc:language>
+  <dc:identifier xsi:type="tel:ISBN">978-3-7347-2612-5 Paperback : EUR 25.99 (DE)</dc:identifier>
+  <dc:identifier xsi:type="dnb:IDN">1279437049</dc:identifier>
+</dc></recordData></record></records></searchRetrieveResponse>`;
+
+const OPUS_OAI = `<?xml version="1.0" encoding="utf-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/">
+  <responseDate>2026-08-03T15:28:26Z</responseDate>
+  <request verb="GetRecord" metadataPrefix="oai_dc" identifier="oai:kobv.de-opus4-zib:1">https://opus4.kobv.de/opus4-zib/oai</request>
+  <GetRecord><record><header><identifier>oai:kobv.de-opus4-zib:1</identifier></header>
+    <metadata><oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+      <dc:title xml:lang="en">Efficient Numerical Simulation and Identification of Large Chemical Reaction Systems.</dc:title>
+      <dc:creator>Deuflhard, Peter</dc:creator>
+      <dc:creator>Nowak, Ulrich</dc:creator>
+      <dc:date>1986-05-29</dc:date>
+      <dc:type>doc-type:preprint</dc:type>
+      <dc:language>eng</dc:language>
+    </oai_dc:dc></metadata>
+  </record></GetRecord>
+</OAI-PMH>`;
+
+const OAI_FEHLER = `<?xml version="1.0" encoding="utf-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/">
+  <responseDate>2026-08-03T15:27:33Z</responseDate>
+  <request verb="GetRecord" metadataPrefix="oai_dc" identifier="oai:kobv.de-opus4-zib:8138">https://opus4.kobv.de/opus4-zib/oai</request>
+  <error code="idDoesNotExist">The value of the identifier argument is unknown or illegal in this repository.</error>
+</OAI-PMH>`;
+
+const SCHNITTSTELLE = [
+  {
+    name: "DNB-SRU: Mapping mit Rollen-Klammer und ISBN",
+    reg: () => F.oaiDcAusXml(DNB_SRU),
+    pruefe: (r) => [
+      [!!r, "kein Datensatz erkannt"],
+      [r && /Deleuze/.test(r.title), `Titel=${r && r.title}`],
+      // Die DNB haengt "[Verfasser]" an — das ist eine Rolle, kein Name.
+      [r && r.authors[0] === "Pflaum, Michael", `Autor=${r && r.authors[0]}`],
+      [r && r.year === "2023", `Jahr=${r && r.year}`],
+      [r && r.isbn === "978-3-7347-2612-5", `ISBN=${r && r.isbn} (Preis-Anhaengsel darf nicht mit)`],
+      [r && r.art === "Buch", `art=${r && r.art} (ISBN-13 muss Buch ergeben)`],
+      [r && r.language === "de", `Sprache=${r && r.language} (ger -> de)`],
+    ],
+  },
+  {
+    name: "OPUS-OAI: Mapping mit Namespace-Praefix oai_dc:",
+    reg: () => F.oaiDcAusXml(OPUS_OAI),
+    pruefe: (r) => [
+      [!!r, "kein Datensatz erkannt"],
+      [r && r.title.startsWith("Efficient Numerical Simulation"), `Titel=${r && r.title}`],
+      [r && r.authors.length === 2 && r.authors[0] === "Deuflhard, Peter", `Autoren=${r && JSON.stringify(r.authors)}`],
+      [r && r.year === "1986", `Jahr=${r && r.year}`],
+      [r && r.art === "Preprint", `art=${r && r.art}`],
+    ],
+  },
+  {
+    name: "OAI-Fehler idDoesNotExist ist kein Datensatz",
+    reg: () => F.oaiDcAusXml(OAI_FEHLER),
+    pruefe: (r) => [[r === null, `Fehler als Satz gewertet: ${r && r.title}`]],
+  },
+  {
+    name: "Leerer SRU-Treffer ist kein Datensatz",
+    reg: () => F.oaiDcAusXml(`<searchRetrieveResponse><numberOfRecords>0</numberOfRecords></searchRetrieveResponse>`),
+    pruefe: (r) => [[r === null, "leerer Treffer als Satz gewertet"]],
+  },
+  {
+    name: "Adressmuster der Plattformen werden erkannt",
+    reg: () => true,
+    pruefe: () => {
+      const dnb = F.plattformAbfrage("https://d-nb.info/1279437049");
+      const opus = F.plattformAbfrage("https://opus4.kobv.de/opus4-zib/frontdoor/index/index/docId/8138");
+      const psych = F.plattformAbfrage("https://psycharchives.org/handle/20.500.12034/2487");
+      const fremd = F.plattformAbfrage("https://example.org/1279437049");
+      return [
+        [dnb && dnb.abruf.includes("services.dnb.de/sru/dnb") && dnb.abruf.includes("idn%3D1279437049"),
+          `DNB: ${dnb && dnb.abruf}`],
+        [opus && opus.abruf === "https://opus4.kobv.de/opus4-zib/oai?verb=GetRecord&identifier=oai%3Akobv.de-opus4-zib%3A8138&metadataPrefix=oai_dc",
+          `OPUS: ${opus && opus.abruf}`],
+        [psych && psych.abruf.includes("oai%3Apsycharchives.org%3A20.500.12034%2F2487"),
+          `PsychArchives: ${psych && psych.abruf}`],
+        [fremd === null, "fremde Adresse faelschlich erkannt"],
+      ];
+    },
+  },
+];
+
+
 let gruen = 0, rot = 0;
 for (const f of FAELLE) {
   const q = F.quelleAusHtml(f.html, f.url);
@@ -299,5 +403,15 @@ for (const f of FAELLE) {
     for (const [, wie] of fehler) console.log(`          ${wie}`);
   }
 }
-console.log(`\n  ${gruen} von ${FAELLE.length} bestanden${rot ? `, ${rot} fehlgeschlagen` : ""}`);
+for (const f of SCHNITTSTELLE) {
+  const reg = f.reg();
+  const fehler = f.pruefe(reg).filter(([ok]) => !ok);
+  if (fehler.length === 0) { gruen++; console.log(`  ok    ${f.name}`); }
+  else {
+    rot++;
+    console.log(`  FEHL  ${f.name}`);
+    for (const [, wie] of fehler) console.log(`          ${wie}`);
+  }
+}
+console.log(`\n  ${gruen} von ${FAELLE.length + SCHNITTSTELLE.length} bestanden${rot ? `, ${rot} fehlgeschlagen` : ""}`);
 process.exit(rot ? 1 : 0);

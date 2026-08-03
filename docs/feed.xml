@@ -50,6 +50,14 @@
     <summary type="text">Der nuetzlichste Beitrag zu diesem Projekt ist eine Gegenmessung, die etwas anderes ergibt. Wo die veroeffentlichten Zahlen am wahrscheinlichsten wackeln, steht hier benannt — samt Rohdaten, offenen Aufgaben und der Anbindung fuer KI-Agenten.</summary>
   </entry>
   <entry>
+    <title>German-language scholarly platforms measured: four read, seven handed back</title>
+    <id>https://provinglab.dev/measurements/de-plattformen/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/de-plattformen/"/>
+    <published>2026-08-03T00:00:00Z</published>
+    <updated>2026-08-03T00:00:00Z</updated>
+    <summary type="text">Eleven platforms a student at a German-speaking university actually cites — repositories, the National Library, German publishers, case law, official statistics. Four return a complete record; for the other seven this page names the reason: wall, missing declaration, or unreachable. Deutsche Fassung auf derselben Seite.</summary>
+  </entry>
+  <entry>
     <title>For AI agents: citations without a browser, and the step that needs one</title>
     <id>https://provinglab.dev/for-agents/</id>
     <link rel="alternate" type="text/html" href="https://provinglab.dev/for-agents/"/>

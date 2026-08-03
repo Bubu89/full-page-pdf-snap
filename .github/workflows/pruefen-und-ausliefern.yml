@@ -48,6 +48,18 @@ jobs:
       - name: Rechtscheck
         run: python3 rechtscheck.py
 
+      # Rohdaten unter docs/data/ gegen docs/data/schema.json (Issue #9).
+      # BLOCKIEREND, absichtlich kein `|| true`: das Schema ist aus dem
+      # Bestand abgeleitet und bildet die drei vorgefundenen Formate ab, der
+      # Bestand ist konform — was hier durchfaellt, ist also ein echter
+      # Befund (fehlendes Pflichtfeld, leere per_source bei genannten
+      # Einzelwerten, kopierte Beschreibung) und soll nicht ausgeliefert
+      # werden. Warnungen (z.B. fehlender Kontrolllauf) blockieren nicht.
+      # Laeuft auf dem Runner mit dem eingebauten Stdlib-Pruefer, jsonschema
+      # ist dort nicht installiert.
+      - name: Rohdaten gegen Schema
+        run: python3 tools/daten-pruefen.py --ci
+
       # Die Funktionstests liefen bisher nur von Hand — und waren rot, ohne
       # dass es jemandem auffiel: eine Aenderung am Endpunkt hatte einen Fall
       # ueberholt, und der Testlauf gehoerte in keine Pipeline.

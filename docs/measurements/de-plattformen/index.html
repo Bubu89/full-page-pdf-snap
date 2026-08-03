@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>German-language scholarly platforms measured: four read, seven handed back — Proving Lab</title>
+<meta name="description" content="Eleven platforms a student at a German-speaking university actually cites — repositories, the National Library, German publishers, case law, official statistics. Four return a complete record; for the other seven this page names the reason: wall, missing declaration, or unreachable. Deutsche Fassung auf derselben Seite.">
+<link rel="canonical" href="https://provinglab.dev/measurements/de-plattformen/">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/measurements/de-plattformen/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/measurements/de-plattformen/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/measurements/de-plattformen/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="German-language scholarly platforms measured: four read, seven handed back">
+<meta property="og:description" content="Eleven platforms a student at a German-speaking university actually cites — repositories, the National Library, German publishers, case law, official statistics. Four return a complete record; for the other seven this page names the reason: wall, missing declaration, or unreachable.">
+<meta property="og:url" content="https://provinglab.dev/measurements/de-plattformen/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-08-01">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "German-language scholarly platforms measured: four read, seven handed back",
+  "description": "Eleven platforms a student at a German-speaking university actually cites — repositories, the National Library, German publishers, case law, official statistics. Four return a complete record; for the other seven this page names the reason: wall, missing declaration, or unreachable.",
+  "datePublished": "2026-08-03",
+  "dateModified": "2026-08-03",
+  "inLanguage": [
+    "en",
+    "de"
+  ],
+  "url": "https://provinglab.dev/measurements/de-plattformen/",
+  "about": [
+    "citation metadata",
+    "German scholarly platforms",
+    "Zitationsdaten",
+    "Repositorien",
+    "Literaturverzeichnis"
+  ],
+  "keywords": "Zitationsdaten, Literaturverzeichnis erstellen, Internetquellen zitieren, Abrufdatum, SSOAR, OPUS, Deutsche Nationalbibliothek, citation data, repositories",
+  "author": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org", "@type": "Dataset",
+  "name": "Print-to-PDF versus screenshot capture, same document",
+  "description": "Page counts, page-break analysis, word recall against the source text, embedded images and file sizes for the same Wikipedia article captured both ways on 1 August 2026.",
+  "url": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "identifier": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "datePublished": "2026-08-01", "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true, "inLanguage": "en",
+  "keywords": ["print to PDF","screenshot","page breaks","OCR","web archiving"],
+  "variableMeasured": ["pages","page breaks","breaks mid-sentence","word recall","file size","embedded images"],
+  "creator": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
+  "distribution": [{ "@type": "DataDownload", "encodingFormat": "application/json",
+    "contentUrl": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json" }],
+  "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
+}
+</script>
+
+<style>
+  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.87em;background:var(--card);
+       padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:34px 0 36px;border-bottom:1px solid var(--line);margin-bottom:32px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.16;letter-spacing:-.025em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:60ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+  h2{font-size:1.4rem;line-height:1.25;margin:46px 0 14px;letter-spacing:-.015em;text-wrap:balance}
+  h3{font-size:1.04rem;margin:28px 0 8px}
+  p{margin-bottom:17px} ul,ol{margin:0 0 18px 24px} li{margin-bottom:9px}
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0}
+  .kf{flex:1 1 160px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px}
+  .kf .n{font-size:1.8rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.a .n{color:var(--good)} .kf.b .n{color:var(--warn)}
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--bg2);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .win{color:var(--good);font-weight:600} .lose{color:var(--bad)}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.84rem;line-height:1.6}
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0} .box p:last-child{margin-bottom:0}
+  .faq{margin:44px 0 0}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin:44px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+  footer{margin-top:52px;padding:24px 0 64px;border-top:1px solid var(--line);
+    font-size:.83rem;color:var(--dim);line-height:1.6}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+
+  /* --- Sprachumschaltung --- */
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
+  .lang{display:flex;gap:6px;margin:0 0 26px}
+  .lang button{font:inherit;font-size:.86rem;font-weight:600;padding:7px 18px;cursor:pointer;
+    background:var(--card);color:var(--dim);border:1px solid var(--line);border-radius:8px}
+  .lang button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
+</style>
+<script src="/agent-tools.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/">Notes</a>
+    <a class="n" href="../../measurements/" aria-current="page">Measurements</a>
+    <a class="n" href="../../how-to/save-a-webpage-as-pdf/">How&nbsp;to</a>
+    <a class="n" href="../../recipes/">Recipes</a>
+    <a class="n" href="../../for-agents/">For&nbsp;agents</a>
+    <a class="n" href="../../mitmachen/">Mitmachen</a>
+    <a class="n" href="../../tools/">Tools</a>
+    <a class="n" href="../../about/">About</a>
+    <a class="n" href="#b-de" hreflang="de" lang="de" title="Zur deutschen Fassung auf dieser Seite">Deutsch</a>
+      <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header>
+  <h1 data-lang="en" class="on" lang="en">German-language scholarly platforms measured: four read, seven handed back</h1>
+  <h1 data-lang="de" lang="de">Deutschsprachige Wissenschaftsplattformen gemessen: vier gelesen, sieben zurückgegeben</h1>
+  <p class="standfirst on" data-lang="en" lang="en">
+    A term paper at a German-speaking university cites SSOAR, the National
+    Library, Nomos and Destatis — not PubMed. Eleven such platforms went
+    through the citation endpoint on 3 August 2026. Four returned a complete
+    record. The more useful half of this page is the seven that did not, and
+    the reason for each.
+  </p>
+  <p class="standfirst" data-lang="de" lang="de">
+    Eine Arbeit an einer deutschsprachigen Hochschule zitiert SSOAR, die
+    Nationalbibliothek, Nomos und Destatis — nicht PubMed. Elf solcher
+    Plattformen gingen am 3. August 2026 durch den Zitations-Endpunkt. Vier
+    lieferten einen vollständigen Nachweis. Die verwertbarere Hälfte dieser
+    Seite sind die sieben, die es nicht taten — und der jeweilige Grund.
+  </p>
+  <p class="meta"><span data-lang="en" class="on" lang="en">3 August 2026 · 11 platforms, one pass ·
+    <a href="/data/2026-08-03-de-plattformen.json">raw data</a></span><span data-lang="de" lang="de">3. August 2026 · 11 Plattformen, ein Durchlauf ·
+    <a href="/data/2026-08-03-de-plattformen.json">Rohdaten</a></span></p>
+</header>
+
+<div class="lang">
+  <button id="b-en" aria-pressed="true" onclick="setLang('en')">English</button>
+  <button id="b-de" aria-pressed="false" onclick="setLang('de')">Deutsch</button>
+</div>
+
+<div data-lang="en" class="on" lang="en">
+
+<div class="kf-row">
+  <div class="kf b"><div class="n">4/11</div><div class="l">complete records</div></div>
+  <div class="kf"><div class="n">1</div><div class="l">behind a measured wall</div></div>
+  <div class="kf"><div class="n">0</div><div class="l">unreachable for a browser</div></div>
+  <div class="kf"><div class="n">0.75&nbsp;s</div><div class="l">per source</div></div>
+</div>
+
+<h2>Where it fails — and why</h2>
+<p>
+  The failures come first, because they are the usable answer. Each handed-back
+  address was fetched twice, once with the reader's own user agent, once with a
+  browser's. A wall counts only where the browser is answered and the reader is
+  not; everything else is a page that answers but declares too little. None of
+  the eleven was unreachable for a browser.
+</p>
+<table>
+  <thead><tr><th scope="col">Platform</th><th scope="col">Reader</th><th scope="col">Browser</th><th scope="col">Finding</th><th scope="col">s</th></tr></thead>
+  <tbody>
+    <tr><td>SSOAR (Kontrolle)</td><td class="num">200</td><td class="num">200</td><td>Both are answered with 200, but what the reader receives is an access wall, not the record.</td><td class="num">0.5</td></tr>
+    <tr><td>OPUS 4 (KOBV/ZIB)</td><td class="num">404</td><td class="num">200</td><td>A wall: a browser is answered with 200, the reader is refused (404). The address exists — not for a machine.</td><td class="num">0.28</td></tr>
+    <tr><td>Deutsche Nationalbibliothek</td><td class="num">200</td><td class="num">200</td><td>Both are answered with 200, but what the reader receives is an access wall, not the record.</td><td class="num">0.77</td></tr>
+    <tr><td>beck-online</td><td class="num">200</td><td class="num">200</td><td>Both receive the same stub of a page — a login screen of a licensed database, with no citation metadata in it.</td><td class="num">1.07</td></tr>
+    <tr><td>openJur</td><td class="num">200</td><td class="num">200</td><td>No wall: the page answers in full, but declares only a record number as its title. Nothing identifies the work.</td><td class="num">0.58</td></tr>
+    <tr><td>Statistik Austria</td><td class="num">200</td><td class="num">200</td><td>The page answers in full, but declares no year — an incomplete citation, flagged instead of guessed.</td><td class="num">0.44</td></tr>
+    <tr><td>Destatis</td><td class="num">200</td><td class="num">200</td><td>The page answers in full, but declares no year — an incomplete citation, flagged instead of guessed.</td><td class="num">1.77</td></tr>
+  </tbody>
+</table>
+<p>
+  SSOAR is the control: its refusal of server-side readers was already measured
+  in the <a href="/measurements/reading-list-to-bibliography/">reading-list
+  run</a>. This time both fetches were answered with 200 — but the reader's
+  copy is an access wall, not the record. A run in which SSOAR yields a clean
+  citation would be the suspicious result, not this one.
+</p>
+
+<h2>What it reads</h2>
+<table>
+  <thead><tr><th scope="col">Platform</th><th scope="col">Kind</th><th scope="col">Authors</th><th scope="col">Year</th><th scope="col">DOI</th><th scope="col">RIS</th><th scope="col">s</th></tr></thead>
+  <tbody>
+    <tr><td>PsychArchives (ZPID)</td><td>repository</td><td class="num">✓</td><td class="num">✓</td><td class="num">—</td><td class="num">✓</td><td class="num">0.82</td></tr>
+    <tr><td>peDOCS</td><td>repository</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">0.45</td></tr>
+    <tr><td>Springer Link (Wirtschaftsdienst)</td><td>publisher</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">0.97</td></tr>
+    <tr><td>Nomos eLibrary</td><td>publisher</td><td class="num">—</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">0.64</td></tr>
+  </tbody>
+</table>
+<p>
+  Both German-language publisher platforms and both disciplinary repositories
+  of the Leibniz institutes (ZPID, DIPF) declare enough for a complete record,
+  including a RIS entry that imports into Citavi, Zotero or EndNote.
+</p>
+
+<h2>Method</h2>
+<ul>
+  <li>The eleven addresses were fixed on 3 August 2026 before the run, and each
+    answered 200 to a browser in a pre-check the same day — two first guesses
+    (a catalogue number, a DOI) returned 404 and were replaced with verified
+    records before measuring, so no typo masquerades as a platform's fault.</li>
+  <li>Every address went to the endpoint
+    (<code>https://provinglab.dev/mcp</code>, tool <code>extract_citation</code>),
+    which fetches from Cloudflare's edge.</li>
+  <li>The measuring client ran from a commercial VPN exit on the local network
+    (AS209854 Cyberzone S.A., Frankfurt DE) — not a plain residential line.
+    Some platforms answer such ranges differently than a home connection.</li>
+  <li>Raw data, per source and with both status codes:
+    <a href="/data/2026-08-03-de-plattformen.json">JSON</a>, CC BY 4.0.</li>
+</ul>
+
+<h2>What this means for a bibliography in German</h2>
+<p>
+  Publisher platforms and the Leibniz repositories can go through the endpoint.
+  The National Library's catalogue, OPUS front doors and licensed databases
+  cannot — there the page has to be opened in a browser and kept from inside
+  the session, which is what the
+  <a href="/tools/full-page-pdf-snap/">capture extension</a> is for. Statistics
+  portals answer in full but declare too little for a citation; the endpoint
+  says so instead of inventing the missing year. The two routes are
+  complements, not competitors.
+</p>
+
+<h2>Limits of this measurement</h2>
+<ul>
+  <li>Eleven platforms with one example record each, one pass on one day — a
+    survey of what a German-language bibliography touches, not a census.</li>
+  <li>“Wall” here means: two fetches on one afternoon, one answered, one not.
+    It is an observation, not a statement about any operator's motives.</li>
+  <li>Whether a page declares enough metadata can differ between records on the
+    same platform; the example records were chosen before the run, not after.</li>
+</ul>
+
+</div>
+
+<div data-lang="de" lang="de">
+
+<div class="kf-row">
+  <div class="kf b"><div class="n">4/11</div><div class="l">vollständige Nachweise</div></div>
+  <div class="kf"><div class="n">1</div><div class="l">hinter gemessener Sperre</div></div>
+  <div class="kf"><div class="n">0</div><div class="l">für Browser unerreichbar</div></div>
+  <div class="kf"><div class="n">0,75&nbsp;s</div><div class="l">pro Quelle</div></div>
+</div>
+
+<h2>Wo es scheitert — und warum</h2>
+<p>
+  Die Fehlschläge stehen zuerst, weil sie die verwertbare Auskunft sind. Jede
+  zurückgegebene Adresse wurde zweimal abgerufen — einmal mit der Kennung des
+  Lesers, einmal mit der eines Browsers. Eine Sperre zählt nur, wo der Browser
+  durchkommt und der Leser nicht; alles andere ist eine Seite, die antwortet,
+  aber zu wenig ausweist. Keine der elf Adressen war für einen Browser
+  unerreichbar.
+</p>
+<table>
+  <thead><tr><th scope="col">Plattform</th><th scope="col">Leser</th><th scope="col">Browser</th><th scope="col">Befund</th><th scope="col">s</th></tr></thead>
+  <tbody>
+    <tr><td>SSOAR (Kontrolle)</td><td class="num">200</td><td class="num">200</td><td>Beide bekommen 200, aber was der Leser erhält, ist eine Zugangsschranke, nicht der Datensatz.</td><td class="num">0.5</td></tr>
+    <tr><td>OPUS 4 (KOBV/ZIB)</td><td class="num">404</td><td class="num">200</td><td>Eine Sperre: Der Browser bekommt 200, der Leser wird abgewiesen (404). Die Adresse existiert — nicht für eine Maschine.</td><td class="num">0.28</td></tr>
+    <tr><td>Deutsche Nationalbibliothek</td><td class="num">200</td><td class="num">200</td><td>Beide bekommen 200, aber was der Leser erhält, ist eine Zugangsschranke, nicht der Datensatz.</td><td class="num">0.77</td></tr>
+    <tr><td>beck-online</td><td class="num">200</td><td class="num">200</td><td>Beide erhalten denselben Seitenstummel — den Anmeldeschirm einer lizenzierten Datenbank, ohne Zitationsdaten.</td><td class="num">1.07</td></tr>
+    <tr><td>openJur</td><td class="num">200</td><td class="num">200</td><td>Keine Sperre: Die Seite antwortet vollständig, weist aber nur eine Aktennummer als Titel aus. Nichts benennt das Werk.</td><td class="num">0.58</td></tr>
+    <tr><td>Statistik Austria</td><td class="num">200</td><td class="num">200</td><td>Die Seite antwortet vollständig, weist aber kein Jahr aus — eine unvollständige Angabe, markiert statt erraten.</td><td class="num">0.44</td></tr>
+    <tr><td>Destatis</td><td class="num">200</td><td class="num">200</td><td>Die Seite antwortet vollständig, weist aber kein Jahr aus — eine unvollständige Angabe, markiert statt erraten.</td><td class="num">1.77</td></tr>
+  </tbody>
+</table>
+<p>
+  SSOAR ist der Kontrolllauf: Die Abweisung serverseitiger Leser war bereits im
+  <a href="/measurements/reading-list-to-bibliography/">Quellenlisten-Lauf</a>
+  gemessen. Diesmal wurden beide Abrufe mit 200 beantwortet — aber was der
+  Leser erhält, ist eine Zugangsschranke, nicht der Datensatz. Ein Lauf, in dem
+  SSOAR einen sauberen Nachweis liefert, wäre das verdächtige Ergebnis, nicht
+  dieses.
+</p>
+
+<h2>Was gelesen wird</h2>
+<table>
+  <thead><tr><th scope="col">Plattform</th><th scope="col">Art</th><th scope="col">Autoren</th><th scope="col">Jahr</th><th scope="col">DOI</th><th scope="col">RIS</th><th scope="col">s</th></tr></thead>
+  <tbody>
+    <tr><td>PsychArchives (ZPID)</td><td>Repositorium</td><td class="num">✓</td><td class="num">✓</td><td class="num">—</td><td class="num">✓</td><td class="num">0.82</td></tr>
+    <tr><td>peDOCS</td><td>Repositorium</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">0.45</td></tr>
+    <tr><td>Springer Link (Wirtschaftsdienst)</td><td>Verlag</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">0.97</td></tr>
+    <tr><td>Nomos eLibrary</td><td>Verlag</td><td class="num">—</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">0.64</td></tr>
+  </tbody>
+</table>
+<p>
+  Beide deutschsprachigen Verlagsplattformen und beide fachlichen Repositorien
+  der Leibniz-Institute (ZPID, DIPF) weisen genug für einen vollständigen
+  Nachweis aus — inklusive RIS-Eintrag, der sich ohne Abtippen in Citavi,
+  Zotero oder EndNote importieren lässt.
+</p>
+
+<h2>Methode</h2>
+<ul>
+  <li>Die elf Adressen wurden am 3. August 2026 vor dem Lauf festgelegt, und
+    jede antwortete einem Browser am selben Tag mit 200 — zwei zuerst gewählte
+    Adressen (eine Katalognummer, ein DOI) lieferten in dieser Vorab-Prüfung
+    404 und wurden vor der Messung durch geprüfte Datensätze ersetzt, damit
+    kein Tippfehler als Fehler einer Plattform erscheint.</li>
+  <li>Jede Adresse ging an den Endpunkt
+    (<code>https://provinglab.dev/mcp</code>, Werkzeug
+    <code>extract_citation</code>), der von Cloudflares Randnetz abruft.</li>
+  <li>Der messende Client lief über den kommerziellen VPN-Ausgang des lokalen
+    Netzes (AS209854 Cyberzone S.A., Frankfurt am Main) — keine gewöhnliche
+    Haushaltsleitung. Manche Plattformen antworten solchen Adressbereichen
+    anders als einem Heimanschluss.</li>
+  <li>Rohdaten, pro Quelle und mit beiden Statuscodes:
+    <a href="/data/2026-08-03-de-plattformen.json">JSON</a>, CC BY 4.0.</li>
+</ul>
+
+<h2>Was das für ein deutsches Literaturverzeichnis bedeutet</h2>
+<p>
+  Verlagsplattformen und die Leibniz-Repositorien können über den Endpunkt
+  laufen. Der Katalog der Nationalbibliothek, OPUS-Einstiegsseiten und
+  lizenzierte Datenbanken können es nicht — dort muss die Seite im Browser
+  geöffnet und aus der eigenen Sitzung heraus gesichert werden, wofür die
+  <a href="/tools/full-page-pdf-snap/">Aufnahme-Erweiterung</a> gebaut ist.
+  Statistikportale antworten vollständig, weisen aber zu wenig für einen
+  Nachweis aus; der Endpunkt sagt das, statt das fehlende Jahr zu erfinden.
+  Die beiden Wege ergänzen sich, sie konkurrieren nicht.
+</p>
+
+<h2>Grenzen dieser Messung</h2>
+<ul>
+  <li>Elf Plattformen mit je einem Beispieldatensatz, ein Durchlauf an einem
+    Tag — eine Aufnahme dessen, was ein deutsches Literaturverzeichnis berührt,
+    keine Vollerhebung.</li>
+  <li>„Sperre" heißt hier: zwei Abrufe an einem Nachmittag, einer beantwortet,
+    einer nicht. Das ist eine Beobachtung, keine Aussage über die Absichten
+    eines Betreibers.</li>
+  <li>Ob eine Seite genug Metadaten ausweist, kann zwischen Datensätzen
+    derselben Plattform variieren; die Beispiele wurden vor dem Lauf gewählt,
+    nicht danach.</li>
+</ul>
+
+</div>
+
+<footer>
+      Measured on 3 August 2026 in one pass against https://provinglab.dev/mcp.
+      Every handed-back source was fetched twice — as reader and as browser. Raw data:
+      <a href="/data/2026-08-03-de-plattformen.json">JSON</a>, CC BY 4.0.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+
+</div>
+<script>
+function setLang(l){
+  document.querySelectorAll('[data-lang]').forEach(function(e){
+    e.classList.toggle('on', e.dataset.lang === l);
+  });
+  document.getElementById('b-en').setAttribute('aria-pressed', l === 'en');
+  document.getElementById('b-de').setAttribute('aria-pressed', l === 'de');
+  document.documentElement.lang = l;
+  try { localStorage.setItem('pl-lang', l); } catch (e) {}
+}
+(function(){
+  var gespeichert = null;
+  try { gespeichert = localStorage.getItem('pl-lang'); } catch (e) {}
+  var l = gespeichert || ((navigator.language || 'en').slice(0,2) === 'de' ? 'de' : 'en');
+  if (l === 'de') setLang('de');
+})();
+</script>
+</body>
+</html>

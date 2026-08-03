@@ -73,6 +73,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://provinglab.dev/measurements/de-plattformen/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://provinglab.dev/measurements/extension-permissions-risk/</loc>
     <lastmod>2026-08-03</lastmod>
     <changefreq>yearly</changefreq>
@@ -205,6 +211,12 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://provinglab.dev/data/2026-08-03-de-plattformen.json</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://provinglab.dev/data/2026-08-03-reading-list-to-bibliography-vpn-ausgang.json</loc>
     <lastmod>2026-08-03</lastmod>
     <changefreq>yearly</changefreq>
@@ -212,6 +224,12 @@
   </url>
   <url>
     <loc>https://provinglab.dev/data/2026-08-03-reading-list-to-bibliography.json</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/data/schema.json</loc>
     <lastmod>2026-08-03</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
