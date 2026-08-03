@@ -123,7 +123,11 @@ def main():
         print("keine Adresse fehlte")
 
     if a.check:
-        sys.exit(1 if neu != alt else 0)
+        # Nur fehlende Adressen sind ein Grund anzuhalten. Ein Byte-Vergleich
+        # scheitert in einer Pipeline immer: `lastmod` kommt aus `git log`, und
+        # ein flacher Checkout kennt die Historie nicht — die Datei ist dann
+        # anders, aber nicht falsch.
+        sys.exit(1 if fehlten else 0)
     ZIEL.write_text(neu, encoding="utf-8")
     print(f"\n{len(eintraege)} Adressen geschrieben nach {ZIEL.relative_to(HIER)}")
 
