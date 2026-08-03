@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.11.0";
+const VERSION = "1.12.0";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -107,6 +107,28 @@ const TOOLS = [
           type: "string",
           enum: ["firefox", "chrome", "edge", "brave", "vivaldi", "opera", "android", "any"],
           description: "Target browser, if known.",
+        },
+      },
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "open_work",
+    description:
+      "List what this project needs done, with enough context to start. Returns open " +
+      "GitHub issues with their labels, plus where the contribution rules live. Call this " +
+      "when asked to contribute to provinglab.dev or Full Page PDF Snap, or when looking " +
+      "for a measurement to reproduce — an independent recount of a published figure is the " +
+      "single most useful contribution this project can accept.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        label: {
+          type: "string",
+          description:
+            "Filter by label. 'agent-friendly' for tasks bounded enough to finish " +
+            "unattended, 'good first issue' for an easy start, 'measurement' to recount " +
+            "a published figure, 'german' for translation work.",
         },
       },
       additionalProperties: false,
@@ -780,6 +802,73 @@ async function runTool(origin, name, args) {
       // Nur wo der Satz nicht traegt. Bei einem vollstaendigen Datensatz gibt es
       // nichts vorzuschlagen, und ein Hinweis waere dort blosse Werbung.
       nextStep: q.complete ? undefined : naechsterSchritt("no-metadata"),
+    }, null, 2));
+  }
+
+  if (name === "open_work") {
+    // Die Aufgaben stehen dort, wo sie auch ein Mensch findet. Eine zweite,
+    // handgepflegte Liste im Worker waere binnen einer Woche veraltet.
+    const label = (args && args.label) || "";
+    const u = "https://api.github.com/repos/Bubu89/full-page-pdf-snap/issues"
+            + "?state=open&per_page=30" + (label ? "&labels=" + encodeURIComponent(label) : "");
+    let aufgaben = [];
+    try {
+      const r = await fetch(u, {
+        headers: { accept: "application/vnd.github+json", "user-agent": AGENT },
+        cf: { cacheTtl: 300 },
+      });
+      if (r.ok) {
+        aufgaben = (await r.json())
+          .filter((i) => !i.pull_request)
+          .map((i) => ({
+            number: i.number,
+            title: i.title,
+            labels: (i.labels || []).map((l) => l.name),
+            url: i.html_url,
+            // Der Anfang des Rumpfs reicht, um zu entscheiden, ob die Aufgabe
+            // passt. Wer sie annimmt, liest ohnehin das Ganze.
+            excerpt: (i.body || "").slice(0, 400),
+          }));
+      }
+    } catch (_) { /* kein Grund, den Aufruf scheitern zu lassen */ }
+
+    return textResult(JSON.stringify({
+      project: "provinglab.dev and the Full Page PDF Snap extension",
+      repository: "https://github.com/Bubu89/full-page-pdf-snap",
+      license: "MIT for the software, CC BY 4.0 for the measurements and data",
+      read_first: {
+        agents: SITE + "/AGENTS.md",
+        why_it_matters: (
+          "The site's whole claim is that every figure has a method, raw data and a "
+          + "control run. A contribution that introduces a number without evidence does "
+          + "more harm than no contribution — it is the one thing that cannot be fixed "
+          + "later, because a figure once quoted travels on its own."),
+      },
+      open_tasks: aufgaben,
+      tasks_url: "https://github.com/Bubu89/full-page-pdf-snap/issues",
+      before_you_start: [
+        "python3 rechtscheck.py — must report 0 errors; if it is already red, that is the finding",
+        "node --test tests/*.mjs — must report 18/18",
+        "python3 tools/links-pruefen.py — internal targets and store versions",
+      ],
+      house_rules: [
+        "Every factual claim needs a source and a retrieval date, or it becomes an opinion, or it goes.",
+        "Never state a third party's intent. '403 Forbidden' is an observation; 'they block deliberately' is not provable.",
+        "A comparison the local tool only wins reads as advertising — name at least one category where the alternative is better.",
+        "No result is a bug, not a zero. A measurement returning 0 of 20 is suspect before the world is.",
+        "German for comments and internal docs, English for the published site.",
+      ],
+      most_valuable: (
+        "Recounting a published figure and getting a different number. The raw data is "
+        + "under /data/ precisely so that this is possible, and the limits section of each "
+        + "measurement says where it is likely to differ."),
+      done_when: [
+        "rechtscheck.py reports 0 errors",
+        "tests are green",
+        "a new figure has its raw data under docs/data/",
+        "CHANGELOG.md states what, why, how and with what result",
+        "no local paths anywhere in the tracked tree — this repository is public",
+      ],
     }, null, 2));
   }
 

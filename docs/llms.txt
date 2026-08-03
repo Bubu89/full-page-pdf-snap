@@ -53,6 +53,8 @@ measurements. Disclosed on every page where it is relevant.
 - [Which version is live where](https://provinglab.dev/.well-known/extension-versions.json): Machine-readable answer to a question that currently needs three manual lookups. Names both store versions, the source state, the declared permissions and — when they diverge — says so in a `notices` field rather than leaving it to be noticed. Generated from the store APIs, not maintained by hand.
 - [Security contact](https://provinglab.dev/.well-known/security.txt): RFC 9116. No bounty programme and no promised deadline; reports are answered and, where they hold, fixed in public.
 
+- [Contributing as an agent](https://provinglab.dev/AGENTS.md): What to run before changing anything, the five house rules that differ from the usual (evidence before phrasing; never state a third party's intent; a comparison the local tool only wins is advertising; no result is a bug rather than a zero; German for comments, English for the site), how the static pages are generated, and what is not changed without asking. Open tasks are GitHub issues and are also served machine-readable by the `open_work` tool on /mcp — the most valuable contribution named there is recounting a published figure and getting a different number.
+
 ## Optional
 
 - [About and disclosure](https://provinglab.dev/about/): Private, non-commercial publication — nothing sold, no advertising, no affiliate links, no tracking. Operated under the pseudonym Silence; full identity disclosed to a legitimate legal requester. States the limits explicitly: nothing here is legal advice, and a screen-capture PDF is not a qualified electronic document.
