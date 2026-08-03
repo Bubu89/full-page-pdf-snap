@@ -79,7 +79,10 @@ jobs:
         run: |
           # Nur die echten Kennungen, nicht jeder Beispielpfad: /home/name/
           # und /home/you/ stehen absichtlich in der Oberflaeche.
-          treffer=$(git ls-files | xargs grep -lE '/home/holo/|/mnt/c/Users/HOLO/' 2>/dev/null || true)
+          # Diese Datei selbst ausnehmen — sie muss das Muster enthalten, um
+          # danach suchen zu koennen, und fand sich beim ersten Lauf prompt selbst.
+          treffer=$(git ls-files | grep -v '^\.github/workflows/' \
+                    | xargs grep -lE '/home/holo/|/mnt/c/Users/HOLO/' 2>/dev/null || true)
           if [ -n "$treffer" ]; then
             echo "::error::Lokale Pfade in: $treffer"
             exit 1
