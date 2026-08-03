@@ -435,6 +435,6 @@
       }
     }
   ],
-  "network": "VPN exit (Surfshark via ASUS router 192.168.50.1), AS209854 Cyberzone S.A., Frankfurt DE — NOT a plain residential line; the local network tunnels through a VPN endpoint",
+  "network": "Commercial VPN exit on the local router, AS209854 Cyberzone S.A., Frankfurt DE — NOT a plain residential line; the local network tunnels through a VPN endpoint",
   "license": "CC-BY-4.0"
 }
