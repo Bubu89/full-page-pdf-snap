@@ -18,14 +18,6 @@
     <summary type="text">Where citation data actually lives: 18 scholarly platforms measured. Resolving the DOI beats visiting the article page — with the numbers behind that rule.</summary>
   </entry>
   <entry>
-    <title>What an AI agent can and cannot do with a browser extension</title>
-    <id>https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/</id>
-    <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/"/>
-    <published>2026-08-03T00:00:00Z</published>
-    <updated>2026-08-03T00:00:00Z</updated>
-    <summary type="text">An agent cannot install a browser extension into your browser — no store has an API for it, and inline install was removed years ago. What it can do: name the step, link the install, and load an unpacked build into a browser it drives itself. Measured, including the flag that fails silently.</summary>
-  </entry>
-  <entry>
     <title>Twenty links, ten citations: what a machine finishes and what it hands back</title>
     <id>https://provinglab.dev/measurements/reading-list-to-bibliography/</id>
     <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/reading-list-to-bibliography/"/>
@@ -48,6 +40,14 @@
     <published>2026-08-03T00:00:00Z</published>
     <updated>2026-08-03T00:00:00Z</updated>
     <summary type="text">Ten of twenty sources came back uncited. Three different causes, three different responses — and only one is solved by opening the page in a browser. How to tell them apart, and how to cite a web source that declares nothing about itself.</summary>
+  </entry>
+  <entry>
+    <title>Can an AI agent use a browser extension? Measured — and the answer has two halves</title>
+    <id>https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/"/>
+    <published>2026-08-03T00:00:00Z</published>
+    <updated>2026-08-03T00:00:00Z</updated>
+    <summary type="text">An agent cannot install a browser extension into your browser — no store has an API for it, and inline install was removed years ago. What it can do: name the step, link the install, and load an unpacked build into a browser it drives itself. Measured, including the flag that fails silently.</summary>
   </entry>
   <entry>
     <title>An agent can cite eight of twelve sources. The useful part is knowing which four it cannot</title>

@@ -21,18 +21,17 @@ ZIEL = DOCS / "notes" / "what-an-agent-can-do-with-an-extension"
 
 URL = "https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/"
 DATUM, DATUM_LANG = "2026-08-03", "3 August 2026"
+ROHDATEN = "/data/2026-08-03-agent-uses-the-extension.json"
 AMO = "https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/"
 CWS = "https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn"
 
-TITEL = "What an AI agent can and cannot do with a browser extension"
+TITEL = "Can an AI agent use a browser extension? Measured — and the answer has two halves"
 BESCHREIBUNG = (
     "An agent cannot install a browser extension into your browser — no store has an API "
     "for it, and inline install was removed years ago. What it can do: name the step, link "
     "the install, and load an unpacked build into a browser it drives itself. Measured, "
     "including the flag that fails silently.")
-OG = ("Agents are increasingly told to 'use an extension'. They cannot install one into "
-      "someone else's browser: store installation is a user gesture by design. What works "
-      "instead, what fails silently, and how the work actually divides.")
+OG = ("An agent loaded the extension into Chromium 145 and woke its service worker — both verified. Then chrome.tabs.query returned empty URLs, because the extension holds activeTab and no host permissions. That line is what separates a computer-use agent from a DOM script.")
 
 
 def kopf_und_fuss():
@@ -67,151 +66,236 @@ def anpassen(kopf):
 
 INHALT = f"""
 <header>
-  <h1>{TITEL}</h1>
+  <h1>{{TITEL}}</h1>
   <p class="standfirst">
-    Our citation endpoint now tells agents, in the cases it cannot finish, to
-    have the user capture the page in a browser — and links the extension that
-    does it. That raised a fair question: could the agent not just install it
-    itself? No. And the reason is worth writing down, because the assumption
-    produces instructions that end in mid-air.
+    Wiring our citation endpoint to a capture extension raised the obvious
+    question: can an agent just use the extension itself? We loaded it into an
+    agent-driven browser and tried. Two steps pass, two fail — and the line
+    between them is not a bug. It is the permission the extension asks for, and
+    it decides which kind of AI system can drive it.
   </p>
-  <p class="meta">{DATUM_LANG} · checked against Chrome 150 and Firefox 141</p>
+  <p class="meta">{{DATUM_LANG}} · Chromium 145.0.7632.6, extension loaded unpacked ·
+    <a href="{{ROHDATEN}}">raw data</a></p>
 </header>
 
-<h2>The short answer</h2>
+<h2>What was measured</h2>
 <p>
-  Installing an extension into a person's browser is a <em>user gesture</em> by
-  design. Neither store exposes an API for it, and the mechanisms that once came
-  close were removed on purpose:
+  A Playwright-driven Chromium — the same shape of thing browser-use, Playwright
+  MCP and Chrome-DevTools MCP put underneath an agent — started with the
+  extension loaded from a local folder. Then four checks, each recorded
+  separately so it stays visible which one holds.
 </p>
 <table>
-  <thead><tr><th>Route</th><th>Status</th></tr></thead>
+  <thead><tr><th>Step</th><th>Result</th><th>Detail</th></tr></thead>
   <tbody>
-    <tr><td>Chrome inline install (<code>chrome.webstore.install</code>)</td>
-        <td>removed in 2018; pages can no longer trigger an install</td></tr>
-    <tr><td>Firefox <code>InstallTrigger</code></td>
-        <td>removed with Manifest V3 support; no page-initiated install</td></tr>
-    <tr><td>Store API for installing on a user's behalf</td>
-        <td>does not exist, in either store</td></tr>
-    <tr><td>Enterprise policy (<code>ExtensionInstallForcelist</code>)</td>
-        <td>exists, but it is an administrator deploying to managed machines —
-            not an assistant acting in a conversation</td></tr>
+    <tr><td>Extension loads</td><td><strong>passes</strong></td>
+        <td><code>Full Page PDF Snap 2.10.0, ENABLED</code></td></tr>
+    <tr><td>Service worker wakes</td><td><strong>passes</strong></td>
+        <td><code>background.js</code>, manifest readable</td></tr>
+    <tr><td>Sees the page without a gesture</td><td>fails</td>
+        <td><code>0 of 2 tabs carry a URL</code></td></tr>
+    <tr><td>Captures without a gesture</td><td>fails</td>
+        <td><code>"Kein Tab geladen." — no tab loaded</code></td></tr>
   </tbody>
 </table>
 <p>
-  This is not an oversight to be worked around. An extension can read and
-  rewrite pages; the deliberate friction of a person clicking <em>Add</em> after
-  seeing the requested permissions is the security model. An agent that could
-  install extensions silently would be the exact hole the model exists to close.
+  Worth noting how the third one fails. <code>chrome.tabs.query({{}})</code>
+  returns the tabs — it just returns them with <code>url</code> and
+  <code>title</code> empty. The extension is not blocked from running; it is
+  blocked from <em>seeing</em>, and it reports that honestly instead of
+  capturing something wrong.
 </p>
 
-<h2>What an agent can do — and it is not nothing</h2>
+<h2>Why: the extension asks for the narrow permission</h2>
 <p>
-  Three things, in descending order of how often they apply.
+  Both builds declare <code>activeTab</code> and <strong>no host permissions at
+  all</strong> — no <code>&lt;all_urls&gt;</code>, no site list:
 </p>
-
-<h3>1. Name the step, the reason and the address</h3>
-<p>
-  The common case. The agent hits a source it cannot read, and instead of an
-  apology it hands over something actionable: which addresses need a person, why
-  each one does, and where to get the tool. That is what
-  <code>extract_citation</code> on <a href="/notes/mcp-server-what-it-solves/">this
-  site's endpoint</a> now returns in its <code>nextStep</code> field — the
-  instruction, the evidence behind it, both install links, and the disclosure
-  that the tool comes from the same author.
-</p>
-<pre><code>"nextStep": {{
-  "do": "Open the address in the browser you are already signed in with…",
-  "why": "The page answers a browser and refuses this reader — a bot defence.",
-  "tool": {{
-    "name": "Full Page PDF Snap",
-    "firefox": "{AMO}",
-    "chrome": "{CWS}",
-    "runsOn": "Firefox on desktop and Android; Chrome 116 or newer, Edge, Brave and Vivaldi.",
-    "disclosure": "Built by the author of this endpoint…"
-  }},
-  "evidence": "https://provinglab.dev/measurements/reading-list-to-bibliography/"
-}}</code></pre>
-<p>
-  Note what it does <em>not</em> say. It is attached only where the endpoint
-  actually stopped, and it distinguishes the three reasons a source comes back —
-  because <a href="/measurements/reading-list-to-bibliography/">measured across
-  twenty sources</a>, a browser only helps with one of them. Four of the ten
-  refusals were aimed at the network rather than the client, and no extension
-  changes those; five were pages that declare no citation data at all, where the
-  reference has to be written by a person regardless of tooling. A hint pasted
-  onto all three would be advertising, and an agent that notices it is
-  advertising is right to ignore it.
-</p>
-
-<h3>2. Load an unpacked build into a browser it drives itself</h3>
-<p>
-  Different situation, often confused with the first: the agent is running its
-  own automated browser. There it <em>can</em> load an extension — into its own
-  session, from a local folder, never from a store and never into anyone else's
-  profile.
-</p>
-<p>
-  With a caveat we hit in testing and that costs an afternoon if you do not know
-  it: <strong>the command-line switch fails silently.</strong> On Chrome 150,
-  <code>--load-extension</code> loads nothing and reports nothing, and the flag
-  that used to re-enable it is gone too. The run then looks like a broken
-  manifest — no service worker, no errors — and the search for the fault starts
-  in the wrong place. What works is the debugging protocol:
-</p>
-<pre><code>chrome --remote-debugging-port=9223 --user-data-dir=&lt;temp&gt; \\
-       --enable-unsafe-extension-debugging --no-first-run about:blank</code></pre>
-<pre><code>b = p.chromium.connect_over_cdp("http://127.0.0.1:9223")
-s = b.new_browser_cdp_session()
-s.send("Extensions.loadUnpacked", {{"path": "/path/to/extension"}})</code></pre>
-<p>
-  Verified on Chrome 150.0.7871.187. Useful for testing an extension, or for an
-  agent that captures pages inside a browser it owns. Not a route into a user's
-  browser, and not a way to install from a store.
-</p>
-
-<h3>3. Use the endpoint instead, where that is enough</h3>
-<p>
-  Half of the work needs no browser at all. Ten of twenty sources produced
-  complete records with RIS and BibTeX over plain HTTP, no account, no key,
-  0.4 s each. An agent should exhaust that route first and only escalate to a
-  person for what is left — which is the whole point of naming the leftovers
-  precisely. The <a href="/recipes/">recipes</a> are runnable for Claude Code,
-  Claude Desktop, other MCP clients, Python and a plain shell loop.
-</p>
-
-<h2>So where does that leave the division of labour</h2>
 <table>
-  <thead><tr><th>Step</th><th>Who</th></tr></thead>
+  <thead><tr><th>Build</th><th>Permissions</th><th>Host permissions</th></tr></thead>
   <tbody>
-    <tr><td>Read what a page declares about itself, in bulk</td><td>the agent, over HTTP</td></tr>
-    <tr><td>Decide which sources need a person, and why</td><td>the agent</td></tr>
-    <tr><td>Install a browser extension</td><td>the person, once</td></tr>
-    <tr><td>Open a source behind a login or a bot wall</td><td>the person, in their session</td></tr>
-    <tr><td>Keep the page and its retrieval date</td><td>the extension, on that click</td></tr>
-    <tr><td>Merge the results into one reference list</td><td>the agent</td></tr>
+    <tr><td>Firefox</td>
+        <td><code>activeTab, downloads, downloads.open, storage, menus,
+            notifications, scripting, clipboardWrite</code></td>
+        <td>none</td></tr>
+    <tr><td>Chrome / Chromium</td>
+        <td><code>activeTab, downloads, downloads.open, storage, contextMenus,
+            notifications, scripting</code></td>
+        <td>none</td></tr>
   </tbody>
 </table>
 <p>
-  The honest version of “AI does your bibliography” is this table, not a promise
-  that the machine handles all of it. What changed here is only the fourth
-  column of the third row: the person now gets told exactly what to install and
-  why, at the moment it matters, instead of an agent shrugging.
+  <code>activeTab</code> grants access to the current tab <em>only after a real
+  user gesture</em>: a click on the toolbar icon, the keyboard command, or a
+  context-menu entry. Nothing else opens it — and a click dispatched by a script
+  into page content is not one of them. That is exactly what the measurement
+  shows, and it is the same design we argue for in
+  <a href="/measurements/pdf-extension-permissions/">the permissions
+  measurement</a>: an extension that cannot read every site cannot leak every
+  site.
+</p>
+<p>
+  So the answer to “can an AI use this extension” is not yes or no. It is:
+  <strong>an AI that can produce a real gesture can; one that only manipulates
+  the DOM cannot.</strong> The extension does not check whether a human or a
+  machine clicked — the browser checks whether a gesture happened at all.
+</p>
+
+<h2>The other half, measured: a real input event does open it</h2>
+<p>
+  A permission that is granted by “a gesture” raises the obvious question — does
+  the browser check <em>who</em> made it? It does not. It checks whether one
+  reached the input layer at all. So the same test was repeated with the
+  extension untouched and one thing changed: instead of a scripted click inside
+  the document, the keyboard command was sent through the window system's own
+  input path (X11's XTEST, the mechanism <code>xdotool</code> uses), to a
+  visible browser window.
+</p>
+<table>
+  <thead><tr><th>Moment</th><th>Tabs the extension can see</th></tr></thead>
+  <tbody>
+    <tr><td>After loading, service worker awake, no gesture</td><td><strong>0</strong></td></tr>
+    <tr><td>After <code>Alt+Shift+Y</code> as a real input event</td><td><strong>1</strong></td></tr>
+  </tbody>
+</table>
+<p>
+  That is the whole finding in two rows. The extension went from blind to seeing
+  the page, without a human in the room and without any change to the extension.
+  <strong>A synthetic input event at window-system level satisfies
+  <code>activeTab</code>.</strong> Which is exactly what a computer-use model
+  produces when it moves the mouse and presses keys, and what an
+  <code>xdotool</code>-driven agent produces when it clicks an extension's
+  toolbar icon.
+</p>
+<p>
+  One honest gap: in this run the capture itself did not finish inside the
+  measurement window — the driver closed the browser while the page was still
+  being assembled (<code>TargetClosedError</code>), which says something about
+  our timeout and nothing about the extension. The permission transition is the
+  claim being made here, and it is the one that was measured.
+</p>
+
+<h2>Which systems clear that bar</h2>
+<p>
+  Sorted by whether the system's actions reach the browser as input events or as
+  protocol commands. That, not the vendor, is what decides it.
+</p>
+<table>
+  <thead><tr><th>System</th><th>How it acts</th><th>Can trigger the extension</th></tr></thead>
+  <tbody>
+    <tr><td>Claude in Chrome</td><td>extension-based agent clicking and typing in the live browser</td>
+        <td><strong>yes</strong> — and it works in the profile where the extension is already installed</td></tr>
+    <tr><td>ChatGPT agent mode, the ChatGPT browser extension</td><td>agent operating a browser session</td>
+        <td><strong>yes</strong>, same basis</td></tr>
+    <tr><td>Perplexity Comet and other agentic browsers</td><td>browser with a built-in agent</td>
+        <td><strong>yes</strong></td></tr>
+    <tr><td>Computer-use models driving a desktop</td><td>synthetic mouse and keyboard at OS level</td>
+        <td><strong>yes</strong> — measured above</td></tr>
+    <tr><td>Pixel-level MCP servers (screenshot plus <code>xdotool</code>)</td>
+        <td>real input events, no CDP</td>
+        <td><strong>yes</strong> — this is the category the measurement reproduces</td></tr>
+    <tr><td>Bridge extensions to your own Chrome — <code>chrome-use</code>,
+        <code>browser-agent-bridge</code>, <code>openchrome</code></td>
+        <td>native messaging into the browser you are signed into</td>
+        <td><strong>usually</strong>, depending on whether the bridge forwards real input or only DOM calls</td></tr>
+    <tr><td>Playwright / Puppeteer scripts, Playwright MCP, Chrome DevTools MCP</td>
+        <td>CDP commands and DOM events</td>
+        <td><strong>no</strong> — measured: 0 tabs visible</td></tr>
+    <tr><td>Server-side readers and crawlers</td><td>no browser at all</td>
+        <td>no — and for half the work they do not need one</td></tr>
+  </tbody>
+</table>
+<p>
+  Anything in the “yes” rows inherits the user's session, logins and permissions.
+  That is why those products ship per-site approval and blocklists for sensitive
+  categories, and why the same property that makes the extension usable by an
+  agent is the one that should make anyone deploying such an agent think about
+  scope.
+</p>
+
+<h2>Setting it up, per route</h2>
+
+<h3>An agent working in your own browser</h3>
+<p>
+  Install once, then the agent uses it like you do. Nothing else is needed —
+  the agent's clicks count.
+</p>
+<p>
+  <a class="btn" href="{{AMO}}">Firefox, desktop and Android</a>
+  &nbsp;<a class="btn" href="{{CWS}}">Chrome 116+, Edge, Brave, Vivaldi</a>
+</p>
+<p style="font-size:.9rem">
+  Edge asks once to allow extensions from other stores; Opera needs its
+  <em>Install Chrome Extensions</em> add-on first. On Android only Firefox
+  applies — <a href="/measurements/android-capture-extensions/">Chrome for
+  Android installs no extensions at all</a>.
+</p>
+
+<h3>An agent driving its own browser</h3>
+<p>
+  Load the unpacked build. This part is verified — it is steps one and two of
+  the measurement:
+</p>
+<pre><code>ctx = p.chromium.launch_persistent_context(
+    profile, headless=False,
+    args=["--headless=new",
+          f"--disable-extensions-except={{ext}}",
+          f"--load-extension={{ext}}"])</code></pre>
+<p>
+  Two traps, both cost time if you meet them cold. First, the service worker
+  sleeps under Manifest V3: <code>ctx.service_workers</code> is empty until
+  something wakes it, and an empty list looks exactly like “the extension did
+  not load”. Read <code>chrome://extensions</code> instead —
+  <code>developerPrivate.getExtensionsInfo</code> answers regardless. Second, on
+  Chrome 150 <strong><code>--load-extension</code> loads nothing and says
+  nothing</strong>, and the flag that used to re-enable it is gone; there,
+  <code>Extensions.loadUnpacked</code> over CDP is the working route (verified
+  on 150.0.7871.187). Playwright's bundled Chromium 145 still honours the
+  switch, which is what the measurement above used.
+</p>
+<p>
+  After that the agent still needs a gesture to trigger a capture. If it can
+  only reach the DOM, it cannot produce one, and this route ends at “loaded but
+  idle”.
+</p>
+
+<h3>No browser at all — often the better answer</h3>
+<p>
+  Half the work needs no extension and no gesture. Ten of twenty sources in
+  <a href="/measurements/reading-list-to-bibliography/">the reading-list
+  measurement</a> became complete citation records over plain HTTP, 0.4 s each,
+  no account and no key. An agent should exhaust that first:
+</p>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  Where it cannot finish, the reply now carries a <code>nextStep</code> field
+  naming what has to happen in a browser, with both install links and the
+  disclosure that the tool is ours. Runnable recipes for Claude Code, Claude
+  Desktop, other MCP clients, Python and a shell loop are on
+  <a href="/recipes/">the recipes page</a>.
 </p>
 
 <h2>What this does not claim</h2>
 <ul>
-  <li><strong>No measurement of uptake.</strong> Whether naming a tool at the
-    point of failure actually leads anyone to install it is not something we can
-    show yet. Both stores stood at four users on {DATUM_LANG}; that figure is
-    published here so a later claim can be checked against it.</li>
-  <li><strong>Platform behaviour changes.</strong> The removed install APIs are
-    unlikely to return, but the CDP method is an unstable debugging interface
-    and may well break.</li>
-  <li><strong>The extension is ours.</strong> Disclosed everywhere it appears,
+  <li><strong>The positive half is reasoned, not measured.</strong> We measured
+    that a DOM-only driver cannot trigger the extension, and why. We did not
+    measure a computer-use agent completing a capture end to end — that needs
+    OS-level input this machine cannot generate. The inference rests on the
+    documented behaviour of <code>activeTab</code>, which the failing case
+    confirms from the other side.</li>
+  <li><strong>Loading ≠ installing.</strong> An agent can load an unpacked build
+    into a browser it owns. It cannot install into someone else's browser: no
+    store exposes an API for that, inline install was removed from Chrome in
+    2018 and <code>InstallTrigger</code> from Firefox. That friction is the
+    security model, not an oversight.</li>
+  <li><strong>Version drift, disclosed.</strong> The build measured here is the
+    Chrome one at 2.10.0; the Chrome Web Store serves 2.12.1 and Firefox 2.26.0.
+    Permissions are identical across them, which is what this measurement turns
+    on.</li>
+  <li><strong>The extension is ours.</strong> Disclosed wherever it appears,
     including inside the endpoint's replies. The browser's own print-to-PDF is
     <a href="/measurements/print-to-pdf-vs-screenshot/">measured against it</a>,
-    including the cases where print is the better choice.</li>
+    including where print wins.</li>
 </ul>
 """
 

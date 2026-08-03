@@ -1,0 +1,49 @@
+{
+  "measurement": "agent-uses-the-extension",
+  "date": "2026-08-03",
+  "question": "Can an agent that drives a browser load the capture extension and trigger it without a human gesture? Where exactly does it stop, and why?",
+  "method": {
+    "browser": "145.0.7632.6",
+    "driver": "Playwright persistent context, --headless=new",
+    "extension": "chrome-mv3 build, loaded unpacked",
+    "trigger": "runOnActiveTab() called directly in the service worker — the same function the toolbar button and the keyboard command reach. No OS-level mouse or keyboard event was generated.",
+    "extension_permissions": [
+      "activeTab",
+      "downloads",
+      "downloads.open",
+      "storage",
+      "contextMenus",
+      "notifications",
+      "scripting"
+    ],
+    "host_permissions": [],
+    "page": "https://provinglab.dev/measurements/reading-list-to-bibliography/"
+  },
+  "results": {
+    "steps_passed": 2,
+    "steps_total": 4
+  },
+  "steps": [
+    {
+      "step": "extension loads",
+      "passed": true,
+      "detail": "Full Page PDF Snap – Save Webpage  2.10.0, ENABLED"
+    },
+    {
+      "step": "service worker wakes",
+      "passed": true,
+      "detail": "background.js, manifest 2.10.0"
+    },
+    {
+      "step": "sees the page without a gesture",
+      "passed": false,
+      "detail": "0 von 2 Tabs mit Adresse"
+    },
+    {
+      "step": "captures without a gesture",
+      "passed": false,
+      "detail": "Kein Tab geladen."
+    }
+  ],
+  "license": "CC-BY-4.0"
+}

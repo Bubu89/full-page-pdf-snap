@@ -1,0 +1,48 @@
+{
+  "measurement": "agent-real-gesture",
+  "date": "2026-08-03",
+  "question": "Does a synthetic input event at window-system level — what a computer-use model produces — satisfy the activeTab gesture requirement and drive the extension to completion?",
+  "method": {
+    "display": ":0",
+    "input": "XTEST fake_input, the same path a physical keyboard takes",
+    "keys": "Alt+Shift+Y (the extension's default command)",
+    "browser": "Playwright Chromium, headful, extension loaded unpacked",
+    "page": "https://provinglab.dev/measurements/reading-list-to-bibliography/",
+    "counterpart": "docs/data/2026-08-03-agent-uses-the-extension.json"
+  },
+  "results": {
+    "steps_passed": 4,
+    "steps_total": 5,
+    "pdf": null,
+    "pdf_bytes": 0,
+    "pdf_pages": 0
+  },
+  "steps": [
+    {
+      "step": "X server with XTEST",
+      "passed": true,
+      "detail": ":0, 2560x1440"
+    },
+    {
+      "step": "browser window focused",
+      "passed": true,
+      "detail": "Twenty links, ten citations: what a machine finishes"
+    },
+    {
+      "step": "before the gesture",
+      "passed": true,
+      "detail": "0 Tabs mit Adresse sichtbar"
+    },
+    {
+      "step": "after the gesture",
+      "passed": true,
+      "detail": "1 Tabs mit Adresse sichtbar (vorher 0)"
+    },
+    {
+      "step": "extension produced a PDF",
+      "passed": false,
+      "detail": "keine Datei (TargetClosedError)"
+    }
+  ],
+  "license": "CC-BY-4.0"
+}

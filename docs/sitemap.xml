@@ -175,6 +175,18 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://provinglab.dev/data/2026-08-03-agent-real-gesture.json</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/data/2026-08-03-agent-uses-the-extension.json</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://provinglab.dev/data/2026-08-03-citation-by-platform.json</loc>
     <lastmod>2026-08-03</lastmod>
     <changefreq>yearly</changefreq>
