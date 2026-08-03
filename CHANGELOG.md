@@ -1,3 +1,41 @@
+## 2026-08-03 — Damit ein Agent hier mitarbeiten kann, brauchte es beides
+
+**Was.** `AGENTS.md`, fuenf echte GitHub-Issues und das MCP-Werkzeug
+`open_work` (Worker 1.12.1).
+
+**Warum.** Zwei Luecken, die sich gegenseitig verstaerkten: Es gab **keine
+AGENTS.md**, ein Agent fand also keine Regeln — und **null offene Issues**, es
+gab also nichts, woran er haette arbeiten koennen. Beides einzeln waere halb so
+schlimm gewesen.
+
+**Wie.** `AGENTS.md` nennt die fuenf Regeln, die hier anders sind als ueblich,
+weil ein Agent sonst die ueblichen anwendet: Belegpflicht vor Formulierung; nie
+eine Absicht Dritter behaupten; ein Vergleich, den das eigene Werkzeug nur
+gewinnt, ist Werbung; kein Ergebnis ist ein Fehler statt eines Nullwerts; und
+die f-String-Falle, die heute zweimal literale `{PLATZHALTER}` ausgeliefert hat.
+
+Fuenf Aufgaben, alle aus echten offenen Punkten dieses Tages — nicht erfunden:
+deutsche Fassungen der Zitations-Messungen, die Log-Aufbewahrung, die `/about/`
+zuzusagen verspricht; eine unabhaengige Gegenmessung der Zwanzig-Quellen-Messung
+aus einem Heimnetz; die Art der Seite benennen, wenn ein Satz unvollstaendig
+zurueckkommt; und die MCP-Verzeichnisse.
+
+`open_work` liefert sie maschinenlesbar aus der Issues-Schnittstelle statt aus
+einer zweiten, handgepflegten Liste, die binnen einer Woche veraltet waere. Es
+benennt ausdruecklich, was am meisten hilft: **eine veroeffentlichte Zahl
+nachrechnen und eine andere bekommen.** Die Rohdaten liegen genau dafuer offen.
+
+**Panne, die dabei auffiel.** Der erste CI-Lauf meldete einen fehlgeschlagenen
+Deploy, der gelungen war: Das Skript ging live, aber `wrangler` schreibt bei
+jedem Lauf die Route neu und bricht ab, weil das CI-Token bewusst keine
+Zonenrechte hat. Einen gruenen Deploy als rot zu melden ist schlimmer als keine
+Pipeline — man hoert auf hinzusehen. Die CI liefert jetzt ohne Routen-Block aus;
+serverseitig bleibt die Route bestehen.
+
+**Gegengeprueft.** `open_work` antwortet live mit vier `agent-friendly`-Aufgaben,
+`AGENTS.md` ist unter `provinglab.dev/AGENTS.md` abrufbar, Pipeline gruen
+einschliesslich Live-Gegenprobe der Worker-Fassung.
+
 ## 2026-08-03 — 262 Zeitueberschreitungen in 24 Stunden, und warum serve_stale nichts ausrichten konnte
 
 **Was.** Edge-Haltedauer fuer HTML von *Origin-TTL* auf **feste 4 Stunden**,
