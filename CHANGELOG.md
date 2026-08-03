@@ -1,3 +1,71 @@
+## 2026-08-03 — Zwanzig Quellen: was hinter den zehn Rueckgaben wirklich steckt
+
+**Was.** Zwei neue Seiten aus einer neuen Messung —
+`/measurements/reading-list-to-bibliography/` und
+`/notes/sources-a-machine-cannot-cite/` — sowie die Reparatur von sechs
+Befunden, die beim Bauen auffielen.
+
+**Warum.** Gemessen war bisher, wie gut der Leser Metadaten zieht (gegen
+Citoid) und wieviel ein Agent an einer Liste schafft (Triage, 8 von 12). Nicht
+gemessen war, **warum** die Rueckgaben zurueckkommen. Die Triage-Seite legte
+nahe, es seien Verlage, die Server abweisen. Das stimmt so nicht.
+
+**Wie.** 20 Quellen, vor dem Lauf festgelegt und jede einmal im Browser
+geprueft, damit ein geratener Pfad von uns nicht als Versagen der Seite zaehlt
+— der erste Durchlauf hatte genau dieses Problem und vier tote Adressen. Jede
+Rueckgabe wurde zweimal geholt, einmal mit dem Kennzeichen eines Lesers und
+einmal mit dem eines Browsers. Nur wo der Browser durchkommt und der Leser
+nicht, ist eine Abwehr nachgewiesen. Skript `messung-literaturverzeichnis.py`,
+Datensatz `docs/data/2026-08-03-reading-list-to-bibliography.json`.
+
+**Resultat.** 10 von 20 vollstaendig in 8,1 s. Von den zehn Rueckgaben ist
+**eine** eine Bot-Abwehr. Vier weisen einen Browser genauso ab wie einen Leser
+— das sind Sperren gegen Rechenzentrums-Adressen, kein Client-Problem. Fuenf
+antworten mit 50 bis 90 kB lesbarem HTML und erklaeren schlicht keine
+Zitationsangaben. Die Trennlinie laeuft nicht zwischen bezahlt und frei,
+sondern zwischen Seiten, die zitiert werden wollen, und Seiten, die gelesen
+werden wollen: Verlage 4 von 5 (Bezahlschranke) und 2 von 3 (Open Access),
+Amtliches und Graue Literatur 0 von 4.
+
+**Der Fund, der die Muehe wert war.** Zwei der fuenf stummen Faelle liefern
+Titel *und* Verfasser und tragen trotzdem `complete: false` — Zenodo mit einem
+Software-Release, Statistik Austria mit einer Themenseite. Wer das Titelfeld
+liest und die Vollstaendigkeit ueberspringt, legt beide als Quelle ab. Das gilt
+fuer jeden Zitationsdienst, nicht nur fuer diesen.
+
+**Nebenbefunde, alle beim Pruefen gefunden und behoben.**
+
+- Drei veroeffentlichte Messungen (`citation-triage`, `citation-by-platform`,
+  `citation-extraction`) waren von **keiner** Uebersichtsseite aus erreichbar.
+- Der Eintrag zu `citation-extraction` auf `/data/` trug eine aus einem anderen
+  Beitrag kopierte Beschreibung und einen Verweis auf eine Seite, die es nie
+  gab.
+- `build-feed.py` nahm nur `TechArticle` — zwei Notizen mit `Article` fielen
+  aus dem Feed. Der Schematyp beschreibt den Inhalt und darf nicht darueber
+  entscheiden, ob etwas ausgeliefert wird.
+- Die Sitemap wurde von Hand gefuehrt und hatte fuenf Adressen verpasst. Sie
+  wird jetzt erzeugt (`build-sitemap.py`). Die erste Fassung des Erzeugers
+  haette drei Messungen und die Datenschutzseite verloren, weil die
+  Ausschlussliste auf Pfad*teile* verglich und die Weiterleitungsstummel
+  genauso heissen wie die Messungen, auf die sie zeigen — deshalb meldet das
+  Skript, was es hinzufuegt, und der Vergleich alt gegen neu gehoert zum Lauf.
+- `CHANGELOG.md` trug 23 absolute Pfade aus dem Aggregator, und
+  `bump-version.py` verdrahtet dieselben Windows-Pfade wie die Pack-Skripte,
+  die laengst ignoriert werden. Beide Kanaele geschlossen; die Historie
+  behaelt den alten Stand.
+- Eigener Fehler, vor der Veroeffentlichung gefunden: den beiden neuen Seiten
+  fehlte der Layout-Container, weil der Schnitt aus der Vorlage vor dem
+  oeffnenden `<div class="wrap">` lag. Im Quelltext unauffaellig, im Browser
+  eine Seite ueber die volle Fensterbreite.
+
+**Offen.** Der eigene Endpunkt weist Anfragen mit dem Standard-Kennzeichen von
+Pythons `urllib` mit Cloudflare-Fehler 1010 ab (Browser Integrity Check,
+zonenweit). KI-Crawler und `requests` kommen durch, gemessen an elf
+Kennzeichen — betroffen ist die Standardbibliothek der Sprache, in der die
+meisten Agenten geschrieben sind. Pfadgenau abstellen liesse sich das ueber
+eine Config Rule oder eine WAF-Ausnahme fuer `/mcp`; der hinterlegte Token hat
+fuer beides keine Rechte. Zonenweit abschalten waere der falsche Tausch.
+
 ## 2026-08-03 — Zweite Pruefung: stimmen die Verknuepfungen zur KI?
 
 Geprueft wurde, ob die Beschreibungen halten, was die Seiten sagen — und ob
