@@ -15,7 +15,31 @@
     <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/citation-by-platform/"/>
     <published>2026-08-03T00:00:00Z</published>
     <updated>2026-08-03T00:00:00Z</updated>
-    <summary type="text">Which platforms declare citation data a reader can use? Eleven of eighteen returned a record, ten of them complete. The most complete record of all came from the DOI resolver — not from the article page.</summary>
+    <summary type="text">Where citation data actually lives: 18 scholarly platforms measured. Resolving the DOI beats visiting the article page — with the numbers behind that rule.</summary>
+  </entry>
+  <entry>
+    <title>Twenty links, ten citations: what a machine finishes and what it hands back</title>
+    <id>https://provinglab.dev/measurements/reading-list-to-bibliography/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/reading-list-to-bibliography/"/>
+    <published>2026-08-03T00:00:00Z</published>
+    <updated>2026-08-03T00:00:00Z</updated>
+    <summary type="text">Turning a reading list into a bibliography, measured: 10 of 20 sources became complete records with RIS and BibTeX in 8 seconds. Only one of the other ten was stopped by a bot defence — five pages answered in full and declared no citation data.</summary>
+  </entry>
+  <entry>
+    <title>This site runs an MCP server. Measured: it is smaller than the file it competes with</title>
+    <id>https://provinglab.dev/notes/mcp-server-what-it-solves/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/mcp-server-what-it-solves/"/>
+    <published>2026-08-02T00:00:00Z</published>
+    <updated>2026-08-03T00:00:00Z</updated>
+    <summary type="text">An MCP endpoint that turns any URL into a reference with RIS and BibTeX — or names the paywall that stopped it. Seven complete records from ten sources in 4.8 s.</summary>
+  </entry>
+  <entry>
+    <title>The sources a machine cannot cite for you — and how to cite them anyway</title>
+    <id>https://provinglab.dev/notes/sources-a-machine-cannot-cite/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/sources-a-machine-cannot-cite/"/>
+    <published>2026-08-03T00:00:00Z</published>
+    <updated>2026-08-03T00:00:00Z</updated>
+    <summary type="text">Ten of twenty sources came back uncited. Three different causes, three different responses — and only one is solved by opening the page in a browser. How to tell them apart, and how to cite a web source that declares nothing about itself.</summary>
   </entry>
   <entry>
     <title>An agent can cite eight of twelve sources. The useful part is knowing which four it cannot</title>
@@ -23,7 +47,7 @@
     <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/citation-triage/"/>
     <published>2026-08-03T00:00:00Z</published>
     <updated>2026-08-03T00:00:00Z</updated>
-    <summary type="text">Given a mixed reading list, an MCP endpoint turned 8 of 12 sources into complete citations with RIS records in 13 seconds. The other four are blocked to any server-side reader — and saying so precisely is worth more than guessing.</summary>
+    <summary type="text">A reading list through a citation endpoint: 8 of 12 sources became complete records with RIS in 13 seconds. The other four are named, so a human can fetch them.</summary>
   </entry>
   <entry>
     <title>Which page-saving extensions actually run on Firefox for Android?</title>
@@ -42,12 +66,12 @@
     <summary type="text">150 web sources from reference lists, checked: 19.3% are gone, and the newest archived copy is a median of 603 days old. What that means for a thesis, and how to secure a source in the moment you cite it. Mit deutscher Fassung.</summary>
   </entry>
   <entry>
-    <title>This site runs an MCP server. Measured: it is smaller than the file it competes with</title>
-    <id>https://provinglab.dev/notes/mcp-server-what-it-solves/</id>
-    <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/mcp-server-what-it-solves/"/>
+    <title>Pages that are gone before you need them: eight moments in a degree</title>
+    <id>https://provinglab.dev/notes/pages-gone-before-you-need-them/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/pages-gone-before-you-need-them/"/>
     <published>2026-08-02T00:00:00Z</published>
     <updated>2026-08-02T00:00:00Z</updated>
-    <summary type="text">An MCP endpoint at /mcp exposes the measurement datasets and published methods to AI clients. Everything it can return adds up to roughly 1,300 tokens — less than the llms.txt file that already sits on the same domain. What that leaves it good for, and what it does not solve.</summary>
+    <summary type="text">Submission receipts, course rooms after the semester ends, the version of an examination regulation that applied when you enrolled: eight situations in a degree where a screen matters later and is no longer there. With what to keep, what not to keep, and why. Mit deutscher Fassung.</summary>
   </entry>
   <entry>
     <title>Measured against Citoid on random samples: same coverage, nothing invented</title>
@@ -55,7 +79,7 @@
     <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/citation-extraction/"/>
     <published>2026-08-02T00:00:00Z</published>
     <updated>2026-08-02T00:00:00Z</updated>
-    <summary type="text">A citation reader is only as good as the one it replaces. Against Citoid — the Wikimedia service built on the Zotero translators — across 18 works drawn at random: the same coverage, 100 % accuracy against 79 %, and 2.8x faster. The earlier hand-picked sample flattered us; this one does not.</summary>
+    <summary type="text">Citation extraction measured against Wikimedia Citoid on random samples: same coverage, 100 % accuracy against its 79 %, and the selection bias that skewed the first run.</summary>
   </entry>
   <entry>
     <title>Webpage to PDF for OCR: how much text survives? A measured test</title>

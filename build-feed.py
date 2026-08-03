@@ -39,7 +39,10 @@ def beitraege():
     out = []
     for datei in sorted(glob.glob(str(DOCS / "**" / "index.html"), recursive=True)):
         s = Path(datei).read_text(encoding="utf-8")
-        if '"TechArticle"' not in s and '"Dataset"' not in s:
+        # Auch "Article": der Schematyp beschreibt den Inhalt, er soll nicht
+        # darueber entscheiden, ob ein Beitrag ausgeliefert wird. Zwei Notizen
+        # fehlten am 3. August 2026 aus genau diesem Grund im Feed.
+        if not any(f'"{t}"' in s for t in ("TechArticle", "Article", "Dataset")):
             continue
         pfad = str(Path(datei).relative_to(DOCS).parent).replace("\\", "/")
         if pfad == ".":

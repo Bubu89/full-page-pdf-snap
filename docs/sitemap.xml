@@ -7,90 +7,136 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://provinglab.dev/measurements/</loc>
-    <lastmod>2026-08-01</lastmod><changefreq>weekly</changefreq><priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/notes/</loc>
-    <lastmod>2026-08-01</lastmod><changefreq>weekly</changefreq><priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/notes/building-with-ai-what-went-wrong/</loc>
-    <lastmod>2026-08-01</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/measurements/print-to-pdf-vs-screenshot/</loc>
-    <lastmod>2026-08-01</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/measurements/citation-extraction/</loc>
-    <lastmod>2026-08-02</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/measurements/citation-triage/</loc>
+    <loc>https://provinglab.dev/recipes/</loc>
     <lastmod>2026-08-03</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/measurements/citation-by-platform/</loc>
-    <lastmod>2026-08-03</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json</loc>
-    <lastmod>2026-08-01</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/measurements/webpage-to-pdf-for-ocr/</loc>
-    <lastmod>2026-08-01</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/measurements/pdf-extension-permissions/</loc>
-    <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/measurements/extension-permissions-risk/</loc>
-    <lastmod>2026-08-01</lastmod>
-    <changefreq>yearly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/tools/full-page-pdf-snap/</loc>
     <lastmod>2026-08-03</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/measurements/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://provinglab.dev/notes/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/tools/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/data/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/deutsch/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/measurements/android-capture-extensions/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/measurements/citation-by-platform/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/measurements/citation-extraction/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/measurements/citation-triage/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/measurements/extension-permissions-risk/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/measurements/pdf-extension-permissions/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/measurements/print-to-pdf-vs-screenshot/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/measurements/reading-list-to-bibliography/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/measurements/web-citations-that-vanish/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/measurements/webpage-to-pdf-for-ocr/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/notes/building-with-ai-what-went-wrong/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/notes/mcp-server-what-it-solves/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/notes/pages-gone-before-you-need-them/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/notes/sources-a-machine-cannot-cite/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://provinglab.dev/data/2026-08-01-extension-permissions.json</loc>
-    <lastmod>2026-08-01</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/about/</loc>
-    <lastmod>2026-08-01</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/privacy.html</loc>
-    <lastmod>2026-08-01</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/data/2026-08-01-ocr-recall.json</loc>
@@ -99,18 +145,10 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://provinglab.dev/measurements/web-citations-that-vanish/</loc>
-    <lastmod>2026-08-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/data/2026-08-02-quellen-archiv.json</loc>
-    <lastmod>2026-08-02</lastmod><changefreq>yearly</changefreq><priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/measurements/android-capture-extensions/</loc>
-    <lastmod>2026-08-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/data/2026-08-02-android-capture-extensions.json</loc>
@@ -119,33 +157,13 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://provinglab.dev/notes/pages-gone-before-you-need-them/</loc>
-    <lastmod>2026-08-02</lastmod><changefreq>monthly</changefreq><priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/disclaimer/</loc>
-    <lastmod>2026-08-02</lastmod><changefreq>yearly</changefreq><priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/deutsch/</loc>
-    <lastmod>2026-08-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/notes/mcp-server-what-it-solves/</loc>
-    <lastmod>2026-08-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://provinglab.dev/tools/</loc>
-    <lastmod>2026-08-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://provinglab.dev/data/2026-08-02-citation-extraction.json</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/data/2026-08-02-quellen-archiv.json</loc>
     <lastmod>2026-08-02</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
@@ -163,9 +181,27 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://provinglab.dev/recipes/</loc>
+    <loc>https://provinglab.dev/data/2026-08-03-reading-list-to-bibliography.json</loc>
     <lastmod>2026-08-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/about/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/disclaimer/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/privacy.html</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
 </urlset>

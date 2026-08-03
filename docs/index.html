@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Proving Lab — measurements on browser tools and AI-assisted development</title>
-<meta name="description" content="Measurements on browser tools, citation extraction and OCR pipelines. Every claim published with its method, its raw data and a control run.">
+<meta name="description" content="Measurements on browser tools, citation extraction and OCR — including how much of a reading list becomes a bibliography without a human, and which sources have to be handed back. Every claim with its method, its raw data and a control run.">
 <link rel="canonical" href="https://provinglab.dev/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
@@ -16,7 +16,7 @@
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Proving Lab">
-<meta property="og:description" content="Measurements, not opinions — on browser tools, OCR pipelines and AI-assisted development.">
+<meta property="og:description" content="Measurements, not opinions — on browser tools, citation extraction, OCR pipelines and AI-assisted development. Including how much of a reading list becomes a bibliography without a human.">
 <meta property="og:url" content="https://provinglab.dev/">
 <meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -27,7 +27,7 @@
   "@type": "WebSite",
   "name": "Proving Lab",
   "url": "https://provinglab.dev/",
-  "description": "Measurements on browser tools, OCR pipelines and AI-assisted development. Every claim published with method, raw data and a control run.",
+  "description": "Measurements on browser tools, citation extraction, OCR pipelines and AI-assisted development — including how much of a reading list becomes a bibliography without a human, and which sources have to be handed back. Every claim published with method, raw data and a control run.",
   "inLanguage": "en",
   "publisher": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" }
 }
@@ -215,6 +215,36 @@
     <p class="sub">Build reports from real work — including the parts that went wrong.</p>
     <div class="items">
       <div class="item">
+        <p class="date">3 August 2026</p>
+        <h3><a href="notes/sources-a-machine-cannot-cite/">The sources a machine cannot cite for you — and how to cite them anyway</a></h3>
+        <p>
+          When a citation tool hands a source back, the cause is one of three: a bot defence,
+          a refusal aimed at the network, or a page that declares nothing about itself. Each
+          needs different work, and only one is solved by opening the page in a browser.
+        </p>
+        <div class="figures">
+          <span><b>3</b> causes</span>
+          <span><b>1</b> solved by a browser</span>
+          <span><b>2</b> requests to tell them apart</span>
+        </div>
+      </div>
+
+      <div class="item">
+        <p class="date">2 August 2026</p>
+        <h3><a href="notes/mcp-server-what-it-solves/">This site runs an MCP server. Measured: it is smaller than the file it competes with</a></h3>
+        <p>
+          An endpoint at <code>/mcp</code> hands the datasets, the methods and a citation
+          reader to AI clients over JSON-RPC — no key, no account. What that is actually
+          good for, and where a plain text file on the same domain already does the job.
+        </p>
+        <div class="figures">
+          <span><b>4</b> tools</span>
+          <span><b>1,300</b> tokens total</span>
+          <span><b>1,988</b> in llms.txt</span>
+        </div>
+      </div>
+
+      <div class="item">
         <p class="date">1 August 2026</p>
         <h3><a href="notes/building-with-ai-what-went-wrong/">Six things went wrong building software with an AI assistant in one day</a></h3>
         <p>
@@ -237,6 +267,52 @@
     <p class="sub">Each with the commands to repeat it and the raw data behind it.</p>
 
     <div class="items">
+      <div class="item">
+        <p class="date">3 August 2026</p>
+        <h3><a href="measurements/reading-list-to-bibliography/">Twenty links, ten citations: what a machine finishes and what it hands back</a></h3>
+        <p>
+          A reading list into a bibliography, end to end. The split does not run between paid
+          and free — it runs between pages built to be cited and pages built to be read.
+          Journal publishers yield records either way; statistics portals, chambers of
+          commerce and newspapers yield none, and not because they defend themselves.
+        </p>
+        <div class="figures">
+          <span><b>10/20</b> complete records</span>
+          <span><b>1</b> bot defence</span>
+          <span><b>5</b> pages with nothing to declare</span>
+        </div>
+      </div>
+
+      <div class="item">
+        <p class="date">3 August 2026</p>
+        <h3><a href="measurements/citation-triage/">An agent can cite eight of twelve sources — the useful part is knowing which four it cannot</a></h3>
+        <p>
+          A mixed reading list through the citation endpoint: complete records with RIS for
+          two thirds, and the rest named precisely enough to fetch by hand instead of
+          invented.
+        </p>
+        <div class="figures">
+          <span><b>8/12</b> done by the agent</span>
+          <span><b>1.09 s</b> per source</span>
+          <span><b>4</b> named, not guessed</span>
+        </div>
+      </div>
+
+      <div class="item">
+        <p class="date">2 August 2026</p>
+        <h3><a href="measurements/citation-extraction/">Measured against Citoid on random samples: same coverage, nothing invented</a></h3>
+        <p>
+          The Wikimedia service built on the Zotero translators is the yardstick. Across
+          18 works drawn at random: equal coverage, and not one refusal reported as a
+          success.
+        </p>
+        <div class="figures">
+          <span><b>13/13</b> fields complete</span>
+          <span><b>0</b> false block reports</span>
+          <span><b>0.35 s</b> median</span>
+        </div>
+      </div>
+
       <div class="item">
         <p class="date">1 August 2026</p>
         <h3><a href="measurements/print-to-pdf-vs-screenshot/">Print to PDF or capture the screen? The same page measured both ways</a></h3>
@@ -363,6 +439,16 @@
           <span><b>0.45 s</b> median</span>
           <span><b>3 Aug 2026</b></span>
         </div>
+      </div>
+      <div class="item">
+        <h3><a href="recipes/">Recipes: a reading list into a reference list</a></h3>
+        <p>
+          Complete, runnable instructions for putting the citation endpoint into the tools
+          people actually work in: a shell loop that turns <code>reading-list.txt</code> into
+          one importable <code>.ris</code> for Zotero or Citavi, one line to connect Claude
+          Code, the remote-server entry for Claude Desktop and other MCP clients, and the
+          Python minimum. Every one was run before it was written down.
+        </p>
       </div>
     </div>
   </div>

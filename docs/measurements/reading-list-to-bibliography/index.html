@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Twenty links, ten citations: what a machine finishes and what it hands back — Proving Lab</title>
+<meta name="description" content="Turning a reading list into a bibliography, measured: 10 of 20 sources became complete records with RIS and BibTeX in 8 seconds. Only one of the other ten was stopped by a bot defence — five pages answered in full and declared no citation data.">
+<link rel="canonical" href="https://provinglab.dev/measurements/reading-list-to-bibliography/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Twenty links, ten citations: what a machine finishes and what it hands back">
+<meta property="og:description" content="A reading list of 20 mixed sources through a citation endpoint. Journal publishers yield records whether paywalled or open; statistics portals, chambers of commerce and newspapers yield none — not because they defend themselves, but because they declare nothing to cite. With the trap: a record can carry a title and still be incomplete.">
+<meta property="og:url" content="https://provinglab.dev/measurements/reading-list-to-bibliography/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-08-01">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Twenty links, ten citations: what a machine finishes and what it hands back",
+  "description": "Turning a reading list into a bibliography, measured: 10 of 20 sources became complete records with RIS and BibTeX in 8 seconds. Only one of the other ten was stopped by a bot defence — five pages answered in full and declared no citation data.",
+  "datePublished": "2026-08-03",
+  "dateModified": "2026-08-03",
+  "inLanguage": "en",
+  "url": "https://provinglab.dev/measurements/reading-list-to-bibliography/",
+  "author": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "isAccessibleForFree": true,
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "A mixed reading list through a citation endpoint: which sources yield and which refuse",
+  "description": "Twelve sources of mixed type through the extract_citation endpoint — eight returned complete records with RIS, four were refused with the access wall named — with timings, 3 August 2026.",
+  "url": "https://provinglab.dev/data/2026-08-03-citation-triage.json",
+  "identifier": "https://provinglab.dev/data/2026-08-03-citation-triage.json",
+  "datePublished": "2026-08-03",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "keywords": [
+    "citation extraction",
+    "paywall",
+    "access walls",
+    "RIS",
+    "reading list",
+    "triage"
+  ],
+  "variableMeasured": [
+    "pages",
+    "page breaks",
+    "breaks mid-sentence",
+    "word recall",
+    "file size",
+    "embedded images"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "encodingFormat": "application/json",
+      "contentUrl": "https://provinglab.dev/data/2026-08-03-citation-triage.json"
+    }
+  ],
+  "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
+}
+</script>
+
+<style>
+  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.87em;background:var(--card);
+       padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:34px 0 36px;border-bottom:1px solid var(--line);margin-bottom:32px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.16;letter-spacing:-.025em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:60ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+  h2{font-size:1.4rem;line-height:1.25;margin:46px 0 14px;letter-spacing:-.015em;text-wrap:balance}
+  h3{font-size:1.04rem;margin:28px 0 8px}
+  p{margin-bottom:17px} ul,ol{margin:0 0 18px 24px} li{margin-bottom:9px}
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0}
+  .kf{flex:1 1 160px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px}
+  .kf .n{font-size:1.8rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.a .n{color:var(--good)} .kf.b .n{color:var(--warn)}
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--bg2);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .win{color:var(--good);font-weight:600} .lose{color:var(--bad)}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.84rem;line-height:1.6}
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0} .box p:last-child{margin-bottom:0}
+  .faq{margin:44px 0 0}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin:44px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+  footer{margin-top:52px;padding:24px 0 64px;border-top:1px solid var(--line);
+    font-size:.83rem;color:var(--dim);line-height:1.6}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+</style>
+<script src="/agent-tools.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/">Notes</a>
+    <a class="n" href="../../measurements/" aria-current="page">Measurements</a>
+    <a class="n" href="../../recipes/">Recipes</a>
+    <a class="n" href="../../tools/">Tools</a>
+    <a class="n" href="../../about/">About</a>
+    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
+      <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+<header>
+  <h1>Twenty links, ten citations: what a machine finishes and what it hands back</h1>
+  <p class="standfirst">
+    A reading list of twenty sources through a citation endpoint. Ten came back
+    as complete records with RIS and BibTeX, in eight seconds. The interesting
+    half is the other ten — because only one of them was stopped by a bot
+    defence. Five answered every request in full and simply had no citation data
+    to declare.
+  </p>
+  <p class="meta">3 August 2026 · 20 sources, one pass ·
+    <a href="/data/2026-08-03-reading-list-to-bibliography.json">raw data</a></p>
+</header>
+
+<h2>The question</h2>
+<p>
+  A bibliography is the part of a piece of work where a machine looks most
+  useful and is hardest to check. Hand an assistant twenty addresses, ask for a
+  reference list, and something plausible comes back for all twenty. The
+  question worth measuring is not how many entries appear. It is how many are
+  <em>records</em> — read from what the page declares about itself — and whether
+  the rest are named as gaps or quietly filled in.
+</p>
+<p>
+  Each source was sent once to <code>extract_citation</code> on this site's
+  <a href="/notes/mcp-server-what-it-solves/">MCP endpoint</a>, which reads the
+  citation metadata a page publishes about itself and returns a structured
+  record. Nothing was retried, nothing was chosen for whether it works. Every
+  address was checked in a browser before the run, so that a typo of ours could
+  not be counted as a failure of theirs.
+</p>
+
+<div class="kf-row">
+  <div class="kf b"><div class="n">10/20</div><div class="l">complete records</div></div>
+  <div class="kf"><div class="n">1</div><div class="l">stopped by a bot defence</div></div>
+  <div class="kf"><div class="n">5</div><div class="l">no citation data on the page</div></div>
+  <div class="kf"><div class="n">0.4 s</div><div class="l">per source</div></div>
+</div>
+
+<h2>Where the split runs</h2>
+<p>
+  Not between disciplines, and not between paid and free. It runs between pages
+  built to be cited and pages built to be read.
+</p>
+<table>
+  <thead><tr><th>Kind of source</th><th>Complete records</th></tr></thead>
+  <tbody>
+    <tr><td>reference</td><td>2 of 2</td></tr>
+    <tr><td>bare doi</td><td>1 of 1</td></tr>
+    <tr><td>publisher</td><td>4 of 5</td></tr>
+    <tr><td>open access</td><td>2 of 3</td></tr>
+    <tr><td>repository</td><td>1 of 3</td></tr>
+    <tr><td>preprint</td><td>0 of 1</td></tr>
+    <tr><td>official</td><td>0 of 3</td></tr>
+    <tr><td>grey lit</td><td>0 of 1</td></tr>
+    <tr><td>news</td><td>0 of 1</td></tr>
+  </tbody>
+</table>
+<p>
+  Journal publishers are the easiest case, whether the article is paywalled or
+  open: 4/5 and 2/3. A journal page
+  carries <code>citation_author</code>, <code>citation_title</code> and a DOI in
+  its head, because it wants to be indexed. An encyclopaedia entry and a bare
+  DOI resolve just as cleanly.
+</p>
+<p>
+  Official statistics, chambers of commerce and newspapers are the hard case:
+  none of the four produced a record. Not because they defend themselves — they
+  answered every request in full — but because a statistics portal page is a
+  topic overview, not a work, and declares no author, no date and no title of
+  the kind a reference list needs.
+</p>
+
+<h2>The ten that came back, sorted by cause</h2>
+<p>
+  The distinction matters because each cause needs a different response from
+  whoever is writing. Lumping them together as “blocked” is what makes a
+  citation tool feel unreliable when it is being accurate.
+</p>
+
+<h3>One was stopped by a bot defence</h3>
+<table>
+  <thead><tr><th>Host</th><th>Kind</th><th>What happened</th></tr></thead>
+  <tbody>
+    <tr><td><code>www.mdpi.com</code></td><td>open access</td><td>answers a browser, refuses the reader</td></tr>
+  </tbody>
+</table>
+<p>
+  This is the only case in twenty where a browser sees something a server-side
+  reader is not allowed to see. It is also the only case where opening the page
+  yourself changes the outcome — see
+  <a href="/notes/sources-a-machine-cannot-cite/">what to do with the ten</a>.
+</p>
+
+<h3>Four refuse everyone from this address</h3>
+<table>
+  <thead><tr><th>Host</th><th>Kind</th><th>What happened</th></tr></thead>
+  <tbody>
+    <tr><td><code>www.sciencedirect.com</code></td><td>publisher</td><td>refuses both — HTTP 403 from a data centre address</td></tr>
+    <tr><td><code>papers.ssrn.com</code></td><td>preprint</td><td>refuses both — HTTP 403 from a data centre address</td></tr>
+    <tr><td><code>eur-lex.europa.eu</code></td><td>official</td><td>refuses both — HTTP 202 from a data centre address</td></tr>
+    <tr><td><code>www.oecd.org</code></td><td>official</td><td>refuses both — HTTP 403 from a data centre address</td></tr>
+  </tbody>
+</table>
+<p>
+  These answered 403 to a browser user agent as readily as to a reader. The
+  common factor is not the client but the network: requests from a data centre
+  are refused whatever they claim to be. From a home connection the same pages
+  open normally. That is worth stating plainly, because it is the one result
+  here that would look different measured from a different place.
+</p>
+
+<h3>Five answered in full and had nothing to declare</h3>
+<table>
+  <thead><tr><th>Host</th><th>Kind</th><th>What happened</th></tr></thead>
+  <tbody>
+    <tr><td><code>www.ssoar.info</code></td><td>repository</td><td>answers in full, declares no citation data</td></tr>
+    <tr><td><code>zenodo.org</code></td><td>repository</td><td>answers in full, declares no citation data</td></tr>
+    <tr><td><code>www.statistik.at</code></td><td>official</td><td>answers in full, declares no citation data</td></tr>
+    <tr><td><code>www.wko.at</code></td><td>grey lit</td><td>answers in full, declares no citation data</td></tr>
+    <tr><td><code>www.derstandard.at</code></td><td>news</td><td>answers in full, declares no citation data</td></tr>
+  </tbody>
+</table>
+<p>
+  Fifty to ninety kilobytes of perfectly readable HTML, no defence of any kind,
+  and no <code>citation_*</code> metadata, no author, no publication date. A
+  reference for these has to be written by a person who decides what the work
+  <em>is</em> — a page of a statistics portal, an article in a newspaper, a
+  software release on a repository. No amount of retrying changes that, and any
+  tool that returns a tidy entry here has invented the missing half.
+</p>
+
+<h2>A record can carry a title and still not be one</h2>
+<p>
+  Two of the five silent cases are the trap this measurement was worth doing
+  for. The Zenodo record returns
+  <code>"kjswedberg/kjswedberg.github.io: First Release"</code> with an author
+  attached; the statistics portal returns
+  <code>"Forschung, Innovation, Digitalisierung"</code> with
+  <code>STATISTIK AUSTRIA</code> as author. Both look like results. Both come
+  back with <code>complete: false</code>.
+</p>
+<p>
+  Anything reading the title field and skipping the flag will file both as
+  sources. The lesson is not about this endpoint — it applies to every citation
+  service: <strong>read the completeness flag, not the title.</strong> On this
+  endpoint that check is one field:
+</p>
+<pre><code>if not record["complete"]:
+    hand_back(url, record.get("warning") or "no citation data on the page")</code></pre>
+<p>
+  A gap we should close on our side: in these five cases the
+  <code>warning</code> field is empty. <code>complete: false</code> is correct
+  and sufficient to act on, but a reason would be more useful than a silence,
+  and it is <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">noted
+  as such</a>.
+</p>
+
+<h2>What this does not settle</h2>
+<ul>
+  <li><strong>Twenty sources is a shape, not a study.</strong> For coverage
+    against an established service on randomly drawn samples, the
+    <a href="/measurements/citation-extraction/">Citoid comparison</a> is the
+    measurement to cite. This one shows how the work divides.</li>
+  <li><strong>The address you measure from changes the result.</strong> Four
+    refusals here are refusals of a data centre. Anyone repeating this from a
+    home connection should expect a higher completion rate — and is welcome to
+    say so; the <a href="/data/2026-08-03-reading-list-to-bibliography.json">data</a> and the
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/messung-literaturverzeichnis.py">script</a>
+    are both published.</li>
+  <li><strong>The split moves.</strong> Publishers tighten defences, and pages
+    are rebuilt. A figure here is one afternoon, not a constant.</li>
+  <li><strong>A publisher's own export beats all of this.</strong> Where a page
+    offers RIS or BibTeX for download, that file is authoritative and this is
+    not.</li>
+</ul>
+
+<h2>Running it yourself</h2>
+<p>
+  One URL per line in, one importable <code>.ris</code> out, with the refusals
+  named on stderr instead of half-imported. The
+  <a href="/recipes/">recipes page</a> has the same thing for Claude Code,
+  Claude Desktop, Python and the browser.
+</p>
+<pre><code>while read -r u; do
+  curl -sX POST https://provinglab.dev/mcp \
+    -H 'content-type: application/json' \
+    -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",
+         \"params\":{\"name\":\"extract_citation\",\"arguments\":{\"url\":\"$u\"}}}" \
+  | python3 -c 'import json,sys
+d = json.loads(json.load(sys.stdin)["result"]["content"][0]["text"])
+sys.stdout.write(d["ris"]) if d.get("complete") else \
+  sys.stderr.write("hand back: " + d["url"] + "\n")'
+done &lt; reading-list.txt &gt; literature.ris</code></pre>
+<p>
+  Then <em>Zotero → File → Import</em>, or <em>Citavi → Import → RIS</em>. No
+  key, no account. One caveat worth knowing: this site sits behind a filter that
+  refuses the user agent Python's <code>urllib</code> sends by default. Set any
+  user agent of your own and it answers normally.
+</p>
+<footer>
+      Measured on 3 August 2026, one pass, from a Cloudflare Workers edge. Every handed-back source was fetched twice, once as a reader and once as a browser, to separate a page's wall from a reader's limit.
+      Raw data: <a href="/data/2026-08-03-reading-list-to-bibliography.json">JSON</a>, CC BY 4.0.
+      <br><br>
+      Corrections are welcome and are made in public: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">open an issue</a>. If a figure here is wrong, the data and the script are published so it can be shown to be wrong.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+
+</div>
+</body>
+</html>

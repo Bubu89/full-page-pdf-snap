@@ -185,7 +185,7 @@ Drei Formen, weil derselbe Pfad je nach Ziel anders aussehen muss:
 | | |
 |---|---|
 | Windows | `C:\Users\Name\Downloads\seite.pdf` |
-| WSL | `/mnt/c/Users/Name/Downloads/seite.pdf` |
+| WSL | `~/Downloads/seite.pdf` |
 | macOS / Linux | `/home/name/Downloads/seite.pdf` |
 
 Ein Windows-Pfad in einer Linux-Shell unter Windows fuehrt ins Leere. Die
@@ -545,29 +545,29 @@ _Quelle: change-stream, 91 Events, generiert 2026-08-03T09:00_
 **Aktivitaet:** 21 Datei(en), 91 Tool-Calls (76 Edit, 14 Write, 1 Bash), 2 Session(s).
 
 **Beruehrte Dateien:**
-- `/home/holo/repos/full-page-pdf-snap-public/pdf-writer.js` (27x)
-- `/home/holo/repos/full-page-pdf-snap-public/content.js` (20x)
-- `/home/holo/repos/full-page-pdf-snap-public/background.js` (9x)
-- `/home/holo/repos/full-page-pdf-snap-public/make-store-screenshots.py` (6x)
-- `/home/holo/repos/full-page-pdf-snap-public/worker/mcp.js` (6x)
-- `/home/holo/repos/full-page-pdf-snap-public/messung-quellen-archiv.py` (3x)
-- `/home/holo/repos/full-page-pdf-snap-public/CHANGELOG.md` (3x)
-- `/home/holo/repos/full-page-pdf-snap-public/STORE_LISTING_EN.md` (2x)
-- `/home/holo/repos/full-page-pdf-snap-public/docs/agent-tools.js` (2x)
-- `/home/holo/repos/full-page-pdf-snap-public/build-feed.py` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/docs/robots.txt` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/build-agent-discovery.py` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/build-android-post.py` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/rechtscheck.py` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/WACHSTUMSPLAN.md` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/build-de-index.py` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/build-mcp-post.py` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/options.html` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/PRIVACY.md` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/README.md` (1x)
+- `pdf-writer.js` (27x)
+- `content.js` (20x)
+- `background.js` (9x)
+- `make-store-screenshots.py` (6x)
+- `worker/mcp.js` (6x)
+- `messung-quellen-archiv.py` (3x)
+- `CHANGELOG.md` (3x)
+- `STORE_LISTING_EN.md` (2x)
+- `docs/agent-tools.js` (2x)
+- `build-feed.py` (1x)
+- `docs/robots.txt` (1x)
+- `build-agent-discovery.py` (1x)
+- `build-android-post.py` (1x)
+- `rechtscheck.py` (1x)
+- `WACHSTUMSPLAN.md` (1x)
+- `build-de-index.py` (1x)
+- `build-mcp-post.py` (1x)
+- `options.html` (1x)
+- `PRIVACY.md` (1x)
+- `README.md` (1x)
 
 **Bemerkenswerte Commands:**
-- `cd /home/holo/repos/full-page-pdf-snap-public && timeout 200 python3 rechtscheck.py 2>&1 | tail -5 && git add -A && git `
+- `cd ~/repos/full-page-pdf-snap-public && timeout 200 python3 rechtscheck.py 2>&1 | tail -5 && git add -A && git `
 
 <!-- change-stream:auto-block:2026-08-02:END -->
 <!-- Keine absoluten Pfade des Entwicklungsrechners in dieses Repo.
