@@ -96,6 +96,14 @@ jobs:
             echo "::error::Sitemap veraltet — build-sitemap.py ausfuehren und committen"
             exit 1
           }
+          # llms.txt ist der Index, llms-full.txt der Volltext und agent.md das
+          # Blatt fuer den Erstkontakt. Wer llms-full.txt von Hand aendert und
+          # den Index nicht neu baut, liefert zwei Staende gleichzeitig aus —
+          # und die Datei, die ein Agent zuerst liest, ist dann die falsche.
+          python3 build-llms-index.py --check || {
+            echo "::error::llms.txt/llms-full.txt/agent.md veraltet — build-llms-index.py ausfuehren"
+            exit 1
+          }
 
       # Zweimal an einem Tag standen Platzhalter in ausgelieferten Seiten
       # ({TITEL}, {AMO}), weil ein Textblock in einen f-String geriet. Im

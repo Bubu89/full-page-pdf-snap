@@ -333,7 +333,15 @@
       "anchor": "https://provinglab.dev/",
       "service-doc": [
         {
+          "href": "https://provinglab.dev/agent.md",
+          "type": "text/markdown"
+        },
+        {
           "href": "https://provinglab.dev/llms.txt",
+          "type": "text/plain"
+        },
+        {
+          "href": "https://provinglab.dev/llms-full.txt",
           "type": "text/plain"
         },
         {

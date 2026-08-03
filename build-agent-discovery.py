@@ -111,7 +111,9 @@ def api_catalog():
 
     linkset.append({
         "anchor": f"{BASIS}/",
-        "service-doc": [{"href": f"{BASIS}/llms.txt", "type": "text/plain"},
+        "service-doc": [{"href": f"{BASIS}/agent.md", "type": "text/markdown"},
+                        {"href": f"{BASIS}/llms.txt", "type": "text/plain"},
+                        {"href": f"{BASIS}/llms-full.txt", "type": "text/plain"},
                         {"href": f"{BASIS}/about/", "type": "text/html"}],
         "describedby": [{"href": f"{BASIS}/.well-known/agent-skills/index.json",
                          "type": "application/json"}],
@@ -184,7 +186,9 @@ browser integrity check — use any other user agent.
 | Resource | Path |
 |---|---|
 | MCP endpoint (JSON-RPC over POST) | `/mcp` |
-| Site summary for language models | `/llms.txt` |
+| Everything an agent needs, one fetch (~1,200 tokens) | `/agent.md` |
+| Index of everything published | `/llms.txt` |
+| The same index with full text | `/llms-full.txt` |
 | Published methods as skills | `/.well-known/agent-skills/index.json` |
 | Measurement datasets as a linkset | `/.well-known/api-catalog` |
 | Markdown of any page | any URL with `Accept: text/markdown` |

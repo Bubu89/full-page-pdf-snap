@@ -59,7 +59,9 @@ browser integrity check — use any other user agent.
 | Resource | Path |
 |---|---|
 | MCP endpoint (JSON-RPC over POST) | `/mcp` |
-| Site summary for language models | `/llms.txt` |
+| Everything an agent needs, one fetch (~1,200 tokens) | `/agent.md` |
+| Index of everything published | `/llms.txt` |
+| The same index with full text | `/llms-full.txt` |
 | Published methods as skills | `/.well-known/agent-skills/index.json` |
 | Measurement datasets as a linkset | `/.well-known/api-catalog` |
 | Markdown of any page | any URL with `Accept: text/markdown` |

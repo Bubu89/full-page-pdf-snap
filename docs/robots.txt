@@ -18,3 +18,13 @@ Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 Sitemap: https://provinglab.dev/sitemap.xml
+
+# For agents: one sheet that gets you from nothing to working, in a
+# single fetch — connect line, the tools, the install route, the open
+# tasks. Measured at about 1,200 tokens against roughly 13,500 for the
+# four pages it replaces.
+# https://provinglab.dev/agent.md
+#
+# llms.txt is the index; llms-full.txt carries the same entries in full.
+# https://provinglab.dev/llms.txt
+# https://provinglab.dev/llms-full.txt

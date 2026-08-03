@@ -1,3 +1,48 @@
+## 2026-08-03 — Der Erstkontakt kostete 19.000 Token. Jetzt 1.200.
+
+**Gemessen, nicht vermutet.** Ein Agent, der sich hier einarbeitet, lud
+`/llms.txt` (5.339 Tok), `/for-agents/` (5.235), `/AGENTS.md` (1.973), den
+Skill-Index (964), den Install-Skill (3.136) und die Sitemap (2.309) —
+**rund 19.000 Token in sechs Abrufen**, bevor er handeln konnte. Die Latenz war
+dabei nie das Problem: 0,15 bis 0,33 s je Abruf. Der Kontext war es.
+
+**Zwei Ursachen.**
+
+1. `llms.txt` war ein **Volltext**. Der Vorschlag sieht sie als Index vor —
+   kurze Zeilen mit Verweis — und den ausgeschriebenen Text in
+   `llms-full.txt`. Hier standen 19 von 34 Eintraegen ueber 400 Zeichen, der
+   laengste 1.428.
+2. HTML ist fuer ein Modell zu **64 % Ballast**: `/for-agents/` misst 20.894 B,
+   davon 7.454 B Text. Der Rest ist Stil, Navigation und Markup.
+
+**Neu: `agent.md`.** Ein Blatt, das in **einem** Abruf traegt, was vier Abrufe
+trugen — Verbindungszeile, die eine Regel, die sechs Werkzeuge, die
+Installation ohne Klick, die Reihenfolge bei wissenschaftlichen Quellen, wo die
+offene Arbeit liegt, und die Grenzen. **1.234 Token gegen 13.513, also 91 %
+weniger, ein Abruf statt vier.** Wer Tiefe braucht, findet am Fuss die
+Verweise; der Index kommt vor der Tiefe, nicht statt ihrer.
+
+**`llms.txt` ist jetzt der Index** (21.275 → 10.230 B), `llms-full.txt` traegt
+den bisherigen Inhalt unveraendert. Erzeugt von `build-llms-index.py`, das den
+ersten Satz je Eintrag nimmt und bei 220 Zeichen hart kappt — der erste Satz
+allein reichte nicht, ein Eintrag hatte in tausend Zeichen keinen Punkt.
+
+**Der billigste Gewinn lag brach.** Der Worker beantwortet jede Seite in
+Markdown, wenn `Accept: text/markdown` mitkommt — die Funktion gab es schon,
+sie stand nur nirgends, wo ein Agent sie liest. Gemessen ueber drei Seiten:
+**61 bis 66 % kleiner** als das HTML. Steht jetzt ganz oben in `agent.md`.
+
+**Verdrahtet** in `robots.txt`, im API-Katalog (`service-doc`) und in der
+Discovery-Tabelle. Die CI prueft die drei Dateien gegen ihren Generator: wer
+`llms-full.txt` von Hand aendert und den Index nicht neu baut, liefert zwei
+Staende gleichzeitig aus — und die Datei, die ein Agent zuerst liest, waere
+dann die falsche.
+
+**Was nicht zu optimieren war.** Die Sitemap: 49 Adressen, alle mit `lastmod`,
+`priority` und `changefreq`, Daten aktuell. Und die Antwortzeiten: der Worker
+liefert einen vollstaendigen Zitationsdatensatz in 0,77 s. Der Ablauf war nicht
+langsam, er war breit.
+
 ## 2026-08-03 — Korrektur am Agenten-Artikel, und was auf fremden Rechnern nicht lief
 
 **Die Korrektur.** Der Beitrag `/notes/what-an-agent-can-do-with-an-extension/`
