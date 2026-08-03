@@ -149,7 +149,7 @@ def inhalt(d):
        "name":"extract_citation",
        "arguments":{{"url":"https://arxiv.org/abs/1706.03762"}}}}}}'</code></pre>
 <p>
-  No key, no account, no rate limit worth mentioning. A record comes back with a
+  No key and no account. Please use it in proportion — it is one small endpoint, and a reading list is a handful of calls, not a crawl. A record comes back with a
   <code>source</code> field saying where the details were read, and a
   <code>warning</code> field that is empty when there is nothing to warn about.
 </p>

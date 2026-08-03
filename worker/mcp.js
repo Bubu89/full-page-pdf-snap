@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.10.0";
+const VERSION = "1.11.0";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -137,6 +137,17 @@ const CAPTURE = {
             + "the only one: the browser's own print-to-PDF is measured against it at "
             + SITE + "/measurements/print-to-pdf-vs-screenshot/, including where print wins.",
 };
+
+// Oeffentlich im Sinne von: keine Adresse, die auf das eigene Netz zeigt.
+// Als eigene Funktion, weil sie zweimal gebraucht wird — vor dem ersten Abruf
+// und nach JEDER Weiterleitung.
+function istOeffentlich(u) {
+  const h = u.hostname;
+  if (/^(localhost|127\.|10\.|192\.168\.|169\.254\.|0\.|\[?::1)/i.test(h)) return false;
+  if (/^172\.(1[6-9]|2\d|3[01])\./.test(h)) return false;
+  if (/\.(local|internal|localdomain)$/i.test(h)) return false;
+  return true;
+}
 
 // fall: "wall" | "network" | "no-metadata" | "not-html"
 function naechsterSchritt(fall) {
@@ -656,14 +667,32 @@ async function runTool(origin, name, args) {
     // Pruefung liesse sich der Endpunkt als Sprungbrett auf interne Dienste
     // verwenden — die klassische serverseitige Anfragefaelschung.
     if (!/^https?:$/.test(ziel.protocol)) throw new Error("only http and https are supported");
-    if (/^(localhost|127\.|10\.|192\.168\.|169\.254\.|0\.|\[?::1)/i.test(ziel.hostname) ||
-        /^172\.(1[6-9]|2\d|3[01])\./.test(ziel.hostname) ||
-        /\.(local|internal|localdomain)$/i.test(ziel.hostname)) {
-      throw new Error("only public addresses can be read");
-    }
+    if (!istOeffentlich(ziel)) throw new Error("only public addresses can be read");
 
-    const r = await fetch(ziel.href, {
-      redirect: "follow",
+    // Weiterleitungen selbst verfolgen. Mit redirect:"follow" wird nur die
+    // ZUERST genannte Adresse geprueft — eine oeffentliche Adresse, die auf
+    // 127.0.0.1 weiterleitet, umgeht die Pruefung vollstaendig. Die Plattform
+    // faengt das derzeit ab, aber darauf soll die Sicherheit nicht beruhen.
+    let r = await holeMitPruefung(ziel);
+    async function holeMitPruefung(start) {
+      let adresse = start;
+      for (let sprung = 0; sprung < 5; sprung++) {
+        const antwort = await fetchRoh(adresse);
+        if (![301, 302, 303, 307, 308].includes(antwort.status)) return antwort;
+        const ort = antwort.headers.get("location");
+        if (!ort) return antwort;
+        let naechste;
+        try { naechste = new URL(ort, adresse); } catch { return antwort; }
+        if (!/^https?:$/.test(naechste.protocol) || !istOeffentlich(naechste)) {
+          throw new Error("redirect target is not a public address");
+        }
+        adresse = naechste;
+      }
+      throw new Error("too many redirects");
+    }
+    function fetchRoh(adresse) {
+      return fetch(adresse.href, {
+      redirect: "manual",
       headers: {
         // Offen benennen, wer anfragt. Wer den Zugriff nicht wuenscht, kann
         // ihn so unterscheiden und aussperren.
@@ -677,7 +706,8 @@ async function runTool(origin, name, args) {
       // gar nicht greifen. Bei einem Werkzeug, das selten aufgerufen wird und
       // dessen Ergebnis zitiert wird, ist Aktualitaet mehr wert als Ersparnis.
       cf: { cacheTtl: 0, cacheEverything: false },
-    });
+      });
+    }
     // DOI in der Adresse? Dann steht ein zweiter Weg offen, falls die Seite
     // sperrt — die Registrierungsstelle antwortet immer.
     const doiInUrl = (ziel.href.match(/\b10\.\d{4,9}\/[-._;()A-Za-z0-9]+/) || [])[0];

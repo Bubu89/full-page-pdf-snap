@@ -118,6 +118,45 @@ OFFENLEGUNG = re.compile(r"(author develops|Der Autor entwickelt|disclos|Offenle
                          r"appears in (some of )?the(se)? measurements)", re.I)
 KORREKTURWEG = re.compile(r"(github\.com/[\w-]+/[\w-]+/issues|Korrekturen|Corrections)", re.I)
 
+# --- Erweiterung 03.08.2026: Risiken, die durch die Agenten-Anbindung entstanden ---
+
+# Zusagen ueber Verfuegbarkeit, die man nicht halten will und die zum
+# uebermaessigen Gebrauch einladen. "Kein Limit" ist eine Aussage ueber die
+# Zukunft, keine Beschreibung — und ein offener Abrufdienst ohne Grenze laesst
+# sich als Verstaerker gegen Dritte verwenden, mit unserem Kennzeichen im Log.
+UNBEGRENZT = re.compile(
+    r"(no rate limit|unlimited|kein (rate.?)?limit|ohne (jede )?(begrenzung|limit)"
+    r"|as (much|often) as you (want|like)|beliebig oft)", re.I)
+
+# Anleitungen, die das Umgehen fremder Schutzmassnahmen empfehlen. Der Unterschied
+# zwischen "so kommst du an der Sperre vorbei" und "das funktioniert nicht und
+# gehoert sich nicht" ist der ganze Unterschied.
+UMGEHUNG = re.compile(
+    r"(bypass|umgeh\w+|circumvent|get (a)?round the (block|wall|paywall)"
+    r"|spoof (the )?user.?agent|pretend to be a browser)", re.I)
+UMGEHUNG_ERLAUBT = re.compile(
+    r"(do not|don't|never|nicht|statt dessen|stattdessen|does not work|funktioniert nicht"
+    r"|is not something|keine? (route|weg))", re.I)
+
+# Verweise auf fremde Projekte ohne Distanzierung. Wer Dritt-Software empfiehlt,
+# ohne sie geprueft zu haben, sollte das sagen — sonst liest es sich als Zusage.
+FREMDPROJEKT = re.compile(r"github\.com/(?!Bubu89/)[\w.-]+/[\w.-]+", re.I)
+DISTANZIERUNG = re.compile(
+    r"(not (an )?endorse|no endorsement|not audited|nicht geprueft|nicht gepr\u00fcft"
+    r"|keine empfehlung|check .{0,20}yourself|ungeprueft)", re.I)
+
+# Aussagen ueber fremde Anbieter, die Absichten unterstellen statt Beobachtungen
+# zu berichten. Beweispflichtig und praktisch nie beweisbar.
+# "they want to" allein ist zu weit — es trifft Saetze ueber Nutzer ("they want
+# to save a page"). Nur Formulierungen, die einem ANBIETER ein Motiv zuschreiben.
+ABSICHT = re.compile(
+    r"(deliberately (blocks?|hides?|withholds?)"
+    r"|(publishers?|vendors?|they) (want|try|intend) to (block|stop|prevent|hide|keep)"
+    r"|in order to (prevent|stop) (us|you|readers|agents)"
+    r"|absichtlich (sperr|blockier|verberg)"
+    r"|um zu verhindern, dass (wir|man|Leser))", re.I)
+
+
 
 def text_aus(html):
     """Sichtbarer Text: Skripte, Stile und Auszeichnung raus."""
@@ -179,6 +218,39 @@ def pruefe_seite(pfad, html, befunde):
     if not KORREKTURWEG.search(html) and rel not in ("404.html",):
         befunde.append(("WARNUNG", rel, "kein-korrekturweg",
                         "Kein Weg angegeben, wie eine Korrektur gemeldet werden kann.", ""))
+
+    # --- Erweiterung 03.08.2026 ---
+
+    # Unbegrenzte Nutzung zusagen
+    for t in UNBEGRENZT.finditer(txt):
+        befunde.append(("FEHLER", rel, "zusage-ohne-grenze",
+                        "Sagt unbegrenzte Nutzung zu. Das laedt zum Missbrauch eines offenen "
+                        "Abrufdienstes ein und ist eine Zusage ueber die Zukunft.",
+                        umfeld(txt, t)))
+        break
+
+    # Umgehungsanleitung ohne Abgrenzung im selben Absatz
+    for t in UMGEHUNG.finditer(txt):
+        nahbereich = txt[max(0, t.start() - 260):t.end() + 260]
+        if not UMGEHUNG_ERLAUBT.search(nahbereich):
+            befunde.append(("FEHLER", rel, "umgehungsanleitung",
+                            "Nennt das Umgehen einer Schutzmassnahme, ohne im Umfeld "
+                            "klarzustellen, dass es unterbleibt.", umfeld(txt, t)))
+            break
+
+    # Fremdprojekte ohne Distanzierung
+    if FREMDPROJEKT.search(html) and not DISTANZIERUNG.search(txt):
+        befunde.append(("WARNUNG", rel, "fremdprojekt-ohne-distanz",
+                        "Verweist auf fremde Software, ohne zu sagen, dass sie hier weder "
+                        "geprueft noch empfohlen wird.", ""))
+
+    # Absichtsunterstellung gegenueber Dritten
+    for t in ABSICHT.finditer(txt):
+        befunde.append(("FEHLER", rel, "absicht-unterstellt",
+                        "Behauptet eine Absicht eines Dritten. Beweispflichtig und von "
+                        "aussen nicht belegbar — Beobachtung berichten statt Motiv.",
+                        umfeld(txt, t)))
+        break
 
     # Interne Ziele
     for m in re.finditer(r'href="(?!https?:|mailto:|#)([^"]+)"', html):

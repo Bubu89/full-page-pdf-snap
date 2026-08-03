@@ -32,7 +32,7 @@ RUMPF = """
     speak MCP. Every one of them was run on 3 August 2026 before it was written
     down; an untested recipe is a claim.
   </p>
-  <p class="meta-line">No account, no key, no rate limit ·
+  <p class="meta-line">No account and no key · fair use, please ·
     <a href="/notes/mcp-server-what-it-solves/">what the endpoint is and what it refuses</a></p>
 </header>
 
