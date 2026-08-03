@@ -1,3 +1,42 @@
+## 2026-08-03 — Elf Aufgaben, die nicht erfunden sind
+
+**Was.** Sechs weitere Issues (#6 bis #11) zur Weiterentwicklung, alle aus
+belegten Befunden.
+
+**Wie sie zustande kamen.** Vor jedem Issue stand eine Pruefung, nicht eine Idee:
+
+- **#6 Link-Rot nachmessen.** Die Messung vom 02.08. haelt 150 Adressen fest,
+  29 verschwunden, **26 ungeklaert**. Link-Rot ist zeitabhaengig — eine zweite
+  Messung derselben Adressen sagt, *wie schnell* es geschieht. Das ist die Zahl,
+  die in der Literatur meist geschaetzt wird. Die 26 ungeklaerten Faelle sind
+  eine eigene Aufgabe.
+- **#7 Weiterleitungs-Stummel.** Geprueft: alle drei antworten mit **HTTP 200**
+  und einem `canonical`, nicht mit 301. GitHub Pages kann keine echten
+  Weiterleitungen — aber der Worker liegt davor und kann es.
+- **#8 Barrierefreiheit.** Geprueft an drei Seiten: **null** Tabellen tragen
+  `scope` oder `<caption>`. Bei einer Publikation, die im Wesentlichen aus
+  Messtabellen besteht, ist das der Inhalt selbst, der unbenutzbar wird. Bilder
+  und Sprunglink sind dagegen in Ordnung.
+- **#9 Rohdaten-Schema.** Neun Datensaetze, und nichts prueft sie. Zwei Fehler
+  fielen heute nur zufaellig auf: ein leeres `per_source` trotz Einzelwerten im
+  Beitrag, und eine aus einem fremden Beitrag kopierte Beschreibung.
+- **#10 Deutschsprachige Plattformen.** Von 18 gemessenen Plattformen ist genau
+  eine deutschsprachig — SSOAR, und die mit einer Bot-Wand. Die Zielgruppe
+  schreibt an deutschsprachigen Hochschulen; wenn der Endpunkt bei deren Quellen
+  schlechter abschneidet, gehoert das gemessen.
+- **#11 Fristen.** `security.txt` traegt ein Pflicht-Ablaufdatum, zwei Tokens
+  laufen 2027 aus, und die **Domain hat Auto-Renew ausgeschaltet** — Ablauf
+  2027-08-01. Nichts erinnert an eines davon.
+
+**Resultat.** `open_work` auf `/mcp` liefert alle elf maschinenlesbar aus:
+sieben `agent-friendly`, fuenf `good first issue`, drei `measurement`, zwei
+`german`.
+
+**Was dabei nicht passiert ist.** Keine erfundene Aufgabe, kein „waere schoen".
+Jedes Issue nennt den Befund, die Zahl dahinter und die Grenze, die beim
+Bearbeiten zu respektieren ist — bei #9 ausdruecklich: Abweichungen werden
+gemeldet, nicht repariert, Rohdaten werden nicht geglaettet.
+
 ## 2026-08-03 — Damit ein Agent hier mitarbeiten kann, brauchte es beides
 
 **Was.** `AGENTS.md`, fuenf echte GitHub-Issues und das MCP-Werkzeug
