@@ -31,7 +31,44 @@ VORLAGE_N = DOCS / "notes" / "mcp-server-what-it-solves" / "index.html"
 
 DATUM = "2026-08-03"
 DATUM_LANG = "3 August 2026"
+DATUM_DE = "3. August 2026"
 ROHDATEN = "/data/2026-08-03-reading-list-to-bibliography.json"
+
+TITEL_M_DE = ("Zwanzig Links, zehn Nachweise: was eine Maschine erledigt "
+              "und was sie zurückgibt")
+
+# Deutsche Fassung auf derselben Adresse, Umschaltung per #b-de — das Muster
+# dafuer ist measurements/web-citations-that-vanish. Sprachbloecke tragen
+# data-lang, build-de-index.py findet die Seite am Anker id="b-de".
+SPRACHE_CSS = """
+  /* --- Sprachumschaltung --- */
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
+  .lang{display:flex;gap:6px;margin:0 0 26px}
+  .lang button{font:inherit;font-size:.86rem;font-weight:600;padding:7px 18px;cursor:pointer;
+    background:var(--card);color:var(--dim);border:1px solid var(--line);border-radius:8px}
+  .lang button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
+"""
+
+SPRACHE_SKRIPT = """<script>
+function setLang(l){
+  document.querySelectorAll('[data-lang]').forEach(function(e){
+    e.classList.toggle('on', e.dataset.lang === l);
+  });
+  document.getElementById('b-en').setAttribute('aria-pressed', l === 'en');
+  document.getElementById('b-de').setAttribute('aria-pressed', l === 'de');
+  document.documentElement.lang = l;
+  try { localStorage.setItem('pl-lang', l); } catch (e) {}
+}
+(function(){
+  var gespeichert = null;
+  try { gespeichert = localStorage.getItem('pl-lang'); } catch (e) {}
+  var l = gespeichert || ((navigator.language || 'en').slice(0,2) === 'de' ? 'de' : 'en');
+  if (l === 'de') setLang('de');
+})();
+</script>"""
 
 
 # ---------------------------------------------------------------- Geruest
@@ -49,11 +86,13 @@ def kopf_und_fuss(vorlage):
     return s[:schnitt], s[s.index("<footer"):]
 
 
-def anpassen(kopf, url, titel, beschreibung, og_beschreibung, tiefe, art):
+def anpassen(kopf, url, titel, beschreibung, og_beschreibung, tiefe, art,
+             deutsch=False):
     k = kopf
     k = re.sub(r"<title>.*?</title>", f"<title>{titel} — Proving Lab</title>", k, flags=re.S)
     k = re.sub(r'(<meta name="description" content=")[^"]*(")',
-               lambda m: m.group(1) + beschreibung + m.group(2), k)
+               lambda m: m.group(1) + beschreibung
+               + (" Mit deutscher Fassung." if deutsch else "") + m.group(2), k)
     k = re.sub(r'(<link rel="canonical" href=")[^"]*(")', rf"\g<1>{url}\g<2>", k)
     k = re.sub(r'(<link rel="alternate" hreflang="[^"]*" href=")[^"]*(")', rf"\g<1>{url}\g<2>", k)
     k = re.sub(r'(<meta property="og:url" content=")[^"]*(")', rf"\g<1>{url}\g<2>", k)
@@ -61,20 +100,41 @@ def anpassen(kopf, url, titel, beschreibung, og_beschreibung, tiefe, art):
     k = re.sub(r'(<meta property="og:description" content=")[^"]*(")',
                lambda m: m.group(1) + og_beschreibung + m.group(2), k)
     k = re.sub(r'(<link rel="icon" href=")[^"]*(")', rf"\g<1>{tiefe}icon-128.png\g<2>", k)
-    # Die Vorlage traegt eine deutsche Fassung im selben Dokument und verweist
-    # mit #b-de darauf. Seiten ohne diesen Abschnitt haetten damit einen toten
-    # Anker in der Navigation — auf die Sammelseite umbiegen.
-    k = k.replace('href="#b-de"', f'href="{tiefe}deutsch/"')
+    if deutsch:
+        # hreflang in beide Richtungen: deutsch und englisch teilen sich eine
+        # Adresse, also zeigen alle drei Angaben auf dieselbe. Steht in der
+        # Vorlage schon, ist der Ersatz oben ausreichend gewesen.
+        if 'hreflang="de"' not in k:
+            k = k.replace(
+                f'<link rel="canonical" href="{url}">',
+                f'<link rel="canonical" href="{url}">\n'
+                f'<link rel="alternate" hreflang="en" href="{url}">\n'
+                f'<link rel="alternate" hreflang="de" href="{url}">\n'
+                f'<link rel="alternate" hreflang="x-default" href="{url}">')
+        if '--- Sprachumschaltung ---' not in k:
+            k = k.replace("</style>", SPRACHE_CSS + "</style>")
+    else:
+        # Die Vorlage traegt eine deutsche Fassung im selben Dokument und
+        # verweist mit #b-de darauf. Seiten ohne diesen Abschnitt haetten
+        # damit einen toten Anker in der Navigation — auf die Sammelseite
+        # umbiegen.
+        k = k.replace('href="#b-de"', f'href="{tiefe}deutsch/"')
     ld = {
         "@context": "https://schema.org", "@type": art,
         "headline": titel, "description": beschreibung,
         "datePublished": DATUM, "dateModified": DATUM,
-        "inLanguage": "en", "url": url,
+        "inLanguage": ["en", "de"] if deutsch else "en", "url": url,
         "author": {"@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/"},
         "publisher": {"@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/"},
         "isAccessibleForFree": True,
         "license": "https://creativecommons.org/licenses/by/4.0/",
     }
+    if deutsch:
+        ld["about"] = ["citation", "bibliography", "reading list",
+                       "Literaturverzeichnis", "Quellennachweis", "Zitieren"]
+        ld["keywords"] = ("reading list, citation endpoint, MCP, "
+                          "Literaturverzeichnis erstellen, Internetquellen "
+                          "zitieren, Abrufdatum, RIS, BibTeX, Citavi, Zotero")
     neu = '<script type="application/ld+json">\n' + json.dumps(ld, indent=2, ensure_ascii=False) + "\n</script>"
     k = re.sub(r'<script type="application/ld\+json">.*?</script>', lambda _: neu, k, count=1, flags=re.S)
     return k
@@ -141,19 +201,50 @@ def messseite(d):
                                   f'from a data centre address')
     t_stumm = zeilen(stumm, lambda e: "answers in full, declares no citation data")
 
+    # Dieselben Zeilen fuer die deutsche Fassung: Kategorien und Begruendungen
+    # uebersetzt, die Zahlen kommen aus demselben Datensatz.
+    arten_de = {"publisher": "Verlag", "open access": "Open Access",
+                "repository": "Repositorium", "preprint": "Preprint",
+                "official": "amtliche Stelle", "grey lit": "graue Literatur",
+                "reference": "Nachschlagewerk", "bare doi": "nackter DOI",
+                "news": "Presse"}
+    tab_art_de = "\n".join(
+        f'    <tr><td>{arten_de.get(k, k)}</td><td>{v["complete"]} von {v["total"]}</td></tr>'
+        for k, v in sorted(art.items(), key=lambda x: -x[1]["complete"] / x[1]["total"]))
+    t_wand_de = zeilen(wand, lambda e: "beantwortet einen Browser, verweigert dem Leser")
+    t_tot_de = zeilen(tot, lambda e: f'verweigert beiden — HTTP {e["as_browser"]["status"]} '
+                                     f'von einer Rechenzentrums-Adresse')
+    t_stumm_de = zeilen(stumm, lambda e: "antwortet vollständig, weist keine Zitationsdaten aus")
+
     return f"""
 <header>
-  <h1>Twenty links, ten citations: what a machine finishes and what it hands back</h1>
-  <p class="standfirst">
+  <h1 data-lang="en" class="on" lang="en">Twenty links, ten citations: what a machine finishes and what it hands back</h1>
+  <h1 data-lang="de" lang="de">{TITEL_M_DE}</h1>
+  <p class="standfirst on" data-lang="en" lang="en">
     A reading list of twenty sources through a citation endpoint. Ten came back
     as complete records with RIS and BibTeX, in eight seconds. The interesting
     half is the other ten — because only one of them was stopped by a bot
     defence. Five answered every request in full and simply had no citation data
     to declare.
   </p>
-  <p class="meta">{DATUM_LANG} · {r['sources']} sources, one pass ·
-    <a href="{ROHDATEN}">raw data</a></p>
+  <p class="standfirst" data-lang="de" lang="de">
+    Eine Leseliste aus zwanzig Quellen durch einen Zitations-Endpunkt. Zehn
+    kamen als vollständige Nachweise mit RIS und BibTeX zurück, in acht
+    Sekunden. Die interessante Hälfte sind die anderen zehn — denn nur eine
+    davon wurde von einer Bot-Abwehr gestoppt. Fünf beantworteten jede Anfrage
+    vollständig und hatten schlicht keine Zitationsdaten auszuweisen.
+  </p>
+  <p class="meta"><span data-lang="en" class="on" lang="en">{DATUM_LANG} · {r['sources']} sources, one pass ·
+    <a href="{ROHDATEN}">raw data</a></span><span data-lang="de" lang="de">{DATUM_DE} · {r['sources']} Quellen, ein Durchlauf ·
+    <a href="{ROHDATEN}">Rohdaten</a></span></p>
 </header>
+
+<div class="lang">
+  <button id="b-en" aria-pressed="true" onclick="setLang('en')">English</button>
+  <button id="b-de" aria-pressed="false" onclick="setLang('de')">Deutsch</button>
+</div>
+
+<div data-lang="en" class="on" lang="en">
 
 <h2>The question</h2>
 <p>
@@ -365,6 +456,240 @@ done &lt; reading-list.txt &gt; literature.ris</code></pre>
   refuses the user agent Python's <code>urllib</code> sends by default. Set any
   user agent of your own and it answers normally.
 </p>
+
+</div>
+
+<div data-lang="de" lang="de">
+
+<h2>Die Frage</h2>
+<p>
+  Ein Literaturverzeichnis ist die Stelle einer Arbeit, an der eine Maschine
+  am nützlichsten wirkt und am schwersten zu kontrollieren ist. Gibt man einem
+  Assistenten zwanzig Adressen und bittet um ein Literaturverzeichnis, kommt
+  zu allen zwanzig etwas Plausibles zurück. Die Messfrage ist nicht, wie viele
+  Einträge erscheinen. Sie lautet: Wie viele davon sind <em>Nachweise</em> —
+  gelesen aus dem, was die Seite über sich selbst ausweist —, und wird der
+  Rest als Lücke benannt oder still aufgefüllt?
+</p>
+<p>
+  Jede Quelle ging genau einmal an <code>extract_citation</code> am
+  <a href="/notes/mcp-server-what-it-solves/">MCP-Endpunkt</a> dieser Seite,
+  der die Zitationsmetadaten liest, die eine Seite über sich selbst
+  veröffentlicht, und einen strukturierten Nachweis zurückgibt. Nichts wurde
+  wiederholt, nichts danach ausgewählt, ob es funktioniert. Jede Adresse wurde
+  vor dem Lauf in einem Browser geprüft, damit ein eigener Tippfehler nicht
+  als Versagen der Gegenseite gezählt wird.
+</p>
+
+<div class="kf-row">
+  <div class="kf b"><div class="n">{r['complete_records']}/{r['sources']}</div><div class="l">vollständige Nachweise</div></div>
+  <div class="kf"><div class="n">{r['handed_back_behind_a_wall']}</div><div class="l">von einer Bot-Abwehr gestoppt</div></div>
+  <div class="kf"><div class="n">{r['handed_back_thin_page']}</div><div class="l">keine Zitationsdaten auf der Seite</div></div>
+  <div class="kf"><div class="n">{r['seconds_per_source']} s</div><div class="l">pro Quelle</div></div>
+</div>
+
+<h2>Wo die Trennlinie verläuft</h2>
+<p>
+  Nicht zwischen Fachgebieten, und nicht zwischen kostenpflichtig und frei.
+  Sie verläuft zwischen Seiten, die gebaut sind, um zitiert zu werden, und
+  Seiten, die gebaut sind, um gelesen zu werden.
+</p>
+<table>
+  <thead><tr><th scope="col">Art der Quelle</th><th scope="col">Vollständige Nachweise</th></tr></thead>
+  <tbody>
+{tab_art_de}
+  </tbody>
+</table>
+<p>
+  Verlage von Fachzeitschriften sind der einfachste Fall, gleich ob der
+  Artikel hinter einer Bezahlschranke liegt oder offen steht:
+  {nach_art('publisher')} und {nach_art('open access')}. Eine
+  Zeitschriftenseite trägt <code>citation_author</code>,
+  <code>citation_title</code> und einen DOI im Kopf, weil sie indexiert werden
+  will. Ein Enzyklopädie-Eintrag und ein nackter DOI lösen genauso sauber auf.
+</p>
+<p>
+  Amtliche Statistik, Wirtschaftskammern und Zeitungen sind der harte Fall:
+  Keine der vier brachte einen Nachweis hervor. Nicht weil sie sich wehren —
+  sie beantworteten jede Anfrage vollständig —, sondern weil eine
+  Statistikportal-Seite ein Themenüberblick ist und kein Werk: Sie weist
+  weder Autor noch Datum noch einen Titel aus, wie ihn ein
+  Literaturverzeichnis braucht.
+</p>
+
+<h2>Die zehn, die zurückkamen, nach Ursache sortiert</h2>
+<p>
+  Die Unterscheidung zählt, weil jede Ursache eine andere Reaktion der
+  schreibenden Person verlangt. Alles unter „blockiert" zusammenzufassen ist
+  genau das, was ein Zitationswerkzeug unzuverlässig wirken lässt, während es
+  in Wahrheit genau ist.
+</p>
+
+<h3>Eine wurde von einer Bot-Abwehr gestoppt</h3>
+<table>
+  <thead><tr><th scope="col">Host</th><th scope="col">Art</th><th scope="col">Was geschah</th></tr></thead>
+  <tbody>
+{t_wand_de}
+  </tbody>
+</table>
+<p>
+  Das ist der einzige Fall unter zwanzig, in dem ein Browser etwas sieht, das
+  ein serverseitiger Leser nicht sehen darf. Es ist auch der einzige Fall, in
+  dem das eigene Öffnen der Seite das Ergebnis ändert — siehe
+  <a href="/notes/sources-a-machine-cannot-cite/">was mit den zehn zu tun
+  ist</a>.
+</p>
+
+<h3>Vier verweigern jeder Anfrage von dieser Adresse</h3>
+<table>
+  <thead><tr><th scope="col">Host</th><th scope="col">Art</th><th scope="col">Was geschah</th></tr></thead>
+  <tbody>
+{t_tot_de}
+  </tbody>
+</table>
+<p>
+  Diese antworteten einem Browser-User-Agent genauso bereitwillig mit 403 wie
+  einem Leser. Der gemeinsame Faktor ist nicht der Client, sondern das Netz:
+  Anfragen aus einem Rechenzentrum werden abgewiesen, was immer sie vorgeben
+  zu sein. Von einem Hausanschluss aus öffnen dieselben Seiten normal. Das ist
+  es wert, klar benannt zu werden, denn es ist das eine Ergebnis hier, das von
+  einem anderen Ort aus gemessen anders aussehen würde.
+</p>
+
+<h3>Fünf antworteten vollständig und hatten nichts auszuweisen</h3>
+<table>
+  <thead><tr><th scope="col">Host</th><th scope="col">Art</th><th scope="col">Was geschah</th></tr></thead>
+  <tbody>
+{t_stumm_de}
+  </tbody>
+</table>
+<p>
+  Fünfzig bis neunzig Kilobyte einwandfrei lesbares HTML, keinerlei Abwehr,
+  und keine <code>citation_*</code>-Metadaten, kein Autor, kein
+  Veröffentlichungsdatum. Einen Nachweis dafür muss ein Mensch schreiben, der
+  entscheidet, was das Werk <em>ist</em> — eine Seite eines Statistikportals,
+  ein Zeitungsartikel, ein Software-Release in einem Repositorium. Kein noch
+  so häufiges Wiederholen ändert das, und jedes Werkzeug, das hier einen
+  sauberen Eintrag zurückgibt, hat die fehlende Hälfte erfunden.
+</p>
+
+<h2>Ein Nachweis kann einen Titel tragen und trotzdem keiner sein</h2>
+<p>
+  Zwei der fünf stillen Fälle sind die Falle, für die sich diese Messung
+  gelohnt hat. Der Zenodo-Nachweis meldet
+  <code>"kjswedberg/kjswedberg.github.io: First Release"</code> mit einem
+  Autor; das Statistikportal meldet
+  <code>"Forschung, Innovation, Digitalisierung"</code> mit
+  <code>STATISTIK AUSTRIA</code> als Autor. Beide sehen wie Ergebnisse aus.
+  Beide kommen mit <code>complete: false</code> zurück.
+</p>
+<p>
+  Wer das Titelfeld liest und das Flag überspringt, legt beide als Quellen ab.
+  Die Lehre betrifft nicht nur diesen Endpunkt — sie gilt für jeden
+  Zitationsdienst: <strong>Lesen Sie das Vollständigkeits-Flag, nicht den
+  Titel.</strong> An diesem Endpunkt ist diese Prüfung ein einziges Feld:
+</p>
+<pre><code>if not record["complete"]:
+    hand_back(url, record.get("warning") or "no citation data on the page")</code></pre>
+<p>
+  Eine Lücke, die wir auf eigener Seite schließen sollten: In diesen fünf
+  Fällen ist das <code>warning</code>-Feld leer. <code>complete: false</code>
+  ist korrekt und reicht zum Handeln, aber ein Grund wäre nützlicher als
+  Schweigen — und das ist
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">als solches
+  vermerkt</a>.
+</p>
+
+<h2>Gegenmessung: ein zweites Netz, und was es nicht änderte</h2>
+<p>
+  Der Abschnitt weiter unten sagte voraus, ein Hausanschluss sollte eine
+  höhere Abschlussquote liefern. Diese Behauptung wurde inzwischen einmal
+  geprüft — von einem kommerziellen VPN-Ausgang statt von einem
+  Hausanschluss —, und sie hielt größtenteils nicht stand.
+</p>
+<table>
+  <thead><tr><th scope="col"></th><th scope="col">Rechenzentrum</th><th scope="col">VPN-Ausgang</th></tr></thead>
+  <tbody>
+    <tr><td>Vollständige Nachweise</td><td>10</td><td><strong>11</strong></td></tr>
+    <tr><td>Von einer Bot-Abwehr gestoppt</td><td>1</td><td>1</td></tr>
+    <tr><td>Verweigern jedem Client von dieser Adresse</td><td><strong>4</strong></td><td><strong>4</strong></td></tr>
+    <tr><td>Antworteten vollständig, wiesen nichts aus</td><td>5</td><td>4</td></tr>
+    <tr><td>Sekunden pro Quelle</td><td>0.4</td><td>0.7</td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>Die vier Verweigerungen auf Netzebene bewegten sich nicht.</strong>
+  ScienceDirect, SSRN, die OECD und EUR-Lex beantworteten die zweite Adresse
+  exakt wie die erste. Der wahrscheinliche Grund: Ein kommerzieller
+  VPN-Ausgang ist selbst ein Rechenzentrums-Bereich — dieser Lauf tauschte
+  also ein Rechenzentrum gegen ein anderes, statt die Behauptung zu prüfen.
+  <em>Ob ein privater Anschluss das Ergebnis ändert, bleibt offen</em>; diese
+  Messung schließt die Frage nicht.
+</p>
+<p>
+  Die eine Quelle, die sich änderte, ist Zenodo, und nicht wegen des Netzes:
+  Sie gab im ersten Lauf <code>authors, doi, title</code> zurück, im zweiten
+  <code>authors, doi, publisher, title, year</code>. Der Nachweis gewann ein
+  Jahr — und das ist das Feld, das über Vollständigkeit entscheidet. Entweder
+  wurde der Datensatz zwischen den Läufen bearbeitet, oder Zenodo liefert
+  seine Metadaten uneinheitlich aus; von außen sehen beide gleich aus.
+</p>
+<p>
+  Rohdaten: <a href="/data/2026-08-03-reading-list-to-bibliography-vpn-ausgang.json">zweiter
+  Lauf</a>. Wer über einen privaten Anschluss verfügt, ist eingeladen, die
+  offene Hälfte zu klären —
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/3">Issue 3</a>.
+</p>
+
+<h2>Was hier nicht geklärt ist</h2>
+<ul>
+  <li><strong>Zwanzig Quellen sind eine Form, keine Studie.</strong> Für die
+    Abdeckung gegenüber einem etablierten Dienst an zufällig gezogenen
+    Stichproben ist der
+    <a href="/measurements/citation-extraction/">Citoid-Vergleich</a> die zu
+    zitierende Messung. Diese hier zeigt, wie sich die Arbeit aufteilt.</li>
+  <li><strong>Die Adresse, von der aus gemessen wird, verändert das Ergebnis
+    — weniger als erwartet.</strong> Ein zweiter Lauf von einer anderen
+    Adresse ließ alle vier Verweigerungen auf Netzebene bestehen. Ein privater
+    Anschluss könnte immer noch etwas ändern, aber das ist nun eine offene
+    Frage statt einer Annahme — wer es prüft, möge es gern sagen; die
+    <a href="{ROHDATEN}">Daten</a> und das
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/messung-literaturverzeichnis.py">Skript</a>
+    sind beide veröffentlicht.</li>
+  <li><strong>Die Aufteilung wandert.</strong> Verlage ziehen ihre Abwehr
+    enger, und Seiten werden neu gebaut. Eine Zahl hier ist ein Nachmittag,
+    keine Konstante.</li>
+  <li><strong>Der eigene Export eines Verlags schlägt all das.</strong> Wo
+    eine Seite RIS oder BibTeX zum Herunterladen anbietet, ist diese Datei
+    maßgeblich und dies hier nicht.</li>
+</ul>
+
+<h2>Selbst ausführen</h2>
+<p>
+  Eine URL pro Zeile hinein, eine importierbare <code>.ris</code> heraus — mit
+  den Verweigerungen auf stderr benannt statt halb importiert. Die
+  <a href="/recipes/">Rezepte-Seite</a> bietet dasselbe für Claude Code,
+  Claude Desktop, Python und den Browser.
+</p>
+<pre><code>while read -r u; do
+  curl -sX POST https://provinglab.dev/mcp \\
+    -H 'content-type: application/json' \\
+    -d "{{\\"jsonrpc\\":\\"2.0\\",\\"id\\":1,\\"method\\":\\"tools/call\\",
+         \\"params\\":{{\\"name\\":\\"extract_citation\\",\\"arguments\\":{{\\"url\\":\\"$u\\"}}}}}}" \\
+  | python3 -c 'import json,sys
+d = json.loads(json.load(sys.stdin)["result"]["content"][0]["text"])
+sys.stdout.write(d["ris"]) if d.get("complete") else \\
+  sys.stderr.write("hand back: " + d["url"] + "\\n")'
+done &lt; reading-list.txt &gt; literature.ris</code></pre>
+<p>
+  Dann <em>Zotero → Datei → Importieren</em> oder <em>Citavi → Import →
+  RIS</em>. Kein Schlüssel, kein Konto. Ein Hinweis lohnt sich noch: Diese
+  Seite sitzt hinter einem Filter, der den User-Agent ablehnt, den Pythons
+  <code>urllib</code> standardmäßig sendet. Setzen Sie einen beliebigen
+  eigenen User-Agent, und sie antwortet normal.
+</p>
+
+</div>
 """
 
 
@@ -499,11 +824,19 @@ curl -sI -A "$BROWSER_UA"    "$URL" | head -1     # as a browser</code></pre>
 # ---------------------------------------------------------------- Schreiben
 
 def schreiben(ziel, vorlage, inhalt, url, titel, besch, og, tiefe, art, fusssatz,
-              offenlegung=""):
+              offenlegung="", deutsch=False):
     kopf, fuss = kopf_und_fuss(vorlage)
     ziel.mkdir(parents=True, exist_ok=True)
-    seite = (anpassen(kopf, url, titel, besch, og, tiefe, art)
+    seite = (anpassen(kopf, url, titel, besch, og, tiefe, art, deutsch)
              + inhalt + fuss_setzen(fuss, fusssatz, tiefe, offenlegung))
+    # Das Umschalt-Skript gehoert nur auf Seiten mit deutschem Abschnitt. Es
+    # kann aus einer zweisprachigen Vorlage mitkommen oder fehlen — beides
+    # ausgleichen, sonst setzt es auf einer rein englischen Seite bei
+    # deutschen Besuchern die Dokumentsprache auf de.
+    if deutsch and "function setLang" not in seite:
+        seite = seite.replace("</body>", SPRACHE_SKRIPT + "\n</body>")
+    if not deutsch and "function setLang" in seite:
+        seite = seite.replace(SPRACHE_SKRIPT + "\n</body>", "</body>")
     (ziel / "index.html").write_text(seite, encoding="utf-8")
     print(f"  geschrieben: {(ziel / 'index.html').relative_to(DOCS)}")
 
@@ -526,7 +859,8 @@ def main():
         "../../", "TechArticle",
         f"Measured on {DATUM_LANG}, one pass, from a Cloudflare Workers edge. Every "
         "handed-back source was fetched twice, once as a reader and once as a browser, "
-        "to separate a page's wall from a reader's limit.")
+        "to separate a page's wall from a reader's limit.",
+        deutsch=True)
 
     schreiben(
         DOCS / "notes" / "sources-a-machine-cannot-cite", VORLAGE_N,
