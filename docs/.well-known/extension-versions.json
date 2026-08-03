@@ -1,0 +1,57 @@
+{
+  "$schema_comment": "Kein Standard, sondern eine Auskunft. Wer wissen will, ob seine Fassung die aktuelle ist, findet hier beide Store-Staende und den Quellstand an einer Adresse. Erzeugt von build-versionen.py.",
+  "name": "Full Page PDF Snap",
+  "source": "https://github.com/Bubu89/full-page-pdf-snap",
+  "license": "MIT",
+  "homepage": "https://provinglab.dev/tools/full-page-pdf-snap/",
+  "security_contact": "https://provinglab.dev/.well-known/security.txt",
+  "published": {
+    "firefox": {
+      "version": "2.26.0",
+      "status": "public",
+      "users": 4,
+      "url": "https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/",
+      "signed_file": "https://addons.mozilla.org/firefox/downloads/file/4935078/full_page_pdf_snap_webpagesave-2.26.0.xpi"
+    },
+    "chromium": {
+      "version": "2.12.1",
+      "users": 4,
+      "url": "https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn"
+    },
+    "signed_releases": {
+      "tag": "v2.16.0",
+      "assets": [
+        "full-page-pdf-snap-2.16.0.xpi",
+        "full-page-pdf-snap-chrome-2.14.0.zip"
+      ],
+      "url": "https://github.com/Bubu89/full-page-pdf-snap/releases/tag/v2.16.0"
+    }
+  },
+  "source_state": {
+    "firefox": "2.27.0",
+    "chromium": "2.27.0",
+    "requires": {
+      "firefox": "109.0",
+      "firefox_android": "127.0",
+      "chromium": "116"
+    }
+  },
+  "permissions": {
+    "declared": [
+      "activeTab",
+      "downloads",
+      "downloads.open",
+      "storage",
+      "menus",
+      "notifications",
+      "scripting",
+      "clipboardWrite"
+    ],
+    "host_permissions": [],
+    "note": "Keine Host-Rechte. Die Erweiterung sieht einen Tab erst nach einer Nutzergeste — Messung: https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/"
+  },
+  "notices": [
+    "Die Stores liefern unterschiedliche Fassungen: Firefox 2.26.0, Chromium 2.12.1.",
+    "Der Quellstand (2.27.0) ist nicht der ausgelieferte (2.26.0)."
+  ]
+}

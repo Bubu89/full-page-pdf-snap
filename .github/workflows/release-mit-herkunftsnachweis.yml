@@ -1,0 +1,96 @@
+# Baut die auslieferbaren Pakete und haengt einen kryptografischen
+# Herkunftsnachweis daran.
+#
+# Wozu: Eine Erweiterung wird als Datei weitergegeben — im Store, ueber die
+# Release-Seite, in einem Unternehmensnetz. Wer sie erhaelt, kann bisher nicht
+# pruefen, ob sie aus diesem Quelltext stammt. Die Signatur von Mozilla belegt,
+# dass Mozilla sie geprueft hat, nicht, woraus sie gebaut wurde.
+#
+# GitHub Artifact Attestations schliessen genau diese Luecke: Sigstore bindet
+# das Artefakt an Repository, Commit und Workflow-Lauf, das Zertifikat lebt zehn
+# Minuten, der Nachweis landet in einem unveraenderlichen Transparenzprotokoll.
+# Fuer oeffentliche Repositorien kostenlos.
+#
+# Pruefen laesst sich das mit einem Befehl, den jeder ausfuehren kann:
+#
+#   gh attestation verify full-page-pdf-snap-chrome-2.27.0.zip \
+#      --repo Bubu89/full-page-pdf-snap
+#
+# Ausgeloest wird der Ablauf durch einen Versions-Tag. Ein Tag ist eine
+# Entscheidung, kein Nebenprodukt — deshalb nicht bei jedem Push.
+
+name: Release mit Herkunftsnachweis
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Versions-Tag, z. B. v2.27.0"
+        required: true
+
+permissions:
+  contents: write        # Release anlegen und Dateien anhaengen
+  id-token: write        # Sigstore: kurzlebiges Zertifikat anfordern
+  attestations: write    # Nachweis im Transparenzprotokoll hinterlegen
+
+jobs:
+  bauen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fassung aus den Quellen lesen
+        id: fassung
+        run: |
+          v=$(python3 -c "import json;print(json.load(open('manifest.json'))['version'])")
+          c=$(python3 -c "import json;print(json.load(open('chrome-mv3/manifest.json'))['version'])")
+          echo "firefox=$v" >> "$GITHUB_OUTPUT"
+          echo "chromium=$c" >> "$GITHUB_OUTPUT"
+          # Auseinanderlaufende Fassungen waren am 03.08.2026 vierzehn Versionen
+          # gross und fielen niemandem auf. Hier faellt es sofort auf.
+          if [ "$v" != "$c" ]; then
+            echo "::error::Firefox $v gegen Chromium $c — chrome-mv3/port.py laufen lassen"
+            exit 1
+          fi
+
+      # Die Pakete werden hier erzeugt, nicht hochgeladen. Nur was in diesem
+      # Lauf entsteht, kann bezeugt werden — eine mitgebrachte Datei nicht.
+      - name: Firefox-Paket schnueren
+        run: |
+          mkdir -p auslieferung
+          zip -r -q "auslieferung/full-page-pdf-snap-${{ steps.fassung.outputs.firefox }}.zip" \
+            manifest.json background.html background.js content.js pdf-writer.js \
+            popup.html popup.js options.html options.js result.html result.js \
+            i18n.js i18n-data.js icons _locales \
+            -x '*.pyc' '*/__pycache__/*'
+
+      - name: Chromium-Paket schnueren
+        working-directory: chrome-mv3
+        run: |
+          zip -r -q "../auslieferung/full-page-pdf-snap-chrome-${{ steps.fassung.outputs.chromium }}.zip" . \
+            -x '*.py' '*.pyc' '*/__pycache__/*' 'ANLEITUNG.txt' 'REICHWEITE.txt'
+
+      - name: Pruefsummen
+        run: |
+          cd auslieferung && sha256sum *.zip | tee SHA256SUMS.txt
+
+      - name: Herkunftsnachweis erzeugen
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: "auslieferung/*.zip"
+
+      - name: An das Release haengen
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
+        run: |
+          gh release view "$TAG" >/dev/null 2>&1 \
+            || gh release create "$TAG" --title "$TAG" --notes "Siehe CHANGELOG.md"
+          gh release upload "$TAG" auslieferung/* --clobber
+
+      - name: Was ein Empfaenger jetzt tun kann
+        run: |
+          echo "gh attestation verify <datei> --repo ${{ github.repository }}"
+          echo "belegt: Repository, Commit und Workflow-Lauf, aus dem die Datei stammt."

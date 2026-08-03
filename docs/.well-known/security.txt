@@ -1,0 +1,22 @@
+# Sicherheitsmeldungen zu provinglab.dev und Full Page PDF Snap
+# RFC 9116
+
+Contact: mailto:chris.vis@goldfishgateway.com
+Contact: https://github.com/Bubu89/full-page-pdf-snap/issues
+Expires: 2027-08-03T00:00:00.000Z
+Preferred-Languages: de, en
+Canonical: https://provinglab.dev/.well-known/security.txt
+Policy: https://provinglab.dev/disclaimer/
+Acknowledgments: https://provinglab.dev/about/
+
+# Umfang: die Domain provinglab.dev, der Endpunkt unter /mcp und die
+# Erweiterung Full Page PDF Snap in ihren Fassungen fuer Firefox und Chromium.
+#
+# Was hier hilft: eine Beschreibung, mit der sich der Befund nachstellen laesst.
+# Was nicht noetig ist: ein Nachweis, dass es ausnutzbar waere — die Beschreibung
+# genuegt.
+#
+# Dies ist eine private, nicht-kommerzielle Veroeffentlichung. Es gibt kein
+# Praemienprogramm und keine Frist, die zugesagt werden kann. Gemeldete Befunde
+# werden beantwortet und, wo sie zutreffen, oeffentlich behoben — nachlesbar im
+# CHANGELOG des Repositoriums.

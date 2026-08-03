@@ -57,6 +57,14 @@ jobs:
         # einziger Test laeuft.
         run: node --test tests/*.mjs
 
+      # Die Versionsauskunft muss die Wahrheit sagen, sonst ist sie schaedlicher
+      # als keine. Sie darf abweichen — sie darf nur nicht veraltet sein.
+      - name: Versionsauskunft aktuell
+        run: |
+          python3 build-versionen.py --check || {
+            echo "::warning::extension-versions.json veraltet — build-versionen.py laufen lassen"
+          }
+
       # Interne Ziele und Store-Staende. Externe Adressen werden hier bewusst
       # nicht geprueft: ein fremder Server, der gerade 503 antwortet, ist kein
       # Grund, die eigene Auslieferung anzuhalten.
