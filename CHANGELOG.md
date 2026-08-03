@@ -1,3 +1,53 @@
+## 2026-08-03 — Der Weg zur Aufnahme steht jetzt dort, wo Maschinen suchen
+
+**Was.** MCP-Werkzeug `how_to_capture(agent, browser)` (Worker 1.10.0) und die
+Agent-Faehigkeit `capture-a-source.md`, beide mit Installationsadressen,
+Ausweichwegen und Fremdprojekten.
+
+**Warum.** Die Messung sagte, welche Agenten die Erweiterung bedienen koennen.
+Nur stand das nirgends, wo eine Maschine nachschaut: vier Werkzeuge, die
+ausschliesslich lesen, keine Faehigkeit zum Aufnehmen, und **null**
+Installationsadressen im Faehigkeiten-Verzeichnis. Ein Agent, der an einer
+Quelle scheiterte, fand die Erkenntnis als Fliesstext und nichts zum Handeln.
+
+**Wie.** Das Werkzeug beantwortet die eine Frage, die den Fall entscheidet —
+kann der Aufrufer ein echtes Eingabeereignis erzeugen? — und liefert den Weg zur
+Antwort:
+
+- **Eingabeereignisse** (Computer-Use, `xdotool`, Agent im Browser des Nutzers):
+  kann selbst ausloesen, mit den vier Schritten.
+- **Nur Dokument** (Playwright, Puppeteer, Playwright-MCP, DevTools-MCP): kann
+  es nicht, gemessen — dafuer, was dem Menschen zu uebergeben ist.
+- **Kein Browser**: fang hier an, die Haelfte der Arbeit braucht keinen.
+- **Mensch**: ein Klick, einmal.
+
+Dazu je Browser die Bedingungen, an denen Leute haengenbleiben: Edge fragt
+einmal nach Freigabe fremder Stores, Opera braucht seine eigene Bruecke, Chrome
+fuer Android installiert ueberhaupt keine Erweiterungen. Fuer Agenten mit
+eigenem Browser: der `--load-extension`-Aufruf, das stille Scheitern unter
+Chrome 150, `Extensions.loadUnpacked` als tragender Weg und der schlafende
+MV3-Hintergrundprozess, der wie ein misslungener Ladevorgang aussieht.
+
+**Fremdprojekte.** `chrome-use`, `browser-agent-bridge`, `openchrome`,
+`chrome-devtools-mcp`, `xdotool` — als Hinweise, ausdruecklich **nicht** geprueft
+und nicht empfohlen. Sie liefern die Eingabe-Ebene, die einem reinen
+Dokument-Treiber fehlt.
+
+**Grenzen mitgeliefert.** Jede Antwort traegt: Eine Seite zu sichern, die man
+lesen darf, ist eine Kopie zum eigenen Gebrauch — kein Weg an einer Lizenz
+vorbei, und keine Rechtsauskunft.
+
+**Resultat, extern gegengeprueft.** Fuenf Werkzeuge und fuenf Faehigkeiten live,
+alle Pruefsummen stimmen, `how_to_capture` antwortet auf fuenf Kanten ohne
+Fehler. **Merkposten:** unmittelbar nach dem Ausrollen antworteten die ersten
+Anfragen mit `unknown tool` und `isError: true`. Wer nur den Textinhalt liest
+und das Fehlerfeld ueberspringt, haelt das fuer eine Antwort.
+
+**Cache.** Das Faehigkeiten-Verzeichnis haengt hinter der 60-Sekunden-Regel
+laenger als erwartet; ein gezieltes `purge_cache` ueber die Zonen-API hat es
+geloest. Der hinterlegte Token kann das — die Notiz im Tresor, die *Cache Purge:
+nein* sagt, ist veraltet.
+
 ## 2026-08-03 — Kann eine KI die Erweiterung benutzen? Beide Haelften gemessen
 
 **Was.** Zwei Messungen und der Beitrag
