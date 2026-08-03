@@ -83,12 +83,28 @@ Ziels steht unser Name.
   use, please" bzw. eine Bitte um Verhältnismäßigkeit.
 - `rechtscheck.py` prüft jetzt auf solche Zusagen (`zusage-ohne-grenze`).
 
-**Offen:** Eine echte Ratenbegrenzung. Der hinterlegte Cloudflare-Token darf
-weder Config Rules noch WAF-Regeln — beide Phasen antworten mit *request is not
-authorized*. **Nächster Schritt:** Im Konto `Blockinhalt@gmail.com` einen Token
-mit *Firewall Services: Edit* erzeugen, in Vaultwarden ablegen, dann eine
-Rate-Limiting-Regel auf `/mcp` (z. B. 60 Anfragen/Minute je Adresse) als Skript
-hinterlegen — nicht als Klick im Dashboard.
+**Geprüft am 3. August 2026, und die Antwort ist unbequem.** Ein Token mit
+*Firewall Services: Write* auf die Zone wurde eigens erzeugt: Er sieht die Zone
+(`provinglab.dev` kommt zurück), aber die Phase `http_ratelimit` antwortet
+weiterhin mit *Authentication error*. **Ratenbegrenzungs-Regeln sind auf dem
+Gratis-Tarif über die API nicht erreichbar.** Der Token wurde wieder gelöscht,
+statt ihn ungenutzt stehen zu lassen.
+
+**Was bleibt, ohne Kosten zu verursachen:**
+
+- Die eine kostenlose Regel, die Cloudflare Free vorsieht, im **Dashboard**
+  setzen — das ist der einzige Weg, der ohne Tarifwechsel bleibt.
+- Der Missbrauch, um den es geht, ist gedämpft, aber nicht ausgeschlossen: Jede
+  Anfrage löst höchstens einen externen Abruf plus eine DOI-Auflösung aus, und
+  Weiterleitungen sind seit Worker 1.11.0 auf fünf Sprünge begrenzt.
+- **Kein Kostenrisiko besteht in keiner Richtung:** Gemessen über 24 Stunden
+  laufen rund 4.400 Anfragen über den Worker, also **4,4 % des Gratis-Kontingents
+  von 100.000 pro Tag**. Und Cloudflare schaltet bei Überschreitung ab, statt zu
+  verrechnen — Ausfall ist möglich, eine Rechnung nicht.
+
+**Web Analytics wurde geprüft und bewusst nicht eingerichtet.** Es wäre gratis,
+verlangt aber ein Zählskript auf jeder Seite. `/about/` sagt zu: *no tracking*.
+Diese Zusage ist mehr wert als die Besucherstatistik.
 
 ### 3.2 Serverseitige Anfragefälschung über Weiterleitungen — behoben
 
