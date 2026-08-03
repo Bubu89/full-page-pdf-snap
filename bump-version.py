@@ -104,11 +104,21 @@ def chrome_setzen(neu):
 def main():
     local = json.loads((HERE / "manifest.json").read_text(encoding="utf-8"))["version"]
     remote = published_versions()
-    published = local in remote
+    # Auch ein lokal gebautes Paket macht die Nummer unbrauchbar: es kann
+    # laengst eingereicht sein, und die Wache im Paketbau lehnt sie ohnehin ab.
+    # Nur AMO zu fragen liess bump-version "bleibt" melden, waehrend pack
+    # unmittelbar danach abbrach — zwei Werkzeuge, zwei Wahrheiten.
+    gebaut = False
+    try:
+        FF_UPLOAD = Path("/mnt/c/Users/HOLO/Documents/FullPagePDFSnap_Firefox/upload")
+        gebaut = any(local in f.name for f in FF_UPLOAD.glob("*firefox-*.zip"))
+    except Exception:
+        pass
+    published = (local in remote) or gebaut
 
     print(f"  lokal        : {local}")
     print(f"  bei AMO      : {', '.join(remote[:5]) if remote else '(unbekannt)'}")
-    print(f"  Status       : {'VEROEFFENTLICHT' if published else 'noch nicht veroeffentlicht'}")
+    print(f"  Status       : {'VEROEFFENTLICHT' if local in remote else ('lokal gebaut' if gebaut else 'noch nicht veroeffentlicht')}")
 
     # Zielnummer bestimmen
     if "--set" in sys.argv:

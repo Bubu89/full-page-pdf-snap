@@ -1,3 +1,25 @@
+## 2026-08-03 — PubMed schreibt den Nachnamen vorn
+
+Eine PubMed-Quelle ergab die Zitation `TA, G. & A, S. (2017)`. Richtig waere
+`Graham, T. A. & Sottoriva, A.`
+
+PubMed und viele Fachdatenbanken schreiben `Nachname Initialen` ohne Komma —
+"Graham TA". Der Namenszerleger nahm ohne Komma an, das letzte Wort sei der
+Nachname; bei dieser Schreibweise ist es genau umgekehrt. Erkennbar ist sie am
+letzten Wort: ein bis drei Grossbuchstaben ohne Punkt sind Initialen, kein Name.
+
+Die Rohform im RIS-Satz bleibt unveraendert — Literaturprogramme zerlegen selbst,
+und was dort steht, soll das sein, was die Seite deklariert hat.
+
+### Was an derselben Quelle richtig war
+
+Titel, Band, Heft, DOI und ISSN stimmen mit Crossref ueberein. Zwei Abweichungen
+sind keine Fehler: das Jahr (PubMed nennt 2017, Crossref 2016 — Online- gegen
+Ausgabejahr) und die ISSN (e-ISSN gegen Print-ISSN). Nicht erfasst sind die
+Seitenzahlen, weil PubMed sie auf dieser Seite nicht deklariert. Als `PB` steht
+`J Pathol`, weil PubMed dort die Zeitschriftenabkuerzung eintraegt statt des
+Verlags — uebernommen wie deklariert, nicht korrigiert.
+
 ## 2026-08-03 — Der RIS-Satz liegt jetzt neben dem PDF, nicht nur darin
 
 Die Zitationsangaben standen an drei Stellen im PDF: in den Dokumentangaben, als

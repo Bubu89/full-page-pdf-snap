@@ -82,7 +82,18 @@
     if (w.some(function (x) {
       return /^(van|von|de|der|den|del|della|di|da|dos|du|la|le|al|bin|ibn|ter|zu|zum)$/i.test(x);
     })) return s;
-    var nachname = w[w.length - 1];
+    // PubMed und viele Fachdatenbanken schreiben "Nachname Initialen" ohne
+    // Komma: "Graham TA". Dort steht der Nachname VORN. Ohne diese Ausnahme
+    // wurde daraus "TA, G." — gemeldet am 03.08.2026 an einer PubMed-Quelle.
+    // Erkennbar am letzten Wort: ein bis drei Grossbuchstaben ohne Punkt sind
+    // Initialen, kein Name.
+    var letztes = w[w.length - 1];
+    if (w.length >= 2 && /^[A-Z]{1,3}$/.test(letztes)) {
+      var nach2 = w.slice(0, -1).join(" ");
+      var ini2 = letztes.split("").map(function (b) { return b + "."; }).join(" ");
+      return nach2 + ", " + ini2;
+    }
+    var nachname = letztes;
     var ini = w.slice(0, -1).map(function (x) {
       return x.charAt(0).toUpperCase() + ".";
     }).join(" ");

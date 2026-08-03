@@ -219,6 +219,21 @@ const FAELLE = [
       [q.publisher !== "@ResearchGate", `Herausgeber mit @: ${q.publisher}`],
     ],
   },
+  {
+    name: "PubMed-Namensform: Nachname vorn (Fehler 14)",
+    html: seite(`<title>Measuring cancer evolution from the genome</title>
+      <meta name="citation_title" content="Measuring cancer evolution from the genome">
+      <meta name="citation_author" content="Graham TA">
+      <meta name="citation_author" content="Sottoriva A">
+      <meta name="citation_journal_title" content="The Journal of pathology">
+      <meta name="citation_date" content="2017">
+      <meta name="citation_doi" content="10.1002/path.4821">`),
+    url: "https://pubmed.ncbi.nlm.nih.gov/27741350/",
+    pruefe: (q) => [
+      [q.authors[0] === "Graham TA", `roh veraendert: ${q.authors[0]}`],
+      [q.art === "Zeitschriftenaufsatz", `art=${q.art}`],
+    ],
+  },
 ];
 
 let gruen = 0, rot = 0;
