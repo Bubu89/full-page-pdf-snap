@@ -27,6 +27,14 @@
       "url": "https://provinglab.dev/.well-known/agent-skills/measure-ocr-recall.md",
       "sha256": "6513571ce3c3d8a9034015a9c309f631338b91df378153731256dc4e521caace",
       "license": "CC-BY-4.0"
+    },
+    {
+      "name": "cite-a-web-source",
+      "type": "skill",
+      "description": "Turn a web page into a citation record with RIS and BibTeX, decide which sources a server can read and which need a browser, and know when a returned record must not be used. Use when someone asks to cite links, build a bibliography from URLs, or archive a source for a thesis.",
+      "url": "https://provinglab.dev/.well-known/agent-skills/cite-a-web-source.md",
+      "sha256": "9bc435b574d092b1a95151cf342bab0daa940813173efea6eca9b37834829d6d",
+      "license": "CC-BY-4.0"
     }
   ]
 }
