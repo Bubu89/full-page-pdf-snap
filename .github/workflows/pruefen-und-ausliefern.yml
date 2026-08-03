@@ -52,7 +52,10 @@ jobs:
       # dass es jemandem auffiel: eine Aenderung am Endpunkt hatte einen Fall
       # ueberholt, und der Testlauf gehoerte in keine Pipeline.
       - name: Zitations-Tests
-        run: node --test tests/
+        # Dateien statt Verzeichnis: der Node auf dem Runner loest `tests/`
+        # als Modul auf und bricht mit "Cannot find module" ab, bevor ein
+        # einziger Test laeuft.
+        run: node --test tests/*.mjs
 
       # Interne Ziele und Store-Staende. Externe Adressen werden hier bewusst
       # nicht geprueft: ein fremder Server, der gerade 503 antwortet, ist kein
