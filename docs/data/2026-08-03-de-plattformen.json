@@ -8,7 +8,8 @@
     "sources": 11,
     "selection": "Fixed on 3 August 2026 before the run and not chosen for whether it works: four repositories (SSOAR as a known-walled control, PsychArchives, peDOCS, one OPUS 4 instance), the German National Library, two German-language publishers (Springer Link, Nomos), a licensed legal database (beck-online), free case law (openJur) and two official statistics bodies (Statistik Austria, Destatis). Every address answered 200 to a browser in the pre-check the same day.",
     "control": "Every handed-back source was fetched twice — once with the reader's own user agent, once with a browser's. A source counts as walled only when the browser is answered and the reader is not.",
-    "network": "Commercial VPN exit on the local network, AS209854 Cyberzone S.A., Frankfurt DE — not a plain residential line"
+    "network": "Commercial VPN exit on the local network, AS209854 Cyberzone S.A., Frankfurt DE — not a plain residential line",
+    "counterpart": "docs/data/2026-08-03-de-plattformen-nach-fallback.json"
   },
   "results": {
     "sources": 11,

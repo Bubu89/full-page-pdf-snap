@@ -1,5 +1,5 @@
 {
-  "datum": "2026-08-03",
+  "gemessen_am": "2026-08-03",
   "frage": "Kann ein autonomer Agent die Erweiterung als echte Store-Installation in ein eigenes Profil installieren und ausloesen — ohne Admin-Rechte, nur mit echten Eingabeereignissen (SendInput)?",
   "maschine": "Windows 11, 2560x1440, WSL-Steuerung via powershell.exe",
   "store_versionen": {
