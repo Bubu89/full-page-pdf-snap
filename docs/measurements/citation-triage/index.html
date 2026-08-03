@@ -45,18 +45,44 @@
 </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org", "@type": "Dataset",
-  "name": "Print-to-PDF versus screenshot capture, same document",
-  "description": "Page counts, page-break analysis, word recall against the source text, embedded images and file sizes for the same Wikipedia article captured both ways on 1 August 2026.",
-  "url": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
-  "identifier": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
-  "datePublished": "2026-08-01", "license": "https://creativecommons.org/licenses/by/4.0/",
-  "isAccessibleForFree": true, "inLanguage": "en",
-  "keywords": ["print to PDF","screenshot","page breaks","OCR","web archiving"],
-  "variableMeasured": ["pages","page breaks","breaks mid-sentence","word recall","file size","embedded images"],
-  "creator": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
-  "distribution": [{ "@type": "DataDownload", "encodingFormat": "application/json",
-    "contentUrl": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json" }],
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "A mixed reading list through a citation endpoint: which sources yield and which refuse",
+  "description": "Twelve sources of mixed type through the extract_citation endpoint — eight returned complete records with RIS, four were refused with the access wall named — with timings, 3 August 2026.",
+  "url": "https://provinglab.dev/data/2026-08-03-citation-triage.json",
+  "identifier": "https://provinglab.dev/data/2026-08-03-citation-triage.json",
+  "datePublished": "2026-08-03",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "keywords": [
+    "citation extraction",
+    "paywall",
+    "access walls",
+    "RIS",
+    "reading list",
+    "triage"
+  ],
+  "variableMeasured": [
+    "pages",
+    "page breaks",
+    "breaks mid-sentence",
+    "word recall",
+    "file size",
+    "embedded images"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "encodingFormat": "application/json",
+      "contentUrl": "https://provinglab.dev/data/2026-08-03-citation-triage.json"
+    }
+  ],
   "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
 }
 </script>

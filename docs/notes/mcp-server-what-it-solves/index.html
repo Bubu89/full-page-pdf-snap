@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>This site runs an MCP server. Measured: it is smaller than the file it competes with — Proving Lab</title>
-<meta name="description" content="An MCP endpoint at /mcp exposes the measurement datasets and published methods to AI clients. Everything it can return adds up to roughly 1,300 tokens — less than the llms.txt file that already sits on the same domain. What that leaves it good for, and what it does not solve.">
+<meta name="description" content="An MCP endpoint at /mcp with four tools. Three read this site's datasets and methods and total about 1,300 tokens — less than the llms.txt beside them. The fourth turns any URL into a structured reference with RIS and BibTeX, or a refusal naming the paywall that stopped it: seven complete records from ten scholarly sources in 4.8 seconds.">
 <link rel="canonical" href="https://provinglab.dev/notes/mcp-server-what-it-solves/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
@@ -15,10 +15,11 @@
 
 <meta property="og:type" content="article">
 <meta property="og:title" content="This site runs an MCP server. Measured: it is smaller than the file it competes with">
-<meta property="og:description" content="An MCP endpoint at /mcp exposes the measurement datasets and published methods to AI clients. Everything it can return adds up to roughly 1,300 tokens — less than the llms.txt file that already sits on the same domain. What that leaves it good for, and what it does not solve.">
+<meta property="og:description" content="An MCP endpoint at /mcp with four tools. Three read this site's datasets and methods and total about 1,300 tokens — less than the llms.txt beside them. The fourth turns any URL into a structured reference with RIS and BibTeX, or a refusal naming the paywall that stopped it: seven complete records from ten scholarly sources in 4.8 seconds.">
 <meta property="og:url" content="https://provinglab.dev/notes/mcp-server-what-it-solves/">
 <meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
-<meta property="article:published_time" content="2026-08-01">
+<meta property="article:published_time" content="2026-08-02">
+<meta property="article:modified_time" content="2026-08-03">
 <meta name="twitter:card" content="summary_large_image">
 
 <script type="application/ld+json">
@@ -26,9 +27,9 @@
   "@context": "https://schema.org",
   "@type": "TechArticle",
   "headline": "This site runs an MCP server. Measured: it is smaller than the file it competes with",
-  "description": "An MCP endpoint at /mcp exposes the measurement datasets and published methods to AI clients. Everything it can return adds up to roughly 1,300 tokens — less than the llms.txt file that already sits on the same domain. What that leaves it good for, and what it does not solve.",
+  "description": "An MCP endpoint at /mcp with four tools. Three read this site's measurement datasets and methods and together return about 1,300 tokens — less than the llms.txt file on the same domain, so for that job the protocol solves no size problem. The fourth, extract_citation, turns any URL into a structured reference with RIS and BibTeX, or a refusal naming the paywall or bot check that stopped it: ten scholarly URLs on 3 August 2026 gave seven complete records and three named refusals in 4.8 seconds. What that is good for, and what it does not solve.",
   "datePublished": "2026-08-02",
-  "dateModified": "2026-08-02",
+  "dateModified": "2026-08-03",
   "inLanguage": "en",
   "url": "https://provinglab.dev/notes/mcp-server-what-it-solves/",
   "author": {
@@ -45,19 +46,31 @@
 </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org", "@type": "Dataset",
-  "name": "Print-to-PDF versus screenshot capture, same document",
-  "description": "Page counts, page-break analysis, word recall against the source text, embedded images and file sizes for the same Wikipedia article captured both ways on 1 August 2026.",
-  "url": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
-  "identifier": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
-  "datePublished": "2026-08-01", "license": "https://creativecommons.org/licenses/by/4.0/",
-  "isAccessibleForFree": true, "inLanguage": "en",
-  "keywords": ["print to PDF","screenshot","page breaks","OCR","web archiving"],
-  "variableMeasured": ["pages","page breaks","breaks mid-sentence","word recall","file size","embedded images"],
-  "creator": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
-  "distribution": [{ "@type": "DataDownload", "encodingFormat": "application/json",
-    "contentUrl": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json" }],
-  "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
+  "@context": "https://schema.org",
+  "@type": "WebAPI",
+  "name": "Proving Lab citation and measurement endpoint (MCP)",
+  "description": "Model Context Protocol server over JSON-RPC 2.0. extract_citation returns what a given page declares about itself — authors, title, journal, year, DOI, licence — as a structured record with RIS and BibTeX, or a refusal marked complete:false where the page is a paywall, an error or a bot check. Three further tools hand over the measurement datasets and published methods. No authentication and no key required.",
+  "url": "https://provinglab.dev/mcp",
+  "documentation": "https://provinglab.dev/notes/mcp-server-what-it-solves/",
+  "termsOfService": "https://provinglab.dev/disclaimer/",
+  "provider": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://provinglab.dev/mcp",
+      "httpMethod": "POST",
+      "contentType": "application/json",
+      "encodingType": "application/json"
+    },
+    "query-input": "required name=url"
+  }
 }
 </script>
 
@@ -281,7 +294,7 @@ done</code></pre>
   in one Citavi or Zotero library regardless of which route produced them.
 </p>
 
-<h2>What it does not solve</h2>
+<h2 id="what-it-does-not-solve">What it does not solve</h2>
 <ul>
   <li><strong>A bot filter sits in front of it.</strong> Requests identifying as
     <code>Python-urllib</code> are answered with HTTP 403 by the CDN before the worker

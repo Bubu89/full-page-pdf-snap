@@ -1,6 +1,40 @@
 {
   "linkset": [
     {
+      "anchor": "https://provinglab.dev/mcp",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/.well-known/mcp/server-card.json",
+          "type": "application/json"
+        },
+        {
+          "href": "https://provinglab.dev/notes/mcp-server-what-it-solves/",
+          "type": "text/html"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://provinglab.dev/llms.txt",
+          "type": "text/plain"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://provinglab.dev/notes/mcp-server-what-it-solves/#what-it-does-not-solve"
+        }
+      ]
+    },
+    {
       "anchor": "https://provinglab.dev/data/2026-08-01-extension-permissions.json",
       "type": [
         {

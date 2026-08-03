@@ -45,18 +45,44 @@
 </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org", "@type": "Dataset",
-  "name": "Print-to-PDF versus screenshot capture, same document",
-  "description": "Page counts, page-break analysis, word recall against the source text, embedded images and file sizes for the same Wikipedia article captured both ways on 1 August 2026.",
-  "url": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
-  "identifier": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
-  "datePublished": "2026-08-01", "license": "https://creativecommons.org/licenses/by/4.0/",
-  "isAccessibleForFree": true, "inLanguage": "en",
-  "keywords": ["print to PDF","screenshot","page breaks","OCR","web archiving"],
-  "variableMeasured": ["pages","page breaks","breaks mid-sentence","word recall","file size","embedded images"],
-  "creator": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
-  "distribution": [{ "@type": "DataDownload", "encodingFormat": "application/json",
-    "contentUrl": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json" }],
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Citation metadata declared by 18 scholarly platforms",
+  "description": "What each of 18 scholarly platforms declares about a work to a server-side reader — authors, year, journal, volume, pages, DOI, ISSN — measured through the extract_citation endpoint and verified against Crossref, 3 August 2026.",
+  "url": "https://provinglab.dev/data/2026-08-03-citation-by-platform.json",
+  "identifier": "https://provinglab.dev/data/2026-08-03-citation-by-platform.json",
+  "datePublished": "2026-08-03",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "keywords": [
+    "citation metadata",
+    "Highwire Press tags",
+    "Dublin Core",
+    "DOI",
+    "Crossref",
+    "scholarly publishing"
+  ],
+  "variableMeasured": [
+    "pages",
+    "page breaks",
+    "breaks mid-sentence",
+    "word recall",
+    "file size",
+    "embedded images"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "encodingFormat": "application/json",
+      "contentUrl": "https://provinglab.dev/data/2026-08-03-citation-by-platform.json"
+    }
+  ],
   "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
 }
 </script>

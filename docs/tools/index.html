@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tools — Proving Lab</title>
-<meta name="description" content="Browser tools built here and measured here: Full Page PDF Snap downloads an entire webpage as one seamless PDF, on the device, for Firefox and Chrome.">
+<meta name="description" content="Tools built here and measured here: Full Page PDF Snap saves a whole webpage as one seamless PDF on the device, and a citation endpoint at /mcp that turns a URL into a reference with RIS and BibTeX — or names the paywall that stopped it.">
 <link rel="canonical" href="https://provinglab.dev/tools/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
@@ -55,6 +55,55 @@
   .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
   @media (max-width:640px){ .topnav .brand{width:100%;margin-right:0} }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Tools built at Proving Lab",
+  "description": "Software built here and measured here under the same rules as everything else, including where it loses against an alternative.",
+  "url": "https://provinglab.dev/tools/",
+  "itemListOrder": "https://schema.org/ItemListUnordered",
+  "numberOfItems": 2,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "SoftwareApplication",
+        "name": "Full Page PDF Snap",
+        "url": "https://provinglab.dev/tools/full-page-pdf-snap/",
+        "applicationCategory": "BrowserApplication",
+        "operatingSystem": "Firefox (desktop and Android), Chrome",
+        "description": "Saves a whole web page as one continuous PDF, entirely on the device. Optionally writes the citation the page declares — authors, DOI, licence, time of retrieval — into the PDF, with an RIS record beside it.",
+        "license": "https://opensource.org/licenses/MIT",
+        "isAccessibleForFree": true,
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "EUR"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "WebAPI",
+        "name": "Proving Lab citation endpoint (MCP)",
+        "url": "https://provinglab.dev/mcp",
+        "documentation": "https://provinglab.dev/notes/mcp-server-what-it-solves/",
+        "description": "Model Context Protocol server over JSON-RPC 2.0. Returns what a given page declares about itself as a structured reference with RIS and BibTeX, or a refusal naming the paywall, error or bot check that stopped it. No authentication and no key required.",
+        "provider": {
+          "@type": "Organization",
+          "name": "Proving Lab",
+          "url": "https://provinglab.dev/"
+        },
+        "isAccessibleForFree": true
+      }
+    }
+  ]
+}
+</script>
 <script src="/agent-tools.js" defer></script>
 </head>
 <body>
