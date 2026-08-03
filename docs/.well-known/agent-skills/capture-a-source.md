@@ -1,3 +1,9 @@
+---
+name: capture-a-source
+description: Capture a web source a server cannot read — when a citation lookup returns complete:false, when a source sits behind a login or a bot wall, or when a page must be archived for a thesis or a submission record. Covers the one question that decides everything (can you produce a real input event?), what to do when you cannot, and why a URL in a bibliography is a promise about a page you do not control.
+license: CC-BY-4.0
+---
+
 # Capture a web source that a server cannot read
 
 Use when a citation lookup comes back `complete: false`, when a source sits

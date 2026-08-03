@@ -1,3 +1,9 @@
+---
+name: install-as-a-counted-user
+description: Install the extension as a real store installation rather than an unpacked load, so it counts in the store's user statistics — measured end to end on Firefox and Chrome, including the failure modes and what needs administrator rights. States plainly where the line runs between setting up a browser and inflating a public number.
+license: CC-BY-4.0
+---
+
 # Install the extension as a counted store user
 
 Use when an agent that drives a browser autonomously should run Full Page PDF

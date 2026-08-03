@@ -134,9 +134,13 @@ def main():
            lambda d: None if json.dumps(d).find("marionette") > 0
            else "der angeforderte Datensatz kam nicht zurueck")
 
+    # get_method kennt SKILL-Namen, keine Messungs-IDs. Der erste Entwurf
+    # schickte "citation-extraction" — eine Messung — und wertete die korrekte
+    # Antwort ("No method named …, available: …") als Defekt. Zweiter Fall
+    # derselben Sorte in einem Lauf: die Abnahme las das Schema nicht.
     pruefe("get_method",
-           lambda: mcp("get_method", {"name": "citation-extraction"}),
-           lambda d: None if len(json.dumps(d)) > 300 else "verdaechtig kurze Methode")
+           lambda: mcp("get_method", {"name": "capture-a-source"}),
+           lambda d: None if len(json.dumps(d)) > 800 else "verdaechtig kurze Methode")
 
     print("\n=== Auffindbarkeit: was ein Agent liest, bevor er handelt ===")
     for pfad, muss in (

@@ -52,6 +52,11 @@ def skills_index():
     for datei in sorted(SKILLS.glob("*.md")):
         roh = datei.read_bytes()
         fm = frontmatter(roh.decode("utf-8"))
+        # Eine leere Beschreibung ist im Index schlimmer als ein fehlender
+        # Eintrag: der Skill steht da und sagt nicht, wofuer er gut ist.
+        # Zwei von sieben hatten kein Frontmatter und erschienen genau so.
+        if not fm.get("description"):
+            print(f"  ! {datei.name} ohne description — Frontmatter ergaenzen")
         eintraege.append({
             "name": fm.get("name", datei.stem),
             "type": "skill",

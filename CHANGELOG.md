@@ -1,3 +1,38 @@
+## 2026-08-03 — Abnahme aller Agenten-Werkzeuge, und was sie fand
+
+**Neu: `tools/agenten-abnahme.py`.** Ruft jedes Werkzeug auf, das ein Agent hier
+benutzen soll — mit echten Argumenten — und prueft eine Bedingung an den
+**Inhalt**, nicht am Statuscode. Ein Endpunkt, der 200 und einen leeren
+Datensatz liefert, besteht jeden Verfuegbarkeitstest und ist trotzdem kaputt.
+29 Pruefungen: sechs MCP-Werkzeuge, zehn Auffindbarkeits-Dateien, sieben
+Faehigkeiten, die Markdown-Aushandlung und der haeufige Irrtum, einen
+Werkzeugnamen fuer eine Adresse zu halten.
+
+**Ein echter Defekt, und es war der wichtigste.** Die Regel, die diese Seite
+ueberall propagiert, lautet: *lies das `complete`-Feld, nie den Titel allein.*
+Der Endpunkt hielt sich nicht daran. Bei einer harten Ablehnung — HTTP-Fehler,
+Nicht-HTML, leerer Koerper — fehlte das Feld **ganz**. Ein Agent, der auf
+`complete === false` prueft, sah `undefined`: weder wahr noch falsch. Drei
+Rueckgabewege, alle korrigiert. Worker 1.15.0.
+
+**Zwei Faehigkeiten ohne Beschreibung.** `capture-a-source` und
+`install-as-a-counted-user` hatten kein Frontmatter und standen deshalb mit
+leerer `description` im Skill-Index — sie waren da und sagten nicht, wofuer sie
+gut sind. Ergaenzt; `build-agent-discovery.py` meldet den Fall jetzt beim Bauen.
+
+**Zwei gemeldete Defekte waren keine — beide meine.** Die Abnahme schickte `id`
+an `get_measurement_data`, das `dataset` erwartet und einen `.json`-Dateinamen;
+und einen Messungsnamen an `get_method`, das Skill-Namen kennt. Der Endpunkt
+antwortete beide Male mit einer Fehlermeldung, die genau das sagte, und die
+Abnahme wertete das als Ausfall. Eine Pruefung, die das `inputSchema` nicht
+liest, misst sich selbst. Beide Faelle stehen als Kommentar in der Datei.
+
+**Stand nach dem Lauf:** 29 von 29. Alle sechs MCP-Werkzeuge liefern
+brauchbare Antworten in 0,14 bis 0,54 s, alle zehn Auffindbarkeits-Dateien
+tragen den erwarteten Inhalt, alle sieben Faehigkeiten sind abrufbar, die
+Markdown-Aushandlung greift, und `/open_work` weist den Weg zum richtigen
+Aufruf statt auf ein blankes 404.
+
 ## 2026-08-03 — Was ein WordPress-Plugin taete, als Pruefung im Repository
 
 **Die Ausgangsfrage war nach WordPress-Werkzeugen.** Diese Seite ist kein

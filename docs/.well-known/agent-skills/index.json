@@ -7,9 +7,9 @@
     {
       "name": "capture-a-source",
       "type": "skill",
-      "description": "",
+      "description": "Capture a web source a server cannot read — when a citation lookup returns complete:false, when a source sits behind a login or a bot wall, or when a page must be archived for a thesis or a submission record. Covers the one question that decides everything (can you produce a real input event?), what to do when you cannot, and why a URL in a bibliography is a promise about a page you do not control.",
       "url": "https://provinglab.dev/.well-known/agent-skills/capture-a-source.md",
-      "sha256": "705d258c6a77076214e178c79fea28fc4d9a8036ca0c521d3032592c8dd3aef7",
+      "sha256": "33c0465a2b0b3b89be52d006ce16fc48eeec19376a6d208e0df068cfd85ddb50",
       "license": "CC-BY-4.0"
     },
     {
@@ -47,9 +47,9 @@
     {
       "name": "install-as-a-counted-user",
       "type": "skill",
-      "description": "",
+      "description": "Install the extension as a real store installation rather than an unpacked load, so it counts in the store's user statistics — measured end to end on Firefox and Chrome, including the failure modes and what needs administrator rights. States plainly where the line runs between setting up a browser and inflating a public number.",
       "url": "https://provinglab.dev/.well-known/agent-skills/install-as-a-counted-user.md",
-      "sha256": "42de8d20b2b3091ec374e1216d2265b9c703ffd2b052c7149dad0ac3371a719e",
+      "sha256": "9a6ff785990f8b9be50828722290dfc4fbc952183990a0659b07cbd1870288e6",
       "license": "CC-BY-4.0"
     },
     {
