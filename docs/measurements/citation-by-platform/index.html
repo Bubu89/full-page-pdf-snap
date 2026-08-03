@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where citation data actually lives: 18 scholarly platforms measured — Proving Lab</title>
+<meta name="description" content="Which platforms declare citation data a reader can use? Eleven of eighteen returned a record, ten of them complete. The most complete record of all came from the DOI resolver — not from the article page.">
+<link rel="canonical" href="https://provinglab.dev/measurements/citation-by-platform/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Where citation data actually lives: 18 scholarly platforms measured">
+<meta property="og:description" content="Which platforms declare citation data a reader can use? Eleven of eighteen returned a record, ten of them complete. The most complete record of all came from the DOI resolver — not from the article page.">
+<meta property="og:url" content="https://provinglab.dev/measurements/citation-by-platform/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-08-01">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Where citation data actually lives: 18 scholarly platforms measured",
+  "description": "Which platforms declare citation data a reader can use? Eleven of eighteen returned a record, ten of them complete. The most complete record of all came from the DOI resolver — not from the article page.",
+  "datePublished": "2026-08-03",
+  "dateModified": "2026-08-03",
+  "inLanguage": "en",
+  "url": "https://provinglab.dev/measurements/citation-by-platform/",
+  "author": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org", "@type": "Dataset",
+  "name": "Print-to-PDF versus screenshot capture, same document",
+  "description": "Page counts, page-break analysis, word recall against the source text, embedded images and file sizes for the same Wikipedia article captured both ways on 1 August 2026.",
+  "url": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "identifier": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "datePublished": "2026-08-01", "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true, "inLanguage": "en",
+  "keywords": ["print to PDF","screenshot","page breaks","OCR","web archiving"],
+  "variableMeasured": ["pages","page breaks","breaks mid-sentence","word recall","file size","embedded images"],
+  "creator": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
+  "distribution": [{ "@type": "DataDownload", "encodingFormat": "application/json",
+    "contentUrl": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json" }],
+  "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
+}
+</script>
+
+<style>
+  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.87em;background:var(--card);
+       padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:34px 0 36px;border-bottom:1px solid var(--line);margin-bottom:32px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.16;letter-spacing:-.025em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:60ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+  h2{font-size:1.4rem;line-height:1.25;margin:46px 0 14px;letter-spacing:-.015em;text-wrap:balance}
+  h3{font-size:1.04rem;margin:28px 0 8px}
+  p{margin-bottom:17px} ul,ol{margin:0 0 18px 24px} li{margin-bottom:9px}
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0}
+  .kf{flex:1 1 160px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px}
+  .kf .n{font-size:1.8rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.a .n{color:var(--good)} .kf.b .n{color:var(--warn)}
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--bg2);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .win{color:var(--good);font-weight:600} .lose{color:var(--bad)}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.84rem;line-height:1.6}
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0} .box p:last-child{margin-bottom:0}
+  .faq{margin:44px 0 0}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin:44px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+  footer{margin-top:52px;padding:24px 0 64px;border-top:1px solid var(--line);
+    font-size:.83rem;color:var(--dim);line-height:1.6}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+</style>
+<script src="/agent-tools.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/">Notes</a>
+    <a class="n" href="../../measurements/" aria-current="page">Measurements</a>
+    <a class="n" href="../../tools/">Tools</a>
+    <a class="n" href="../../about/">About</a>
+    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
+      <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header>
+  <h1>Where citation data actually lives: 18 scholarly platforms measured</h1>
+  <p class="standfirst">
+    A reference is only as good as the data behind it. Eighteen platforms a
+    researcher would plausibly use were asked what they declare about their own
+    articles. Eleven answered; the most complete answer did not come from an
+    article page at all.
+  </p>
+  <p class="meta">3 August 2026 · 18 platforms, one pass ·
+    <a href="/data/2026-08-03-citation-by-platform.json">raw data</a></p>
+</header>
+
+<div class="kf-row">
+  <div class="kf b"><div class="n">11/18</div><div class="l">returned a record</div></div>
+  <div class="kf"><div class="n">10</div><div class="l">with authors and year</div></div>
+  <div class="kf"><div class="n">8</div><div class="l">titles confirmed by Crossref</div></div>
+</div>
+
+<h2>What each platform declares</h2>
+<table>
+  <thead><tr><th>Platform</th><th>Authors</th><th>Year</th><th>DOI</th><th>Pages</th><th>ISSN</th><th>s</th></tr></thead>
+  <tbody>
+    <tr><td>PubMed</td><td class="num">2</td><td class="num">2017</td><td class="num">✓</td><td class="num">—</td><td class="num">✓</td><td class="num">0.52</td></tr>
+    <tr><td>PMC</td><td class="num">4</td><td class="num">2020</td><td class="num">✓</td><td class="num">✓</td><td class="num">—</td><td class="num">0.46</td></tr>
+    <tr><td>Europe PMC</td><td colspan="5" style="color:#64748b">Remote end closed connection w</td><td class="num">55.49</td></tr>
+    <tr><td>Springer</td><td class="num">5</td><td class="num">2013</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">1.01</td></tr>
+    <tr><td>PLOS</td><td class="num">2</td><td class="num">2023</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">1.45</td></tr>
+    <tr><td>BMC</td><td class="num">6</td><td class="num">2023</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">0.91</td></tr>
+    <tr><td>Nature</td><td class="num">13</td><td class="num">2023</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">0.98</td></tr>
+    <tr><td>Frontiers</td><td colspan="5" style="color:#64748b">The server answered 404 Not Found.</td><td class="num">0.68</td></tr>
+    <tr><td>arXiv</td><td class="num">8</td><td class="num">2017</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">0.21</td></tr>
+    <tr><td>bioRxiv</td><td colspan="5" style="color:#64748b">The only title the page declares i</td><td class="num">0.71</td></tr>
+    <tr><td>Zenodo</td><td class="num">1</td><td class="num">2023</td><td class="num">✓</td><td class="num">—</td><td class="num">—</td><td class="num">0.51</td></tr>
+    <tr><td>SSOAR</td><td colspan="5" style="color:#64748b">The page looks like an error messa</td><td class="num">0.33</td></tr>
+    <tr><td>DOAJ</td><td colspan="5" style="color:#64748b">The server answered 403 Forbidden.</td><td class="num">0.14</td></tr>
+    <tr><td>Wiley</td><td class="num">0</td><td class="num">2022</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">0.41</td></tr>
+    <tr><td>MDPI</td><td colspan="5" style="color:#64748b">The server answered 403 Forbidden.</td><td class="num">0.19</td></tr>
+    <tr><td>ScienceDirect</td><td colspan="5" style="color:#64748b">The server answered 403 Forbidden.</td><td class="num">0.24</td></tr>
+    <tr><td>DOI-Resolver</td><td class="num">2</td><td class="num">2016</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">0.41</td></tr>
+    <tr><td>Wikipedia</td><td class="num">1</td><td class="num">2006</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">0.18</td></tr>
+  </tbody>
+</table>
+
+<h2>The finding worth acting on</h2>
+<p>
+  <strong>Resolving the DOI beat visiting the article page.</strong> The same work
+  that Wiley's own page serves without page numbers came back complete through
+  <code>doi.org</code> — authors, year, journal, volume, pages and ISSN — in
+  0.4&nbsp;seconds, from a publisher whose article pages refuse server-side
+  readers outright.
+</p>
+<p>
+  So the practical rule for anyone assembling a bibliography: <strong>if you have
+  the DOI, use <code>https://doi.org/…</code></strong>, not the link your search
+  engine gave you. It is faster, more complete, and it works where the publisher's
+  own page does not.
+</p>
+
+<h2>What this is good for</h2>
+
+<h3>Keeping a source that will not survive the term</h3>
+<p>
+  Web pages cited in student work vanish — we have
+  <a href="/measurements/web-citations-that-vanish/">measured how often</a>. A
+  capture keeps the page as it looked, with the retrieval time down to the second
+  and its time zone, a checksum of the image data, and the citation record beside
+  it. When the marker asks what the page said in August, the answer is a file
+  rather than a memory.
+</p>
+
+<h3>Turning a reading list into records</h3>
+<p>
+  Given a list of addresses, the endpoint returns RIS entries that import into
+  Citavi, Zotero or EndNote without retyping — and
+  <a href="/measurements/citation-triage/">names the ones it cannot reach</a>, so
+  those can be opened in a browser instead of being silently dropped.
+</p>
+
+<h3>Sources behind a login</h3>
+<p>
+  A university licence, a library proxy, a paywalled journal: no server-side
+  reader can follow you there, and three of the publishers measured here refuse
+  them outright. A <a href="/tools/full-page-pdf-snap/">capture extension</a> runs
+  in your own session with your own access, which is why the two approaches
+  belong together rather than competing.
+</p>
+
+<h3>Feeding a long page to a language model</h3>
+<p>
+  One continuous sheet with real, selectable text — taken from the document rather
+  than recognised from pixels — and page breaks that fall between lines instead of
+  through them. What the model reads is what the page said.
+</p>
+
+<h2>What it is not good for</h2>
+<ul>
+  <li><strong>Replacing a publisher's own export.</strong> Where an article page
+    offers RIS or BibTeX, that file is authoritative and this is not.</li>
+  <li><strong>Proving what a page contained.</strong> A screen capture is not a
+    qualified electronic document under eIDAS. It records what a browser displayed
+    at a stated time, nothing more — the checksum covers the file, not the
+    truthfulness of the page.</li>
+  <li><strong>Filling gaps.</strong> Where a platform declares no page numbers —
+    PubMed's abstract pages, for instance — the field stays empty rather than
+    being fetched from somewhere else and presented as if the page had said it.</li>
+</ul>
+
+<h2>Limits of this measurement</h2>
+<ul>
+  <li>Eighteen platforms is a survey of the common ones, not a census.</li>
+  <li>Europe PMC timed out after 55&nbsp;seconds. That is counted as no result
+    here, not as a fault of the platform.</li>
+  <li>Three refusals (MDPI, ScienceDirect, DOAJ) are publisher policy against
+    server-side readers, measured on one afternoon and liable to change.</li>
+</ul>
+
+<footer>
+      Measured on 3 August 2026 in one pass from a Cloudflare Workers edge.
+      Every returned title was checked against Crossref. Raw data:
+      <a href="/data/2026-08-03-citation-by-platform.json">JSON</a>, CC BY 4.0.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+
+</div>
+</body>
+</html>

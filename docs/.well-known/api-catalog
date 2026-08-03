@@ -121,6 +121,25 @@
       ]
     },
     {
+      "anchor": "https://provinglab.dev/data/2026-08-03-citation-by-platform.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
       "anchor": "https://provinglab.dev/data/2026-08-03-citation-triage.json",
       "type": [
         {

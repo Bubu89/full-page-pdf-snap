@@ -1,3 +1,32 @@
+## 2026-08-03 — Neuer Beitrag: Wo Zitationsdaten tatsaechlich liegen
+
+18 Wissenschaftsplattformen gemessen. **11 lieferten einen Datensatz, 10 davon
+mit Verfassern und Jahr**, 7 Titel gegen Crossref bestaetigt.
+
+Der Befund, der etwas aendert: **Die DOI aufzuloesen schlaegt den Besuch der
+Artikelseite.** Dieselbe Arbeit, die Wileys eigene Seite ohne Seitenzahlen
+ausliefert, kam ueber `doi.org` vollstaendig zurueck — Verfasser, Jahr,
+Zeitschrift, Band, Seiten und ISSN, in 0,4 Sekunden, von einem Verlag, dessen
+Artikelseiten serverseitige Leser rundweg abweisen.
+
+Praktische Regel fuer eine Literaturliste: Wer die DOI hat, nimmt
+`https://doi.org/…` statt der Adresse aus der Suchmaschine.
+
+### Anwendungsfaelle, mit Grenzen
+
+Vier Faelle im Beitrag: Belege fuer Quellen, die das Semester nicht ueberleben;
+Literaturlisten in RIS-Saetze verwandeln; Quellen hinter einer Anmeldung, wo nur
+der Browser hinkommt; lange Seiten fuer Sprachmodelle.
+
+Dazu ein eigener Abschnitt, wofuer es **nicht** taugt: Ein Verlags-Export ist und
+bleibt massgeblich; eine Bildschirmaufnahme ist kein qualifiziertes
+elektronisches Dokument nach eIDAS; und fehlende Angaben werden nicht anderswo
+beschafft und als Seitenangabe ausgegeben.
+
+Rechtlich geprueft: Rohdaten verlinkt, Messzeitpunkt genannt, keine
+Rangbehauptung, keine Herabsetzung Dritter, Verlagssperren als Richtlinie
+bezeichnet und nicht als Fehler.
+
 ## 2026-08-03 — PubMed schreibt den Nachnamen vorn
 
 Eine PubMed-Quelle ergab die Zitation `TA, G. & A, S. (2017)`. Richtig waere

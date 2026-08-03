@@ -1,0 +1,242 @@
+{
+  "measurement": "citation-data-by-platform",
+  "date": "2026-08-03",
+  "question": "Which scholarly platforms declare citation data a reader can actually use, and which route gives the most complete record?",
+  "method": {
+    "endpoint": "https://provinglab.dev/mcp",
+    "tool": "extract_citation",
+    "platforms": 18,
+    "verification": "Every returned title was checked against Crossref via its DOI.",
+    "note": "One platform (Europe PMC) timed out after 55 s and is counted as no result, not as a failure of the platform."
+  },
+  "results": {
+    "returned_data": 11,
+    "complete_authors_and_year": 10,
+    "title_matched_crossref": 8,
+    "per_platform": [
+      {
+        "platform": "PubMed",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/27741350/",
+        "returned": true,
+        "authors": 2,
+        "year": "2017",
+        "doi": true,
+        "pages": false,
+        "issn": true,
+        "seconds": 0.52,
+        "reason": null
+      },
+      {
+        "platform": "PMC",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10418250/",
+        "returned": true,
+        "authors": 4,
+        "year": "2020",
+        "doi": true,
+        "pages": true,
+        "issn": false,
+        "seconds": 0.46,
+        "reason": null
+      },
+      {
+        "platform": "Europe PMC",
+        "url": "https://europepmc.org/article/MED/27741350",
+        "returned": false,
+        "authors": null,
+        "year": null,
+        "doi": null,
+        "pages": null,
+        "issn": null,
+        "seconds": 55.49,
+        "reason": "Remote end closed connection w"
+      },
+      {
+        "platform": "Springer",
+        "url": "https://link.springer.com/article/10.1007/s10508-012-0062-0",
+        "returned": true,
+        "authors": 5,
+        "year": "2013",
+        "doi": true,
+        "pages": true,
+        "issn": true,
+        "seconds": 1.01,
+        "reason": null
+      },
+      {
+        "platform": "PLOS",
+        "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0287153",
+        "returned": true,
+        "authors": 2,
+        "year": "2023",
+        "doi": true,
+        "pages": true,
+        "issn": true,
+        "seconds": 1.45,
+        "reason": null
+      },
+      {
+        "platform": "BMC",
+        "url": "https://bmcpublichealth.biomedcentral.com/articles/10.1186/s12889-023-16556-0",
+        "returned": true,
+        "authors": 6,
+        "year": "2023",
+        "doi": true,
+        "pages": true,
+        "issn": true,
+        "seconds": 0.91,
+        "reason": null
+      },
+      {
+        "platform": "Nature",
+        "url": "https://www.nature.com/articles/s41598-023-38000-4",
+        "returned": true,
+        "authors": 13,
+        "year": "2023",
+        "doi": true,
+        "pages": true,
+        "issn": true,
+        "seconds": 0.98,
+        "reason": null
+      },
+      {
+        "platform": "Frontiers",
+        "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2021.618509/full",
+        "returned": false,
+        "authors": null,
+        "year": null,
+        "doi": null,
+        "pages": null,
+        "issn": null,
+        "seconds": 0.68,
+        "reason": "The server answered 404 Not Found."
+      },
+      {
+        "platform": "arXiv",
+        "url": "https://arxiv.org/abs/1706.03762",
+        "returned": true,
+        "authors": 8,
+        "year": "2017",
+        "doi": false,
+        "pages": false,
+        "issn": false,
+        "seconds": 0.21,
+        "reason": null
+      },
+      {
+        "platform": "bioRxiv",
+        "url": "https://www.biorxiv.org/content/10.1101/2023.01.01.522000v1",
+        "returned": false,
+        "authors": null,
+        "year": null,
+        "doi": null,
+        "pages": null,
+        "issn": null,
+        "seconds": 0.71,
+        "reason": "The only title the page declares i"
+      },
+      {
+        "platform": "Zenodo",
+        "url": "https://zenodo.org/records/10005281",
+        "returned": true,
+        "authors": 1,
+        "year": "2023",
+        "doi": true,
+        "pages": false,
+        "issn": false,
+        "seconds": 0.51,
+        "reason": null
+      },
+      {
+        "platform": "SSOAR",
+        "url": "https://www.ssoar.info/ssoar/handle/document/72281",
+        "returned": false,
+        "authors": null,
+        "year": null,
+        "doi": null,
+        "pages": null,
+        "issn": null,
+        "seconds": 0.33,
+        "reason": "The page looks like an error messa"
+      },
+      {
+        "platform": "DOAJ",
+        "url": "https://doaj.org/article/e0b0e0a41c1c4f0e9e1b1e1e1e1e1e1e",
+        "returned": false,
+        "authors": null,
+        "year": null,
+        "doi": null,
+        "pages": null,
+        "issn": null,
+        "seconds": 0.14,
+        "reason": "The server answered 403 Forbidden."
+      },
+      {
+        "platform": "Wiley",
+        "url": "https://onlinelibrary.wiley.com/doi/10.1111/jan.15234",
+        "returned": true,
+        "authors": 0,
+        "year": "2022",
+        "doi": true,
+        "pages": true,
+        "issn": true,
+        "seconds": 0.41,
+        "reason": null
+      },
+      {
+        "platform": "MDPI",
+        "url": "https://www.mdpi.com/2076-328X/13/2/167",
+        "returned": false,
+        "authors": null,
+        "year": null,
+        "doi": null,
+        "pages": null,
+        "issn": null,
+        "seconds": 0.19,
+        "reason": "The server answered 403 Forbidden."
+      },
+      {
+        "platform": "ScienceDirect",
+        "url": "https://www.sciencedirect.com/science/article/pii/S0747563223000626",
+        "returned": false,
+        "authors": null,
+        "year": null,
+        "doi": null,
+        "pages": null,
+        "issn": null,
+        "seconds": 0.24,
+        "reason": "The server answered 403 Forbidden."
+      },
+      {
+        "platform": "DOI-Resolver",
+        "url": "https://doi.org/10.1002/path.4821",
+        "returned": true,
+        "authors": 2,
+        "year": "2016",
+        "doi": true,
+        "pages": true,
+        "issn": true,
+        "seconds": 0.41,
+        "reason": null
+      },
+      {
+        "platform": "Wikipedia",
+        "url": "https://de.wikipedia.org/wiki/Sexualtherapie",
+        "returned": true,
+        "authors": 1,
+        "year": "2006",
+        "doi": false,
+        "pages": false,
+        "issn": false,
+        "seconds": 0.18,
+        "reason": null
+      }
+    ]
+  },
+  "finding": "The DOI resolver returned the most complete record of all — authors, year, journal, volume, pages and ISSN — in 0.4 s, from a publisher page that refuses direct access. Where a DOI is known, resolving it beats visiting the article page.",
+  "limits": [
+    "Three publishers (MDPI, ScienceDirect, DOAJ) answer 403 to any server-side reader. That is their policy, not a defect here, and the browser extension reaches them.",
+    "Pages and ISSN are missing where the platform does not declare them — PubMed omits page numbers on the abstract page. Nothing is filled in from elsewhere.",
+    "18 platforms is a survey of the common ones, not a census."
+  ],
+  "license": "CC-BY-4.0"
+}

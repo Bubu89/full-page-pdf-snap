@@ -2,7 +2,7 @@
   "$schema": "https://modelcontextprotocol.io/schema/2025-06-18/server-card.json",
   "serverInfo": {
     "name": "provinglab",
-    "version": "1.8.1",
+    "version": "1.8.2",
     "title": "Proving Lab",
     "description": "Measurement datasets and reproducible methods on browser tools, OCR pipelines and AI-assisted development. Every dataset has a documented method and a control run."
   },

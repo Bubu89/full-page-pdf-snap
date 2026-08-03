@@ -10,6 +10,14 @@
   <icon>https://provinglab.dev/icon-128.png</icon>
   <rights>Content licensed for reading and quoting with attribution.</rights>
   <entry>
+    <title>Where citation data actually lives: 18 scholarly platforms measured</title>
+    <id>https://provinglab.dev/measurements/citation-by-platform/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/citation-by-platform/"/>
+    <published>2026-08-03T00:00:00Z</published>
+    <updated>2026-08-03T00:00:00Z</updated>
+    <summary type="text">Which platforms declare citation data a reader can use? Eleven of eighteen returned a record, ten of them complete. The most complete record of all came from the DOI resolver — not from the article page.</summary>
+  </entry>
+  <entry>
     <title>An agent can cite eight of twelve sources. The useful part is knowing which four it cannot</title>
     <id>https://provinglab.dev/measurements/citation-triage/</id>
     <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/citation-triage/"/>
