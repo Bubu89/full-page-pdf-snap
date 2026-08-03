@@ -1,0 +1,187 @@
+{
+  "gemessen_am": "2026-08-03",
+  "lizenz": "CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/",
+  "frage": "Kann ein Agent eine Browser-Erweiterung installieren und wieder entfernen, ohne zu klicken und ohne ein Fenster in den Vordergrund zu holen?",
+  "maschine": {
+    "betriebssystem": "Windows 11 unter WSL2 aufgerufen",
+    "firefox": "Firefox ESR, C:\\Program Files\\Mozilla FirefoxESR\\firefox.exe",
+    "chrome": "Google Chrome, Kanal stable",
+    "rechte": "gewoehnliches Benutzerkonto, keine Administratorrechte"
+  },
+  "erweiterung": {
+    "id": "pageshot-pdf@bubu89.local",
+    "store_version": "2.26.0",
+    "xpi_bytes": 160918,
+    "sha256_16": "c24089760def33b6",
+    "quelle": "addons.mozilla.org, von Mozilla signiert"
+  },
+  "wege": [
+    {
+      "weg": "marionette",
+      "browser": "firefox",
+      "beschreibung": "Firefox' eigener Fernsteuerungs-Kanal, gestartet mit -headless -marionette",
+      "installieren": true,
+      "deinstallieren": true,
+      "sichtbares_fenster": false,
+      "eingabe_ereignisse": 0,
+      "administratorrechte": false,
+      "sekunden_rundlauf": 4.1,
+      "schritte": [
+        {
+          "schritt": "XPI aus dem Store",
+          "ok": true,
+          "sekunden": 0.21,
+          "beleg": "aus dem lokalen Zwischenspeicher, bereits geholt"
+        },
+        {
+          "schritt": "Firefox headless starten und Sitzung aufbauen",
+          "ok": true,
+          "sekunden": 3.65,
+          "beleg": "Marionette antwortet, WebDriver:NewSession quittiert"
+        },
+        {
+          "schritt": "Addon:Uninstall",
+          "ok": true,
+          "sekunden": 0.08,
+          "beleg": "Befehl ohne Fehler quittiert"
+        },
+        {
+          "schritt": "Addon:Install",
+          "ok": true,
+          "sekunden": 0.16,
+          "beleg": "Profil meldet 2.26.0, aktiv, location app-profile"
+        }
+      ],
+      "zaehlt_im_store": false,
+      "anmerkung": "Installiert die Datei, besucht keine Store-Seite — die Nutzerstatistik des Stores bleibt unberuehrt. Die beiden Befehle zusammen dauern 0,24 s; alles uebrige ist Start und Beenden von Firefox. Wer eine Sitzung offen haelt, installiert und entfernt beliebig viele Erweiterungen in Bruchteilen einer Sekunde je Vorgang.",
+      "sekunden_rundlauf_erste_fassung": 9.4,
+      "befehlszeit_summe": 0.24
+    },
+    {
+      "weg": "cdp",
+      "browser": "chrome",
+      "beschreibung": "Chrome DevTools Protocol, gestartet mit --headless=new --enable-unsafe-extension-debugging",
+      "installieren": "nur entpackt",
+      "deinstallieren": true,
+      "sichtbares_fenster": false,
+      "eingabe_ereignisse": 0,
+      "administratorrechte": false,
+      "befehle": [
+        {
+          "befehl": "Extensions.loadUnpacked",
+          "antwort": "id zurueckgegeben",
+          "ok": true
+        },
+        {
+          "befehl": "Extensions.install",
+          "antwort": "-32601 'Extensions.install' wasn't found",
+          "ok": false
+        },
+        {
+          "befehl": "Extensions.uninstall",
+          "antwort": "leeres Ergebnis = Erfolg",
+          "ok": true
+        },
+        {
+          "befehl": "Schema.getDomains",
+          "antwort": "Extensions-Domaene nicht im Schema gelistet, funktioniert dennoch",
+          "ok": true
+        }
+      ],
+      "zaehlt_im_store": false,
+      "anmerkung": "Es gibt keinen CDP-Befehl, der eine Store-Fassung installiert. Fuer Chrome bleibt dafuer nur die Oberflaeche oder eine Unternehmensrichtlinie."
+    },
+    {
+      "weg": "richtlinie",
+      "browser": "firefox und chrome",
+      "beschreibung": "policies.json bzw. ExtensionInstallForcelist in der Registry",
+      "installieren": false,
+      "deinstallieren": false,
+      "sichtbares_fenster": false,
+      "eingabe_ereignisse": 0,
+      "administratorrechte": true,
+      "belege": [
+        {
+          "ziel": "C:\\Program Files\\Mozilla FirefoxESR\\distribution",
+          "ergebnis": "nicht beschreibbar, UnauthorizedAccessException"
+        },
+        {
+          "ziel": "HKCU\\Software\\Policies\\Google\\Chrome",
+          "ergebnis": "ACL-geschuetzt, UnauthorizedAccessException"
+        }
+      ],
+      "zaehlt_im_store": "not measured",
+      "anmerkung": "Scheidet ohne Administratorrechte in beide Richtungen aus — sie kann weder installieren noch entfernen. Ob eine per Richtlinie ausgerollte Erweiterung in der Nutzerstatistik erscheint, wurde nicht gemessen: der Weg war auf dieser Maschine nicht gangbar."
+    },
+    {
+      "weg": "oberflaeche",
+      "browser": "firefox",
+      "beschreibung": "Store-Seite oeffnen und die Schaltflaechen mit echten Eingabe-Ereignissen bedienen",
+      "installieren": false,
+      "deinstallieren": false,
+      "sichtbares_fenster": true,
+      "eingabe_ereignisse": 4,
+      "administratorrechte": false,
+      "sekunden_rundlauf": 179.4,
+      "schritte": [
+        {
+          "schritt": "start",
+          "ok": true,
+          "sekunden": 0.4
+        },
+        {
+          "schritt": "warte fenster",
+          "ok": true,
+          "sekunden": 1.4
+        },
+        {
+          "schritt": "klick add",
+          "ok": false,
+          "sekunden": 2.3
+        },
+        {
+          "schritt": "klick confirm",
+          "ok": false,
+          "sekunden": 1.3
+        },
+        {
+          "schritt": "install verifiziert",
+          "ok": false,
+          "sekunden": 60.3
+        },
+        {
+          "schritt": "alt+shift+y",
+          "ok": false,
+          "sekunden": 1.7
+        },
+        {
+          "schritt": "pdf verifiziert",
+          "ok": false,
+          "sekunden": 90.4
+        }
+      ],
+      "zaehlt_im_store": true,
+      "anmerkung": "Jeder Klick meldete Erfolg, weil ein Klick ins Leere fuer Windows ein gueltiger Klick ist. Installiert wurde nichts. Dies ist der einzige gemessene Weg, der in der Nutzerstatistik zaehlt."
+    }
+  ],
+  "nebenbefund_wsl": {
+    "beobachtung": "Firefox bindet Marionette an 127.0.0.1 des Windows-Hosts. Aus WSL2 ist dieser Port weder ueber 127.0.0.1 noch ueber die Host-Adresse erreichbar (Connection refused).",
+    "folge": "Der Client muss auf derselben Seite laufen wie der Browser. Das Werkzeug reicht sich unter WSL selbst an das Windows-Python weiter."
+  },
+  "reproduktion": {
+    "werkzeug": "tools/erweiterung-fernsteuern.py",
+    "befehl": "python3 tools/erweiterung-fernsteuern.py rundlauf --protokoll lauf.json",
+    "voraussetzung": "Firefox darf das Zielprofil nicht geoeffnet haben; das Werkzeug prueft die Profilsperre und bricht ab, statt einen fremden Firefox zu beenden."
+  },
+  "grenzen": [
+    "Einzelmessung auf einer Maschine, kein Mittelwert ueber mehrere Laeufe.",
+    "Die Zeiten enthalten den Start und das Beenden von Firefox; ein bereits laufender Marionette-Firefox waere schneller.",
+    "Der Chrome-Teil wurde mit einer Wegwerf-Erweiterung gemessen, nicht mit der eigenen — fuer die Frage, welche CDP-Befehle existieren, ist das gleichwertig.",
+    "Ob eine kuenftige Firefox- oder Chrome-Fassung diese Kanaele einschraenkt, sagt die Messung nicht."
+  ],
+  "optimierung": {
+    "vorher": "Je Befehl eine eigene Firefox-Sitzung — 9,4 s fuer den Rundlauf.",
+    "nachher": "Beide Befehle in einer Sitzung — 4,1 s, also 56 % der Zeit.",
+    "erkenntnis": "Der Prozessstart ist der teure Teil, nicht die Arbeit. Das ist die uebliche Reihenfolge bei Werkzeugen, die pro Aufruf einen Browser hochfahren, und der erste Ort, an dem zu messen lohnt."
+  }
+}

@@ -50,6 +50,14 @@
     <summary type="text">Der nuetzlichste Beitrag zu diesem Projekt ist eine Gegenmessung, die etwas anderes ergibt. Wo die veroeffentlichten Zahlen am wahrscheinlichsten wackeln, steht hier benannt — samt Rohdaten, offenen Aufgaben und der Anbindung fuer KI-Agenten.</summary>
   </entry>
   <entry>
+    <title>Installing a browser extension without a click, and removing it again</title>
+    <id>https://provinglab.dev/measurements/install-an-extension-without-a-click/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/install-an-extension-without-a-click/"/>
+    <published>2026-08-03T00:00:00Z</published>
+    <updated>2026-08-03T00:00:00Z</updated>
+    <summary type="text">Four routes measured on 3 August 2026. Firefox&#x27;s own Marionette channel installs and uninstalls a signed store extension headless in 9.4 seconds with zero input events and no visible window. The click route took 179.4 seconds and installed nothing while reporting success at every step.</summary>
+  </entry>
+  <entry>
     <title>German-language scholarly platforms measured: four read, seven handed back</title>
     <id>https://provinglab.dev/measurements/de-plattformen/</id>
     <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/de-plattformen/"/>

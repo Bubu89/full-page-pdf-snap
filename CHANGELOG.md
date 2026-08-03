@@ -1,3 +1,56 @@
+## 2026-08-03 — Installation und Deinstallation ohne Klick, ohne Fenster
+
+**Was.** Neues Werkzeug `tools/erweiterung-fernsteuern.py`, das die Erweiterung
+ueber Firefox' eigenen Marionette-Kanal installiert und wieder entfernt —
+headless, ohne Eingabe-Ereignis, ohne Administratorrechte. Dazu die Messung
+`/measurements/install-an-extension-without-a-click/` mit Rohdaten, der
+Agent-Skill `install-an-extension-headless.md`, Eintraege in llms.txt,
+Startseite und `/for-agents/`.
+
+**Warum.** Die vorhandene Klick-Route lief 179 Sekunden, meldete an jedem
+Schritt Erfolg und installierte nichts. Ursache sind feste Koordinaten: ein
+Klick ins Leere ist fuer Windows ein gueltiger Klick. Fuer einen Agenten ist
+das schlimmer als kein Weg, weil alles Nachgelagerte auf einer falschen
+Erfolgsmeldung aufbaut. Ausserdem braucht sie den Vordergrund und uebernimmt
+Maus und Tastatur des Benutzers.
+
+**Wie.** Marionette ist der Fernsteuerungs-Kanal, den Firefox selbst mitbringt
+— laengen-praefixiertes JSON auf einem TCP-Port, kein Treiber, kein
+Fremdpaket. `Addon:Install` und `Addon:Uninstall` antworten mit Erfolg *oder*
+Fehler. Jeder Schritt wird gegen `extensions.json` geprueft, nicht gegen die
+Antwort des Befehls. Die XPI kommt signiert aus dem Store, mit Pruefsumme.
+
+**Ergebnis.** Rundlauf aus Deinstallation und Neuinstallation in **4,1 s**,
+null Eingabe-Ereignisse, kein Fenster. Die beiden Befehle selbst dauern
+zusammen **0,24 s** — der Rest ist Prozessstart; beide Befehle in *einer*
+Sitzung zu fahren statt in zwei senkte die Zeit von 9,4 s auf 56 %. Die
+Erweiterung ist im Standardprofil wieder installiert (2.26.0, aktiv).
+
+**Vier Wege vermessen, drei Nebenbefunde:**
+
+- **Richtlinie scheidet in beide Richtungen aus** ohne Administratorrechte:
+  `C:\Program Files\Mozilla FirefoxESR\distribution` nicht beschreibbar,
+  `HKCU\Software\Policies` ACL-geschuetzt. Das korrigiert eine fruehere
+  eigene Aussage im Skill `install-as-a-counted-user`.
+- **Chrome kann es nur halb.** `Extensions.loadUnpacked` und
+  `Extensions.uninstall` laufen headless, aber `Extensions.install` existiert
+  nicht (`-32601`). Eine Store-Fassung braucht dort die Oberflaeche.
+  Nebenbei: `Schema.getDomains` listet die Extensions-Domaene gar nicht und
+  sie antwortet trotzdem — Abwesenheit im Schema ist kein Beleg.
+- **Aus WSL2 ist der Marionette-Port nicht erreichbar**, weder ueber
+  `127.0.0.1` noch ueber die Host-Adresse. Der Client muss auf der Seite des
+  Browsers laufen; das Werkzeug reicht sich selbst an das Windows-Python
+  weiter.
+
+**Der Handel, offen benannt.** Der schnelle Weg zaehlt **nicht** in der
+Nutzerstatistik des Stores, weil er keine Store-Seite besucht. Das ist das
+gewuenschte Verhalten und der Grund, warum er veroeffentlicht werden kann.
+
+**Am Pruefer geaendert.** `rechtscheck.py` akzeptiert jetzt einen Verweis auf
+den Haftungsausschluss als Erfuellung des Rechtsausschlusses und sucht ihn
+auch im Markup — er meldete eine Seite, die dreimal „licence" im Sinne von
+Zugangsberechtigung schrieb und den Ausschluss bereits verlinkte.
+
 ## 2026-08-03 — Agent installiert die Store-Version als gezaehlter Nutzer
 
 **Was.** Neuer Weg fuer Agenten, die einen eigenen Browser fahren: die

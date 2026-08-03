@@ -1,40 +1,6 @@
 {
   "linkset": [
     {
-      "anchor": "https://provinglab.dev/mcp",
-      "type": [
-        {
-          "href": "application/json"
-        }
-      ],
-      "describedby": [
-        {
-          "href": "https://provinglab.dev/.well-known/mcp/server-card.json",
-          "type": "application/json"
-        },
-        {
-          "href": "https://provinglab.dev/notes/mcp-server-what-it-solves/",
-          "type": "text/html"
-        }
-      ],
-      "service-doc": [
-        {
-          "href": "https://provinglab.dev/llms.txt",
-          "type": "text/plain"
-        }
-      ],
-      "license": [
-        {
-          "href": "https://creativecommons.org/licenses/by/4.0/"
-        }
-      ],
-      "status": [
-        {
-          "href": "https://provinglab.dev/notes/mcp-server-what-it-solves/#what-it-does-not-solve"
-        }
-      ]
-    },
-    {
       "anchor": "https://provinglab.dev/data/2026-08-01-extension-permissions.json",
       "type": [
         {
@@ -155,6 +121,63 @@
       ]
     },
     {
+      "anchor": "https://provinglab.dev/data/2026-08-03-agent-install-and-capture.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
+      "anchor": "https://provinglab.dev/data/2026-08-03-agent-real-gesture.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
+      "anchor": "https://provinglab.dev/data/2026-08-03-agent-uses-the-extension.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
       "anchor": "https://provinglab.dev/data/2026-08-03-citation-by-platform.json",
       "type": [
         {
@@ -175,6 +198,120 @@
     },
     {
       "anchor": "https://provinglab.dev/data/2026-08-03-citation-triage.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
+      "anchor": "https://provinglab.dev/data/2026-08-03-de-plattformen-nach-fallback.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
+      "anchor": "https://provinglab.dev/data/2026-08-03-de-plattformen.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
+      "anchor": "https://provinglab.dev/data/2026-08-03-install-without-a-click.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
+      "anchor": "https://provinglab.dev/data/2026-08-03-reading-list-to-bibliography-vpn-ausgang.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
+      "anchor": "https://provinglab.dev/data/2026-08-03-reading-list-to-bibliography.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
+      "anchor": "https://provinglab.dev/data/schema.json",
       "type": [
         {
           "href": "application/json"

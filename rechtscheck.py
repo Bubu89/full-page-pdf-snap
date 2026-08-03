@@ -111,7 +111,14 @@ RECHTSTHEMA = wort("copyright", "Urheberrecht", "UrhG", "UWG", "licence", "Lizen
 RECHTSAUSSCHLUSS = re.compile(
     r"(no(thing|t)\b[^.]{0,140}\b(legal|professional) advice"
     r"|(legal|professional) advice\b[^.]{0,40}\bnot\b"
-    r"|(keine|nichts|kein)\b[^.]{0,140}\b(Rechtsberatung|fachliche Beratung))", re.I)
+    r"|(keine|nichts|kein)\b[^.]{0,140}\b(Rechtsberatung|fachliche Beratung)"
+    # Ein Verweis auf den Haftungsausschluss erfuellt die Anforderung ebenso:
+    # dort steht der Ausschluss vollstaendig, und ihn auf jeder Seite zu
+    # wiederholen macht ihn nicht wirksamer, nur laenger. Am 3. August 2026
+    # meldete der Pruefer eine Seite, die dreimal „licence" im Sinne von
+    # Zugangsberechtigung schrieb und den Ausschluss bereits verlinkte.
+    r"|href=\"[^\"]*disclaimer/?\""
+    r"|href=\"[^\"]*haftungsausschluss/?\")", re.I)
 
 EIGENPRODUKT = re.compile(r"Full Page PDF Snap", re.I)
 OFFENLEGUNG = re.compile(r"(author develops|Der Autor entwickelt|disclos|Offenlegung|"
@@ -195,7 +202,8 @@ def pruefe_seite(pfad, html, befunde):
                         "Seite nennt fremde Produkte oder Dienste, aber kein Abrufdatum.", ""))
 
     # Rechtsthema ohne Ausschluss
-    if RECHTSTHEMA.search(txt) and not RECHTSAUSSCHLUSS.search(txt):
+    if RECHTSTHEMA.search(txt) and not RECHTSAUSSCHLUSS.search(txt) \
+            and not RECHTSAUSSCHLUSS.search(html):
         n = len(RECHTSTHEMA.findall(txt))
         if n >= 3:                       # einzelne Nennung von "Lizenz" reicht nicht
             befunde.append(("WARNUNG", rel, "kein-rechtsausschluss",

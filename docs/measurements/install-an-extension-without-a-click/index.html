@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Installing a browser extension without a click, and removing it again — Proving Lab</title>
+<meta name="description" content="Four routes measured on 3 August 2026. Firefox's own Marionette channel installs and uninstalls a signed store extension headless in 9.4 seconds with zero input events and no visible window. The click route took 179.4 seconds and installed nothing while reporting success at every step.">
+<link rel="canonical" href="https://provinglab.dev/measurements/install-an-extension-without-a-click/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Installing a browser extension without a click, and removing it again">
+<meta property="og:description" content="Four routes measured on 3 August 2026. Firefox's own Marionette channel installs and uninstalls a signed store extension headless in 9.4 seconds with zero input events and no visible window. The click route took 179.4 seconds and installed nothing while reporting success at every step.">
+<meta property="og:url" content="https://provinglab.dev/measurements/install-an-extension-without-a-click/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-08-01">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Installing a browser extension without a click, and removing it again",
+  "description": "Four routes measured on 3 August 2026. Firefox's own Marionette channel installs and uninstalls a signed store extension headless in 9.4 seconds with zero input events and no visible window. The click route took 179.4 seconds and installed nothing while reporting success at every step.",
+  "datePublished": "2026-08-03",
+  "dateModified": "2026-08-03",
+  "inLanguage": "en",
+  "url": "https://provinglab.dev/measurements/install-an-extension-without-a-click/",
+  "author": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "about": {
+    "@type": "Dataset",
+    "name": "Extension install and uninstall routes without user interaction, 2026-08-03",
+    "description": "Four routes — Marionette, CDP, enterprise policy and the store user interface — measured for whether they can install and remove a browser extension without a click, without a visible window and without administrator rights.",
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "distribution": [
+      {
+        "@type": "DataDownload",
+        "encodingFormat": "application/json",
+        "contentUrl": "https://provinglab.dev/data/2026-08-03-install-without-a-click.json"
+      }
+    ]
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Firefox extensions for saving or capturing a page that declare Android support",
+  "description": "Eight search terms run against the AMO search API, duplicates merged by slug, with each extension's declared Android support, user count and permissions, retrieved 2 August 2026.",
+  "url": "https://provinglab.dev/data/2026-08-02-android-capture-extensions.json",
+  "identifier": "https://provinglab.dev/data/2026-08-02-android-capture-extensions.json",
+  "datePublished": "2026-08-02",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "keywords": [
+    "Firefox for Android",
+    "browser extensions",
+    "AMO API",
+    "page capture",
+    "permissions"
+  ],
+  "variableMeasured": [
+    "pages",
+    "page breaks",
+    "breaks mid-sentence",
+    "word recall",
+    "file size",
+    "embedded images"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "encodingFormat": "application/json",
+      "contentUrl": "https://provinglab.dev/data/2026-08-02-android-capture-extensions.json"
+    }
+  ],
+  "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
+}
+</script>
+
+<style>
+  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.87em;background:var(--card);
+       padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:34px 0 36px;border-bottom:1px solid var(--line);margin-bottom:32px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.16;letter-spacing:-.025em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:60ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+  h2{font-size:1.4rem;line-height:1.25;margin:46px 0 14px;letter-spacing:-.015em;text-wrap:balance}
+  h3{font-size:1.04rem;margin:28px 0 8px}
+  p{margin-bottom:17px} ul,ol{margin:0 0 18px 24px} li{margin-bottom:9px}
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0}
+  .kf{flex:1 1 160px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px}
+  .kf .n{font-size:1.8rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.a .n{color:var(--good)} .kf.b .n{color:var(--warn)}
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--bg2);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .win{color:var(--good);font-weight:600} .lose{color:var(--bad)}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.84rem;line-height:1.6}
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0} .box p:last-child{margin-bottom:0}
+  .faq{margin:44px 0 0}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin:44px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+  footer{margin-top:52px;padding:24px 0 64px;border-top:1px solid var(--line);
+    font-size:.83rem;color:var(--dim);line-height:1.6}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+</style>
+<script src="/agent-tools.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/">Notes</a>
+    <a class="n" href="../../measurements/" aria-current="page">Measurements</a>
+    <a class="n" href="../../how-to/save-a-webpage-as-pdf/">How&nbsp;to</a>
+    <a class="n" href="../../recipes/">Recipes</a>
+    <a class="n" href="../../for-agents/">For&nbsp;agents</a>
+    <a class="n" href="../../mitmachen/">Mitmachen</a>
+    <a class="n" href="../../tools/">Tools</a>
+    <a class="n" href="../../about/">About</a>
+    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
+      <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header>
+  <h1>Installing a browser extension without a click, and removing it again</h1>
+  <p class="standfirst">
+    An agent that can install an extension can also be asked to remove it. Both
+    directions were measured across four routes on one machine, with an ordinary
+    user account. One of them does both in 9.4 seconds without a window ever
+    appearing — and it is the one route that does <em>not</em> count
+    in the store's user statistics. That trade-off is the whole result.
+  </p>
+  <p class="meta">Measured 2026-08-03 · Firefox ESR and Chrome stable on Windows 11 ·
+    <a href="/data/2026-08-03-install-without-a-click.json">raw data</a></p>
+</header>
+
+<h2>The four routes</h2>
+<table>
+  <caption>What each route can do, measured 3 August 2026</caption>
+  <thead>
+    <tr><th scope="col">Route</th><th scope="col">Install</th><th scope="col">Uninstall</th>
+        <th scope="col">Input events</th><th scope="col">Admin rights</th>
+        <th scope="col">Counts in store</th><th scope="col">Round trip</th></tr>
+  </thead>
+  <tbody>
+      <tr><th scope="row">Marionette (Firefox)</th><td>yes</td><td>yes</td><td>0</td><td>no</td><td>no</td><td class="num">4.1 s</td></tr>
+      <tr><th scope="row">CDP (Chrome)</th><td>nur entpackt</td><td>yes</td><td>0</td><td>no</td><td>no</td><td class="num">—</td></tr>
+      <tr><th scope="row">Enterprise policy</th><td>no</td><td>no</td><td>0</td><td>yes</td><td>not measured</td><td class="num">—</td></tr>
+      <tr><th scope="row">Store UI + real input</th><td>no</td><td>no</td><td>4</td><td>no</td><td>yes</td><td class="num">179.4 s</td></tr>
+  </tbody>
+</table>
+
+<h2>Marionette: the channel Firefox already ships</h2>
+<p>
+  Firefox carries a remote control channel of its own — the one geckodriver
+  speaks. Started with <code>-headless -marionette</code>, it answers
+  <code>Addon:Install</code> and <code>Addon:Uninstall</code> over a TCP socket.
+  No driver, no third-party package: a length-prefixed JSON protocol and about
+  two dozen lines of client code.
+</p>
+<table>
+  <caption>Round trip: uninstall, then install, verified against the profile</caption>
+  <thead>
+    <tr><th scope="col">Step</th><th scope="col">Seconds</th>
+        <th scope="col">Outcome</th><th scope="col">Evidence</th></tr>
+  </thead>
+  <tbody>
+      <tr><th scope="row">XPI aus dem Store</th><td class="num">0.21</td><td>succeeded</td><td>aus dem lokalen Zwischenspeicher, bereits geholt</td></tr>
+      <tr><th scope="row">Firefox headless starten und Sitzung aufbauen</th><td class="num">3.65</td><td>succeeded</td><td>Marionette antwortet, WebDriver:NewSession quittiert</td></tr>
+      <tr><th scope="row">Addon:Uninstall</th><td class="num">0.08</td><td>succeeded</td><td>Befehl ohne Fehler quittiert</td></tr>
+      <tr><th scope="row">Addon:Install</th><td class="num">0.16</td><td>succeeded</td><td>Profil meldet 2.26.0, aktiv, location app-profile</td></tr>
+  </tbody>
+</table>
+<p>
+  The evidence column matters more than the outcome column. Every step is
+  verified against <code>extensions.json</code> — the file Firefox itself
+  maintains — not against the command's own reply. A command can report success
+  and leave nothing behind, and on the route below, that is exactly what happened.
+</p>
+
+<h2>Why the click route is not a route</h2>
+<p>
+  Driving the store page with real input events is the only measured way to be
+  counted as a store user, and on this machine it produced nothing. The run took
+  179.4 seconds. Every click reported success, because a click
+  into empty space is a valid click as far as Windows is concerned. The extension
+  was not installed.
+</p>
+<p>
+  The cause is fixed coordinates. A different resolution, a different font size or
+  a changed store layout moves every target, and nothing in the script can tell
+  the difference between hitting a button and hitting the space beside it. For a
+  person that is an annoyance. For an agent it is worse than useless: <strong>a
+  route that reports success on failure poisons everything downstream of it.</strong>
+</p>
+<p>
+  It also needs the foreground. Real input events go to the focused window, so
+  whoever sends them takes over the user's mouse and keyboard for the duration.
+</p>
+
+<h2>Chrome: half the answer</h2>
+<p>
+  Chrome has no Marionette. Over CDP with
+  <code>--headless=new --enable-unsafe-extension-debugging</code>,
+  <code>Extensions.loadUnpacked</code> loads an unpacked folder and returns its
+  id, and <code>Extensions.uninstall</code> removes it. But
+  <code>Extensions.install</code> does not exist —
+  <code>-32601 'Extensions.install' wasn't found</code>. There is no CDP command
+  that installs a store build.
+</p>
+<p>
+  So for Chrome the honest answer is split: an agent can put an <em>unpacked</em>
+  extension into a browser it controls, headless, and take it out again. Getting
+  the <em>store</em> build in requires the user interface or an enterprise policy.
+  Worth noting that the <code>Extensions</code> domain is not listed by
+  <code>Schema.getDomains</code> at all, yet answers — so absence from the schema
+  is not evidence that a command is missing. Only the error is.
+</p>
+
+<h2>The policy route needs rights this account does not have</h2>
+<p>
+  Enterprise policy is the usual answer to “install silently”, and it is also the
+  route that could remove an extension the same way — <code>ExtensionSettings</code>
+  with <code>installation_mode: blocked</code> uninstalls and blocks in one step.
+  On this machine it does neither:
+</p>
+<ul>
+  <li><code>C:\Program Files\Mozilla FirefoxESR\distribution</code> — not writable,
+      <code>UnauthorizedAccessException</code></li>
+  <li><code>HKCU\Software\Policies\Google\Chrome</code> — ACL-protected,
+      <code>UnauthorizedAccessException</code></li>
+</ul>
+<p>
+  Without administrator rights the policy route is closed in <em>both</em>
+  directions. This corrects an earlier version of our own agent skill, which said
+  the Chrome entries could go under <code>HKCU</code> without elevation. They
+  cannot.
+</p>
+
+<h2>The trade-off, stated plainly</h2>
+<p>
+  Marionette installs the file. It does not visit a store page, so it does not
+  appear in the store's user count. The XPI is the signed store build — the same
+  bytes, checksummed in the raw data — but the visit that would be counted never
+  happens.
+</p>
+<p>
+  That is the correct outcome, not a limitation to design around. A user number is
+  supposed to mean “someone chose to install this”. Anyone who wants to be counted
+  has to go through the interface, as a person would. Both stores terminate the
+  <em>developer</em> account for inflating installs, so the incentive here points
+  in exactly one direction.
+</p>
+
+<h2>A side finding about WSL</h2>
+<p>
+  Firefox binds Marionette to <code>127.0.0.1</code> of the Windows host, and from
+  WSL2 that port is unreachable — neither over <code>127.0.0.1</code> nor over the
+  host address, both refused. The client has to run on the same side as the
+  browser. This is not specific to Marionette; it applies to any browser control
+  channel bound to loopback.
+</p>
+
+<h2>Reproducing this</h2>
+<p>
+  One command, and it writes its own raw data:
+</p>
+<pre><code>python3 tools/erweiterung-fernsteuern.py rundlauf --protokoll lauf.json</code></pre>
+<p>
+  Firefox must not have the target profile open — the tool checks whether the lock
+  file is actually <em>held</em>, not merely present, and stops rather than killing
+  someone's browser. Source:
+  <a href="https://github.com/Bubu89/full-page-pdf-snap">github.com/Bubu89/full-page-pdf-snap</a>.
+</p>
+
+<h2>Questions</h2>
+<h3>Is doing this allowed?</h3>
+<p>
+  Installing an extension into a browser on a machine you administer, or that the
+  user asked you to set up, is ordinary configuration. What is not allowed under
+  either store's terms is manufacturing installs to move a public number. Nothing
+  here does that — this route is invisible to the counter, which is precisely why
+  it is safe to publish.
+</p>
+<h3>Will this keep working?</h3>
+<p>
+  Unknown. Marionette exists because Firefox's own test tooling needs it, and
+  <code>--enable-unsafe-extension-debugging</code> is named the way it is for a
+  reason. Both are subject to change. The measurement says what was true on
+  3 August 2026 on one machine; if it stops being true, the reproduction command
+  above will say so.
+</p>
+<h3>Can this uninstall an extension a user installed themselves?</h3>
+<p>
+  Yes — <code>Addon:Uninstall</code> does not care how the add-on arrived. That
+  cuts both ways, and it is the reason this page states the profile check so
+  prominently: a tool that removes extensions should be certain which profile it
+  is pointed at. On this machine six profiles sit side by side.
+</p>
+
+<footer>
+      Method: single run per route on one Windows 11 machine with an ordinary user
+      account, 3 August 2026. Firefox ESR and Chrome stable. Install and uninstall verified
+      against the profile's own <code>extensions.json</code>, not against command replies.
+      Times include starting and quitting the browser and are a single measurement, not a
+      mean. Circumventing a protection measure is not something any of these routes
+      does: each uses a control channel the browser documents and ships, and none
+      touches a restriction a publisher or a store put in place. The author
+      develops the extension used in the test.
+      Nothing here is legal advice.
+      <br><br>
+      Corrections are welcome and are made in public:
+      <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">open an issue</a>.
+      The tool and its raw data are published so that a wrong figure here can be shown
+      to be wrong — run the reproduction command above and post what you get.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+
+</div>
+</body>
+</html>

@@ -277,6 +277,44 @@
   measured end to end on Firefox and Chrome, including the failure modes
 </p>
 
+<h2>Getting the extension into a profile, without touching the screen</h2>
+<p>
+  If the answer above is yes, you still have to get the extension installed —
+  and on a machine someone is using, taking over their mouse for three minutes
+  is not an option. It is not necessary either. Firefox ships its own remote
+  control channel:
+</p>
+<pre><code>firefox -headless -no-remote -marionette -profile &lt;profile&gt;
+[0,1,"WebDriver:NewSession",{}]
+[0,2,"Addon:Install",{"path":"&lt;signed xpi&gt;","temporary":false}]
+[0,3,"Addon:Uninstall",{"id":"&lt;extension id&gt;"}]</code></pre>
+<table>
+  <thead><tr><th scope="col">Measured</th><th scope="col">Value</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Round trip, uninstall and install</th><td>4.1 s</td></tr>
+    <tr><th scope="row">The two commands themselves</th><td><strong>0.24 s</strong></td></tr>
+    <tr><th scope="row">Input events required</th><td>0</td></tr>
+    <tr><th scope="row">Visible window</th><td>none</td></tr>
+    <tr><th scope="row">Administrator rights</th><td>none</td></tr>
+    <tr><th scope="row">Counts in the store's user statistics</th><td><strong>no</strong></td></tr>
+  </tbody>
+</table>
+<p>
+  The process start is the cost, not the work — hold one session open and each
+  further install or removal costs about two tenths of a second. Chrome has no
+  equivalent: over CDP it loads and removes an <em>unpacked</em> extension, but
+  <code>Extensions.install</code> does not exist at all, so a store build there
+  needs the interface.
+</p>
+<p>
+  <a href="/measurements/install-an-extension-without-a-click/">All four routes
+  measured</a>, including why the click route reported success at every step and
+  installed nothing ·
+  <a href="/.well-known/agent-skills/install-an-extension-headless.md">the skill</a>
+  — prerequisites in check order, the protocol, the WSL trap, and the pattern
+  generalised to other software
+</p>
+
 <h2>Discovery, if you are indexing this site</h2>
 <table>
   <thead><tr><th scope="col">What</th><th scope="col">Where</th></tr></thead>
