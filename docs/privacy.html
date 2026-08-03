@@ -87,7 +87,7 @@
   <a class="back" href="./">← Full Page PDF Snap</a>
 
   <h1>Privacy Policy</h1>
-  <p class="updated">Last updated: 27 July 2026 · Applies to the browser extension “Full Page PDF Snap” for Firefox and Chrome.</p>
+  <p class="updated">Last updated: 3 August 2026 · Applies to the browser extension “Full Page PDF Snap” for Firefox and Chrome.</p>
 
   <div class="key">
     <p>This extension collects no data. It has no server, sends no network requests, and contains no analytics or telemetry code.</p>
@@ -113,6 +113,15 @@
   <h2>Third parties</h2>
   <p>There are none. No external services, no content delivery networks, no fonts or scripts loaded from elsewhere, no advertising, no third-party libraries that phone home.</p>
 
+  <h2 id="endpoint-logs">The citation endpoint on provinglab.dev</h2>
+  <p>Everything above covers the extension. The website additionally runs a public endpoint (/mcp) that fetches citation data from addresses its callers name. It runs as a Cloudflare Worker with the platform’s request logging (Cloudflare Workers Logs) switched on.</p>
+  <ul>
+    <li><strong>What is stored:</strong> for each request, an invocation log with the request method and URL, the response and related technical metadata — the content is documented by Cloudflare. The worker itself writes no log entries of its own; that is verifiable in the published source code.</li>
+    <li><strong>Where:</strong> in the operator’s Cloudflare account, in the Workers Logs of that worker.</li>
+    <li><strong>How long:</strong> the project operates the worker on the Workers Free plan, under which Cloudflare keeps logs for a maximum of 3 days; on the Workers Paid plan the maximum is 7 days (source: <a href="https://developers.cloudflare.com/workers/observability/logs/workers-logs/">Cloudflare Workers Logs documentation</a>, retrieved 3 August 2026).</li>
+    <li><strong>What does not happen:</strong> the logs are not analysed into usage profiles, not combined with other data and not passed to third parties. They exist for error diagnosis and for detecting abuse of the open endpoint.</li>
+  </ul>
+
   <h2>Verification</h2>
   <p>The complete source code is published under the MIT license at <a href="https://github.com/Bubu89/full-page-pdf-snap">github.com/Bubu89/full-page-pdf-snap</a>. The submitted extension files are the source files — no bundler, no minification — so what you audit is what runs.</p>
 
@@ -125,7 +134,7 @@
   <hr>
 
   <h1>Datenschutzerklärung</h1>
-  <p class="updated">Stand: 27. Juli 2026 · Gilt für die Browser-Erweiterung „Full Page PDF Snap“ für Firefox und Chrome.</p>
+  <p class="updated">Stand: 3. August 2026 · Gilt für die Browser-Erweiterung „Full Page PDF Snap“ für Firefox und Chrome.</p>
 
   <div class="key">
     <p>Diese Erweiterung erhebt keine Daten. Sie hat keinen Server, sendet keine Netzwerkanfragen und enthält keinen Analytics- oder Telemetrie-Code.</p>
@@ -151,6 +160,15 @@
   <h2>Dritte</h2>
   <p>Es gibt keine. Keine externen Dienste, keine Content-Delivery-Netzwerke, keine von außen geladenen Schriften oder Skripte, keine Werbung, keine Fremdbibliotheken, die nach Hause telefonieren.</p>
 
+  <h2>Der Zitations-Endpunkt auf provinglab.dev</h2>
+  <p>Alles bis hier betrifft die Erweiterung. Die Website betreibt zusätzlich einen offenen Endpunkt (/mcp), der Zitationsdaten von Adressen abruft, die Aufrufende nennen. Er läuft als Cloudflare Worker mit eingeschalteter Anfragen-Protokollierung der Plattform (Cloudflare Workers Logs).</p>
+  <ul>
+    <li><strong>Was gespeichert wird:</strong> je Anfrage ein Protokolleintrag mit Methode und Adresse der Anfrage, der Antwort und zugehörigen technischen Metadaten — der Inhalt ist von Cloudflare dokumentiert. Der Worker selbst schreibt keine eigenen Protokolleinträge; das ist im veröffentlichten Quellcode nachprüfbar.</li>
+    <li><strong>Wo:</strong> im Cloudflare-Konto des Betreibers, in den Workers Logs dieses Workers.</li>
+    <li><strong>Wie lange:</strong> das Projekt betreibt den Worker im Tarif Workers Free, in dem Cloudflare Protokolle höchstens 3 Tage aufbewahrt; im Tarif Workers Paid beträgt das Maximum 7 Tage (Quelle: <a href="https://developers.cloudflare.com/workers/observability/logs/workers-logs/">Dokumentation zu Cloudflare Workers Logs</a>, abgerufen am 3. August 2026).</li>
+    <li><strong>Was nicht geschieht:</strong> die Protokolle werden nicht zu Nutzungsprofilen ausgewertet, nicht mit anderen Daten verknüpft und nicht an Dritte weitergegeben. Sie dienen der Fehlerdiagnose und dem Erkennen von Missbrauch des offenen Endpunkts.</li>
+  </ul>
+
   <h2>Überprüfbarkeit</h2>
   <p>Der vollständige Quellcode ist unter der MIT-Lizenz veröffentlicht: <a href="https://github.com/Bubu89/full-page-pdf-snap">github.com/Bubu89/full-page-pdf-snap</a>. Die eingereichten Dateien sind der Quellcode — kein Bundler, keine Minifizierung. Was Sie prüfen, ist das, was läuft.</p>
 
@@ -170,6 +188,10 @@ cookies, embeds no third-party scripts, no analytics library and no advertising.
 <li>Like every web server, the hosting provider records access data (IP address,
 time, requested page, user agent) for delivery and abuse prevention. We do not
 combine these with anything and cannot identify individual visitors.</li>
+<li>Requests to the citation endpoint additionally pass through a Cloudflare
+Worker whose platform keeps request logs. What they contain, where they are
+kept and for how long is set out above under
+<a href="#endpoint-logs">The citation endpoint on provinglab.dev</a>.</li>
 <li>Should measurement of visits ever be added, it will be a cookieless method,
 and this section will say so before it goes live.</li>
 </ul>

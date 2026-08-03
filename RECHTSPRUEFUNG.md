@@ -194,13 +194,19 @@ Verbleibende Verarbeitung: Server-Logs bei Cloudflare und GitHub Pages als
 Auftragsverarbeiter, sowie die vom Nutzer selbst genannten Adressen beim Aufruf
 des Endpunkts.
 
-**Offener Punkt:** `wrangler.toml` setzt `[observability] enabled = true`, ohne
-eine Aufbewahrungsdauer festzulegen — es gilt die Voreinstellung von Cloudflare
-Workers Logs. Eine angefragte Adresse kann verraten, woran jemand arbeitet; das
-ist der einzige Datenpunkt mit Personenbezug, den der Endpunkt überhaupt
-erzeugt. **Zu tun:** entweder in `privacy.html` benennen, was gespeichert wird
-und wie lange, oder die Aufbewahrung ausdrücklich kurz setzen. Beides ist
-billiger als die Frage später beantworten zu müssen.
+**Erledigt am 3. August 2026:** `wrangler.toml` setzt `[observability] enabled = true`,
+ohne eine Aufbewahrungsdauer festzulegen — es gilt die Voreinstellung von
+Cloudflare Workers Logs. `privacy.html` benennt jetzt in beiden Sprachfassungen,
+was gespeichert wird (Anfrage-Protokolle der Plattform: Methode und Adresse der
+Anfrage, Antwort, technische Metadaten; der Worker selbst schreibt keine eigenen
+Einträge), wo (Workers Logs im Cloudflare-Konto des Betreibers) und wie lange:
+höchstens 3 Tage im Tarif Workers Free, 7 Tage in Workers Paid (Quelle:
+Cloudflare-Dokumentation, abgerufen am 3. August 2026 — die dort genannten
+Werte wurden an diesem Tag gegen die Live-Seite geprüft). Der Tarif des Kontos
+war über den vorhandenen API-Token nicht auslesbar (nur Zone-Rechte), die
+Formulierung nennt deshalb beide Werte statt zu schätzen. Die Zusage „no
+tracking" auf `/about/` bleibt bestehen: Sie meint Zählskripte und Analytik,
+und `privacy.html` benennt jetzt, was dennoch anfällt.
 
 ---
 
@@ -218,11 +224,10 @@ billiger als die Frage später beantworten zu müssen.
 1. **Ratenbegrenzung auf `/mcp`** — braucht einen Cloudflare-Token mit
    Firewall-Rechten. Solange sie fehlt, ist der Endpunkt als Verstärker
    verwendbar.
-2. **Log-Aufbewahrung in `privacy.html` benennen** oder ausdrücklich begrenzen —
-   die angefragten Adressen sind der einzige personenbeziehbare Datenpunkt.
-3. **Wohnort in `/about/` ergänzen** (Option 2 aus Abschnitt 2) — eine Zeile,
+2. **Wohnort in `/about/` ergänzen** (Option 2 aus Abschnitt 2) — eine Zeile,
    nimmt der Offenlegungsfrage die Grundlage.
 
-**Erledigt am 3. August:** Whois-Kanal geprüft (gibt nichts preis) und die vier
+**Erledigt am 3. August:** Whois-Kanal geprüft (gibt nichts preis), die vier
 Befunde aus `rechtscheck.py` abgearbeitet — der Prüfer meldet erstmals
-**0 Fehler**.
+**0 Fehler** — und die Log-Aufbewahrung in `privacy.html` benannt (Abschnitt 6):
+was gespeichert wird, wo und wie lange, mit Quelle und Abrufdatum.

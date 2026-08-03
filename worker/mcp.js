@@ -290,6 +290,27 @@ function jsonLdLesen(html) {
   return {};
 }
 
+// Erster deklarierter schema.org-Typ der Seite, ungefiltert. jsonLdLesen
+// sucht gezielt nach zitierfaehigen Werktypen; fuer die Art der Seite zaehlt
+// dagegen jede Deklaration — auch SoftwareSourceCode oder WebSite, die sonst
+// durch den Filter faelen.
+function jsonLdTypLesen(html) {
+  const re = /<script[^>]+type\s*=\s*["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let t;
+  while ((t = re.exec(html)) !== null) {
+    try {
+      const j = JSON.parse(t[1].trim());
+      const liste = Array.isArray(j) ? j
+                  : (j && Array.isArray(j["@graph"]) ? j["@graph"] : [j]);
+      for (const o of liste) {
+        const typ = String((o && o["@type"]) || "");
+        if (typ) return typ;
+      }
+    } catch (_) { /* fehlerhaftes JSON-LD ist haeufig und kein Grund aufzugeben */ }
+  }
+  return "";
+}
+
 function quelleAusHtml(html, endgueltigeUrl) {
   const meta = metaLesen(html);
   const ld = jsonLdLesen(html);
@@ -407,6 +428,17 @@ function quelleAusHtml(html, endgueltigeUrl) {
     const v = erste(k);
     if (v) { try { q.fullTextUrls.push({ type: art2, url: new URL(v, endgueltigeUrl).href }); } catch (_) {} }
   }
+
+  // Art der Seite — nur was die Seite selbst deklariert: og:type, sonst der
+  // erste schema.org-Typ. Die absolute Schreibweise schema.org/Typname wird
+  // auf den lokalen Namen gekuerzt; das ist dieselbe Deklaration in anderer
+  // Notation, kein Raten. Wo nichts deklariert ist, bleibt das Feld weg.
+  // Der Aufrufer soll einen Zeitungsartikel ohne Datumsdeklaration von einem
+  // Software-Release unterscheiden koennen, bei dem der unvollstaendige Satz
+  // der richtige ist — ein erfundener Typ wuerde diese Entscheidung faelschen.
+  const seitenTyp = (erste("og:type") || jsonLdTypLesen(html))
+    .replace(/^https?:\/\/schema\.org\//i, "");
+  if (seitenTyp) q.pageType = seitenTyp;
 
   // Seitenname als Anhaengsel im Titel abschneiden — aber nur im Abgleich mit
   // dem angegebenen Seitennamen oder dem Namen der Domain, nie geraten.

@@ -242,6 +242,48 @@ const FAELLE = [
       [q.art === "Zeitschriftenaufsatz", `art=${q.art}`],
     ],
   },
+  // Die drei folgenden Faelle decken die Ableitung der Seitenart ab. Gegen die
+  // echten Seiten lokal geprueft (curl mit Browser-Kennung, 03.08.2026):
+  // derstandard.at deklariert og:type, zenodo.org nur schema.org in
+  // URL-Schreibweise, wko.at/eservices keines von beiden. Live gegen den
+  // Endpunkt pruefbar erst nach dem Ausliefern des Workers.
+  {
+    name: "Seitenart aus og:type (Issue #4)",
+    html: seite(`<title>Ein Zeitungsartikel</title>
+      <meta property="og:type" content="article">
+      <meta property="og:site_name" content="Beispielzeitung">
+      <meta property="og:title" content="Ein Zeitungsartikel">`),
+    url: "https://www.derstandard.at/story/3000000200000/",
+    pruefe: (q) => [
+      [q.pageType === "article", `pageType=${q.pageType}`],
+      // Der Fall, fuer den das Feld gebaut wurde: Artikel ohne Datums-
+      // deklaration. Die Warnung benennt das fehlende Feld, pageType die Art
+      // der Seite — erst beides zusammen macht den Satz einordbar.
+      [q.complete === false, `complete=${q.complete}`],
+      [/year is missing/.test(q.warning || ""), `Warnung=${q.warning}`],
+    ],
+  },
+  {
+    name: "Seitenart aus schema.org, URL-Schreibweise gekuerzt (Issue #4)",
+    html: seite(`<title>Ein Werkzeug</title>
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"https://schema.org/SoftwareSourceCode","name":"Ein Werkzeug"}</script>`),
+    url: "https://zenodo.org/records/3832945",
+    pruefe: (q) => [
+      // SoftwareSourceCode faellt durch den Werktyp-Filter von jsonLdLesen;
+      // fuer die Seitenart muss die Deklaration trotzdem zaehlen.
+      [q.pageType === "SoftwareSourceCode", `pageType=${q.pageType}`],
+    ],
+  },
+  {
+    name: "Keine Seitenart deklariert: Feld bleibt weg (Issue #4)",
+    html: seite(`<title>Eine Seite ohne jede Typangabe</title>`),
+    url: "https://www.wko.at/eservices",
+    pruefe: (q) => [
+      // Geraten wird nichts: ohne og:type und ohne schema.org-Typ darf das
+      // Feld nicht erscheinen, sonst unterscheidet es sich nicht vom Belegten.
+      [!("pageType" in q), `pageType unerwartet vorhanden: ${q.pageType}`],
+    ],
+  },
 ];
 
 let gruen = 0, rot = 0;

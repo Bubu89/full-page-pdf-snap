@@ -65,6 +65,13 @@ jobs:
             echo "::warning::extension-versions.json veraltet — build-versionen.py laufen lassen"
           }
 
+      # Fristen. Warnt, blockiert nicht — eine bald ablaufende Frist ist kein
+      # Grund, eine Auslieferung anzuhalten, sondern einer, es zu wissen.
+      # In der Pipeline ohne Vaultwarden, also ohne die Token-Fristen; die
+      # Domain und security.txt werden trotzdem geprueft.
+      - name: Fristen
+        run: python3 tools/fristen-pruefen.py --ci || true
+
       # Interne Ziele und Store-Staende. Externe Adressen werden hier bewusst
       # nicht geprueft: ein fremder Server, der gerade 503 antwortet, ist kein
       # Grund, die eigene Auslieferung anzuhalten.
