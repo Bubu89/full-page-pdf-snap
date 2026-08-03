@@ -20,7 +20,7 @@ kein Beitrag.
 
 ```bash
 python3 rechtscheck.py          # muss 0 Fehler melden
-node --test tests/*.mjs         # muss 18/18 melden
+node --test tests/*.mjs         # muss vollstaendig gruen sein
 python3 tools/links-pruefen.py  # interne Ziele und Store-Stände
 ```
 
@@ -109,6 +109,28 @@ Sortiert nach Nutzen, nicht nach Aufwand:
 
 Offene Aufgaben stehen als [Issues](https://github.com/Bubu89/full-page-pdf-snap/issues),
 und der Endpunkt liefert sie maschinenlesbar über das Werkzeug `open_work`.
+
+## Mehrere Agenten am selben Baum
+
+An diesem Repository arbeitet mehr als ein Prozess gleichzeitig. Am 3. August
+2026 sind dadurch zweimal fremde Aenderungen in einem Commit gelandet, der sie
+nicht meinte: ein Messdatensatz und eine Erweiterung des Endpunkts. Beide waren
+gut — aber sie wurden unter einer fremden Commit-Nachricht veroeffentlicht,
+ungelesen.
+
+**Deshalb: kein `git add -A` ohne vorherigen Blick.**
+
+```bash
+git status --short          # was liegt ueberhaupt da?
+git diff --cached --stat    # was nehme ich mit?
+```
+
+Was nicht von der eigenen Arbeit stammt, wird **nicht mitgenommen**. Ein anderer
+Prozess ist womoeglich mitten in einer Aenderung; ein halbfertiger Stand, den
+jemand anders veroeffentlicht, ist schlimmer als ein spaeterer Commit.
+
+Wer eine fremde, offensichtlich fertige Aenderung vorfindet, committet sie
+**einzeln und benennt sie als fremd** — nicht angehaengt an etwas anderes.
 
 ## Ein Beitrag gilt als fertig, wenn
 
