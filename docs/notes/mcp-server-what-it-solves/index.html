@@ -161,17 +161,19 @@
   <h1>This site runs an MCP server. Measured: it is smaller than the file it competes with</h1>
   <p class="standfirst">
     Since 2 August 2026 there is an endpoint at <code>/mcp</code> that hands the
-    measurement datasets and the published methods to an AI client on request.
-    Before recommending that anyone else build one, here is what it actually
-    returns — and the number that decides whether it was worth it.
+    measurement datasets and the published methods to an AI client on request — and,
+    since then, turns any URL into a citation with an RIS record. Before recommending
+    that anyone else build one, here is what it actually returns, the number that
+    decides whether it was worth it, and the one job that justified it after all.
   </p>
-  <p class="meta">2 August 2026 · Protocol MCP 2025-06-18 · transport streamable HTTP ·
+  <p class="meta">2 August 2026, workflow section added 3 August · Protocol MCP 2025-06-18 ·
+    transport streamable HTTP ·
     <a href="/.well-known/mcp/server-card.json">server card</a></p>
 </header>
 
 <h2>What it can do</h2>
 <p>
-  Three tools, no authentication, no state:
+  Four tools, no authentication, no state:
 </p>
 <table>
   <thead><tr><th>Tool</th><th>Input</th><th>Returns</th></tr></thead>
@@ -182,21 +184,32 @@
         <td>one dataset as JSON — measured values, control run, conditions</td></tr>
     <tr><td><code>get_method</code></td><td><code>name</code> (optional)</td>
         <td>a reproducible method, or the list of them</td></tr>
+    <tr><td><code>extract_citation</code></td><td><code>url</code></td>
+        <td>the citation a page declares about itself — authors, title, journal, year,
+            DOI, licence — plus a ready-to-import RIS record and BibTeX entry, or a
+            named refusal where the page is a wall rather than a work</td></tr>
   </tbody>
 </table>
 
 <h2>The number that matters</h2>
 <p>
-  Everything the server can return, added together, is about
+  Everything the first three tools can return, added together, is about
   <strong>1,300 tokens</strong>. The <a href="/llms.txt">llms.txt</a> file on the
   same domain — a plain text summary any model can read in one request — is about
   <strong>1,988 tokens</strong>.
 </p>
 <p>
   So a model that simply reads one text file ends up with <em>more</em> context than
-  one that calls all three tools. The protocol solves a size problem this site does
-  not have. That is worth saying plainly, because the opposite is usually implied:
-  an MCP server sounds like capability, and here it mostly is not.
+  one that calls all three. For the published measurements, the protocol solves a
+  size problem this site does not have. That is worth saying plainly, because the
+  opposite is usually implied: an MCP server sounds like capability, and for reading
+  out this site it mostly is not.
+</p>
+<p>
+  The fourth tool is the exception, and it is the reason the endpoint still exists.
+  <code>extract_citation</code> does not read this site at all — it reads whichever
+  page it is pointed at. A text file cannot do that at any size, because the answer
+  does not exist until the question is asked.
 </p>
 
 <h2>Where it earns its place anyway</h2>
@@ -215,8 +228,65 @@
   files the site serves.
 </p>
 
+<h2 id="the-workflow-it-was-actually-built-for">The workflow it was actually built for</h2>
+<p>
+  Someone with a reading list — twelve tabs, a bibliography to assemble, a set of
+  links pasted into a chat — wants each one turned into a reference that can be
+  filed. That is a loop: for every URL, ask the page what it says about itself, and
+  write down the answer or the reason there is none.
+</p>
+<pre><code>for url in $(cat reading-list.txt); do
+  curl -sX POST https://provinglab.dev/mcp \
+    -H 'content-type: application/json' \
+    -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",
+         \"params\":{\"name\":\"extract_citation\",\"arguments\":{\"url\":\"$url\"}}}"
+done</code></pre>
+<p>
+  Ten scholarly URLs through that loop on 3 August 2026: <strong>seven came back
+  complete</strong> — authors, year, DOI, journal, with an RIS record and a BibTeX
+  entry ready to import — and <strong>three came back refused</strong>, marked
+  <code>complete: false</code> with a warning naming the wall that stopped them. Total
+  <strong>4.8 seconds</strong>, median 0.45 s per source. A longer run is measured in
+  <a href="/measurements/citation-triage/">the triage note</a>; the accuracy against
+  Wikimedia's Citoid is measured
+  <a href="/measurements/citation-extraction/">separately</a>.
+</p>
+<p>
+  <strong>Read the warning, not the title.</strong> A refused record still carries a
+  <code>title</code>, and it will be something like <em>Checking your browser</em>.
+  Anything that consumes this endpoint has to test <code>complete</code> before it
+  files the result — that mistake was made while writing this paragraph, which is the
+  reason for the sentence.
+</p>
+
+<h2>What it hands over, and what it does not</h2>
+<p>
+  The endpoint returns <strong>the reference, never the document</strong>. It reads
+  the page from a server, so it sees what any anonymous visitor sees: no library
+  licence, no session, no paywall, and no page that only assembles itself in a
+  browser. The three refusals above are exactly those cases.
+</p>
+<p>
+  The other half of the job is done in the browser instead.
+  <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a> captures the page as a
+  PDF <em>and</em> writes the same fields into it — authors, DOI, licence, time of
+  retrieval — with the RIS record saved alongside. It reaches what the server cannot,
+  because it runs where the reader is already logged in; it costs one click per page,
+  where the endpoint costs none.
+</p>
+<p>
+  So the division is not a compromise, it is the design: <strong>the endpoint for
+  volume, the extension for the ones it refuses</strong> — and the refusal list is
+  what tells you which is which. Both write the same RIS format, so the results land
+  in one Citavi or Zotero library regardless of which route produced them.
+</p>
+
 <h2>What it does not solve</h2>
 <ul>
+  <li><strong>A bot filter sits in front of it.</strong> Requests identifying as
+    <code>Python-urllib</code> are answered with HTTP 403 by the CDN before the worker
+    sees them — sending any user agent of your own is enough. Measured 3 August 2026;
+    <code>curl</code> and real MCP clients are unaffected.</li>
   <li><strong>Reach.</strong> No one finds a site because it has an MCP endpoint.
     The server has served a few dozen calls, essentially all of them our own tests.</li>
   <li><strong>Discovery.</strong> A client has to be told the address. The

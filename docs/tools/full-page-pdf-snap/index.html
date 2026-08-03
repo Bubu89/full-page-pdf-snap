@@ -366,6 +366,9 @@ function zeig(n){const [s,c]=SHOTS[n];lbimg.src=s;lbimg.alt=c;lbcap.textContent=
         <div class="card"><h3>High resolution</h3><p>Scaling from 1.0x to 2.0x for sharp text and images on long documents.</p></div>
         <div class="card"><h3>Filename templates</h3><p>Compose names from site, date, time, counter and page title.</p></div>
         <div class="card"><h3>Hide sticky elements</h3><p>Cookie banners, chat widgets and floating top bars are removed before capture.</p></div>
+        <div class="card"><h3>Citation details inside the PDF</h3><p>Authors, journal, DOI, licence and the time of retrieval are read from the page and written into the document, with an RIS record saved beside it for Citavi, Zotero and EndNote.</p></div>
+        <div class="card"><h3>Select an area</h3><p>A second button draws a rectangle with the mouse — one figure, one table, one paragraph, saved as its own PDF with the same details.</p></div>
+        <div class="card"><h3>Path to the clipboard</h3><p>After saving, the file path can go straight to the clipboard — as a Windows, WSL or POSIX path, ready to paste into a terminal or a chat with an AI tool.</p></div>
       </div>
     </div>
     <div data-lang="de" lang="de">
@@ -378,6 +381,9 @@ function zeig(n){const [s,c]=SHOTS[n];lbimg.src=s;lbimg.alt=c;lbcap.textContent=
         <div class="card"><h3>Hohe Auflösung</h3><p>Skalierung von 1.0x bis 2.0x für scharfe Schrift und Bilder auch bei langen Dokumenten.</p></div>
         <div class="card"><h3>Dateinamen-Vorlagen</h3><p>Namen aus Seite, Datum, Uhrzeit, Zähler und Seitentitel zusammensetzen.</p></div>
         <div class="card"><h3>Sticky-Elemente ausblenden</h3><p>Cookie-Banner, Chat-Widgets und schwebende Leisten verschwinden vor der Aufnahme.</p></div>
+        <div class="card"><h3>Quellenangaben im PDF</h3><p>Verfasser, Zeitschrift, DOI, Lizenz und Abrufzeitpunkt werden aus der Seite gelesen und ins Dokument geschrieben; daneben entsteht ein RIS-Datensatz für Citavi, Zotero und EndNote.</p></div>
+        <div class="card"><h3>Bereich auswählen</h3><p>Ein zweiter Knopf zieht ein Rechteck mit der Maus — eine Abbildung, eine Tabelle, ein Absatz, als eigenes PDF mit denselben Angaben.</p></div>
+        <div class="card"><h3>Pfad in die Zwischenablage</h3><p>Nach dem Speichern wandert der Dateipfad auf Wunsch direkt in die Zwischenablage — als Windows-, WSL- oder POSIX-Pfad, zum Einfügen in ein Terminal oder in den Chat mit einem KI-Werkzeug.</p></div>
       </div>
     </div>
   </div>
@@ -569,6 +575,14 @@ function zeig(n){const [s,c]=SHOTS[n];lbimg.src=s;lbimg.alt=c;lbcap.textContent=
           <p>One uninterrupted sheet instead of A4 slices — no page break cutting through a table. <a href="../../measurements/webpage-to-pdf-for-ocr/">Measured: 92.6&nbsp;% of the text survives OCR</a>, and there is a resolution threshold worth knowing.</p>
         </div>
         <div class="card">
+          <h3>Sources for a thesis or a paper</h3>
+          <p>Switch on <em>Add citation details</em> and each capture arrives with its own reference: authors, journal, DOI, licence and the moment it was retrieved, written into the PDF and into an RIS file beside it. The evidence and the reference stay in one place, so a later reader can check both. <a href="../../measurements/citation-by-platform/">Eighteen scholarly platforms measured</a> — what each one declares, and where the data actually comes from.</p>
+        </div>
+        <div class="card">
+          <h3>Handing a source to an AI tool</h3>
+          <p>A language model reading the finished PDF finds the authors and the DOI in the text, because they were on the page. The retrieval time and the checksum sit in the metadata, which a model does not see — turn on the <em>provenance line</em> in the settings and they are printed at the foot of the page as well. A folder of such captures is a bibliography a model can compile without opening a single one of the original pages.</p>
+        </div>
+        <div class="card">
           <h3>Transaction histories that run over months</h3>
           <p>A trade history or account ledger in a portal often runs to hundreds of rows in one endless scroll, and the export — where there is one — drops the layout. Downloading the entire page seamlessly keeps the whole run in a single sheet: dates, amounts and references in the order they appeared, readable end to end by OCR or a language model, and filed as documentation of what the portal showed on that day. Two caveats from practice: not every portal cooperates — several banking sites do not — and a screen capture stays a picture of a screen, <a href="#limits">not a qualified document</a>.</p>
         </div>
@@ -593,6 +607,14 @@ function zeig(n){const [s,c]=SHOTS[n];lbimg.src=s;lbimg.alt=c;lbcap.textContent=
         <div class="card">
           <h3>Eine Seite an OCR oder ein KI-Werkzeug übergeben</h3>
           <p>Ein durchgehendes Blatt statt A4-Scheiben — kein Seitenumbruch mitten durch eine Tabelle. <a href="../../measurements/webpage-to-pdf-for-ocr/">Gemessen: 92,6&nbsp;% des Textes überstehen die OCR</a>, samt der Auflösungsschwelle, die man kennen sollte.</p>
+        </div>
+        <div class="card">
+          <h3>Quellen für Modularbeit oder Thesis</h3>
+          <p><em>Quellenangaben hinzufügen</em> einschalten, und jede Aufnahme bringt ihren Nachweis mit: Verfasser, Zeitschrift, DOI, Lizenz und den Zeitpunkt des Abrufs, im PDF und in einer RIS-Datei daneben. Beleg und Angabe bleiben an einem Ort, sodass beides später nachprüfbar ist. <a href="../../measurements/citation-by-platform/">Achtzehn Wissenschaftsplattformen vermessen</a> — was jede von sich preisgibt und woher die Daten tatsächlich stammen.</p>
+        </div>
+        <div class="card">
+          <h3>Eine Quelle an ein KI-Werkzeug übergeben</h3>
+          <p>Ein Sprachmodell, das das fertige PDF liest, findet Verfasser und DOI im Text, weil sie auf der Seite standen. Abrufzeit und Prüfsumme liegen in den Metadaten, die ein Modell nicht sieht — mit der <em>Nachweiszeile</em> in den Einstellungen stehen sie zusätzlich am Fuß der Seite. Ein Ordner solcher Aufnahmen ist ein Literaturverzeichnis, das ein Modell erstellen kann, ohne eine einzige der Ursprungsseiten zu öffnen.</p>
         </div>
         <div class="card">
           <h3>Transaktionsverläufe über Monate</h3>

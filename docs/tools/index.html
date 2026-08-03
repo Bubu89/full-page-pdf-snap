@@ -93,6 +93,37 @@
 </div>
 
 <div class="item">
+  <h2><a href="../notes/mcp-server-what-it-solves/">Citation endpoint (MCP server)</a></h2>
+  <p>Point it at a URL and it returns what that page declares about itself — authors,
+  title, journal, year, DOI, licence — as a structured record with a ready-to-import
+  RIS entry and BibTeX. Where a page is a paywall, an error or a bot check, it says so
+  and refuses instead of inventing a reference. No account, no key, no rate limit; it
+  reads the page from a server, so anything behind a login stays out of reach and is
+  named as such. Runs at <code>https://provinglab.dev/mcp</code> for any client that
+  speaks MCP, and answers plain <code>curl</code> just as well.</p>
+  <div class="figures">
+    <span><b>7 of 10</b> scholarly sources complete</span>
+    <span><b>0.45 s</b> median</span>
+    <span><b>RIS + BibTeX</b> returned</span>
+  </div>
+  <div class="holen">
+    <a class="erst" href="../notes/mcp-server-what-it-solves/">How it works and what it refuses</a>
+    <a href="../measurements/citation-extraction/">Measured against Citoid</a>
+    <a href="../measurements/citation-by-platform/">18 platforms surveyed</a>
+    <a href="/.well-known/mcp/server-card.json">Server card</a>
+  </div>
+</div>
+
+<div class="item">
+  <p><strong>Together.</strong> The endpoint collects references at volume but never the
+  document; the extension produces the document with the same fields written into it,
+  and reaches the pages a server cannot — anything behind a login. Both emit the same
+  RIS format, so the results land in one Citavi or Zotero library either way.
+  <a href="../notes/mcp-server-what-it-solves/#the-workflow-it-was-actually-built-for">The
+  workflow in full</a>.</p>
+</div>
+
+<div class="item">
   <p><strong>Disclosure.</strong> The tool listed here is developed by the author of this
   site. It appears in several of the measurements published here, and that is stated on each
   of those pages. Nothing is sold, there is no advertising and there are no affiliate links —

@@ -344,8 +344,24 @@
         <p>
           Firefox extension that saves a whole web page as one continuous PDF. Runs on the
           device, asks for <code>activeTab</code> rather than all-sites access, works on
-          Firefox for Android. MIT licensed.
+          Firefox for Android. MIT licensed. Optionally writes the citation the page
+          declares — authors, DOI, licence, time of retrieval — into the PDF, with an RIS
+          record beside it.
         </p>
+      </div>
+      <div class="item">
+        <h3><a href="notes/mcp-server-what-it-solves/">Citation endpoint at <code>/mcp</code></a></h3>
+        <p>
+          Hand it a URL, get back what that page says about itself as a structured record
+          with RIS and BibTeX — or a named refusal where the page turns out to be a paywall,
+          an error or a bot check rather than a work. No account and no key. Speaks MCP for
+          AI clients and plain HTTP for everything else.
+        </p>
+        <div class="figures">
+          <span><b>7 of 10</b> scholarly sources complete</span>
+          <span><b>0.45 s</b> median</span>
+          <span><b>3 Aug 2026</b></span>
+        </div>
       </div>
     </div>
   </div>
