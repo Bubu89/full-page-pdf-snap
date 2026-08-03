@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.14.0";
+const VERSION = "1.15.0";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -953,6 +953,12 @@ async function runTool(origin, name, args) {
       }
       return textResult(JSON.stringify({
         url: ziel.href, httpStatus: r.status,
+        // `complete` MUSS auf jedem Rueckgabeweg stehen. Die Regel, die diese
+        // Seite ueberall propagiert, lautet „lies das complete-Feld, nie den
+        // Titel allein" — und genau hier fehlte es. Ein Agent, der auf
+        // `complete === false` prueft, sah bei einer 403-Ablehnung `undefined`
+        // und damit weder wahr noch falsch. Gefunden von tools/agenten-abnahme.py.
+        complete: false,
         warning: `The server answered ${r.status} ${r.statusText}. No citation data was read.`,
         hint: r.status === 403 || r.status === 503
           ? "Publisher sites frequently block server-side readers, and no DOI was available "
@@ -965,7 +971,7 @@ async function runTool(origin, name, args) {
     const typ = r.headers.get("content-type") || "";
     if (!/html|xml/i.test(typ)) {
       return textResult(JSON.stringify({
-        url: r.url, contentType: typ,
+        url: r.url, contentType: typ, complete: false,
         warning: "The address does not return an HTML page, so it declares no citation metadata.",
         nextStep: naechsterSchritt("not-html"),
       }, null, 2));
@@ -979,7 +985,7 @@ async function runTool(origin, name, args) {
     // damit der Seite zu, statt die Sperre zu benennen.
     if (html.trim().length < 500) {
       return textResult(JSON.stringify({
-        url: r.url, httpStatus: r.status, bytes: html.length,
+        url: r.url, httpStatus: r.status, bytes: html.length, complete: false,
         warning: "The server returned an empty or near-empty response. That is a block, "
                + "not a page: nothing was declared and nothing could be read.",
         hint: "Open the page in a browser and capture it there.",
