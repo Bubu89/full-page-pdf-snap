@@ -1,3 +1,44 @@
+## 2026-08-03 — Der Chrome-Rueckstand war kein Vergessen, sondern das Portierungsskript
+
+**Was.** `chrome-mv3/port.py` zieht die Fassung jetzt aus den Firefox-Quellen;
+Chrome-Zweig von **2.10.0 auf 2.27.0**, Paket geschnuert. Dazu die deutsche
+Anleitung `/anleitung/webseite-als-pdf-speichern/` und einreichfertige
+Store-Texte.
+
+**Der Fund.** Die Versionsnummer stand in `port.py` **fest verdrahtet** auf
+`2.10.0`. Jeder Portierungslauf setzte den Chrome-Zweig damit auf denselben
+alten Stand zurueck — und weil das Skript sauber lief und alle 14 Ersetzungen
+meldete, sah es jedes Mal nach Erfolg aus. Der vierzehn Versionen grosse Abstand
+zwischen Firefox und Chrome war keine vergessene Einreichung, sondern dieses
+Skript.
+
+**Behoben.** Die Fassung kommt aus `manifest.json` der Quellen, und der Lauf
+meldet sie: *„Fassung aus den Firefox-Quellen uebernommen: 2.27.0"*. Damit kann
+der Abstand nicht mehr unbemerkt entstehen.
+
+**Paket.** `full-page-pdf-snap-chrome-2.27.0.zip`, 143 KB, 26 Dateien, alle
+Skripte syntaxgeprueft. Einreichen muss ein Mensch — das ist die Store-Regel,
+nicht unsere.
+
+**Store-Texte.** `store-texte/EINREICHEN_2026-08-03.md` mit Begruendung je Feld.
+Titel `Full Page PDF Snap – Full Page Screenshot to PDF` (48 von 50 Zeichen)
+trifft **drei** Suchbegriffe woertlich statt bisher einem. Zusammenfassung 233
+von 250 Zeichen, enthaelt erstmals *screenshot* und ersetzt „for Zotero and
+Citavi" durch „an RIS record Zotero and Citavi import" — beschreibt, was die
+Programme tun, statt eine Zugehoerigkeit anzudeuten.
+
+**Deutsche Anleitung.** Eigene Zielgruppe, eigene Begriffe: *Abrufdatum*,
+*Literaturverzeichnis erstellen*, *Webseite als PDF speichern* — Formulierungen
+ohne englische Entsprechung im Suchverhalten. `lang="de"`, `HowTo` +
+`FAQPage`-Auszeichnung, wechselseitig mit der englischen Fassung verlinkt.
+
+**Panne, zum zweiten Mal am selben Tag.** Beim Einbetten der deutschen Fassung
+blieben `{DATUM_LANG}`, `{AMO}` und `{CWS}` erneut als literale Klammern stehen,
+weil der Textblock in einen f-String eingefuegt wurde. Beim ersten Mal fiel es
+dem Rechtscheck auf, diesmal der eigenen Kontrolle vor dem Commit. Ein Muster,
+das eine Pruefung verdient: **erzeugte Seiten auf `{GROSSBUCHSTABEN}` pruefen,
+bevor sie ausgeliefert werden.**
+
 ## 2026-08-03 — Zwei Eingaenge, weil die Seite indexiert war und niemand sie fand
 
 **Was.** `/how-to/save-a-webpage-as-pdf/` und `/for-agents/`, die Startseite auf

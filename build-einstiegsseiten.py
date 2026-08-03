@@ -226,6 +226,142 @@ ANLEITUNG = f"""
 </ul>
 """
 
+FAQ_DE = [
+    ("Wie speichere ich eine ganze Webseite als PDF ohne Seitenumbrueche?",
+     "Mit einer Aufnahme-Erweiterung statt ueber den Druckdialog. Der Druckexport des "
+     "Browsers teilt in Seiten auf: derselbe Artikel kam als 26 Seiten heraus, und 9 "
+     "Umbrueche schnitten mitten durch einen Satz. Eine Vollseiten-Aufnahme schreibt ein "
+     "durchgehendes Blatt. Beide Wege sind gemessen unter "
+     "https://provinglab.dev/measurements/print-to-pdf-vs-screenshot/ — einschliesslich der "
+     "Faelle, in denen der Druckexport besser ist, weil er markierbaren Text behaelt."),
+    ("Kann ich eine Seite hinter einem Login speichern?",
+     "Ja, wenn Sie sie im eigenen Browser geoeffnet haben. Die Erweiterung nimmt auf, was "
+     "Ihre Sitzung ohnehin zeigt — ein lizenzierter Zeitschriftenartikel oder ein Kursraum "
+     "wird so gesichert, wie Sie ihn sehen. Kein serverseitiger Dienst kann das, weil er "
+     "Ihre Sitzung nicht hat. Es ist kein Weg zu Inhalten, zu denen Sie keinen Zugang haben."),
+    ("Was ist das Abrufdatum und warum steht es in jeder Quellenangabe?",
+     "Das Abrufdatum ist der Zeitpunkt, zu dem Sie eine Webquelle gesehen haben. Es steht in "
+     "der Angabe, weil eine Webseite sich aendern oder verschwinden kann — und weil es bei "
+     "einer Seite ohne Veroeffentlichungsdatum das einzige Datum ist, das die Quellenangabe "
+     "tragen kann. Von 150 Quellen aus echten Literaturverzeichnissen waren 19,3 % nicht mehr "
+     "erreichbar, 8,7 % nirgends archiviert."),
+    ("Wie speichere ich eine Webseite am Handy als PDF?",
+     "Unter Android nur mit Firefox: Chrome fuer Android installiert ueberhaupt keine "
+     "Erweiterungen. Von 248 geprueften Seiten-Speicher-Erweiterungen geben 60 "
+     "Android-Unterstuetzung an."),
+    ("Kann ich aus einer Linkliste automatisch ein Literaturverzeichnis erzeugen?",
+     "Teilweise — und es lohnt zu wissen, welcher Teil. Von 20 gemischten Quellen wurden 10 "
+     "in 8,1 Sekunden zu vollstaendigen Datensaetzen mit RIS und BibTeX, ueber einfaches "
+     "HTTP, ohne Konto. Die anderen 10 brauchen einen Menschen: eine wegen einer Bot-Abwehr, "
+     "vier wegen einer Sperre gegen das anfragende Netz, und fuenf, weil die Seite ueberhaupt "
+     "keine Zitationsangaben deklariert."),
+]
+
+ANLEITUNG_DE = f"""
+<header>
+  <h1>Webseite als PDF speichern — ein Blatt, mit Quelle und Abrufdatum darauf</h1>
+  <p class="standfirst">
+    Kurz: eine Aufnahme-Erweiterung statt des Druckdialogs. Der Druckexport
+    teilt in Seiten auf — derselbe Artikel kam als <strong>26 Seiten heraus, 9
+    Umbrueche schnitten mitten durch einen Satz</strong>. Eine Aufnahme schreibt
+    ein durchgehendes Blatt und kann Herkunft und Abrufzeit hineinschreiben.
+  </p>
+  <p class="meta">{DATUM_LANG} · jede Zahl verweist auf die Messung dahinter ·
+    <a href="/how-to/save-a-webpage-as-pdf/" hreflang="en">English version</a></p>
+</header>
+
+<p>
+  <a class="btn" href="{AMO}">Firefox, Rechner und Android</a>
+  &nbsp;<a class="btn" href="{CWS}">Chrome 116+, Edge, Brave, Vivaldi</a>
+</p>
+<p style="font-size:.9rem">
+  Kostenlos, MIT-Lizenz, laeuft auf dem Geraet. Edge fragt einmal, ob
+  Erweiterungen aus anderen Stores zugelassen werden; Opera braucht zuerst seine
+  Erweiterung <em>Install Chrome Extensions</em>. Dann: Seite oeffnen,
+  <code>Alt+Umschalt+Y</code> druecken oder auf das Symbol klicken.
+</p>
+
+<h2>Drucken oder aufnehmen? Der ehrliche Vergleich</h2>
+<table>
+  <thead><tr><th></th><th>Druckexport</th><th>Vollseiten-Aufnahme</th></tr></thead>
+  <tbody>
+    <tr><td>Derselbe Artikel ergibt</td><td>26 Seiten</td><td><strong>1 Blatt</strong></td></tr>
+    <tr><td>Umbrueche mitten im Satz</td><td>9</td><td>0</td></tr>
+    <tr><td>Markierbarer, durchsuchbarer Text</td><td><strong>94,8 %</strong></td><td>per Texterkennung: 92,6 %</td></tr>
+    <tr><td>Kostet etwas</td><td>nein, eingebaut</td><td>nein</td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>Beim Text gewinnt der Druckexport.</strong> Wer nur eine lesbare,
+  durchsuchbare Kopie braucht und sich an der Seitenaufteilung nicht stoert,
+  kommt mit der Funktion aus, die im Browser schon steckt — das steht hier,
+  statt es zu verschweigen. Eine Aufnahme lohnt, wenn das Layout zaehlt, wenn
+  ein Umbruch durch eine Tabelle fiele, oder wenn die Quellenangaben mit der
+  Datei mitreisen sollen.
+  <a href="/measurements/print-to-pdf-vs-screenshot/">Methode und Rohdaten</a>
+</p>
+
+<h2>Hinter einem Login oder einer Schranke, zu der Sie Zugang haben</h2>
+<p>
+  Eine Aufnahme-Erweiterung liest, was Ihre eigene Sitzung ohnehin zeigt: ein
+  lizenzierter Zeitschriftenartikel, ein Kursraum, eine Bestellbestaetigung —
+  gesichert, wie Sie es sehen. Kein serverseitiger Dienst kann das. Gemessen an
+  20 gemischten Quellen wurde ein serverseitiger Leser von 5 davon rundweg
+  abgewiesen. Eine Seite zu sichern, die Sie lesen duerfen, ist eine Kopie zum
+  eigenen Gebrauch (§ 42 UrhG) — kein Weg zu Inhalten ohne Zugang.
+</p>
+
+<h2>Am Handy</h2>
+<p>
+  Nur Firefox. <strong>Chrome fuer Android installiert ueberhaupt keine
+  Erweiterungen</strong>, die Frage stellt sich also nur dort. Von 248 geprueften
+  Erweiterungen geben 60 Android-Unterstuetzung an — getestet hatte sie vorher
+  keine.
+  <a href="/measurements/android-capture-extensions/">Die Android-Messung</a>
+</p>
+
+<h2>Warum das Abrufdatum in die Datei gehoert</h2>
+<p>
+  Eine Adresse im Literaturverzeichnis ist ein Versprechen ueber eine Seite, die
+  Ihnen nicht gehoert. Geprueft an 150 Quellen aus echten Verzeichnissen:
+  <strong>19,3 % waren verschwunden</strong>, 8,7 % nirgends archiviert, und wo
+  eine Sicherung bestand, war sie im Mittel 603 Tage alt. Bei einer Seite ohne
+  Veroeffentlichungsdatum ist die Abrufzeit das einzige Datum, das die Angabe
+  tragen kann — und es existiert nur in dem Moment, in dem Sie hinsehen.
+  <a href="/measurements/web-citations-that-vanish/">Was mit einer Quelle
+  geschieht, nachdem man sie zitiert hat</a>
+</p>
+<p>
+  Eine Aufnahme schreibt das hinein: Verfasser, Titel, DOI, Lizenz und die
+  genaue Zeit — im PDF und in einem RIS-Satz daneben, den Zotero, Citavi,
+  EndNote und Mendeley einlesen.
+</p>
+
+<h2>Eine ganze Quellenliste auf einmal</h2>
+<p>
+  Fuer ein Literaturverzeichnis statt einer einzelnen Seite braucht der groessere
+  Teil gar keinen Browser. Von 20 gemischten Quellen wurden
+  <strong>10 in 8,1 Sekunden zu vollstaendigen Datensaetzen</strong> mit RIS und
+  BibTeX — ohne Konto, ohne Schluessel. Die anderen zehn kommen mit Begruendung
+  zurueck, damit Sie wissen, welche Adressen Sie selbst oeffnen muessen.
+  <a href="/recipes/">Die Rezepte</a> ·
+  <a href="/measurements/reading-list-to-bibliography/">die Messung</a>
+</p>
+
+<h2>Was es nicht leistet</h2>
+<ul>
+  <li>Es erreicht keine Inhalte, zu denen Sie keinen Zugang haben.</li>
+  <li>Eine Bildschirmaufnahme ist kein qualifiziertes elektronisches Dokument.
+    Sie haelt fest, wie eine Seite zu einem Zeitpunkt aussah — das ist etwas
+    anderes, als es zu beweisen.</li>
+  <li>Wo ein Verlag einen eigenen <em>Zitieren → RIS</em>-Export anbietet, ist
+    diese Datei massgeblich und besser als alles Rekonstruierte.</li>
+  <li>Die Hinweise zum Urheberrecht auf dieser Seite sind eine Einordnung, keine
+    Rechtsberatung. Im Zweifel und bei einer Auseinandersetzung fragen Sie eine
+    Anwaeltin oder einen Anwalt, nicht diese Seite.</li>
+</ul>
+"""
+
 # ------------------------------------------------------------------ Agenten
 
 AGENTEN = f"""
@@ -381,6 +517,19 @@ def main():
          "Every figure links to the measurement behind it."),
         "../../", "HowTo", f"Figures measured between 1 and {DATUM_LANG}, each linked to its "
         "method and raw data.", faq=FAQ)
+
+    schreiben(
+        DOCS / "anleitung" / "webseite-als-pdf-speichern", ANLEITUNG_DE,
+        "https://provinglab.dev/anleitung/webseite-als-pdf-speichern/",
+        "Webseite als PDF speichern — ein Blatt, mit Quelle und Abrufdatum darauf",
+        ("Ganze Webseite als PDF ohne Seitenumbrueche speichern — auch hinter einem Login und "
+         "am Handy. Mit dem ehrlichen Vergleich zum Druckexport des Browsers, der beim Text "
+         "gewinnt, und warum das Abrufdatum in die Datei gehoert."),
+        ("Kurz: eine Aufnahme-Erweiterung statt des Druckdialogs. Derselbe Artikel kam als 26 "
+         "Seiten heraus, 9 Umbrueche schnitten durch einen Satz — gegen ein durchgehendes "
+         "Blatt. Jede Zahl verweist auf ihre Messung."),
+        "../../", "HowTo", "Zahlen gemessen zwischen 1. und 3. August 2026, jede mit Methode "
+        "und Rohdaten verlinkt.", faq=FAQ_DE)
 
     schreiben(
         DOCS / "for-agents", AGENTEN,

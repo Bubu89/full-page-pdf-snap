@@ -8,6 +8,7 @@ und die Patch-Liste pruefen - jede Ersetzung meldet, ob sie gegriffen hat.
     python3 port.py            # portiert
     python3 port.py --check    # nur pruefen, nichts schreiben
 """
+import json
 import re
 import shutil
 import sys
@@ -107,7 +108,7 @@ MANIFEST = """{
   "name": "__MSG_extName__",
   "default_locale": "en",
   "short_name": "PDFSnap",
-  "version": "2.10.0",
+  "version": "{VERSION}",
   "description": "__MSG_extDescription__",
   "author": "Bubu89",
   "minimum_chrome_version": "116",
@@ -243,7 +244,15 @@ def main():
         return 1
 
     (DST / "background.js").write_text(text, encoding="utf-8")
-    (DST / "manifest.json").write_text(MANIFEST, encoding="utf-8")
+    # Die Fassung kommt aus den Firefox-Quellen, nicht aus einer Zahl in
+    # diesem Skript. Sie stand hier fest verdrahtet, und jeder Portierungslauf
+    # setzte den Chrome-Zweig damit auf denselben alten Stand zurueck — am
+    # 03.08.2026 auf 2.10.0, waehrend Firefox bei 2.27.0 stand. Der Rueckstand
+    # war kein Vergessen, sondern dieses Skript.
+    fassung = json.loads((SRC / "manifest.json").read_text(encoding="utf-8"))["version"]
+    (DST / "manifest.json").write_text(
+        MANIFEST.replace("{VERSION}", fassung), encoding="utf-8")
+    print(f"  Fassung aus den Firefox-Quellen uebernommen: {fassung}")
 
     for name in COPY_AS_IS:
         content = (SRC / name).read_text(encoding="utf-8")
