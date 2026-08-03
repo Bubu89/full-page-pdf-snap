@@ -1,3 +1,18 @@
+## 2026-08-03 — Ein Twitter-Handle ist kein Verfasser
+
+Eine ResearchGate-Diskussion ergab `@ResearchGate` als Autor — im RIS-Satz, in
+den PDF-Angaben und in der sichtbaren Zitationszeile. Ursache war
+`twitter:creator` in der Verfasserkette: Das Feld benennt einen Kanal, keine
+Person, und auf jeder Seite mit Twitter-Karte und ohne Verlagsangaben entstand
+daraus ein erfundener Verfasser.
+
+Entfernt. `twitter:site` bleibt als Herausgeber zulaessig, aber ohne das `@`.
+Jeder Name, der mit `@` beginnt, faellt weg — ihn stillschweigend zu entstellen
+waere schlechter, als ihn wegzulassen.
+
+Der Fall steht als Testfall 13 in `tests/zitation.test.mjs`, damit er nicht
+zurueckkommt.
+
 ## 2026-08-03 — Quellenangaben und Dateipfad dort, wo man sie braucht
 
 **Quellenangaben im Aufnahmefenster.** Die Funktion gab es seit dem 2. August,

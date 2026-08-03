@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.8.1";
+const VERSION = "1.8.2";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -186,7 +186,8 @@ function quelleAusHtml(html, endgueltigeUrl) {
   // Leere Namen aussortieren. Eine koreanische Zeitschrift lieferte
   // content=";;;;;" — daraus wurden sechs leere Verfasser, die als
   // vollstaendige Angabe durchgingen und in BibTeX zu "{ and  and }" wurden.
-  autoren = autoren.map((s) => String(s).trim()).filter((s) => s.length > 1);
+  autoren = autoren.map((s) => String(s).trim())
+    .filter((s) => s.length > 1 && !/^@/.test(s));
   if (!autoren.length && ld.author) {
     autoren = (Array.isArray(ld.author) ? ld.author : [ld.author])
       .map((x) => String(typeof x === "string" ? x : (x && x.name) || "").trim())
@@ -318,7 +319,9 @@ function quelleAusHtml(html, endgueltigeUrl) {
     const koerper =
       (typeof ld.publisher === "object" && ld.publisher && ld.publisher.name) ||
       (typeof ld.publisher === "string" ? ld.publisher : "") ||
-      erste("og:site_name", "dc.publisher", "publisher", "author", "twitter:site");
+      // twitter:site taugt als Herausgeber, nicht als Verfasser — und das @
+      // gehört nicht in eine Quellenangabe.
+      erste("og:site_name", "dc.publisher", "publisher", "twitter:site");
     if (koerper && koerper.trim().length > 1) {
       q.authors = [koerper.trim().replace(/^@/, "")];
       q.corporateAuthor = true;

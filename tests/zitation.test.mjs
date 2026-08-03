@@ -206,6 +206,19 @@ const FAELLE = [
       [q.art === "Zeitschriftenaufsatz", `art=${q.art} — ein Aufsatz UEBER Recht ist keine Rechtsquelle`],
     ],
   },
+  {
+    name: "Twitter-Handle ist kein Verfasser (Fehler 13)",
+    html: seite(`<title>Is it ok for A Network-Theoretic Framework</title>
+      <meta name="twitter:site" content="@ResearchGate">
+      <meta name="twitter:creator" content="@ResearchGate">
+      <meta property="og:site_name" content="ResearchGate">`),
+    url: "https://www.researchgate.net/post/Is_it_ok_for_A_Network",
+    pruefe: (q, r) => [
+      [!q.authors.some((a) => /^@/.test(a)), `Handle als Verfasser: ${JSON.stringify(q.authors)}`],
+      [!/AU  - @/.test(r), "Handle im RIS-Verfasserfeld"],
+      [q.publisher !== "@ResearchGate", `Herausgeber mit @: ${q.publisher}`],
+    ],
+  },
 ];
 
 let gruen = 0, rot = 0;

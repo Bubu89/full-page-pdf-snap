@@ -710,11 +710,18 @@
     }
 
     let autoren = alle("citation_author", "dc.creator", "dcterms.creator", "author",
-                       "citation_authors", "article:author", "twitter:creator");
+                       "citation_authors", "article:author");
+    // twitter:creator/site bewusst NICHT: das ist ein Kanalname, kein Verfasser.
+    // ResearchGate lieferte darüber "@ResearchGate" als Autor einer Diskussion —
+    // im Literaturverzeichnis eine Falschangabe, gemeldet am 03.08.2026.
     if (autoren.length === 1 && /;/.test(autoren[0])) autoren = autoren[0].split(";");
     // Leere Namen aussortieren: eine Zeitschrift lieferte content=";;;;;",
     // was sechs leere Verfasser ergab, die als vollständige Angabe galten.
-    autoren = autoren.map(s => String(s).trim()).filter(s => s.length > 1);
+    autoren = autoren.map(s => String(s).trim())
+      // Ein führendes @ macht aus dem Wert einen Kontonamen. Als Verfasser
+      // taugt er nicht, und ihn stillschweigend zu entstellen wäre schlechter,
+      // als ihn wegzulassen.
+      .filter(s => s.length > 1 && !/^@/.test(s));
     if (!autoren.length) autoren = ldAutor();
 
     // Der uebergeordnete Titel — Zeitschrift, Sammelband oder Tagungsband.
