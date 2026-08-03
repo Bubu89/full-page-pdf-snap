@@ -245,6 +245,46 @@
   Regeln, die hier anders sind als üblich.
 </p>
 
+<h3>Warum das über dieses Projekt hinaus interessant sein könnte</h3>
+<p>
+  Nicht als Appell, sondern als Beobachtung: Jedes System, das Software auf
+  einer fremden Maschine einrichtet, steht vor derselben Frage — Oberfläche
+  bedienen oder den Kanal nutzen, den der Hersteller ohnehin mitbringt. Die
+  <a href="/measurements/install-an-extension-without-a-click/">Messung dazu</a>
+  fiel eindeutig aus, und zwar nicht wegen der Geschwindigkeit:
+</p>
+<table>
+  <thead><tr><th scope="col">Weg</th><th scope="col">Dauer</th><th scope="col">Ergebnis</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Oberfläche mit echten Klicks</th><td>179 s</td>
+        <td>meldete an jedem Schritt Erfolg und installierte <strong>nichts</strong></td></tr>
+    <tr><th scope="row">Herstellerkanal (Marionette)</th><td>4,1 s</td>
+        <td>installiert und deinstalliert, meldet Fehler als Fehler</td></tr>
+  </tbody>
+</table>
+<p>
+  Der Unterschied, auf den es ankommt, ist die zweite Spalte von rechts. Ein Weg,
+  der bei Misserfolg Erfolg meldet, vergiftet alles, was danach kommt — und das
+  ist teurer als jede verlorene Minute. Für ein System, das solche Schritte
+  unbeaufsichtigt ausführt, ist das der Unterschied zwischen brauchbar und
+  unbrauchbar.
+</p>
+<p>
+  Deshalb ist <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/14">Issue&nbsp;14</a>
+  offen: ein Verzeichnis solcher Herstellerkanäle, eine Zeile je Anwendung —
+  Kanal, Installations- und Deinstallationsbefehl, benötigte Rechte, eine
+  gemessene Laufzeit. VS&nbsp;Code, JetBrains, Thunderbird und Obsidian stehen
+  als Kandidaten drin, gemessen ist keiner. Eine einzelne Zeile ist ein
+  vollständiger Beitrag, und wer sie beisteuert, hat das Ergebnis selbst
+  zuerst — hier steht es danach unter CC&nbsp;BY&nbsp;4.0 für alle anderen.
+</p>
+<p>
+  Dasselbe gilt für den <a href="/for-agents/">Zitations-Endpunkt</a>: gemessene
+  10 von 20 Quellen werden ohne Browser zu vollständigen Datensätzen, und die
+  zehn übrigen sind einzeln benannt statt pauschal abgetan. Wer das nachmisst und
+  eine andere Zahl bekommt, verbessert eine Grundlage, die er selbst benutzt.
+</p>
+
 <h2>Die fünf Regeln, kurz</h2>
 <ol>
   <li><strong>Beleg vor Formulierung.</strong> Jede Tatsachenbehauptung braucht
