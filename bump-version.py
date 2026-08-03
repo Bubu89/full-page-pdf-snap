@@ -14,6 +14,7 @@ freie Nummer daraus abgeleitet.
     python3 bump-version.py --set 3.0.0
 """
 import json
+import re
 import sys
 import urllib.request
 from pathlib import Path
@@ -42,6 +43,62 @@ def published_versions():
     except Exception as e:
         print(f"  WARNUNG: AMO nicht erreichbar ({str(e)[:50]}) - nur lokal gezaehlt")
         return []
+
+
+# --- Chrome ---------------------------------------------------------------
+#
+# Chrome laeuft auf einer eigenen Reihe: bei Firefox stand 2.19.0, im
+# Chrome-Paket 2.2.0. Das ist kein Versehen, sondern die Folge davon, dass
+# beide Stores unterschiedlich oft angenommen haben. Wer beide Nummern
+# gleichzieht, bekommt beim naechsten Upload eine Ablehnung wegen einer
+# Version, die dort schon existiert.
+#
+# Der Chrome Web Store hat keine offene Abfrage fuer die veroeffentlichte
+# Version. Massgeblich ist deshalb das zuletzt gebaute Paket im Upload-Ordner,
+# hilfsweise das Manifest — beides laesst sich pruefen, im Gegensatz zu einer
+# Annahme.
+CHROME_MANIFEST = HERE / "chrome-mv3" / "manifest.json"
+CHROME_UPLOAD = Path("/mnt/c/Users/HOLO/Documents/FullPagePDFSnap_Chrome/upload")
+
+# Der Chrome Web Store bietet keine offene Abfrage der veroeffentlichten
+# Version. Sie steht deshalb hier und wird bei jeder Annahme im Store
+# nachgezogen — eine Zahl, die von Hand gepflegt wird, aber benannt ist,
+# statt einer, die aus einer Datei geraten wird.
+CHROME_STAND = "2.2.0"
+
+
+def chrome_stand():
+    """Hoechste Nummer, die fuer Chrome bereits gebaut wurde."""
+    # Bewusst NICHT aus chrome-mv3/manifest.json: der Portierungslauf schreibt
+    # dort die Firefox-Nummer hinein. Wer den Chrome-Stand von dort nimmt,
+    # zaehlt die falsche Reihe hoch — am 03.08.2026 wurde so aus 2.2.0 eine
+    # 2.20.0. Massgeblich sind die gebauten Pakete und CHROME_STAND.
+    kandidaten = [CHROME_STAND]
+    try:
+        for f in CHROME_UPLOAD.glob("*chrome-*.zip"):
+            m = re.search(r"(\d+\.\d+\.\d+)", f.name)
+            if m:
+                kandidaten.append(m.group(1))
+    except Exception:
+        pass
+    return max(kandidaten, key=parse) if kandidaten else "0.0.0"
+
+
+def chrome_setzen(neu):
+    d = json.loads(CHROME_MANIFEST.read_text(encoding="utf-8"))
+    alt = d.get("version")
+    if alt == neu:
+        return alt
+    s = CHROME_MANIFEST.read_text(encoding="utf-8")
+    CHROME_MANIFEST.write_text(s.replace(f'"{alt}"', f'"{neu}"', 1), encoding="utf-8")
+    # Der Portierungslauf ueberschreibt das Manifest aus der Firefox-Quelle;
+    # dort steht die Chrome-Nummer, damit sie den Lauf ueberlebt.
+    pp = HERE / "chrome-mv3" / "port.py"
+    if pp.exists():
+        t = pp.read_text(encoding="utf-8")
+        if alt and alt in t:
+            pp.write_text(t.replace(alt, neu), encoding="utf-8")
+    return neu
 
 
 def main():
@@ -85,6 +142,17 @@ def main():
     f.write_text(t.replace(f'"version": "{local}",', f'"version": "{target}",'), encoding="utf-8")
 
     print("  geschrieben in manifest.json und chrome-mv3/port.py")
+
+    # Chrome laeuft auf einer eigenen Reihe und wird getrennt hochgezaehlt.
+    # Sie an die Firefox-Nummer anzugleichen wuerde dort Nummern ueberspringen
+    # oder — schlimmer — eine bereits eingereichte doppelt vergeben.
+    c_alt = chrome_stand()
+    a, b, _ = parse(c_alt)
+    c_neu = f"{a}.{b + 1}.0" if "--patch" not in sys.argv else f"{a}.{b}.{parse(c_alt)[2] + 1}"
+    if "--set-chrome" in sys.argv:
+        c_neu = sys.argv[sys.argv.index("--set-chrome") + 1]
+    chrome_setzen(c_neu)
+    print(f"  Chrome       : {c_alt} -> {c_neu}  (eigene Reihe)")
     return 0
 
 

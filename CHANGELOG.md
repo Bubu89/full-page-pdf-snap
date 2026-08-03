@@ -1,3 +1,26 @@
+## 2026-08-03 — Zwei Versionsreihen, und warum das Skript sie jetzt kennt
+
+Firefox stand bei 2.19.0, das Chrome-Paket bei 2.2.0. Das ist kein Versehen,
+sondern die Folge davon, dass beide Stores unterschiedlich oft angenommen haben.
+`bump-version.py` fragte aber nur AMO ab und schrieb dieselbe Nummer in beide
+Manifeste — die Chrome-Reihe sprang damit still um achtzehn Nummern.
+
+Jetzt zaehlt das Skript beide getrennt:
+
+- **Firefox** aus der AMO-Abfrage. Sie ist messbar, also wird gemessen.
+- **Chrome** aus `CHROME_STAND` und den gebauten Paketen. Der Chrome Web Store
+  bietet keine offene Abfrage der veroeffentlichten Version — eine Zahl, die von
+  Hand gepflegt wird, aber im Code benannt steht, ist ehrlicher als eine, die aus
+  einer Datei geraten wird.
+
+Ein Fallstrick dabei: Der Chrome-Stand darf **nicht** aus
+`chrome-mv3/manifest.json` kommen. Der Portierungslauf schreibt dort die
+Firefox-Nummer hinein, und wer von dort liest, zaehlt die falsche Reihe hoch —
+beim ersten Versuch wurde so aus 2.2.0 eine 2.20.0.
+
+Stand: **Firefox 2.20.0** (2.19.0 ist bei AMO veroeffentlicht),
+**Chrome 2.3.0** (2.2.0 war die letzte gebaute).
+
 ## 2026-08-03 — Bereichsauswahl lieferte ein zerstoertes Bild
 
 Gemeldet an einer Doku-Seite: waagrechte Streifen, senkrecht gestauchter Inhalt,
