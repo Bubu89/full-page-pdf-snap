@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The sources a machine cannot cite for you — and how to cite them anyway — Proving Lab</title>
-<meta name="description" content="Ten of twenty sources came back uncited. Three different causes, three different responses — and only one is solved by opening the page in a browser. How to tell them apart, and how to cite a web source that declares nothing about itself.">
-<link rel="canonical" href="https://provinglab.dev/notes/sources-a-machine-cannot-cite/">
+<title>How to save a web page as a PDF — one sheet, with its source on it — Proving Lab</title>
+<meta name="description" content="Save a whole web page as one PDF without page breaks, including pages behind a login and on Android. With the honest comparison against the browser's own print export — which wins on selectable text — and why the file should carry its retrieval date.">
+<link rel="canonical" href="https://provinglab.dev/how-to/save-a-webpage-as-pdf/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
 <link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
@@ -14,9 +14,9 @@
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 
 <meta property="og:type" content="article">
-<meta property="og:title" content="The sources a machine cannot cite for you — and how to cite them anyway">
-<meta property="og:description" content="When a citation tool hands a source back, the cause is one of three: a bot defence, a refusal aimed at the network, or a page with no citation data at all. Each needs different work. Two requests tell them apart.">
-<meta property="og:url" content="https://provinglab.dev/notes/sources-a-machine-cannot-cite/">
+<meta property="og:title" content="How to save a web page as a PDF — one sheet, with its source on it">
+<meta property="og:description" content="The short answer: a capture extension, not the print dialog. The same article came out as 26 pages with 9 breaks cutting a sentence, against one continuous sheet. Every figure links to the measurement behind it.">
+<meta property="og:url" content="https://provinglab.dev/how-to/save-a-webpage-as-pdf/">
 <meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
 <meta property="article:published_time" content="2026-08-02">
 <meta property="article:modified_time" content="2026-08-03">
@@ -25,13 +25,13 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "The sources a machine cannot cite for you — and how to cite them anyway",
-  "description": "Ten of twenty sources came back uncited. Three different causes, three different responses — and only one is solved by opening the page in a browser. How to tell them apart, and how to cite a web source that declares nothing about itself.",
+  "@type": "HowTo",
+  "headline": "How to save a web page as a PDF — one sheet, with its source on it",
+  "description": "Save a whole web page as one PDF without page breaks, including pages behind a login and on Android. With the honest comparison against the browser's own print export — which wins on selectable text — and why the file should carry its retrieval date.",
   "datePublished": "2026-08-03",
   "dateModified": "2026-08-03",
   "inLanguage": "en",
-  "url": "https://provinglab.dev/notes/sources-a-machine-cannot-cite/",
+  "url": "https://provinglab.dev/how-to/save-a-webpage-as-pdf/",
   "author": {
     "@type": "Organization",
     "name": "Proving Lab",
@@ -44,6 +44,54 @@
   },
   "isAccessibleForFree": true,
   "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I save a whole web page as one PDF without page breaks?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use a capture extension rather than the print dialog. The browser's print export paginates: the same article came out as 26 pages, and 9 page breaks cut through a sentence. A full-page capture writes one continuous sheet. Both routes are measured at https://provinglab.dev/measurements/print-to-pdf-vs-screenshot/ — including the cases where print is the better choice, because it keeps selectable text."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I save a page that is behind a login or a paywall I have access to?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, if you open it in your own browser. An extension captures what your session already shows, so a licensed article or a course page is saved as you see it. No server-side service can do this, because it does not have your session. It is not a way to reach content you do not have access to."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I save a web page as PDF on a phone?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "On Android, only Firefox can do it: Chrome for Android installs no extensions at all. Of 248 page-saving extensions checked against the add-ons API, 60 declare Android support. Measured at https://provinglab.dev/measurements/android-capture-extensions/"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does a saved page need the retrieval date?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because a web source can change or vanish, and for a page that declares no publication date the retrieval date is the only date a reference can carry. Of 150 sources taken from real bibliographies, 19.3 % were gone and 8.7 % had no archived copy anywhere; where a snapshot existed it was a median of 603 days old."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I turn a list of links into a bibliography automatically?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Partly, and it is worth knowing which part. Of 20 mixed sources, 10 became complete records with RIS and BibTeX over plain HTTP in 8.1 seconds. The other 10 need a person — one because of a bot defence, four because the publisher refuses that network, and five because the page declares no citation data at all."
+      }
+    }
+  ]
 }
 </script>
 <script type="application/ld+json">
@@ -175,130 +223,106 @@
 
 <div class="wrap">
 <header>
-  <h1>The sources a machine cannot cite for you — and how to cite them anyway</h1>
+  <h1>How to save a web page as a PDF — one sheet, with its source on it</h1>
   <p class="standfirst">
-    Of twenty sources in a reading list, ten came back as finished citations and
-    ten were handed back. Handing them back is the right behaviour. This is what
-    to do with them, which differs by cause — and only one of the three cases is
-    solved by opening the page in a browser.
+    The short answer: use a capture extension, not the print dialog. Print
+    paginates — the same article came out as <strong>26 pages with 9 breaks
+    cutting through a sentence</strong>. A capture writes one continuous sheet
+    and can stamp the page with where it came from and when.
   </p>
-  <p class="meta">3 August 2026 · from the
-    <a href="/measurements/reading-list-to-bibliography/">twenty-source
-    measurement</a></p>
+  <p class="meta">3 August 2026 · every figure on this page links to the
+    measurement it comes from</p>
 </header>
 
 <p>
-  Anyone assembling a reference list from web sources meets the same wall
-  eventually: the automated part stops, and it is not obvious whether the tool
-  failed, the page is defended, or there was never anything there to collect.
-  The three look identical from the outside — an empty result — and they need
-  completely different work. Guessing wrong wastes an afternoon on a page that
-  will never yield a record, or gives up on one that opens on the first click.
+  <a class="btn" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Firefox, desktop and Android</a>
+  &nbsp;<a class="btn" href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome 116+, Edge, Brave, Vivaldi</a>
 </p>
-<p>
-  So the useful question is not <em>how do I get a citation</em>. It is
-  <em>which of the three is this?</em>
+<p style="font-size:.9rem">
+  Free, MIT licensed, runs on the device. Edge asks once to allow extensions
+  from other stores; Opera needs its <em>Install Chrome Extensions</em> add-on
+  first. Then: open the page, press <code>Alt+Shift+Y</code> or click the icon.
 </p>
 
-<h2>Case 1 — the page answers a browser but not a reader</h2>
+<h2>Print to PDF or capture? The honest comparison</h2>
+<table>
+  <thead><tr><th></th><th>Browser print</th><th>Full-page capture</th></tr></thead>
+  <tbody>
+    <tr><td>Same article comes out as</td><td>26 pages</td><td><strong>1 sheet</strong></td></tr>
+    <tr><td>Page breaks cutting a sentence</td><td>9</td><td>0</td></tr>
+    <tr><td>Text you can select and search</td><td><strong>94.8 % recall</strong></td><td>from OCR: 92.6 %</td></tr>
+    <tr><td>Costs anything</td><td>no, built in</td><td>no</td></tr>
+  </tbody>
+</table>
 <p>
-  <strong>1 of the twenty.</strong> A server-side reader gets 403; a
-  browser gets the page. This is a bot defence, and it is the only case where
-  opening the source yourself changes what is available.
-</p>
-<p>
-  What to do: open it in the browser you already have. Your session, your
-  network, your institutional access. Then take the source with you before it
-  changes — a
-  <a href="/tools/full-page-pdf-snap/">full-page capture</a> writes the page as
-  one PDF with the URL and the retrieval date on it, which is what a reference
-  to a web source has to carry anyway. The metadata for the entry is then in
-  the header of your own file rather than in a service's index.
-</p>
-<p>
-  Why bother capturing at all, rather than noting the link: because
-  <a href="/measurements/web-citations-that-vanish/">we measured what happens to
-  web sources after they are cited</a>. A URL in a reference list is a promise
-  about a page you no longer control.
+  <strong>Print wins on text.</strong> If all you need is a readable, searchable
+  copy and the pagination does not bother you, the function already in your
+  browser is enough — and this page says so rather than pretending otherwise.
+  A capture is worth it when the layout matters, when a break would fall through
+  a table, or when the source details have to travel with the file.
+  <a href="/measurements/print-to-pdf-vs-screenshot/">Method and raw data</a>
 </p>
 
-<h2>Case 2 — the page refuses everyone from this address</h2>
+<h2>Behind a login or a paywall you have access to</h2>
 <p>
-  <strong>4 of the twenty.</strong> 403 to a browser user agent as
-  readily as to a reader. Here the client is not the problem: requests coming
-  from a data centre are refused whatever they claim to be. Publishers do this
-  to deter bulk downloading, and it catches every automated tool equally.
-</p>
-<p>
-  What to do: nothing clever. Open the page from your own connection, where
-  these same publishers answer normally, and use their own export — most journal
-  pages offer <em>Cite</em> → RIS or BibTeX, and that file is better than
-  anything a reader can reconstruct. If you need the article itself rather than
-  the entry, that is a library question, not a tooling question.
-</p>
-<p>
-  The one thing not to do is retry from the same place with a different user
-  agent. It does not work, and a tool that pretends to be a browser to get past
-  a rule that is aimed at it is a tool you cannot cite in good conscience.
+  A capture extension reads what your own session already shows. A licensed
+  journal article, a course page, an order confirmation — saved as you see it.
+  No server-side converter can do this, because it does not have your session:
+  measured across 20 mixed sources, a server-side reader was refused by 5 of
+  them outright. Capturing a page you may read is a copy for your own use; it is
+  not a route to content you do not have access to.
 </p>
 
-<h2>Case 3 — the page answers in full and has nothing to declare</h2>
+<h2>On a phone</h2>
 <p>
-  <strong>5 of the twenty — the largest group, and the one people
-  expect least.</strong> Fifty to ninety kilobytes of readable HTML, no defence
-  of any kind, and no author, no date, no title of a work. A statistics portal
-  page, a chamber-of-commerce service page, a news article, a software release.
-</p>
-<p>
-  What to do: write the entry yourself, because the decision the machine cannot
-  make is <em>what the work is</em>. Is the source the statistics portal page,
-  the dataset behind it, or the release the portal announces? A citation tool
-  that answers here has picked one for you without saying so.
-</p>
-<p>
-  Two things make that manual entry defensible. First, the retrieval date, which
-  for a page with no publication date is the only date the reference can carry.
-  Second, the state of the page as you saw it — a
-  <a href="/tools/full-page-pdf-snap/">capture</a> stamped with the URL and the
-  date, kept with the work. For grey literature and official web pages this is
-  not belt and braces; a corporate page or an agency portal is rebuilt on no
-  schedule and with no notice.
+  Only Firefox. <strong>Chrome for Android installs no extensions at all</strong>,
+  so the question only arises there. Of 248 page-saving extensions checked
+  against the add-ons API, 60 declare Android support and none had been tested on
+  a device before we did.
+  <a href="/measurements/android-capture-extensions/">The Android measurement</a>
 </p>
 
-<h2>Telling the three apart in one step</h2>
+<h2>Why the file should carry its source</h2>
 <p>
-  Two requests answer it. If the second succeeds where the first fails, it is
-  case 1. If both fail, case 2. If both succeed and the record still comes back
-  <code>complete: false</code>, case 3.
+  A URL in a bibliography is a promise about a page you do not control. Checked
+  against 150 sources taken from real reference lists: <strong>19.3 % were
+  gone</strong>, 8.7 % had no archived copy anywhere, and where a snapshot
+  existed it was a median of 603 days old. For a page that declares no
+  publication date, the time of retrieval is the only date a reference can carry
+  — and it exists only at the moment you look.
+  <a href="/measurements/web-citations-that-vanish/">What happens to a source
+  after you cite it</a>
 </p>
-<pre><code>curl -sI -A 'my-reader/1.0' "$URL" | head -1     # as a reader
-curl -sI -A "$BROWSER_UA"    "$URL" | head -1     # as a browser</code></pre>
 <p>
-  In an AI workflow the same three cases fall out of the record itself: a
-  <code>warning</code> naming a wall is case 1 or 2, and
-  <code>complete: false</code> with no warning is case 3. Which is why the flag
-  matters more than the title — the
-  <a href="/measurements/reading-list-to-bibliography/">measurement</a> has two
-  records that carry a title, an author, and no completeness.
+  A capture can write that in: authors, title, DOI, licence and the exact time,
+  inside the PDF and in an RIS record beside it — a format that imports into
+  Zotero, Citavi, EndNote or Mendeley.
 </p>
 
-<h2>What this is not</h2>
+<h2>A whole reading list at once</h2>
+<p>
+  For a bibliography rather than a single page, most of the work needs no
+  browser. Of 20 mixed sources, <strong>10 became complete records with RIS and
+  BibTeX in 8.1 seconds</strong> over plain HTTP — no account, no key. The other
+  ten are handed back with the reason, so you know which addresses need you.
+  <a href="/recipes/">The recipes</a> ·
+  <a href="/measurements/reading-list-to-bibliography/">the measurement</a>
+</p>
+
+<h2>What this does not do</h2>
 <ul>
-  <li><strong>Not a way past a paywall.</strong> Every case above assumes you
-    have access — your own, or your institution's. Capturing a page you may
-    read is a copy for your own use; it is not a route to one you may not.</li>
-  <li><strong>Not a replacement for a publisher's export.</strong> Where a
-    <em>Cite</em> button exists, use it.</li>
-  <li><strong>Not stable.</strong> 4 of these refusals are refusals of
-    a data centre address and would not reproduce from a home connection. The
-    <a href="/data/2026-08-03-reading-list-to-bibliography.json">data</a> says which.</li>
+  <li>It does not reach content you have no access to.</li>
+  <li>A screen capture is not a qualified electronic document. It records what a
+    page looked like at a time, which is a different thing from proving it.</li>
+  <li>Where a publisher offers its own <em>Cite → RIS</em> export, that file is
+    authoritative and better than anything reconstructed from the page.</li>
 </ul>
 <footer>
-      Follows the twenty-source measurement of 3 August 2026.
-      Raw data: <a href="/data/2026-08-03-reading-list-to-bibliography.json">JSON</a>, CC BY 4.0.
+      Figures measured between 1 and 3 August 2026, each linked to its method and raw data.
       <br><br>
-      Corrections are welcome and are made in public: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">open an issue</a>. If a figure here is wrong, the data and the script are published so it can be shown to be wrong. <br><br>
-      Disclosure: the author develops Full Page PDF Snap, the capture extension linked above. It is one way to do the step it is named for and not the only one — the browser's own print-to-PDF is compared against it in a <a href="/measurements/print-to-pdf-vs-screenshot/">published measurement</a>, including the cases where print wins.
+      Corrections are welcome and are made in public: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">open an issue</a>.
+      <br><br>
+      Disclosure: the author develops Full Page PDF Snap, the extension named on this page. The browser's own print-to-PDF is <a href="/measurements/print-to-pdf-vs-screenshot/">measured against it</a>, including where print wins.
       <br><br>
       <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
     </footer>

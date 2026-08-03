@@ -7,6 +7,11 @@
 Run by the developer of Full Page PDF Snap, which appears in several of the
 measurements. Disclosed on every page where it is relevant.
 
+## Start here
+
+- [For AI agents](https://provinglab.dev/for-agents/): The whole surface on one page — connect with `claude mcp add --transport http provinglab https://provinglab.dev/mcp`, five tools, and the one rule worth hard-coding: read the `complete` flag, never the title alone, because a refused record still carries a title and two of twenty measured sources returned a title AND an author while complete was false. Includes what a reading list actually yields (10 of 20 complete, 0.4 s per source), and the measured line between agents that can drive a browser extension (real input events) and agents that cannot (CDP and DOM only). No account, no key; please use it in proportion.
+- [How to save a web page as a PDF](https://provinglab.dev/how-to/save-a-webpage-as-pdf/): The answer for a person, with every figure linked to its measurement. Short version: a capture extension rather than the print dialog, because print paginates — the same article came out as 26 pages with 9 breaks cutting through a sentence, against one continuous sheet. Says plainly where print wins (94.8 % text recall, it keeps selectable text). Covers pages behind a login you have access to, Android (only Firefox — Chrome for Android installs no extensions at all), and why the file should carry its retrieval date: of 150 sources from real bibliographies, 19.3 % were gone and 8.7 % had no archived copy anywhere.
+
 ## Notes
 
 - [Pages that are gone before you need them: eight moments in a degree](https://provinglab.dev/notes/pages-gone-before-you-need-them/): Eight recurring situations in a degree where something on screen becomes evidence later — the submission receipt, a course room that closes, the version of an examination regulation that applied at enrolment, a statistics query that returns different figures next year. With what not to keep: other people's data, and teaching material beyond your own use. German version on the same page.

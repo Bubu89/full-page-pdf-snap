@@ -42,6 +42,14 @@
     <summary type="text">Ten of twenty sources came back uncited. Three different causes, three different responses — and only one is solved by opening the page in a browser. How to tell them apart, and how to cite a web source that declares nothing about itself.</summary>
   </entry>
   <entry>
+    <title>For AI agents: citations without a browser, and the step that needs one</title>
+    <id>https://provinglab.dev/for-agents/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/for-agents/"/>
+    <published>2026-08-03T00:00:00Z</published>
+    <updated>2026-08-03T00:00:00Z</updated>
+    <summary type="text">An MCP endpoint that turns a URL into a citation record with RIS and BibTeX — no account, no key — plus the measured rule for the sources it hands back, and whether your agent can drive the capture extension itself.</summary>
+  </entry>
+  <entry>
     <title>Can an AI agent use a browser extension? Measured — and the answer has two halves</title>
     <id>https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/</id>
     <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/"/>

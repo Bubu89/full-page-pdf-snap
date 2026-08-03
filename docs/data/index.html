@@ -58,7 +58,9 @@
     <a class="brand" href="../"><img src="../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
     <a class="n" href="../notes/">Notes</a>
     <a class="n" href="../measurements/">Measurements</a>
+    <a class="n" href="../how-to/save-a-webpage-as-pdf/">How&nbsp;to</a>
     <a class="n" href="../recipes/">Recipes</a>
+    <a class="n" href="../for-agents/">For&nbsp;agents</a>
     <a class="n" href="../tools/">Tools</a>
     <a class="n" href="../about/">About</a>
     <a class="n" href="../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
@@ -71,6 +73,18 @@
   <h1>Data</h1>
   <p class="lead">The raw numbers behind the measurements, as JSON — including the control runs. Licensed CC BY 4.0, so they can be reused with attribution.</p>
 </header>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-real-gesture.json">2026-08-03-agent-real-gesture.json</a></h2>
+  <p>Whether a synthetic input event at window-system level satisfies the activeTab gesture requirement: tabs visible to the extension before and after a keyboard command sent through X11 XTEST. <a href="../notes/what-an-agent-can-do-with-an-extension/">Method and discussion</a>.</p>
+  <div class="figures"><span><b>0</b> tabs before</span><span><b>1</b> tab after</span><span>Chromium 145</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-uses-the-extension.json">2026-08-03-agent-uses-the-extension.json</a></h2>
+  <p>The counterpart: an agent driving the browser through CDP and the DOM only. The extension loads and its service worker runs, then every tab comes back with an empty url. <a href="../notes/what-an-agent-can-do-with-an-extension/">Method and discussion</a>.</p>
+  <div class="figures"><span><b>2/4</b> steps pass</span><span><b>0</b> tabs visible</span><span>activeTab, no host permissions</span></div>
+</div>
 
 <div class="item">
   <h2><a href="2026-08-02-quellen-archiv.json">2026-08-02-quellen-archiv.json</a></h2>
@@ -88,17 +102,6 @@
   <h2><a href="2026-08-01-extension-permissions.json">2026-08-01-extension-permissions.json</a></h2>
   <p>Declared permissions, host permissions, user counts and ratings for eight PDF and capture extensions, as retrieved from the Mozilla add-ons API. <a href="../measurements/pdf-extension-permissions/">Method and discussion</a>.</p>
   <div class="figures"><span><b>8</b> extensions</span><span>source: addons.mozilla.org API</span></div>
-</div>
-<div class="item">
-  <h2><a href="2026-08-02-quellen-archiv.json">2026-08-02-quellen-archiv.json</a></h2>
-  <p>For 150 cited web sources: live status, verdict, whether the Internet Archive holds a snapshot and how old it is. Cases where a service did not answer are marked as such rather than counted as negative. <a href="../measurements/web-citations-that-vanish/">Method and discussion</a>.</p>
-  <div class="figures"><span><b>19.3 %</b> gone</span><span><b>8.7 %</b> unarchived</span><span><b>603 d</b> median snapshot age</span></div>
-</div>
-
-<div class="item">
-  <h2><a href="2026-08-01-ocr-recall.json">2026-08-01-ocr-recall.json</a></h2>
-  <p>How much text survives when a full-page screenshot PDF goes through OCR, plus the full resolution series and a control run against unrelated text. <a href="../measurements/webpage-to-pdf-for-ocr/">Method and discussion</a>.</p>
-  <div class="figures"><span><b>92.6&nbsp;%</b> vocabulary recall</span><span><b>110 dpi</b> threshold</span><span><b>0.0&nbsp;%</b> control</span></div>
 </div>
 
 <div class="item">
