@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Erzeugt docs/deutsch/index.html — die Übersicht der deutschen Fassungen.
 
-Warum es diese Seite gibt: Fünf Seiten tragen einen vollständigen deutschen
-Teil, die übrigen vierzehn nicht. Ein Menüpunkt, der mal erscheint und mal
+Warum es diese Seite gibt: Acht Seiten tragen einen vollständigen deutschen
+Teil, die übrigen nicht. Ein Menüpunkt, der mal erscheint und mal
 nicht, ist für Leser schlechter als keiner — er wirkt wie ein Fehler. Mit
 dieser Seite steht „Deutsch" überall im Menü und führt immer irgendwohin:
 auf Seiten mit eigenem deutschen Teil direkt dorthin, sonst hierher.
@@ -52,9 +52,10 @@ def kopf_und_fuss():
 def anpassen(kopf):
     URL = "https://provinglab.dev/deutsch/"
     TITEL = "Deutschsprachige Fassungen"
-    BESCHR = ("Fünf Beiträge auf provinglab.dev tragen eine vollständige deutsche "
-              "Fassung: zum Werkzeug, zu verschwindenden Quellen, zu Nachweisen im "
-              "Studium, zur Offenlegung und zum Haftungsausschluss.")
+    BESCHR = ("Acht Beiträge auf provinglab.dev tragen eine vollständige deutsche "
+              "Fassung: zum Werkzeug, zu verschwindenden Quellen, zu Zitationsdaten "
+              "und Literaturverzeichnissen, zu Nachweisen im Studium, zur "
+              "Offenlegung und zum Haftungsausschluss.")
     k = kopf
     k = re.sub(r"<title>.*?</title>", f"<title>{TITEL} — Proving Lab</title>", k, flags=re.S)
     k = re.sub(r'(<meta name="description" content=")[^"]*(")',

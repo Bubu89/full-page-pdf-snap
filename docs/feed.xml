@@ -15,7 +15,7 @@
     <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/citation-by-platform/"/>
     <published>2026-08-03T00:00:00Z</published>
     <updated>2026-08-03T00:00:00Z</updated>
-    <summary type="text">Where citation data actually lives: 18 scholarly platforms measured. Resolving the DOI beats visiting the article page — with the numbers behind that rule.</summary>
+    <summary type="text">Which platforms declare citation data a reader can use? Eleven of eighteen returned a record, ten of them complete. The most complete record of all came from the DOI resolver — not from the article page. Mit deutscher Fassung.</summary>
   </entry>
   <entry>
     <title>Twenty links, ten citations: what a machine finishes and what it hands back</title>
@@ -23,7 +23,7 @@
     <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/reading-list-to-bibliography/"/>
     <published>2026-08-03T00:00:00Z</published>
     <updated>2026-08-03T00:00:00Z</updated>
-    <summary type="text">Turning a reading list into a bibliography, measured: 10 of 20 sources became complete records with RIS and BibTeX in 8 seconds. Only one of the other ten was stopped by a bot defence — five pages answered in full and declared no citation data.</summary>
+    <summary type="text">Turning a reading list into a bibliography, measured: 10 of 20 sources became complete records with RIS and BibTeX in 8 seconds. Only one of the other ten was stopped by a bot defence — five pages answered in full and declared no citation data. Mit deutscher Fassung.</summary>
   </entry>
   <entry>
     <title>This site runs an MCP server. Measured: it is smaller than the file it competes with</title>

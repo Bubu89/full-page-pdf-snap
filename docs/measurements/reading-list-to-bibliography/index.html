@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Twenty links, ten citations: what a machine finishes and what it hands back — Proving Lab</title>
-<meta name="description" content="Turning a reading list into a bibliography, measured: 10 of 20 sources became complete records with RIS and BibTeX in 8 seconds. Only one of the other ten was stopped by a bot defence — five pages answered in full and declared no citation data.">
+<meta name="description" content="Turning a reading list into a bibliography, measured: 10 of 20 sources became complete records with RIS and BibTeX in 8 seconds. Only one of the other ten was stopped by a bot defence — five pages answered in full and declared no citation data. Mit deutscher Fassung.">
 <link rel="canonical" href="https://provinglab.dev/measurements/reading-list-to-bibliography/">
 <link rel="alternate" hreflang="en" href="https://provinglab.dev/measurements/reading-list-to-bibliography/">
 <link rel="alternate" hreflang="de" href="https://provinglab.dev/measurements/reading-list-to-bibliography/">
@@ -32,7 +32,10 @@
   "description": "Turning a reading list into a bibliography, measured: 10 of 20 sources became complete records with RIS and BibTeX in 8 seconds. Only one of the other ten was stopped by a bot defence — five pages answered in full and declared no citation data.",
   "datePublished": "2026-08-03",
   "dateModified": "2026-08-03",
-  "inLanguage": "en",
+  "inLanguage": [
+    "en",
+    "de"
+  ],
   "url": "https://provinglab.dev/measurements/reading-list-to-bibliography/",
   "author": {
     "@type": "Organization",
@@ -45,7 +48,16 @@
     "url": "https://provinglab.dev/"
   },
   "isAccessibleForFree": true,
-  "license": "https://creativecommons.org/licenses/by/4.0/"
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "about": [
+    "citation",
+    "bibliography",
+    "reading list",
+    "Literaturverzeichnis",
+    "Quellennachweis",
+    "Zitieren"
+  ],
+  "keywords": "reading list, citation endpoint, MCP, Literaturverzeichnis erstellen, Internetquellen zitieren, Abrufdatum, RIS, BibTeX, Citavi, Zotero"
 }
 </script>
 <script type="application/ld+json">
@@ -169,7 +181,7 @@
     <a class="n" href="../../mitmachen/">Mitmachen</a>
     <a class="n" href="../../tools/">Tools</a>
     <a class="n" href="../../about/">About</a>
-    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Zur deutschen Fassung auf dieser Seite">Deutsch</a>
+    <a class="n" href="#b-de" hreflang="de" lang="de" title="Zur deutschen Fassung auf dieser Seite">Deutsch</a>
       <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
   </div>
 </nav>
@@ -688,5 +700,22 @@ done &lt; reading-list.txt &gt; literature.ris</code></pre>
     </footer>
 
 </div>
+<script>
+function setLang(l){
+  document.querySelectorAll('[data-lang]').forEach(function(e){
+    e.classList.toggle('on', e.dataset.lang === l);
+  });
+  document.getElementById('b-en').setAttribute('aria-pressed', l === 'en');
+  document.getElementById('b-de').setAttribute('aria-pressed', l === 'de');
+  document.documentElement.lang = l;
+  try { localStorage.setItem('pl-lang', l); } catch (e) {}
+}
+(function(){
+  var gespeichert = null;
+  try { gespeichert = localStorage.getItem('pl-lang'); } catch (e) {}
+  var l = gespeichert || ((navigator.language || 'en').slice(0,2) === 'de' ? 'de' : 'en');
+  if (l === 'de') setLang('de');
+})();
+</script>
 </body>
 </html>

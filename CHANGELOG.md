@@ -1,3 +1,47 @@
+## 2026-08-03 — Vier der fuenf offenen Aufgaben bearbeitet (#1 bis #4)
+
+**Was.** Die Issues #1 bis #4 sind umgesetzt; #5 (MCP-Verzeichnisse) bleibt
+offen, weil das Eintragen von Hand und mit Namen geschieht.
+
+**Warum.** Vier der fuenf Aufgaben aus `open_work` waren ohne externe
+Abhaengigkeit loesbar — und drei davon schlossen Luecken, die die Seite selbst
+benannt hatte.
+
+**Wie und Ergebnis.**
+
+- **#1 Deutsche Fassungen.** Alle drei Zitations-Messungen tragen jetzt eine
+  deutsche Fassung auf derselben Adresse (`#b-de`), nach dem Muster von
+  `web-citations-that-vanish`: Sprachschalter, `hreflang` in beide Richtungen,
+  `inLanguage: ["en", "de"]`. Zahlen unveraendert aus denselben Rohdaten,
+  nichts neu gemessen. `build-de-index.py` zaehlt jetzt ehrlich: acht
+  Fassungen statt fuenf.
+- **#2 Log-Aufbewahrung.** `privacy.html` benennt in beiden Sprachen, was der
+  Endpunkt anfaellt (Invocation-Logs mit Methode und Pfad der Anfrage — der
+  Worker schreibt selbst nichts, die im Tool uebergebene Adresse steht im
+  Request-Body und taucht in den Logs nicht auf), wo (Cloudflare Workers Logs)
+  und wie lange (3 Tage Free, 7 Tage Paid; Quelle Cloudflare-Doku, Abruf
+  2026-08-03). Der Tarif war per API nicht auslesbar, deshalb
+  plandifferenziert statt geschaetzt. `RECHTSPRUEFUNG.md` §6 als erledigt
+  markiert.
+- **#3 Gegenmessung.** Dieselben 20 Adressen, gleiche Methode, anderes Netz:
+  ein kommerzieller VPN-Ausgang (AS209854) statt des Rechenzentrums. Ergebnis
+  11 von 20 statt 10 — aber der Unterschied ist Zenodos Metadaten, nicht das
+  Netz. Die vier Netz-Sperren ruehrten sich nicht. Der Beitrag nennt die
+  Gegenmessung neben der urspruenglichen Zahl und sagt offen, dass die
+  Heimnetz-Frage weiter offen ist. Rohdaten:
+  `docs/data/2026-08-03-reading-list-to-bibliography-vpn-ausgang.json`.
+- **#4 Seitenart im Endpunkt.** `extract_citation` liefert jetzt `pageType`,
+  soweit die Seite ihn deklariert (`og:type`, sonst erster schema.org-`@type`;
+  wo nichts deklariert ist, bleibt das Feld weg — kein Raten). Der Kernfall
+  aus dem Issue: Zenodo deklariert `SoftwareSourceCode` — ein Software-Release
+  ist richtig unvollstaendig, kein Artikel mit fehlendem Jahr. Drei neue
+  Testfaelle, 21/21 in `tests/zitation.test.mjs`.
+
+**Was dabei schiefging und blieb.** Zwei Agenten arbeiteten parallel im
+selben Baum; ein Fremd-Commit (`518dc20`) nahm uncommittete Aenderungen unter
+einer anderen Botschaft mit auf. Inhaltlich stimmt alles, die Historie trennt
+die vier Aenderungen nicht sauber. Lektion daraus steht in `AGENTS.md`.
+
 ## 2026-08-03 — Elf Aufgaben, die nicht erfunden sind
 
 **Was.** Sechs weitere Issues (#6 bis #11) zur Weiterentwicklung, alle aus
