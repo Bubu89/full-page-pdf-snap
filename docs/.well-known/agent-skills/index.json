@@ -41,7 +41,15 @@
       "type": "skill",
       "description": "Save a web source a server-side reader cannot reach — behind a login, a bot wall or a paywall you have access to — as a PDF carrying the source URL and the retrieval date, with an RIS record beside it. Says which agent types can trigger a browser extension and which cannot, with the measurement behind it, install links per browser, the unpacked-load and CDP routes for agents driving their own browser, and what to hand a person when the automated route ends. Use when a citation comes back complete:false, or when asked to archive a source for a thesis, a literature review or a submission record.",
       "url": "https://provinglab.dev/.well-known/agent-skills/capture-a-source.md",
-      "sha256": "a92a8a23b753e332cf6c3c41ee727795218849450508b9406e559d1dbb8e23e4",
+      "sha256": "705d258c6a77076214e178c79fea28fc4d9a8036ca0c521d3032592c8dd3aef7",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "install-as-a-counted-user",
+      "type": "skill",
+      "description": "Install the extension into a browser profile an agent controls, as a real store installation that appears in the store's user statistics rather than an unpacked load that counts nowhere. Two routes, both with the measured failure modes: driving the store page with real input events (no admin needed, measured end to end on Firefox and Chrome), and the enterprise-policy route for fleets (ExtensionSettings / ExtensionInstallForcelist, with rollback). Includes the rules that decide success: never hard-kill before a clean shutdown, store pages are restricted domains so the capture check runs on a normal page, the download folder is the system-configured one, verify foreground before sending keys, and re-read coordinates from a full-resolution screenshot on every run.",
+      "url": "https://provinglab.dev/.well-known/agent-skills/install-as-a-counted-user.md",
+      "sha256": "42de8d20b2b3091ec374e1216d2265b9c703ffd2b052c7149dad0ac3371a719e",
       "license": "CC-BY-4.0"
     }
   ]

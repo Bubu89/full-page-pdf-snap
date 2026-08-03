@@ -1,3 +1,56 @@
+## 2026-08-03 — Agent installiert die Store-Version als gezaehlter Nutzer
+
+**Was.** Neuer Weg fuer Agenten, die einen eigenen Browser fahren: die
+Erweiterung als echte Store-Installation (zaehlt in den Store-Statistiken)
+statt als entpackter Ordner (zaehlt nirgendwo). Neuer Agent-Skill
+`install-as-a-counted-user`, Messung mit Rohdaten, zwei Werkzeuge,
+Verdrahtung in llms.txt, `/for-agents/`, Skill-Index und MCP
+(`how_to_capture` → `countedInstall`). Nachtrag gleichen Tags: die stille
+Variante (PostMessage, ohne Fokus/Maus des Users) wurde ebenfalls vermessen
+— und faellt aus; `protokoll-agent-install.md` dokumentiert jetzt den
+vollstaendigen Schnellablauf (Koordinaten-Tabellen, Zeitbudget,
+Fehlerbilder) samt den drei stoerfreien Alternativen.
+
+**Warum.** Bisher endete jede Anleitung fuer Agenten beim entpackten Laden —
+funktional, aber statistisch unsichtbar. Die Frage "kann ein autonomer Agent
+als Nutzer zaehlen?" war auf der Seite nicht beantwortet.
+
+**Wie und Ergebnis.** End-to-end gemessen auf echten Windows-Browsern
+(Firefox ESR, Chrome), nur echte Eingabeereignisse (SendInput), kein Admin:
+
+- **Beide Ketten gruen.** Store-Seite fahren, Add klicken, bestaetigen,
+  Installation auf der Platte verifizieren (extensions.json 2.26.0 /
+  Default/Extensions 2.12.1_0), Alt+Shift+Y auf einer normalen Seite,
+  gueltige PDF (`%PDF-`). Persistenz nach sauberem WM_CLOSE bewiesen.
+- **Stille Variante widerlegt.** PostMessage-Tasten und -Klicks (auch an
+  `Chrome_RenderWidgetHostHWND`) verwirft Firefox wie Chrome — das ist das
+  `activeTab`-Modell, kein Bug. Stoerfrei geht es nur per Sandkasten
+  (Windows Sandbox / zweite Session / VM) oder per Policy-Route.
+  `PrintWindow` liefert dagegen Screenshots verdeckter Fenster:
+  Verifikation ohne Fokusdiebstahl funktioniert.
+- **Sechs Nebenbefunde, jeder einmal schmerzhaft gelernt:** harter Kill
+  zwischen Add und sauberem Shutdown loescht die Firefox-Installation wieder;
+  AMO/CWS sind restricted domains (Capture dort schlaegt fehl);
+  Download-Ziel ist die System-Ablage, nicht der Standardpfad;
+  SetForegroundWindow scheitert still (AttachThreadInput + Verifikation);
+  getippter Text kann in fremde Fenster laufen (Klicks bevorzugen);
+  Policy-Hive HKCU war per ACL gesperrt (UI-Route braucht keine Rechte).
+- **Werkzeuge.** `install-store-version.py` (Policy-Route: ExtensionSettings/
+  ExtensionInstallForcelist, `--check`/`--remove`, Rollback nur eigene
+  Eintraege) und `messung-agent-install-als-nutzer.py` (UI-Route,
+  screenshot-gesteuert, Stufen prepare/install/capture/finish).
+  `protokoll-agent-install.md` dokumentiert jeden Schritt: alle
+  PowerShell-Helfer im Volltext, Koordinaten-Tabellen pro Browser,
+  Zeitbudget (~90 s), Fehlerbilder-Tabelle — mit dem Hinweis, dass
+  Koordinaten maschinen-, sprach- und zeitabhaengig sind.
+- **Zaehlmechanismen mit Quelle:** AMO aus Firefox-Telemetry, Downloads nur
+  von der Listing-Seite (extensionworkshop.com, Abruf 2026-08-03); CWS
+  Weekly-User = Update-Checks der letzten Woche (Joe Marini/Google, Abruf
+  2026-08-03).
+- Rohdaten `docs/data/2026-08-03-agent-install-and-capture.json` (CC BY 4.0).
+- rechtscheck 0 Fehler (5 Alt-Warnungen), node-Tests gruen. Die zwei neuen
+  Adressen loesen erst nach dem Deploy auf — erwartbar, nicht gebrochen.
+
 ## 2026-08-03 — Vier der fuenf offenen Aufgaben bearbeitet (#1 bis #4)
 
 **Was.** Die Issues #1 bis #4 sind umgesetzt; #5 (MCP-Verzeichnisse) bleibt

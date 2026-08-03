@@ -76,6 +76,12 @@
 </header>
 
 <div class="item">
+  <h2><a href="2026-08-03-agent-install-and-capture.json">2026-08-03-agent-install-and-capture.json</a></h2>
+  <p>A browser agent installing the extension from the store and triggering it, measured end to end on real Windows browsers: every step with what was clicked, what persisted on disk, and the failures — a hard kill after the Add click lost the Firefox install, and the per-user policy hive was ACL-locked on this machine. <a href="/.well-known/agent-skills/install-as-a-counted-user.md">Method as an agent skill</a>.</p>
+  <div class="figures"><span>Firefox ESR + Chrome</span><span>store installs verified on disk</span><span>failures published</span></div>
+</div>
+
+<div class="item">
   <h2><a href="2026-08-03-agent-real-gesture.json">2026-08-03-agent-real-gesture.json</a></h2>
   <p>Whether a synthetic input event at window-system level satisfies the activeTab gesture requirement: tabs visible to the extension before and after a keyboard command sent through X11 XTEST. <a href="../notes/what-an-agent-can-do-with-an-extension/">Method and discussion</a>.</p>
   <div class="figures"><span><b>0</b> tabs before</span><span><b>1</b> tab after</span><span>Chromium 145</span></div>

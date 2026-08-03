@@ -293,6 +293,38 @@
   complements, not competitors.
 </p>
 
+<h2>Follow-up measurement: a fallback to the platforms' own interfaces</h2>
+<p>
+  After the first run the endpoint was extended the same day (version 1.13.1):
+  when the HTML page itself declares nothing readable, it now asks the
+  platform's own machine interface — the SRU interface of the National Library
+  for d-nb.info, the OAI-PMH interface of the instance for OPUS and
+  PsychArchives. All eleven addresses went through again on 3 August 2026,
+  same method, same network. The figure above stays the finding of the day;
+  the second run stands next to it, not in its place.
+</p>
+<table>
+  <thead><tr><th scope="col"></th><th scope="col">First run</th><th scope="col">After the fallback</th></tr></thead>
+  <tbody>
+    <tr><td>Complete records</td><td>4/11</td><td><strong>5/11</strong></td></tr>
+    <tr><td>Seconds per source</td><td>0.75</td><td>0.69</td></tr>
+    <tr><td>National Library (d-nb.info)</td><td>handed back, 0.77 s</td><td><strong>complete, 1.42 s — via SRU</strong></td></tr>
+  </tbody>
+</table>
+<p>
+  The only gain is the National Library — not because the page changed, but
+  because the endpoint now uses the library's SRU interface when the HTML page
+  offers nothing readable. OPUS (KOBV/ZIB) stays open: the record is not
+  present in the instance's OAI-PMH feed at all (<code>idDoesNotExist</code>).
+  SSOAR, beck-online, openJur, Statistik Austria and Destatis are unchanged —
+  there the cause is not a missing interface: a wall, a login stub, a record
+  number for a title, or a page that declares too little.
+</p>
+<p>
+  Raw data of the second run, retrieved 3 August 2026:
+  <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">JSON</a>, CC BY 4.0.
+</p>
+
 <h2>Limits of this measurement</h2>
 <ul>
   <li>Eleven platforms with one example record each, one pass on one day — a
@@ -389,6 +421,39 @@
   Statistikportale antworten vollständig, weisen aber zu wenig für einen
   Nachweis aus; der Endpunkt sagt das, statt das fehlende Jahr zu erfinden.
   Die beiden Wege ergänzen sich, sie konkurrieren nicht.
+</p>
+
+<h2>Nachmessung: Fallback auf die Schnittstellen der Plattformen</h2>
+<p>
+  Nach dem ersten Lauf wurde der Endpunkt am selben Tag erweitert (Version
+  1.13.1): Deklariert die HTML-Seite selbst nichts Lesbares, fragt er jetzt die
+  eigene Maschinenschnittstelle der Plattform — die SRU-Schnittstelle der
+  Nationalbibliothek bei d-nb.info, die OAI-PMH-Schnittstelle der Instanz bei
+  OPUS und PsychArchives. Alle elf Adressen gingen am 3. August 2026 erneut
+  durch, gleiche Methode, gleiches Netz. Die Zahl oben bleibt der Befund des
+  Tages; der zweite Lauf steht daneben, nicht an ihrer Stelle.
+</p>
+<table>
+  <thead><tr><th scope="col"></th><th scope="col">Erster Lauf</th><th scope="col">Nach dem Fallback</th></tr></thead>
+  <tbody>
+    <tr><td>Vollständige Nachweise</td><td>4/11</td><td><strong>5/11</strong></td></tr>
+    <tr><td>Sekunden pro Quelle</td><td>0,75</td><td>0,69</td></tr>
+    <tr><td>Nationalbibliothek (d-nb.info)</td><td>zurückgegeben, 0,77&nbsp;s</td><td><strong>vollständig, 1,42&nbsp;s — via SRU</strong></td></tr>
+  </tbody>
+</table>
+<p>
+  Der einzige Zugewinn ist die Nationalbibliothek — nicht weil sich die Seite
+  geändert hätte, sondern weil der Endpunkt jetzt die SRU-Schnittstelle der
+  Bibliothek nutzt, wenn die HTML-Seite nichts Lesbares bietet. OPUS (KOBV/ZIB)
+  bleibt offen: Der Datensatz ist im OAI-PMH der Instanz gar nicht vorhanden
+  (<code>idDoesNotExist</code>). SSOAR, beck-online, openJur, Statistik Austria
+  und Destatis sind unverändert — dort liegt der Grund nicht in einer fehlenden
+  Schnittstelle: eine Sperre, ein Anmeldestummel, eine Aktennummer als Titel
+  oder eine Seite, die zu wenig ausweist.
+</p>
+<p>
+  Rohdaten des zweiten Laufs, abgerufen am 3. August 2026:
+  <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">JSON</a>, CC BY 4.0.
 </p>
 
 <h2>Grenzen dieser Messung</h2>

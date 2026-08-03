@@ -1,0 +1,50 @@
+{
+  "datum": "2026-08-03",
+  "frage": "Kann ein autonomer Agent die Erweiterung als echte Store-Installation in ein eigenes Profil installieren und ausloesen — ohne Admin-Rechte, nur mit echten Eingabeereignissen (SendInput)?",
+  "maschine": "Windows 11, 2560x1440, WSL-Steuerung via powershell.exe",
+  "store_versionen": {
+    "firefox_amo": "2.26.0",
+    "chrome_cws": "2.12.1"
+  },
+  "ergebnisse": {
+    "firefox": {
+      "browser": "Firefox ESR (C:\\Program Files\\Mozilla FirefoxESR)",
+      "profil": "frisch, Temp",
+      "installation": "AMO-Seite, Klick 'Add to Firefox', Klick 'Add' (mouse_event)",
+      "installiert": "2.26.0, active:true in extensions.json",
+      "ausloesung": "Alt+Shift+Y via SendKeys/SendInput auf https://example.com/",
+      "pdf": "example_com_2026-08-03_1716_0001.pdf, 49110 bytes, Kopf %PDF-",
+      "persistenz": "extensions.json nach sauberem WM_CLOSE weiterhin 2.26.0"
+    },
+    "chrome": {
+      "browser": "Google Chrome (C:\\Program Files\\Google\\Chrome)",
+      "profil": "frisch, --user-data-dir in Temp",
+      "installation": "CWS-Seite, Consent 'Alle ablehnen', Klick 'Hinzufuegen', Klick 'Erweiterung hinzufuegen'",
+      "installiert": "2.12.1_0 in Default/Extensions/ (CWS-Stand, hinter AMO)",
+      "ausloesung": "Alt+Shift+Y via SendKeys/SendInput auf https://example.com/",
+      "pdf": "example_com_2026-08-03_1722_0001.pdf, 22559 bytes, Kopf %PDF-",
+      "persistenz": "Installation ueberlebt sauberen Neustart des Profils"
+    },
+    "stille_variante": {
+      "frage": "Lassen sich Installation und Ausloesung per PostMessage (ohne Fokus/Maus des Users) erledigen?",
+      "ergebnis": "nein — Firefox wie Chrome verwerfen WM_KEYDOWN/WM_SYSKEYDOWN/WM_CHAR und WM_LBUTTONDOWN, auch an Chrome_RenderWidgetHostHWND",
+      "folge": "nur der echte Eingabe-Stack zaehlt; stille Wege: Sandbox/zweite Session/VM oder Policy-Route",
+      "winshot": "PrintWindow liefert Screenshots verdeckter Fenster — Verifikation ohne Fokuswechsel moeglich"
+    }
+  },
+  "befunde_nebenher": [
+    "Policy-Route (HKCU\\Software\\Policies) scheiterte auf dieser Maschine: ACL verweigert Schreiben. UI-Route braucht keine Rechte.",
+    "Hartes Beenden der Instanz NACH 'Add'-Klick liess die Firefox-Installation verschwinden; nach sauberem WM_CLOSE blieb sie.",
+    "AMO- und CWS-Seiten sind restricted domains: Capture darauf schlaegt fehl, auf example.com laeuft es.",
+    "Download-Ziel ist die systemweit konfigurierte Ablage (hier D:\\Downloads\\Full Page PDF Snap\\), nicht C:\\Users\\...\\Downloads.",
+    "SetForegroundWindow aus Hintergrundprozess wird still ignoriert; AttachThreadInput-Variante + Verifikation via GetForegroundWindow haelt.",
+    "SendKeys-Tippen kann bei Fokuswechsel in fremde Fenster laufen; Klicks sind positionsgebunden und damit sicherer."
+  ],
+  "methode": {
+    "klicks": "SetCursorPos + mouse_event (echter Eingabe-Stack)",
+    "tasten": "SendKeys.SendWait (SendInput)",
+    "fokus": "ShowWindow(9) + MoveWindow(0,0,1400,900) + AttachThreadInput + SetForegroundWindow, verifiziert via GetForegroundWindow",
+    "verifikation": "extensions.json / Extensions-Verzeichnis im Profil, PDF-Kopfzeile, Vollbild-Screenshots je Schritt"
+  },
+  "lizenz": "CC BY 4.0"
+}

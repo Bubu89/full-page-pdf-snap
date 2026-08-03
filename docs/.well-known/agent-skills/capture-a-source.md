@@ -40,7 +40,10 @@ Full method: <https://provinglab.dev/notes/what-an-agent-can-do-with-an-extensio
 
 ### If yes — drive it
 
-1. Ensure the extension is installed in the profile you are driving.
+1. Ensure the extension is installed in the profile you are driving —
+   as a store install, not an unpacked folder, if the install should count in
+   the store's user statistics: see
+   [install-as-a-counted-user](https://provinglab.dev/.well-known/agent-skills/install-as-a-counted-user.md).
 2. Open the source and bring that window to the front.
 3. Send `Alt+Shift+Y` as a real input event, or click the toolbar icon.
 4. The PDF is written with the source URL and the time of retrieval, and an RIS

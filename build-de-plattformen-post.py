@@ -20,6 +20,12 @@ DOCS = HIER / "docs"
 VORLAGE = DOCS / "measurements" / "print-to-pdf-vs-screenshot" / "index.html"
 ZIEL = DOCS / "measurements" / "de-plattformen"
 DATEN = DOCS / "data" / "2026-08-03-de-plattformen.json"
+# Nachmessung desselben Tages, nachdem der Endpunkt einen Fallback auf die
+# Maschinenschnittstellen der Plattformen (SRU der DNB, OAI-PMH der Instanz)
+# bekommen hat. Beide Datensaetze bleiben sichtbar — der erste Lauf ist der
+# Befund des Tages, der zweite steht daneben, nicht an seiner Stelle.
+DATEN_NACH = DOCS / "data" / "2026-08-03-de-plattformen-nach-fallback.json"
+ROHDATEN_NACH = "/data/2026-08-03-de-plattformen-nach-fallback.json"
 
 URL = "https://provinglab.dev/measurements/de-plattformen/"
 TITEL = "German-language scholarly platforms measured: four read, seven handed back"
@@ -180,10 +186,17 @@ def tabelle_ok(ganz, lang):
     return "\n".join(zeilen)
 
 
-def inhalt(d):
+def inhalt(d, nach):
     r = d["results"]
+    rn = nach["results"]
     fehler = [e for e in d["per_source"] if not e["complete"]]
     ganz = [e for e in d["per_source"] if e["complete"]]
+    dnb_vor = next(e for e in d["per_source"] if e["host"] == "d-nb.info")
+    dnb_nach = next(e for e in nach["per_source"] if e["host"] == "d-nb.info")
+
+    def sz(x):
+        return str(x).replace(".", ",")
+
     n = r["sources"]
     return f"""<div class="wrap">
 
@@ -286,6 +299,38 @@ def inhalt(d):
   complements, not competitors.
 </p>
 
+<h2>Follow-up measurement: a fallback to the platforms' own interfaces</h2>
+<p>
+  After the first run the endpoint was extended the same day (version 1.13.1):
+  when the HTML page itself declares nothing readable, it now asks the
+  platform's own machine interface — the SRU interface of the National Library
+  for d-nb.info, the OAI-PMH interface of the instance for OPUS and
+  PsychArchives. All eleven addresses went through again on 3 August 2026,
+  same method, same network. The figure above stays the finding of the day;
+  the second run stands next to it, not in its place.
+</p>
+<table>
+  <thead><tr><th scope="col"></th><th scope="col">First run</th><th scope="col">After the fallback</th></tr></thead>
+  <tbody>
+    <tr><td>Complete records</td><td>{r["complete_records"]}/{n}</td><td><strong>{rn["complete_records"]}/{n}</strong></td></tr>
+    <tr><td>Seconds per source</td><td>{r["seconds_per_source"]}</td><td>{rn["seconds_per_source"]}</td></tr>
+    <tr><td>National Library (d-nb.info)</td><td>handed back, {dnb_vor["seconds"]} s</td><td><strong>complete, {dnb_nach["seconds"]} s — via SRU</strong></td></tr>
+  </tbody>
+</table>
+<p>
+  The only gain is the National Library — not because the page changed, but
+  because the endpoint now uses the library's SRU interface when the HTML page
+  offers nothing readable. OPUS (KOBV/ZIB) stays open: the record is not
+  present in the instance's OAI-PMH feed at all (<code>idDoesNotExist</code>).
+  SSOAR, beck-online, openJur, Statistik Austria and Destatis are unchanged —
+  there the cause is not a missing interface: a wall, a login stub, a record
+  number for a title, or a page that declares too little.
+</p>
+<p>
+  Raw data of the second run, retrieved 3 August 2026:
+  <a href="{ROHDATEN_NACH}">JSON</a>, CC BY 4.0.
+</p>
+
 <h2>Limits of this measurement</h2>
 <ul>
   <li>Eleven platforms with one example record each, one pass on one day — a
@@ -375,6 +420,39 @@ def inhalt(d):
   Die beiden Wege ergänzen sich, sie konkurrieren nicht.
 </p>
 
+<h2>Nachmessung: Fallback auf die Schnittstellen der Plattformen</h2>
+<p>
+  Nach dem ersten Lauf wurde der Endpunkt am selben Tag erweitert (Version
+  1.13.1): Deklariert die HTML-Seite selbst nichts Lesbares, fragt er jetzt die
+  eigene Maschinenschnittstelle der Plattform — die SRU-Schnittstelle der
+  Nationalbibliothek bei d-nb.info, die OAI-PMH-Schnittstelle der Instanz bei
+  OPUS und PsychArchives. Alle elf Adressen gingen am 3. August 2026 erneut
+  durch, gleiche Methode, gleiches Netz. Die Zahl oben bleibt der Befund des
+  Tages; der zweite Lauf steht daneben, nicht an ihrer Stelle.
+</p>
+<table>
+  <thead><tr><th scope="col"></th><th scope="col">Erster Lauf</th><th scope="col">Nach dem Fallback</th></tr></thead>
+  <tbody>
+    <tr><td>Vollständige Nachweise</td><td>{r["complete_records"]}/{n}</td><td><strong>{rn["complete_records"]}/{n}</strong></td></tr>
+    <tr><td>Sekunden pro Quelle</td><td>{sz(r["seconds_per_source"])}</td><td>{sz(rn["seconds_per_source"])}</td></tr>
+    <tr><td>Nationalbibliothek (d-nb.info)</td><td>zurückgegeben, {sz(dnb_vor["seconds"])}&nbsp;s</td><td><strong>vollständig, {sz(dnb_nach["seconds"])}&nbsp;s — via SRU</strong></td></tr>
+  </tbody>
+</table>
+<p>
+  Der einzige Zugewinn ist die Nationalbibliothek — nicht weil sich die Seite
+  geändert hätte, sondern weil der Endpunkt jetzt die SRU-Schnittstelle der
+  Bibliothek nutzt, wenn die HTML-Seite nichts Lesbares bietet. OPUS (KOBV/ZIB)
+  bleibt offen: Der Datensatz ist im OAI-PMH der Instanz gar nicht vorhanden
+  (<code>idDoesNotExist</code>). SSOAR, beck-online, openJur, Statistik Austria
+  und Destatis sind unverändert — dort liegt der Grund nicht in einer fehlenden
+  Schnittstelle: eine Sperre, ein Anmeldestummel, eine Aktennummer als Titel
+  oder eine Seite, die zu wenig ausweist.
+</p>
+<p>
+  Rohdaten des zweiten Laufs, abgerufen am 3. August 2026:
+  <a href="{ROHDATEN_NACH}">JSON</a>, CC BY 4.0.
+</p>
+
 <h2>Grenzen dieser Messung</h2>
 <ul>
   <li>Elf Plattformen mit je einem Beispieldatensatz, ein Durchlauf an einem
@@ -395,6 +473,7 @@ def inhalt(d):
 
 def main():
     d = json.loads(DATEN.read_text(encoding="utf-8"))
+    nach = json.loads(DATEN_NACH.read_text(encoding="utf-8"))
     kopf, fuss = kopf_und_fuss()
     fuss = re.sub(
         r"<footer>.*?</footer>",
@@ -406,7 +485,7 @@ def main():
         fuss, count=1, flags=re.S)
     fuss = fuss.replace("</body>", SPRACHE_SKRIPT + "\n</body>")
     ZIEL.mkdir(parents=True, exist_ok=True)
-    (ZIEL / "index.html").write_text(anpassen(kopf) + inhalt(d) + fuss, encoding="utf-8")
+    (ZIEL / "index.html").write_text(anpassen(kopf) + inhalt(d, nach) + fuss, encoding="utf-8")
     print(f"  geschrieben: {(ZIEL / 'index.html').relative_to(DOCS)}")
 
 
