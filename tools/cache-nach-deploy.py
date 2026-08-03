@@ -210,6 +210,7 @@ def main():
     zustand()
     print("\n  Gehoert nach jedem `git push`, sonst haelt der Edge bis zu "
           f"{EDGE_TTL // 3600} Stunden die alte Fassung.")
+    print("  Danach `python3 tools/indexnow.py` — meldet die Aenderung an\n  Bing, Yandex, Seznam und Naver, statt auf den naechsten Crawl zu warten.")
 
 
 if __name__ == "__main__":

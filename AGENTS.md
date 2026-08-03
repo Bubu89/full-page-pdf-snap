@@ -71,11 +71,23 @@ nicht auseinanderlaufen.
 | `build-feed.py` | `docs/feed.xml` |
 | `build-versionen.py` | `/.well-known/extension-versions.json` |
 | `chrome-mv3/port.py` | den Chrome-Zweig aus den Firefox-Quellen |
+| `build-llms-index.py` | `llms.txt` (Index), `llms-full.txt`, `agent.md` |
 
 **Falle, die zweimal zugeschlagen hat:** Diese Skripte nutzen f-Strings. Ein
 eingebetteter Textblock mit `{NAME}` wird zu `{{NAME}}` maskiert — und landet
 dann als literale Klammer auf der ausgelieferten Seite. Die Pipeline prüft
 darauf; lokal hilft `grep -rE '\{[A-Z_]{3,}\}' docs`.
+
+## Nach dem Ausliefern
+
+```bash
+python3 tools/cache-nach-deploy.py   # wartet auf Pages, leert dann den Edge
+python3 tools/indexnow.py            # meldet die Aenderung an die Suchmaschinen
+```
+
+Der Purge **vor** dem fertigen Pages-Deploy ist schlimmer als keiner — er
+holt die alte Fassung frisch an den Edge und haelt sie vier Stunden. Das
+Werkzeug wartet deshalb auf den Commit, bevor es leert.
 
 ## Der Endpunkt
 
