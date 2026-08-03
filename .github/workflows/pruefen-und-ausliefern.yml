@@ -48,6 +48,12 @@ jobs:
       - name: Rechtscheck
         run: python3 rechtscheck.py
 
+      # Die Funktionstests liefen bisher nur von Hand — und waren rot, ohne
+      # dass es jemandem auffiel: eine Aenderung am Endpunkt hatte einen Fall
+      # ueberholt, und der Testlauf gehoerte in keine Pipeline.
+      - name: Zitations-Tests
+        run: node --test tests/
+
       # Interne Ziele und Store-Staende. Externe Adressen werden hier bewusst
       # nicht geprueft: ein fremder Server, der gerade 503 antwortet, ist kein
       # Grund, die eigene Auslieferung anzuhalten.

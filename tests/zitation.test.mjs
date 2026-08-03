@@ -85,7 +85,15 @@ const FAELLE = [
     pruefe: (q) => [
       [q.authors.length === 1 && q.authors[0] === "Statistik Austria", `Verfasser=${JSON.stringify(q.authors)}`],
       [q.corporateAuthor === true, "nicht als Koerperschaft gekennzeichnet"],
-      [!q.warning, `Warnung=${q.warning}`],
+      // Die Seite nennt kein Jahr, also ist der Satz unvollstaendig — und seit
+      // dem 03.08.2026 sagt der Endpunkt auch, woran es liegt, statt es zu
+      // verschweigen. Frueher stand hier `!q.warning`; das prueft den Stand,
+      // in dem `complete: false` ohne Begruendung zurueckkam und ein
+      // aufrufendes Programm den Satz am gefuellten Titel fuer einen Treffer
+      // hielt. Erwartet wird jetzt genau das Gegenteil: eine Warnung, die das
+      // fehlende Feld benennt.
+      [q.complete === false, `complete=${q.complete}`],
+      [/year is missing/.test(q.warning || ""), `Warnung=${q.warning}`],
     ],
   },
   {
