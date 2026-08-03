@@ -27,8 +27,10 @@ import argparse
 import json
 import subprocess
 import sys
+import time
 import urllib.error
 import urllib.request
+from pathlib import Path
 
 ZONE = "0d7110c80d576750944785d0ae759209"
 ITEM = "0fd9f886-bdb1-40a2-b364-24961e4d2253"     # Cloudflare API Token — provinglab.dev
@@ -127,11 +129,54 @@ def zustand():
             print(f"    --  {p:<20} {type(e).__name__}")
 
 
+def auf_pages_warten(minuten=5):
+    """Wartet, bis GitHub Pages den aktuellen Commit ausliefert.
+
+    Ohne das ist der Purge schlimmer als keiner: er holt die **alte** Fassung
+    frisch an den Edge und zementiert sie fuer die volle Haltedauer. Genau so
+    passiert am 3. August 2026 — die Pipeline war gruen, der Purge lief, und
+    die Seite zeigte vier Stunden lang den Stand davor.
+
+    Geprueft wird gegen den Commit, nicht gegen eine Zeitspanne: nur der sagt,
+    ob der Ursprung wirklich den neuen Stand hat.
+    """
+    kopf = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True,
+                          text=True, cwd=Path(__file__).resolve().parent.parent)
+    if kopf.returncode:
+        print("  ?  Commit nicht lesbar — warte nicht, purge sofort")
+        return
+    sha = kopf.stdout.strip()
+    ende = time.time() + minuten * 60
+    while time.time() < ende:
+        try:
+            r = subprocess.run(["gh", "api",
+                                "repos/Bubu89/full-page-pdf-snap/pages/builds/latest",
+                                "-q", ".commit + \" \" + .status"],
+                               capture_output=True, text=True, timeout=30)
+            live, _, status = r.stdout.strip().partition(" ")
+            if live == sha and status == "built":
+                print(f"  OK Pages liefert {sha[:8]} aus")
+                return
+            print(f"  .. Pages steht auf {live[:8]} ({status}), erwartet {sha[:8]}")
+        except Exception as e:
+            print(f"  ?  Pages-Stand nicht abfragbar ({type(e).__name__}) — purge trotzdem")
+            return
+        time.sleep(15)
+    print(f"  !  Pages hat {sha[:8]} nach {minuten} min nicht ausgeliefert — "
+          "purge trotzdem, aber danach nachsehen")
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--regel", action="store_true", help="Edge-TTL-Regel setzen")
     p.add_argument("--pruefen", action="store_true", help="nichts aendern")
+    p.add_argument("--sofort", action="store_true",
+                   help="nicht auf den Pages-Deploy warten")
     a = p.parse_args()
+
+    if not (a.pruefen or a.sofort):
+        print("Warte auf GitHub Pages")
+        auf_pages_warten()
 
     tok = token()
     if a.regel:
