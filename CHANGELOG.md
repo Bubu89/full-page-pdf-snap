@@ -1,3 +1,45 @@
+## 2026-08-03 — Zwei Eingaenge, weil die Seite indexiert war und niemand sie fand
+
+**Was.** `/how-to/save-a-webpage-as-pdf/` und `/for-agents/`, die Startseite auf
+den Nutzen geoeffnet, `llms.txt` um einen Einstiegsabschnitt erweitert.
+Skript `build-einstiegsseiten.py`.
+
+**Warum — zuerst gemessen.** Bing und Google fuehren die Domain unter einer
+`site:`-Abfrage, beide liefern fuer das blosse Wort *provinglab* **nichts**.
+DuckDuckGo liefert gar nichts. `robots.txt`, Content-Signals, Sitemap und
+IndexNow sind in Ordnung — die Ursache ist nicht technisch.
+
+Sie ist strukturell: **jeder Titel hier ist ein Befund-Titel.** „Twenty links,
+ten citations" ist zitierfaehig — dafuer wurde er geschrieben — und niemand
+tippt ihn in ein Suchfeld. Daraus folgt die unbequeme Einordnung der gesamten
+heutigen Agenten-Arbeit: Sie wirkt erst, wenn jemand die Seite bereits kennt.
+Verstaerkung, kein Eingang.
+
+**Wie.** Zwei Seiten, die die **Frage** tragen statt des Ergebnisses.
+
+- `/how-to/save-a-webpage-as-pdf/` beantwortet sie in den ersten zwei Saetzen,
+  jede Zahl auf ihre Messung verlinkt, mit `FAQPage`-Auszeichnung fuer die fuenf
+  Fragen, die tatsaechlich gestellt werden. Sie nennt ausdruecklich, wo die
+  **browsereigene** Druckausgabe gewinnt (94,8 % Textausbeute, markierbarer
+  Text) — ein Vergleich, den das eigene Werkzeug nur gewinnt, liest sich als
+  Werbung.
+- `/for-agents/` buendelt die Agenten-Oberflaeche auf einer Seite statt verteilt
+  ueber fuenf Beitraege: Ein-Zeilen-Anbindung, fuenf Werkzeuge, die eine Regel
+  zum Festverdrahten, und die gemessene Trennlinie zwischen Agenten, die die
+  Erweiterung bedienen koennen, und solchen, die es nicht koennen.
+
+**Resultat.** Beide live und gegengeprueft; Schema-Typen `HowTo` + `FAQPage`
+bzw. `TechArticle` + `WebAPI`. Sitemap 39 Adressen, Feed 16 Beitraege, IndexNow
+angenommen. Die Startseite oeffnet mit *„Keep the web page you will need
+later."*; „Measurements, not opinions" steht an zweiter Stelle — es ist der
+Grund, warum die Zahlen tragen, kein Grund zu kommen.
+
+**Nebenbei gefunden.** Die Datenuebersicht fuehrte zwei Datensaetze doppelt und
+die beiden von heute gar nicht. Und die eigene Navigationsaenderung zeigte auf
+`/for-agents/` kurzzeitig jeden Punkt eine Ebene zu hoch, weil die geerbte
+Vorlage zwei Ebenen tief liegt — neun tote Verweise, vom Rechtscheck gefunden,
+bevor sie live gingen. Beides behoben, Pruefer wieder bei **0 Fehlern**.
+
 ## 2026-08-03 — Der Weg zur Aufnahme steht jetzt dort, wo Maschinen suchen
 
 **Was.** MCP-Werkzeug `how_to_capture(agent, browser)` (Worker 1.10.0) und die
