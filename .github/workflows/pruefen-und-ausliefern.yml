@@ -108,6 +108,12 @@ jobs:
       # Zweimal an einem Tag standen Platzhalter in ausgelieferten Seiten
       # ({TITEL}, {AMO}), weil ein Textblock in einen f-String geriet. Im
       # Quelltext faellt das nicht auf, auf der Seite schon.
+      # Was ein SEO-Plugin im Redaktionsfenster anzeigen wuerde, hier als
+      # Pruefung: fehlende Canonicals und Titel halten die Auslieferung an,
+      # verwaiste Seiten und Laengen werden als Warnung gemeldet.
+      - name: Auffindbarkeit und Kopfzeilen
+        run: python3 tools/seo-pruefen.py --ci
+
       - name: Keine unaufgeloesten Platzhalter
         run: |
           treffer=$(grep -rlE '\{[A-Z_]{3,}\}' docs --include='*.html' || true)

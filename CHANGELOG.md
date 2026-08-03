@@ -1,3 +1,53 @@
+## 2026-08-03 — Was ein WordPress-Plugin taete, als Pruefung im Repository
+
+**Die Ausgangsfrage war nach WordPress-Werkzeugen.** Diese Seite ist kein
+WordPress: statisches HTML auf GitHub Pages hinter Cloudflare. Yoast, Rank
+Math, All in One SEO und Wordfence setzen alle WordPress voraus. Was sie
+leisten, laesst sich aber nachbilden — und besser, weil eine Pruefung im
+Repository die Auslieferung anhalten kann, waehrend ein Plugin nur eine Ampel
+im Redaktionsfenster zeigt.
+
+**Neu: `tools/seo-pruefen.py`.** Titel- und Beschreibungslaengen (Yoast), eine
+H1 je Seite (Yoast), Canonical (alle), strukturierte Daten (Rank Math),
+verwaiste Seiten (Link Whisper), Bilder ohne Alternativtext, und die
+Sicherheits-Kopfzeilen der Live-Seite (Wordfence, Sucuri). In der CI:
+fehlende Canonicals und Titel blockieren, alles andere warnt.
+
+**Google Analytics wurde bewusst nicht eingebaut.** Die Datenschutzerklaerung
+sagt woertlich, die Seite setze keine Cookies und binde keine Analytik-
+Bibliothek ein. Ein Analytics-Skript wuerde diese Zusage brechen, in der EU
+eine Einwilligung erfordern und der Seite ein Banner aufzwingen — fuer Zahlen,
+die serverseitig ohnehin vorliegen (`tools/crawler-bericht.py`). Ebenfalls
+weggelassen: Keyword-Dichte und Lesbarkeitsindex. Beides misst nicht, was es
+zu messen vorgibt.
+
+**Sechzehn der zwanzig ersten Meldungen waren Fehler des Pruefers.**
+
+- Drei Seiten ohne H1 und ohne Beschreibung sind **umgezogene Adressen**, die
+  der Worker mit 301 beantwortet — ihre Dateien erreichen nie einen Leser. Der
+  Pruefer liest die Weiterleitungstabelle jetzt aus `worker/mcp.js` und nimmt
+  sie aus.
+- Sieben Seiten mit „zwei H1" sind **zweisprachig**: beide tragen `data-lang`,
+  sichtbar ist immer nur eine. Gezaehlt werden jetzt nur H1 ohne
+  Sprachkennzeichnung.
+
+Das ist Regel 4 in Reinform: Wenn eine Pruefung zwanzig Befunde meldet, ist
+zuerst die Pruefung verdaechtig.
+
+**Der eine echte Befund.** `/anleitung/webseite-als-pdf-speichern/` war von
+**nirgendwo** verlinkt. Die deutschsprachige Uebersicht `/deutsch/` verwies auf
+die *englische* Anleitung, und die deutsche Fassung existierte nur in der
+Sitemap. Fuer Suchmaschinen ist eine Seite ohne eingehenden Verweis praktisch
+nicht vorhanden — und ausgerechnet die deutschsprachige Zielgruppe steht in
+AGENTS.md als der wertvollste offene Bereich. Behoben.
+
+**Sicherheit: nichts zu tun.** Geprueft wurden die ausgelieferten Kopfzeilen —
+HSTS, CSP mit `default-src 'self'`, `frame-ancestors 'none'` und
+`object-src 'none'`, Cross-Origin-Opener-Policy, Permissions-Policy,
+Referrer-Policy, X-Content-Type-Options. Alle gesetzt. Die Scans aus den Logs
+(`/wp-login.php`, `/.git/HEAD`, `/keys.json`, `/terraform.tfvars`, `/.env`)
+laufen samt und sonders ins Leere; jeder Pfad einzeln nachgeprueft, alle 404.
+
 ## 2026-08-03 — Der Anreiz war behauptet, jetzt ist er gemessen
 
 **Die Luecke.** Alle bisherigen Zahlen sagten, wie *schnell* der Endpunkt ist —
