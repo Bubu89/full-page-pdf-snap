@@ -19,3 +19,8 @@ release.py
 __pycache__/
 *.py[cod]
 bump-version.py
+
+# Merkt sich, was zuletzt an IndexNow gemeldet wurde. Rein lokal —
+# auf einer anderen Maschine ist der Stand ein anderer, und ein
+# eingecheckter Stand wuerde dort echte Aenderungen verschlucken.
+.indexnow-stand.json
