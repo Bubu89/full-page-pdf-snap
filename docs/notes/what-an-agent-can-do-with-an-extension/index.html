@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What an AI agent can and cannot do with a browser extension — Proving Lab</title>
+<meta name="description" content="An agent cannot install a browser extension into your browser — no store has an API for it, and inline install was removed years ago. What it can do: name the step, link the install, and load an unpacked build into a browser it drives itself. Measured, including the flag that fails silently.">
+<link rel="canonical" href="https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="What an AI agent can and cannot do with a browser extension">
+<meta property="og:description" content="Agents are increasingly told to 'use an extension'. They cannot install one into someone else's browser: store installation is a user gesture by design. What works instead, what fails silently, and how the work actually divides.">
+<meta property="og:url" content="https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-08-02">
+<meta property="article:modified_time" content="2026-08-03">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "What an AI agent can and cannot do with a browser extension",
+  "description": "An agent cannot install a browser extension into your browser — no store has an API for it, and inline install was removed years ago. What it can do: name the step, link the install, and load an unpacked build into a browser it drives itself. Measured, including the flag that fails silently.",
+  "datePublished": "2026-08-03",
+  "dateModified": "2026-08-03",
+  "inLanguage": "en",
+  "url": "https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/",
+  "author": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "isAccessibleForFree": true,
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebAPI",
+  "name": "Proving Lab citation and measurement endpoint (MCP)",
+  "description": "Model Context Protocol server over JSON-RPC 2.0. extract_citation returns what a given page declares about itself — authors, title, journal, year, DOI, licence — as a structured record with RIS and BibTeX, or a refusal marked complete:false where the page is a paywall, an error or a bot check. Three further tools hand over the measurement datasets and published methods. No authentication and no key required.",
+  "url": "https://provinglab.dev/mcp",
+  "documentation": "https://provinglab.dev/notes/mcp-server-what-it-solves/",
+  "termsOfService": "https://provinglab.dev/disclaimer/",
+  "provider": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://provinglab.dev/mcp",
+      "httpMethod": "POST",
+      "contentType": "application/json",
+      "encodingType": "application/json"
+    },
+    "query-input": "required name=url"
+  }
+}
+</script>
+
+<style>
+  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.87em;background:var(--card);
+       padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:34px 0 36px;border-bottom:1px solid var(--line);margin-bottom:32px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.16;letter-spacing:-.025em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:60ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+  h2{font-size:1.4rem;line-height:1.25;margin:46px 0 14px;letter-spacing:-.015em;text-wrap:balance}
+  h3{font-size:1.04rem;margin:28px 0 8px}
+  p{margin-bottom:17px} ul,ol{margin:0 0 18px 24px} li{margin-bottom:9px}
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0}
+  .kf{flex:1 1 160px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px}
+  .kf .n{font-size:1.8rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.a .n{color:var(--good)} .kf.b .n{color:var(--warn)}
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--bg2);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .win{color:var(--good);font-weight:600} .lose{color:var(--bad)}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.84rem;line-height:1.6}
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0} .box p:last-child{margin-bottom:0}
+  .faq{margin:44px 0 0}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin:44px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+  footer{margin-top:52px;padding:24px 0 64px;border-top:1px solid var(--line);
+    font-size:.83rem;color:var(--dim);line-height:1.6}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+</style>
+<script src="/agent-tools.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/">Notes</a>
+    <a class="n" href="../../measurements/" aria-current="page">Measurements</a>
+    <a class="n" href="../../recipes/">Recipes</a>
+    <a class="n" href="../../tools/">Tools</a>
+    <a class="n" href="../../about/">About</a>
+    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
+      <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+<header>
+  <h1>What an AI agent can and cannot do with a browser extension</h1>
+  <p class="standfirst">
+    Our citation endpoint now tells agents, in the cases it cannot finish, to
+    have the user capture the page in a browser — and links the extension that
+    does it. That raised a fair question: could the agent not just install it
+    itself? No. And the reason is worth writing down, because the assumption
+    produces instructions that end in mid-air.
+  </p>
+  <p class="meta">3 August 2026 · checked against Chrome 150 and Firefox 141</p>
+</header>
+
+<h2>The short answer</h2>
+<p>
+  Installing an extension into a person's browser is a <em>user gesture</em> by
+  design. Neither store exposes an API for it, and the mechanisms that once came
+  close were removed on purpose:
+</p>
+<table>
+  <thead><tr><th>Route</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr><td>Chrome inline install (<code>chrome.webstore.install</code>)</td>
+        <td>removed in 2018; pages can no longer trigger an install</td></tr>
+    <tr><td>Firefox <code>InstallTrigger</code></td>
+        <td>removed with Manifest V3 support; no page-initiated install</td></tr>
+    <tr><td>Store API for installing on a user's behalf</td>
+        <td>does not exist, in either store</td></tr>
+    <tr><td>Enterprise policy (<code>ExtensionInstallForcelist</code>)</td>
+        <td>exists, but it is an administrator deploying to managed machines —
+            not an assistant acting in a conversation</td></tr>
+  </tbody>
+</table>
+<p>
+  This is not an oversight to be worked around. An extension can read and
+  rewrite pages; the deliberate friction of a person clicking <em>Add</em> after
+  seeing the requested permissions is the security model. An agent that could
+  install extensions silently would be the exact hole the model exists to close.
+</p>
+
+<h2>What an agent can do — and it is not nothing</h2>
+<p>
+  Three things, in descending order of how often they apply.
+</p>
+
+<h3>1. Name the step, the reason and the address</h3>
+<p>
+  The common case. The agent hits a source it cannot read, and instead of an
+  apology it hands over something actionable: which addresses need a person, why
+  each one does, and where to get the tool. That is what
+  <code>extract_citation</code> on <a href="/notes/mcp-server-what-it-solves/">this
+  site's endpoint</a> now returns in its <code>nextStep</code> field — the
+  instruction, the evidence behind it, both install links, and the disclosure
+  that the tool comes from the same author.
+</p>
+<pre><code>"nextStep": {
+  "do": "Open the address in the browser you are already signed in with…",
+  "why": "The page answers a browser and refuses this reader — a bot defence.",
+  "tool": {
+    "name": "Full Page PDF Snap",
+    "firefox": "https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/",
+    "chrome": "https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn",
+    "runsOn": "Firefox on desktop and Android; Chrome 116 or newer, Edge, Brave and Vivaldi.",
+    "disclosure": "Built by the author of this endpoint…"
+  },
+  "evidence": "https://provinglab.dev/measurements/reading-list-to-bibliography/"
+}</code></pre>
+<p>
+  Note what it does <em>not</em> say. It is attached only where the endpoint
+  actually stopped, and it distinguishes the three reasons a source comes back —
+  because <a href="/measurements/reading-list-to-bibliography/">measured across
+  twenty sources</a>, a browser only helps with one of them. Four of the ten
+  refusals were aimed at the network rather than the client, and no extension
+  changes those; five were pages that declare no citation data at all, where the
+  reference has to be written by a person regardless of tooling. A hint pasted
+  onto all three would be advertising, and an agent that notices it is
+  advertising is right to ignore it.
+</p>
+
+<h3>2. Load an unpacked build into a browser it drives itself</h3>
+<p>
+  Different situation, often confused with the first: the agent is running its
+  own automated browser. There it <em>can</em> load an extension — into its own
+  session, from a local folder, never from a store and never into anyone else's
+  profile.
+</p>
+<p>
+  With a caveat we hit in testing and that costs an afternoon if you do not know
+  it: <strong>the command-line switch fails silently.</strong> On Chrome 150,
+  <code>--load-extension</code> loads nothing and reports nothing, and the flag
+  that used to re-enable it is gone too. The run then looks like a broken
+  manifest — no service worker, no errors — and the search for the fault starts
+  in the wrong place. What works is the debugging protocol:
+</p>
+<pre><code>chrome --remote-debugging-port=9223 --user-data-dir=&lt;temp&gt; \
+       --enable-unsafe-extension-debugging --no-first-run about:blank</code></pre>
+<pre><code>b = p.chromium.connect_over_cdp("http://127.0.0.1:9223")
+s = b.new_browser_cdp_session()
+s.send("Extensions.loadUnpacked", {"path": "/path/to/extension"})</code></pre>
+<p>
+  Verified on Chrome 150.0.7871.187. Useful for testing an extension, or for an
+  agent that captures pages inside a browser it owns. Not a route into a user's
+  browser, and not a way to install from a store.
+</p>
+
+<h3>3. Use the endpoint instead, where that is enough</h3>
+<p>
+  Half of the work needs no browser at all. Ten of twenty sources produced
+  complete records with RIS and BibTeX over plain HTTP, no account, no key,
+  0.4 s each. An agent should exhaust that route first and only escalate to a
+  person for what is left — which is the whole point of naming the leftovers
+  precisely. The <a href="/recipes/">recipes</a> are runnable for Claude Code,
+  Claude Desktop, other MCP clients, Python and a plain shell loop.
+</p>
+
+<h2>So where does that leave the division of labour</h2>
+<table>
+  <thead><tr><th>Step</th><th>Who</th></tr></thead>
+  <tbody>
+    <tr><td>Read what a page declares about itself, in bulk</td><td>the agent, over HTTP</td></tr>
+    <tr><td>Decide which sources need a person, and why</td><td>the agent</td></tr>
+    <tr><td>Install a browser extension</td><td>the person, once</td></tr>
+    <tr><td>Open a source behind a login or a bot wall</td><td>the person, in their session</td></tr>
+    <tr><td>Keep the page and its retrieval date</td><td>the extension, on that click</td></tr>
+    <tr><td>Merge the results into one reference list</td><td>the agent</td></tr>
+  </tbody>
+</table>
+<p>
+  The honest version of “AI does your bibliography” is this table, not a promise
+  that the machine handles all of it. What changed here is only the fourth
+  column of the third row: the person now gets told exactly what to install and
+  why, at the moment it matters, instead of an agent shrugging.
+</p>
+
+<h2>What this does not claim</h2>
+<ul>
+  <li><strong>No measurement of uptake.</strong> Whether naming a tool at the
+    point of failure actually leads anyone to install it is not something we can
+    show yet. Both stores stood at four users on 3 August 2026; that figure is
+    published here so a later claim can be checked against it.</li>
+  <li><strong>Platform behaviour changes.</strong> The removed install APIs are
+    unlikely to return, but the CDP method is an unstable debugging interface
+    and may well break.</li>
+  <li><strong>The extension is ours.</strong> Disclosed everywhere it appears,
+    including inside the endpoint's replies. The browser's own print-to-PDF is
+    <a href="/measurements/print-to-pdf-vs-screenshot/">measured against it</a>,
+    including the cases where print is the better choice.</li>
+</ul>
+<footer>
+      Checked on 3 August 2026 against Chrome 150.0.7871.187 and Firefox 141. Store figures from the addons.mozilla.org API and the Chrome Web Store listing on the same day.
+      <br><br>
+      Corrections are welcome and are made in public: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">open an issue</a>.
+      <br><br>
+      Disclosure: the author develops Full Page PDF Snap, the extension named above.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+
+</div>
+</body>
+</html>
