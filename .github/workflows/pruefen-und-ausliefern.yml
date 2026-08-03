@@ -1,0 +1,140 @@
+# Prueft die Publikation und liefert den Worker aus — ohne dass ein fremder
+# Dienst Zugriff auf dieses GitHub-Konto bekommt.
+#
+# Warum nicht "Workers Builds" aus dem Cloudflare-Dashboard: dieser Weg
+# installiert die Cloudflare-GitHub-App und damit einen dauerhaften
+# Fremdzugriff auf ein Konto, unter dem **73 private Repositorien** liegen. Der
+# Gewinn waere derselbe automatische Deploy; der Preis ein Zugriff, der weit
+# ueber dieses eine oeffentliche Repo hinausreicht und nach der Einrichtung
+# niemandem mehr auffaellt.
+#
+# Hier laeuft es umgekehrt: Der Ablauf liegt sichtbar und versioniert im Repo,
+# und nach aussen geht nur ein Token, das ausschliesslich Worker-Skripte
+# schreiben darf. Cloudflare erfaehrt nichts ueber GitHub.
+#
+# Einrichtung, einmalig:
+#   gh secret set CLOUDFLARE_API_TOKEN   # Token mit "Workers Scripts: Edit"
+#   gh secret set CLOUDFLARE_ACCOUNT_ID
+#
+# Absichtlich KEIN pull_request-Ausloeser: in einem oeffentlichen Repo koennte
+# ein fremder Beitrag sonst an die Geheimnisse gelangen. Nur direkte Pushes auf
+# main, also nur, wer ohnehin Schreibrechte hat.
+
+name: Pruefen und ausliefern
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pruefen:
+    name: Rechtscheck und Verweise
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Das eigentliche Tor. Der Rechtscheck prueft Belegpflicht, Offenlegung,
+      # Haftungshinweis, Korrekturweg, Umgehungsanleitungen, Zusagen ohne
+      # Grenze und Absichtsunterstellungen gegenueber Dritten. Was hier
+      # durchfaellt, soll gar nicht erst oeffentlich werden — eine einmal
+      # ausgelieferte Seite steht auch nach dem Loeschen im Archiv.
+      - name: Rechtscheck
+        run: python3 rechtscheck.py
+
+      # Interne Ziele und Store-Staende. Externe Adressen werden hier bewusst
+      # nicht geprueft: ein fremder Server, der gerade 503 antwortet, ist kein
+      # Grund, die eigene Auslieferung anzuhalten.
+      - name: Verweise und Store-Staende
+        run: python3 tools/links-pruefen.py || true
+
+      - name: Sitemap und Feed sind auf dem Stand der Dateien
+        run: |
+          python3 build-sitemap.py --check || {
+            echo "::error::Sitemap veraltet — build-sitemap.py ausfuehren und committen"
+            exit 1
+          }
+
+      # Zweimal an einem Tag standen Platzhalter in ausgelieferten Seiten
+      # ({TITEL}, {AMO}), weil ein Textblock in einen f-String geriet. Im
+      # Quelltext faellt das nicht auf, auf der Seite schon.
+      - name: Keine unaufgeloesten Platzhalter
+        run: |
+          treffer=$(grep -rlE '\{[A-Z_]{3,}\}' docs --include='*.html' || true)
+          if [ -n "$treffer" ]; then
+            echo "::error::Unaufgeloeste Platzhalter in: $treffer"
+            exit 1
+          fi
+
+      # Der Grund, warum dieses Repo oeffentlich ist, darf nicht zum Leck
+      # werden. Der Aggregator schrieb schon einmal 23 absolute Pfade in den
+      # CHANGELOG.
+      - name: Keine lokalen Pfade im Auslieferungsstand
+        run: |
+          # Nur die echten Kennungen, nicht jeder Beispielpfad: /home/name/
+          # und /home/you/ stehen absichtlich in der Oberflaeche.
+          treffer=$(git ls-files | xargs grep -lE '/home/holo/|/mnt/c/Users/HOLO/' 2>/dev/null || true)
+          if [ -n "$treffer" ]; then
+            echo "::error::Lokale Pfade in: $treffer"
+            exit 1
+          fi
+
+  ausliefern:
+    name: Worker ausliefern
+    needs: pruefen
+    runs-on: ubuntu-latest
+    # Nur wenn der Worker sich geaendert hat. Eine Textkorrektur an einer Seite
+    # braucht keine neue Worker-Fassung.
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Hat sich am Worker etwas geaendert?
+        id: geaendert
+        run: |
+          if git diff --name-only HEAD~1 HEAD | grep -q '^worker/'; then
+            echo "ja=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ja=false" >> "$GITHUB_OUTPUT"
+            echo "Worker unveraendert — nichts auszuliefern."
+          fi
+
+      - name: Syntaxpruefung
+        if: steps.geaendert.outputs.ja == 'true'
+        run: node --check worker/mcp.js
+
+      - name: Ausliefern
+        if: steps.geaendert.outputs.ja == 'true'
+        working-directory: worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        # Die Route ist bereits gesetzt und soll nicht bei jedem Lauf neu
+        # geschrieben werden — dafuer braeuchte das Token Zonenrechte, die es
+        # bewusst nicht hat.
+        run: npx --yes wrangler@latest deploy
+
+      - name: Gegenprobe am Live-Endpunkt
+        if: steps.geaendert.outputs.ja == 'true'
+        run: |
+          sleep 25
+          for versuch in 1 2 3 4 5 6; do
+            fassung=$(curl -s -X POST https://provinglab.dev/mcp \
+              -H 'content-type: application/json' -A 'github-actions-check/1.0' \
+              -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"ci","version":"1"}}}' \
+              | python3 -c 'import json,sys; print(json.load(sys.stdin)["result"]["serverInfo"]["version"])' 2>/dev/null || echo "?")
+            erwartet=$(grep -oP 'const VERSION = "\K[^"]+' worker/mcp.js)
+            echo "Versuch $versuch: live=$fassung erwartet=$erwartet"
+            [ "$fassung" = "$erwartet" ] && exit 0
+            sleep 20
+          done
+          echo "::error::Der Endpunkt meldet nach dem Ausrollen nicht die erwartete Fassung"
+          exit 1
