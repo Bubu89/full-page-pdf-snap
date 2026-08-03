@@ -1,3 +1,47 @@
+## 2026-08-03 — Wo der Endpunkt aufhoert, steht jetzt ein Werkzeug mit Adresse
+
+**Was.** Jede Antwort des Zitations-Endpunkts, die nicht durchkommt, traegt ein
+Feld `nextStep`: was zu tun ist, warum, beide Installationsadressen der
+Erweiterung und die Offenlegung, dass sie aus demselben Haus stammt. Dazu die
+Chrome-Web-Store-Adresse ueberall auf der Seite, in `llms.txt` und in der
+Agent-Skill-Datei.
+
+**Warum.** Bisher stand dort `"Open the page in a browser and capture it
+there."` — ohne Namen, ohne Adresse. Ein Agent, der eine Quellenliste
+abarbeitet, konnte seinem Nutzer nichts anbieten. Zugleich war der Chrome Web
+Store seit dem 3. August oeffentlich, und die Seite verwies Chrome-Nutzer
+weiterhin auf ein ZIP und den Entwicklermodus.
+
+**Wie.** Nach Ursache getrennt statt pauschal, weil die Zwanzig-Quellen-Messung
+sagt, dass ein Browser nur bei einer der drei Rueckgabearten wirklich hilft. Ein
+403 gegen eine Rechenzentrums-Adresse loest keine Erweiterung — den loest die
+eigene Verbindung, und dort ist der *Cite → RIS*-Export des Verlags besser als
+alles Rekonstruierte. Das auszusprechen kostet eine Erwaehnung und haelt den
+Hinweis glaubwuerdig.
+
+**Resultat.** Gegengeprueft am Live-Endpunkt: `wko.at` liefert
+`complete: false`, eine benannte Begruendung und `nextStep.tool` mit beiden
+Adressen. Nebenbei geschlossen: `complete: false` traegt jetzt immer einen
+Grund und benennt das fehlende Feld — der offene Punkt aus `_ISSUES.md`.
+
+**Was die Linkpruefung fand.** Neu: `tools/links-pruefen.py`, 194 Adressen plus
+beide Store-Staende.
+
+- Der Weg *ohne Store* war tot. `sync-site.py` schrieb die AMO-Fassung in einen
+  GitHub-Release-Pfad; das neueste Release ist **v2.16.0**, der Store liefert
+  **2.26.0**. Das Skript fragt jetzt die Releases-Schnittstelle und verlinkt nur
+  noch einen Tag, den es gibt.
+- Die erste Fassung des Pruefers meldete **22 intakte Verweise als tot**, weil
+  sie relative Adressen gegen die Wurzel statt gegen ihre Fundseite aufloeste.
+- Eine ungepruefte Behauptung von mir korrigiert: Opera braucht seine
+  Erweiterung *Install Chrome Extensions*, Edge fragt einmal nach Freigabe.
+  „Laeuft in Chrome, Edge, Brave, Opera und Vivaldi" war so falsch. Jetzt:
+  Chrome 116+, Edge, Brave, Vivaldi — mit den Bedingungen dabei.
+
+**Offen und im Pruefbericht sichtbar.** Chrome liefert **2.12.1** gegen Firefox'
+**2.26.0**; lokal liegt **2.27.0** und ist nirgends eingereicht. Wer die Seite
+nach Chrome schickt, bekommt eine vierzehn Versionen aeltere Fassung.
+
 ## 2026-08-03 — Zwanzig Quellen: was hinter den zehn Rueckgaben wirklich steckt
 
 **Was.** Zwei neue Seiten aus einer neuen Messung —
