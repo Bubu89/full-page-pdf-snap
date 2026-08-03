@@ -66,7 +66,7 @@ def anpassen(kopf):
 
 INHALT = f"""
 <header>
-  <h1>{{TITEL}}</h1>
+  <h1>{TITEL}</h1>
   <p class="standfirst">
     Wiring our citation endpoint to a capture extension raised the obvious
     question: can an agent just use the extension itself? We loaded it into an
@@ -74,8 +74,8 @@ INHALT = f"""
     between them is not a bug. It is the permission the extension asks for, and
     it decides which kind of AI system can drive it.
   </p>
-  <p class="meta">{{DATUM_LANG}} · Chromium 145.0.7632.6, extension loaded unpacked ·
-    <a href="{{ROHDATEN}}">raw data</a></p>
+  <p class="meta">{DATUM_LANG} · Chromium 145.0.7632.6, extension loaded unpacked ·
+    raw data: <a href="{ROHDATEN}">without a gesture</a> · <a href="/data/2026-08-03-agent-real-gesture.json">with one</a></p>
 </header>
 
 <h2>What was measured</h2>
@@ -221,8 +221,8 @@ INHALT = f"""
   the agent's clicks count.
 </p>
 <p>
-  <a class="btn" href="{{AMO}}">Firefox, desktop and Android</a>
-  &nbsp;<a class="btn" href="{{CWS}}">Chrome 116+, Edge, Brave, Vivaldi</a>
+  <a class="btn" href="{AMO}">Firefox, desktop and Android</a>
+  &nbsp;<a class="btn" href="{CWS}">Chrome 116+, Edge, Brave, Vivaldi</a>
 </p>
 <p style="font-size:.9rem">
   Edge asks once to allow extensions from other stores; Opera needs its
