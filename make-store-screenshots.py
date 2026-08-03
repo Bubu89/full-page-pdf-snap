@@ -29,6 +29,46 @@ BREITE, HOEHE = 1280, 800
 KUERZEL = "Alt+Shift+Y"
 KUERZEL2 = "Ctrl+Shift+Y"
 
+
+# --- Die Schalter im Aufnahmefenster -----------------------------------------
+# Sie stehen hier, weil das Bild sie zeigen muss wie das Fenster selbst. Als das
+# Fenster einen dritten Schalter bekam, zeigte das Store-Bild noch einen — und
+# der Nutzer suchte im Popup nach einer Funktion, die er auf dem Bild gesehen
+# hatte. Wortlaut und Reihenfolge folgen popup.html.
+POPUP_SCHALTER = [
+    ("Hide banners and pop-ups",
+     "Consent dialogs and floating bars are hidden for the capture.", True),
+    ("Add citation details",
+     "Authors, DOI, licence and retrieval time into the PDF, plus an RIS record.", True),
+    ("Copy file path after saving",
+     "Paste the path straight into a terminal or a chat.", False),
+]
+
+
+def schalter_html():
+    """Die Schalterzeilen des Aufnahmefensters, gezeichnet wie im Fenster."""
+    teile = []
+    for titel, hinweis, an in POPUP_SCHALTER:
+        farbe = "#2563eb" if an else "#cbd5e1"
+        pos = "22px" if an else "3px"
+        teile.append(f"""        <div style="display:flex;align-items:flex-start;gap:13px;margin-top:12px;
+                    background:#f1f5f9;border:1px solid #cbd5e1;border-radius:10px;
+                    padding:12px 14px;text-align:left">
+          <span style="width:44px;height:26px;border-radius:13px;background:{farbe};
+                       position:relative;flex:0 0 auto;margin-top:2px">
+            <span style="position:absolute;top:3px;left:{pos};width:20px;height:20px;
+                         border-radius:50%;background:#fff"></span></span>
+          <span style="flex:1;min-width:0">
+            <span style="display:block;font-size:17px;font-weight:700;color:#0f172a;line-height:1.25">{titel}</span>
+            <span style="display:block;font-size:13.5px;color:#64748b;margin-top:3px;line-height:1.35">{hinweis}</span>
+          </span>
+        </div>
+""")
+    return "".join(teile)
+
+
+SCHALTER = schalter_html()
+
 STIL = """
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
@@ -98,26 +138,17 @@ BILD1 = html(f"""
     <div class="leiste"><span>Full Page PDF Snap</span>
       <span class="punkte"><span style="background:#cbd5e1"></span>
       <span style="background:#cbd5e1"></span><span style="background:#f87171"></span></span></div>
-    <div class="rumpf" style="text-align:center;padding:42px 36px">
-      <div style="font-size:27px;font-weight:800;margin-bottom:26px">Save the whole page as PDF</div>
-      <div style="background:#2563eb;color:#fff;font-size:26px;font-weight:700;
-                  padding:20px;border-radius:12px;box-shadow:0 8px 22px rgba(37,99,235,.34)">
+    <div class="rumpf" style="text-align:center;padding:28px 28px">
+      <div style="font-size:25px;font-weight:800;margin-bottom:19px">Save the whole page as PDF</div>
+      <div style="background:#2563eb;color:#fff;font-size:24px;font-weight:700;
+                  padding:17px;border-radius:12px;box-shadow:0 8px 22px rgba(37,99,235,.34)">
         Capture whole page</div>
-        <div style="background:#f1f5f9;color:#0f172a;font-size:22px;font-weight:600;
-                    padding:16px;border-radius:10px;border:1px solid #cbd5e1;
-                    margin-top:14px">Select an area&hellip;</div>
-        <div style="display:flex;align-items:center;gap:14px;margin-top:16px;
-                    background:#f1f5f9;border:1px solid #cbd5e1;border-radius:10px;
-                    padding:14px 16px;text-align:left">
-          <span style="width:46px;height:27px;border-radius:14px;background:#2563eb;
-                       position:relative;flex:0 0 auto">
-            <span style="position:absolute;top:3px;left:22px;width:21px;height:21px;
-                         border-radius:50%;background:#fff"></span></span>
-          <span style="font-size:19px;font-weight:700;color:#0f172a">Hide banners and pop-ups</span>
-        </div>
-      <div style="margin-top:26px;font-size:20px;color:#475569">
-        Whole page shortcut: <kbd style="font-size:19px">{KUERZEL}</kbd></div>
-      <div style="margin-top:22px;font-size:19px;color:#2563eb;font-weight:600;
+        <div style="background:#f1f5f9;color:#0f172a;font-size:20px;font-weight:600;
+                    padding:14px;border-radius:10px;border:1px solid #cbd5e1;
+                    margin-top:12px">Select an area&hellip;</div>
+{SCHALTER}      <div style="margin-top:18px;font-size:17px;color:#475569">
+        Whole page shortcut: <kbd style="font-size:16px">{KUERZEL}</kbd></div>
+      <div style="margin-top:15px;font-size:17px;color:#2563eb;font-weight:600;
                   text-decoration:underline">Settings</div>
     </div>
   </div></div>
