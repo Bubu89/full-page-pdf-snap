@@ -71,7 +71,7 @@
     <link rel="alternate" type="text/html" href="https://provinglab.dev/measurements/citation-triage/"/>
     <published>2026-08-03T00:00:00Z</published>
     <updated>2026-08-03T00:00:00Z</updated>
-    <summary type="text">A reading list through a citation endpoint: 8 of 12 sources became complete records with RIS in 13 seconds. The other four are named, so a human can fetch them.</summary>
+    <summary type="text">Given a mixed reading list, an MCP endpoint turned 8 of 12 sources into complete citations with RIS records in 13 seconds. The other four are blocked to any server-side reader — and saying so precisely is worth more than guessing. Mit deutscher Fassung.</summary>
   </entry>
   <entry>
     <title>Which page-saving extensions actually run on Firefox for Android?</title>

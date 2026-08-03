@@ -86,7 +86,7 @@ INHALT = f"""
   separately so it stays visible which one holds.
 </p>
 <table>
-  <thead><tr><th>Step</th><th>Result</th><th>Detail</th></tr></thead>
+  <thead><tr><th scope="col">Step</th><th scope="col">Result</th><th scope="col">Detail</th></tr></thead>
   <tbody>
     <tr><td>Extension loads</td><td><strong>passes</strong></td>
         <td><code>Full Page PDF Snap 2.10.0, ENABLED</code></td></tr>
@@ -112,7 +112,7 @@ INHALT = f"""
   all</strong> — no <code>&lt;all_urls&gt;</code>, no site list:
 </p>
 <table>
-  <thead><tr><th>Build</th><th>Permissions</th><th>Host permissions</th></tr></thead>
+  <thead><tr><th scope="col">Build</th><th scope="col">Permissions</th><th scope="col">Host permissions</th></tr></thead>
   <tbody>
     <tr><td>Firefox</td>
         <td><code>activeTab, downloads, downloads.open, storage, menus,
@@ -152,7 +152,7 @@ INHALT = f"""
   visible browser window.
 </p>
 <table>
-  <thead><tr><th>Moment</th><th>Tabs the extension can see</th></tr></thead>
+  <thead><tr><th scope="col">Moment</th><th scope="col">Tabs the extension can see</th></tr></thead>
   <tbody>
     <tr><td>After loading, service worker awake, no gesture</td><td><strong>0</strong></td></tr>
     <tr><td>After <code>Alt+Shift+Y</code> as a real input event</td><td><strong>1</strong></td></tr>
@@ -181,7 +181,7 @@ INHALT = f"""
   protocol commands. That, not the vendor, is what decides it.
 </p>
 <table>
-  <thead><tr><th>System</th><th>How it acts</th><th>Can trigger the extension</th></tr></thead>
+  <thead><tr><th scope="col">System</th><th scope="col">How it acts</th><th scope="col">Can trigger the extension</th></tr></thead>
   <tbody>
     <tr><td>Claude in Chrome</td><td>extension-based agent clicking and typing in the live browser</td>
         <td><strong>yes</strong> — and it works in the profile where the extension is already installed</td></tr>

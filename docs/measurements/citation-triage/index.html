@@ -4,8 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>An agent can cite eight of twelve sources. The useful part is knowing which four it cannot — Proving Lab</title>
-<meta name="description" content="A reading list through a citation endpoint: 8 of 12 sources became complete records with RIS in 13 seconds. The other four are named, so a human can fetch them.">
+<meta name="description" content="Given a mixed reading list, an MCP endpoint turned 8 of 12 sources into complete citations with RIS records in 13 seconds. The other four are blocked to any server-side reader — and saying so precisely is worth more than guessing. Mit deutscher Fassung.">
 <link rel="canonical" href="https://provinglab.dev/measurements/citation-triage/">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/measurements/citation-triage/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/measurements/citation-triage/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/measurements/citation-triage/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
 <link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
@@ -29,8 +32,20 @@
   "description": "Given a mixed reading list, an MCP endpoint turned 8 of 12 sources into complete citations with RIS records in 13 seconds. The other four are blocked to any server-side reader — and saying so precisely is worth more than guessing.",
   "datePublished": "2026-08-03",
   "dateModified": "2026-08-03",
-  "inLanguage": "en",
+  "inLanguage": [
+    "en",
+    "de"
+  ],
   "url": "https://provinglab.dev/measurements/citation-triage/",
+  "about": [
+    "citation",
+    "MCP endpoint",
+    "bibliography",
+    "Literaturverzeichnis",
+    "Quellennachweis",
+    "Zitieren"
+  ],
+  "keywords": "citation endpoint, MCP, extract_citation, reading list, Literaturverzeichnis erstellen, Internetquellen zitieren, Abrufdatum, RIS, BibTeX, Citavi, Zotero",
   "author": {
     "@type": "Organization",
     "name": "Proving Lab",
@@ -45,44 +60,18 @@
 </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "Dataset",
-  "name": "A mixed reading list through a citation endpoint: which sources yield and which refuse",
-  "description": "Twelve sources of mixed type through the extract_citation endpoint — eight returned complete records with RIS, four were refused with the access wall named — with timings, 3 August 2026.",
-  "url": "https://provinglab.dev/data/2026-08-03-citation-triage.json",
-  "identifier": "https://provinglab.dev/data/2026-08-03-citation-triage.json",
-  "datePublished": "2026-08-03",
-  "license": "https://creativecommons.org/licenses/by/4.0/",
-  "isAccessibleForFree": true,
-  "inLanguage": "en",
-  "keywords": [
-    "citation extraction",
-    "paywall",
-    "access walls",
-    "RIS",
-    "reading list",
-    "triage"
-  ],
-  "variableMeasured": [
-    "pages",
-    "page breaks",
-    "breaks mid-sentence",
-    "word recall",
-    "file size",
-    "embedded images"
-  ],
-  "creator": {
-    "@type": "Organization",
-    "name": "Proving Lab",
-    "url": "https://provinglab.dev/"
-  },
-  "distribution": [
-    {
-      "@type": "DataDownload",
-      "encodingFormat": "application/json",
-      "contentUrl": "https://provinglab.dev/data/2026-08-03-citation-triage.json"
-    }
-  ],
+  "@context": "https://schema.org", "@type": "Dataset",
+  "name": "Print-to-PDF versus screenshot capture, same document",
+  "description": "Page counts, page-break analysis, word recall against the source text, embedded images and file sizes for the same Wikipedia article captured both ways on 1 August 2026.",
+  "url": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "identifier": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "datePublished": "2026-08-01", "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true, "inLanguage": "en",
+  "keywords": ["print to PDF","screenshot","page breaks","OCR","web archiving"],
+  "variableMeasured": ["pages","page breaks","breaks mid-sentence","word recall","file size","embedded images"],
+  "creator": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
+  "distribution": [{ "@type": "DataDownload", "encodingFormat": "application/json",
+    "contentUrl": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json" }],
   "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
 }
 </script>
@@ -165,6 +154,16 @@
     .topnav .brand{width:100%;margin-right:0}
     .topnav a.n{font-size:.85rem}
   }
+
+  /* --- Sprachumschaltung --- */
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
+  .lang{display:flex;gap:6px;margin:0 0 26px}
+  .lang button{font:inherit;font-size:.86rem;font-weight:600;padding:7px 18px;cursor:pointer;
+    background:var(--card);color:var(--dim);border:1px solid var(--line);border-radius:8px}
+  .lang button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
 </style>
 <script src="/agent-tools.js" defer></script>
 </head>
@@ -180,7 +179,7 @@
     <a class="n" href="../../mitmachen/">Mitmachen</a>
     <a class="n" href="../../tools/">Tools</a>
     <a class="n" href="../../about/">About</a>
-    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
+    <a class="n" href="#b-de" hreflang="de" lang="de" title="Zur deutschen Fassung auf dieser Seite">Deutsch</a>
       <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
   </div>
 </nav>
@@ -188,16 +187,32 @@
 <div class="wrap">
 
 <header>
-  <h1>An agent can cite eight of twelve sources. The useful part is knowing which four it cannot</h1>
-  <p class="standfirst">
+  <h1 data-lang="en" class="on" lang="en">An agent can cite eight of twelve sources. The useful part is knowing which four it cannot</h1>
+  <h1 data-lang="de" lang="de">Ein Agent kann acht von zwölf Quellen zitieren. Wertvoll ist, dass er die vier benennt, die er nicht kann</h1>
+  <p class="standfirst on" data-lang="en" lang="en">
     A reading list goes in, citable records come out — for two thirds of it. The
     remaining third is refused by the publishers to any server that asks. What
     makes the endpoint useful is not the two thirds; it is that it names the
     third precisely enough to act on.
   </p>
-  <p class="meta">3 August 2026 · 12 sources, one pass ·
-    <a href="/data/2026-08-03-citation-triage.json">raw data</a></p>
+  <p class="standfirst" data-lang="de" lang="de">
+    Eine Leseliste geht hinein, zitierfähige Nachweise kommen heraus — für zwei
+    Drittel davon. Das restliche Drittel verweigern die Verlage jedem Server,
+    der nachfragt. Was den Endpunkt nützlich macht, sind nicht die zwei Drittel,
+    sondern dass er das letzte Drittel so genau benennt, dass man damit
+    weiterarbeiten kann.
+  </p>
+  <p class="meta"><span data-lang="en" class="on" lang="en">3 August 2026 · 12 sources, one pass ·
+    <a href="/data/2026-08-03-citation-triage.json">raw data</a></span><span data-lang="de" lang="de">3. August 2026 · 12 Quellen, ein Durchlauf ·
+    <a href="/data/2026-08-03-citation-triage.json">Rohdaten</a></span></p>
 </header>
+
+<div class="lang">
+  <button id="b-en" aria-pressed="true" onclick="setLang('en')">English</button>
+  <button id="b-de" aria-pressed="false" onclick="setLang('de')">Deutsch</button>
+</div>
+
+<div data-lang="en" class="on" lang="en">
 
 <h2>The task</h2>
 <p>
@@ -232,12 +247,12 @@
 
 <h2>What was handed back, and why</h2>
 <table>
-  <thead><tr><th>Source</th><th>Reason</th></tr></thead>
+  <thead><tr><th scope="col">Source</th><th scope="col">Reason</th></tr></thead>
   <tbody>
-    <tr><td><code>www.mdpi.com</code></td><td>http-403</td></tr>
-    <tr><td><code>www.sciencedirect.com</code></td><td>http-403</td></tr>
-    <tr><td><code>www.ssoar.info</code></td><td>bot wall served to server-side readers</td></tr>
-    <tr><td><code>eur-lex.europa.eu</code></td><td>near-empty response to server-side readers</td></tr>
+    <tr><th scope="row"><code>www.mdpi.com</code></th><td>http-403</td></tr>
+    <tr><th scope="row"><code>www.sciencedirect.com</code></th><td>http-403</td></tr>
+    <tr><th scope="row"><code>www.ssoar.info</code></th><td>bot wall served to server-side readers</td></tr>
+    <tr><th scope="row"><code>eur-lex.europa.eu</code></th><td>near-empty response to server-side readers</td></tr>
   </tbody>
 </table>
 <p>
@@ -286,6 +301,109 @@
   <code>warning</code> field that is empty when there is nothing to warn about.
 </p>
 
+</div>
+
+<div data-lang="de" lang="de">
+
+<h2>Die Aufgabe</h2>
+<p>
+  Ein Agent bekommt eine Liste von Adressen und soll sie für ein
+  Literaturverzeichnis vorbereiten. Für jede ruft er
+  <code>extract_citation</code> am
+  <a href="/notes/mcp-server-what-it-solves/">MCP-Endpunkt</a> dieser Seite auf.
+  Der Endpunkt liest die Zitationsdaten, die eine Seite über sich selbst
+  ausweist, und gibt einen strukturierten Nachweis mit RIS und BibTeX zurück.
+</p>
+
+<div class="kf-row">
+  <div class="kf b"><div class="n">8/12</div><div class="l">vom Agenten erledigt</div></div>
+  <div class="kf"><div class="n">4</div><div class="l">zurückgegeben</div></div>
+  <div class="kf"><div class="n">1.09 s</div><div class="l">pro Quelle</div></div>
+</div>
+
+<h2>Was für die acht zurückkam</h2>
+<p>
+  Vollständige Nachweise — Autoren, Jahr, Publikationsorgan, Identifikator —,
+  jeder mit einem RIS-Eintrag, der sich ohne Abtippen in Citavi, Zotero oder
+  EndNote importieren lässt. Ein Zeitschriftenartikel von Springer mit fünf
+  Autoren, ein PLOS-Artikel, ein Beitrag aus PubMed Central, ein
+  arXiv-Preprint, ein Wikipedia-Eintrag, ein Zenodo-Datensatz und ein nackter
+  DOI, der über die Registrierungsagentur aufgelöst wurde, weil die Seite des
+  Verlags die Antwort verweigerte.
+</p>
+<p>
+  Zwei der acht tragen keinen Autor, weil die Seite keinen ausweist. Das ist
+  die Lücke der Seite, nicht die des Werkzeugs — und sie wird als leeres Feld
+  gemeldet statt mit einer Vermutung gefüllt. Ein Eintrag im
+  Literaturverzeichnis, der vollständig aussieht und falsch ist, kostet mehr
+  als einer mit sichtbarer Lücke.
+</p>
+
+<h2>Was zurückgegeben wurde — und warum</h2>
+<table>
+  <thead><tr><th scope="col">Quelle</th><th scope="col">Grund</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>www.mdpi.com</code></th><td>http-403</td></tr>
+    <tr><th scope="row"><code>www.sciencedirect.com</code></th><td>http-403</td></tr>
+    <tr><th scope="row"><code>www.ssoar.info</code></th><td>Bot-Abwehr-Seite an serverseitige Leser ausgeliefert</td></tr>
+    <tr><th scope="row"><code>eur-lex.europa.eu</code></th><td>nahezu leere Antwort an serverseitige Leser</td></tr>
+  </tbody>
+</table>
+<p>
+  Jede dieser Adressen wurde zur Kontrolle von einem unabhängigen Netz aus
+  erneut abgerufen, damit eine Störung auf eigener Seite nicht für eine Sperre
+  gehalten wird. Alle vier Sperren sind echt.
+</p>
+
+<h2>Warum die Verweigerung die wertvolle Hälfte ist</h2>
+<p>
+  Ein Zitationswerkzeug, das zu jeder Adresse etwas zurückgibt, klingt besser
+  und ist schlechter. Mit einer Bot-Abwehr gefüttert, erzeugt es einen Beleg,
+  dessen Titel <em>Making sure you're not a bot!</em> lautet — formatiert,
+  vollständig wirkend und wertlos. <a href="/measurements/citation-extraction/">Gemessen
+  haben wir das</a> an einem etablierten Dienst, bei zwei von achtzehn zufällig
+  gezogenen Quellen.
+</p>
+<p>
+  Eine Verweigerung dagegen lässt sich umsetzen. Der Agent kann genau die vier
+  Adressen nennen, die im Browser zu öffnen sind — dort erreicht eine
+  <a href="/tools/full-page-pdf-snap/">Aufnahme-Erweiterung</a>, was kein
+  Server erreicht: Die Seite lädt in der eigenen Sitzung, mit dem eigenen
+  Zugang. Diese Arbeitsteilung ist kein Notbehelf, sie folgt daraus, wer was
+  sehen darf.
+</p>
+
+<h2>Was hier nicht geklärt ist</h2>
+<ul>
+  <li><strong>Die Aufteilung verändert sich.</strong> EUR-Lex begann zwischen
+    zwei Durchläufen am selben Tag, serverseitigen Lesern eine nahezu leere
+    Antwort zu schicken. Jede Zahl hier ist ein Messwert eines Nachmittags,
+    keine Konstante.</li>
+  <li><strong>Zwölf Quellen sind eine Demonstration, keine Studie.</strong>
+    Zitierfähig für die Abdeckung ist die
+    <a href="/measurements/citation-extraction/">Messung an der
+    Zufallsstichprobe</a>; diese hier zeigt die Form des Arbeitsablaufs.</li>
+  <li><strong>Nichts davon schlägt den Export des Verlags selbst.</strong> Wo
+    eine Seite RIS oder BibTeX zum Herunterladen anbietet, ist diese Datei
+    maßgeblich und dies hier nicht.</li>
+</ul>
+
+<h2>Selbst ausprobieren</h2>
+<pre><code>curl -X POST https://provinglab.dev/mcp \
+  -H 'content-type: application/json' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{
+       "name":"extract_citation",
+       "arguments":{"url":"https://arxiv.org/abs/1706.03762"}}}'</code></pre>
+<p>
+  Kein Schlüssel, kein Konto. Bitte im Verhältnis nutzen — es ist ein kleiner
+  Endpunkt, und eine Leseliste ist eine Handvoll Aufrufe, kein Crawl. Der
+  Nachweis kommt mit einem <code>source</code>-Feld zurück, das angibt, wo die
+  Einzelheiten gelesen wurden, und einem <code>warning</code>-Feld, das leer
+  ist, wenn es nichts zu warnen gibt.
+</p>
+
+</div>
+
 <footer>
       Measured on 3 August 2026 in a single pass from a Cloudflare Workers edge.
       Every refusal was re-checked from an unrelated network. Raw data:
@@ -295,5 +413,22 @@
     </footer>
 
 </div>
+<script>
+function setLang(l){
+  document.querySelectorAll('[data-lang]').forEach(function(e){
+    e.classList.toggle('on', e.dataset.lang === l);
+  });
+  document.getElementById('b-en').setAttribute('aria-pressed', l === 'en');
+  document.getElementById('b-de').setAttribute('aria-pressed', l === 'de');
+  document.documentElement.lang = l;
+  try { localStorage.setItem('pl-lang', l); } catch (e) {}
+}
+(function(){
+  var gespeichert = null;
+  try { gespeichert = localStorage.getItem('pl-lang'); } catch (e) {}
+  var l = gespeichert || ((navigator.language || 'en').slice(0,2) === 'de' ? 'de' : 'en');
+  if (l === 'de') setLang('de');
+})();
+</script>
 </body>
 </html>

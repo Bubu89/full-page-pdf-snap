@@ -4,8 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Where citation data actually lives: 18 scholarly platforms measured — Proving Lab</title>
-<meta name="description" content="Where citation data actually lives: 18 scholarly platforms measured. Resolving the DOI beats visiting the article page — with the numbers behind that rule.">
+<meta name="description" content="Which platforms declare citation data a reader can use? Eleven of eighteen returned a record, ten of them complete. The most complete record of all came from the DOI resolver — not from the article page. Mit deutscher Fassung.">
 <link rel="canonical" href="https://provinglab.dev/measurements/citation-by-platform/">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/measurements/citation-by-platform/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/measurements/citation-by-platform/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/measurements/citation-by-platform/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
 <link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
@@ -29,8 +32,20 @@
   "description": "Which platforms declare citation data a reader can use? Eleven of eighteen returned a record, ten of them complete. The most complete record of all came from the DOI resolver — not from the article page.",
   "datePublished": "2026-08-03",
   "dateModified": "2026-08-03",
-  "inLanguage": "en",
+  "inLanguage": [
+    "en",
+    "de"
+  ],
   "url": "https://provinglab.dev/measurements/citation-by-platform/",
+  "about": [
+    "citation metadata",
+    "scholarly platforms",
+    "DOI",
+    "Zitationsdaten",
+    "Quellennachweis",
+    "Literaturverzeichnis"
+  ],
+  "keywords": "citation data, DOI resolver, scholarly platforms, Zitationsdaten, Literaturverzeichnis erstellen, Internetquellen zitieren, Abrufdatum, RIS, BibTeX",
   "author": {
     "@type": "Organization",
     "name": "Proving Lab",
@@ -45,44 +60,18 @@
 </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "Dataset",
-  "name": "Citation metadata declared by 18 scholarly platforms",
-  "description": "What each of 18 scholarly platforms declares about a work to a server-side reader — authors, year, journal, volume, pages, DOI, ISSN — measured through the extract_citation endpoint and verified against Crossref, 3 August 2026.",
-  "url": "https://provinglab.dev/data/2026-08-03-citation-by-platform.json",
-  "identifier": "https://provinglab.dev/data/2026-08-03-citation-by-platform.json",
-  "datePublished": "2026-08-03",
-  "license": "https://creativecommons.org/licenses/by/4.0/",
-  "isAccessibleForFree": true,
-  "inLanguage": "en",
-  "keywords": [
-    "citation metadata",
-    "Highwire Press tags",
-    "Dublin Core",
-    "DOI",
-    "Crossref",
-    "scholarly publishing"
-  ],
-  "variableMeasured": [
-    "pages",
-    "page breaks",
-    "breaks mid-sentence",
-    "word recall",
-    "file size",
-    "embedded images"
-  ],
-  "creator": {
-    "@type": "Organization",
-    "name": "Proving Lab",
-    "url": "https://provinglab.dev/"
-  },
-  "distribution": [
-    {
-      "@type": "DataDownload",
-      "encodingFormat": "application/json",
-      "contentUrl": "https://provinglab.dev/data/2026-08-03-citation-by-platform.json"
-    }
-  ],
+  "@context": "https://schema.org", "@type": "Dataset",
+  "name": "Print-to-PDF versus screenshot capture, same document",
+  "description": "Page counts, page-break analysis, word recall against the source text, embedded images and file sizes for the same Wikipedia article captured both ways on 1 August 2026.",
+  "url": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "identifier": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "datePublished": "2026-08-01", "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true, "inLanguage": "en",
+  "keywords": ["print to PDF","screenshot","page breaks","OCR","web archiving"],
+  "variableMeasured": ["pages","page breaks","breaks mid-sentence","word recall","file size","embedded images"],
+  "creator": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
+  "distribution": [{ "@type": "DataDownload", "encodingFormat": "application/json",
+    "contentUrl": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json" }],
   "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
 }
 </script>
@@ -165,6 +154,16 @@
     .topnav .brand{width:100%;margin-right:0}
     .topnav a.n{font-size:.85rem}
   }
+
+  /* --- Sprachumschaltung --- */
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
+  .lang{display:flex;gap:6px;margin:0 0 26px}
+  .lang button{font:inherit;font-size:.86rem;font-weight:600;padding:7px 18px;cursor:pointer;
+    background:var(--card);color:var(--dim);border:1px solid var(--line);border-radius:8px}
+  .lang button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
 </style>
 <script src="/agent-tools.js" defer></script>
 </head>
@@ -180,7 +179,7 @@
     <a class="n" href="../../mitmachen/">Mitmachen</a>
     <a class="n" href="../../tools/">Tools</a>
     <a class="n" href="../../about/">About</a>
-    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
+    <a class="n" href="#b-de" hreflang="de" lang="de" title="Zur deutschen Fassung auf dieser Seite">Deutsch</a>
       <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
   </div>
 </nav>
@@ -188,16 +187,31 @@
 <div class="wrap">
 
 <header>
-  <h1>Where citation data actually lives: 18 scholarly platforms measured</h1>
-  <p class="standfirst">
+  <h1 data-lang="en" class="on" lang="en">Where citation data actually lives: 18 scholarly platforms measured</h1>
+  <h1 data-lang="de" lang="de">Wo Zitationsdaten tatsächlich stehen: 18 wissenschaftliche Plattformen gemessen</h1>
+  <p class="standfirst on" data-lang="en" lang="en">
     A reference is only as good as the data behind it. Eighteen platforms a
     researcher would plausibly use were asked what they declare about their own
     articles. Eleven answered; the most complete answer did not come from an
     article page at all.
   </p>
-  <p class="meta">3 August 2026 · 18 platforms, one pass ·
-    <a href="/data/2026-08-03-citation-by-platform.json">raw data</a></p>
+  <p class="standfirst" data-lang="de" lang="de">
+    Ein Quellennachweis ist nur so gut wie die Daten dahinter. Achtzehn
+    Plattformen, die Forschende realistischerweise nutzen, wurden gefragt, was
+    sie über ihre eigenen Artikel ausweisen. Elf antworteten — und die
+    vollständigste Antwort kam gar nicht von einer Artikelseite.
+  </p>
+  <p class="meta"><span data-lang="en" class="on" lang="en">3 August 2026 · 18 platforms, one pass ·
+    <a href="/data/2026-08-03-citation-by-platform.json">raw data</a></span><span data-lang="de" lang="de">3. August 2026 · 18 Plattformen, ein Durchlauf ·
+    <a href="/data/2026-08-03-citation-by-platform.json">Rohdaten</a></span></p>
 </header>
+
+<div class="lang">
+  <button id="b-en" aria-pressed="true" onclick="setLang('en')">English</button>
+  <button id="b-de" aria-pressed="false" onclick="setLang('de')">Deutsch</button>
+</div>
+
+<div data-lang="en" class="on" lang="en">
 
 <div class="kf-row">
   <div class="kf b"><div class="n">11/18</div><div class="l">returned a record</div></div>
@@ -207,7 +221,7 @@
 
 <h2>What each platform declares</h2>
 <table>
-  <thead><tr><th>Platform</th><th>Authors</th><th>Year</th><th>DOI</th><th>Pages</th><th>ISSN</th><th>s</th></tr></thead>
+  <thead><tr><th scope="col">Platform</th><th scope="col">Authors</th><th scope="col">Year</th><th scope="col">DOI</th><th scope="col">Pages</th><th scope="col">ISSN</th><th scope="col">s</th></tr></thead>
   <tbody>
     <tr><td>PubMed</td><td class="num">2</td><td class="num">2017</td><td class="num">✓</td><td class="num">—</td><td class="num">✓</td><td class="num">0.52</td></tr>
     <tr><td>PMC</td><td class="num">4</td><td class="num">2020</td><td class="num">✓</td><td class="num">✓</td><td class="num">—</td><td class="num">0.46</td></tr>
@@ -303,6 +317,123 @@
     server-side readers, measured on one afternoon and liable to change.</li>
 </ul>
 
+</div>
+
+<div data-lang="de" lang="de">
+
+<div class="kf-row">
+  <div class="kf b"><div class="n">11/18</div><div class="l">gaben einen Nachweis zurück</div></div>
+  <div class="kf"><div class="n">10</div><div class="l">mit Autoren und Jahr</div></div>
+  <div class="kf"><div class="n">8</div><div class="l">Titel von Crossref bestätigt</div></div>
+</div>
+
+<h2>Was jede Plattform ausweist</h2>
+<table>
+  <thead><tr><th scope="col">Plattform</th><th scope="col">Autoren</th><th scope="col">Jahr</th><th scope="col">DOI</th><th scope="col">Seiten</th><th scope="col">ISSN</th><th scope="col">s</th></tr></thead>
+  <tbody>
+    <tr><td>PubMed</td><td class="num">2</td><td class="num">2017</td><td class="num">✓</td><td class="num">—</td><td class="num">✓</td><td class="num">0.52</td></tr>
+    <tr><td>PMC</td><td class="num">4</td><td class="num">2020</td><td class="num">✓</td><td class="num">✓</td><td class="num">—</td><td class="num">0.46</td></tr>
+    <tr><td>Europe PMC</td><td colspan="5" style="color:#64748b">Remote end closed connection w</td><td class="num">55.49</td></tr>
+    <tr><td>Springer</td><td class="num">5</td><td class="num">2013</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">1.01</td></tr>
+    <tr><td>PLOS</td><td class="num">2</td><td class="num">2023</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">1.45</td></tr>
+    <tr><td>BMC</td><td class="num">6</td><td class="num">2023</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">0.91</td></tr>
+    <tr><td>Nature</td><td class="num">13</td><td class="num">2023</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">0.98</td></tr>
+    <tr><td>Frontiers</td><td colspan="5" style="color:#64748b">The server answered 404 Not Found.</td><td class="num">0.68</td></tr>
+    <tr><td>arXiv</td><td class="num">8</td><td class="num">2017</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">0.21</td></tr>
+    <tr><td>bioRxiv</td><td colspan="5" style="color:#64748b">The only title the page declares i</td><td class="num">0.71</td></tr>
+    <tr><td>Zenodo</td><td class="num">1</td><td class="num">2023</td><td class="num">✓</td><td class="num">—</td><td class="num">—</td><td class="num">0.51</td></tr>
+    <tr><td>SSOAR</td><td colspan="5" style="color:#64748b">The page looks like an error messa</td><td class="num">0.33</td></tr>
+    <tr><td>DOAJ</td><td colspan="5" style="color:#64748b">The server answered 403 Forbidden.</td><td class="num">0.14</td></tr>
+    <tr><td>Wiley</td><td class="num">0</td><td class="num">2022</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">0.41</td></tr>
+    <tr><td>MDPI</td><td colspan="5" style="color:#64748b">The server answered 403 Forbidden.</td><td class="num">0.19</td></tr>
+    <tr><td>ScienceDirect</td><td colspan="5" style="color:#64748b">The server answered 403 Forbidden.</td><td class="num">0.24</td></tr>
+    <tr><td>DOI-Resolver</td><td class="num">2</td><td class="num">2016</td><td class="num">✓</td><td class="num">✓</td><td class="num">✓</td><td class="num">0.41</td></tr>
+    <tr><td>Wikipedia</td><td class="num">1</td><td class="num">2006</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">0.18</td></tr>
+  </tbody>
+</table>
+
+<h2>Der Befund, den man umsetzen sollte</h2>
+<p>
+  <strong>Den DOI aufzulösen schlug den Besuch der Artikelseite.</strong>
+  Derselbe Beitrag, den die eigene Seite von Wiley ohne Seitenzahlen ausliefert,
+  kam über <code>doi.org</code> vollständig zurück — Autoren, Jahr, Zeitschrift,
+  Band, Seiten und ISSN — in 0,4&nbsp;Sekunden, von einem Verlag, dessen
+  Artikelseiten serverseitige Leser kategorisch abweisen.
+</p>
+<p>
+  Die praktische Regel für alle, die ein Literaturverzeichnis zusammenstellen:
+  <strong>Wer den DOI hat, nutzt <code>https://doi.org/…</code></strong>, nicht
+  den Link aus der Suchmaschine. Das ist schneller, vollständiger und
+  funktioniert dort, wo die eigene Seite des Verlags versagt.
+</p>
+
+<h2>Wofür das gut ist</h2>
+
+<h3>Eine Quelle sichern, die das Semester nicht überlebt</h3>
+<p>
+  Webseiten, die in studentischen Arbeiten zitiert werden, verschwinden — wie
+  oft, haben wir <a href="/measurements/web-citations-that-vanish/">gemessen</a>.
+  Eine Aufnahme bewahrt die Seite, wie sie aussah: mit Abrufzeitpunkt auf die
+  Sekunde samt Zeitzone, einer Prüfsumme der Bilddaten und dem Zitationsnachweis
+  daneben. Fragt die prüfende Person, was im August auf der Seite stand, ist die
+  Antwort eine Datei statt einer Erinnerung.
+</p>
+
+<h3>Eine Leseliste in Nachweise verwandeln</h3>
+<p>
+  Mit einer Liste von Adressen liefert der Endpunkt RIS-Einträge, die sich ohne
+  Abtippen in Citavi, Zotero oder EndNote importieren lassen — und er
+  <a href="/measurements/citation-triage/">nennt die Adressen, die er nicht
+  erreicht</a>, sodass diese im Browser geöffnet werden können, statt still
+  unterzugehen.
+</p>
+
+<h3>Quellen hinter einem Login</h3>
+<p>
+  Eine Hochschullizenz, ein Bibliotheks-Proxy, eine Fachzeitschrift hinter der
+  Bezahlschranke: Kein serverseitiger Leser kann Ihnen dorthin folgen, und drei
+  der hier gemessenen Verlage weisen sie kategorisch ab. Eine
+  <a href="/tools/full-page-pdf-snap/">Aufnahme-Erweiterung</a> läuft in Ihrer
+  eigenen Sitzung mit Ihrem eigenen Zugang — darum gehören beide Wege zusammen,
+  statt miteinander zu konkurrieren.
+</p>
+
+<h3>Eine lange Seite an ein Sprachmodell geben</h3>
+<p>
+  Ein durchgehendes Blatt mit echtem, markierbarem Text — aus dem Dokument
+  entnommen statt aus Pixeln erkannt — und Seitenumbrüche, die zwischen den
+  Zeilen fallen statt durch sie hindurch. Was das Modell liest, ist das, was
+  die Seite sagte.
+</p>
+
+<h2>Wofür es nicht gut ist</h2>
+<ul>
+  <li><strong>Den Export des Verlags ersetzen.</strong> Wo eine Artikelseite
+    RIS oder BibTeX anbietet, ist diese Datei maßgeblich und dies hier nicht.</li>
+  <li><strong>Beweisen, was eine Seite enthielt.</strong> Eine
+    Bildschirmaufnahme ist kein qualifiziertes elektronisches Dokument im Sinn
+    der eIDAS-Verordnung. Sie hält fest, was ein Browser zu einem genannten
+    Zeitpunkt anzeigte, nicht mehr — die Prüfsumme deckt die Datei, nicht die
+    Wahrhaftigkeit der Seite.</li>
+  <li><strong>Lücken füllen.</strong> Wo eine Plattform keine Seitenzahlen
+    ausweist — etwa die Abstract-Seiten von PubMed —, bleibt das Feld leer,
+    statt von anderswo geholt und so dargestellt zu werden, als hätte die Seite
+    es gesagt.</li>
+</ul>
+
+<h2>Grenzen dieser Messung</h2>
+<ul>
+  <li>Achtzehn Plattformen sind eine Aufnahme der gängigen, keine
+    Vollerhebung.</li>
+  <li>Europe PMC lief nach 55&nbsp;Sekunden in eine Zeitüberschreitung. Das
+    zählt hier als kein Ergebnis, nicht als Fehler der Plattform.</li>
+  <li>Drei Verweigerungen (MDPI, ScienceDirect, DOAJ) sind
+    Verlagsentscheidungen gegen serverseitige Leser, gemessen an einem
+    Nachmittag und veränderlich.</li>
+</ul>
+
+</div>
+
 <footer>
       Measured on 3 August 2026 in one pass from a Cloudflare Workers edge.
       Every returned title was checked against Crossref. Raw data:
@@ -312,5 +443,22 @@
     </footer>
 
 </div>
+<script>
+function setLang(l){
+  document.querySelectorAll('[data-lang]').forEach(function(e){
+    e.classList.toggle('on', e.dataset.lang === l);
+  });
+  document.getElementById('b-en').setAttribute('aria-pressed', l === 'en');
+  document.getElementById('b-de').setAttribute('aria-pressed', l === 'de');
+  document.documentElement.lang = l;
+  try { localStorage.setItem('pl-lang', l); } catch (e) {}
+}
+(function(){
+  var gespeichert = null;
+  try { gespeichert = localStorage.getItem('pl-lang'); } catch (e) {}
+  var l = gespeichert || ((navigator.language || 'en').slice(0,2) === 'de' ? 'de' : 'en');
+  if (l === 'de') setLang('de');
+})();
+</script>
 </body>
 </html>

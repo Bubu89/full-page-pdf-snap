@@ -204,19 +204,19 @@
 
 <h2>Five tools</h2>
 <table>
-  <thead><tr><th>Tool</th><th>What it is for</th></tr></thead>
+  <thead><tr><th scope="col">Tool</th><th scope="col">What it is for</th></tr></thead>
   <tbody>
-    <tr><td><code>extract_citation</code></td>
+    <tr><th scope="row"><code>extract_citation</code></th>
         <td>URL in, structured record out — authors, title, journal, year, DOI, licence,
             plus RIS and BibTeX. Or a named refusal.</td></tr>
-    <tr><td><code>how_to_capture</code></td>
+    <tr><th scope="row"><code>how_to_capture</code></th>
         <td>What to do with a source this endpoint cannot read, resolved for your agent
             type and target browser.</td></tr>
-    <tr><td><code>list_measurements</code></td>
+    <tr><th scope="row"><code>list_measurements</code></th>
         <td>Everything published here, with dataset URLs.</td></tr>
-    <tr><td><code>get_measurement_data</code></td>
+    <tr><th scope="row"><code>get_measurement_data</code></th>
         <td>One dataset as JSON, including the control run.</td></tr>
-    <tr><td><code>get_method</code></td>
+    <tr><th scope="row"><code>get_method</code></th>
         <td>A reproducible method, to repeat a measurement rather than cite it.</td></tr>
   </tbody>
 </table>
@@ -260,7 +260,7 @@
   X11 XTEST. The browser does not ask who produced the gesture.
 </p>
 <table>
-  <thead><tr><th>Your agent acts through</th><th>Can trigger it</th></tr></thead>
+  <thead><tr><th scope="col">Your agent acts through</th><th scope="col">Can trigger it</th></tr></thead>
   <tbody>
     <tr><td>Real input events — computer use, <code>xdotool</code>, an agent inside the
         user's browser</td><td><strong>yes</strong></td></tr>
@@ -277,7 +277,7 @@
 
 <h2>Discovery, if you are indexing this site</h2>
 <table>
-  <thead><tr><th>What</th><th>Where</th></tr></thead>
+  <thead><tr><th scope="col">What</th><th scope="col">Where</th></tr></thead>
   <tbody>
     <tr><td>Site summary for language models</td><td><a href="/llms.txt"><code>/llms.txt</code></a></td></tr>
     <tr><td>Skills with checksums</td><td><a href="/.well-known/agent-skills/index.json"><code>/.well-known/agent-skills/index.json</code></a></td></tr>

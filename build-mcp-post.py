@@ -72,13 +72,13 @@ INHALT = """<div class="wrap">
   Three tools, no authentication, no state:
 </p>
 <table>
-  <thead><tr><th>Tool</th><th>Input</th><th>Returns</th></tr></thead>
+  <thead><tr><th scope="col">Tool</th><th scope="col">Input</th><th scope="col">Returns</th></tr></thead>
   <tbody>
-    <tr><td><code>list_measurements</code></td><td>none</td>
+    <tr><th scope="row"><code>list_measurements</code></th><td>none</td>
         <td>every measurement with its dataset URL and the page documenting the method</td></tr>
-    <tr><td><code>get_measurement_data</code></td><td><code>dataset</code></td>
+    <tr><th scope="row"><code>get_measurement_data</code></th><td><code>dataset</code></td>
         <td>one dataset as JSON — measured values, control run, conditions</td></tr>
-    <tr><td><code>get_method</code></td><td><code>name</code> (optional)</td>
+    <tr><th scope="row"><code>get_method</code></th><td><code>name</code> (optional)</td>
         <td>a reproducible method, or the list of them</td></tr>
   </tbody>
 </table>

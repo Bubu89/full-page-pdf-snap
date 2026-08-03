@@ -111,7 +111,7 @@ def inhalt(d):
   translators — was given the same {len(d['per_source'])} addresses in the same order.
 </p>
 <table>
-  <thead><tr><th></th><th>This endpoint</th><th>Citoid</th></tr></thead>
+  <thead><tr><th scope="col"></th><th scope="col">This endpoint</th><th scope="col">Citoid</th></tr></thead>
   <tbody>
     <tr><td>Complete citations</td><td class="num win">{r['records_complete_ours']}</td><td class="num">{r['records_complete_citoid']}</td></tr>
     <tr><td>Any record returned</td><td class="num">{r['any_ours']}</td><td class="num win">{r['any_citoid']}</td></tr>
@@ -154,7 +154,7 @@ def inhalt(d):
 
 <h2>By field</h2>
 <table>
-  <thead><tr><th>Field</th><th>Returned</th><th>Sources that answered</th><th>Sources that refused</th></tr></thead>
+  <thead><tr><th scope="col">Field</th><th scope="col">Returned</th><th scope="col">Sources that answered</th><th scope="col">Sources that refused</th></tr></thead>
   <tbody>
 {tabelle(d)}
   </tbody>
@@ -178,7 +178,7 @@ def inhalt(d):
 
 <h2>Speed</h2>
 <table>
-  <thead><tr><th></th><th>Seconds</th></tr></thead>
+  <thead><tr><th scope="col"></th><th scope="col">Seconds</th></tr></thead>
   <tbody>
     <tr><td>Endpoint alone, no page fetched</td><td class="num">{s['baseline_no_fetch']}</td></tr>
     <tr><td>Median, all calls</td><td class="num">{s['median_all']}</td></tr>

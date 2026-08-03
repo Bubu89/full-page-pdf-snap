@@ -61,6 +61,10 @@ def anpassen(kopf, url, titel, beschreibung, og_beschreibung, tiefe, art):
     k = re.sub(r'(<meta property="og:description" content=")[^"]*(")',
                lambda m: m.group(1) + og_beschreibung + m.group(2), k)
     k = re.sub(r'(<link rel="icon" href=")[^"]*(")', rf"\g<1>{tiefe}icon-128.png\g<2>", k)
+    # Die Vorlage traegt eine deutsche Fassung im selben Dokument und verweist
+    # mit #b-de darauf. Seiten ohne diesen Abschnitt haetten damit einen toten
+    # Anker in der Navigation — auf die Sammelseite umbiegen.
+    k = k.replace('href="#b-de"', f'href="{tiefe}deutsch/"')
     ld = {
         "@context": "https://schema.org", "@type": art,
         "headline": titel, "description": beschreibung,
@@ -113,7 +117,7 @@ def gruppen(d):
 
 def zeilen(eintraege, grund):
     return "\n".join(
-        f'    <tr><td><code>{e["host"]}</code></td><td>{e["kind"]}</td>'
+        f'    <tr><th scope="row"><code>{e["host"]}</code></th><td>{e["kind"]}</td>'
         f'<td>{grund(e)}</td></tr>' for e in eintraege)
 
 
@@ -182,7 +186,7 @@ def messseite(d):
   built to be cited and pages built to be read.
 </p>
 <table>
-  <thead><tr><th>Kind of source</th><th>Complete records</th></tr></thead>
+  <thead><tr><th scope="col">Kind of source</th><th scope="col">Complete records</th></tr></thead>
   <tbody>
 {tab_art}
   </tbody>
@@ -211,7 +215,7 @@ def messseite(d):
 
 <h3>One was stopped by a bot defence</h3>
 <table>
-  <thead><tr><th>Host</th><th>Kind</th><th>What happened</th></tr></thead>
+  <thead><tr><th scope="col">Host</th><th scope="col">Kind</th><th scope="col">What happened</th></tr></thead>
   <tbody>
 {t_wand}
   </tbody>
@@ -225,7 +229,7 @@ def messseite(d):
 
 <h3>Four refuse everyone from this address</h3>
 <table>
-  <thead><tr><th>Host</th><th>Kind</th><th>What happened</th></tr></thead>
+  <thead><tr><th scope="col">Host</th><th scope="col">Kind</th><th scope="col">What happened</th></tr></thead>
   <tbody>
 {t_tot}
   </tbody>
@@ -240,7 +244,7 @@ def messseite(d):
 
 <h3>Five answered in full and had nothing to declare</h3>
 <table>
-  <thead><tr><th>Host</th><th>Kind</th><th>What happened</th></tr></thead>
+  <thead><tr><th scope="col">Host</th><th scope="col">Kind</th><th scope="col">What happened</th></tr></thead>
   <tbody>
 {t_stumm}
   </tbody>
@@ -287,7 +291,7 @@ def messseite(d):
   than a home line — and it mostly did not hold.
 </p>
 <table>
-  <thead><tr><th></th><th>Data centre</th><th>VPN exit</th></tr></thead>
+  <thead><tr><th scope="col"></th><th scope="col">Data centre</th><th scope="col">VPN exit</th></tr></thead>
   <tbody>
     <tr><td>Complete records</td><td>10</td><td><strong>11</strong></td></tr>
     <tr><td>Stopped by a bot defence</td><td>1</td><td>1</td></tr>

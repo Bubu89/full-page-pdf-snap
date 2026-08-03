@@ -6,6 +6,9 @@
 <title>Twenty links, ten citations: what a machine finishes and what it hands back — Proving Lab</title>
 <meta name="description" content="Turning a reading list into a bibliography, measured: 10 of 20 sources became complete records with RIS and BibTeX in 8 seconds. Only one of the other ten was stopped by a bot defence — five pages answered in full and declared no citation data.">
 <link rel="canonical" href="https://provinglab.dev/measurements/reading-list-to-bibliography/">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/measurements/reading-list-to-bibliography/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/measurements/reading-list-to-bibliography/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/measurements/reading-list-to-bibliography/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
 <link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
@@ -47,44 +50,18 @@
 </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "Dataset",
-  "name": "A mixed reading list through a citation endpoint: which sources yield and which refuse",
-  "description": "Twelve sources of mixed type through the extract_citation endpoint — eight returned complete records with RIS, four were refused with the access wall named — with timings, 3 August 2026.",
-  "url": "https://provinglab.dev/data/2026-08-03-citation-triage.json",
-  "identifier": "https://provinglab.dev/data/2026-08-03-citation-triage.json",
-  "datePublished": "2026-08-03",
-  "license": "https://creativecommons.org/licenses/by/4.0/",
-  "isAccessibleForFree": true,
-  "inLanguage": "en",
-  "keywords": [
-    "citation extraction",
-    "paywall",
-    "access walls",
-    "RIS",
-    "reading list",
-    "triage"
-  ],
-  "variableMeasured": [
-    "pages",
-    "page breaks",
-    "breaks mid-sentence",
-    "word recall",
-    "file size",
-    "embedded images"
-  ],
-  "creator": {
-    "@type": "Organization",
-    "name": "Proving Lab",
-    "url": "https://provinglab.dev/"
-  },
-  "distribution": [
-    {
-      "@type": "DataDownload",
-      "encodingFormat": "application/json",
-      "contentUrl": "https://provinglab.dev/data/2026-08-03-citation-triage.json"
-    }
-  ],
+  "@context": "https://schema.org", "@type": "Dataset",
+  "name": "Print-to-PDF versus screenshot capture, same document",
+  "description": "Page counts, page-break analysis, word recall against the source text, embedded images and file sizes for the same Wikipedia article captured both ways on 1 August 2026.",
+  "url": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "identifier": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "datePublished": "2026-08-01", "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true, "inLanguage": "en",
+  "keywords": ["print to PDF","screenshot","page breaks","OCR","web archiving"],
+  "variableMeasured": ["pages","page breaks","breaks mid-sentence","word recall","file size","embedded images"],
+  "creator": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
+  "distribution": [{ "@type": "DataDownload", "encodingFormat": "application/json",
+    "contentUrl": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json" }],
   "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
 }
 </script>
@@ -167,6 +144,16 @@
     .topnav .brand{width:100%;margin-right:0}
     .topnav a.n{font-size:.85rem}
   }
+
+  /* --- Sprachumschaltung --- */
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
+  .lang{display:flex;gap:6px;margin:0 0 26px}
+  .lang button{font:inherit;font-size:.86rem;font-weight:600;padding:7px 18px;cursor:pointer;
+    background:var(--card);color:var(--dim);border:1px solid var(--line);border-radius:8px}
+  .lang button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
 </style>
 <script src="/agent-tools.js" defer></script>
 </head>
@@ -182,7 +169,7 @@
     <a class="n" href="../../mitmachen/">Mitmachen</a>
     <a class="n" href="../../tools/">Tools</a>
     <a class="n" href="../../about/">About</a>
-    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
+    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Zur deutschen Fassung auf dieser Seite">Deutsch</a>
       <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
   </div>
 </nav>
@@ -232,7 +219,7 @@
   built to be cited and pages built to be read.
 </p>
 <table>
-  <thead><tr><th>Kind of source</th><th>Complete records</th></tr></thead>
+  <thead><tr><th scope="col">Kind of source</th><th scope="col">Complete records</th></tr></thead>
   <tbody>
     <tr><td>reference</td><td>2 of 2</td></tr>
     <tr><td>bare doi</td><td>1 of 1</td></tr>
@@ -269,9 +256,9 @@
 
 <h3>One was stopped by a bot defence</h3>
 <table>
-  <thead><tr><th>Host</th><th>Kind</th><th>What happened</th></tr></thead>
+  <thead><tr><th scope="col">Host</th><th scope="col">Kind</th><th scope="col">What happened</th></tr></thead>
   <tbody>
-    <tr><td><code>www.mdpi.com</code></td><td>open access</td><td>answers a browser, refuses the reader</td></tr>
+    <tr><th scope="row"><code>www.mdpi.com</code></th><td>open access</td><td>answers a browser, refuses the reader</td></tr>
   </tbody>
 </table>
 <p>
@@ -283,12 +270,12 @@
 
 <h3>Four refuse everyone from this address</h3>
 <table>
-  <thead><tr><th>Host</th><th>Kind</th><th>What happened</th></tr></thead>
+  <thead><tr><th scope="col">Host</th><th scope="col">Kind</th><th scope="col">What happened</th></tr></thead>
   <tbody>
-    <tr><td><code>www.sciencedirect.com</code></td><td>publisher</td><td>refuses both — HTTP 403 from a data centre address</td></tr>
-    <tr><td><code>papers.ssrn.com</code></td><td>preprint</td><td>refuses both — HTTP 403 from a data centre address</td></tr>
-    <tr><td><code>eur-lex.europa.eu</code></td><td>official</td><td>refuses both — HTTP 202 from a data centre address</td></tr>
-    <tr><td><code>www.oecd.org</code></td><td>official</td><td>refuses both — HTTP 403 from a data centre address</td></tr>
+    <tr><th scope="row"><code>www.sciencedirect.com</code></th><td>publisher</td><td>refuses both — HTTP 403 from a data centre address</td></tr>
+    <tr><th scope="row"><code>papers.ssrn.com</code></th><td>preprint</td><td>refuses both — HTTP 403 from a data centre address</td></tr>
+    <tr><th scope="row"><code>eur-lex.europa.eu</code></th><td>official</td><td>refuses both — HTTP 202 from a data centre address</td></tr>
+    <tr><th scope="row"><code>www.oecd.org</code></th><td>official</td><td>refuses both — HTTP 403 from a data centre address</td></tr>
   </tbody>
 </table>
 <p>
@@ -301,13 +288,13 @@
 
 <h3>Five answered in full and had nothing to declare</h3>
 <table>
-  <thead><tr><th>Host</th><th>Kind</th><th>What happened</th></tr></thead>
+  <thead><tr><th scope="col">Host</th><th scope="col">Kind</th><th scope="col">What happened</th></tr></thead>
   <tbody>
-    <tr><td><code>www.ssoar.info</code></td><td>repository</td><td>answers in full, declares no citation data</td></tr>
-    <tr><td><code>zenodo.org</code></td><td>repository</td><td>answers in full, declares no citation data</td></tr>
-    <tr><td><code>www.statistik.at</code></td><td>official</td><td>answers in full, declares no citation data</td></tr>
-    <tr><td><code>www.wko.at</code></td><td>grey lit</td><td>answers in full, declares no citation data</td></tr>
-    <tr><td><code>www.derstandard.at</code></td><td>news</td><td>answers in full, declares no citation data</td></tr>
+    <tr><th scope="row"><code>www.ssoar.info</code></th><td>repository</td><td>answers in full, declares no citation data</td></tr>
+    <tr><th scope="row"><code>zenodo.org</code></th><td>repository</td><td>answers in full, declares no citation data</td></tr>
+    <tr><th scope="row"><code>www.statistik.at</code></th><td>official</td><td>answers in full, declares no citation data</td></tr>
+    <tr><th scope="row"><code>www.wko.at</code></th><td>grey lit</td><td>answers in full, declares no citation data</td></tr>
+    <tr><th scope="row"><code>www.derstandard.at</code></th><td>news</td><td>answers in full, declares no citation data</td></tr>
   </tbody>
 </table>
 <p>
@@ -352,7 +339,7 @@
   than a home line — and it mostly did not hold.
 </p>
 <table>
-  <thead><tr><th></th><th>Data centre</th><th>VPN exit</th></tr></thead>
+  <thead><tr><th scope="col"></th><th scope="col">Data centre</th><th scope="col">VPN exit</th></tr></thead>
   <tbody>
     <tr><td>Complete records</td><td>10</td><td><strong>11</strong></td></tr>
     <tr><td>Stopped by a bot defence</td><td>1</td><td>1</td></tr>
@@ -436,5 +423,22 @@ done &lt; reading-list.txt &gt; literature.ris</code></pre>
     </footer>
 
 </div>
+<script>
+function setLang(l){
+  document.querySelectorAll('[data-lang]').forEach(function(e){
+    e.classList.toggle('on', e.dataset.lang === l);
+  });
+  document.getElementById('b-en').setAttribute('aria-pressed', l === 'en');
+  document.getElementById('b-de').setAttribute('aria-pressed', l === 'de');
+  document.documentElement.lang = l;
+  try { localStorage.setItem('pl-lang', l); } catch (e) {}
+}
+(function(){
+  var gespeichert = null;
+  try { gespeichert = localStorage.getItem('pl-lang'); } catch (e) {}
+  var l = gespeichert || ((navigator.language || 'en').slice(0,2) === 'de' ? 'de' : 'en');
+  if (l === 'de') setLang('de');
+})();
+</script>
 </body>
 </html>

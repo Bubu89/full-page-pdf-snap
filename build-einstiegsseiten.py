@@ -53,6 +53,10 @@ def anpassen(kopf, url, titel, besch, og, tiefe, art, faq=None):
     k = re.sub(r'(<meta property="og:description" content=")[^"]*(")',
                lambda m: m.group(1) + og + m.group(2), k)
     k = re.sub(r'(<link rel="icon" href=")[^"]*(")', rf"\g<1>{tiefe}icon-128.png\g<2>", k)
+    # Die Vorlage traegt eine deutsche Fassung im selben Dokument und verweist
+    # mit #b-de darauf. Seiten ohne diesen Abschnitt haetten damit einen toten
+    # Anker in der Navigation — auf die Sammelseite umbiegen.
+    k = k.replace('href="#b-de"', f'href="{tiefe}deutsch/"')
     # Die Vorlage liegt zwei Ebenen tief; ihre Navigation zeigt mit ../../ nach
     # oben. Eine Seite direkt unter der Wurzel braucht ../ — sonst zeigt jeder
     # Navigationspunkt ins Leere, und zwar auf jeder erzeugten Seite gleich.
@@ -153,7 +157,7 @@ ANLEITUNG = f"""
 
 <h2>Print to PDF or capture? The honest comparison</h2>
 <table>
-  <thead><tr><th></th><th>Browser print</th><th>Full-page capture</th></tr></thead>
+  <thead><tr><th scope="col"></th><th scope="col">Browser print</th><th scope="col">Full-page capture</th></tr></thead>
   <tbody>
     <tr><td>Same article comes out as</td><td>26 pages</td><td><strong>1 sheet</strong></td></tr>
     <tr><td>Page breaks cutting a sentence</td><td>9</td><td>0</td></tr>
@@ -283,7 +287,7 @@ ANLEITUNG_DE = f"""
 
 <h2>Drucken oder aufnehmen? Der ehrliche Vergleich</h2>
 <table>
-  <thead><tr><th></th><th>Druckexport</th><th>Vollseiten-Aufnahme</th></tr></thead>
+  <thead><tr><th scope="col"></th><th scope="col">Druckexport</th><th scope="col">Vollseiten-Aufnahme</th></tr></thead>
   <tbody>
     <tr><td>Derselbe Artikel ergibt</td><td>26 Seiten</td><td><strong>1 Blatt</strong></td></tr>
     <tr><td>Umbrueche mitten im Satz</td><td>9</td><td>0</td></tr>
@@ -383,7 +387,7 @@ MITMACHEN = f"""
   benannt gehören:
 </p>
 <table>
-  <thead><tr><th>Angabe</th><th>Warum sie wackeln könnte</th></tr></thead>
+  <thead><tr><th scope="col">Angabe</th><th scope="col">Warum sie wackeln könnte</th></tr></thead>
   <tbody>
     <tr><td><a href="/measurements/reading-list-to-bibliography/">10 von 20 Quellen</a>
         werden zu Zitationsdatensätzen</td>
@@ -417,7 +421,7 @@ MITMACHEN = f"""
   vorher jemanden zu fragen. Was er dafür braucht, liegt an festen Adressen:
 </p>
 <table>
-  <thead><tr><th>Was</th><th>Wo</th></tr></thead>
+  <thead><tr><th scope="col">Was</th><th scope="col">Wo</th></tr></thead>
   <tbody>
     <tr><td>Regeln, Bauweise, Grenzen</td><td><a href="/AGENTS.md"><code>/AGENTS.md</code></a></td></tr>
     <tr><td>Offene Aufgaben, maschinenlesbar</td><td>Werkzeug <code>open_work</code> auf <code>/mcp</code></td></tr>
@@ -504,19 +508,19 @@ AGENTEN = f"""
 
 <h2>Five tools</h2>
 <table>
-  <thead><tr><th>Tool</th><th>What it is for</th></tr></thead>
+  <thead><tr><th scope="col">Tool</th><th scope="col">What it is for</th></tr></thead>
   <tbody>
-    <tr><td><code>extract_citation</code></td>
+    <tr><th scope="row"><code>extract_citation</code></th>
         <td>URL in, structured record out — authors, title, journal, year, DOI, licence,
             plus RIS and BibTeX. Or a named refusal.</td></tr>
-    <tr><td><code>how_to_capture</code></td>
+    <tr><th scope="row"><code>how_to_capture</code></th>
         <td>What to do with a source this endpoint cannot read, resolved for your agent
             type and target browser.</td></tr>
-    <tr><td><code>list_measurements</code></td>
+    <tr><th scope="row"><code>list_measurements</code></th>
         <td>Everything published here, with dataset URLs.</td></tr>
-    <tr><td><code>get_measurement_data</code></td>
+    <tr><th scope="row"><code>get_measurement_data</code></th>
         <td>One dataset as JSON, including the control run.</td></tr>
-    <tr><td><code>get_method</code></td>
+    <tr><th scope="row"><code>get_method</code></th>
         <td>A reproducible method, to repeat a measurement rather than cite it.</td></tr>
   </tbody>
 </table>
@@ -560,7 +564,7 @@ AGENTEN = f"""
   X11 XTEST. The browser does not ask who produced the gesture.
 </p>
 <table>
-  <thead><tr><th>Your agent acts through</th><th>Can trigger it</th></tr></thead>
+  <thead><tr><th scope="col">Your agent acts through</th><th scope="col">Can trigger it</th></tr></thead>
   <tbody>
     <tr><td>Real input events — computer use, <code>xdotool</code>, an agent inside the
         user's browser</td><td><strong>yes</strong></td></tr>
@@ -577,7 +581,7 @@ AGENTEN = f"""
 
 <h2>Discovery, if you are indexing this site</h2>
 <table>
-  <thead><tr><th>What</th><th>Where</th></tr></thead>
+  <thead><tr><th scope="col">What</th><th scope="col">Where</th></tr></thead>
   <tbody>
     <tr><td>Site summary for language models</td><td><a href="/llms.txt"><code>/llms.txt</code></a></td></tr>
     <tr><td>Skills with checksums</td><td><a href="/.well-known/agent-skills/index.json"><code>/.well-known/agent-skills/index.json</code></a></td></tr>

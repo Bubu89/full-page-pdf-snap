@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.12.1";
+const VERSION = "1.13.0";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -170,6 +170,18 @@ function istOeffentlich(u) {
   if (/\.(local|internal|localdomain)$/i.test(h)) return false;
   return true;
 }
+
+// Adressen, die umgezogen sind. Sie lagen unter der Wurzel und liegen jetzt
+// unter /measurements/ — die Stummel antworteten mit HTTP 200 und einem
+// canonical, gemessen am 03.08.2026. Fuer eine Suchmaschine ist canonical ein
+// Hinweis, 301 eine Anweisung; fuer einen Menschen oder einen Agenten sieht 200
+// so aus, als gaebe es die Seite noch. GitHub Pages kann nicht weiterleiten,
+// dieser Worker schon — er liegt davor.
+const UMGEZOGEN = {
+  "/extension-permissions-risk/": "/measurements/extension-permissions-risk/",
+  "/pdf-extension-permissions/":  "/measurements/pdf-extension-permissions/",
+  "/webpage-to-pdf-for-ocr/":     "/measurements/webpage-to-pdf-for-ocr/",
+};
 
 // fall: "wall" | "network" | "no-metadata" | "not-html"
 function naechsterSchritt(fall) {
@@ -1334,6 +1346,13 @@ export default {
   async fetch(request, env, ctx) {
     try {
       const url = new URL(request.url);
+
+      // Zuerst, damit eine umgezogene Adresse nie das Origin erreicht. Ohne
+      // und mit Schraegstrich am Ende, weil beide Formen verlinkt wurden.
+      const ziel = UMGEZOGEN[url.pathname] || UMGEZOGEN[url.pathname + "/"];
+      if (ziel) {
+        return Response.redirect(SITE + ziel, 301);
+      }
 
       if (url.pathname === "/mcp" || url.pathname === "/mcp/") {
         return handleMcp(request, SITE);
