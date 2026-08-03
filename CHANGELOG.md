@@ -1,3 +1,51 @@
+## 2026-08-03 — Zustimmungsdialoge: nicht nur haesslich, sondern der Grund fuer abgebrochene Aufnahmen
+
+Bisher wurden nur `position: fixed` und `sticky` ausgeblendet. Gemessen an acht
+Seiten reichte das nicht:
+
+- **Bei vier von acht war der Bildlauf gesperrt** (`overflow: hidden` am
+  Dokument). Das ist kein Schoenheitsfehler: Bei spiegel.de meldete die Seite
+  dadurch **900 Pixel Hoehe statt 43.101** — die Aufnahme waere auf einen
+  einzigen Bildschirm zusammengeschrumpft, ohne dass es jemandem auffaellt.
+- **Zwei von sechs Overlays trugen `position: absolute`**, eines davon ueber dem
+  gesamten Sichtfenster. Die alte Regel sah sie nicht.
+
+Erkannt wird jetzt nach Bauart: was sich als Dialog ausweist (`dialog[open]`,
+`role=dialog`, `aria-modal`), oder was hoch gestapelt, positioniert und
+grossflaechig ist. **Keine Namensliste** — die muesste gepflegt werden und waere
+an dem Tag falsch, an dem eine Seite ihre Klassen umbenennt.
+
+### Der Fehler, den diese Aenderung zuerst verursacht hat
+
+Die erste Fassung blendete bei zeit.de den Hauptcontainer aus: hoch gestapelt,
+absolut positioniert, grossflaechig — alle Merkmale erfuellt. Die Seitenhoehe
+fiel von 48.437 auf 900 Pixel. Aus Stoerungsbereinigung wurde Datenverlust.
+
+Zwei Bremsen dagegen: Was mehr als ein Viertel des Seitentextes traegt, ist
+Inhalt. Und was hoeher ist als anderthalb Fensterhoehen, wird gescrollt und ist
+damit ebenfalls Inhalt — Zustimmungsdialoge passen auf einen Bildschirm.
+
+### Warum ausgeblendet und nicht weggeklickt
+
+[Autoconsent](https://github.com/duckduckgo/autoconsent) und
+[Consent-O-Matic](https://github.com/Consent-O-Matic/) loesen dasselbe Problem
+anders: Sie **klicken** die Dialoge weg. Fuer taegliches Surfen ist das richtig.
+
+Fuer ein Aufnahmewerkzeug ist es das nicht. Ein Klick auf "Ablehnen" oder
+"Akzeptieren" ist eine Willenserklaerung im Namen des Nutzers, setzt Cookies und
+veraendert den Zustand der Seite dauerhaft. Diese Erweiterung blendet nur fuer
+die Dauer der Aufnahme aus und stellt danach jeden Eingriff zurueck — sie
+entscheidet nichts, sie fotografiert.
+
+### Gemessene Wirkung
+
+| Seite | Bildlauf | Hoehe vorher | nachher |
+|---|---|---|---|
+| spiegel.de | gesperrt | 900 | **43.101** |
+| zeit.de | gesperrt | 48.437 | 48.437 (unveraendert — richtig) |
+| kurier.at | gesperrt | 36.452 | 36.452, Overlay-Text entfernt |
+| orf.at | gesperrt | 6.369 | 6.369, Overlay-Text entfernt |
+
 ## 2026-08-02 — Was die Konkurrenz besser macht, und was davon uebertragbar war
 
 Geprueft, wie Zotero es loest — der Unterbau von Citoid. Zotero arbeitet eine
@@ -97,6 +145,41 @@ Vergleich zugunsten der eigenen Seite verfaelscht. Der Lauf wartet jetzt
 zwischen den Aufrufen und wiederholt nach einem 429.
 
 # Changelog
+
+<!-- change-stream:auto-block:2026-08-02:START -->
+### 2026-08-02 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 91 Events, generiert 2026-08-03T07:02_
+
+**Aktivitaet:** 21 Datei(en), 91 Tool-Calls (76 Edit, 14 Write, 1 Bash), 2 Session(s).
+
+**Beruehrte Dateien:**
+- `/home/holo/repos/full-page-pdf-snap-public/pdf-writer.js` (27x)
+- `/home/holo/repos/full-page-pdf-snap-public/content.js` (20x)
+- `/home/holo/repos/full-page-pdf-snap-public/background.js` (9x)
+- `/home/holo/repos/full-page-pdf-snap-public/make-store-screenshots.py` (6x)
+- `/home/holo/repos/full-page-pdf-snap-public/worker/mcp.js` (6x)
+- `/home/holo/repos/full-page-pdf-snap-public/messung-quellen-archiv.py` (3x)
+- `/home/holo/repos/full-page-pdf-snap-public/CHANGELOG.md` (3x)
+- `/home/holo/repos/full-page-pdf-snap-public/STORE_LISTING_EN.md` (2x)
+- `/home/holo/repos/full-page-pdf-snap-public/docs/agent-tools.js` (2x)
+- `/home/holo/repos/full-page-pdf-snap-public/build-feed.py` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/docs/robots.txt` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/build-agent-discovery.py` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/build-android-post.py` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/rechtscheck.py` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/WACHSTUMSPLAN.md` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/build-de-index.py` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/build-mcp-post.py` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/options.html` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/PRIVACY.md` (1x)
+- `/home/holo/repos/full-page-pdf-snap-public/README.md` (1x)
+
+**Bemerkenswerte Commands:**
+- `cd /home/holo/repos/full-page-pdf-snap-public && timeout 200 python3 rechtscheck.py 2>&1 | tail -5 && git add -A && git `
+
+<!-- change-stream:auto-block:2026-08-02:END -->
+
 <!-- Keine absoluten Pfade des Entwicklungsrechners in dieses Repo.
      Der Aggregator des Arbeitsplatzes traegt sie automatisch ein; sie
      verraten Benutzernamen und Verzeichnisstruktur und nuetzen keinem

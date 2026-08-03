@@ -346,8 +346,17 @@
     html.style.scrollBehavior = saved.html.scrollBehavior;
     if (document.body) document.body.style.overflow = saved.body.overflow;
     for (const entry of saved.stickyChanges) {
-      try { entry.el.style.visibility = entry.prevVisibility; }
-      catch (_) { /* element gone */ }
+      try {
+        // Zwei Arten von Eingriff, dieselbe Liste: ausgeblendete Elemente
+        // tragen prevVisibility, gelöste Bildlauf-Sperren prevOverflow.
+        if (entry.prevOverflow !== undefined) {
+          entry.el.style.overflow = entry.prevOverflow;
+          entry.el.style.overflowY = entry.prevOverflowY;
+          entry.el.style.position = entry.prevPosition;
+        } else {
+          entry.el.style.visibility = entry.prevVisibility;
+        }
+      } catch (_) { /* element gone */ }
     }
     saved.stickyChanges.length = 0;
     if (scrollState) setScrollTop(scrollState, saved.rootScrollTop);
@@ -386,7 +395,69 @@
    * jedes Segment und zerschneidet den Verlauf - genau wie Kopfzeile und
    * Seitenleiste bei App-Layouts. Einmal oben zeigen loest beides.
    */
+  /* Overlays, die kein "position: fixed" tragen.
+   *
+   * Zustimmungsdialoge, Anmeldeaufforderungen und Werbeeinblendungen liegen oft
+   * als modaler Dialog oder als absolut positionierter Kasten mit hohem
+   * Stapelwert über der Seite. Die bisherige Regel griff nur bei fixed und
+   * sticky — gemessen an acht Seiten blieben dadurch zwei von sechs Overlays
+   * stehen, eines davon über dem gesamten Sichtfenster.
+   *
+   * Entschieden wird nach Bauart, nicht nach Namenslisten: was sich selbst als
+   * Dialog ausweist, oder was hoch gestapelt ist, positioniert ist und einen
+   * erheblichen Teil des Fensters deckt. Eine Namensliste müsste gepflegt
+   * werden und wäre an dem Tag falsch, an dem eine Seite ihre Klassen umbenennt.
+   */
+  function isBlockingOverlay(el, cs, r) {
+    try {
+      if (el.matches("dialog[open],[role=dialog],[aria-modal=true]")) return true;
+    } catch (_) { /* ungueltiger Selektor kommt vor */ }
+    if (!/fixed|sticky|absolute/.test(cs.position)) return false;
+    const z = parseInt(cs.zIndex, 10);
+    if (!Number.isFinite(z) || z < 100) return false;
+    const anteil = (r.width * r.height) / (window.innerWidth * window.innerHeight);
+    if (anteil < 0.12 || r.width < 120 || r.height < 60) return false;
+
+    // Was den Text der Seite trägt, ist der Inhalt — auch wenn es hoch
+    // gestapelt und absolut positioniert ist. Ohne diese Bremse blendete die
+    // Regel bei zeit.de den Hauptcontainer aus und die Seitenhöhe fiel von
+    // 48.437 auf 900 Pixel: aus einer Störungsbereinigung wurde Datenverlust.
+    const gesamt = (document.body.innerText || "").length;
+    const eigener = (el.innerText || "").length;
+    if (gesamt > 400 && eigener / gesamt > 0.25) return false;
+
+    // Ebenso: was höher ist als das Fenster, wird gescrollt und ist damit
+    // Inhalt, kein Overlay. Zustimmungsdialoge passen auf einen Bildschirm.
+    return r.height <= window.innerHeight * 1.5;
+  }
+
+  /* Sperre des Bildlaufs aufheben.
+   *
+   * Zustimmungsdialoge setzen dem Dokument häufig "overflow: hidden", damit
+   * dahinter nicht weitergelesen wird. Für eine Aufnahme der ganzen Seite ist
+   * das kein Schönheitsfehler, sondern der Grund, warum sie nach dem ersten
+   * Bildschirm abbricht: gemessen an acht Seiten war bei vier der Bildlauf
+   * gesperrt, darunter eine ohne jedes erkennbare Overlay.
+   */
+  function releaseScrollLock() {
+    for (const el of [document.documentElement, document.body]) {
+      if (!el) continue;
+      let cs;
+      try { cs = getComputedStyle(el); } catch (_) { continue; }
+      if (!/hidden|clip/.test(cs.overflow + " " + cs.overflowY)) continue;
+      saved.stickyChanges.push({ el, prevOverflow: el.style.overflow,
+                                 prevOverflowY: el.style.overflowY,
+                                 prevPosition: el.style.position });
+      el.style.setProperty("overflow", "visible", "important");
+      el.style.setProperty("overflow-y", "visible", "important");
+      // Manche Seiten fixieren zusätzlich die Position des Körpers.
+      if (cs.position === "fixed") el.style.setProperty("position", "static", "important");
+      log("Bildlauf-Sperre aufgehoben an", el.tagName.toLowerCase());
+    }
+  }
+
   function hideStickyAndFixed(includeSideNav) {
+    releaseScrollLock();
     const els = document.querySelectorAll("*");
     const keep = [];
     const candidates = [];
@@ -394,9 +465,10 @@
     for (const el of els) {
       let cs;
       try { cs = getComputedStyle(el); } catch (_) { continue; }
-      if (cs.position !== "fixed" && cs.position !== "sticky") continue;
       let r;
       try { r = el.getBoundingClientRect(); } catch (_) { continue; }
+      const fixiert = cs.position === "fixed" || cs.position === "sticky";
+      if (!fixiert && !isBlockingOverlay(el, cs, r)) continue;
       if (!includeSideNav && isSideNavigation(r)) {
         keep.push(el);
         log("Sticky behalten (Navigationsspalte):",
