@@ -121,6 +121,65 @@
         });
       },
     },
+    /* The one tool here that is not about this site.
+     *
+     * It reaches the same /mcp endpoint an external client would call, from the
+     * page rather than from a server — which costs one same-origin request and
+     * keeps a single implementation of the extraction. An agent already reading
+     * this page can therefore resolve a source without being told an address.
+     *
+     * The refusal path matters more than the success path: a page that turns out
+     * to be a paywall still returns a title, so the warning is repeated at the
+     * top of the answer where it cannot be skimmed past. */
+    {
+      name: "extract_citation",
+      description:
+        "Read the citation a web page declares about itself — authors, title, " +
+        "journal, year, DOI, licence — and return it as a structured record with " +
+        "a ready-to-import RIS entry and BibTeX. Where the page is a paywall, an " +
+        "error page or a bot check rather than a work, it says so and refuses " +
+        "instead of inventing a reference: check the warning before using the fields.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          url: {
+            type: "string",
+            description: "Address of the page to read, e.g. https://doi.org/10.1038/s41586-020-2649-2",
+          },
+        },
+        required: ["url"],
+        additionalProperties: false,
+      },
+      execute: function (args) {
+        var u = String((args && args.url) || "");
+        if (!u) return Promise.resolve(text("No url given."));
+        return fetch(BASE + "/mcp", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            jsonrpc: "2.0", id: 1, method: "tools/call",
+            params: { name: "extract_citation", arguments: { url: u } },
+          }),
+        }).then(function (r) {
+          if (!r.ok) throw new Error("/mcp returned " + r.status);
+          return r.json();
+        }).then(function (d) {
+          var body = d && d.result && d.result.content && d.result.content[0]
+            ? d.result.content[0].text : JSON.stringify(d);
+          var warn = "";
+          try {
+            var rec = JSON.parse(body);
+            if (rec.warning) {
+              warn = "NOT USABLE AS A REFERENCE — " + rec.warning +
+                     "\nThe title below belongs to that wall, not to a work.\n\n";
+            }
+          } catch (e) { /* not JSON: hand it over unchanged */ }
+          return text(warn + body);
+        }).catch(function (e) {
+          return text("Could not reach the citation endpoint: " + e.message);
+        });
+      },
+    },
   ];
 
   function register(mc) {
