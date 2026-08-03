@@ -66,7 +66,19 @@ Domain-Eigentum.
 4. **Diesen Wert schicken Sie mir** — ich setze den DNS-Eintrag über die
    Cloudflare-API und melde, sobald er aufgelöst wird.
 5. Zurück in der Search Console **Bestätigen** klicken.
-6. Im Chrome-Dashboard unter **Konto** die verifizierte Domain hinterlegen.
+6. Im Chrome-Dashboard unter **Settings** (nicht *Profile*) die verifizierte
+   Domain hinterlegen.
+
+**Danach sofort: Sitemap einreichen** — der eigentliche Gewinn der Verbindung.
+
+**Indexierung → Sitemaps**, und dort die **vollständige Adresse** eintragen:
+
+    https://provinglab.dev/sitemap.xml
+
+Nicht `sitemap.xml` allein. Eine über den Domainanbieter verifizierte Property
+ist eine **Domain-Property**, und die stellt kein Präfix voran — der Pfad allein
+wird mit *Invalid sitemap address* abgewiesen. Bei URL-Präfix-Properties wäre
+der kurze Pfad richtig; das ist die Verwechslung, die dahintersteckt.
 
 **Einordnung, damit die Erwartung stimmt:** Rund 75 % des Stores tragen dieses
 Abzeichen. Es ist notwendig, nicht hinreichend — im Januar 2026 erreichten zwei
