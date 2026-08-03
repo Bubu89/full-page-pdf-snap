@@ -3,7 +3,7 @@ const s = readFileSync(new URL("../background.js", import.meta.url), "utf8");
 const f = new Function(s.slice(s.indexOf("function pfadFormatieren("),
   s.indexOf("async function pfadInZwischenablage")) + "\n return pfadFormatieren;")();
 const faelle = [
-  [String.raw`C:\Users\HOLO\Downloads\seite.pdf`, "wsl",     "/mnt/c/Users/HOLO/Downloads/seite.pdf"],
+  [String.raw`C:\Users\HOLO\Downloads\seite.pdf`, "wsl",     "/mnt/c/Users/name/Downloads/seite.pdf"],
   [String.raw`C:\Users\HOLO\Downloads\seite.pdf`, "windows", String.raw`C:\Users\HOLO\Downloads\seite.pdf`],
   [String.raw`D:\Downloads\Full Page PDF Snap\x.pdf`, "wsl", "/mnt/d/Downloads/Full Page PDF Snap/x.pdf"],
   ["/home/name/Downloads/seite.pdf", "posix",             "/home/name/Downloads/seite.pdf"],
