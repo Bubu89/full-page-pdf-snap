@@ -111,7 +111,13 @@ def stores_pruefen():
 
     s, koerper, ende = hole(f"https://chromewebstore.google.com/detail/{CWS_ID}")
     if s == 200:
-        m = re.search(r'"(\d+\.\d+\.\d+)"', koerper)
+        # Aus dem Umfeld lesen, nicht als ersten Treffer: das alte Muster nahm
+        # am 4. August 2026 ein Stueck SVG-Pfad (`4.38.38`) fuer die Fassung
+        # und meldete 2.12.1, waehrend der Store 2.17.0 auslieferte. Dieselbe
+        # Reihenfolge wie in build-versionen.py — zwei Werkzeuge, die dieselbe
+        # Seite lesen, duerfen nicht zwei Zahlen melden.
+        m = (re.search(r'\\?"version\\?":\s*\\?"(\d+\.\d+\.\d+)', koerper)
+             or re.search(r">Version</div><div[^>]*>([\d.]+)<", koerper))
         stand["chrome"] = m.group(1) if m else "?"
         nutzer = re.search(r">([\d,]+) users<", koerper)
         print(f"  chromewebstore       {s}  Version {stand['chrome']}  "

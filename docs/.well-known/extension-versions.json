@@ -14,17 +14,18 @@
       "signed_file": "https://addons.mozilla.org/firefox/downloads/file/4935078/full_page_pdf_snap_webpagesave-2.26.0.xpi"
     },
     "chromium": {
-      "version": "2.12.1",
+      "version": "2.17.0",
       "users": 4,
       "url": "https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn"
     },
     "signed_releases": {
-      "tag": "v2.16.0",
+      "tag": "v2.27.0",
       "assets": [
-        "full-page-pdf-snap-2.16.0.xpi",
-        "full-page-pdf-snap-chrome-2.14.0.zip"
+        "full-page-pdf-snap-2.27.0.zip",
+        "full-page-pdf-snap-chrome-2.27.0.zip",
+        "SHA256SUMS.txt"
       ],
-      "url": "https://github.com/Bubu89/full-page-pdf-snap/releases/tag/v2.16.0"
+      "url": "https://github.com/Bubu89/full-page-pdf-snap/releases/tag/v2.27.0"
     }
   },
   "source_state": {
@@ -51,7 +52,7 @@
     "note": "Keine Host-Rechte. Die Erweiterung sieht einen Tab erst nach einer Nutzergeste — Messung: https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/"
   },
   "notices": [
-    "Die Stores liefern unterschiedliche Fassungen: Firefox 2.26.0, Chromium 2.12.1.",
+    "Die Stores liefern unterschiedliche Fassungen: Firefox 2.26.0, Chromium 2.17.0.",
     "Der Quellstand (2.27.0) ist nicht der ausgelieferte (2.26.0)."
   ]
 }

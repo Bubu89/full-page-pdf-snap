@@ -52,12 +52,31 @@ def amo():
         return {"error": type(e).__name__}
 
 
+def cws_version(s):
+    """Die Fassung aus der Store-Seite — aus dem Umfeld, nicht als erster Treffer.
+
+    Das erste Muster `"(\\d+\\.\\d+\\.\\d+)"` nahm irgendeine Zahlenfolge und
+    traf am 4. August 2026 auf `4.38.38` — ein Stueck SVG-Pfad aus dem
+    Sternesymbol. Zwei Werkzeuge lasen dieselbe Seite und meldeten 2.12.1 und
+    2.17.0; richtig war 2.17.0. Ein Muster ohne Kontext liefert eine Zahl, die
+    aussieht wie eine Fassung, und niemand sieht ihr an, dass sie keine ist.
+
+    Zwei belastbare Stellen, in dieser Reihenfolge:
+      1. das eingebettete Manifest — `"version": "2.17.0"`
+      2. das Detailfeld — `>Version</div><div class="…">2.17.0</div>`
+    """
+    m = re.search(r'\\?"version\\?":\s*\\?"(\d+\.\d+\.\d+)', s)
+    if m:
+        return m.group(1)
+    m = re.search(r">Version</div><div[^>]*>([\d.]+)<", s)
+    return m.group(1) if m else None
+
+
 def cws():
     try:
         s = hole(f"https://chromewebstore.google.com/detail/{CWS_ID}")
-        m = re.search(r'"(\d+\.\d+\.\d+)"', s)
         n = re.search(r">([\d,]+) users<", s)
-        return {"version": m.group(1) if m else None,
+        return {"version": cws_version(s),
                 "users": int(n.group(1).replace(",", "")) if n else None,
                 "url": f"https://chromewebstore.google.com/detail/{CWS_ID}"}
     except Exception as e:
