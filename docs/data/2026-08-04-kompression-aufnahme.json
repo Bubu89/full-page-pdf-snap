@@ -1,0 +1,54 @@
+{
+  "gemessen_am": "2026-08-04",
+  "lizenz": "CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/",
+  "frage": "Laesst sich die Datei einer Vollseitenaufnahme verkleinern, ohne die Qualitaet zu senken — und mit welchem Verfahren?",
+  "anlass": "Die eigene Messung vom 1. August: 6,7 MB gegen 1,1 MB beim Druckexport, derselbe Artikel. Die Erweiterung encodiert mit jpegQuality 0.92 und bettet als /Filter /DCTDecode ein. Ob dieser Wert je gemessen oder nur gesetzt wurde, war offen.",
+  "methode": {
+    "beschreibung": "Zwei synthetische Seiten von 1400x3200 px: eine textlastige mit Absaetzen und drei eingestreuten Grafiken, eine bildlastige aus weichen Verlaeufen mit Rauschen. Jede in neun Varianten kodiert, Groesse und struktureller Vergleich (SSIM) gegen das Original gemessen.",
+    "werkzeug": "Pillow 12.2.0",
+    "control": "Die zweite Seite IST der Kontrolllauf. Die erste Messung zeigte PNG als klaren Sieger — was fuer Fotos nicht stimmen kann, weil JPEG genau dafuer gebaut wurde. Die Gegenprobe dreht das Verhaeltnis um Faktor sechs und macht den Befund erst brauchbar.",
+    "grenze": "Synthetische Seiten, keine echten Aufnahmen. Die Groessenordnung ist belastbar, die Einzelwerte sind es nicht."
+  },
+  "ergebnis": {
+    "textseite_kb": {
+      "jpeg_92_heute": 1327,
+      "jpeg_85": 1065,
+      "jpeg_80": 953,
+      "jpeg_75": 867,
+      "jpeg_85_progressiv": 932,
+      "png_flate": 495
+    },
+    "bildseite_kb": {
+      "jpeg_92_heute": 684,
+      "jpeg_85_progressiv": 354,
+      "png_flate": 3124
+    },
+    "ssim": {
+      "jpeg_92": 0.9996,
+      "jpeg_85": 0.9987,
+      "jpeg_80": 0.9978,
+      "jpeg_75": 0.9966,
+      "png_flate": 1.0
+    }
+  },
+  "befund": "Das Verhaeltnis dreht sich mit der Seitenart. Bei Text ist FlateDecode (verlustfrei) auf 37 % der heutigen Groesse, bei Bildern auf 456 %. Ein fester Wert ist fuer einen der beiden Faelle immer falsch — und die Erweiterung kachelt ohnehin, kann also je Kachel entscheiden.",
+  "was_der_browser_kann": {
+    "canvas.toBlob": [
+      "image/jpeg mit Qualitaet",
+      "image/png verlustfrei",
+      "image/webp — von PDF nicht unterstuetzt"
+    ],
+    "nicht_steuerbar": [
+      "progressive",
+      "optimize",
+      "chroma subsampling"
+    ],
+    "pdf_filter": {
+      "DCTDecode": "heute genutzt",
+      "FlateDecode": "erzeugbar, ungenutzt",
+      "JPXDecode": "kein Browser encodiert JPEG 2000",
+      "JBIG2Decode": "1-bit, stark bei Text, kein Browser encodiert es"
+    }
+  },
+  "empfehlung": "Je Kachel beide Varianten erzeugen und die kleinere einbetten. Kostet Rechenzeit, keine Qualitaet: FlateDecode ist verlustfrei (SSIM 1.0), JPEG bleibt wo es gewinnt. Erwarteter Gewinn bei einer textlastigen Seite rund 63 %, bei einer bildlastigen null."
+}
