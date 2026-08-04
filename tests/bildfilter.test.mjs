@@ -91,3 +91,72 @@ test("ohne Farbraumangabe bleibt es bei DeviceRGB und 8 bit", () => {
   const t = alsText(pdf);
   assert.match(t, /\/ColorSpace \/DeviceRGB \/BitsPerComponent 8/);
 });
+
+/* --------------------------------------------------------------------------
+ * Zeilenausrichtung bei Schwarzweiss
+ *
+ * PDF verlangt, dass jede Bildzeile an einer Byte-Grenze beginnt
+ * (ISO 32000-1, 7.4.4). Die erste Fassung von farbtiefeAnwenden packte alle
+ * Punkte fortlaufend durch. Bei 1440 Punkten Breite fiel das nicht auf, weil
+ * 1440 durch 8 teilbar ist; bei 1617 rutschte jede Zeile um sieben Bit und
+ * das Bild zerfiel in Diagonalen.
+ *
+ * Geprueft wird deshalb beides: die glatte Breite, die auch vorher ging, und
+ * die krumme, die es aufdeckte.
+ * ----------------------------------------------------------------------- */
+
+const hintergrund = readFileSync(new URL("../background.js", import.meta.url), "utf8");
+const anfang = hintergrund.indexOf("function farbtiefeAnwenden");
+const ende = hintergrund.indexOf("\nasync function canvasToFlateBytes");
+const kontext2 = { Uint8Array, Math, console };
+kontext2.globalThis = kontext2;
+vm.createContext(kontext2);
+vm.runInContext(hintergrund.slice(anfang, ende), kontext2);
+
+/** Ein Bild bauen, dessen erste Spalte schwarz ist und der Rest weiss. */
+function testbild(breite, hoehe) {
+  const d = new Uint8Array(breite * hoehe * 4).fill(255);
+  for (let y = 0; y < hoehe; y++) {
+    const i = (y * breite) * 4;
+    d[i] = d[i + 1] = d[i + 2] = 0;      // Punkt ganz links: schwarz
+  }
+  return d;
+}
+
+for (const breite of [1440, 1617, 999, 8, 7]) {
+  test(`Schwarzweiss: Zeilen byte-ausgerichtet bei Breite ${breite}`, () => {
+    const hoehe = 5;
+    const { daten, bits, kanaele } = kontext2.farbtiefeAnwenden(
+      testbild(breite, hoehe), "sw", breite);
+
+    assert.equal(bits, 1);
+    assert.equal(kanaele, 1);
+
+    const bytesJeZeile = Math.ceil(breite / 8);
+    assert.equal(daten.length, bytesJeZeile * hoehe,
+      "Puffergroesse muss Zeilen auf volle Bytes auffuellen");
+
+    // Der schwarze Punkt jeder Zeile muss am Zeilenanfang stehen — genau das
+    // verrutscht ohne Auffuellung.
+    for (let y = 0; y < hoehe; y++) {
+      const erstesByte = daten[y * bytesJeZeile];
+      assert.equal(erstesByte & 0x80, 0x80,
+        `Zeile ${y}: linker Punkt muss gesetzt sein, Byte war 0x${erstesByte.toString(16)}`);
+      // und der Rest der Zeile leer
+      for (let b = 1; b < bytesJeZeile; b++) {
+        assert.equal(daten[y * bytesJeZeile + b], 0,
+          `Zeile ${y}, Byte ${b}: darf nichts enthalten`);
+      }
+      assert.equal(erstesByte, 0x80, `Zeile ${y}: nur der linke Punkt`);
+    }
+  });
+}
+
+test("Graustufen bleibt 8 bit und unveraendert lang", () => {
+  const breite = 1617, hoehe = 4;
+  const { daten, bits, kanaele } = kontext2.farbtiefeAnwenden(
+    testbild(breite, hoehe), "graustufen", breite);
+  assert.equal(bits, 8);
+  assert.equal(kanaele, 1);
+  assert.equal(daten.length, breite * hoehe, "Graustufen kennt keine Auffuellung");
+});

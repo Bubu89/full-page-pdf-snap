@@ -242,9 +242,10 @@ function dataUrlToBlob(dataUrl) {
  */
 /* Wendet die gewaehlte Farbtiefe an. Gibt Kanalzahl und Bittiefe mit zurueck,
  * weil das PDF beides im Bildobjekt braucht. */
-function farbtiefeAnwenden(d, modus) {
+function farbtiefeAnwenden(d, modus, breite) {
   if (modus === "graustufen" || modus === "sw") {
     const n = d.length / 4;
+    const hoehe = breite ? Math.round(n / breite) : 0;
     // Luminanz nach Rec. 601 — dieselbe Gewichtung, die auch Texterkennung
     // und Druckvorstufe verwenden. Ein einfacher Mittelwert macht rote
     // Ueberschriften zu hell und blaue Links zu dunkel.
@@ -256,10 +257,25 @@ function farbtiefeAnwenden(d, modus) {
     // 1 bit, acht Punkte je Byte. Feste Schwelle statt Dithering: Dithering
     // sieht besser aus und komprimiert schlechter, und fuer Text zaehlt hier
     // die Kante, nicht der Halbton.
-    const proZeile = Math.ceil(n / 8);
-    const bin = new Uint8Array(proZeile);
-    for (let j = 0; j < n; j++) {
-      if (grau[j] < 128) bin[j >> 3] |= 0x80 >> (j & 7);
+    //
+    // JEDE ZEILE BEGINNT AN EINER BYTE-GRENZE. Das schreibt PDF so vor
+    // (ISO 32000-1, 7.4.4: "Each row of the image shall begin on a byte
+    // boundary"), und es ist keine Formalie. Eine erste Fassung packte alle
+    // Punkte fortlaufend durch. Bei einer Breite, die durch 8 teilbar ist,
+    // faellt das nicht auf — bei 1440 Punkten ging alles gut. Bei 1617
+    // Punkten rutscht jede Zeile um sieben Bit, nach hundert Zeilen sind es
+    // 87 Punkte, und das Bild zerfaellt in Diagonalen. Gemessen am
+    // 4. August 2026 an einer Aufnahme aus Firefox unter Windows.
+    const bytesJeZeile = Math.ceil(breite / 8);
+    const bin = new Uint8Array(bytesJeZeile * hoehe);
+    for (let y = 0; y < hoehe; y++) {
+      const zeilenAnfang = y * bytesJeZeile;
+      const quellAnfang = y * breite;
+      for (let x = 0; x < breite; x++) {
+        if (grau[quellAnfang + x] < 128) {
+          bin[zeilenAnfang + (x >> 3)] |= 0x80 >> (x & 7);
+        }
+      }
     }
     return { daten: bin, kanaele: 1, bits: 1 };
   }
@@ -276,7 +292,7 @@ async function canvasToFlateBytes(canvas, modus) {
   const d = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
   // RGBA -> gewaehlte Farbtiefe. PDF kennt keinen Alphakanal, und die Aufnahme
   // hat keinen: der Hintergrund wurde vor dem Zeichnen gefuellt.
-  const { daten, kanaele, bits } = farbtiefeAnwenden(d, modus);
+  const { daten, kanaele, bits } = farbtiefeAnwenden(d, modus, canvas.width);
   const strom = new Blob([daten]).stream().pipeThrough(new CompressionStream("deflate"));
   const buf = await new Response(strom).arrayBuffer();
   return { bytes: new Uint8Array(buf), kanaele, bits };
