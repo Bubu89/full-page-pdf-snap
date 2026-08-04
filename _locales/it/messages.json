@@ -135,7 +135,7 @@
     "message": "Nascondi elementi fissi"
   },
   "optHideStickyHint": {
-    "message": "Hide sidebars and top bars before capture. Navigation columns are kept once at the top."
+    "message": "Nasconde barre laterali e intestazioni prima dell’acquisizione. Le colonne di navigazione vengono mantenute una volta in alto."
   },
   "optAppLayout": {
     "message": "Interfacce applicative (Gmail, Outlook, Notion …)"
@@ -150,7 +150,7 @@
     "message": "Cattura tutto — il menu si ripete"
   },
   "optAppLayoutHint": {
-    "message": "On pages that scroll their content in a separate area, the header and sidebar stay in place and would otherwise appear in every section of the PDF. Has no effect on ordinary pages."
+    "message": "Nelle pagine che scorrono il contenuto in un’area separata, intestazione e barra laterale restano fisse e finirebbero altrimenti in ogni sezione del PDF. Nessun effetto sulle pagine ordinarie."
   },
   "optAfter": {
     "message": "Dopo la cattura"
@@ -168,7 +168,7 @@
     "message": "Mostra cartella e apri il PDF"
   },
   "optAfterHint": {
-    "message": "Default is \"Show folder\": after saving, the download folder opens with the file preselected. \"Open the PDF\" starts the PDF viewer instead, \"Both\" does one after the other."
+    "message": "L’impostazione predefinita è «Mostra cartella»: dopo il salvataggio si apre la cartella dei download con il file preselezionato. «Apri il PDF» avvia invece il visualizzatore PDF, «Entrambi» esegue l’uno dopo l’altro."
   },
   "optScale": {
     "message": "Scala di cattura (risoluzione)"
@@ -186,7 +186,7 @@
     "message": "2.0x — massimo, per stampe grandi"
   },
   "optScaleHint": {
-    "message": "Default is 1.0x: the PDF shows the page exactly as it appears on screen — enough for normal printing at 144 dpi. Higher values sharpen the text but fit less into the window, so menus and sidebars end earlier."
+    "message": "Il valore predefinito è 1.0x: il PDF mostra la pagina esattamente come appare sullo schermo, sufficiente per una normale stampa a 144 dpi. Valori più alti rendono il testo più nitido, ma nella finestra entra meno contenuto, così menu e barre laterali terminano prima."
   },
   "optLanguage": {
     "message": "Lingua"
@@ -195,7 +195,7 @@
     "message": "Automatico (lingua del browser)"
   },
   "optLanguageHint": {
-    "message": "Interface language. \"Automatic\" follows the browser language, otherwise English. The name shown in the store always follows the browser language — an extension cannot influence that."
+    "message": "Lingua dell’interfaccia. «Automatico» segue la lingua del browser, altrimenti inglese. Il nome mostrato nello store segue sempre la lingua del browser: un’estensione non può influire su questo."
   },
   "optSave": {
     "message": "Salva"
@@ -204,43 +204,43 @@
     "message": "Salvato."
   },
   "optSubfolderHint": {
-    "message": "Default: Full Page PDF Snap. Leave empty to save directly into Downloads/. For security reasons the browser only allows subfolders."
+    "message": "Predefinito: Full Page PDF Snap. Lascia vuoto per salvare direttamente in Downloads/. Per motivi di sicurezza il browser consente solo sottocartelle."
   },
   "optSaveAsHint": {
-    "message": "Enable this if you want to save into folders outside Downloads/."
+    "message": "Attiva questa opzione se vuoi salvare in cartelle esterne a Downloads/."
   },
   "optTitleLenHint": {
-    "message": "Prevents overly long filenames. Default 40."
+    "message": "Evita nomi di file troppo lunghi. Predefinito 40."
   },
   "optCounterHint": {
-    "message": "Increases by one with every new PDF. Reset sets it back to zero."
+    "message": "Aumenta di uno a ogni nuovo PDF. Il ripristino lo riporta a zero."
   },
   "optPdfFormatHint": {
-    "message": "A single continuous page removes the visible seams between segments. Multi-page splits the result into pages of the height set below."
+    "message": "Un’unica pagina continua elimina le giunzioni visibili tra i segmenti. La modalità multipagina divide il risultato in pagine dell’altezza impostata sotto."
   },
   "optPageHeightHint": {
-    "message": "Only relevant when \"Multiple pages\" is selected. Default 2400 px."
+    "message": "Attivo solo se è selezionato «Più pagine». Predefinito 2400 px."
   },
   "optShortcut": {
-    "message": "Keyboard shortcut"
+    "message": "Scorciatoia da tastiera"
   },
   "optShortcutNone": {
-    "message": "none assigned — conflicts with a browser shortcut"
+    "message": "nessuna assegnata: conflitto con una scorciatoia del browser"
   },
   "optShortcutManage": {
-    "message": "Change shortcut"
+    "message": "Modifica scorciatoia"
   },
   "optShortcutHint": {
-    "message": "Shown here is the shortcut the browser has actually assigned. Browser shortcuts always take precedence and cannot be overridden by an extension — if the field says none, the combination is taken by the browser itself. To change it, open the address next to the button in a new tab."
+    "message": "Qui è indicata la scorciatoia effettivamente assegnata dal browser. Le scorciatoie del browser hanno sempre la precedenza e non possono essere sovrascritte da un’estensione: se il campo è vuoto, la combinazione è occupata dal browser stesso. Per modificarla, apri in una nuova scheda l’indirizzo accanto al pulsante."
   },
   "optShortcutCopy": {
     "message": "Copy address"
   },
   "optShortcutCopied": {
-    "message": "Address copied — paste it into a new tab"
+    "message": "Indirizzo copiato: incollalo in una nuova scheda"
   },
   "optShortcutWhere": {
-    "message": "To change it, open this address in a new tab:"
+    "message": "Per modificarla, apri questo indirizzo in una nuova scheda:"
   },
   "resultTitle": {
     "message": "Acquisizione pronta — Full Page PDF Snap"
@@ -303,16 +303,16 @@
     "message": "Seleziona un'area…"
   },
   "popupHideOverlays": {
-    "message": "Hide banners and pop-ups"
+    "message": "Nascondere banner e finestre a comparsa"
   },
   "popupHideOverlaysHint": {
-    "message": "Consent dialogs and floating bars are hidden for the capture and restored afterwards."
+    "message": "Le finestre di consenso e le barre flottanti vengono nascoste solo per l’acquisizione e poi ripristinate."
   },
   "popupHideOn": {
-    "message": "Banners will be hidden"
+    "message": "I banner verranno nascosti"
   },
   "popupHideOff": {
-    "message": "Banners will be captured as they are"
+    "message": "I banner verranno acquisiti così come sono"
   },
   "popupWorking": {
     "message": "Capturing …"
@@ -330,39 +330,75 @@
     "message": "Selezione annullata"
   },
   "popupCite": {
-    "message": "Add citation details"
+    "message": "Includere i dati di citazione"
   },
   "popupCiteHint": {
-    "message": "Authors, DOI, licence and retrieval time into the PDF, plus an RIS record. For AI tools to read them too, also switch on the provenance line in the settings."
+    "message": "Autori, DOI, licenza e ora di consultazione nel PDF, più un record RIS. Affinché anche gli strumenti di IA li leggano, attiva inoltre la riga di provenienza nelle impostazioni."
   },
   "popupCiteOn": {
-    "message": "Citation details will be added"
+    "message": "I dati di citazione verranno inclusi"
   },
   "popupCiteOff": {
-    "message": "No citation details"
+    "message": "Senza dati di citazione"
   },
   "optCopyPath": {
-    "message": "Copy the file path to the clipboard after saving"
+    "message": "Copiare il percorso del file negli appunti dopo il salvataggio"
   },
   "optCopyPathHint": {
-    "message": "For handing the file straight to a terminal or a language model: capture, then paste. Off by default."
+    "message": "Per passare il file direttamente a un terminale o a un modello linguistico: acquisisci e incolla. Disattivato per impostazione predefinita."
   },
   "optCopyPathFormat": {
     "message": "Path format"
   },
   "optCopyPathFormatHint": {
-    "message": "A Windows path pasted into a Linux shell under Windows leads nowhere. Choosing WSL converts it once here instead of every time by hand."
+    "message": "Un percorso Windows incollato in una shell Linux sotto Windows non porta da nessuna parte. Scegliendo WSL viene convertito una volta qui, invece che a mano ogni volta."
   },
   "popupCopyPath": {
-    "message": "Copy file path after saving"
+    "message": "Copiare il percorso del file dopo il salvataggio"
   },
   "popupCopyPathHint": {
-    "message": "Paste the path straight into a terminal or a chat. Format for WSL and other shells in the settings."
+    "message": "Incolla il percorso direttamente in un terminale o in una chat. Il formato per WSL e altre shell si imposta nelle impostazioni."
   },
   "popupCopyOn": {
-    "message": "Path will be copied after saving"
+    "message": "Il percorso verrà copiato dopo il salvataggio"
   },
   "popupCopyOff": {
-    "message": "Path will not be copied"
+    "message": "Il percorso non verrà copiato"
+  },
+  "optColourMode": {
+    "message": "Colore e dimensione del file"
+  },
+  "optColourModeHint": {
+    "message": "La scala di grigi e il bianco e nero riducono il file al 58 % e al 27 % — e aiutano l’OCR invece di ostacolarlo: 989 parole rilette contro 987 a colori. Le pagine con fotografie hanno bisogno del colore."
+  },
+  "optSourceMetadata": {
+    "message": "Leggere i dati di citazione dalla pagina"
+  },
+  "optSourceMetadataHint": {
+    "message": "Legge autori, rivista, volume, DOI, licenza e ora di consultazione dalla pagina già aperta e li scrive nei metadati del PDF, con un record RIS allegato per Citavi, Zotero ed EndNote. Non viene interrogato alcun servizio."
+  },
+  "optPageFormat": {
+    "message": "Formato pagina per l’output su più pagine"
+  },
+  "optPageFormatHint": {
+    "message": "A4 ricava l’altezza della pagina dalla larghezza acquisita, così una pagina stampata riempie il foglio senza ridimensionamenti."
+  },
+  "optBreakAtLines": {
+    "message": "Interrompere tra le righe, non attraverso"
+  },
+  "optBreakAtLinesHint": {
+    "message": "Sposta ogni interruzione di pagina verso l’alto, fino allo spazio più vicino tra righe di testo, immagini e tabelle. Misurato su quattro pagine di editori: 30 interruzioni su 46 a griglia fissa tagliavano una riga di testo, 2 su 47 con questa impostazione attiva. Costo: dall’1 al 3 % di margine vuoto per pagina."
+  },
+  "optFetchOriginal": {
+    "message": "Scaricare anche il file originale dell’editore"
+  },
+  "optFetchOriginalHint": {
+    "message": "Disattivato per impostazione predefinita: è l’unica funzione che apre una connessione di rete. Scarica l’indirizzo del testo integrale dichiarato dalla pagina stessa — la stessa richiesta di un clic su «PDF», con gli stessi diritti di accesso. Nulla dietro un paywall diventa raggiungibile."
+  },
+  "optNoReview": {
+    "message": "Richiesta di valutazione"
+  },
+  "optNoReviewHint": {
+    "message": "Non chiedermi di valutare questa estensione. Lo chiede una volta, dopo cinque acquisizioni, e mai più: questo interruttore evita anche quell’unica volta."
   }
 }

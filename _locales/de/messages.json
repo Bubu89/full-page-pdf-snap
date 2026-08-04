@@ -364,5 +364,41 @@
   },
   "popupCopyOff": {
     "message": "Pfad wird nicht kopiert"
+  },
+  "optColourMode": {
+    "message": "Farbe und Dateigröße"
+  },
+  "optColourModeHint": {
+    "message": "Graustufen und Schwarzweiß verkleinern die Datei auf 58 % und 27 % — und helfen der Texterkennung, statt ihr zu schaden: 989 Wörter werden zurückgelesen gegenüber 987 in Farbe. Seiten mit Fotos brauchen Farbe."
+  },
+  "optSourceMetadata": {
+    "message": "Zitationsangaben aus der Seite lesen"
+  },
+  "optSourceMetadataHint": {
+    "message": "Liest Verfasser, Zeitschrift, Jahrgang, DOI, Lizenz und Abrufzeit aus der bereits geöffneten Seite und schreibt sie in die PDF-Metadaten, dazu einen RIS-Datensatz für Citavi, Zotero und EndNote. Es wird kein Dienst angefragt."
+  },
+  "optPageFormat": {
+    "message": "Seitengröße bei mehrseitiger Ausgabe"
+  },
+  "optPageFormatHint": {
+    "message": "A4 leitet die Seitenhöhe aus der aufgenommenen Breite ab, damit eine gedruckte Seite das Blatt ohne Skalierung füllt."
+  },
+  "optBreakAtLines": {
+    "message": "Zwischen Zeilen trennen, nicht mitten hindurch"
+  },
+  "optBreakAtLinesHint": {
+    "message": "Verschiebt jeden Seitenumbruch nach oben zur nächsten Lücke zwischen Textzeilen, Bildern und Tabellen. An vier Verlagsseiten gemessen: 30 von 46 Umbrüchen im festen Raster schnitten durch eine Textzeile, mit dieser Einstellung 2 von 47. Preis: 1–3 % leerer Rand je Seite."
+  },
+  "optFetchOriginal": {
+    "message": "Originaldatei des Verlags zusätzlich laden"
+  },
+  "optFetchOriginalHint": {
+    "message": "Standardmäßig aus: Dies ist die einzige Funktion, die eine Netzverbindung öffnet. Sie lädt die Volltext-Adresse, die die Seite selbst angibt — dieselbe Anfrage wie ein Klick auf „PDF“, mit denselben Zugriffsrechten. Nichts hinter einer Bezahlschranke wird dadurch erreichbar."
+  },
+  "optNoReview": {
+    "message": "Bewertungshinweis"
+  },
+  "optNoReviewHint": {
+    "message": "Nicht nach einer Bewertung dieser Erweiterung fragen. Sie fragt einmal, nach fünf Aufnahmen, und nie wieder — dieser Schalter verhindert auch dieses eine Mal."
   }
 }

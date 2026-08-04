@@ -135,7 +135,7 @@
     "message": "固定要素を隠す"
   },
   "optHideStickyHint": {
-    "message": "Hide sidebars and top bars before capture. Navigation columns are kept once at the top."
+    "message": "取り込みの前にサイドバーとヘッダーを隠します。ナビゲーション列は先頭に一度だけ残ります。"
   },
   "optAppLayout": {
     "message": "アプリ画面 (Gmail、Outlook、Notion …)"
@@ -150,7 +150,7 @@
     "message": "すべて取得 — メニューが繰り返される"
   },
   "optAppLayoutHint": {
-    "message": "On pages that scroll their content in a separate area, the header and sidebar stay in place and would otherwise appear in every section of the PDF. Has no effect on ordinary pages."
+    "message": "内容を独立した領域でスクロールするページでは、ヘッダーとサイドバーが固定されたままとなり、そのままでは PDF の各区画に繰り返し現れます。通常のページでは効果はありません。"
   },
   "optAfter": {
     "message": "取得後"
@@ -168,7 +168,7 @@
     "message": "フォルダーを表示して PDF を開く"
   },
   "optAfterHint": {
-    "message": "Default is \"Show folder\": after saving, the download folder opens with the file preselected. \"Open the PDF\" starts the PDF viewer instead, \"Both\" does one after the other."
+    "message": "既定は「フォルダーを表示」です。保存後、ダウンロードフォルダーが開き、ファイルが選択された状態になります。「PDF を開く」では代わりに PDF ビューアーが起動し、「両方」では順に実行されます。"
   },
   "optScale": {
     "message": "取得倍率（解像度）"
@@ -186,7 +186,7 @@
     "message": "2.0x — 最高、大判印刷向け"
   },
   "optScaleHint": {
-    "message": "Default is 1.0x: the PDF shows the page exactly as it appears on screen — enough for normal printing at 144 dpi. Higher values sharpen the text but fit less into the window, so menus and sidebars end earlier."
+    "message": "既定は 1.0x で、PDF は画面に表示されているとおりのページを示します。144 dpi の通常の印刷には十分です。値を大きくすると文字は鮮明になりますが、ウィンドウに収まる範囲が狭くなるため、メニューやサイドバーは早く途切れます。"
   },
   "optLanguage": {
     "message": "言語"
@@ -195,7 +195,7 @@
     "message": "自動（ブラウザーの言語）"
   },
   "optLanguageHint": {
-    "message": "Interface language. \"Automatic\" follows the browser language, otherwise English. The name shown in the store always follows the browser language — an extension cannot influence that."
+    "message": "画面の表示言語です。「自動」はブラウザーの言語に従い、該当がなければ英語になります。ストアに表示される名称は常にブラウザーの言語に従い、拡張機能から変えることはできません。"
   },
   "optSave": {
     "message": "保存"
@@ -204,43 +204,43 @@
     "message": "保存しました。"
   },
   "optSubfolderHint": {
-    "message": "Default: Full Page PDF Snap. Leave empty to save directly into Downloads/. For security reasons the browser only allows subfolders."
+    "message": "既定は Full Page PDF Snap です。空欄にすると Downloads/ に直接保存します。安全上の理由から、ブラウザーはサブフォルダーのみ許可します。"
   },
   "optSaveAsHint": {
-    "message": "Enable this if you want to save into folders outside Downloads/."
+    "message": "Downloads/ 以外のフォルダーに保存したい場合に有効にします。"
   },
   "optTitleLenHint": {
-    "message": "Prevents overly long filenames. Default 40."
+    "message": "ファイル名が長くなりすぎるのを防ぎます。既定は 40 です。"
   },
   "optCounterHint": {
-    "message": "Increases by one with every new PDF. Reset sets it back to zero."
+    "message": "新しい PDF ごとに 1 ずつ増えます。リセットすると 0 に戻ります。"
   },
   "optPdfFormatHint": {
-    "message": "A single continuous page removes the visible seams between segments. Multi-page splits the result into pages of the height set below."
+    "message": "1 枚の連続したページにすると、区画のつなぎ目が見えなくなります。複数ページでは、下で設定した高さのページに分割されます。"
   },
   "optPageHeightHint": {
-    "message": "Only relevant when \"Multiple pages\" is selected. Default 2400 px."
+    "message": "「複数ページ」を選んだ場合にのみ有効です。既定は 2400 px です。"
   },
   "optShortcut": {
-    "message": "Keyboard shortcut"
+    "message": "キーボードショートカット"
   },
   "optShortcutNone": {
-    "message": "none assigned — conflicts with a browser shortcut"
+    "message": "未割り当て — ブラウザーのショートカットと競合しています"
   },
   "optShortcutManage": {
-    "message": "Change shortcut"
+    "message": "ショートカットを変更"
   },
   "optShortcutHint": {
-    "message": "Shown here is the shortcut the browser has actually assigned. Browser shortcuts always take precedence and cannot be overridden by an extension — if the field says none, the combination is taken by the browser itself. To change it, open the address next to the button in a new tab."
+    "message": "ここに表示されるのは、ブラウザーが実際に割り当てたショートカットです。ブラウザーのショートカットが常に優先され、拡張機能から上書きすることはできません。空欄の場合、その組み合わせはブラウザー自身が使っています。変更するには、ボタンの横のアドレスを新しいタブで開いてください。"
   },
   "optShortcutCopy": {
     "message": "Copy address"
   },
   "optShortcutCopied": {
-    "message": "Address copied — paste it into a new tab"
+    "message": "アドレスをコピーしました。新しいタブに貼り付けてください"
   },
   "optShortcutWhere": {
-    "message": "To change it, open this address in a new tab:"
+    "message": "変更するには、次のアドレスを新しいタブで開いてください:"
   },
   "resultTitle": {
     "message": "キャプチャ完了 — Full Page PDF Snap"
@@ -303,16 +303,16 @@
     "message": "範囲を選択…"
   },
   "popupHideOverlays": {
-    "message": "Hide banners and pop-ups"
+    "message": "バナーとポップアップを隠す"
   },
   "popupHideOverlaysHint": {
-    "message": "Consent dialogs and floating bars are hidden for the capture and restored afterwards."
+    "message": "同意ダイアログや追従バーは取り込みの間だけ隠され、その後元に戻ります。"
   },
   "popupHideOn": {
-    "message": "Banners will be hidden"
+    "message": "バナーは非表示になります"
   },
   "popupHideOff": {
-    "message": "Banners will be captured as they are"
+    "message": "バナーはそのまま取り込まれます"
   },
   "popupWorking": {
     "message": "Capturing …"
@@ -330,39 +330,75 @@
     "message": "選択を中止しました"
   },
   "popupCite": {
-    "message": "Add citation details"
+    "message": "引用情報を書き込む"
   },
   "popupCiteHint": {
-    "message": "Authors, DOI, licence and retrieval time into the PDF, plus an RIS record. For AI tools to read them too, also switch on the provenance line in the settings."
+    "message": "著者、DOI、ライセンス、取得日時を PDF に、あわせて RIS レコードを添えます。AI ツールにも読ませるには、設定で来歴の行も有効にしてください。"
   },
   "popupCiteOn": {
-    "message": "Citation details will be added"
+    "message": "引用情報を書き込みます"
   },
   "popupCiteOff": {
-    "message": "No citation details"
+    "message": "引用情報なし"
   },
   "optCopyPath": {
-    "message": "Copy the file path to the clipboard after saving"
+    "message": "保存後にファイルパスをクリップボードへコピーする"
   },
   "optCopyPathHint": {
-    "message": "For handing the file straight to a terminal or a language model: capture, then paste. Off by default."
+    "message": "ファイルを端末や言語モデルへそのまま渡すために、取り込んで貼り付けます。既定では無効です。"
   },
   "optCopyPathFormat": {
     "message": "Path format"
   },
   "optCopyPathFormatHint": {
-    "message": "A Windows path pasted into a Linux shell under Windows leads nowhere. Choosing WSL converts it once here instead of every time by hand."
+    "message": "Windows のパスを Windows 上の Linux シェルに貼り付けても、どこにも届きません。WSL を選ぶと、毎回手作業で直す代わりに、ここで一度だけ変換します。"
   },
   "popupCopyPath": {
-    "message": "Copy file path after saving"
+    "message": "保存後にファイルパスをコピーする"
   },
   "popupCopyPathHint": {
-    "message": "Paste the path straight into a terminal or a chat. Format for WSL and other shells in the settings."
+    "message": "パスを端末やチャットにそのまま貼り付けられます。WSL やその他のシェル向けの形式は設定にあります。"
   },
   "popupCopyOn": {
-    "message": "Path will be copied after saving"
+    "message": "保存後にパスをコピーします"
   },
   "popupCopyOff": {
-    "message": "Path will not be copied"
+    "message": "パスはコピーされません"
+  },
+  "optColourMode": {
+    "message": "色とファイルサイズ"
+  },
+  "optColourModeHint": {
+    "message": "グレースケールと白黒はファイルをそれぞれ 58 %、27 % に縮小し、OCR を妨げるどころか助けます。カラーの 987 語に対し 989 語を読み取れました。写真を含むページにはカラーが必要です。"
+  },
+  "optSourceMetadata": {
+    "message": "ページから引用情報を読み取る"
+  },
+  "optSourceMetadataHint": {
+    "message": "すでに開いているページから著者、雑誌名、巻、DOI、ライセンス、アクセス日時を読み取り、PDF のメタデータに書き込みます。あわせて Citavi、Zotero、EndNote 用の RIS レコードを添付します。外部サービスへの問い合わせは行いません。"
+  },
+  "optPageFormat": {
+    "message": "複数ページ出力時の用紙サイズ"
+  },
+  "optPageFormatHint": {
+    "message": "A4 では取り込んだ幅からページの高さを導くため、印刷したページが拡大縮小なしで用紙に収まります。"
+  },
+  "optBreakAtLines": {
+    "message": "行の途中ではなく行間で区切る"
+  },
+  "optBreakAtLinesHint": {
+    "message": "各ページの区切りを、テキスト行・画像・表の間にある最も近い余白まで上に移動します。出版社の 4 ページで測定した結果、固定グリッドでは 46 か所中 30 か所が文字行を横切りましたが、この設定では 47 か所中 2 か所でした。代償はページあたり 1〜3 % の余白です。"
+  },
+  "optFetchOriginal": {
+    "message": "出版社のオリジナルファイルもダウンロードする"
+  },
+  "optFetchOriginalHint": {
+    "message": "既定では無効です。ネットワーク接続を開く唯一の機能で、ページ自身が示す全文のアドレスを取得します。「PDF」をクリックした場合と同じ要求であり、権限も同じです。ペイウォールの向こう側にあるものが読めるようになるわけではありません。"
+  },
+  "optNoReview": {
+    "message": "評価のお願い"
+  },
+  "optNoReviewHint": {
+    "message": "この拡張機能の評価を求めない。5 回取り込んだ後に一度だけ尋ね、その後は二度と尋ねません。この設定はその一度も行わないようにします。"
   }
 }

@@ -135,7 +135,7 @@
     "message": "Скрывать закреплённые элементы"
   },
   "optHideStickyHint": {
-    "message": "Hide sidebars and top bars before capture. Navigation columns are kept once at the top."
+    "message": "Скрывает боковые и верхние панели перед съёмкой. Навигационные столбцы сохраняются один раз сверху."
   },
   "optAppLayout": {
     "message": "Интерфейсы приложений (Gmail, Outlook, Notion …)"
@@ -150,7 +150,7 @@
     "message": "Снимать всё — меню повторяется"
   },
   "optAppLayoutHint": {
-    "message": "On pages that scroll their content in a separate area, the header and sidebar stay in place and would otherwise appear in every section of the PDF. Has no effect on ordinary pages."
+    "message": "На страницах, прокручивающих содержимое в отдельной области, шапка и боковая панель остаются на месте и иначе попадали бы в каждый раздел PDF. На обычных страницах не действует."
   },
   "optAfter": {
     "message": "После съёмки"
@@ -168,7 +168,7 @@
     "message": "Показать папку и открыть PDF"
   },
   "optAfterHint": {
-    "message": "Default is \"Show folder\": after saving, the download folder opens with the file preselected. \"Open the PDF\" starts the PDF viewer instead, \"Both\" does one after the other."
+    "message": "По умолчанию «Показать папку»: после сохранения открывается папка загрузок с выделенным файлом. «Открыть PDF» вместо этого запускает просмотрщик PDF, «Оба» выполняет одно за другим."
   },
   "optScale": {
     "message": "Масштаб съёмки (разрешение)"
@@ -186,7 +186,7 @@
     "message": "2.0x — максимум, для крупной печати"
   },
   "optScaleHint": {
-    "message": "Default is 1.0x: the PDF shows the page exactly as it appears on screen — enough for normal printing at 144 dpi. Higher values sharpen the text but fit less into the window, so menus and sidebars end earlier."
+    "message": "По умолчанию 1.0x: PDF показывает страницу точно так, как она выглядит на экране, — этого достаточно для обычной печати при 144 dpi. Более высокие значения делают текст чётче, но в окно помещается меньше, поэтому меню и боковые панели заканчиваются раньше."
   },
   "optLanguage": {
     "message": "Язык"
@@ -195,7 +195,7 @@
     "message": "Автоматически (язык браузера)"
   },
   "optLanguageHint": {
-    "message": "Interface language. \"Automatic\" follows the browser language, otherwise English. The name shown in the store always follows the browser language — an extension cannot influence that."
+    "message": "Язык интерфейса. «Автоматически» следует языку браузера, иначе английский. Название в магазине всегда следует языку браузера — на это расширение повлиять не может."
   },
   "optSave": {
     "message": "Сохранить"
@@ -204,43 +204,43 @@
     "message": "Сохранено."
   },
   "optSubfolderHint": {
-    "message": "Default: Full Page PDF Snap. Leave empty to save directly into Downloads/. For security reasons the browser only allows subfolders."
+    "message": "По умолчанию: Full Page PDF Snap. Оставьте пустым, чтобы сохранять прямо в Downloads/. Из соображений безопасности браузер разрешает только вложенные папки."
   },
   "optSaveAsHint": {
-    "message": "Enable this if you want to save into folders outside Downloads/."
+    "message": "Включите, если хотите сохранять в папки за пределами Downloads/."
   },
   "optTitleLenHint": {
-    "message": "Prevents overly long filenames. Default 40."
+    "message": "Предотвращает слишком длинные имена файлов. По умолчанию 40."
   },
   "optCounterHint": {
-    "message": "Increases by one with every new PDF. Reset sets it back to zero."
+    "message": "Увеличивается на единицу с каждым новым PDF. Сброс возвращает к нулю."
   },
   "optPdfFormatHint": {
-    "message": "A single continuous page removes the visible seams between segments. Multi-page splits the result into pages of the height set below."
+    "message": "Одна непрерывная страница убирает видимые стыки между фрагментами. Многостраничный режим делит результат на страницы заданной ниже высоты."
   },
   "optPageHeightHint": {
-    "message": "Only relevant when \"Multiple pages\" is selected. Default 2400 px."
+    "message": "Действует только при выбранном режиме «Несколько страниц». По умолчанию 2400 пикс."
   },
   "optShortcut": {
-    "message": "Keyboard shortcut"
+    "message": "Сочетание клавиш"
   },
   "optShortcutNone": {
-    "message": "none assigned — conflicts with a browser shortcut"
+    "message": "не назначено — конфликт с сочетанием браузера"
   },
   "optShortcutManage": {
-    "message": "Change shortcut"
+    "message": "Изменить сочетание"
   },
   "optShortcutHint": {
-    "message": "Shown here is the shortcut the browser has actually assigned. Browser shortcuts always take precedence and cannot be overridden by an extension — if the field says none, the combination is taken by the browser itself. To change it, open the address next to the button in a new tab."
+    "message": "Здесь показано сочетание, которое браузер действительно назначил. Сочетания браузера всегда имеют приоритет, и расширение не может их переопределить: если поле пустое, комбинация занята самим браузером. Чтобы изменить её, откройте в новой вкладке адрес рядом с кнопкой."
   },
   "optShortcutCopy": {
     "message": "Copy address"
   },
   "optShortcutCopied": {
-    "message": "Address copied — paste it into a new tab"
+    "message": "Адрес скопирован — вставьте его в новую вкладку"
   },
   "optShortcutWhere": {
-    "message": "To change it, open this address in a new tab:"
+    "message": "Чтобы изменить, откройте этот адрес в новой вкладке:"
   },
   "resultTitle": {
     "message": "Снимок готов — Full Page PDF Snap"
@@ -303,16 +303,16 @@
     "message": "Выбрать область…"
   },
   "popupHideOverlays": {
-    "message": "Hide banners and pop-ups"
+    "message": "Скрывать баннеры и всплывающие окна"
   },
   "popupHideOverlaysHint": {
-    "message": "Consent dialogs and floating bars are hidden for the capture and restored afterwards."
+    "message": "Диалоги согласия и плавающие панели скрываются только на время съёмки и затем восстанавливаются."
   },
   "popupHideOn": {
-    "message": "Banners will be hidden"
+    "message": "Баннеры будут скрыты"
   },
   "popupHideOff": {
-    "message": "Banners will be captured as they are"
+    "message": "Баннеры будут сняты как есть"
   },
   "popupWorking": {
     "message": "Capturing …"
@@ -330,39 +330,75 @@
     "message": "Выбор отменён"
   },
   "popupCite": {
-    "message": "Add citation details"
+    "message": "Добавлять данные для цитирования"
   },
   "popupCiteHint": {
-    "message": "Authors, DOI, licence and retrieval time into the PDF, plus an RIS record. For AI tools to read them too, also switch on the provenance line in the settings."
+    "message": "Авторы, DOI, лицензия и время обращения — в PDF, плюс запись RIS. Чтобы их читали и инструменты ИИ, включите дополнительно строку происхождения в настройках."
   },
   "popupCiteOn": {
-    "message": "Citation details will be added"
+    "message": "Данные для цитирования будут добавлены"
   },
   "popupCiteOff": {
-    "message": "No citation details"
+    "message": "Без данных для цитирования"
   },
   "optCopyPath": {
-    "message": "Copy the file path to the clipboard after saving"
+    "message": "Копировать путь к файлу в буфер обмена после сохранения"
   },
   "optCopyPathHint": {
-    "message": "For handing the file straight to a terminal or a language model: capture, then paste. Off by default."
+    "message": "Чтобы передать файл сразу в терминал или языковой модели: снять и вставить. По умолчанию выключено."
   },
   "optCopyPathFormat": {
     "message": "Path format"
   },
   "optCopyPathFormatHint": {
-    "message": "A Windows path pasted into a Linux shell under Windows leads nowhere. Choosing WSL converts it once here instead of every time by hand."
+    "message": "Путь Windows, вставленный в оболочку Linux под Windows, никуда не ведёт. Выбор WSL преобразует его один раз здесь, а не вручную каждый раз."
   },
   "popupCopyPath": {
-    "message": "Copy file path after saving"
+    "message": "Копировать путь к файлу после сохранения"
   },
   "popupCopyPathHint": {
-    "message": "Paste the path straight into a terminal or a chat. Format for WSL and other shells in the settings."
+    "message": "Вставьте путь прямо в терминал или в чат. Формат для WSL и других оболочек — в настройках."
   },
   "popupCopyOn": {
-    "message": "Path will be copied after saving"
+    "message": "Путь будет скопирован после сохранения"
   },
   "popupCopyOff": {
-    "message": "Path will not be copied"
+    "message": "Путь не будет скопирован"
+  },
+  "optColourMode": {
+    "message": "Цвет и размер файла"
+  },
+  "optColourModeHint": {
+    "message": "Оттенки серого и чёрно-белый режим уменьшают файл до 58 % и 27 % — и помогают распознаванию текста, а не мешают ему: 989 распознанных слов против 987 в цвете. Страницам с фотографиями цвет необходим."
+  },
+  "optSourceMetadata": {
+    "message": "Считывать данные цитирования со страницы"
+  },
+  "optSourceMetadataHint": {
+    "message": "Считывает авторов, журнал, том, DOI, лицензию и время обращения с уже открытой страницы и записывает их в метаданные PDF, а также прилагает запись RIS для Citavi, Zotero и EndNote. Никакие службы не запрашиваются."
+  },
+  "optPageFormat": {
+    "message": "Размер страницы при многостраничном выводе"
+  },
+  "optPageFormatHint": {
+    "message": "A4 вычисляет высоту страницы из захваченной ширины, поэтому напечатанная страница заполняет лист без масштабирования."
+  },
+  "optBreakAtLines": {
+    "message": "Разрывать между строками, а не сквозь них"
+  },
+  "optBreakAtLinesHint": {
+    "message": "Сдвигает каждый разрыв страницы вверх, к ближайшему промежутку между строками текста, изображениями и таблицами. Измерено на четырёх издательских страницах: 30 из 46 разрывов по фиксированной сетке рассекали строку текста, с этой настройкой — 2 из 47. Цена: 1–3 % пустого поля на страницу."
+  },
+  "optFetchOriginal": {
+    "message": "Также загружать исходный файл издателя"
+  },
+  "optFetchOriginalHint": {
+    "message": "По умолчанию выключено: это единственная функция, открывающая сетевое соединение. Она загружает адрес полного текста, который страница объявляет сама, — тот же запрос, что и нажатие на «PDF», с теми же правами доступа. Ничто за платным доступом не становится доступным."
+  },
+  "optNoReview": {
+    "message": "Запрос оценки"
+  },
+  "optNoReviewHint": {
+    "message": "Не предлагать оценить это расширение. Оно спрашивает один раз, после пяти снимков, и больше никогда — этот переключатель отменяет и этот единственный раз."
   }
 }

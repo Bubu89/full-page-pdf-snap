@@ -135,7 +135,7 @@
     "message": "隐藏固定元素"
   },
   "optHideStickyHint": {
-    "message": "Hide sidebars and top bars before capture. Navigation columns are kept once at the top."
+    "message": "在抓取前隐藏侧边栏和顶栏。导航栏会在顶部保留一次。"
   },
   "optAppLayout": {
     "message": "应用界面（Gmail、Outlook、Notion …）"
@@ -150,7 +150,7 @@
     "message": "全部捕获 — 菜单会重复"
   },
   "optAppLayoutHint": {
-    "message": "On pages that scroll their content in a separate area, the header and sidebar stay in place and would otherwise appear in every section of the PDF. Has no effect on ordinary pages."
+    "message": "在内容于独立区域内滚动的页面上，页眉和侧边栏会保持不动，否则会在 PDF 的每一段中重复出现。对普通页面无效。"
   },
   "optAfter": {
     "message": "捕获后"
@@ -168,7 +168,7 @@
     "message": "显示文件夹并打开 PDF"
   },
   "optAfterHint": {
-    "message": "Default is \"Show folder\": after saving, the download folder opens with the file preselected. \"Open the PDF\" starts the PDF viewer instead, \"Both\" does one after the other."
+    "message": "默认为“显示文件夹”：保存后打开下载文件夹并选中该文件。“打开 PDF”改为启动 PDF 阅读器，“两者”则依次执行。"
   },
   "optScale": {
     "message": "捕获缩放（分辨率）"
@@ -186,7 +186,7 @@
     "message": "2.0x — 最高，适合大幅打印"
   },
   "optScaleHint": {
-    "message": "Default is 1.0x: the PDF shows the page exactly as it appears on screen — enough for normal printing at 144 dpi. Higher values sharpen the text but fit less into the window, so menus and sidebars end earlier."
+    "message": "默认为 1.0x：PDF 完全按照屏幕上的样子呈现页面——在 144 dpi 下足以满足普通打印。更高的数值会让文字更清晰，但窗口内容纳的内容更少，因而菜单和侧边栏会更早结束。"
   },
   "optLanguage": {
     "message": "语言"
@@ -195,7 +195,7 @@
     "message": "自动（浏览器语言）"
   },
   "optLanguageHint": {
-    "message": "Interface language. \"Automatic\" follows the browser language, otherwise English. The name shown in the store always follows the browser language — an extension cannot influence that."
+    "message": "界面语言。“自动”跟随浏览器语言，否则使用英文。商店中显示的名称始终跟随浏览器语言——扩展无法影响这一点。"
   },
   "optSave": {
     "message": "保存"
@@ -204,43 +204,43 @@
     "message": "已保存。"
   },
   "optSubfolderHint": {
-    "message": "Default: Full Page PDF Snap. Leave empty to save directly into Downloads/. For security reasons the browser only allows subfolders."
+    "message": "默认：Full Page PDF Snap。留空则直接保存到 Downloads/。出于安全考虑，浏览器只允许使用子文件夹。"
   },
   "optSaveAsHint": {
-    "message": "Enable this if you want to save into folders outside Downloads/."
+    "message": "若需保存到 Downloads/ 以外的文件夹，请启用此项。"
   },
   "optTitleLenHint": {
-    "message": "Prevents overly long filenames. Default 40."
+    "message": "防止文件名过长。默认 40。"
   },
   "optCounterHint": {
-    "message": "Increases by one with every new PDF. Reset sets it back to zero."
+    "message": "每生成一个新 PDF 就加一。重置后归零。"
   },
   "optPdfFormatHint": {
-    "message": "A single continuous page removes the visible seams between segments. Multi-page splits the result into pages of the height set below."
+    "message": "单页连续输出可消除各段之间可见的接缝。多页模式则按下方设定的高度切分结果。"
   },
   "optPageHeightHint": {
-    "message": "Only relevant when \"Multiple pages\" is selected. Default 2400 px."
+    "message": "仅在选择“多页”时有效。默认 2400 像素。"
   },
   "optShortcut": {
-    "message": "Keyboard shortcut"
+    "message": "键盘快捷键"
   },
   "optShortcutNone": {
-    "message": "none assigned — conflicts with a browser shortcut"
+    "message": "未分配——与浏览器快捷键冲突"
   },
   "optShortcutManage": {
-    "message": "Change shortcut"
+    "message": "更改快捷键"
   },
   "optShortcutHint": {
-    "message": "Shown here is the shortcut the browser has actually assigned. Browser shortcuts always take precedence and cannot be overridden by an extension — if the field says none, the combination is taken by the browser itself. To change it, open the address next to the button in a new tab."
+    "message": "此处显示的是浏览器实际分配的快捷键。浏览器快捷键始终优先，扩展无法覆盖：若此处为空，则该组合已被浏览器本身占用。如需更改，请在新标签页中打开按钮旁的地址。"
   },
   "optShortcutCopy": {
     "message": "Copy address"
   },
   "optShortcutCopied": {
-    "message": "Address copied — paste it into a new tab"
+    "message": "地址已复制——请粘贴到新标签页中"
   },
   "optShortcutWhere": {
-    "message": "To change it, open this address in a new tab:"
+    "message": "如需更改，请在新标签页中打开此地址："
   },
   "resultTitle": {
     "message": "截图完成 — Full Page PDF Snap"
@@ -303,16 +303,16 @@
     "message": "选择区域…"
   },
   "popupHideOverlays": {
-    "message": "Hide banners and pop-ups"
+    "message": "隐藏横幅与弹出窗口"
   },
   "popupHideOverlaysHint": {
-    "message": "Consent dialogs and floating bars are hidden for the capture and restored afterwards."
+    "message": "同意对话框和浮动栏仅在抓取期间隐藏，之后会恢复。"
   },
   "popupHideOn": {
-    "message": "Banners will be hidden"
+    "message": "横幅将被隐藏"
   },
   "popupHideOff": {
-    "message": "Banners will be captured as they are"
+    "message": "横幅将按原样抓取"
   },
   "popupWorking": {
     "message": "Capturing …"
@@ -330,39 +330,75 @@
     "message": "已取消选择"
   },
   "popupCite": {
-    "message": "Add citation details"
+    "message": "写入引用信息"
   },
   "popupCiteHint": {
-    "message": "Authors, DOI, licence and retrieval time into the PDF, plus an RIS record. For AI tools to read them too, also switch on the provenance line in the settings."
+    "message": "将作者、DOI、许可协议和获取时间写入 PDF，并附带 RIS 记录。若也希望 AI 工具读取，请在设置中一并启用来源行。"
   },
   "popupCiteOn": {
-    "message": "Citation details will be added"
+    "message": "将写入引用信息"
   },
   "popupCiteOff": {
-    "message": "No citation details"
+    "message": "不含引用信息"
   },
   "optCopyPath": {
-    "message": "Copy the file path to the clipboard after saving"
+    "message": "保存后将文件路径复制到剪贴板"
   },
   "optCopyPathHint": {
-    "message": "For handing the file straight to a terminal or a language model: capture, then paste. Off by default."
+    "message": "用于把文件直接交给终端或语言模型：先抓取，再粘贴。默认关闭。"
   },
   "optCopyPathFormat": {
     "message": "Path format"
   },
   "optCopyPathFormatHint": {
-    "message": "A Windows path pasted into a Linux shell under Windows leads nowhere. Choosing WSL converts it once here instead of every time by hand."
+    "message": "把 Windows 路径粘贴到 Windows 下的 Linux 终端里是走不通的。选择 WSL 可在此一次性转换，省去每次手工修改。"
   },
   "popupCopyPath": {
-    "message": "Copy file path after saving"
+    "message": "保存后复制文件路径"
   },
   "popupCopyPathHint": {
-    "message": "Paste the path straight into a terminal or a chat. Format for WSL and other shells in the settings."
+    "message": "可将路径直接粘贴到终端或聊天中。WSL 及其他 shell 的格式见设置。"
   },
   "popupCopyOn": {
-    "message": "Path will be copied after saving"
+    "message": "保存后将复制路径"
   },
   "popupCopyOff": {
-    "message": "Path will not be copied"
+    "message": "不会复制路径"
+  },
+  "optColourMode": {
+    "message": "色彩与文件大小"
+  },
+  "optColourModeHint": {
+    "message": "灰度和黑白可将文件缩小至 58 % 和 27 %，而且有助于文字识别而非有害：彩色下识别出 987 个词，灰度下为 989 个。含照片的页面需要彩色。"
+  },
+  "optSourceMetadata": {
+    "message": "从页面读取引用信息"
+  },
+  "optSourceMetadataHint": {
+    "message": "从已打开的页面读取作者、期刊、卷号、DOI、许可协议和访问时间，写入 PDF 元数据，并附带可供 Citavi、Zotero 和 EndNote 使用的 RIS 记录。不会向任何服务发出请求。"
+  },
+  "optPageFormat": {
+    "message": "多页输出的页面尺寸"
+  },
+  "optPageFormatHint": {
+    "message": "A4 会根据抓取宽度推算页面高度，因此打印出的页面无需缩放即可填满纸张。"
+  },
+  "optBreakAtLines": {
+    "message": "在行与行之间断页，而非穿行而过"
+  },
+  "optBreakAtLinesHint": {
+    "message": "将每个分页位置上移至文本行、图片和表格之间最近的空隙。在四个出版社页面上测得：固定网格下 46 处分页中有 30 处切断了文字行，启用此设置后为 47 处中的 2 处。代价是每页 1–3 % 的空白边距。"
+  },
+  "optFetchOriginal": {
+    "message": "同时下载出版社的原始文件"
+  },
+  "optFetchOriginalHint": {
+    "message": "默认关闭：这是唯一会建立网络连接的功能。它下载页面自身声明的全文地址——与点击“PDF”发出的请求相同，访问权限也相同。付费墙之后的内容不会因此变得可读。"
+  },
+  "optNoReview": {
+    "message": "评分提示"
+  },
+  "optNoReviewHint": {
+    "message": "不要请求为此扩展评分。它只在第五次抓取后询问一次，此后不再询问——此开关连这一次也会免去。"
   }
 }
