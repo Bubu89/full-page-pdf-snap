@@ -112,6 +112,14 @@ jobs:
             echo "::error::server-card.json veraltet — build-server-card.py ausfuehren"
             exit 1
           }
+          # Skill-Index, api-catalog und auth.md. Dieses Skript lief bisher in
+          # keinem Schritt der Pipeline — deshalb konnte auth.md monatelang eine
+          # Sperre beschreiben, die es nicht mehr gibt, und der Skill-Index den
+          # Pruefsummen der Skills hinterherhinken.
+          python3 build-agent-discovery.py --check || {
+            echo "::error::Discovery-Dateien veraltet — build-agent-discovery.py ausfuehren"
+            exit 1
+          }
 
       # Zweimal an einem Tag standen Platzhalter in ausgelieferten Seiten
       # ({TITEL}, {AMO}), weil ein Textblock in einen f-String geriet. Im

@@ -51,8 +51,12 @@ Metadata: `/.well-known/oauth-authorization-server` and
 ## Rate limits
 
 No identification-based limit. Ordinary Cloudflare protection applies to every
-client equally. Requests identifying as `Python-urllib` are rejected by the
-browser integrity check — use any other user agent.
+client equally, and no user agent is treated differently.
+
+Until 4 August 2026 the browser integrity check rejected requests identifying
+as `Python-urllib` — 24 of them in the preceding 24 hours, all on `/mcp`, all
+from clients doing nothing wrong. It is off: a default library user agent now
+receives the same answer as any other.
 
 ## What is available without any of this
 

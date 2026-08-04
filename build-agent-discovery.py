@@ -11,10 +11,12 @@ Eintraege, fuer die es hier tatsaechlich etwas zu finden gibt:
                                         (RFC 9727 / RFC 9264)
   /auth.md                              die Auskunft, dass nichts geschuetzt ist
 
-Bewusst NICHT erzeugt werden OAuth- und OIDC-Metadaten sowie eine MCP Server
-Card: Es gibt keine geschuetzten Endpunkte und keinen MCP-Server. Eine Datei,
-die das Gegenteil behauptet, kostet jeden Agenten, der ihr folgt, einen
-vergeblichen Aufruf — leere Metadaten sind schlechter als keine.
+Die MCP Server Card erzeugt seit dem 4. August build-server-card.py, das sie
+vollstaendig aus worker/mcp.js ableitet. Hier wurde nur ihre Versionsnummer
+nachgezogen — und weil dieses Skript nicht in der Pipeline lief, stand in der
+Karte monatelang eine alte Fassung mit vier von neun Werkzeugen. Zwei
+Erzeuger fuer eine Datei sind eine Drift-Quelle, auch wenn sie sich gerade
+nicht widersprechen.
 
 Die sha256-Summen im Skills-Index werden aus den Dateien berechnet, nicht
 gepflegt. Damit kann der Index nicht von den Skills abdriften.
@@ -183,8 +185,12 @@ Metadata: `/.well-known/oauth-authorization-server` and
 ## Rate limits
 
 No identification-based limit. Ordinary Cloudflare protection applies to every
-client equally. Requests identifying as `Python-urllib` are rejected by the
-browser integrity check — use any other user agent.
+client equally, and no user agent is treated differently.
+
+Until 4 August 2026 the browser integrity check rejected requests identifying
+as `Python-urllib` — 24 of them in the preceding 24 hours, all on `/mcp`, all
+from clients doing nothing wrong. It is off: a default library user agent now
+receives the same answer as any other.
 
 ## What is available without any of this
 
@@ -244,27 +250,6 @@ def protected_resource():
 
 
 
-def mcp_karte():
-    """Server Card mit der Version aus dem Worker — nicht doppelt gepflegt.
-
-    Sie stand einmal auf 1.0.0, waehrend der Worker 1.4.0 auslieferte. Eine
-    Karte, die eine andere Version nennt als der Server, ist schlimmer als
-    keine: Ein Client glaubt ihr.
-    """
-    quelle = DOCS.parent / "worker" / "mcp.js"
-    version = "1.0.0"
-    if quelle.exists():
-        m = re.search(r'const VERSION = "([^"]+)"', quelle.read_text(encoding="utf-8"))
-        if m:
-            version = m.group(1)
-    ziel = DOCS / ".well-known" / "mcp" / "server-card.json"
-    if not ziel.exists():
-        return None
-    d = json.loads(ziel.read_text(encoding="utf-8"))
-    d["serverInfo"]["version"] = version
-    return d
-
-
 def schreiben(pfad, inhalt, pruefen):
     if isinstance(inhalt, (dict, list)):
         neu = json.dumps(inhalt, indent=2, ensure_ascii=False) + "\n"
@@ -293,10 +278,12 @@ def main():
     abweichung |= schreiben(DOCS / ".well-known" / "api-catalog", api_catalog(), a.check)
     abweichung |= schreiben(DOCS / ".well-known" / "oauth-protected-resource",
                             protected_resource(), a.check)
-    karte = mcp_karte()
-    if karte:
-        abweichung |= schreiben(DOCS / ".well-known" / "mcp" / "server-card.json",
-                                karte, a.check)
+    # Die Agenten-Karte gehoert seit dem 4. August build-server-card.py, das sie
+    # vollstaendig aus worker/mcp.js ableitet — Fassung UND Werkzeugliste. Hier
+    # wurde nur die Versionsnummer nachgezogen, und weil dieses Skript nicht bei
+    # jeder Aenderung lief, stand in der Karte 1.15.0 mit vier von neun
+    # Werkzeugen. Zwei Erzeuger fuer eine Datei sind eine Drift-Quelle, auch
+    # wenn sie sich gerade nicht widersprechen.
     abweichung |= schreiben(DOCS / "auth.md", AUTH_MD, a.check)
 
     print(f"  {len(idx['skills'])} Skills, {len(datensaetze())} Datensaetze")

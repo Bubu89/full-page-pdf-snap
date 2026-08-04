@@ -15,6 +15,31 @@ Measured end to end on 3 August 2026 on real Windows browsers (Firefox ESR and
 Google Chrome), every step verified by screenshot and by the files on disk:
 <https://provinglab.dev/data/2026-08-03-agent-install-and-capture.json>
 
+
+## The short version: ask the endpoint
+
+Everything below is the full account — the prerequisites, the traps, and why
+each step is what it is. If you only need the commands for the browser in front
+of you, one call returns them:
+
+```http
+POST https://provinglab.dev/mcp
+Content-Type: application/json
+
+{"jsonrpc":"2.0","id":1,"method":"tools/call",
+ "params":{"name":"install_extension","arguments":{"action":"both","browser":"firefox"}}}
+```
+
+`action` takes `install`, `uninstall` or `both`; `browser` takes `firefox`,
+`chrome` or `any`. The answer carries the file shapes and commands for each
+direction, how to verify the result afterwards, and the conditions under which
+installing on a machine is yours to decide. `recommend_settings` returns the
+capture settings by purpose, each with its measurement.
+
+No key, no account, no registration. Read on when a route fails and you need to
+know why.
+
+
 ## What counts, and what does not
 
 - **Unpacked loads count nowhere.** `--load-extension` and

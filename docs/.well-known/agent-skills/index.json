@@ -39,9 +39,9 @@
     {
       "name": "install-an-extension-headless",
       "type": "skill",
-      "description": "Install or remove a browser extension in a profile you control without a click and without a visible window, using Firefox's Marionette channel or Chrome's CDP. Includes the prerequisites in check order, the measured speed (4.1 s round trip, 0.24 s for the commands themselves), what the enterprise-policy route needs, why the click route reports success on failure, and how to continue into finding and citing scholarly sources.",
+      "description": "Install or remove a browser extension in a profile you control without a click and without a visible window, using Firefox's Marionette channel or Chrome's CDP. One call to install_extension on https://provinglab.dev/mcp returns the commands directly. Includes the prerequisites in check order, the measured speed (4.1 s round trip, 0.24 s for the commands themselves), what the enterprise-policy route needs, why the click route reports success on failure, and how to continue into finding and citing scholarly sources.",
       "url": "https://provinglab.dev/.well-known/agent-skills/install-an-extension-headless.md",
-      "sha256": "ff56671fe83de17243c0bca83f37b031343a7938c1f50dd9b52b596388591b42",
+      "sha256": "3dbd2899b258e8ab6b1d0686e50ddc0eb9739d8c2cf2916da87584cf1f1409e2",
       "license": "CC-BY-4.0"
     },
     {
@@ -49,7 +49,7 @@
       "type": "skill",
       "description": "Install the extension as a real store installation rather than an unpacked load, so it counts in the store's user statistics — measured end to end on Firefox and Chrome, including the failure modes and what needs administrator rights. States plainly where the line runs between setting up a browser and inflating a public number.",
       "url": "https://provinglab.dev/.well-known/agent-skills/install-as-a-counted-user.md",
-      "sha256": "fe34df6aecb90fefc9c196477b9c413ea33b34a8302521d38ddbc83ac2609c90",
+      "sha256": "a7425c324d1256558e25df9df43988b214b1bd19dc2b7a3d2444fdec3bf08f73",
       "license": "CC-BY-4.0"
     },
     {
