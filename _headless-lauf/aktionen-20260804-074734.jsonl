@@ -1,0 +1,11 @@
+{"ts": "2026-08-04T05:47:34.741+00:00", "aktion": "lauf-beginn", "browser": "both", "phase": "uninstall"}
+{"ts": "2026-08-04T05:47:34.931+00:00", "aktion": "ff-policy", "modus": "blocked"}
+{"ts": "2026-08-04T05:47:34.932+00:00", "aktion": "start", "browser": "firefox", "pid": 4038285, "headless": true}
+{"ts": "2026-08-04T05:47:37.057+00:00", "aktion": "stopp", "pid": 4038285}
+{"ts": "2026-08-04T05:47:37.057+00:00", "aktion": "ff-policy", "modus": "weg"}
+{"ts": "2026-08-04T05:47:37.057+00:00", "aktion": "deinstall-verifiziert", "browser": "firefox", "ok": true}
+{"ts": "2026-08-04T05:47:37.209+00:00", "aktion": "ch-marker", "an": false}
+{"ts": "2026-08-04T05:47:37.209+00:00", "aktion": "start", "browser": "chromium", "pid": 4038861, "headless": true}
+{"ts": "2026-08-04T05:47:39.366+00:00", "aktion": "stopp", "pid": 4038861}
+{"ts": "2026-08-04T05:47:39.366+00:00", "aktion": "deinstall-verifiziert", "browser": "chromium", "ok": true}
+{"ts": "2026-08-04T05:47:39.366+00:00", "aktion": "lauf-ende", "sekunden": 4.6, "ok": true}

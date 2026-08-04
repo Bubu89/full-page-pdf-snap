@@ -1,7 +1,39 @@
 # Aktionsprotokoll — Agent installiert Store-Version und loest aus
 
-Stand 2026-08-03, alles auf dieser Maschine gemessen (Windows 11, 2560x1440,
-Firefox ESR + Chrome, Steuerung aus WSL via powershell.exe). Rohdaten:
+Stand 2026-08-04 (headless-Route ergaenzt), alles auf dieser Maschine gemessen
+(Windows 11, 2560x1440, WSL2, Firefox ESR + Chrome + offizielles Firefox 153
++ Chromium). Rohdaten: `docs/data/2026-08-03-agent-install-and-capture.json`.
+
+## Variante 0 — Headless, fensterlos, Sekunden (die Standard-Route)
+
+`headless-agent-install.py firefox|chromium|both install|uninstall|run|verify|all`
+
+Konstruktiv ohne ein einziges Fenster (MOZ_HEADLESS / --headless=new), darum
+die einzige Route, die den User nie sieht und nie stört. Keine Klicks noetig —
+der Browser installiert per Mechanismus selbst:
+
+| Aktion | Firefox | Chromium |
+|---|---|---|
+| Installieren | `distribution/policies.json` → `ExtensionSettings: normal_installed` + `MOZ_HEADLESS=1`-Start | `<install>/extensions/<id>.json` mit `external_update_url` + `--headless=new`-Start |
+| Deinstallieren | `installation_mode: blocked` + Neustart | Marker weg + Neustart |
+| Nutzer-Puls (zaehlt in der Statistik) | `run`: Profil laeuft N Minuten, Update-Ping geht raus | dito |
+
+Gemessene Zeiten: beide Browser installieren 11,3 s, deinstallieren 4,6 s,
+kompletter Zyklus (Install + Run + Verify) 48,9 s. Verifikation nur ueber
+Dateien. Jede Aktion als JSONL in `_headless-lauf/aktionen-*.jsonl`.
+
+**Grenze:** eine Capture (`Alt+Shift+Y`) ist hier nicht ausloesbar — ohne
+Eingabe-Ebene keine Geste, die `activeTab` erteilt. Dafuer Variante A (Xvfb
++ XTEST, unsichtbar) oder die Windows-Klick-Route weiter unten.
+**Chromium-Hinweis:** der CWS-Update-Dienst lieferte 2.17.0_0, die
+CWS-Web-Seite zeigte 2.12.1, AMO 2.26.0 — bei Verifikation Quelle nennen.
+**Firefox-153-Hinweis:** unter WSL2/Xvfb mappt das offizielle Firefox kein
+Fenster (chroot-Inhaltssandbox) — die Xvfb-Variante braucht dort den
+Playwright-Firefox-Build oder eine VM.
+
+---
+
+Stand 2026-08-03 (urspruengliche Messung), Rohdaten:
 `docs/data/2026-08-03-agent-install-and-capture.json`.
 
 Drei Varianten, absteigend nach Stoerfreiheit fuer den User:

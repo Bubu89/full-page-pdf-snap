@@ -30,6 +30,30 @@
       "ergebnis": "nein — Firefox wie Chrome verwerfen WM_KEYDOWN/WM_SYSKEYDOWN/WM_CHAR und WM_LBUTTONDOWN, auch an Chrome_RenderWidgetHostHWND",
       "folge": "nur der echte Eingabe-Stack zaehlt; stille Wege: Sandbox/zweite Session/VM oder Policy-Route",
       "winshot": "PrintWindow liefert Screenshots verdeckter Fenster — Verifikation ohne Fokuswechsel moeglich"
+    },
+    "headless_fensterlos": {
+      "datum": "2026-08-04",
+      "frage": "Geht Installation und Deinstallation garantiert ohne ein Fenster und ohne User-Beeinflussung?",
+      "ergebnis": "ja — MOZ_HEADLESS/--headless=new + Installationsmechanismus statt Klicks",
+      "firefox": {
+        "install": "distribution/policies.json ExtensionSettings normal_installed -> 2.26.0",
+        "deinstall": "installation_mode blocked -> entfernt"
+      },
+      "chromium": {
+        "install": "extensions/<id>.json external_update_url -> 2.17.0_0",
+        "deinstall": "Marker entfernt -> entfernt"
+      },
+      "zeiten_sekunden": {
+        "install_beide": 11.3,
+        "deinstall_beide": 4.6,
+        "zyklus_install_run_verify": 48.9
+      },
+      "grenzen": [
+        "keine Capture moeglich (keine Eingabe-Ebene, kein activeTab)",
+        "Versionen je Quelle: AMO 2.26.0, CWS-Update 2.17.0, CWS-Web 2.12.1",
+        "offizielles Firefox 153 mappt unter WSL2/Xvfb kein Fenster"
+      ],
+      "werkzeug": "headless-agent-install.py, Aktionen als JSONL in _headless-lauf/"
     }
   },
   "befunde_nebenher": [

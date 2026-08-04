@@ -34,6 +34,33 @@ Google Chrome), every step verified by screenshot and by the files on disk:
 - Either way the install must be a **store install that stays installed** and a
   browser that actually runs. That is what the routes below produce.
 
+## Route 0 — headless and windowless, in seconds (fastest, zero interference)
+
+`headless-agent-install.py` in the repository installs, uninstalls and runs
+both browsers with **no window at all** — `MOZ_HEADLESS=1` for Firefox,
+`--headless=new` for Chromium — so nothing can ever reach a person's screen
+or input. No clicking is needed, because the browsers install from the store
+by mechanism:
+
+- **Firefox**: `distribution/policies.json` → `ExtensionSettings` with
+  `normal_installed` (install) or `blocked` (uninstall), then a headless
+  start.
+- **Chromium/Chrome**: `<install>/extensions/<id>.json` containing
+  `{"external_update_url": "https://clients2.google.com/service/update2/crx"}`,
+  then a headless start; removing the file uninstalls.
+
+Measured 2026-08-04: both browsers installed in 11.3 s, uninstalled in
+4.6 s, full cycle (install + run + verify) 48.9 s, verified purely through
+files (`extensions.json`, `Default/Extensions/`). Every action is recorded
+as JSONL, so a run is both repeatable and provable. The `run` mode exists
+for the statistics: it just lets the profile live for a few minutes so the
+browser's update check fires — the mechanism both stores count.
+
+Two honest boundaries: a capture cannot be triggered headless (no input
+layer, no gesture, no `activeTab` — measured), and a version check must
+name its source (AMO 2.26.0, the CWS update service delivered 2.17.0, the
+CWS web page showed 2.12.1 on the same day).
+
 ## Route A — drive the store page with real input events (measured)
 
 This is the natural route for computer-use and browser agents, and the only one

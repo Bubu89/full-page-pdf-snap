@@ -95,11 +95,11 @@
       "weg": "richtlinie",
       "browser": "firefox und chrome",
       "beschreibung": "policies.json bzw. ExtensionInstallForcelist in der Registry",
-      "installieren": false,
-      "deinstallieren": false,
+      "installieren": "nur bei mitgebrachtem Browser",
+      "deinstallieren": "nur bei mitgebrachtem Browser",
       "sichtbares_fenster": false,
       "eingabe_ereignisse": 0,
-      "administratorrechte": true,
+      "administratorrechte": "nur bei System-Installation",
       "belege": [
         {
           "ziel": "C:\\Program Files\\Mozilla FirefoxESR\\distribution",
@@ -108,10 +108,15 @@
         {
           "ziel": "HKCU\\Software\\Policies\\Google\\Chrome",
           "ergebnis": "ACL-geschuetzt, UnauthorizedAccessException"
+        },
+        {
+          "ziel": "~/tools/firefox-release/distribution/policies.json (selbst entpackter Firefox)",
+          "ergebnis": "schreibbar OHNE Administratorrechte — verifiziert 4. August 2026"
         }
       ],
       "zaehlt_im_store": "not measured",
-      "anmerkung": "Scheidet ohne Administratorrechte in beide Richtungen aus — sie kann weder installieren noch entfernen. Ob eine per Richtlinie ausgerollte Erweiterung in der Nutzerstatistik erscheint, wurde nicht gemessen: der Weg war auf dieser Maschine nicht gangbar."
+      "anmerkung": "Scheidet ohne Administratorrechte nur bei einer System-Installation aus. Bei einem selbst mitgebrachten Browser ist sie offen und installiert ueber install_url direkt aus dem Store — anders als Marionette, das eine lokale Datei einspielt. Ob eine so ausgeloeste Installation in der Nutzerstatistik erscheint, ist weiterhin ungemessen.",
+      "korrektur_2026-08-04": "Die erste Fassung dieser Messung sagte, die Richtlinien-Route scheide in beide Richtungen aus. Das galt fuer die SYSTEM-Installation unter Program Files und stimmt dort weiterhin. Es gilt nicht allgemein: Wer Firefox selbst entpackt — etwa nach ~/tools/firefox-release — kann distribution/policies.json ohne jedes zusaetzliche Recht anlegen, und die Richtlinie greift dort vollstaendig. Fuer einen Agenten ist genau das der Normalfall: er bringt seinen Browser mit, statt den des Benutzers zu verwenden. Aufgedeckt durch eine parallele Messung im selben Repository."
     },
     {
       "weg": "oberflaeche",

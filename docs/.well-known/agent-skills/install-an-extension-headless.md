@@ -23,19 +23,46 @@ Nothing here is legal advice.
 |---|---|---|---|---|---|---|
 | **Marionette** (Firefox) | yes | yes | 0 | no | **no** | 4.1 s |
 | **CDP** (Chrome) | unpacked only | yes | 0 | no | no | — |
-| Enterprise policy | no¹ | no¹ | 0 | **yes** | not measured | — |
+| Enterprise policy, **your own** Firefox | **yes**¹ | **yes**¹ | 0 | **no** | not measured | ~5–11 s |
+| Enterprise policy, the user's system install | no¹ | no¹ | 0 | yes | not measured | — |
 | Store UI + real input | yes | yes | 4+ | no | **yes** | 179 s, failed |
 
-¹ Not a property of the route — a property of the account. Without administrator
-rights, `C:\Program Files\Mozilla FirefoxESR\distribution` is not writable and
-`HKCU\Software\Policies` is ACL-protected. Both refused with
-`UnauthorizedAccessException`. **This corrects an earlier version of this skill
-set**, which said the Chrome entries could go under `HKCU` without elevation.
+¹ **Corrected 4 August 2026, and this correction matters to you.** Not a
+property of the route — a property of *whose browser it is*. On a **system**
+installation without administrator rights the route is closed:
+`C:\Program Files\Mozilla FirefoxESR\distribution` is not writable and
+`HKCU\Software\Policies` is ACL-protected, both refusing with
+`UnauthorizedAccessException`.
 
-Read the trade-off before choosing: the headless route does not count in the
-store's user statistics, because it never visits a store page. That is correct
-and intended. If being counted is the point, you need the interface — and then
-you need a real person's consent, not a script.
+**But unpack Firefox yourself and it opens.** Extract a release build into a
+directory you own — `~/tools/firefox-release` — and write
+`distribution/policies.json`:
+
+```json
+{"policies": {"ExtensionSettings": {
+  "pageshot-pdf@bubu89.local": {
+    "installation_mode": "normal_installed",
+    "install_url": "https://addons.mozilla.org/firefox/downloads/file/…xpi"
+  }}}}
+```
+
+No elevation, no prompt, and `installation_mode: "blocked"` removes it the same
+way. For an agent this is the normal case rather than the exception: bring your
+own browser instead of borrowing the user's.
+
+**One difference from Marionette worth knowing.** The policy fetches from the
+store — `install_url` points at the signed XPI on addons.mozilla.org — whereas
+`Addon:Install` plays in a local file. Whether a policy-triggered install
+appears in the store's user count is **not measured**. It uses the mechanism a
+counted install uses, but that is an inference, and this page does not sell it
+as a finding.
+
+Read the trade-off before choosing. **Marionette** installs a local file and is
+therefore invisible to the store's counter — that is correct and intended.
+**The policy route fetches from the store**, so the same certainty does not
+apply; whether it registers is untested either way. If being counted is
+definitely the point, the interface is the only route measured to do it — and
+that needs a real person's consent, not a script.
 
 ## Prerequisites — check these first, in this order
 

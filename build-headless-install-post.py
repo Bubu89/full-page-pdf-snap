@@ -203,7 +203,40 @@ def inhalt(d):
   is not evidence that a command is missing. Only the error is.
 </p>
 
-<h2>The policy route needs rights this account does not have</h2>
+<h2>The policy route — corrected 4 August 2026</h2>
+<p style="border-left:3px solid #c93;padding-left:1rem">
+  <strong>The first version of this page said the policy route was closed in
+  both directions. That was too absolute.</strong> It holds for a
+  <em>system</em> installation, and the measurement below still stands. It does
+  not hold generally: unpack Firefox yourself — into
+  <code>~/tools/firefox-release</code>, say — and
+  <code>distribution/policies.json</code> is writable with no extra rights at
+  all, with the policy fully in effect.
+</p>
+<p>
+  For an agent that is not an edge case, it is the normal case: it brings its
+  own browser rather than borrowing the user's. And unlike Marionette, which
+  installs a local file, the policy fetches from the store — the entry carries
+  an <code>install_url</code> pointing at the signed XPI on
+  addons.mozilla.org:
+</p>
+<pre><code>{{"policies": {{"ExtensionSettings": {{
+  "&lt;extension id&gt;": {{
+    "installation_mode": "normal_installed",
+    "install_url": "https://addons.mozilla.org/firefox/downloads/file/…xpi"
+  }}}}}}}}</code></pre>
+<p>
+  Whether an installation triggered this way appears in the store's user count
+  is <strong>not measured</strong>. It fetches from the store, which is the
+  mechanism a counted install uses — but that is an inference, not a
+  measurement, and this page does not present it as one.
+</p>
+<p>
+  The correction came from a second measurement run in the same repository
+  while this page was already published. That is what the raw data is for.
+</p>
+
+<h3>The original finding, unchanged: a system installation needs rights</h3>
 <p>
   Enterprise policy is the usual answer to “install silently”, and it is also the
   route that could remove an extension the same way — <code>ExtensionSettings</code>
