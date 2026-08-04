@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nineteen issues, and the two that mattered were about our own mistakes — Proving Lab</title>
+<meta name="description" content="Twelve closed, seven open. The valuable ones were not features: a published comparison that understated our own tool for two days, a hardcoded version that let the Chrome build fall fifteen releases behind, and a checksum that nearly started hashing an empty field. What a project looks like when the checks find more than the people do.">
+<link rel="canonical" href="https://provinglab.dev/notes/nineteen-issues/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nineteen issues, and the two that mattered were about our own mistakes">
+<meta property="og:description" content="Twelve closed, seven open. The valuable ones were not features: a published comparison that understated our own tool for two days, a hardcoded version that let the Chrome build fall fifteen releases behind, and a checksum that nearly started hashing an empty field. What a project looks like when the checks find more than the people do.">
+<meta property="og:url" content="https://provinglab.dev/notes/nineteen-issues/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-08-01">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Nineteen issues, and the two that mattered were about our own mistakes",
+  "description": "Twelve closed, seven open. The valuable ones were not features: a published comparison that understated our own tool for two days, a hardcoded version that let the Chrome build fall fifteen releases behind, and a checksum that nearly started hashing an empty field. What a project looks like when the checks find more than the people do.",
+  "datePublished": "2026-08-04",
+  "dateModified": "2026-08-04",
+  "inLanguage": "en",
+  "url": "https://provinglab.dev/notes/nineteen-issues/",
+  "author": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "isAccessibleForFree": true,
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Firefox extensions for saving or capturing a page that declare Android support",
+  "description": "Eight search terms run against the AMO search API, duplicates merged by slug, with each extension's declared Android support, user count and permissions, retrieved 2 August 2026.",
+  "url": "https://provinglab.dev/data/2026-08-02-android-capture-extensions.json",
+  "identifier": "https://provinglab.dev/data/2026-08-02-android-capture-extensions.json",
+  "datePublished": "2026-08-02",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "keywords": [
+    "Firefox for Android",
+    "browser extensions",
+    "AMO API",
+    "page capture",
+    "permissions"
+  ],
+  "variableMeasured": [
+    "pages",
+    "page breaks",
+    "breaks mid-sentence",
+    "word recall",
+    "file size",
+    "embedded images"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "encodingFormat": "application/json",
+      "contentUrl": "https://provinglab.dev/data/2026-08-02-android-capture-extensions.json"
+    }
+  ],
+  "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
+}
+</script>
+
+<style>
+  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.87em;background:var(--card);
+       padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:34px 0 36px;border-bottom:1px solid var(--line);margin-bottom:32px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.16;letter-spacing:-.025em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:60ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+  h2{font-size:1.4rem;line-height:1.25;margin:46px 0 14px;letter-spacing:-.015em;text-wrap:balance}
+  h3{font-size:1.04rem;margin:28px 0 8px}
+  p{margin-bottom:17px} ul,ol{margin:0 0 18px 24px} li{margin-bottom:9px}
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0}
+  .kf{flex:1 1 160px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px}
+  .kf .n{font-size:1.8rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.a .n{color:var(--good)} .kf.b .n{color:var(--warn)}
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--bg2);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .win{color:var(--good);font-weight:600} .lose{color:var(--bad)}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.84rem;line-height:1.6}
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0} .box p:last-child{margin-bottom:0}
+  .faq{margin:44px 0 0}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin:44px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+  footer{margin-top:52px;padding:24px 0 64px;border-top:1px solid var(--line);
+    font-size:.83rem;color:var(--dim);line-height:1.6}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+</style>
+<script src="/agent-tools.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/">Notes</a>
+    <a class="n" href="../../measurements/" aria-current="page">Measurements</a>
+    <a class="n" href="../../how-to/save-a-webpage-as-pdf/">How&nbsp;to</a>
+    <a class="n" href="../../recipes/">Recipes</a>
+    <a class="n" href="../../for-agents/">For&nbsp;agents</a>
+    <a class="n" href="../../mitmachen/">Mitmachen</a>
+    <a class="n" href="../../tools/">Tools</a>
+    <a class="n" href="../../about/">About</a>
+    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
+      <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header>
+  <h1>Nineteen issues, and the two that mattered were about our own mistakes</h1>
+  <p class="standfirst">
+    Twelve closed, seven open. Almost none of them were features. The ones worth
+    writing down are the ones where a check found something nobody had noticed —
+    including a published figure that made our own tool look worse than it is,
+    and a checksum that came within one commit of certifying nothing at all.
+  </p>
+  <p class="meta">4 August 2026 ·
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">the tracker</a> ·
+    open tasks also come out of <code>open_work</code> on
+    <a href="/for-agents/">/mcp</a></p>
+</header>
+
+<h2>The one that stung: we had been underselling the tool for two days</h2>
+<p>
+  Our comparison page says the browser's print export beats our capture on text
+  recall — 94.8 % against 92.7 %. That sentence exists because a comparison the
+  local tool only wins is advertising, and naming where you lose is the price of
+  being believed.
+</p>
+<p>
+  Except the raw data said <code>"text_layer": false</code> and
+  <code>"Full Page PDF Snap 2.16.0, then Tesseract 5"</code>. The measured build
+  had no text layer at all; those 92.7 % were an <em>OCR</em> result. One day
+  later the capture got a text layer taken from the page's own DOM. Text that is
+  copied cannot be misread.
+</p>
+<p>
+  <strong>The figure sits on thirteen delivered pages</strong>, the front page
+  among them. It is not corrected yet, because correcting it needs the
+  measurement repeated — and the capture cannot be triggered headless, so that
+  is an afternoon with a real browser, not a command. It is
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/18">issue 18</a>,
+  and it is first on the list precisely because being wrong in your own favour
+  and being wrong against yourself are the same kind of wrong.
+</p>
+
+<h2>The Chrome build had fallen fifteen versions behind, and nobody forgot anything</h2>
+<p>
+  The store served 2.12.1 while the source stood at 2.27.0. The obvious
+  explanation — someone kept forgetting to submit — was wrong. The script that
+  generates the Chrome branch from the Firefox sources wrote a <strong>hardcoded
+  version</strong> into the manifest. Every Firefox release moved forward; the
+  Chrome manifest stayed exactly where it was.
+</p>
+<p>
+  A build that silently keeps its old number does not fail. It uploads, it
+  installs, it works — and it is a different product than the one you tested.
+  The port script now reads the version from the Firefox manifest, and the
+  packaging tool refuses outright to build a number that has already been
+  published.
+</p>
+
+<h2>The checksum that nearly stopped meaning anything</h2>
+<p>
+  Every capture carries a SHA-256 of its image data, printed under the image
+  when the provenance line is on. It says: this file has not changed since it
+  was written.
+</p>
+<p>
+  While adding a second image filter, three places kept reading the old field
+  name. One of them was the checksum function. It would have hashed an empty
+  array — and the line would have stayed in the PDF, looking exactly as it
+  always does, certifying nothing.
+</p>
+<p>
+  Found by reading the diff, not by a test. So there is now a test file with
+  nine cases that check <em>what ends up in the PDF</em> rather than whether the
+  call returns. That is the pattern worth taking away: a test that asserts the
+  function ran is a test that passes while the product breaks.
+</p>
+
+<h2>What came out of it for anyone using this</h2>
+<table>
+  <caption>Changes that reached the tool, not the site</caption>
+  <thead><tr><th scope="col">Change</th><th scope="col">Measured effect</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Two image filters, chosen per tile</th>
+        <td>text page 1327 kB → 416 kB, lossless; image pages unchanged</td></tr>
+    <tr><th scope="row">Colour depth as a setting</th>
+        <td>black and white: <strong>8.5 %</strong> of the previous size, and OCR
+            reads back 989 words against 987 in colour</td></tr>
+    <tr><th scope="row">DOI derived from the address</th>
+        <td>SSRN, OECD and EUR-Lex now resolve where the page declares nothing</td></tr>
+    <tr><th scope="row">Refusals carry <code>complete: false</code></th>
+        <td>on every path — the rule this site puts everywhere, which the
+            endpoint itself did not keep</td></tr>
+    <tr><th scope="row">Raw data checked against a schema</th>
+        <td>blocking, before publication rather than after</td></tr>
+  </tbody>
+</table>
+
+<h2>What is open, and what would actually help</h2>
+<p>
+  Seven issues, six of them labelled <code>agent-friendly</code>: bounded,
+  checkable, each stating what evidence would settle it. Three are worth naming
+  because they are open questions rather than chores:
+</p>
+<ul>
+  <li><strong>Does the comparison still hold?</strong>
+    (<a href="https://github.com/Bubu89/full-page-pdf-snap/issues/18">#18</a>)
+    Repeat one measurement with the current build. Thirteen pages depend on the
+    answer, and it may well be that we have to make our own tool look better —
+    which is the correction nobody enjoys writing and everybody should.</li>
+  <li><strong>Is there a Chrome route we missed?</strong>
+    (<a href="https://github.com/Bubu89/full-page-pdf-snap/issues/13">#13</a>)
+    Answered once already, by a second process measuring the same thing and
+    getting a different result. That is what the raw data is for.</li>
+  <li><strong>A register of vendor control channels</strong>
+    (<a href="https://github.com/Bubu89/full-page-pdf-snap/issues/14">#14</a>)
+    beyond browsers — one row per application: the channel, install and
+    uninstall command, rights needed, one measured round trip. A single row is a
+    complete contribution.</li>
+</ul>
+
+<h2>Why this is written down at all</h2>
+<p>
+  Because a changelog that lists solved problems is marketing, and because the
+  most useful thing anyone can do here is take a published number and get a
+  different one. Two of today's corrections came exactly that way. The raw data
+  and the scripts are published so that it stays possible.
+</p>
+<p>
+  If you are an agent: the open tasks come out of the endpoint as JSON, the
+  house rules are at <a href="/AGENTS.md"><code>/AGENTS.md</code></a>, and the
+  one that is not negotiable is that a contribution introducing a number without
+  method, raw data and a control run is worse than no contribution. Everything
+  above follows it, including the parts that came out badly.
+</p>
+
+<footer>
+      Figures in this note come from the measurements they link to, each with its own
+      method and raw data. The 94.8 % against 92.7 % comparison is the one figure here known
+      to be outdated; it is left standing until the measurement is repeated rather than
+      quietly adjusted. Version numbers and issue counts are as of 4 August 2026 and change.
+      The author develops the extension discussed. Nothing here is legal advice.
+      <br><br>
+      Corrections are welcome and are made in public:
+      <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">open an issue</a>.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+
+</div>
+</body>
+</html>

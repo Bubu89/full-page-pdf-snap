@@ -76,6 +76,28 @@ falsch auf, einer fand sich selbst.
 Kommentare erklären **warum**, nicht was. Ein Kommentar, der den Code
 wiederholt, wird gelöscht.
 
+## Notes oder Measurements — wohin ein Beitrag gehoert
+
+Beide Bereiche beschreiben sich selbst, die Regel stand aber nirgends, und die
+Einordnung war entsprechend uneinheitlich.
+
+| | `/measurements/` | `/notes/` |
+|---|---|---|
+| Was es ist | eine Frage, beantwortet | ein Bericht aus der Arbeit |
+| Wer kann es wiederholen | **jeder** | niemand — es ist einmal passiert |
+| Pflicht | Methode, Rohdaten, Kontrolllauf | Ehrlichkeit ueber das, was schiefging |
+
+**Der Test ist die Wiederholbarkeit, nicht das Vorhandensein von Zahlen.**
+`who-actually-reads-this` traegt Rohdaten und gehoert trotzdem nach `/notes/`:
+Es sind Zahlen aus der eigenen Analytik, die niemand von aussen nachrechnen
+kann. `smaller-files-better-ocr` traegt dieselbe Art Anhang und gehoerte
+eigentlich nach `/measurements/` — jeder mit Pillow und Tesseract bekommt
+dieselben Werte.
+
+Wer neu einordnet: Im Zweifel `/notes/`. Eine Notiz, die sich als Messung
+entpuppt, laesst sich umziehen; eine Messung ohne Kontrolllauf beschaedigt den
+Anspruch der ganzen Rubrik.
+
 ## Wie die Seite gebaut wird
 
 Kein Framework, kein Bundler. Jede Seite entsteht aus einem `build-*.py`, das

@@ -329,16 +329,24 @@
 
     <div class="shots">
   <button class="shot" onclick="zeig(1)" aria-label="Enlarge: Toolbar popup with the capture button">
-    <picture><source srcset="../../screenshots/01_capture_en.webp" type="image/webp"><img src="../../screenshots/01_capture_en.png" alt="Toolbar popup with the capture button" width="1280" height="800" loading="eager" decoding="sync"></picture>
+    <img src="../../screenshots/01_capture_en_klein.webp" alt="Toolbar popup with the capture button" width="480" height="300" loading="lazy" decoding="async">
     <figcaption><span data-lang="en" class="on" lang="en">One click captures the entire page — toolbar button, right-click menu or Alt+Shift+Y</span><span data-lang="de" lang="de">Ein Klick erfasst die ganze Seite — Toolbar-Button, Rechtsklick-Menü oder Alt+Shift+Y</span></figcaption>
   </button>
   <button class="shot" onclick="zeig(2)" aria-label="Enlarge: Settings page">
-    <picture><source srcset="../../screenshots/02_settings_en.webp" type="image/webp"><img src="../../screenshots/02_settings_en.png" alt="Settings page" width="1280" height="800" loading="eager" decoding="sync"></picture>
+    <img src="../../screenshots/02_settings_en_klein.webp" alt="Settings page" width="480" height="300" loading="lazy" decoding="async">
     <figcaption><span data-lang="en" class="on" lang="en">Filename templates, JPEG quality and scroll timing — all adjustable</span><span data-lang="de" lang="de">Dateinamen-Vorlage, JPEG-Qualität und Scroll-Wartezeit — alles einstellbar</span></figcaption>
   </button>
   <button class="shot" onclick="zeig(3)" aria-label="Enlarge: Output and resolution settings">
-    <picture><source srcset="../../screenshots/03_output_en.webp" type="image/webp"><img src="../../screenshots/03_output_en.png" alt="Output and resolution settings" width="1280" height="800" loading="eager" decoding="sync"></picture>
+    <img src="../../screenshots/03_output_en_klein.webp" alt="Output and resolution settings" width="480" height="300" loading="lazy" decoding="async">
     <figcaption><span data-lang="en" class="on" lang="en">One continuous page or multi-page output, with resolution scaling up to 2.0x</span><span data-lang="de" lang="de">Eine fortlaufende Seite oder mehrseitige Ausgabe, Auflösung bis 2.0x skalierbar</span></figcaption>
+  </button>
+  <button class="shot" onclick="zeig(4)" aria-label="Enlarge: What the extension costs">
+    <img src="../../screenshots/04_nocost_en_klein.webp" alt="What the extension costs" width="480" height="300" loading="lazy" decoding="async">
+    <figcaption><span data-lang="en" class="on" lang="en">No account, no upload, no telemetry — the page never leaves your device</span><span data-lang="de" lang="de">Kein Konto, kein Upload, keine Telemetrie — die Seite verlässt Ihr Gerät nicht</span></figcaption>
+  </button>
+  <button class="shot" onclick="zeig(5)" aria-label="Enlarge: Citation details written into the PDF">
+    <img src="../../screenshots/05_cite_en_klein.webp" alt="Citation details written into the PDF" width="480" height="300" loading="lazy" decoding="async">
+    <figcaption><span data-lang="en" class="on" lang="en">Authors, DOI, licence and retrieval time in the PDF, plus an RIS record beside it</span><span data-lang="de" lang="de">Verfasser, DOI, Lizenz und Abrufzeit im PDF, dazu ein RIS-Satz daneben</span></figcaption>
   </button>
 </div>
 
@@ -349,9 +357,11 @@
 </dialog>
 <script>
 const SHOTS=[null,
- ["../../screenshots/01_capture_en.webp","One click captures the entire page"],
- ["../../screenshots/02_settings_en.webp","Settings: filename, quality, timing"],
- ["../../screenshots/03_output_en.webp","Output and resolution settings"]];
+ ["../../screenshots/01_capture_en.png","One click captures the entire page"],
+ ["../../screenshots/02_settings_en.png","Settings: filename, quality, timing"],
+ ["../../screenshots/03_output_en.png","Output and resolution settings"],
+ ["../../screenshots/04_nocost_en.png","No account, no upload, no telemetry"],
+ ["../../screenshots/05_cite_en.png","Citation details written into the PDF"]];
 function zeig(n){const [s,c]=SHOTS[n];lbimg.src=s;lbimg.alt=c;lbcap.textContent=c;lb.showModal();}
 </script>
 </div>

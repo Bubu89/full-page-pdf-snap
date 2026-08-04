@@ -10,6 +10,14 @@
   <icon>https://provinglab.dev/icon-128.png</icon>
   <rights>Content licensed for reading and quoting with attribution.</rights>
   <entry>
+    <title>Nineteen issues, and the two that mattered were about our own mistakes</title>
+    <id>https://provinglab.dev/notes/nineteen-issues/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/nineteen-issues/"/>
+    <published>2026-08-04T00:00:00Z</published>
+    <updated>2026-08-04T00:00:00Z</updated>
+    <summary type="text">Twelve closed, seven open. The valuable ones were not features: a published comparison that understated our own tool for two days, a hardcoded version that let the Chrome build fall fifteen releases behind, and a checksum that nearly started hashing an empty field. What a project looks like when the checks find more than the people do.</summary>
+  </entry>
+  <entry>
     <title>An agent can install an extension in both browsers. Whether it may is a different question</title>
     <id>https://provinglab.dev/notes/what-an-agent-may-install/</id>
     <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/what-an-agent-may-install/"/>
