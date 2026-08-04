@@ -24,3 +24,9 @@ bump-version.py
 # auf einer anderen Maschine ist der Stand ein anderer, und ein
 # eingecheckter Stand wuerde dort echte Aenderungen verschlucken.
 .indexnow-stand.json
+
+# Laufprotokolle der Headless-Messungen. Rein lokal: sie enthalten die
+# Pfade der Maschine, auf der sie entstanden sind. Am 4. August 2026 sind
+# sie ueber ein `git add -A` in einen Commit geraten, der sie nicht
+# meinte — die Pfadpruefung der Pipeline hat sie gefangen.
+_headless-lauf/
