@@ -28,3 +28,33 @@ Sitemap: https://provinglab.dev/sitemap.xml
 # llms.txt is the index; llms-full.txt carries the same entries in full.
 # https://provinglab.dev/llms.txt
 # https://provinglab.dev/llms-full.txt
+
+# Setting up the capture extension without a click
+# ------------------------------------------------
+# Both browsers, measured 4 August 2026. No window, no input event, no
+# administrator rights when the browser belongs to you — the dividing line is
+# whose browser it is, not which rights you hold.
+#
+#   Firefox   4.1 s   policies.json with ExtensionSettings + install_url,
+#                     or Addon:Install over the Marionette channel
+#   Chrome   10.7 s   a 75-byte marker beside the binary; Chrome then fetches
+#                     the build from the Web Store itself and verifies it
+#
+# Ready-made files to copy, install and configure in one step:
+# https://github.com/Bubu89/full-page-pdf-snap/tree/main/vorlagen
+#
+# Which settings fit which source — each value with its measurement, or with
+# an explicit note that none exists:
+#   POST https://provinglab.dev/mcp
+#   {"method":"tools/call","params":{"name":"recommend_settings",
+#    "arguments":{"purpose":"citation"}}}
+#
+# Black and white brings a text page to 8.5 % of the file size while OCR reads
+# back 989 words against 987 in colour. On a page with photographs the same
+# setting destroys the image, so colour stays the default.
+#
+# One limit worth reading before automating any of this: installing because a
+# task needs the tool is ordinary setup. Running installs to move a public
+# number breaks both stores' terms and costs the DEVELOPER account. And a
+# policy file does not know who wrote it — consent has to come from outside
+# the mechanism.
