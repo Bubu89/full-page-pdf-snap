@@ -1,0 +1,64 @@
+Save a whole web page as one high-resolution PDF. The extension scrolls the page itself, captures every section and assembles them — no cropping, no print dialog, no page setup.
+
+And it can save the page's source details with it: authors, title, journal, DOI, licence and the exact time of retrieval, written into the PDF and into an RIS file beside it. Evidence and reference in one place.
+
+FOR STUDENTS AND RESEARCHERS
+Switch on "Add citation details" and every capture arrives as a citable source.
+• Authors, title, journal, year, volume, pages, DOI, ISSN and licence, read from the page itself — no citation service is contacted, so nobody learns what you are reading
+• An RIS file saved next to the PDF, ready to import into Zotero, Citavi, EndNote or Mendeley
+• The time of retrieval with your time zone, and a SHA-256 checksum of the image — the two things a "retrieved on" line in a bibliography actually needs
+• The same fields written into the PDF metadata, so your document manager and your operating system's search find the work by author and title
+• Works on PubMed, arXiv, SpringerLink, Wiley, ScienceDirect, JMIR, doi.org and many more
+
+Sources behind a university login are the point. A server-side converter fetches the URL as an anonymous visitor and hits the paywall; this extension captures what your own browser is already showing you, licence and all.
+
+READABLE BY AI TOOLS, NOT JUST BY PEOPLE
+The PDF carries a real text layer — the page's own text, invisibly placed where it appears in the image. A language model reads the source instead of guessing at pixels, and finds the authors and the DOI in the text where they belong. Turn on the provenance line and the retrieval time and checksum are printed under the capture as well, where a model can see them too.
+
+A folder of such captures is a bibliography an AI tool can compile without opening a single one of the original pages.
+
+WHAT IT ASKS FOR, AND WHAT IT DOES NOT
+The permission list is the shortest one that still does the job:
+• activeTab — the current tab, only after you click the button or press the shortcut. Not "all websites". Close the popup and the access is gone again.
+• downloads — to write the file
+• storage — to remember your settings, on your device
+• contextMenus, notifications, scripting — the right-click entry, the "done" message, and the code that does the scrolling
+
+There are no host permissions in the manifest. You can check that yourself: open chrome://extensions, click Details, and read the permissions line.
+
+COMPLETELY FREE — AND BUILT TO STAY THAT WAY
+Free software under the MIT license, and free in every sense that matters day to day:
+• No ads, anywhere — not in the popup, not in the settings, not in your PDF
+• No account, no sign-up, no email address
+• No trial, no "pro" version, no feature held back
+• No telemetry and no analytics — the extension makes no network requests of its own
+• Everything happens on your device. The page never leaves it.
+
+HOW TO USE IT
+1. Open the page you want to keep
+2. Click the toolbar icon, or press Alt+Shift+Y, or right-click and choose "Save page as PDF"
+3. Wait while the page scrolls — the extension is loading the parts that were not on screen yet
+4. The PDF is in your downloads folder
+
+WHERE IT RUNS
+Chrome 116 and later. Also Edge, Brave, Vivaldi and other Chromium browsers — Edge asks once whether to allow extensions from other stores, and Opera needs its "Install Chrome Extensions" add-on first.
+
+Not on Chrome for Android: that browser installs no extensions at all, from any store. If you need this on a phone, Firefox for Android is currently the only mainstream browser where the question even arises, and a Firefox build exists there.
+
+SETTINGS WORTH KNOWING
+• Add citation details — the RIS file and the metadata described above
+• Provenance line — prints URL, retrieval time and checksum under the capture
+• Hide cookie banners and floating headers before capturing — otherwise a sticky bar repeats on every segment
+• Image quality and page size, if the default does not suit you
+
+WHAT IT IS NOT
+It is not a route past a paywall. It captures the page your browser is already displaying, which is a copy for your own use — nothing more. It does not defeat any protection measure, and it cannot show you a page you are not entitled to read.
+
+A screen capture is also not a qualified electronic document. The checksum records that the file has not changed since it was written; it says nothing about the page having been genuine.
+
+Where the browser's own print-to-PDF suits you better, use it — it keeps selectable text throughout, and for a plain article that is often the better result. The trade-off is measured and published rather than glossed over:
+https://provinglab.dev/measurements/print-to-pdf-vs-screenshot/
+
+Source code, issue tracker and the measurements behind these claims:
+https://github.com/Bubu89/full-page-pdf-snap
+https://provinglab.dev/
