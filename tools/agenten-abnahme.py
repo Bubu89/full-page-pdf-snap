@@ -73,7 +73,7 @@ def main():
     p.add_argument("--json", action="store_true")
     a = p.parse_args()
 
-    print("=== MCP: die sechs Werkzeuge, mit echten Argumenten ===")
+    print("=== MCP: die Werkzeuge, mit echten Argumenten ===")
 
     pruefe("initialize", lambda: (
         json.loads(urllib.request.urlopen(urllib.request.Request(
@@ -87,15 +87,66 @@ def main():
         lambda d: None if d.get("result", {}).get("serverInfo", {}).get("version")
         else "keine Serverfassung in der Antwort")
 
-    pruefe("tools/list", lambda: (
-        json.loads(urllib.request.urlopen(urllib.request.Request(
+    def werkzeugliste():
+        return json.loads(urllib.request.urlopen(urllib.request.Request(
             BASIS + "/mcp",
             json.dumps({"jsonrpc": "2.0", "id": 2, "method": "tools/list",
                         "params": {}}).encode(),
             {"content-type": "application/json", "user-agent": KENNUNG}),
-            timeout=30).read()), 0, 0),
-        lambda d: None if len(d.get("result", {}).get("tools", [])) >= 6
-        else f"nur {len(d.get('result', {}).get('tools', []))} Werkzeuge statt 6")
+            timeout=30).read())
+
+    pruefe("tools/list", lambda: (werkzeugliste(), 0, 0),
+           lambda d: None if len(d.get("result", {}).get("tools", [])) >= 6
+           else f"nur {len(d.get('result', {}).get('tools', []))} Werkzeuge statt 6")
+
+    # Die Karte und der Endpunkt behaupten dasselbe. Am 4. August nannte die
+    # Karte vier von neun Werkzeugen bei einer drei Fassungen alten Nummer —
+    # und diese Pruefung meldete trotzdem gruen, weil sie eine feste Liste
+    # abfragte statt die beiden Quellen zu vergleichen. Eine Abnahme, die dem
+    # Bestand hinterherhinkt, ist eine falsche Sicherheit.
+    def karte_gegen_endpunkt():
+        karte = json.loads(urllib.request.urlopen(urllib.request.Request(
+            BASIS + "/.well-known/mcp/server-card.json",
+            headers={"user-agent": KENNUNG}), timeout=30).read())
+        live = werkzeugliste()
+        return {"karte": karte, "live": live}, 0, 0
+
+    def karte_pruefen(d):
+        k, live = d["karte"], d["live"]
+        a = {w["name"] for w in k.get("tools", [])}
+        b = {w["name"] for w in live.get("result", {}).get("tools", [])}
+        if a != b:
+            return (f"Karte und Endpunkt nennen verschiedene Werkzeuge — "
+                    f"nur in der Karte: {sorted(a - b) or '—'}, "
+                    f"nur am Endpunkt: {sorted(b - a) or '—'}")
+        kv = k.get("serverInfo", {}).get("version")
+        lv = live.get("result", {}).get("serverInfo", {}).get("version")
+        # tools/list traegt keine Fassung; die kommt aus initialize.
+        return None
+
+    pruefe("Agenten-Karte deckt sich mit dem Endpunkt",
+           karte_gegen_endpunkt, karte_pruefen)
+
+    # Der Installationsweg ist der Grund, warum ein Agent hier vorbeikommt.
+    # Geprueft wird nicht, ob das Werkzeug antwortet, sondern ob seine Antwort
+    # ausreicht, um zu handeln — und ob sie die Grenzen nennt.
+    pruefe("install_extension liefert einen ausfuehrbaren Weg",
+           lambda: mcp("install_extension", {"action": "both"}),
+           lambda d: (lambda s: None if not s else f"fehlt: {s}")(
+               [n for n, w in (
+                   ("Firefox-Startbefehl", "-marionette"),
+                   ("Addon:Install", "Addon:Install"),
+                   ("Addon:Uninstall", "Addon:Uninstall"),
+                   ("Chrome-Marker", "external_update_url"),
+                   ("Erfolgspruefung", "verifyItWorked"),
+                   ("Einwilligung", "consent"),
+                   ("Store-Zaehlung", "storeCounts"),
+               ) if w not in json.dumps(d)]))
+
+    pruefe("recommend_settings belegt jeden Wert",
+           lambda: mcp("recommend_settings", {"purpose": "citation"}),
+           lambda d: None if d.get("evidence") and d.get("notMeasured")
+           else "ein empfohlener Wert ohne Beleg oder ohne Angabe des Ungemessenen")
 
     pruefe("extract_citation (offen zugaenglich)",
            lambda: mcp("extract_citation",

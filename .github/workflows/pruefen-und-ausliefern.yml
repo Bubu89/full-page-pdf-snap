@@ -104,6 +104,14 @@ jobs:
             echo "::error::llms.txt/llms-full.txt/agent.md veraltet — build-llms-index.py ausfuehren"
             exit 1
           }
+          # Die Agenten-Karte nennt Fassung und Werkzeuge des Endpunkts. Sie war
+          # handgepflegt und stand am 4. August auf 1.15.0 mit vier von neun
+          # Werkzeugen — ohne install_extension, also ohne die Faehigkeit, um
+          # derentwillen ein Agent den Endpunkt ueberhaupt aufsucht.
+          python3 build-server-card.py --check || {
+            echo "::error::server-card.json veraltet — build-server-card.py ausfuehren"
+            exit 1
+          }
 
       # Zweimal an einem Tag standen Platzhalter in ausgelieferten Seiten
       # ({TITEL}, {AMO}), weil ein Textblock in einen f-String geriet. Im
