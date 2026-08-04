@@ -247,7 +247,7 @@ def main():
     # Die Fassung kommt aus den Firefox-Quellen, nicht aus einer Zahl in
     # diesem Skript. Sie stand hier fest verdrahtet, und jeder Portierungslauf
     # setzte den Chrome-Zweig damit auf denselben alten Stand zurueck — am
-    # 03.08.2026 auf 2.10.0, waehrend Firefox bei 2.27.0 stand. Der Rueckstand
+    # 03.08.2026 auf 2.10.0, waehrend Firefox bei 2.28.0 stand. Der Rueckstand
     # war kein Vergessen, sondern dieses Skript.
     fassung = json.loads((SRC / "manifest.json").read_text(encoding="utf-8"))["version"]
     (DST / "manifest.json").write_text(

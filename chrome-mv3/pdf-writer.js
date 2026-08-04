@@ -389,21 +389,35 @@
       // Normalisiere: legacy einzelnes Bild -> Tile-Liste mit einem Eintrag.
       const tiles = pg.tiles && pg.tiles.length
         ? pg.tiles
-        : [{ jpegBytes: pg.jpegBytes, xPx: 0, yPx: 0, wPx: pg.widthPx, hPx: pg.heightPx }];
+        : [{ jpegBytes: pg.jpegBytes, bytes: pg.bytes, filter: pg.filter,
+             xPx: 0, yPx: 0, wPx: pg.widthPx, hPx: pg.heightPx }];
 
       const xobjs = [];
       for (let i = 0; i < tiles.length; i++) {
         const t = tiles[i];
+        // Seit 04.08.2026 traegt eine Kachel ihren Filter selbst. Wer nur
+        // jpegBytes liefert — aeltere Aufrufer, Tests —, bekommt weiter
+        // DCTDecode; ein Formatwechsel darf keine bestehende Verwendung brechen.
+        const daten = t.bytes || t.jpegBytes;
+        const filter = t.filter || "DCTDecode";
+        // Farbraum und Bittiefe muessen zu den Daten passen. Stehen sie nicht
+        // dabei, gilt die alte Annahme RGB/8 — jede bisherige Verwendung
+        // liefert genau das. Eine Graustufenkachel als DeviceRGB auszugeben
+        // ergibt kein Fehlerbild, sondern ein PDF, das falsche Farben zeigt
+        // und ein Drittel der Seite zu breit ist.
+        const kanaele = t.kanaele || 3;
+        const bits = t.bits || 8;
+        const farbraum = kanaele === 1 ? "/DeviceGray" : "/DeviceRGB";
         const imgHeader =
           "<< /Type /XObject /Subtype /Image " +
           "/Width " + t.wPx + " /Height " + t.hPx + " " +
-          "/ColorSpace /DeviceRGB /BitsPerComponent 8 " +
-          "/Filter /DCTDecode " +
-          "/Length " + t.jpegBytes.length + " >>\nstream\n";
+          "/ColorSpace " + farbraum + " /BitsPerComponent " + bits + " " +
+          "/Filter /" + filter + " " +
+          "/Length " + daten.length + " >>\nstream\n";
         const imgFooter = "\nendstream";
         const imgBytes = concatBytes([
           strToBytes(imgHeader),
-          t.jpegBytes,
+          daten,
           strToBytes(imgFooter)
         ]);
         const imgId = addObject(imgBytes);

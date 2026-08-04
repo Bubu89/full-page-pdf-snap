@@ -35,6 +35,7 @@ const DEFAULTS = {
   hideSticky: true,
   provenanceFooter: false,
   textLayer: true,
+  bildModus: "farbe",
   uiLanguage: "auto",
   appLayout: "context",
   afterCapture: "show",
@@ -132,6 +133,7 @@ async function load() {
   $("hideSticky").checked = s.hideSticky !== false;
   $("provenanceFooter").checked = s.provenanceFooter === true;
   $("textLayer").checked = s.textLayer !== false;
+  $("bildModus").value = s.bildModus || "farbe";
   $("uiLanguage").value = s.uiLanguage || "auto";
   $("appLayout").value = s.appLayout || "context";
   $("afterCapture").value = s.afterCapture || "show";
@@ -172,6 +174,7 @@ $("save").addEventListener("click", async () => {
     hideSticky: $("hideSticky").checked,
     provenanceFooter: $("provenanceFooter").checked,
     textLayer: $("textLayer").checked,
+    bildModus: $("bildModus").value,
     reviewPromptOff: $("reviewPromptOff").checked,
     uiLanguage: $("uiLanguage").value,
     appLayout: $("appLayout").value,

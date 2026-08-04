@@ -15,8 +15,16 @@ let _platformCache = null;
 async function bilddatenPruefsumme(pages) {
   const teile = [];
   for (const pg of pages) {
-    if (pg.tiles && pg.tiles.length) for (const t of pg.tiles) teile.push(t.jpegBytes);
-    else if (pg.jpegBytes) teile.push(pg.jpegBytes);
+    // bytes seit 04.08.2026, jpegBytes fuer aeltere Aufrufer. Die Pruefsumme
+    // deckt die eingebetteten Bilddaten ab — welcher Filter sie erzeugt hat,
+    // aendert daran nichts, aber sie muss die Daten auch FINDEN. Beim Umbau
+    // auf zwei Filter las diese Stelle noch das alte Feld und haette eine
+    // Pruefsumme ueber nichts gebildet.
+    if (pg.tiles && pg.tiles.length) {
+      for (const t of pg.tiles) { const b = t.bytes || t.jpegBytes; if (b) teile.push(b); }
+    } else {
+      const b = pg.bytes || pg.jpegBytes; if (b) teile.push(b);
+    }
   }
   let n = 0;
   for (const t of teile) n += t.length;
@@ -43,6 +51,15 @@ const DEFAULTS_DESKTOP = {
   subfolder: "Full Page PDF Snap",
   saveAs: false,
   jpegQuality: 0.92,
+  // Farbtiefe der Aufnahme. Gemessen am 4. August 2026 an einer Textseite:
+  //   farbe       416 kB   OCR 987 Woerter   SSIM 1,00
+  //   graustufen  243 kB   OCR 989 Woerter   SSIM 1,00
+  //   sw          113 kB   OCR 989 Woerter   SSIM 0,86
+  // Auf einer BILDseite faellt Schwarzweiss auf SSIM 0,199 — deshalb bleibt
+  // "farbe" die Voreinstellung. Wer eine Textquelle belegt, spart mit "sw"
+  // rund 92 % gegenueber dem heutigen JPEG, ohne dass die Texterkennung
+  // darunter leidet.
+  bildModus: "farbe",
   settlingMs: 400,
   filenameTemplate: "{site}_{date}_{time}_{n}",
   titleMaxLen: 40,
@@ -174,6 +191,97 @@ function dataUrlToBlob(dataUrl) {
 }
 
 
+
+
+/* Verlustfreie Alternative zu JPEG, fuer Kacheln, auf denen sie kleiner ist.
+ *
+ * Gemessen am 4. August 2026 an zwei Seiten von 1400x3200 px:
+ *
+ *   Textseite   JPEG 0.92  1327 kB   Flate   416 kB   (31 %)
+ *   Bildseite   JPEG 0.92   684 kB   Flate  3124 kB  (456 %)
+ *
+ * Das Verhaeltnis dreht sich mit dem Material, deshalb wird nicht umgestellt,
+ * sondern je Kachel verglichen. Flate ist dabei verlustfrei (SSIM 1,0) — wo es
+ * gewinnt, gewinnt es ohne Preis.
+ *
+ * OHNE Praediktor, obwohl PDF sie ueber /DecodeParms unterstuetzt: gemessen
+ * war Flate ohne Praediktor (416 kB) kleiner als mit (529 kB) und kleiner als
+ * ein PNG (495 kB). Bei Text ueberwiegen einfarbige Flaechen, und die
+ * Differenzbildung bringt dort nichts, kostet aber ein Filterbyte je Zeile.
+ * Das spart zugleich das Zerlegen eines PNG-Containers.
+ *
+ * CompressionStream gibt es in Chrome ab 80 und Firefox ab 113.
+ */
+/* Wendet die gewaehlte Farbtiefe an. Gibt Kanalzahl und Bittiefe mit zurueck,
+ * weil das PDF beides im Bildobjekt braucht. */
+function farbtiefeAnwenden(d, modus) {
+  if (modus === "graustufen" || modus === "sw") {
+    const n = d.length / 4;
+    // Luminanz nach Rec. 601 — dieselbe Gewichtung, die auch Texterkennung
+    // und Druckvorstufe verwenden. Ein einfacher Mittelwert macht rote
+    // Ueberschriften zu hell und blaue Links zu dunkel.
+    const grau = new Uint8Array(n);
+    for (let i = 0, j = 0; j < n; i += 4, j++) {
+      grau[j] = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114) | 0;
+    }
+    if (modus === "graustufen") return { daten: grau, kanaele: 1, bits: 8 };
+    // 1 bit, acht Punkte je Byte. Feste Schwelle statt Dithering: Dithering
+    // sieht besser aus und komprimiert schlechter, und fuer Text zaehlt hier
+    // die Kante, nicht der Halbton.
+    const proZeile = Math.ceil(n / 8);
+    const bin = new Uint8Array(proZeile);
+    for (let j = 0; j < n; j++) {
+      if (grau[j] < 128) bin[j >> 3] |= 0x80 >> (j & 7);
+    }
+    return { daten: bin, kanaele: 1, bits: 1 };
+  }
+  const rgb = new Uint8Array((d.length / 4) * 3);
+  for (let i = 0, j = 0; i < d.length; i += 4, j += 3) {
+    rgb[j] = d[i]; rgb[j + 1] = d[i + 1]; rgb[j + 2] = d[i + 2];
+  }
+  return { daten: rgb, kanaele: 3, bits: 8 };
+}
+
+async function canvasToFlateBytes(canvas, modus) {
+  if (typeof CompressionStream === "undefined") return null;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  const d = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+  // RGBA -> gewaehlte Farbtiefe. PDF kennt keinen Alphakanal, und die Aufnahme
+  // hat keinen: der Hintergrund wurde vor dem Zeichnen gefuellt.
+  const { daten, kanaele, bits } = farbtiefeAnwenden(d, modus);
+  const strom = new Blob([daten]).stream().pipeThrough(new CompressionStream("deflate"));
+  const buf = await new Response(strom).arrayBuffer();
+  return { bytes: new Uint8Array(buf), kanaele, bits };
+}
+
+/* Erzeugt beide Fassungen und gibt die kleinere zurueck.
+ *
+ * Kostet Rechenzeit und keine Qualitaet. Faellt Flate aus — alter Browser,
+ * Speichergrenze, was auch immer —, bleibt es beim bisherigen Verhalten;
+ * ein Fehler in der Sparfassung darf die Aufnahme nicht kosten.
+ */
+async function canvasToBildBytes(canvas, quality, modus) {
+  const m = modus || "farbe";
+  let flate = null;
+  try {
+    flate = await canvasToFlateBytes(canvas, m);
+  } catch (e) {
+    log("Flate uebersprungen:", e && e.message);
+  }
+  // Bei Graustufen und Schwarzweiss gibt es nichts zu vergleichen: JPEG kann
+  // die Farbtiefe nicht halten, und wer sie gewaehlt hat, will sie auch.
+  if (m !== "farbe") {
+    if (flate) return { bytes: flate.bytes, filter: "FlateDecode",
+                        kanaele: flate.kanaele, bits: flate.bits };
+    log("Farbtiefe", m, "nicht moeglich — zurueck auf JPEG");
+  }
+  const jpeg = await canvasToJpegBytes(canvas, quality);
+  if (flate && m === "farbe" && flate.bytes.length < jpeg.length) {
+    return { bytes: flate.bytes, filter: "FlateDecode",
+             kanaele: flate.kanaele, bits: flate.bits };
+  }
+  return { bytes: jpeg, filter: "DCTDecode", kanaele: 3, bits: 8 };
+}
 
 /* Pfad der gespeicherten Datei in die Zwischenablage.
  *
@@ -886,9 +994,10 @@ async function captureFullPageInner(tab, settings) {
   if (settings.singlePagePdf) {
     const tilePx = Math.max(800, Math.min(8000, effectiveTilePx));
     if (bigH <= tilePx) {
-      const jpegBytes = await canvasToJpegBytes(big, settings.jpegQuality);
-      pages.push({ jpegBytes, widthPx: pxW, heightPx: bigH });
-      log("Single-page PDF: 1 page, 1 tile,", jpegBytes.length, "bytes JPEG");
+      const bild = await canvasToBildBytes(big, settings.jpegQuality, settings.bildModus);
+      pages.push({ bytes: bild.bytes, filter: bild.filter, kanaele: bild.kanaele,
+                   bits: bild.bits, widthPx: pxW, heightPx: bigH });
+      log("Single-page PDF: 1 page, 1 tile,", bild.bytes.length, "bytes", bild.filter);
     } else {
       const tasks = [];
       for (let y = 0; y < bigH; y += tilePx) {
@@ -898,15 +1007,18 @@ async function captureFullPageInner(tab, settings) {
         slice.height = h;
         slice.getContext("2d").drawImage(big, 0, y, pxW, h, 0, 0, pxW, h);
         tasks.push(
-          canvasToJpegBytes(slice, settings.jpegQuality).then(b => ({
-            jpegBytes: b, xPx: 0, yPx: y, wPx: pxW, hPx: h
+          canvasToBildBytes(slice, settings.jpegQuality, settings.bildModus).then(b => ({
+            bytes: b.bytes, filter: b.filter, kanaele: b.kanaele, bits: b.bits,
+            xPx: 0, yPx: y, wPx: pxW, hPx: h
           }))
         );
       }
       const tiles = await Promise.all(tasks);
-      const totalBytes = tiles.reduce((s, t) => s + t.jpegBytes.length, 0);
+      const totalBytes = tiles.reduce((s, t) => s + t.bytes.length, 0);
+      const gespart = tiles.filter(t => t.filter === "FlateDecode").length;
       pages.push({ widthPx: pxW, heightPx: bigH, tiles });
-      log("Single-page PDF: 1 page,", tiles.length, "tiles, tilePx=", tilePx, "total=", totalBytes, "bytes JPEG");
+      log("Single-page PDF: 1 page,", tiles.length, "tiles, tilePx=", tilePx,
+          "total=", totalBytes, "bytes;", gespart, "davon verlustfrei");
     }
   } else {
     const sliceH = Math.max(400, Math.min(8000, settings.pageHeightPx || 2400));
@@ -927,8 +1039,9 @@ async function captureFullPageInner(tab, settings) {
       slice.getContext("2d").drawImage(big, 0, y, pxW, h, 0, 0, pxW, h);
       // yPx merkt sich, wo diese Seite im Gesamtbild beginnt. Ohne diese
       // Angabe laesst sich die Textebene den Seiten nicht zuordnen.
-      tasks.push(canvasToJpegBytes(slice, settings.jpegQuality).then(b => ({
-        jpegBytes: b, widthPx: pxW, heightPx: h, yPx: y
+      tasks.push(canvasToBildBytes(slice, settings.jpegQuality, settings.bildModus).then(b => ({
+        bytes: b.bytes, filter: b.filter, kanaele: b.kanaele, bits: b.bits,
+        widthPx: pxW, heightPx: h, yPx: y
       })));
     }
     const results = await Promise.all(tasks);

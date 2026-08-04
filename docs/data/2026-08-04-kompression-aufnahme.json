@@ -109,5 +109,41 @@
       "befund": "Textebene, Metadaten und Bild sind drei getrennte PDF-Objekte. Die Textebene ist ein Content-Stream aus Text-Operatoren, die Angaben stehen im Info-Objekt (/Title, /Author, /Subject, /Keywords), das Bild ist ein XObject mit /Filter. Ein Wechsel des Bildfilters aendert genau diese eine Zeile. RIS-Datei und Pruefsumme liegen ohnehin ausserhalb des PDFs.",
       "folge": "Keines der Verfahren gefaehrdet die Quellenangaben."
     }
+  },
+  "farbtiefe_2026-08-04": {
+    "frage": "Bringt eine Umstellung auf Graustufen oder Schwarzweiss mehr als der Formatwechsel — und haelt die OCR-Ausbeute mit?",
+    "methode": "Dieselbe Textseite, drei Farbtiefen, jeweils Flate-komprimiert. OCR mit Tesseract 5.3.4, deutsches Sprachmodell, Ergebnis gegen den RGB-Lauf per Sequenzaehnlichkeit verglichen. Kontrolllauf auf der Bildseite.",
+    "textseite": {
+      "rgb_24bit": {
+        "flate_kb": 416,
+        "anteil": "100 %",
+        "ocr_woerter": 987,
+        "aehnlichkeit": "100 %",
+        "ssim": 1.0
+      },
+      "graustufen_8bit": {
+        "flate_kb": 243,
+        "anteil": "58 %",
+        "ocr_woerter": 989,
+        "aehnlichkeit": "99,9 %",
+        "ssim": 1.0
+      },
+      "schwarzweiss_1bit": {
+        "flate_kb": 113,
+        "anteil": "27 %",
+        "ocr_woerter": 989,
+        "aehnlichkeit": "99,9 %",
+        "ssim": 0.864
+      }
+    },
+    "bildseite": {
+      "rgb_kb": 2669,
+      "graustufen_kb": 570,
+      "schwarzweiss_kb": 375,
+      "ssim_schwarzweiss": 0.199
+    },
+    "befund": "Auf einer Textseite kostet Schwarzweiss praktisch keine OCR-Ausbeute (989 gegen 987 Woerter, 99,9 % Aehnlichkeit) und bringt die Datei auf 27 % — gegen die heutigen 1327 kB JPEG sind das 8,5 %. Auf einer Bildseite bricht es ein: SSIM 0,199.",
+    "einschraenkung_der_messung": "Das hier verwendete SSIM rechnet auf Luminanz und sieht Farbverlust deshalb NICHT — Graustufen kommt auf 1,000, obwohl die Farbe fehlt. Fuer die Frage 'bleibt Text lesbar' taugt das, fuer 'sieht es noch aus wie vorher' nicht. Wer Farbtreue bewerten will, braucht ein Mass, das Farbkanaele einbezieht.",
+    "folge": "Kein Wert taugt fuer beide Faelle. Das gehoert in die Hand des Nutzers, nicht in eine Voreinstellung: Wer eine Textquelle belegt, will 113 kB; wer eine Abbildung belegt, braucht Farbe."
   }
 }

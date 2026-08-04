@@ -1,3 +1,52 @@
+## 2026-08-04 — Zwei Bildfilter und eine Farbtiefe-Einstellung (2.28.0)
+
+**Was.** Die Aufnahme bettet nicht mehr grundsaetzlich JPEG ein. Je Kachel wird
+verglichen und der kleinere Weg genommen — `DCTDecode` oder `FlateDecode`. Dazu
+eine neue Einstellung *Colour and file size* mit drei Stufen.
+
+**Warum.** Die eigene Messung vom 1. August: 6,7 MB gegen 1,1 MB beim
+Druckexport. Die Erweiterung encodierte mit `jpegQuality: 0.92` — ein Wert, der
+offenbar gesetzt und nie gemessen wurde, und nicht einmal einstellbar war.
+
+**Gemessen, an zwei Seiten zu 1400x3200 px:**
+
+| | Textseite | Bildseite |
+|---|---|---|
+| JPEG 0.92 (bisher) | 1327 kB | 684 kB |
+| Flate, Farbe | **416 kB** | 2669 kB |
+| Flate, Graustufen | 243 kB | 570 kB |
+| Flate, Schwarzweiss | **113 kB** | 375 kB |
+
+Das Verhaeltnis dreht sich mit dem Material — deshalb wird verglichen statt
+umgestellt. Flate ist dabei verlustfrei.
+
+**Die Farbtiefe kostet keine Texterkennung.** Tesseract 5.3.4 auf derselben
+Textseite: 987 Woerter in Farbe, **989 in Schwarzweiss**, 99,9 % Uebereinstimmung.
+Die Datei faellt dabei auf 8,5 % des bisherigen JPEG. Auf einer Bildseite bricht
+Schwarzweiss ein (SSIM 0,199) — deshalb bleibt Farbe die Voreinstellung und die
+Wahl beim Nutzer.
+
+**Was beim Umbau fast schiefging.** Drei Stellen lasen weiter `jpegBytes`,
+darunter `bilddatenPruefsumme`. Die SHA-256-Summe waere ueber ein leeres Feld
+gelaufen — die Herkunftszeile im PDF haette weiter dagestanden und nichts mehr
+belegt. Gefunden beim Durchsehen, nicht beim Testen; deshalb gibt es jetzt
+`tests/bildfilter.test.mjs` mit neun Faellen, die pruefen, was im PDF steht,
+nicht ob der Aufruf durchlaeuft.
+
+**Die Quellenangaben bleiben unberuehrt.** Textebene, Metadaten und Bild sind
+drei getrennte PDF-Objekte; der Filterwechsel aendert eine Zeile im XObject.
+RIS-Datei und Pruefsumme liegen ohnehin ausserhalb des PDFs.
+
+**Was geprueft und verworfen wurde.** MRC (ITU T.44) erreicht Faktor 8 bis 10,
+setzt aber JBIG2 voraus — und JBIG2 ersetzt aehnliche Zeichen durch dasselbe
+Muster, mit dokumentierter Ziffernverwechslung. Fuer ein Werkzeug, dessen
+Ausgabe als Beleg dient, disqualifizierend. WebP und AVIF kennt PDF nicht.
+JPEG 2000 und JBIG2 kann kein Browser encodieren. mozjpeg per WASM waere
+moeglich (`wasm-unsafe-eval` steht in Chromes Mindest-CSP) und bringt 10 bis
+20 % dort, wo Flate nichts bringt — offen ist, ob es im Service Worker laeuft.
+
+Rohdaten: `docs/data/2026-08-04-kompression-aufnahme.json`.
+
 ## 2026-08-04 — DOI aus der Adresse: 10 von 20 werden 14 (#16, #17)
 
 **Was.** Der Endpunkt leitet Kennungen jetzt deterministisch aus der Adresse
@@ -337,8 +386,11 @@ Nutzer-Puls fuer beide Browser garantiert ohne Fenster (MOZ_HEADLESS /
 --headless=new), mit JSONL-Aktionsprotokoll. Nachtrag gleichen Tages: die
 **Capture ist jetzt ebenfalls unsichtbar ausloesbar** —
 `chromium capture` (Xvfb + XTEST) lieferte eine valide PDF in 19,1 s.
-Doku in Skill, Protokoll, Rohdaten; GitHub-Issue #15 mit den
-Prozess-Verbesserungen.
+Zweiter Nachtrag: **Marionette als Primaerroute** fuer Firefox
+(Gegenmessung zu Issue #12 auf WSL2/Linux bestanden: Roundtrip 0,14 s),
+Policy als Rueckfall; Install beider Browser danach 2,4 s. Issue #13 mit
+der gemessenen Antwort geschlossen: Chrome-Store-Install geht headless per
+`external_update_url`. Doku in Skill, Protokoll, Rohdaten; GitHub-Issue #15.
 
 **Warum.** Die Klick-Route funktioniert, stiehlt aber Fokus und Maus — der
 User hat zurecht verlangt: nur Hintergrund, sonst anderer Weg.
@@ -1403,6 +1455,36 @@ zwischen den Aufrufen und wiederholt nach einem 429.
 
 # Changelog
 
+<!-- change-stream:auto-block:2026-08-03:START -->
+### 2026-08-03 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 129 Events, generiert 2026-08-04T09:00_
+
+**Aktivitaet:** 52 Datei(en), 129 Tool-Calls (95 Edit, 34 Write), 2 Session(s).
+
+**Beruehrte Dateien:**
+- `/home/holo/repos/full-page-pdf-snap-public/tools/erweiterung-fernsteuern.py` (14x)
+- `/home/holo/repos/full-page-pdf-snap-public/worker/mcp.js` (13x)
+- `/home/holo/repos/full-page-pdf-snap-public/docs/index.html` (5x)
+- `/home/holo/repos/full-page-pdf-snap-public/tools/cloudflare-audit.py` (5x)
+- `/home/holo/repos/full-page-pdf-snap-public/build-bibliography-post.py` (5x)
+- `/home/holo/repos/full-page-pdf-snap-public/docs/tools/full-page-pdf-snap/index.html` (4x)
+- `/home/holo/repos/full-page-pdf-snap-public/docs/notes/mcp-server-what-it-solves/index.html` (4x)
+- `/home/holo/repos/full-page-pdf-snap-public/tools/links-pruefen.py` (4x)
+- `/home/holo/repos/full-page-pdf-snap-public/build-einstiegsseiten.py` (4x)
+- `/home/holo/repos/full-page-pdf-snap-public/tools/cache-nach-deploy.py` (4x)
+- `/home/holo/repos/full-page-pdf-snap-public/build-headless-install-post.py` (4x)
+- `/home/holo/repos/full-page-pdf-snap-public/build-llms-index.py` (4x)
+- `/home/holo/repos/full-page-pdf-snap-public/content.js` (3x)
+- `/home/holo/repos/full-page-pdf-snap-public/messung-literaturverzeichnis.py` (3x)
+- `/home/holo/repos/full-page-pdf-snap-public/build-sitemap.py` (3x)
+- `/home/holo/repos/full-page-pdf-snap-public/build-agent-extension-post.py` (3x)
+- `/home/holo/repos/full-page-pdf-snap-public/.github/workflows/pruefen-und-ausliefern.yml` (3x)
+- `/home/holo/repos/full-page-pdf-snap-public/tools/crawler-bericht.py` (3x)
+- `/home/holo/repos/full-page-pdf-snap-public/popup.html` (2x)
+- `/home/holo/repos/full-page-pdf-snap-public/make-store-screenshots.py` (2x)
+
+<!-- change-stream:auto-block:2026-08-03:END -->
 <!-- change-stream:auto-block:2026-08-02:START -->
 ### 2026-08-02 — Auto-Aggregat (change-stream)
 

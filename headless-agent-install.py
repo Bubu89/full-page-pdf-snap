@@ -189,38 +189,140 @@ def ch_version():
     return None
 
 
+# --- Firefox: Marionette (schneller, echte Fehlerrueckmeldung) ---------------
+
+class Marionette:
+    """Minimal-Client fuer Mozillas eigenen Fernsteuerungs-Kanal.
+    Gegenmass der Policy-Route: jeder Befehl antwortet mit Erfolg ODER
+    Fehler — ein Klick ins Leere meldete dagegen immer Erfolg."""
+
+    def __init__(self, port=2828, timeout=60):
+        import socket
+        ende = time.time() + timeout
+        while True:
+            try:
+                self.sock = socket.create_connection(("127.0.0.1", port), timeout=10)
+                break
+            except OSError:
+                if time.time() > ende:
+                    raise
+                time.sleep(1)
+        self._gruss()
+        self.zaehler = 0
+
+    def _lesen(self):
+        daten = b""
+        while True:
+            stueck = self.sock.recv(65536)
+            if not stueck:
+                raise RuntimeError("marionette: verbindung weg")
+            daten += stueck
+            if b":" in daten:
+                laenge_s, rest = daten.split(b":", 1)
+                laenge = int(laenge_s)
+                if len(rest) >= laenge:
+                    return json.loads(rest[:laenge].decode())
+
+    def _gruss(self):
+        self._lesen()
+
+    def ruf(self, name, params):
+        self.zaehler += 1
+        payload = json.dumps([0, self.zaehler, name, params])
+        self.sock.sendall(f"{len(payload)}:{payload}".encode())
+        antw = self._lesen()
+        if len(antw) > 2 and antw[2]:
+            raise RuntimeError(f"marionette {name}: {antw[2]}")
+        return antw
+
+    def session(self):
+        return self.ruf("WebDriver:NewSession", {})
+
+
+def marionette_profil_vorbereiten():
+    """Auf Firefox 153 oeffnet sich der Port erst mit Pref + Flag + Env
+    zusammen (gemessen 2026-08-04); das Pref gehoert ins Profil."""
+    FF_PROFIL.mkdir(parents=True, exist_ok=True)
+    userjs = FF_PROFIL / "user.js"
+    zeile = 'user_pref("marionette.enabled", true);\n'
+    bestand = userjs.read_text(encoding="utf-8") if userjs.exists() else ""
+    if "marionette.enabled" not in bestand:
+        userjs.write_text(bestand + zeile, encoding="utf-8")
+
+
+def ff_marionette_aktion(aktion, xpi_pfad=None):
+    marionette_profil_vorbereiten()
+    env = dict(os.environ, MOZ_HEADLESS="1", MOZ_MARIONETTE="1")
+    p = subprocess.Popen([str(FF_EXE), "-no-remote", "-marionette", "-profile",
+                          str(FF_PROFIL), "about:blank"],
+                         env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                         start_new_session=True)
+    log("start", browser="firefox", pid=p.pid, headless=True, marionette=True)
+    try:
+        m = Marionette()
+        m.session()
+        if aktion == "install":
+            m.ruf("Addon:Install", {"path": str(xpi_pfad), "temporary": False})
+        else:
+            m.ruf("Addon:Uninstall", {"id": GECKO_ID})
+        return True
+    finally:
+        stoppe(p)
+
+
 # --- Phasen -------------------------------------------------------------------
 
 def install(browser):
-    xpi, store_version = amo_xpi()
+    xpi_url, store_version = amo_xpi()
     log("store-stand", version=store_version)
     if browser == "firefox":
-        ff_policy_schreiben("normal_installed", xpi)
+        # Primaer Marionette: schneller (gemessen 0,10 s) und mit echter
+        # Fehlerrueckmeldung; Policy als Rueckfall ohne laufenden Browser.
+        xpi_lokal = ARBEIT / "pdfsnap.xpi"
+        if not xpi_lokal.exists():
+            urllib.request.urlretrieve(xpi_url, xpi_lokal)
+        try:
+            ff_marionette_aktion("install", xpi_lokal)
+        except Exception as e:
+            log("marionette-rueckfall", fehler=str(e)[:120])
+            ff_policy_schreiben("normal_installed", xpi_url)
+            p = starte(browser)
+            poll(ff_version, 90)
+            stoppe(p)
         pruefer = ff_version
     else:
         ch_marker_schreiben(True)
+        p = starte(browser)
+        poll(ch_version, 90)
+        stoppe(p)
         pruefer = ch_version
-    p = starte(browser)
-    version = poll(pruefer, 90)
-    stoppe(p)
+    version = pruefer()
     ok = bool(version)
     log("install-verifiziert", browser=browser, version=version, ok=ok)
     return ok
 
 
 def uninstall(browser):
-    xpi, _ = amo_xpi()
     if browser == "firefox":
-        ff_policy_schreiben("blocked", xpi)
-        weg = lambda: ff_version() is None
+        try:
+            ff_marionette_aktion("uninstall")
+            weg = lambda: ff_version() is None
+        except Exception as e:
+            log("marionette-rueckfall", fehler=str(e)[:120])
+            xpi_url, _ = amo_xpi()
+            ff_policy_schreiben("blocked", xpi_url)
+            p = starte(browser)
+            poll(lambda: ff_version() is None, 90)
+            stoppe(p)
+            ff_policy_schreiben("weg", xpi_url)
+            weg = lambda: ff_version() is None
     else:
         ch_marker_schreiben(False)
+        p = starte(browser)
+        poll(lambda: ch_version() is None, 90)
+        stoppe(p)
         weg = lambda: ch_version() is None
-    p = starte(browser)
-    ok = poll(weg, 90)
-    stoppe(p)
-    if browser == "firefox":
-        ff_policy_schreiben("weg", xpi)  # Sperre nicht stehen lassen
+    ok = weg()
     log("deinstall-verifiziert", browser=browser, ok=bool(ok))
     return bool(ok)
 
