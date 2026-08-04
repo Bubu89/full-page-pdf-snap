@@ -496,6 +496,65 @@ def pruefe_live(befunde):
                                 f"{endpunkt} nicht erreichbar: {e}", ""))
 
 
+
+def pruefe_endpunkt(befunde):
+    """Der Worker sagt dieselben Dinge wie die Seiten — und wurde nie geprueft.
+
+    Am 4. August 2026 beschrieb `recommend_settings` einen Eingriff per
+    Richtlinie und enthielt **keinen einzigen** rechtlichen Hinweis. Dieselbe
+    Luecke haette diese Datei auf jeder HTML-Seite blockiert; sie las den
+    Worker nur nicht.
+
+    Geprueft wird **je Block**, nicht ueber die ganze Datei. Der erste Entwurf
+    suchte "developer account" irgendwo in 1900 Zeilen, fand es in einem
+    anderen Werkzeug und war zufrieden — der Gegentest blieb stumm, obwohl der
+    Hinweis an der gepruefen Stelle entfernt war. Ein Muster ohne Kontext
+    bestaetigt, was es finden will.
+    """
+    wk = REPO / "worker" / "mcp.js"
+    if not wk.exists():
+        return
+    t = wk.read_text(encoding="utf-8")
+
+    def block(name):
+        """Den Textbereich eines Werkzeugbausteins herausschneiden."""
+        # Bausteine stehen als `name: {` ODER `name = {` im Quelltext. Der
+        # erste Entwurf kannte nur die erste Form und meldete drei Bausteine
+        # als fehlend, die vorhanden waren.
+        for trenner in (":", " ="):
+            i = t.find(name + trenner)
+            if i >= 0:
+                break
+        else:
+            return ""
+        # Bis zum naechsten Baustein auf gleicher Ebene, hoechstens 4000 Zeichen.
+        return t[i:i + 4000]
+
+    pflichten = [
+        ("routeHeadless", "storeCounts",
+         "Beschreibt die Installation ohne Klick, ohne zu nennen, dass das "
+         "Aufblasen von Installationszahlen das Entwicklerkonto kostet."),
+        ("antwort.limits", "consent",
+         "recommend_settings beschreibt Eingriffe auf einem Rechner ohne "
+         "einen Hinweis auf die Einwilligung."),
+        ("antwort.limits", "noLegalAdvice",
+         "recommend_settings trifft Aussagen zu Rechtsfragen ohne den Hinweis, "
+         "dass es keine Rechtsberatung ist."),
+        ("antwort.limits", "disclosure",
+         "recommend_settings empfiehlt die eigene Erweiterung ohne Offenlegung."),
+    ]
+    for baustein, feld, text in pflichten:
+        b = block(baustein)
+        if not b:
+            befunde.append(("WARNUNG", "worker/mcp.js", "endpunkt-baustein-fehlt",
+                            f"Baustein {baustein} nicht gefunden — Pruefung "
+                            "uebersprungen, nicht bestanden.", ""))
+            continue
+        if feld not in b:
+            befunde.append(("FEHLER", "worker/mcp.js", f"endpunkt-{feld.lower()}",
+                            text, ""))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--live", action="store_true", help="auch die veroeffentlichte Seite pruefen")
@@ -507,6 +566,7 @@ def main():
     for p in seiten:
         pruefe_seite(p, p.read_text(encoding="utf-8"), befunde)
     pruefe_maschinenebene(befunde)
+    pruefe_endpunkt(befunde)
     pruefe_lizenzen(befunde)
     if a.live:
         pruefe_live(befunde)

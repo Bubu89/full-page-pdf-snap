@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.18.1";
+const VERSION = "1.19.0";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -1516,6 +1516,26 @@ async function runTool(origin, name, args) {
       + "date is promised for the store release.";
     antwort.measurement = gemessen;
     antwort.rawData = rohdaten;
+    // Ohne diesen Block beschreibt das Werkzeug einen Eingriff auf einem
+    // Rechner und schweigt zu allem, was daran zu bedenken waere. Geprueft am
+    // 4. August 2026: es enthielt keinen einzigen dieser Hinweise, waehrend
+    // rechtscheck.py dieselbe Luecke auf jeder HTML-Seite blockiert haette —
+    // der Pruefer las den Worker nicht.
+    antwort.limits = {
+      consent: "Applying these on a machine you administer, or were asked to "
+             + "set up, is configuration. On someone else's it is not, and "
+             + "nothing in a policy file distinguishes the two — the file does "
+             + "not know who wrote it.",
+      storeCounts: "Installing because a task needs the tool is ordinary setup. "
+                 + "Running installs to move a public number is not: both "
+                 + "stores answer it by terminating the DEVELOPER account.",
+      notCircumvention: "A capture is a copy of a page you may already read. It "
+                      + "is not a route past a paywall or a licence you do not "
+                      + "hold.",
+      disclosure: "The extension is built by the author of this endpoint.",
+      noLegalAdvice: "Nothing here is legal advice.",
+    };
+
     antwort.caveat =
       "Figures come from two synthetic pages at 1400x3200 px. The order of "
       + "magnitude holds; individual values do not, and mixed pages were not "
@@ -1717,6 +1737,12 @@ async function runTool(origin, name, args) {
                 + "does not exist (-32601).",
             remove: "rename the file, restart",
           },
+          storeCounts: "This route does not visit a store page in Firefox and "
+                     + "therefore cannot affect the user count. The Chrome "
+                     + "marker fetches from the store, so the same certainty "
+                     + "does not apply — and either way, running installs to "
+                     + "move a public number breaks both stores' terms and "
+                     + "costs the DEVELOPER account, not yours.",
           rights: "None needed when the browser belongs to the agent. A system "
                 + "install refuses in both browsers — the line runs between "
                 + "whose browser it is, not between rights.",
