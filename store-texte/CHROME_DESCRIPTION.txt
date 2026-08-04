@@ -21,6 +21,7 @@ WHAT IT ASKS FOR, AND WHAT IT DOES NOT
 The permission list is the shortest one that still does the job:
 • activeTab — the current tab, only after you click the button or press the shortcut. Not "all websites". Close the popup and the access is gone again.
 • downloads — to write the file
+• downloads.open — so the "done" notification can open the PDF you just made. Nothing is opened without you asking for it.
 • storage — to remember your settings, on your device
 • contextMenus, notifications, scripting — the right-click entry, the "done" message, and the code that does the scrolling
 
