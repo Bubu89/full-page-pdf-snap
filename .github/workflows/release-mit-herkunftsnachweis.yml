@@ -69,8 +69,15 @@ jobs:
       - name: Chromium-Paket schnueren
         working-directory: chrome-mv3
         run: |
+          # Ausschluesse identisch zu chrome-mv3/pack.py (EXCLUDE_DIRS).
+          # store-assets/ fehlte hier und tests/ ebenfalls — das Paket im
+          # Release v2.27.0 war dadurch 1.138.313 Bytes statt 146.793 und
+          # enthielt 54 statt 26 Dateien, darunter vier Store-Screenshots und
+          # die Promo-Kachel. Eine Erweiterung, die ihre eigenen Werbebilder
+          # ausliefert, faellt niemandem auf und laedt trotzdem jeder mit.
           zip -r -q "../auslieferung/full-page-pdf-snap-chrome-${{ steps.fassung.outputs.chromium }}.zip" . \
-            -x '*.py' '*.pyc' '*/__pycache__/*' 'ANLEITUNG.txt' 'REICHWEITE.txt'
+            -x '*.py' '*.pyc' '*/__pycache__/*' 'ANLEITUNG.txt' 'REICHWEITE.txt' \
+               'store-assets/*' 'tests/*' 'README.md'
 
       - name: Pruefsummen
         run: |
