@@ -50,5 +50,64 @@
       "JBIG2Decode": "1-bit, stark bei Text, kein Browser encodiert es"
     }
   },
-  "empfehlung": "Je Kachel beide Varianten erzeugen und die kleinere einbetten. Kostet Rechenzeit, keine Qualitaet: FlateDecode ist verlustfrei (SSIM 1.0), JPEG bleibt wo es gewinnt. Erwarteter Gewinn bei einer textlastigen Seite rund 63 %, bei einer bildlastigen null."
+  "empfehlung": "Je Kachel beide Varianten erzeugen und die kleinere einbetten. Kostet Rechenzeit, keine Qualitaet: FlateDecode ist verlustfrei (SSIM 1.0), JPEG bleibt wo es gewinnt. Erwarteter Gewinn bei einer textlastigen Seite rund 63 %, bei einer bildlastigen null.",
+  "recherche_2026-08-04": {
+    "frage": "Was ist ueber canvas.toBlob hinaus erreichbar, in BEIDEN Browsern?",
+    "wasm_in_erweiterungen": {
+      "erlaubt": true,
+      "beleg": "Chromes Mindest-CSP fuer extension_pages lautet \"script-src 'self' 'wasm-unsafe-eval'; object-src 'self';\" — WASM ist ausdruecklich Teil davon. Firefox ab 102, Chrome ab 103.",
+      "haken": "Die VOREINSTELLUNG deaktiviert WASM. Beide Manifeste dieses Projekts fuehren heute gar keine CSP, also gilt die Voreinstellung. Ein Eintrag ist noetig, keine Ausnahmegenehmigung.",
+      "ungeprueft": "Ob WASM im Service Worker laeuft, wo hier encodiert wird. Die CSP-Angabe gilt fuer extension_pages; der Worker ist eine eigene Umgebung. Das ist die eine offene Frage vor der Umsetzung.",
+      "quellen": [
+        "https://developer.chrome.com/docs/extensions/reference/manifest/content-security-policy",
+        "https://bugzilla.mozilla.org/show_bug.cgi?id=1766027"
+      ]
+    },
+    "verfahren_nach_material": [
+      {
+        "material": "Text auf einfarbigem Grund",
+        "verfahren": "FlateDecode",
+        "gewinn": "auf 37 % der heutigen Groesse",
+        "qualitaet": "verlustfrei, SSIM 1.0",
+        "browser": "beide, ohne WASM, ohne CSP-Aenderung",
+        "aufwand": "gering"
+      },
+      {
+        "material": "Fotos, Verlaeufe",
+        "verfahren": "JPEG wie heute",
+        "gewinn": "keiner durch Formatwechsel",
+        "qualitaet": "unveraendert",
+        "browser": "beide",
+        "aufwand": "keiner"
+      },
+      {
+        "material": "Fotos, wenn 10-20 % mehr zaehlen",
+        "verfahren": "mozjpeg per WASM",
+        "gewinn": "10-20 % gegenueber dem Browser-Encoder",
+        "qualitaet": "gleich bei gleichem Qualitaetswert",
+        "browser": "beide, CSP-Eintrag noetig, Web Worker empfohlen",
+        "aufwand": "mittel — Bundle rund 34 kB gzip"
+      },
+      {
+        "material": "gemischte Scan-Seiten",
+        "verfahren": "MRC (ITU T.44)",
+        "gewinn": "Faktor 8 bis 10",
+        "qualitaet": "sichtbar gut",
+        "browser": "kein Browser-Encoder fuer JBIG2",
+        "ausgeschlossen": "JBIG2 ersetzt aehnliche Zeichen durch dasselbe Muster und kann dabei Ziffern vertauschen — dokumentierte Zeichenverwechslung. Fuer ein Werkzeug, dessen Ausgabe als Beleg dient, ist das disqualifizierend, unabhaengig von der Ersparnis."
+      },
+      {
+        "material": "alles",
+        "verfahren": "JPEG 2000 (JPXDecode)",
+        "gewinn": "besser als JPEG bei gleicher Groesse",
+        "browser": "kein nativer Encoder; OpenJPEG als WASM denkbar",
+        "aufwand": "hoch — und PDF-Leser unterstuetzen JPXDecode uneinheitlich"
+      }
+    ],
+    "quellenangaben_bleiben": {
+      "geprueft_am": "2026-08-04",
+      "befund": "Textebene, Metadaten und Bild sind drei getrennte PDF-Objekte. Die Textebene ist ein Content-Stream aus Text-Operatoren, die Angaben stehen im Info-Objekt (/Title, /Author, /Subject, /Keywords), das Bild ist ein XObject mit /Filter. Ein Wechsel des Bildfilters aendert genau diese eine Zeile. RIS-Datei und Pruefsumme liegen ohnehin ausserhalb des PDFs.",
+      "folge": "Keines der Verfahren gefaehrdet die Quellenangaben."
+    }
+  }
 }

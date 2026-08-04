@@ -65,6 +65,14 @@
         "MOZ_HEADLESS hat keine Eingabe-Ebene"
       ],
       "werkzeug": "headless-agent-install.py chromium capture"
+    },
+    "marionette_gegenmessung": {
+      "datum": "2026-08-04",
+      "frage": "Haelt die Marionette-Route (Addon:Install/Uninstall) auf einer zweiten Plattform? (Issue #12)",
+      "ergebnis": "ja — WSL2/Linux, offizielles Firefox 153.0.1, MOZ_HEADLESS: install 0,10 s, uninstall 0,04 s, roundtrip 0,14 s",
+      "abweichung": "Port oeffnete sich erst mit user_pref marionette.enabled=true + -marionette + MOZ_MARIONETTE=1 zusammen; Flag allein reichte nicht (dreimal gemessen)",
+      "integriert": "headless-agent-install.py nutzt Marionette primar, Policy als Rueckfall; Install beider Browser danach 2,4 s",
+      "chrome_antwort_issue13": "external_update_url im External-Extension-Verzeichnis installiert den Store-Build headless (2.17.0_0, ~6 s) — kein CDP noetig"
     }
   },
   "befunde_nebenher": [
