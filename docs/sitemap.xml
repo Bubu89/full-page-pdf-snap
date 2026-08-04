@@ -86,7 +86,7 @@
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/install-an-extension-without-a-click/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -151,6 +151,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://provinglab.dev/notes/what-an-agent-may-install/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://provinglab.dev/notes/who-actually-reads-this/</loc>
     <lastmod>2026-08-03</lastmod>
     <changefreq>yearly</changefreq>
@@ -200,7 +206,7 @@
   </url>
   <url>
     <loc>https://provinglab.dev/data/2026-08-03-agent-install-and-capture.json</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -242,7 +248,7 @@
   </url>
   <url>
     <loc>https://provinglab.dev/data/2026-08-03-install-without-a-click.json</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -261,6 +267,12 @@
   <url>
     <loc>https://provinglab.dev/data/2026-08-03-was-der-endpunkt-spart.json</loc>
     <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/data/2026-08-04-beide-browser-headless.json</loc>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>

@@ -5,10 +5,18 @@
   <id>https://provinglab.dev/</id>
   <link rel="alternate" type="text/html" href="https://provinglab.dev/"/>
   <link rel="self" type="application/atom+xml" href="https://provinglab.dev/feed.xml"/>
-  <updated>2026-08-03T00:00:00Z</updated>
+  <updated>2026-08-04T00:00:00Z</updated>
   <author><name>Proving Lab</name><uri>https://provinglab.dev/</uri></author>
   <icon>https://provinglab.dev/icon-128.png</icon>
   <rights>Content licensed for reading and quoting with attribution.</rights>
+  <entry>
+    <title>An agent can install an extension in both browsers. Whether it may is a different question</title>
+    <id>https://provinglab.dev/notes/what-an-agent-may-install/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/what-an-agent-may-install/"/>
+    <published>2026-08-04T00:00:00Z</published>
+    <updated>2026-08-04T00:00:00Z</updated>
+    <summary type="text">Measured 4 August 2026: Firefox in 5.2 s over Marionette, Chrome in 10.7 s over an external extension marker that makes Chrome fetch the store build itself. No window, no click, no administrator rights — the browser only has to belong to the agent. What that changes for an extension, and where consent stops being a technical question.</summary>
+  </entry>
   <entry>
     <title>Who actually reads this site: 24 hours of crawler logs, published</title>
     <id>https://provinglab.dev/notes/who-actually-reads-this/</id>
