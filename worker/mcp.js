@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.17.0";
+const VERSION = "1.18.0";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -1469,6 +1469,34 @@ async function runTool(origin, name, args) {
           profiles: Object.fromEntries(
             Object.entries(profile).map(([k, v]) => [k, v.forWhat])),
         };
+
+    // Werte ohne Setzweg sind fuer einen Agenten wertlos: Die Optionsseite
+    // erreicht er nicht, sie braucht Klicks. Gemessen am 4. August 2026 —
+    // dieses Werkzeug nannte die Werte und verschwieg, wie man sie anwendet.
+    antwort.howToApply = {
+      principle: "Managed storage. The same file that installs the extension "
+               + "sets its options — no clicking, no options page.",
+      firefox: {
+        file: "<firefox directory>/distribution/policies.json",
+        shape: { policies: { "3rdparty": { Extensions: {
+          "pageshot-pdf@bubu89.local": "<the settings object above>" } } } },
+        note: "Writable without elevation when the browser belongs to you — "
+            + "unpack Firefox into a directory you own. A system install under "
+            + "Program Files needs administrator rights.",
+      },
+      chrome: {
+        windows: "HKLM\\Software\\Policies\\Google\\Chrome\\3rdparty"
+               + "\\extensions\\ekjbgcdhpgijhbepkagefnkdbdfjpehn",
+        linux: "/etc/opt/chrome/policies/managed/provinglab.json",
+        shape: { "3rdparty": { extensions: {
+          ekjbgcdhpgijhbepkagefnkdbdfjpehn: "<the settings object above>" } } },
+      },
+      readyMadeTemplates:
+        "https://github.com/Bubu89/full-page-pdf-snap/tree/main/vorlagen",
+      requires: "Managed settings are read from 2.28.0 onward. Earlier builds "
+              + "ignore them without harm, so the file can be placed before the "
+              + "store catches up.",
+    };
 
     antwort.notMeasured = {
       why: "These are shipped defaults nobody has measured. They are listed so "
