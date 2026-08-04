@@ -1,3 +1,34 @@
+## 2026-08-04 — DOI aus der Adresse: 10 von 20 werden 14 (#16, #17)
+
+**Was.** Der Endpunkt leitet Kennungen jetzt deterministisch aus der Adresse
+ab, wenn die Seite selbst nicht antwortet oder nichts deklariert: SSRN
+(`abstract_id` → `10.2139/ssrn.<id>`), OECD (Adress-Slug → `10.1787/<slug>`)
+und EUR-Lex (CELEX → Cellar, die Linked-Data-Schnittstelle des Amts fuer
+Veroeffentlichungen). Worker 1.15.1.
+
+**Warum.** Vier Adressen der Zwanzig-Quellen-Messung lehnten jeden Client ab
+(403 aus zwei unabhaengigen Netzen). Zwei davon trugen ihre DOI in der
+Adresse — nur nicht in der Form `10.xxxx/`, die der Endpunkt suchte. EUR-Lex
+trug die CELEX-Nummer. Alle drei Wege wurden vor dem Bau gegen Crossref bzw.
+Cellar verifiziert; drei Alternativen wurden geprueft und verworfen
+(ScienceDirect-PII ohne Crossref-Treffer, MDPI-DOI nicht ableitbar, COinS
+traegt nur eine von elf Plattformen, SSOARs Bot-Wand deckt auch die API).
+
+**Wie und Ergebnis.** Neue Funktion `kennungAusAdresse` mit strikten Mustern
+(kein Raten), Cellar-Abruf ueber die sprachliche Fassung (`.<ISO-639-2>` —
+das Voll-Objekt ist 61 MB ohne Titel). `note` sagt ueberall: aus der Adresse
+abgeleitet, nicht von der Seite gelesen. `complete` akzeptiert jetzt
+Korperschaften ohne Personenverfasser (Rechtsakte). Acht neue Tests, 34/34
+gruen.
+
+**Nachmessung (gleiche 20 Adressen, gleiche Methode):** 10/20 → **14/20**.
+Neu vollstaendig: SSRN, OECD, EUR-Lex (ueber die Ableitung) und Zenodo
+(fruehere Endpunkt-Verbesserung). Uebrig: ScienceDirect, MDPI (Waende ohne
+ableitbare Kennung), SSOAR (Wand auch ueber API), statistik.at, wko.at,
+derstandard.at (deklarieren nichts). Rohdaten
+`2026-08-04-reading-list-to-bibliography-nach-ableitung.json`, der Beitrag
+nennt alle drei Laeufe nebeneinander.
+
 ## 2026-08-03 — Rohdaten-Pruefung, deutsche Plattformen, und ein Ende der stillen Waende (#9, #10)
 
 **Was.** Drei zusammenhaengende Arbeiten: (1) `docs/data/schema.json` und
@@ -303,8 +334,11 @@ Zugangsberechtigung schrieb und den Ausschluss bereits verlinkte.
 
 **Was.** `headless-agent-install.py`: Installation, Deinstallation und
 Nutzer-Puls fuer beide Browser garantiert ohne Fenster (MOZ_HEADLESS /
---headless=new), mit JSONL-Aktionsprotokoll. Doku in Skill, Protokoll,
-Rohdaten; GitHub-Issue #15 mit den Prozess-Verbesserungen.
+--headless=new), mit JSONL-Aktionsprotokoll. Nachtrag gleichen Tages: die
+**Capture ist jetzt ebenfalls unsichtbar ausloesbar** —
+`chromium capture` (Xvfb + XTEST) lieferte eine valide PDF in 19,1 s.
+Doku in Skill, Protokoll, Rohdaten; GitHub-Issue #15 mit den
+Prozess-Verbesserungen.
 
 **Warum.** Die Klick-Route funktioniert, stiehlt aber Fokus und Maus — der
 User hat zurecht verlangt: nur Hintergrund, sonst anderer Weg.
@@ -313,11 +347,12 @@ User hat zurecht verlangt: nur Hintergrund, sonst anderer Weg.
 Firefox per `distribution/policies.json` (normal_installed/blocked),
 Chromium per `extensions/<id>.json` mit `external_update_url`. Gemessen:
 Install beider Browser 11,3 s, Deinstall 4,6 s, Zyklus 48,9 s — unsichtbar
-konstruiert, nicht nur versteckt. Grenzen ehrlich: keine Capture headless
-(kein activeTab ohne Eingabe-Ebene), Versions-Stände je Quelle (AMO 2.26.0,
-CWS-Update 2.17.0, CWS-Web 2.12.1), offizielles Firefox 153 mappt unter
-WSL2/Xvfb kein Fenster (chroot-Sandbox). Der Xvfb/XTEST-Weg bleibt fuer
-Captures dokumentiert.
+konstruiert, nicht nur versteckt. Grenzen ehrlich: die Xvfb-Capture geht
+nur mit Chromium — weder offizielles Firefox 153 noch Playwright-Build 146
+mappen unter WSL2/Xvfb ein Fenster (dbus, GPU- und Sandbox-Flags gemessen,
+inkl. crashhelper-Befund); Versions-Stände je Quelle (AMO 2.26.0,
+CWS-Update 2.17.0, CWS-Web 2.12.1). Firefox-Captures bleiben der
+Windows-Route vorbehalten.
 
 ## 2026-08-03 — Agent installiert die Store-Version als gezaehlter Nutzer
 

@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://provinglab.dev/notes/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -152,7 +152,7 @@
   </url>
   <url>
     <loc>https://provinglab.dev/notes/what-an-agent-may-install/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -273,6 +273,12 @@
   <url>
     <loc>https://provinglab.dev/data/2026-08-04-beide-browser-headless.json</loc>
     <lastmod>2026-08-04</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json</loc>
+    <lastmod>2026-08-03</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>

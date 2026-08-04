@@ -398,6 +398,40 @@
   <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/3">issue 3</a>.
 </p>
 
+<h2>Follow-up measurement: the endpoint changed, the pages did not</h2>
+<p>
+  Both runs above measured the same endpoint from two networks. A third run on
+  4 August 2026 measured the same twenty addresses against an improved
+  endpoint, and the split moved again:
+</p>
+<table>
+  <thead><tr><th scope="col"></th><th scope="col">3 Aug, data centre</th><th scope="col">3 Aug, VPN exit</th><th scope="col">4 Aug, after identifier derivation</th></tr></thead>
+  <tbody>
+    <tr><td>Complete records</td><td>10</td><td>11</td><td><strong>14</strong></td></tr>
+    <tr><td>Seconds per source</td><td>0.4</td><td>0.7</td><td>0.58</td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>The gain came from the endpoint, not from the pages.</strong> An SSRN
+  address carries its abstract ID and an OECD address its publication slug —
+  both resolve to a DOI, and the registration agency (Crossref) returns the
+  authoritative fields. A EUR-Lex address carries its CELEX number, which the
+  Publications Office of the EU resolves in Cellar. And the endpoint now reads
+  Zenodo's deposit metadata in full. Newly complete: Zenodo, SSRN, EUR-Lex and
+  the OECD.
+</p>
+<p>
+  The limit is equally clear. ScienceDirect and MDPI remain walls without a
+  derivable identifier; SSOAR's bot defence covers its API as well; and the
+  three remaining pages — statistik.at, wko.at, derstandard.at — still declare
+  nothing. There the extension's browser path remains the honest way: open the
+  page yourself and cite what you saw.
+</p>
+<p>
+  Raw data: <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">third
+  run</a>, retrieved 4 August 2026.
+</p>
+
 <h2>What this does not settle</h2>
 <ul>
   <li><strong>Twenty sources is a shape, not a study.</strong> For coverage
@@ -639,6 +673,41 @@ done &lt; reading-list.txt &gt; literature.ris</code></pre>
   Lauf</a>. Wer über einen privaten Anschluss verfügt, ist eingeladen, die
   offene Hälfte zu klären —
   <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/3">Issue 3</a>.
+</p>
+
+<h2>Folgemessung: Der Endpunkt änderte sich, die Seiten nicht</h2>
+<p>
+  Beide Läufe oben maßen denselben Endpunkt aus zwei Netzen. Ein dritter Lauf
+  am 4. August 2026 maß dieselben zwanzig Adressen gegen einen verbesserten
+  Endpunkt — und die Aufteilung wanderte erneut:
+</p>
+<table>
+  <thead><tr><th scope="col"></th><th scope="col">3.8., Rechenzentrum</th><th scope="col">3.8., VPN-Ausgang</th><th scope="col">4.8., nach Kennungs-Ableitung</th></tr></thead>
+  <tbody>
+    <tr><td>Vollständige Nachweise</td><td>10</td><td>11</td><td><strong>14</strong></td></tr>
+    <tr><td>Sekunden pro Quelle</td><td>0.4</td><td>0.7</td><td>0.58</td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>Der Zugewinn kam vom Endpunkt, nicht von den Seiten.</strong> Eine
+  SSRN-Adresse trägt ihre Abstract-ID, eine OECD-Adresse ihren
+  Publikations-Slug — beide lösen zu einem DOI auf, und die
+  Registrierungsstelle (Crossref) liefert die autoritativen Angaben. Eine
+  EUR-Lex-Adresse trägt ihre CELEX-Nummer, die das Amt für Veröffentlichungen
+  der EU in Cellar auflöst. Und der Endpunkt liest die Deposit-Metadaten von
+  Zenodo inzwischen vollständig. Neu vollständig: Zenodo, SSRN, EUR-Lex und
+  die OECD.
+</p>
+<p>
+  Die Grenze ist ebenso klar. ScienceDirect und MDPI bleiben Wände ohne
+  ableitbare Kennung; SSOARs Bot-Abwehr deckt auch die API ab; und die drei
+  übrigen Seiten — statistik.at, wko.at, derstandard.at — deklarieren weiterhin
+  nichts. Dort bleibt der Browser-Weg der Erweiterung der ehrliche Weg: die
+  Seite selbst öffnen und das zitieren, was man gesehen hat.
+</p>
+<p>
+  Rohdaten: <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">dritter
+  Lauf</a>, abgerufen am 4. August 2026.
 </p>
 
 <h2>Was hier nicht geklärt ist</h2>

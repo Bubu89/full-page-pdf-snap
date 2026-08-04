@@ -1,0 +1,429 @@
+{
+  "measurement": "reading-list-to-bibliography",
+  "date": "2026-08-04",
+  "question": "Twenty sources as a term paper collects them: how many become citable records without a human, which are handed back, and is the reason the page's wall or the reader's limit?",
+  "method": {
+    "endpoint": "https://provinglab.dev/mcp",
+    "tool": "extract_citation",
+    "sources": 20,
+    "selection": "Fixed before the run and not chosen for whether it works: five publishers, three open access, three repositories, one preprint server, three official bodies, grey literature, two reference works, a bare DOI and a news article.",
+    "counterpart": "docs/data/2026-08-03-reading-list-to-bibliography.json",
+    "control": "Every handed-back source was fetched twice — once with the reader's own user agent, once with a browser's. A source counts as walled only when the browser is answered and the reader is not."
+  },
+  "results": {
+    "sources": 20,
+    "complete_records": 14,
+    "handed_back": 6,
+    "handed_back_behind_a_wall": 1,
+    "handed_back_page_unreachable": 1,
+    "handed_back_thin_page": 4,
+    "seconds_total": 11.6,
+    "seconds_per_source": 0.58,
+    "by_kind": {
+      "publisher": {
+        "total": 5,
+        "complete": 4
+      },
+      "open access": {
+        "total": 3,
+        "complete": 2
+      },
+      "repository": {
+        "total": 3,
+        "complete": 2
+      },
+      "preprint": {
+        "total": 1,
+        "complete": 1
+      },
+      "official": {
+        "total": 3,
+        "complete": 2
+      },
+      "grey lit": {
+        "total": 1,
+        "complete": 0
+      },
+      "reference": {
+        "total": 2,
+        "complete": 2
+      },
+      "bare doi": {
+        "total": 1,
+        "complete": 1
+      },
+      "news": {
+        "total": 1,
+        "complete": 0
+      }
+    }
+  },
+  "per_source": [
+    {
+      "kind": "publisher",
+      "host": "www.sciencedirect.com",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0148296319304564",
+      "complete": false,
+      "seconds": 0.26,
+      "warning": "The server answered 403 Forbidden. No citation data was read.",
+      "has_ris": false,
+      "has_bibtex": false,
+      "fields": [],
+      "as_reader": {
+        "status": 403,
+        "bytes": 0
+      },
+      "as_browser": {
+        "status": 403,
+        "bytes": 0
+      }
+    },
+    {
+      "kind": "publisher",
+      "host": "www.tandfonline.com",
+      "url": "https://www.tandfonline.com/doi/full/10.1080/00207543.2020.1824085",
+      "complete": true,
+      "seconds": 0.31,
+      "warning": null,
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "authors",
+        "doi",
+        "journal",
+        "publisher",
+        "title",
+        "year"
+      ]
+    },
+    {
+      "kind": "publisher",
+      "host": "link.springer.com",
+      "url": "https://link.springer.com/article/10.1007/s11846-020-00426-9",
+      "complete": true,
+      "seconds": 1.01,
+      "warning": null,
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "authors",
+        "doi",
+        "journal",
+        "licence",
+        "publisher",
+        "title",
+        "year"
+      ]
+    },
+    {
+      "kind": "publisher",
+      "host": "onlinelibrary.wiley.com",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1002/bse.2882",
+      "complete": true,
+      "seconds": 0.39,
+      "warning": null,
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "authors",
+        "doi",
+        "journal",
+        "publisher",
+        "title",
+        "year"
+      ]
+    },
+    {
+      "kind": "publisher",
+      "host": "journals.sagepub.com",
+      "url": "https://journals.sagepub.com/doi/10.1177/0008125619867910",
+      "complete": true,
+      "seconds": 0.27,
+      "warning": null,
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "authors",
+        "doi",
+        "journal",
+        "publisher",
+        "title",
+        "year"
+      ]
+    },
+    {
+      "kind": "open access",
+      "host": "www.mdpi.com",
+      "url": "https://www.mdpi.com/2071-1050/12/16/6597",
+      "complete": false,
+      "seconds": 0.35,
+      "warning": "The server answered 403 Forbidden. No citation data was read.",
+      "has_ris": false,
+      "has_bibtex": false,
+      "fields": [],
+      "as_reader": {
+        "status": 403,
+        "bytes": 0
+      },
+      "as_browser": {
+        "status": 200,
+        "bytes": 2216
+      }
+    },
+    {
+      "kind": "open access",
+      "host": "www.frontiersin.org",
+      "url": "https://www.frontiersin.org/articles/10.3389/fpsyg.2021.620766/full",
+      "complete": true,
+      "seconds": 2.11,
+      "warning": null,
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "authors",
+        "doi",
+        "journal",
+        "publisher",
+        "title",
+        "year"
+      ]
+    },
+    {
+      "kind": "open access",
+      "host": "journals.plos.org",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0247139",
+      "complete": true,
+      "seconds": 1.32,
+      "warning": null,
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "authors",
+        "doi",
+        "journal",
+        "publisher",
+        "title",
+        "year"
+      ]
+    },
+    {
+      "kind": "repository",
+      "host": "www.ssoar.info",
+      "url": "https://www.ssoar.info/ssoar/handle/document/71234",
+      "complete": false,
+      "seconds": 0.2,
+      "warning": "The page looks like an error message or an access wall, not content. The details below are not usable as a reference.",
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "title"
+      ],
+      "as_reader": {
+        "status": 200,
+        "bytes": 34330
+      },
+      "as_browser": {
+        "status": 200,
+        "bytes": 24462
+      }
+    },
+    {
+      "kind": "repository",
+      "host": "arxiv.org",
+      "url": "https://arxiv.org/abs/1706.03762",
+      "complete": true,
+      "seconds": 0.22,
+      "warning": null,
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "authors",
+        "publisher",
+        "title",
+        "year"
+      ]
+    },
+    {
+      "kind": "repository",
+      "host": "zenodo.org",
+      "url": "https://zenodo.org/records/3832945",
+      "complete": true,
+      "seconds": 0.71,
+      "warning": null,
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "authors",
+        "doi",
+        "publisher",
+        "title",
+        "year"
+      ]
+    },
+    {
+      "kind": "preprint",
+      "host": "papers.ssrn.com",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3529682",
+      "complete": true,
+      "seconds": 0.3,
+      "warning": null,
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "authors",
+        "doi",
+        "journal",
+        "publisher",
+        "title",
+        "year"
+      ]
+    },
+    {
+      "kind": "official",
+      "host": "eur-lex.europa.eu",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679",
+      "complete": true,
+      "seconds": 0.36,
+      "warning": null,
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "publisher",
+        "title",
+        "year"
+      ]
+    },
+    {
+      "kind": "official",
+      "host": "www.oecd.org",
+      "url": "https://www.oecd.org/en/publications/oecd-digital-economy-outlook-2024-volume-1_a1689dc5-en.html",
+      "complete": true,
+      "seconds": 0.29,
+      "warning": null,
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "doi",
+        "journal",
+        "publisher",
+        "title",
+        "year"
+      ]
+    },
+    {
+      "kind": "official",
+      "host": "www.statistik.at",
+      "url": "https://www.statistik.at/statistiken/forschung-innovation-digitalisierung",
+      "complete": false,
+      "seconds": 0.45,
+      "warning": "The page answered in full but declares no complete citation: a year is missing. Read this flag rather than the title field — the details below are what the page says about itself, not a reference.",
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "authors",
+        "title"
+      ],
+      "as_reader": {
+        "status": 200,
+        "bytes": 89876
+      },
+      "as_browser": {
+        "status": 200,
+        "bytes": 89876
+      }
+    },
+    {
+      "kind": "grey lit",
+      "host": "www.wko.at",
+      "url": "https://www.wko.at/eservices",
+      "complete": false,
+      "seconds": 0.44,
+      "warning": "The page answered in full but declares no complete citation: a year is missing. Read this flag rather than the title field — the details below are what the page says about itself, not a reference.",
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "authors",
+        "title"
+      ],
+      "as_reader": {
+        "status": 200,
+        "bytes": 49544
+      },
+      "as_browser": {
+        "status": 200,
+        "bytes": 49544
+      }
+    },
+    {
+      "kind": "reference",
+      "host": "en.wikipedia.org",
+      "url": "https://en.wikipedia.org/wiki/Digital_transformation",
+      "complete": true,
+      "seconds": 0.18,
+      "warning": null,
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "authors",
+        "title",
+        "year"
+      ]
+    },
+    {
+      "kind": "reference",
+      "host": "plato.stanford.edu",
+      "url": "https://plato.stanford.edu/entries/computing-responsibility/",
+      "complete": true,
+      "seconds": 0.62,
+      "warning": null,
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "authors",
+        "title",
+        "year"
+      ]
+    },
+    {
+      "kind": "bare doi",
+      "host": "doi.org",
+      "url": "https://doi.org/10.1016/j.jbusres.2019.09.022",
+      "complete": true,
+      "seconds": 0.77,
+      "warning": null,
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "authors",
+        "doi",
+        "journal",
+        "publisher",
+        "title",
+        "year"
+      ]
+    },
+    {
+      "kind": "news",
+      "host": "www.derstandard.at",
+      "url": "https://www.derstandard.at/story/3000000200000/",
+      "complete": false,
+      "seconds": 1.04,
+      "warning": "The page answered in full but declares no complete citation: a year is missing. Read this flag rather than the title field — the details below are what the page says about itself, not a reference.",
+      "has_ris": true,
+      "has_bibtex": true,
+      "fields": [
+        "authors",
+        "title"
+      ],
+      "as_reader": {
+        "status": 200,
+        "bytes": 57648
+      },
+      "as_browser": {
+        "status": 200,
+        "bytes": 57648
+      }
+    }
+  ],
+  "license": "CC-BY-4.0"
+}
