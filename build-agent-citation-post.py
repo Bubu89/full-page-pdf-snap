@@ -273,12 +273,36 @@ other vendor's intentions. Corrections are taken through
 and are published with the correction visible, not silently.</p>
 
 </article>
+"""
+
+
+FUSSTEXT = """<footer>
+      Method: one install-and-remove cycle per browser on 4 August 2026, driven by
+      <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/tools/erweiterung-fernsteuern.py">erweiterung-fernsteuern.py</a>
+      — Firefox ESR on Windows 11 over Marionette, Chromium 1208 on Linux over the
+      external extension marker. Success was verified by reading the profile
+      (extensions.json, and the versioned directory under Default/Extensions), not by
+      the command's return code. The absence of a window was verified by reading the
+      process's own window handle after start. One run each, no averages: process start
+      dominates the total and varies with the machine, so the command times are the
+      stable part. Whether an install triggered this way is counted by a store is
+      unmeasured. Nothing here is legal advice.
+      <br><br>
+      Corrections are welcome and are made in public:
+      <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a>.
+      <br><br>
+      <a href="../../">&#8592; Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+
 </div>
+</body>
+</html>
 """
 
 
 def main():
-    kopf, fuss = kopf_und_fuss()
+    kopf, _ = kopf_und_fuss()
+    fuss = FUSSTEXT
     ZIEL.mkdir(parents=True, exist_ok=True)
     ziel = ZIEL / "index.html"
     ziel.write_text(anpassen(kopf) + KOERPER + fuss, encoding="utf-8")
