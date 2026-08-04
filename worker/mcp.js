@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.21.0";
+const VERSION = "1.22.0";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -2369,6 +2369,71 @@ export default {
           docs: `${SITE}/for-agents/`,
         }, null, 2), {
           status: 404,   // die Adresse gibt es wirklich nicht — nur der Koerper hilft weiter
+          headers: { "content-type": "application/json; charset=utf-8",
+                     "cache-control": "no-store" },
+        });
+      }
+
+      // Standardpfade, an denen Agenten zuerst nachsehen. Gemessen 3./4. August
+      // 2026: rund 270 Anfragen in 23 Stunden liefen hier ins Leere. Die Karte
+      // liegt seit jeher unter /.well-known/mcp/server-card.json — nur sucht sie
+      // dort kaum jemand. Es gibt keinen registrierten Pfad fuer MCP-Karten, also
+      // fragen Clients der Reihe nach alles ab, was plausibel klingt.
+      //
+      // Ausgeliefert wird derselbe Inhalt, nicht eine zweite Fassung davon: eine
+      // Kopie waere die naechste Datei, die abdriftet.
+      const KARTENPFADE = new Set([
+        "/.well-known/agent-card.json",
+        "/.well-known/mcp.json",
+        "/.well-known/mcp/server-cards.json",
+        "/.well-known/mcp-server.json",
+      ]);
+      if (KARTENPFADE.has(url.pathname)) {
+        const karte = await fetch(`${SITE}/.well-known/mcp/server-card.json`);
+        if (karte.ok) {
+          return new Response(await karte.text(), {
+            status: 200,
+            headers: {
+              "content-type": "application/json; charset=utf-8",
+              "cache-control": "public, max-age=300",
+              // Damit ein Client die kanonische Adresse lernt und beim
+              // naechsten Mal direkt dorthin geht.
+              "content-location": "/.well-known/mcp/server-card.json",
+              "link": `<${SITE}/.well-known/mcp/server-card.json>; rel="canonical"`,
+            },
+          });
+        }
+      }
+
+      // Pfade, an denen Agenten nachsehen und fuer die es hier nichts gibt.
+      // Eine erfundene Datei waere schlimmer als der 404: sie kostet jeden
+      // Agenten, der ihr folgt, einen weiteren vergeblichen Aufruf. Was hilft,
+      // ist die Auskunft, was es stattdessen gibt.
+      const NICHT_VORHANDEN = {
+        "/openapi.json": "There is no REST API here. The tools are called by "
+                       + "JSON-RPC on /mcp.",
+        "/.well-known/ucp": "No UCP endpoint. This server speaks MCP over "
+                          + "streamable HTTP.",
+        "/.well-known/acp.json": "No ACP endpoint. This server speaks MCP over "
+                               + "streamable HTTP.",
+        "/.well-known/ai-plugin.json": "No OpenAI plugin manifest. This server "
+                                     + "speaks MCP over streamable HTTP.",
+        "/.well-known/http-message-signatures-directory":
+          "Requests are not signed and no signature keys are published.",
+      };
+      if (NICHT_VORHANDEN[url.pathname]) {
+        return new Response(JSON.stringify({
+          error: "not_available_here",
+          message: NICHT_VORHANDEN[url.pathname],
+          instead: {
+            mcp_endpoint: `${SITE}/mcp`,
+            server_card: `${SITE}/.well-known/mcp/server-card.json`,
+            one_page_briefing: `${SITE}/agent.md`,
+            index_for_machines: `${SITE}/llms.txt`,
+          },
+          connect: `claude mcp add --transport http provinglab ${SITE}/mcp`,
+        }, null, 2), {
+          status: 404,   // es gibt sie wirklich nicht — nur der Koerper hilft
           headers: { "content-type": "application/json; charset=utf-8",
                      "cache-control": "no-store" },
         });

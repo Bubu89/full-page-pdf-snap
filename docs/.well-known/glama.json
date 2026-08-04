@@ -1,0 +1,6 @@
+{
+  "$schema": "https://glama.ai/mcp/schemas/connector.json",
+  "maintainers": [
+    { "email": "chris.vis@goldfishgateway.com" }
+  ]
+}

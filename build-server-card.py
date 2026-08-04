@@ -125,25 +125,60 @@ def karte():
     }
 
 
+REGISTRIERUNG = HIER / "server.json"
+
+
+def registrierung():
+    """Der Datensatz, den die offizielle MCP-Registry veroeffentlicht.
+
+    Er traegt dieselbe Fassungsnummer wie der Worker — sonst altert der
+    Registry-Eintrag bei jeder Aenderung, und mit ihm alle Verzeichnisse, die
+    aus der Registry abschreiben. Gemessen am 4. August 2026: Glama hatte den
+    Eintrag binnen zwei Stunden uebernommen, samt Beschreibung und allen neun
+    Werkzeugen. Was dort steht, steht kurz darauf an mehreren Stellen.
+
+    Die Beschreibung ist auf 100 Zeichen begrenzt (die Registry weist laengere
+    mit 422 ab) und bleibt deshalb handgeschrieben — sie ist der eine Satz, den
+    ein Agent bei der Suche zu sehen bekommt.
+    """
+    alt = json.loads(REGISTRIERUNG.read_text(encoding="utf-8")) \
+        if REGISTRIERUNG.exists() else {}
+    alt["version"] = version()
+    return alt
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true")
     a = ap.parse_args()
 
-    neu = json.dumps(karte(), indent=2, ensure_ascii=False) + "\n"
-    alt = ZIEL.read_text(encoding="utf-8") if ZIEL.exists() else ""
     k = karte()
+    neu = json.dumps(k, indent=2, ensure_ascii=False) + "\n"
+    alt = ZIEL.read_text(encoding="utf-8") if ZIEL.exists() else ""
+
+    reg = registrierung()
+    reg_neu = json.dumps(reg, indent=2, ensure_ascii=False) + "\n"
+    reg_alt = REGISTRIERUNG.read_text(encoding="utf-8") \
+        if REGISTRIERUNG.exists() else ""
+
     if a.check:
+        schief = []
         if neu != alt:
-            print(f"  server-card.json veraltet — {len(k['tools'])} Werkzeuge, "
-                  f"Fassung {k['serverInfo']['version']}")
+            schief.append("server-card.json")
+        if reg_neu != reg_alt:
+            schief.append(f"server.json (Registry: {reg.get('version')})")
+        if schief:
+            print(f"  veraltet: {', '.join(schief)}")
             sys.exit(1)
-        print(f"  server-card.json aktuell ({len(k['tools'])} Werkzeuge, "
-              f"{k['serverInfo']['version']})")
+        print(f"  server-card.json und server.json aktuell "
+              f"({len(k['tools'])} Werkzeuge, {k['serverInfo']['version']})")
         return
+
     ZIEL.write_text(neu, encoding="utf-8")
+    REGISTRIERUNG.write_text(reg_neu, encoding="utf-8")
     print(f"  server-card.json: {len(k['tools'])} Werkzeuge, "
           f"Fassung {k['serverInfo']['version']}")
+    print(f"  server.json:      {reg.get('name')}, Fassung {reg.get('version')}")
     for w in k["tools"]:
         print(f"    {w['name']:<22} {w['description'][:58]}…")
 

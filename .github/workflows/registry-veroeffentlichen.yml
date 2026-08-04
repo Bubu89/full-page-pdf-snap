@@ -1,0 +1,82 @@
+# Veroeffentlicht server.json in der offiziellen MCP-Registry, sobald sich die
+# Fassung des Workers aendert.
+#
+# Warum automatisch: Am 4. August 2026 wurde der Eintrag von Hand publiziert.
+# Zwei Stunden spaeter hatte Glama ihn uebernommen — mit Beschreibung, Zustand
+# und allen neun Werkzeugen. Verzeichnisse schreiben aus der Registry ab, nicht
+# umgekehrt. Ein Eintrag, der bei jedem Deploy eine Fassung zurueckfaellt, laesst
+# also nicht eine Seite veralten, sondern mehrere gleichzeitig.
+#
+# Authentifizierung ueber den DNS-Nachweis auf provinglab.dev statt ueber ein
+# GitHub-Konto: GitHub-OIDC gilt nur fuer io.github.*-Namensraeume, und der
+# DNS-Weg kommt ohne Kontobezug aus.
+#
+# Einrichtung (einmalig): Den privaten Ed25519-Schluessel als Repository-Secret
+# MCP_REGISTRY_KEY hinterlegen. Er liegt im Vault unter
+# "MCP Registry — DNS-Signaturschluessel provinglab.dev"; das Gegenstueck steht
+# als TXT-Eintrag auf provinglab.dev. Ohne das Secret ueberspringt der Lauf sich
+# selbst, statt rot zu werden — ein fehlendes Secret ist kein Fehler im Code.
+
+name: Registry aktuell halten
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "server.json"
+      - "worker/mcp.js"
+  workflow_dispatch:
+
+jobs:
+  veroeffentlichen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fassung gegen den Worker pruefen
+        run: |
+          python3 build-server-card.py --check || {
+            echo "::error::server.json weicht vom Worker ab — build-server-card.py ausfuehren und committen"
+            exit 1
+          }
+
+      - name: Steht der Stand schon in der Registry?
+        id: stand
+        run: |
+          python3 tools/registry-stand.py
+          if python3 tools/registry-stand.py --gleich >/dev/null; then
+            echo "gleich=ja" >> "$GITHUB_OUTPUT"
+          else
+            echo "gleich=nein" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Veroeffentlichen
+        if: steps.stand.outputs.gleich == 'nein'
+        env:
+          SCHLUESSEL: ${{ secrets.MCP_REGISTRY_KEY }}
+        run: |
+          if [ -z "$SCHLUESSEL" ]; then
+            echo "::warning::Kein MCP_REGISTRY_KEY hinterlegt — uebersprungen. Anleitung im Kopf dieser Datei."
+            exit 0
+          fi
+          curl -sfL -o publisher.tar.gz \
+            https://github.com/modelcontextprotocol/registry/releases/download/v1.8.0/mcp-publisher_linux_amd64.tar.gz
+          tar xzf publisher.tar.gz
+          ./mcp-publisher login dns --domain=provinglab.dev --private-key="$SCHLUESSEL"
+          ./mcp-publisher publish --file=server.json
+
+      - name: Nachpruefen
+        if: steps.stand.outputs.gleich == 'nein'
+        run: |
+          # Ein Publish, der ohne Fehler zurueckkehrt, ist kein Nachweis.
+          # Ohne hinterlegtes Secret wurde nichts veroeffentlicht — dann darf
+          # dieser Schritt nicht rot werden.
+          if [ -z "${{ secrets.MCP_REGISTRY_KEY }}" ]; then
+            echo "  kein Schluessel hinterlegt, nichts nachzupruefen"
+            exit 0
+          fi
+          sleep 8
+          python3 tools/registry-stand.py --gleich || {
+            echo "::error::Die Registry fuehrt nach dem Veroeffentlichen nicht den lokalen Stand"
+            exit 1
+          }

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "dev.provinglab/browser-citation-capture",
+  "title": "Proving Lab",
+  "description": "Cite or capture a web page; installs the capture extension in Firefox and Chrome.",
+  "version": "1.22.0",
+  "websiteUrl": "https://provinglab.dev/",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://provinglab.dev/mcp"
+    }
+  ]
+}
