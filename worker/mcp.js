@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.15.0";
+const VERSION = "1.15.1";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -777,6 +777,114 @@ async function ausPlattform(zielUrl) {
   } catch (_) { return null; }
 }
 
+// Drei Plattformen tragen ihre Kennung anders in der Adresse, als es das
+// DOI-Muster 10.xxxx/ erfasst — fuer sie gibt es einen deterministischen
+// Uebersetzer. Alle drei Uebersetzungen sind am 04.08.2026 live verifiziert
+// (SSRN und OECD gegen api.crossref.org, EUR-Lex gegen Cellar). Was nicht
+// exakt auf die Form passt, wird NICHT uebersetzt — kein Raten, keine
+// Annahme ueber fremde Adressschemata.
+function kennungAusAdresse(adresse) {
+  let u;
+  try { u = new URL(adresse); } catch (_) { return null; }
+  const host = u.hostname.toLowerCase();
+
+  // SSRN: abstract_id=<ziffern> benennt die Arbeit; die registrierte DOI ist
+  // 10.2139/ssrn.<id>. Verifiziert 04.08.2026 an abstract_id=3529682
+  // (Crossref: 10.2139/ssrn.3529682, Brady/Bass 2019).
+  if (host === "ssrn.com" || host === "papers.ssrn.com") {
+    const id = u.searchParams.get("abstract_id") || "";
+    return /^\d+$/.test(id) ? { doi: "10.2139/ssrn." + id } : null;
+  }
+
+  // OECD: der letzte Pfadteil ist _<slug>.html, der Slug endet auf ein
+  // zweistelliges Sprachkuerzel (-en, -fr, ...). Die DOI ist 10.1787/<slug>.
+  // Verifiziert 04.08.2026 an _a1689dc5-en.html (Crossref:
+  // 10.1787/a1689dc5-en, OECD Digital Economy Outlook 2024 Vol. 1).
+  if (host === "oecd.org" || host === "www.oecd.org") {
+    const m = u.pathname.match(/_([a-z0-9]+(?:-[a-z0-9]+)*-[a-z]{2})\.html$/);
+    return m ? { doi: "10.1787/" + m[1] } : null;
+  }
+
+  // EUR-Lex: die CELEX-Nummer steht im uri-Parameter. Die Sprache steht im
+  // Pfad (/legal-content/DE/...) und bestimmt, welche Fassung Cellar liefert.
+  // Verifiziert 04.08.2026 an CELEX:32016R0679.
+  if (host === "eur-lex.europa.eu") {
+    const m = (u.searchParams.get("uri") || "").match(/^CELEX:([0-9][0-9A-Za-z]*)$/i);
+    if (!m) return null;
+    const erg = { celex: m[1].toUpperCase() };
+    const spr = u.pathname.match(/\/legal-content\/([A-Z]{2})\//);
+    if (spr) erg.sprache = spr[1];
+    return erg;
+  }
+
+  return null;
+}
+
+// Cellar-RDF ohne Dokumentbaum lesen — die Worker-Umgebung hat keinen
+// XML-Parser. Der Namespace-Praefix der cdm-Ontologie ist NICHT stabil: die
+// echte Antwort vom 04.08.2026 nutzt "j.0:", und die Nummerierung kann mit
+// jeder Antwort wechseln. Die Suche toleriert deshalb jeden Praefix,
+// den Punkt in "j.0:" inbegriffen.
+function cellarAusXml(xml) {
+  if (!xml) return null;
+  const wert = (tag) => {
+    const re = new RegExp("<(?:[A-Za-z0-9._-]+:)?" + tag + "(?:\\s[^>]*)?>([\\s\\S]*?)</(?:[A-Za-z0-9._-]+:)?" + tag + ">", "i");
+    const t = re.exec(xml);
+    return t ? entzeichnen(t[1].replace(/<[^>]+>/g, "")) : "";
+  };
+  const titel = wert("expression_title") || wert("title");
+  if (!titel) return null;
+  // Die sprachliche Fassung traegt kein Datumsfeld (geprueft 04.08.2026 an
+  // 32016R0679.ENG). Das Jahr steht im amtlichen Titel ("... of 27 April
+  // 2016 ...") — dieselbe Stelle, aus der die Seitenauswertung es bei
+  // Rechtsakten ohnehin liest.
+  const imTitel = titel.match(/\b(?:vom|of|du)\s+\d{1,2}\.?\s*\S*\s*(1[5-9]\d{2}|20\d{2})\b/i)
+               || titel.match(/\b(?:EU|EG|EWG)\)?\s*(?:Nr\.?\s*)?(\d{4})\/\d+/i);
+  const sprache = wert("lang");
+  return {
+    title: titel, authors: [], year: imTitel ? imTitel[1] : "",
+    journal: "", volume: "", issue: "", firstPage: "", lastPage: "",
+    // Rechtsakte haben keinen Personenverfasser; der Traeger ist die
+    // Institution. Dieselbe Zuordnung, die die Seitenauswertung fuer
+    // europa.eu-Adressen vornimmt.
+    publisher: "Europaeische Union",
+    issn: "", isbn: "", doi: "",
+    art: "Rechtsquelle",
+    language: /^[a-z]{2}$/.test(sprache) ? sprache : "",
+    source: "",
+  };
+}
+
+// EUR-Lex beantwortet serverseitige Leser mit 202 und null Bytes (gemessen
+// 03.08.2026), aber die CELEX-Nummer in der Adresse adressiert den Datensatz
+// bei Cellar, dem Amt fuer Veroeffentlichungen der EU — derselben
+// Institution, deren Seite ohnehin abgerufen wurde. Abgerufen wird die
+// sprachliche Fassung <celex>.<SPRACHE>: Der Abruf ohne Sprachsuffix liefert
+// das volle Verknuepfungsobjekt — fuer die DSGVO am 04.08.2026 61 MB ohne
+// ein einziges Titelfeld. Die Fassung ist knapp 4 KB gross und traegt den
+// amtlichen Titel. Wirft nie; ein Fehlschlag laesst die bisherige Antwort.
+async function ausCellar(celex, sprache) {
+  // Cellar kodiert die Sprache als ISO 639-2 (ENG, DEU, ...). Die Tabelle ist
+  // der amtliche Satz der 24 EU-Amtssprachen; was nicht darin steht, faellt
+  // auf Englisch zurueck — jeder EU-Rechtsakt hat eine englische Fassung.
+  const CELLAR_SPRACHE = { EN: "ENG", DE: "DEU", FR: "FRA", IT: "ITA", ES: "SPA",
+    PT: "POR", NL: "NLD", PL: "POL", SV: "SWE", CS: "CES", SK: "SLK", SL: "SLV",
+    HU: "HUN", RO: "RUM", BG: "BUL", EL: "ELL", DA: "DAN", FI: "FIN", ET: "EST",
+    LV: "LAV", LT: "LIT", MT: "MLT", HR: "HRV", GA: "GLE" };
+  const lang = CELLAR_SPRACHE[String(sprache || "").toUpperCase()] || "ENG";
+  try {
+    const r = await fetch("https://publications.europa.eu/resource/celex/"
+        + celex + "." + lang, {
+      headers: { accept: "application/rdf+xml", "user-agent": AGENT },
+      cf: { cacheTtl: 0 },
+    });
+    if (!r.ok) return null;
+    const reg = cellarAusXml((await r.text()).slice(0, 300000));
+    if (reg && reg.title) reg.source = "Cellar, Publications Office of the EU";
+    return reg;
+  } catch (_) { return null; }
+}
+
 /** Bringt einen Registrierungssatz auf dieselbe Form wie die Seitenauswertung. */
 function vervollstaendigen(reg, url) {
   const jetzt = new Date().toISOString();
@@ -789,7 +897,11 @@ function vervollstaendigen(reg, url) {
     fullTextUrls: [], retrievedAt: jetzt,
     website: (() => { try { return new URL(url).hostname.replace(/^www\./, ""); } catch (_) { return ""; } })(),
     warning: "", source: reg.source,
-    complete: !!(reg.title && reg.authors.length && reg.year),
+    // Rechtsquellen und Koerperschaftssaetze haben keinen Personenverfasser —
+    // der Verlagstraeger zaehlt, genau wie in der Seitenauswertung. Ohne den
+    // Rueckgriff bliebe jeder Cellar-Satz unvollstaendig, obwohl die Angabe
+    // vollstaendig vorliegt.
+    complete: !!(reg.title && (reg.authors.length || reg.publisher) && reg.year),
   };
 }
 
@@ -937,20 +1049,49 @@ async function runTool(origin, name, args) {
     // DOI in der Adresse? Dann steht ein zweiter Weg offen, falls die Seite
     // sperrt — die Registrierungsstelle antwortet immer.
     const doiInUrl = (ziel.href.match(/\b10\.\d{4,9}\/[-._;()A-Za-z0-9]+/) || [])[0];
+    // SSRN, OECD und EUR-Lex tragen ihre Kennung in einer anderen Form in
+    // der Adresse (Issues #16/#17). Die Uebersetzung ist streng an die
+    // verifizierte Form gebunden; was nicht passt, bleibt unuebersetzt.
+    const kennung = kennungAusAdresse(ziel.href);
 
-    if (!r.ok) {
-      if (doiInUrl) {
-        const reg = await ausRegistrierung(doiInUrl.replace(/[.,;)]+$/, ""));
+    // Zweiter Weg, wenn die Seite selbst nicht traegt: eine DOI steht in der
+    // Adresse oder ist aus ihr ableitbar (SSRN, OECD), eine CELEX-Nummer
+    // fuehrt zu Cellar (EUR-Lex). Liefert eine fertige Antwort oder null.
+    // Wirft selbst nichts — beide Abrufe scheitern still.
+    async function kennungsAntwort(seitenGrund) {
+      const doi = doiInUrl || (kennung && kennung.doi) || null;
+      if (doi) {
+        const reg = await ausRegistrierung(doi.replace(/[.,;)]+$/, ""));
         if (reg && reg.title) {
           const q2 = vervollstaendigen(reg, ziel.href);
           return textResult(JSON.stringify({
             ...q2, ris: risAus(q2), bibtex: bibtexAus(q2),
-            note: `The page itself answered ${r.status}; these details come from the DOI `
-                + `registration agency, which is authoritative for them. Nothing was read `
-                + `from the publisher's page.`,
+            note: seitenGrund + " These details come from the DOI registration agency, "
+                + "which is authoritative for them. Nothing was read from the publisher's "
+                + "page."
+                + (doiInUrl ? "" : ` The DOI ${reg.doi || doi} was derived from the address `
+                + "itself, not read from the page."),
           }, null, 2));
         }
       }
+      if (kennung && kennung.celex) {
+        const reg = await ausCellar(kennung.celex, kennung.sprache);
+        if (reg && reg.title) {
+          const q2 = vervollstaendigen(reg, ziel.href);
+          return textResult(JSON.stringify({
+            ...q2, ris: risAus(q2), bibtex: bibtexAus(q2),
+            note: seitenGrund + " This record comes from Cellar, Publications Office of "
+                + `the EU, addressed by the CELEX number ${kennung.celex}, which was `
+                + "derived from the address itself, not read from the page.",
+          }, null, 2));
+        }
+      }
+      return null;
+    }
+
+    if (!r.ok) {
+      const antwort = await kennungsAntwort(`The page itself answered ${r.status}.`);
+      if (antwort) return antwort;
       return textResult(JSON.stringify({
         url: ziel.href, httpStatus: r.status,
         // `complete` MUSS auf jedem Rueckgabeweg stehen. Die Regel, die diese
@@ -984,6 +1125,13 @@ async function runTool(origin, name, args) {
     // meldete das Werkzeug "nur der Seitenname steht da" und schob den Grund
     // damit der Seite zu, statt die Sperre zu benennen.
     if (html.trim().length < 500) {
+      // Der Kennungsweg muss VOR der Wand-Meldung laufen: EUR-Lex antwortet
+      // mit 202 und null Bytes, waehrend die CELEX-Nummer in der Adresse
+      // steht — ohne diesen Versuch bliebe die Rechtsquelle ungelesen,
+      // obwohl Cellar den Datensatz liefert (gemessen 03./04.08.2026).
+      const antwort = await kennungsAntwort(
+        `The page itself answered ${r.status} with an empty or near-empty response.`);
+      if (antwort) return antwort;
       return textResult(JSON.stringify({
         url: r.url, httpStatus: r.status, bytes: html.length, complete: false,
         warning: "The server returned an empty or near-empty response. That is a block, "
@@ -994,12 +1142,31 @@ async function runTool(origin, name, args) {
     }
     let q = quelleAusHtml(html, r.url);
     // Sperrseite oder taube Angaben? Dann zaehlt die Registrierungsstelle.
-    if ((q.warning || !q.authors.length) && (q.doi || doiInUrl)) {
-      const reg = await ausRegistrierung((q.doi || doiInUrl).replace(/[.,;)]+$/, ""));
+    // Neben der DOI aus Seite oder Adresse auch die abgeleitete Kennung
+    // (SSRN, OECD) — derselbe Weg, nur mit der Plattform-Uebersetzung davor.
+    const doiErsatz = q.doi || doiInUrl || (kennung && kennung.doi) || null;
+    const doiAbgeleitet = !q.doi && !doiInUrl && !!(kennung && kennung.doi);
+    if ((q.warning || !q.authors.length) && doiErsatz) {
+      const reg = await ausRegistrierung(doiErsatz.replace(/[.,;)]+$/, ""));
       if (reg && reg.title && reg.authors.length) {
         q = vervollstaendigen(reg, r.url);
         q.note = "The page declared no usable citation data; these details come from the "
-               + "DOI registration agency.";
+               + "DOI registration agency."
+               + (doiAbgeleitet
+                  ? ` The DOI ${reg.doi} was derived from the address itself, not read from the page.`
+                  : "");
+      }
+    }
+    // EUR-Lex: CELEX aus der Adresse, Datensatz von Cellar. Derselbe Rang wie
+    // die DOI-Registrierung, vor dem letzten Rettungsweg ausPlattform.
+    if ((q.warning || !q.authors.length) && kennung && kennung.celex) {
+      const reg = await ausCellar(kennung.celex, kennung.sprache);
+      if (reg && reg.title) {
+        q = vervollstaendigen(reg, r.url);
+        q.note = "The page yielded no usable citation data; this record comes from Cellar, "
+               + "Publications Office of the EU, addressed by the CELEX number "
+               + kennung.celex + ", which was derived from the address itself, not read "
+               + "from the page.";
       }
     }
     // Letzter Rettungsweg vor der Rueckgabe: die Maschinenschnittstelle der

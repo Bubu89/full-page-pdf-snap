@@ -21,7 +21,7 @@ const src = readFileSync(join(HIER, "..", "worker", "mcp.js"), "utf8");
 const von = src.indexOf("function entzeichnen(");
 const bisEnde = src.indexOf("\n}\n", src.indexOf("function bibtexAus(")) + 3;
 const F = new Function('const AGENT = "test";\n' + src.slice(von, bisEnde) +
-                       "\n return { quelleAusHtml, risAus, bibtexAus, plattformAbfrage, oaiDcAusXml };")();
+                       "\n return { quelleAusHtml, risAus, bibtexAus, plattformAbfrage, oaiDcAusXml, kennungAusAdresse, cellarAusXml };")();
 
 const seite = (kopf, koerper = "x".repeat(9000)) =>
   `<html><head>${kopf}</head><body>${koerper}</body></html>`;
@@ -388,6 +388,130 @@ const SCHNITTSTELLE = [
     },
   },
 ];
+// --- Kennung aus der Adresse (Issues #16/#17) ------------------------------
+// SSRN, OECD und EUR-Lex tragen ihre Kennung in anderer Form in der Adresse
+// als das DOI-Muster 10.xxxx/. Die Uebersetzungen sind am 04.08.2026 live
+// verifiziert:
+//   - 10.2139/ssrn.3529682 gegen api.crossref.org (Brady/Bass 2019)
+//   - 10.1787/a1689dc5-en gegen api.crossref.org (OECD Digital Economy
+//     Outlook 2024 Vol. 1)
+//   - CELEX 32016R0679 gegen publications.europa.eu/resource/celex — die
+//     Fixture unten ist die WORTLICHE, vollstaendige Antwort auf
+//     resource/celex/32016R0679.ENG mit Accept: application/rdf+xml.
+// Befund dabei: der Abruf OHNE Sprachsuffix liefert ein 61-MB-
+// Verknuepfungsobjekt ohne ein einziges Titelfeld; Titel steht nur in der
+// sprachlichen Fassung (.ENG/.DEU, knapp 4 KB). Ein Datumsfeld traegt auch
+// sie nicht — das Jahr steht im amtlichen Titel.
+
+const CELLAR_ENG = `<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:j.0="http://publications.europa.eu/ontology/cdm#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:j.1="http://www.w3.org/2004/02/skos/core#"
+    xmlns:j.2="http://publications.europa.eu/ontology/cdm/cmr#" >
+  <rdf:Description rdf:about="http://publications.europa.eu/resource/celex/32016R0679.ENG">
+    <rdf:type rdf:resource="http://publications.europa.eu/ontology/cdm#expression"/>
+    <j.0:expression_title_short rdf:datatype="http://www.w3.org/2001/XMLSchema#string">gdpr, personal data, personal data protection</j.0:expression_title_short>
+    <j.0:title_short rdf:datatype="http://www.w3.org/2001/XMLSchema#string">gdpr, personal data, personal data protection</j.0:title_short>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://publications.europa.eu/resource/cellar/3e485e15-11bd-11e6-ba9a-01aa75ed71a1.0006">
+    <owl:sameAs rdf:resource="http://publications.europa.eu/resource/oj/JOL_2016_119_R_0001.RNG"/>
+    <owl:sameAs rdf:resource="http://publications.europa.eu/resource/uriserv/OJ.L_.2016.119.01.0001.01.ENG"/>
+    <owl:sameAs rdf:resource="http://publications.europa.eu/resource/celex/32016R0679.ENG"/>
+    <owl:sameAs rdf:resource="http://publications.europa.eu/resource/oj/JOL_2016_119_R_0001.ENG"/>
+    <j.2:lang rdf:datatype="http://www.w3.org/2001/XMLSchema#language">en</j.2:lang>
+    <j.2:lang rdf:datatype="http://www.w3.org/2001/XMLSchema#language">eng</j.2:lang>
+    <j.2:lastModificationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2025-02-05T16:25:55.607+01:00</j.2:lastModificationDate>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://publications.europa.eu/resource/oj/JOL_2016_119_R_0001.ENG">
+    <j.0:expression_manifested_by_manifestation rdf:resource="http://publications.europa.eu/resource/oj/JOL_2016_119_R_0001.ENG.fmx4"/>
+    <j.0:uses rdf:resource="http://publications.europa.eu/resource/authority/language/ENG"/>
+    <j.0:expression_manifested_by_manifestation rdf:resource="http://publications.europa.eu/resource/oj/JOL_2016_119_R_0001.ENG.xhtml"/>
+    <j.0:expression_belongs_to_work rdf:resource="http://publications.europa.eu/resource/oj/JOL_2016_119_R_0001"/>
+    <j.0:belongs_to rdf:resource="http://publications.europa.eu/resource/oj/JOL_2016_119_R_0001"/>
+    <j.0:expression_uses_language rdf:resource="http://publications.europa.eu/resource/authority/language/ENG"/>
+    <rdf:type rdf:resource="http://publications.europa.eu/ontology/cdm#expression"/>
+    <j.0:title>Regulation (EU) 2016/679 of the European Parliament and of the Council of 27 April 2016 on the protection of natural persons with regard to the processing of personal data and on the free movement of such data, and repealing Directive 95/46/EC (General Data Protection Regulation) (Text with EEA relevance)</j.0:title>
+    <j.0:expression_title>Regulation (EU) 2016/679 of the European Parliament and of the Council of 27 April 2016 on the protection of natural persons with regard to the processing of personal data and on the free movement of such data, and repealing Directive 95/46/EC (General Data Protection Regulation) (Text with EEA relevance)</j.0:expression_title>
+    <j.0:expression_manifested_by_manifestation rdf:resource="http://publications.europa.eu/resource/oj/JOL_2016_119_R_0001.ENG.pdfa1a"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://publications.europa.eu/resource/authority/language/ENG">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <rdf:type rdf:resource="http://publications.europa.eu/ontology/cdm#language"/>
+    <j.1:inScheme rdf:resource="http://publications.europa.eu/resource/authority/language"/>
+    <j.0:language_used_by_expression rdf:resource="http://publications.europa.eu/resource/oj/JOL_2016_119_R_0001.ENG"/>
+  </rdf:Description>
+</rdf:RDF>`;
+
+const KENNUNG = [
+  {
+    name: "SSRN: abstract_id wird zu 10.2139/ssrn.<id> (Issue #16)",
+    reg: () => F.kennungAusAdresse("https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3529682"),
+    pruefe: (k) => [
+      [k && k.doi === "10.2139/ssrn.3529682", `doi=${k && k.doi}`],
+    ],
+  },
+  {
+    name: "OECD: _<slug>-<sprache>.html wird zu 10.1787/<slug> (Issue #16)",
+    reg: () => F.kennungAusAdresse("https://www.oecd.org/en/publications/oecd-digital-economy-outlook-2024-volume-1_a1689dc5-en.html"),
+    pruefe: (k) => [
+      [k && k.doi === "10.1787/a1689dc5-en", `doi=${k && k.doi}`],
+    ],
+  },
+  {
+    name: "EUR-Lex: CELEX aus dem uri-Parameter (Issue #17)",
+    reg: () => F.kennungAusAdresse("https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679"),
+    pruefe: (k) => [
+      [k && k.celex === "32016R0679", `celex=${k && k.celex}`],
+      [k && k.sprache === "EN", `sprache=${k && k.sprache} (steht im Pfad)`],
+    ],
+  },
+  {
+    name: "SSRN ohne abstract_id: kein Rateversuch",
+    reg: () => F.kennungAusAdresse("https://papers.ssrn.com/sol3/papers.cfm"),
+    pruefe: (k) => [[k === null, `unerwartet uebersetzt: ${k && JSON.stringify(k)}`]],
+  },
+  {
+    name: "oecd.org ohne Slug-Form: kein Rateversuch",
+    reg: () => F.kennungAusAdresse("https://www.oecd.org/en/about.html"),
+    pruefe: (k) => [[k === null, `unerwartet uebersetzt: ${k && JSON.stringify(k)}`]],
+  },
+  {
+    name: "Fremder Host mit aehnlicher Form bleibt unuebersetzt",
+    reg: () => true,
+    pruefe: () => [
+      [F.kennungAusAdresse("https://example.org/x_a1689dc5-en.html") === null, "oecd-aehnlicher Pfad auf fremdem Host"],
+      [F.kennungAusAdresse("https://notssrn.com/sol3/papers.cfm?abstract_id=3529682") === null, "ssrn-aehnlicher Host"],
+      [F.kennungAusAdresse("https://eur-lex.europa.eu.example.com/legal-content/EN/TXT/?uri=CELEX%3A32016R0679") === null, "eur-lex im Hostnamen versteckt"],
+    ],
+  },
+  {
+    name: "Cellar-RDF: Titel, Jahr und Traeger aus der echten Antwort",
+    reg: () => F.cellarAusXml(CELLAR_ENG),
+    pruefe: (r) => [
+      [!!r, "kein Datensatz erkannt"],
+      [r && /^Regulation \(EU\) 2016\/679/.test(r.title), `Titel=${r && (r.title || "").slice(0, 60)}`],
+      [r && /General Data Protection Regulation/.test(r.title), "Titel abgeschnitten"],
+      [r && r.year === "2016", `Jahr=${r && r.year} (steht im Titel, die Fassung traegt kein Datumsfeld)`],
+      [r && r.art === "Rechtsquelle", `art=${r && r.art}`],
+      [r && r.publisher === "Europaeische Union", `Traeger=${r && r.publisher}`],
+      [r && r.language === "en", `Sprache=${r && r.language}`],
+      // title_short ("gdpr, personal data, ...") darf nicht als Titel
+      // durchgehen — es ist ein Schlagwortfeld, kein Werktitel.
+      [r && !/^gdpr,/.test(r.title), `Kurztitel als Titel: ${r && r.title}`],
+    ],
+  },
+  {
+    name: "Cellar-RDF kaputt oder ohne Titel: kein Datensatz",
+    reg: () => true,
+    pruefe: () => [
+      [F.cellarAusXml("") === null, "leere Antwort als Satz gewertet"],
+      [F.cellarAusXml("<rdf:RDF><rdf:Description><j.0:title_short>nur ein Schlagwort</j.0:title_short></rdf:Description></rdf:RDF>") === null,
+        "title_short allein ist kein Datensatz"],
+      [F.cellarAusXml("gar kein XML") === null, "Muell als Satz gewertet"],
+    ],
+  },
+];
 
 
 let gruen = 0, rot = 0;
@@ -403,7 +527,7 @@ for (const f of FAELLE) {
     for (const [, wie] of fehler) console.log(`          ${wie}`);
   }
 }
-for (const f of SCHNITTSTELLE) {
+for (const f of SCHNITTSTELLE.concat(KENNUNG)) {
   const reg = f.reg();
   const fehler = f.pruefe(reg).filter(([ok]) => !ok);
   if (fehler.length === 0) { gruen++; console.log(`  ok    ${f.name}`); }
@@ -413,5 +537,5 @@ for (const f of SCHNITTSTELLE) {
     for (const [, wie] of fehler) console.log(`          ${wie}`);
   }
 }
-console.log(`\n  ${gruen} von ${FAELLE.length + SCHNITTSTELLE.length} bestanden${rot ? `, ${rot} fehlgeschlagen` : ""}`);
+console.log(`\n  ${gruen} von ${FAELLE.length + SCHNITTSTELLE.length + KENNUNG.length} bestanden${rot ? `, ${rot} fehlgeschlagen` : ""}`);
 process.exit(rot ? 1 : 0);
