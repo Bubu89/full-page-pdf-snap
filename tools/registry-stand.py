@@ -21,22 +21,36 @@ LOKAL = Path(__file__).resolve().parent.parent / "server.json"
 
 
 def fern(name):
-    """Fassung und Zustand des Eintrags, oder (None, None) wenn es keinen gibt."""
+    """Fassung und Zustand des NEUESTEN Eintrags, sonst (None, None).
+
+    Die Registry behaelt alte Fassungen und liefert sie mit — der erste
+    Treffer ist nicht der aktuelle. Ein erster Entwurf nahm ihn trotzdem und
+    meldete eine erfolgreiche Veroeffentlichung als fehlgeschlagen: publiziert
+    war 1.22.0, gelesen wurde das danebenliegende 1.21.0. Massgeblich ist
+    `isLatest` im Metadatenblock.
+    """
     frage = name.split("/")[-1]
     try:
-        with urllib.request.urlopen(f"{REGISTRY}?search={frage}&limit=30",
+        with urllib.request.urlopen(f"{REGISTRY}?search={frage}&limit=50",
                                     timeout=30) as a:
             d = json.load(a)
     except (urllib.error.URLError, TimeoutError) as e:
         print(f"  Registry nicht erreichbar: {e}")
         return None, None
+
+    treffer = []
     for e in d.get("servers") or []:
-        if e["server"]["name"] == name:
-            zustand = (e.get("_meta", {})
-                        .get("io.modelcontextprotocol.registry/official", {})
-                        .get("status"))
-            return e["server"]["version"], zustand
-    return None, None
+        if e["server"]["name"] != name:
+            continue
+        meta = e.get("_meta", {}).get("io.modelcontextprotocol.registry/official", {})
+        treffer.append((meta.get("isLatest") is True,
+                        str(meta.get("publishedAt") or ""),
+                        e["server"]["version"], meta.get("status")))
+    if not treffer:
+        return None, None
+    # isLatest zuerst, dann das juengste Veroeffentlichungsdatum als Rueckfall.
+    treffer.sort(key=lambda x: (x[0], x[1]), reverse=True)
+    return treffer[0][2], treffer[0][3]
 
 
 def main():
