@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.15.1";
+const VERSION = "1.16.0";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -1466,6 +1466,54 @@ async function runTool(origin, name, args) {
       // Wer als Nutzer in der Store-Statistik zaehlen will, darf NICHT
       // entpackt laden — die beiden Wege zur echten Store-Installation,
       // beide am 2026-08-03 auf echten Windows-Browsern vermessen.
+      // Welche Einstellung zu welcher Quelle passt. Gemessen am 4. August 2026
+      // an einer Textseite: Schwarzweiss bringt die Datei auf 8,5 % der
+      // JPEG-Fassung, und die Texterkennung liest 989 Woerter statt 987 —
+      // OCR binarisiert ohnehin, Farbe ist Arbeit, die sie wegwirft. Auf einer
+      // Bildseite faellt dieselbe Einstellung auf SSIM 0,199.
+      //
+      // Warum das hier steht und nicht nur in den Einstellungen: Ein Agent
+      // waehlt die Aufnahme fuer eine Quelle, deren Art er in diesem Moment
+      // kennt. Spaeter weiss es niemand mehr.
+      captureSettings: {
+        why: "The file that comes out is between 8.5 % and 100 % of the same "
+           + "capture, depending on one setting. For a folder of sources that "
+           + "is the difference between 50 MB and 300 MB.",
+        colourDepth: {
+          "black and white": {
+            forWhat: "statutes, standards, repository records, tables, any page "
+                   + "that is text on a plain background",
+            size: "about 8.5 % of the colour capture",
+            ocr: "989 words read back against 987 in colour — slightly better, "
+               + "because OCR binarises the image anyway",
+          },
+          greyscale: {
+            forWhat: "text with photographs where the colour carries no meaning",
+            size: "about 58 %",
+            ocr: "unchanged",
+          },
+          colour: {
+            forWhat: "figures, maps, charts, anything where colour IS the "
+                   + "information — a legend keyed by colour is unreadable "
+                   + "without it",
+            size: "the reference",
+            note: "the default, because black and white destroys an image page "
+                + "(structural similarity 0.199)",
+          },
+        },
+        alsoWorthSetting: {
+          "citation details": "writes authors, DOI, licence and retrieval time "
+                            + "into the PDF and an RIS record beside it",
+          "provenance line": "prints URL, retrieval time and a SHA-256 of the "
+                           + "image under the capture",
+          "hide sticky headers": "otherwise a fixed bar repeats on every segment",
+        },
+        availability: "Colour depth ships in 2.28.0. The stores currently serve "
+                    + "2.26.0 (Firefox) and 2.17.0 (Chrome); no date is promised "
+                    + "here. Everything else in this block is in the published "
+                    + "builds.",
+        measurement: SITE + "/notes/smaller-files-better-ocr/",
+      },
       countedInstall: {
         why: "An unpacked load (loadIntoYourOwnBrowser) never touches a store and counts "
            + "nowhere. AMO usage figures come from Firefox telemetry and its download counts "
