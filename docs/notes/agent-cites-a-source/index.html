@@ -66,43 +66,26 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "TechArticle",
-  "headline": "How an AI agent turns a web page into a citable PDF",
-  "description": "An agent asked to cite a source meets a paywall, a login or a page built by script, and an anonymous fetch returns nothing citable — 10 of 20 sources in our own test. Measured 4 August 2026: installing the capture extension takes 0.12 s in Firefox and 5.49 s in Chrome, with no window and no input event, and removing it is the same route backwards. What that gives an agent, what it does not, and the mistake that kept it hidden.",
-  "datePublished": "2026-08-04",
-  "dateModified": "2026-08-04",
-  "inLanguage": "en",
+  "@type": "Dataset",
+  "name": "Installing and uninstalling a browser extension without a click, both browsers, 2026-08-04",
+  "description": "One install-and-remove cycle per browser, measured with no visible window and no synthetic input event. Firefox over Marionette: install 0.12 s, uninstall 0.10 s, whole cycle 5.16 s including process start. Chrome over the external extension marker: marker written 0.00 s, store build fetched and registered 5.49 s. Verified by reading the profile, not by the command's return code. One run each, no averages.",
   "url": "https://provinglab.dev/notes/agent-cites-a-source/",
-  "author": {"@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/"},
-  "publisher": {"@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/"},
-  "keywords": "MCP server, Model Context Protocol, AI agent automation, citable PDF, web page archiving, source citation, DOI extraction, RIS export, Zotero, Citavi, EndNote, OCR, browser extension, headless install, Firefox, Chrome, retrieval date, provenance, literature review, thesis research",
-  "about": [
-    {"@type": "Thing", "name": "Model Context Protocol"},
-    {"@type": "Thing", "name": "Citation management"},
-    {"@type": "Thing", "name": "Web archiving"}
+  "datePublished": "2026-08-04",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "creator": {"@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/"},
+  "measurementTechnique": "Marionette remote protocol over TCP 2828; Chromium external extension marker with external_update_url",
+  "variableMeasured": [
+    {"@type": "PropertyValue", "name": "Firefox install", "value": 0.12, "unitText": "s"},
+    {"@type": "PropertyValue", "name": "Firefox uninstall", "value": 0.10, "unitText": "s"},
+    {"@type": "PropertyValue", "name": "Chrome install", "value": 5.49, "unitText": "s"},
+    {"@type": "PropertyValue", "name": "Visible windows", "value": 0},
+    {"@type": "PropertyValue", "name": "Synthetic input events", "value": 0}
   ],
-  "mainEntity": {
-    "@type": "HowTo",
-    "name": "Install the capture extension without a click",
-    "totalTime": "PT6S",
-    "step": [
-      {"@type": "HowToStep", "name": "Ask the endpoint",
-       "text": "Call install_extension at https://provinglab.dev/mcp. It returns the file shapes and commands for Firefox and Chrome, in both directions."},
-      {"@type": "HowToStep", "name": "Firefox",
-       "text": "Start Firefox with -headless -no-remote -marionette and send Addon:Install over TCP 2828. Measured 0.12 s; Addon:Uninstall removes it in 0.10 s without a restart."},
-      {"@type": "HowToStep", "name": "Chrome",
-       "text": "Write a marker file with external_update_url into the browser's extensions directory. Chrome fetches and verifies the signed store build itself. Measured 5.49 s."},
-      {"@type": "HowToStep", "name": "Verify",
-       "text": "Read extensions.json in the Firefox profile, or the versioned directory under Default/Extensions in Chrome. A command that returns without error is not proof."}
-    ]
-  },
-  "citation": [
-    {"@type": "Dataset",
-     "name": "Install and uninstall in both directions, both browsers, 2026-08-04",
-     "license": "https://creativecommons.org/licenses/by/4.0/",
-     "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json",
-       "contentUrl": "https://provinglab.dev/data/2026-08-04-install-uninstall-beide-richtungen.json"}]}
-  ]
+  "distribution": [{
+    "@type": "DataDownload",
+    "encodingFormat": "application/json",
+    "contentUrl": "https://provinglab.dev/data/2026-08-04-install-uninstall-beide-richtungen.json"
+  }]
 }
 </script>
 

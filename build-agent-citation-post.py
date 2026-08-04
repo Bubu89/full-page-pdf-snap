@@ -48,9 +48,16 @@ def anpassen(kopf):
                lambda m: m.group(1) + URL + '"', k)
     k = re.sub(r'(<meta property="article:published_time" content=")[^"]*"',
                lambda m: m.group(1) + '2026-08-04"', k)
-    # Der strukturierte Datensatz wird vollstaendig ersetzt: Der geerbte
-    # beschreibt eine Messung mit Datensatz, dieser Beitrag ist ein Verfahren.
-    k = re.sub(r'<script type="application/ld\+json">.*?</script>', LD, k, flags=re.S)
+    # Die Vorlage traegt ZWEI Datensaetze: einen TechArticle und einen
+    # Dataset. Ein re.sub ohne count ersetzte beide durch denselben Block —
+    # zwei identische TechArticle, und der Dataset-Eintrag, ueber den die
+    # Messdatei in Datensuchen gefunden wird, war weg. Jeder wird einzeln
+    # ersetzt.
+    # Beide in EINEM Durchgang: zwei aufeinanderfolgende count=1-Aufrufe
+    # treffen zweimal denselben Block, weil der zweite wieder vorne anfaengt.
+    ersatz = iter([LD, DATENSATZ])
+    k = re.sub(r'<script type="application/ld\+json">.*?</script>',
+               lambda _: next(ersatz), k, flags=re.S)
     return k
 
 
@@ -97,6 +104,32 @@ LD = """<script type="application/ld+json">
 }
 </script>""" % (BESCHREIBUNG, URL)
 
+
+DATENSATZ = """<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Installing and uninstalling a browser extension without a click, both browsers, 2026-08-04",
+  "description": "One install-and-remove cycle per browser, measured with no visible window and no synthetic input event. Firefox over Marionette: install 0.12 s, uninstall 0.10 s, whole cycle 5.16 s including process start. Chrome over the external extension marker: marker written 0.00 s, store build fetched and registered 5.49 s. Verified by reading the profile, not by the command's return code. One run each, no averages.",
+  "url": "https://provinglab.dev/notes/agent-cites-a-source/",
+  "datePublished": "2026-08-04",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "creator": {"@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/"},
+  "measurementTechnique": "Marionette remote protocol over TCP 2828; Chromium external extension marker with external_update_url",
+  "variableMeasured": [
+    {"@type": "PropertyValue", "name": "Firefox install", "value": 0.12, "unitText": "s"},
+    {"@type": "PropertyValue", "name": "Firefox uninstall", "value": 0.10, "unitText": "s"},
+    {"@type": "PropertyValue", "name": "Chrome install", "value": 5.49, "unitText": "s"},
+    {"@type": "PropertyValue", "name": "Visible windows", "value": 0},
+    {"@type": "PropertyValue", "name": "Synthetic input events", "value": 0}
+  ],
+  "distribution": [{
+    "@type": "DataDownload",
+    "encodingFormat": "application/json",
+    "contentUrl": "https://provinglab.dev/data/2026-08-04-install-uninstall-beide-richtungen.json"
+  }]
+}
+</script>"""
 
 KOERPER = """<div class="wrap">
 <article>
