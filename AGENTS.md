@@ -16,6 +16,12 @@ Das ist keine Stilfrage, sondern die Bedingung, unter der die Seite zitiert
 werden kann. Ein Beitrag, der eine Zahl ohne Beleg einführt, ist schädlicher als
 kein Beitrag.
 
+## Wo du stehst
+
+[STAND.md](STAND.md) — was gebaut ist, was offen ist, was beim Anfassen leicht
+schiefgeht. Gedacht fuer den Einstieg ohne Vorgeschichte. Die Reihenfolge der
+offenen Arbeit steht in [PLAN-ERWEITERUNG.md](PLAN-ERWEITERUNG.md).
+
 ## Vor der ersten Änderung
 
 ```bash
