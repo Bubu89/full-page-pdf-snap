@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.18.0";
+const VERSION = "1.18.1";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -1683,6 +1683,50 @@ async function runTool(origin, name, args) {
            + "Alt+Shift+Y on a NORMAL page (the store pages themselves are restricted "
            + "domains), and close the window cleanly — a hard kill between Add and a clean "
            + "shutdown lost the whole install in the measurement.",
+        // Der einzige gemessene Weg OHNE Klick und ohne Fenster. Steht hier
+        // ausgeschrieben, weil ein Agent sonst nur eine Store-Adresse zum
+        // Anklicken bekommt — geprueft am 4. August 2026, und genau das war
+        // der Fall.
+        routeHeadless: {
+          measured: "Firefox 4.1 s, Chrome 10.7 s, 2026-08-04. No window, no "
+                  + "input event, no administrator rights.",
+          firefox: {
+            file: "<firefox directory>/distribution/policies.json",
+            shape: {
+              policies: {
+                ExtensionSettings: {
+                  "pageshot-pdf@bubu89.local": {
+                    installation_mode: "normal_installed",
+                    install_url: "<signed xpi url from the AMO API>",
+                  },
+                },
+              },
+            },
+            xpiFrom: "https://addons.mozilla.org/api/v5/addons/addon/"
+                   + "full_page_pdf_snap_webpagesave/ -> "
+                   + "current_version.file.url",
+            remove: "set installation_mode to blocked, restart",
+          },
+          chrome: {
+            file: "<chrome directory>/extensions/"
+                + "ekjbgcdhpgijhbepkagefnkdbdfjpehn.json",
+            shape: { external_update_url:
+              "https://clients2.google.com/service/update2/crx" },
+            note: "Chrome fetches the store build itself and verifies the "
+                + "signature. No CDP command does this: Extensions.install "
+                + "does not exist (-32601).",
+            remove: "rename the file, restart",
+          },
+          rights: "None needed when the browser belongs to the agent. A system "
+                + "install refuses in both browsers — the line runs between "
+                + "whose browser it is, not between rights.",
+          alsoSetsOptions: "The same policies.json can carry "
+                         + "3rdparty.Extensions. Call recommend_settings for "
+                         + "the values.",
+          templates: SITE.replace("provinglab.dev",
+            "github.com/Bubu89/full-page-pdf-snap/tree/main/vorlagen")
+            .replace("https://https://", "https://"),
+        },
         routePolicy: "For fleets: install-store-version.py in the repo writes ExtensionSettings "
            + "(Firefox) / ExtensionInstallForcelist (Chrome) with --check and --remove. On "
            + "machines where the per-user policy hive is ACL-locked, use routeUi — it needs "
