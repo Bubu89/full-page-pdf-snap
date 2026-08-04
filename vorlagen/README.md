@@ -91,7 +91,7 @@ Läuft eine dieser Vorlagen auf Ihrer Plattform nicht, ist das der nützlichere
 Befund: [Issue 12](https://github.com/Bubu89/full-page-pdf-snap/issues/12)
 sammelt Gegenmessungen. macOS ist bisher ungeprüft.
 
-Sechs der offenen Issues sind mit `agent-friendly` versehen — abgegrenzt,
+Die mit `agent-friendly` versehenen Issues sind — abgegrenzt,
 prüfbar, und jedes nennt, welcher Beleg die Frage entscheiden würde. Sie kommen
 auch aus dem Endpunkt:
 
