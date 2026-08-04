@@ -470,6 +470,12 @@ function verifyCoverage(label, positions, viewH, maxScroll) {
 
 async function captureFullPageInner(tab, settings) {
   // Textebene: wird im selben Seitenzustand gesammelt wie die Bilder.
+  // Was angefordert war und nicht kam. Ein PDF ohne Textebene sieht aus wie
+  // eines mit — der Unterschied faellt erst auf, wenn jemand Monate spaeter
+  // darin sucht. Am 4. August 2026 kamen zwei Aufnahmen von einem
+  // Android-Geraet zurueck: keine Textebene, keine Quellenangaben, keine
+  // Meldung. Beide Aufrufe waren in try/catch, das nur ins Protokoll schrieb.
+  const fehlteStill = [];
   let textWoerter = null;
   let textBloecke = [];
   let quelle = null;
@@ -670,9 +676,13 @@ async function captureFullPageInner(tab, settings) {
           quelle = src.quelle;
           log("Quelle:", quelle.art, "—", quelle.herkunft,
               quelle.vollstaendig ? "(vollstaendig)" : "(unvollstaendig)");
+        } else {
+          // Die Seite gibt nichts her — kein Fehler, aber auch kein Beleg.
+          fehlteStill.push({ was: "quelle", grund: "die Seite deklariert keine" });
         }
       } catch (e) {
         log("Quellenangaben nicht verfuegbar:", e && e.message);
+        fehlteStill.push({ was: "quelle", grund: (e && e.message) || "unbekannt" });
       }
     }
     if (settings.textLayer !== false) {
@@ -684,9 +694,12 @@ async function captureFullPageInner(tab, settings) {
           textSeiteBreite = tl.seite && tl.seite.w ? tl.seite.w : 0;
           log("Textebene:", textWoerter.length, "Woerter,", textBloecke.length,
               "Bloecke, Seitenbreite", textSeiteBreite);
+        } else {
+          fehlteStill.push({ was: "textebene", grund: "kein Text zurueckgeliefert" });
         }
       } catch (e) {
         log("Textebene nicht verfuegbar:", e && e.message);
+        fehlteStill.push({ was: "textebene", grund: (e && e.message) || "unbekannt" });
       }
     }
   } finally {
@@ -705,11 +718,18 @@ async function captureFullPageInner(tab, settings) {
                                  [0].concat(side.shots.map(s2 => s2.y)),
                                  side.rect.h, side.rect.max));
   }
+  // Was still fehlte, gehoert in dieselbe Meldung wie eine luckenhafte
+  // Abdeckung: beides macht das PDF unbrauchbarer, als es aussieht.
+  const NAMEN = { textebene: "Textebene", quelle: "Quellenangaben" };
+  const stilleLuecken = fehlteStill.map(
+    f => (NAMEN[f.was] || f.was) + " (" + f.grund + ")");
+
   const unvollstaendig = coverage.filter(c => !c.ok);
-  if (unvollstaendig.length) {
-    log("WARNUNG: unvollstaendige Abdeckung —", unvollstaendig.map(c => c.meldung).join(" | "));
+  if (unvollstaendig.length || stilleLuecken.length) {
+    const teile = unvollstaendig.map(c => c.meldung).concat(stilleLuecken);
+    log("WARNUNG: unvollstaendig —", teile.join(" | "));
     notifyHint("Teile der Seite konnten nicht vollstaendig erfasst werden: "
-               + unvollstaendig.map(c => c.meldung).join(" · "));
+               + teile.join(" · "));
   } else {
     log("Abdeckung vollstaendig in allen", coverage.length, "Scroll-Ebene(n).");
   }
