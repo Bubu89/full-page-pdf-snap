@@ -121,6 +121,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://provinglab.dev/notes/agent-cites-a-source/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://provinglab.dev/notes/building-with-ai-what-went-wrong/</loc>
     <lastmod>2026-08-03</lastmod>
     <changefreq>yearly</changefreq>

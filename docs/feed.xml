@@ -18,6 +18,14 @@
     <summary type="text">Twelve closed, seven open. The valuable ones were not features: a published comparison that understated our own tool for two days, a hardcoded version that let the Chrome build fall fifteen releases behind, and a checksum that nearly started hashing an empty field. What a project looks like when the checks find more than the people do.</summary>
   </entry>
   <entry>
+    <title>How an AI agent turns a web page into a citable PDF — install, configure and remove, without a click</title>
+    <id>https://provinglab.dev/notes/agent-cites-a-source/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/agent-cites-a-source/"/>
+    <published>2026-08-04T00:00:00Z</published>
+    <updated>2026-08-04T00:00:00Z</updated>
+    <summary type="text">An agent asked to cite a source meets a paywall, a login or a page built by script, and an anonymous fetch returns nothing citable — 10 of 20 sources in our own test. Measured 4 August 2026: installing the capture extension takes 0.12 s in Firefox and 5.49 s in Chrome, with no window and no input event, and removing it is the same route backwards. What that gives an agent, what it does not, and the mistake that kept it hidden.</summary>
+  </entry>
+  <entry>
     <title>An agent can install an extension in both browsers. Whether it may is a different question</title>
     <id>https://provinglab.dev/notes/what-an-agent-may-install/</id>
     <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/what-an-agent-may-install/"/>

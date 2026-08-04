@@ -20,6 +20,7 @@ measurements. Disclosed on every page where it is relevant.
 
 ## Notes
 
+- [How an AI agent turns a web page into a citable PDF](https://provinglab.dev/notes/agent-cites-a-source/): An agent building a bibliography fails on the sources that need a session — a login, a paywall, a page assembled by script.
 - [Pages that are gone before you need them: eight moments in a degree](https://provinglab.dev/notes/pages-gone-before-you-need-them/): Eight recurring situations in a degree where something on screen becomes evidence later — the submission receipt, a course room that closes, the version of an examination regulation that applied at enrolment, a …
 - [Six things went wrong building software with an AI assistant in one day](https://provinglab.dev/notes/building-with-ai-what-went-wrong/): A logged account of six failures in one working day: a wrong generalisation from Chrome to Firefox (Firefox MV3 uses event pages, not service workers, so an entire rewrite was unnecessary), a factual claim about a …
 
