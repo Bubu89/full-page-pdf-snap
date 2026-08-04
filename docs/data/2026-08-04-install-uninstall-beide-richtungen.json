@@ -1,0 +1,81 @@
+{
+  "gemessen_am": "2026-08-04",
+  "frage": "Kann ein Agent die Erweiterung ohne Fenster, ohne Klick und ohne Administratorrechte installieren UND wieder entfernen — in Firefox und in Chrome?",
+  "ergebnis": "ja, beide Richtungen, beide Browser",
+  "methode": {
+    "werkzeug": "tools/erweiterung-fernsteuern.py, Unterbefehl 'rundlauf'",
+    "kontrolle": "Nach dem Start wird das MainWindowHandle des eigenen Prozesses gelesen; ein gesetztes Handle bricht den Lauf ab. Headless ist eine Zusage, kein Ergebnis.",
+    "verifikation": "Firefox: extensions.json im Profil, Feld active. Chrome: Verzeichnis Default/Extensions/<id>/<version>/. Ein fehlerfrei quittierter Befehl gilt nicht als Nachweis.",
+    "einschraenkung": "Je ein Lauf pro Browser, kein Mittelwert. Die Prozessstartzeit dominiert und schwankt mit dem Maschinenzustand; die Befehlszeiten sind der stabile Teil."
+  },
+  "firefox": {
+    "kanal": "Marionette (TCP 2828, laengenpraefixiertes JSON)",
+    "browser": "C:\\Program Files\\Mozilla FirefoxESR\\firefox.exe",
+    "profil": "frisches ESR-Profil aus profiles.ini",
+    "sichtbares_fenster": false,
+    "eingabe_ereignisse": 0,
+    "schritte": [
+      {
+        "schritt": "XPI aus dem Store",
+        "ok": true,
+        "sekunden": 0.52,
+        "detail": "2.26.0, 160918 B, sha256:c24089760def33b6"
+      },
+      {
+        "schritt": "Addon:Uninstall",
+        "ok": true,
+        "sekunden": 4.64,
+        "detail": "0.1s, Befehl ohne Fehler quittiert"
+      },
+      {
+        "schritt": "Addon:Install",
+        "ok": true,
+        "sekunden": 0.0,
+        "detail": "0.12s, Profil meldet 2.26.0"
+      }
+    ],
+    "gesamt_sekunden": 5.16,
+    "zustand_danach": {
+      "version": "2.26.0",
+      "aktiv": true,
+      "quelle": "app-profile"
+    }
+  },
+  "chrome": {
+    "kanal": "External-Extension-Marker",
+    "browser": "Chromium 1208 (Playwright-Build), Linux",
+    "profil": "eigenes Profilverzeichnis unter /tmp",
+    "sichtbares_fenster": false,
+    "eingabe_ereignisse": 0,
+    "schritte": [
+      {
+        "schritt": "Marker zurueckgenommen",
+        "ok": true,
+        "sekunden": 0.0,
+        "detail": "als .json.disabled umbenannt, nicht geloescht"
+      },
+      {
+        "schritt": "Marker gesetzt",
+        "ok": true,
+        "sekunden": 0.0,
+        "detail": "external_update_url auf den Store"
+      },
+      {
+        "schritt": "Chrome hat geholt",
+        "ok": true,
+        "sekunden": 5.49,
+        "detail": "Profil meldet 2.17.0"
+      }
+    ],
+    "zustand_danach": {
+      "version": "2.17.0",
+      "pfad": "/tmp/pl-chrome-profil/Default/Extensions/ekjbgcdhpgijhbepkagefnkdbdfjpehn"
+    }
+  },
+  "was_das_nicht_zeigt": [
+    "Ob eine so ausgeloeste Installation in der Nutzerstatistik des Stores erscheint — ungemessen.",
+    "macOS: ungeprueft.",
+    "Die Aufnahme selbst (activeTab) braucht ein echtes Eingabeereignis und ist hier nicht Gegenstand."
+  ],
+  "lizenz": "CC BY 4.0"
+}

@@ -517,7 +517,15 @@ def pruefe_endpunkt(befunde):
     t = wk.read_text(encoding="utf-8")
 
     def block(name):
-        """Den Textbereich eines Werkzeugbausteins herausschneiden."""
+        """Den Textbereich eines Werkzeugbausteins herausschneiden.
+
+        Die Grenze wird ueber die Klammerbilanz bestimmt, nicht ueber eine
+        feste Zeichenzahl. Das vorherige 4000-Zeichen-Fenster meldete am
+        4. August einen Hinweis als fehlend, der 4123 Zeichen hinter dem
+        Blockanfang stand — ein Fehlalarm, der entstand, weil der Block
+        wuchs. Eine Pruefung, deren Ergebnis von der Laenge des geprueften
+        Texts abhaengt, misst die Laenge und nicht die Sache.
+        """
         # Bausteine stehen als `name: {` ODER `name = {` im Quelltext. Der
         # erste Entwurf kannte nur die erste Form und meldete drei Bausteine
         # als fehlend, die vorhanden waren.
@@ -527,8 +535,18 @@ def pruefe_endpunkt(befunde):
                 break
         else:
             return ""
-        # Bis zum naechsten Baustein auf gleicher Ebene, hoechstens 4000 Zeichen.
-        return t[i:i + 4000]
+        start = t.find("{", i)
+        if start < 0:
+            return t[i:i + 4000]
+        tiefe = 0
+        for k in range(start, len(t)):
+            if t[k] == "{":
+                tiefe += 1
+            elif t[k] == "}":
+                tiefe -= 1
+                if tiefe == 0:
+                    return t[i:k + 1]
+        return t[i:]
 
     pflichten = [
         ("routeHeadless", "storeCounts",
