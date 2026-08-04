@@ -132,10 +132,38 @@ async function getDefaults() {
 
 const DEFAULTS = DEFAULTS_DESKTOP;
 
+/* Vom Administrator vorgegebene Einstellungen.
+ *
+ * Der Weg, auf dem jemand die Erweiterung einrichtet, ohne sie zu bedienen:
+ * In Firefox stehen sie in `policies.json` unter `3rdparty.Extensions`, in
+ * Chrome in der Unternehmensrichtlinie. Dieselbe Datei, die die Erweiterung
+ * installiert, kann sie damit auch einstellen.
+ *
+ * Bis 2.29.0 gab es das nicht — wer die Einstellungen setzen wollte, musste
+ * die Optionsseite oeffnen und klicken. Fuer einen Agenten hiess das: die
+ * Empfehlung von `recommend_settings` kennen und sie nicht anwenden koennen.
+ *
+ * Vorrang: vorgegeben schlaegt lokal schlaegt Voreinstellung. Das ist die
+ * uebliche Reihenfolge und die einzige, die Sinn ergibt — wer eine Vorgabe
+ * macht, will nicht, dass sie beim naechsten Klick verschwindet.
+ */
+async function getManaged() {
+  try {
+    if (!browser.storage.managed) return {};
+    const m = await browser.storage.managed.get();
+    return (m && typeof m === "object") ? m : {};
+  } catch (e) {
+    // Ohne hinterlegte Richtlinie wirft Firefox hier. Das ist der Normalfall
+    // und kein Fehler — es gibt schlicht keine Vorgabe.
+    return {};
+  }
+}
+
 async function getSettings() {
   const defs = await getDefaults();
   const stored = await browser.storage.local.get(defs);
-  const merged = { ...defs, ...stored };
+  const managed = await getManaged();
+  const merged = { ...defs, ...stored, ...managed };
   // Android-Safety: 'show'/'both' funktionieren dort nicht (downloads.show fehlt).
   // Falls Settings von Desktop-Sync hierher landen, mappen wir auf 'open'.
   const p = await getPlatform();

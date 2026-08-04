@@ -1,3 +1,36 @@
+## 2026-08-04 — Vorgegebene Einstellungen, und Vorlagen zum Kopieren
+
+**Die Luecke.** `recommend_settings` sagt einem Agenten seit heute, welche
+Einstellung zu welcher Quelle passt. Anwenden konnte er sie nicht: Die
+Erweiterung las ausschliesslich `storage.local`, und das faellt nur ueber die
+Optionsseite — also ueber Klicks, die ein Agent ohne Eingabe-Ebene nicht hat.
+
+**Behoben.** `getSettings()` liest jetzt zusaetzlich `storage.managed`.
+Vorrang: vorgegeben schlaegt lokal schlaegt Voreinstellung. In Firefox kommen
+die Werte aus `policies.json` unter `3rdparty.Extensions`, in Chrome aus der
+Unternehmensrichtlinie — **dieselbe Datei, die die Erweiterung installiert,
+stellt sie damit auch ein.**
+
+**Neu: `vorlagen/`.** Drei Dateien zum Kopieren, jede installiert und
+konfiguriert in einem Zug:
+
+- `firefox-policies.json` — ExtensionSettings mit `install_url` plus die
+  Einstellungen des Profils *citation*
+- `chrome-external-extension.json` — der Marker, mit dem Chrome die Fassung
+  selbst aus dem Web Store holt
+- `chrome-managed-settings.json` — die Einstellungen fuer die
+  Chrome-Richtlinie
+
+**Praktisch geprueft, nicht nur geschrieben.** Die Firefox-Vorlage in ein
+Verzeichnis gelegt, Firefox headless gestartet, 25 Sekunden gewartet: Die
+Erweiterung stand als 2.26.0 im Profil, aktiv, `location: app-profile`. Kein
+Klick, kein Fenster.
+
+**Was daran noch nicht geprueft ist:** ob die `3rdparty`-Werte ankommen. Die
+Store-Fassung 2.26.0 kennt `storage.managed` noch nicht — das steht erst in
+2.28.0, und die ist in keinem Store. Bis dahin werden die Werte ignoriert,
+ohne Schaden anzurichten.
+
 ## 2026-08-04 — Zwei Bildfilter und eine Farbtiefe-Einstellung (2.28.0)
 
 **Was.** Die Aufnahme bettet nicht mehr grundsaetzlich JPEG ein. Je Kachel wird

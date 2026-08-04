@@ -1,0 +1,21 @@
+{
+  "policies": {
+    "ExtensionSettings": {
+      "pageshot-pdf@bubu89.local": {
+        "installation_mode": "normal_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/file/4935078/full_page_pdf_snap_webpagesave-2.26.0.xpi"
+      }
+    },
+    "3rdparty": {
+      "Extensions": {
+        "pageshot-pdf@bubu89.local": {
+          "bildModus": "sw",
+          "sourceMetadata": true,
+          "provenanceFooter": true,
+          "textLayer": true,
+          "hideSticky": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "3rdparty": {
+    "extensions": {
+      "ekjbgcdhpgijhbepkagefnkdbdfjpehn": {
+        "bildModus": "sw",
+        "sourceMetadata": true,
+        "provenanceFooter": true,
+        "textLayer": true,
+        "hideSticky": true
+      }
+    }
+  }
+}
