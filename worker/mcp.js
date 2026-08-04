@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.16.0";
+const VERSION = "1.17.0";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -99,6 +99,26 @@ const TOOLS = [
       },
       required: ["urls"],
       additionalProperties: false,
+    },
+  },
+  {
+    name: "recommend_settings",
+    description:
+      "The capture settings that fit a given purpose, each with the measurement "
+      + "behind it or an explicit note that none exists. Pass purpose as "
+      + "citation, figure, archive or ocr. Use before capturing: the file that "
+      + "comes out is between 8.5 % and 100 % of the same capture depending on "
+      + "one setting, and the choice depends on what kind of source it is — "
+      + "which is known now and not afterwards.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        purpose: {
+          type: "string",
+          enum: ["citation", "figure", "archive", "ocr"],
+          description: "what the capture is for",
+        },
+      },
     },
   },
   {
@@ -204,7 +224,7 @@ function istOeffentlich(u) {
 // vorn waere hier teurer als sechs Zeichenketten.
 const WERKZEUGNAMEN = new Set([
   "list_measurements", "get_measurement_data", "get_method",
-  "extract_citation", "how_to_capture", "open_work",
+  "extract_citation", "how_to_capture", "recommend_settings", "open_work",
 ]);
 
 const UMGEZOGEN = {
@@ -1365,6 +1385,115 @@ async function runTool(origin, name, args) {
         "no local paths anywhere in the tracked tree — this repository is public",
       ],
     }, null, 2));
+  }
+
+  // ---------------------------------------------------------------- Empfehlung
+  //
+  // Ein Agent stellt die Aufnahme fuer einen Zweck ein, den er in diesem
+  // Moment kennt — Beleg, Archiv, Weitergabe, spaetere Texterkennung. Danach
+  // weiss es niemand mehr, und eine Voreinstellung, die fuer alle vier passt,
+  // gibt es nicht.
+  //
+  // Jeder Wert traegt hier seinen Beleg oder die Angabe, dass keiner
+  // existiert. Ungemessene Werte als Empfehlung auszugeben waere genau die
+  // Sorte Zahl, die dieses Projekt anderen vorhaelt.
+  if (name === "recommend_settings") {
+    const zweck = String((args && args.purpose) || "").toLowerCase();
+    const gemessen = SITE + "/notes/smaller-files-better-ocr/";
+    const rohdaten = SITE + "/data/2026-08-04-kompression-aufnahme.json";
+
+    const profile = {
+      citation: {
+        forWhat: "a source you will cite — statute, standard, repository record, "
+               + "statistics page, anything that is text on a plain background",
+        settings: {
+          bildModus: "sw",
+          sourceMetadata: true,
+          provenanceFooter: true,
+          textLayer: true,
+          hideSticky: true,
+        },
+        evidence: {
+          bildModus: "8.5 % of the colour capture; OCR reads back 989 words "
+                   + "against 987 in colour, 99.9 % agreement — measured "
+                   + "2026-08-04 on a 1400x3200 text page with Tesseract 5.3.4",
+          sourceMetadata: "writes authors, DOI, licence and retrieval time into "
+                        + "the PDF and an RIS record beside it — no citation "
+                        + "service is contacted, so nobody learns what you read",
+          provenanceFooter: "prints URL, retrieval time and a SHA-256 of the "
+                          + "image under the capture. It attests the file has "
+                          + "not changed since it was written, not that the "
+                          + "page was genuine",
+          textLayer: "text taken from the page's DOM, not from OCR — copied "
+                   + "text cannot be misread",
+        },
+      },
+      figure: {
+        forWhat: "a figure, map, chart or photograph — anything where the "
+               + "colour carries meaning. A legend keyed by colour is "
+               + "unreadable without it.",
+        settings: { bildModus: "farbe", sourceMetadata: true, textLayer: true },
+        evidence: {
+          bildModus: "the default. Black and white destroys an image page: "
+                   + "structural similarity 0.199, measured 2026-08-04",
+        },
+      },
+      archive: {
+        forWhat: "many sources kept for a long time, where total size matters",
+        settings: { bildModus: "graustufen", sourceMetadata: true,
+                    provenanceFooter: true, textLayer: true },
+        evidence: {
+          bildModus: "58 % of the colour capture, OCR unchanged. The middle "
+                   + "option for mixed material: text stays sharp, photographs "
+                   + "survive as greyscale rather than being destroyed",
+        },
+      },
+      ocr: {
+        forWhat: "a capture that will be run through text recognition later",
+        settings: { bildModus: "sw", textLayer: true },
+        evidence: {
+          bildModus: "OCR binarises the image anyway, so colour is work it "
+                   + "discards. 989 words read back against 987 in colour",
+          textLayer: "if the capture keeps its text layer, OCR may not be "
+                   + "needed at all — read the PDF text first and fall back to "
+                   + "recognition only where it is empty",
+        },
+      },
+    };
+
+    const gewaehlt = profile[zweck] || null;
+    const antwort = gewaehlt
+      ? { purpose: zweck, ...gewaehlt }
+      : {
+          note: "Pass purpose as one of: citation, figure, archive, ocr.",
+          profiles: Object.fromEntries(
+            Object.entries(profile).map(([k, v]) => [k, v.forWhat])),
+        };
+
+    antwort.notMeasured = {
+      why: "These are shipped defaults nobody has measured. They are listed so "
+         + "that the measured ones above are not read as a complete picture.",
+      captureScale: "resolution multiplier, default 1.0 — no measurement of "
+                  + "what higher values cost in size or gain in OCR",
+      tilePx: "tile height, default 4000 — no measurement",
+      settlingMs: "wait between scroll steps, default 400 — no measurement of "
+                + "how often lazy-loaded images are missed at lower values",
+      jpegQuality: "0.92, and only relevant where colour is kept. Measured "
+                 + "against 0.85, 0.80 and 0.75 on one page; not measured "
+                 + "across page types",
+    };
+    antwort.availability =
+      "bildModus ships in 2.28.0. The stores currently serve 2.26.0 (Firefox) "
+      + "and 2.17.0 (Chrome). Everything else is in the published builds. No "
+      + "date is promised for the store release.";
+    antwort.measurement = gemessen;
+    antwort.rawData = rohdaten;
+    antwort.caveat =
+      "Figures come from two synthetic pages at 1400x3200 px. The order of "
+      + "magnitude holds; individual values do not, and mixed pages were not "
+      + "measured at all.";
+
+    return textResult(JSON.stringify(antwort, null, 2));
   }
 
   if (name === "how_to_capture") {
