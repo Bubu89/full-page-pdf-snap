@@ -513,6 +513,8 @@ async function captureFullPageInner(tab, settings) {
   const fehlteStill = [];
   // Wie oft die Seite waehrend der Aufnahme nachgewachsen ist.
   const seiteWuchs = [];
+  // Blieb die Hoehe auch nach drei Vorlaufrunden in Bewegung?
+  let vorlaufUnruhig = false;
   let textWoerter = null;
   let textBloecke = [];
   let quelle = null;
@@ -553,6 +555,52 @@ async function captureFullPageInner(tab, settings) {
   let safety = 0;
   let lastActualY = -1;
   let stuckCount = 0;
+
+  /* Vorlauf: die Seite einmal durchscrollen, bevor fotografiert wird.
+   *
+   * Seiten, die beim Scrollen nachladen, wachsen mitten in der Aufnahme.
+   * Alles unterhalb der Einfuegestelle rutscht nach unten, und ein bereits
+   * fotografierter Abschnitt kommt im naechsten Bild ein zweites Mal vor —
+   * im PDF steht er dann doppelt, der erste angeschnitten. Gemessen am
+   * 4. August 2026 an einer PubMed-Seite: "Comment in", "Cited by" und
+   * "Similar articles" erschienen je zweimal.
+   *
+   * Nachtraeglich ist das nicht zu beheben; die alten Bilder zeigen einen
+   * Zustand, den es nicht mehr gibt. Also vorher: einmal durchlaufen, ohne
+   * Bilder, bis die Hoehe stehenbleibt. Ein Durchlauf ohne Aufnahme ist
+   * billig — es entfaellt genau der teure Teil.
+   *
+   * Hoechstens drei Runden: Seiten mit endlosem Nachschub (Zeitleisten)
+   * werden nie stabil, und dort ist ein Abbruch richtiger als eine Schleife.
+   */
+  for (let runde = 1; runde <= 3; runde++) {
+    const vorher = totalH;
+    let vy = 0, schutz = 0;
+    while (vy < maxScroll && ++schutz <= 400) {
+      await browser.tabs.sendMessage(tab.id, { cmd: "scrollTo", y: vy })
+        .catch(() => null);
+      await sleep(Math.min(120, settings.settlingMs));
+      vy += stepCss;
+    }
+    await browser.tabs.sendMessage(tab.id, { cmd: "scrollTo", y: maxScroll })
+      .catch(() => null);
+    await sleep(Math.min(250, settings.settlingMs));
+
+    const nach = await browser.tabs.sendMessage(tab.id, { cmd: "currentTotalH" })
+      .catch(() => null);
+    if (nach && nach.totalH && nach.totalH > totalH) {
+      totalH = nach.totalH;
+      maxScroll = Math.max(0, totalH - layout.viewportH);
+    }
+    log("Vorlauf Runde", runde, ":", vorher, "->", totalH);
+    if (totalH === vorher) break;          // steht still, es kann losgehen
+    if (runde === 3) {
+      log("Vorlauf: Hoehe wurde nicht stabil, nehme trotzdem auf");
+      vorlaufUnruhig = true;
+    }
+  }
+  await browser.tabs.sendMessage(tab.id, { cmd: "scrollTo", y: 0 }).catch(() => null);
+  await sleep(Math.min(250, settings.settlingMs));
 
   const clipModeWanted = settings.appLayout || "context";
   const sideCaptures = [];
@@ -777,6 +825,11 @@ async function captureFullPageInner(tab, settings) {
 
   // Nachgewachsene Seite: derselbe Rang wie eine Luecke in der Abdeckung.
   // Wer es nicht erfaehrt, haelt einen doppelten Abschnitt fuer die Seite.
+  if (vorlaufUnruhig) {
+    stilleLuecken.push(
+      "die Seite laedt fortlaufend nach und kam auch im Vorlauf nicht zur Ruhe "
+      + "— Abschnitte koennen doppelt erscheinen");
+  }
   if (seiteWuchs.length) {
     const gesamt = seiteWuchs[seiteWuchs.length - 1].auf - seiteWuchs[0].von;
     stilleLuecken.push(
