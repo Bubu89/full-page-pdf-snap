@@ -495,6 +495,8 @@ async function captureFullPageInner(tab, settings) {
   // Android-Geraet zurueck: keine Textebene, keine Quellenangaben, keine
   // Meldung. Beide Aufrufe waren in try/catch, das nur ins Protokoll schrieb.
   const fehlteStill = [];
+  // Wie oft die Seite waehrend der Aufnahme nachgewachsen ist.
+  const seiteWuchs = [];
   let textWoerter = null;
   let textBloecke = [];
   let quelle = null;
@@ -672,6 +674,20 @@ async function captureFullPageInner(tab, settings) {
       const fresh = await browser.tabs.sendMessage(tab.id, { cmd: "currentTotalH" }).catch(() => null);
       if (fresh && fresh.totalH && fresh.totalH > totalH) {
         log("Lazy-load grew page:", totalH, "->", fresh.totalH);
+        // Das Nachwachsen wird hier aufgefangen, damit das Ende nicht fehlt.
+        // Was es mit dem bereits Aufgenommenen macht, faengt es nicht auf:
+        // waechst die Seite oberhalb der laufenden Position, rutscht alles
+        // darunter nach unten, und ein schon fotografierter Abschnitt kommt
+        // im naechsten Bild ein zweites Mal vor. Im fertigen PDF steht er
+        // dann doppelt, der erste davon oft angeschnitten.
+        //
+        // Gemessen am 4. August 2026 an einer PubMed-Seite: "Comment in",
+        // "Cited by" und "Similar articles" — genau die Abschnitte, die dort
+        // nachgeladen werden — erschienen je zweimal.
+        //
+        // Rueckgaengig machen laesst sich das nicht: die alten Bilder zeigen
+        // einen Zustand, den es nicht mehr gibt. Gesagt werden muss es.
+        seiteWuchs.push({ von: totalH, auf: fresh.totalH, beiY: actualY });
         totalH = fresh.totalH;
         maxScroll = Math.max(0, totalH - layout.viewportH);
       }
@@ -742,6 +758,16 @@ async function captureFullPageInner(tab, settings) {
   const NAMEN = { textebene: "Textebene", quelle: "Quellenangaben" };
   const stilleLuecken = fehlteStill.map(
     f => (NAMEN[f.was] || f.was) + " (" + f.grund + ")");
+
+  // Nachgewachsene Seite: derselbe Rang wie eine Luecke in der Abdeckung.
+  // Wer es nicht erfaehrt, haelt einen doppelten Abschnitt fuer die Seite.
+  if (seiteWuchs.length) {
+    const gesamt = seiteWuchs[seiteWuchs.length - 1].auf - seiteWuchs[0].von;
+    stilleLuecken.push(
+      "die Seite lud waehrend der Aufnahme nach (" + seiteWuchs.length + "x, "
+      + "insgesamt " + Math.round(gesamt) + " px) — Abschnitte koennen doppelt "
+      + "erscheinen; mit hoeherer Wartezeit je Schritt erneut aufnehmen");
+  }
 
   const unvollstaendig = coverage.filter(c => !c.ok);
   if (unvollstaendig.length || stilleLuecken.length) {
