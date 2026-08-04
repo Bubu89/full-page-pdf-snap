@@ -56,10 +56,15 @@ as JSONL, so a run is both repeatable and provable. The `run` mode exists
 for the statistics: it just lets the profile live for a few minutes so the
 browser's update check fires — the mechanism both stores count.
 
-Two honest boundaries: a capture cannot be triggered headless (no input
-layer, no gesture, no `activeTab` — measured), and a version check must
-name its source (AMO 2.26.0, the CWS update service delivered 2.17.0, the
-CWS web page showed 2.12.1 on the same day).
+Two honest boundaries: the version check must name its source (AMO 2.26.0,
+the CWS update service delivered 2.17.0, the CWS web page showed 2.12.1 on
+the same day) — and triggering a capture still needs a gesture. On 2026-08-04
+that boundary moved: `headless-agent-install.py chromium capture` triggers
+the extension on an invisible Xvfb display through XTEST, which does satisfy
+`activeTab`, and produced a valid PDF in 19.1 s. Firefox could not join:
+neither the official 153 build nor the Playwright 146 build maps a window
+under WSL2/Xvfb here (dbus, GPU and sandbox flags all measured), so Firefox
+captures stay with the visible-input routes below.
 
 ## Route A — drive the store page with real input events (measured)
 

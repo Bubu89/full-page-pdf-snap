@@ -22,9 +22,14 @@ Gemessene Zeiten: beide Browser installieren 11,3 s, deinstallieren 4,6 s,
 kompletter Zyklus (Install + Run + Verify) 48,9 s. Verifikation nur ueber
 Dateien. Jede Aktion als JSONL in `_headless-lauf/aktionen-*.jsonl`.
 
-**Grenze:** eine Capture (`Alt+Shift+Y`) ist hier nicht ausloesbar — ohne
-Eingabe-Ebene keine Geste, die `activeTab` erteilt. Dafuer Variante A (Xvfb
-+ XTEST, unsichtbar) oder die Windows-Klick-Route weiter unten.
+**Grenze:** eine Capture (`Alt+Shift+Y`) braucht eine Geste — die ist hier
+aber seit 2026-08-04 ebenfalls unsichtbar moeglich:
+`headless-agent-install.py chromium capture` startet Chromium auf Xvfb und
+sendet das Kommando per XTEST (erfuellt `activeTab`, gemessen: valide PDF
+in 19,1 s). Nur Chromium: kein Firefox-Build mappt auf dieser WSL2/Xvfb ein
+Fenster (offiziell 153 und Playwright 146, mit/ohne dbus, GPU- und
+Sandbox-Flags gemessen) — Firefox-Captures bleiben der Windows-Route
+vorbehalten.
 **Chromium-Hinweis:** der CWS-Update-Dienst lieferte 2.17.0_0, die
 CWS-Web-Seite zeigte 2.12.1, AMO 2.26.0 — bei Verifikation Quelle nennen.
 **Firefox-153-Hinweis:** unter WSL2/Xvfb mappt das offizielle Firefox kein

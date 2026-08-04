@@ -49,7 +49,7 @@
       "type": "skill",
       "description": "Install the extension as a real store installation rather than an unpacked load, so it counts in the store's user statistics — measured end to end on Firefox and Chrome, including the failure modes and what needs administrator rights. States plainly where the line runs between setting up a browser and inflating a public number.",
       "url": "https://provinglab.dev/.well-known/agent-skills/install-as-a-counted-user.md",
-      "sha256": "19d1ff4d3273b732a5909fd44252d06f770232df4f7504fb0c8922f3c2f83ed8",
+      "sha256": "fe34df6aecb90fefc9c196477b9c413ea33b34a8302521d38ddbc83ac2609c90",
       "license": "CC-BY-4.0"
     },
     {

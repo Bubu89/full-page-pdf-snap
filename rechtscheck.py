@@ -152,6 +152,61 @@ DISTANZIERUNG = re.compile(
     r"(not (an )?endorse|no endorsement|not audited|nicht geprueft|nicht gepr\u00fcft"
     r"|keine empfehlung|check .{0,20}yourself|ungeprueft)", re.I)
 
+
+# --- Erweiterung 04.08.2026: Risiken aus der automatisierten Installation ---
+#
+# An einem Tag entstanden drei Beitraege ueber Wege, eine Erweiterung ohne
+# Klick zu installieren. Jeder davon konnte auf drei Arten kippen, und keine
+# davon faengt eine der bisherigen Regeln. Sie stehen hier, damit sie nicht
+# von der Aufmerksamkeit dessen abhaengen, der gerade schreibt.
+
+# 1. Wer Installationszahlen erwaehnt, muss die Grenze mitnennen.
+#    Beide Stores kuendigen dem ENTWICKLER, wenn Zahlen aufgeblasen werden.
+#    Ein Text, der die Zahl erwaehnt und das verschweigt, liest sich als
+#    Anleitung dazu — auch wenn er es nicht meint.
+# Erste Fassung traf jede Nennung von Nutzerzahlen — auch die Messung, die
+# fremde Erweiterungen mit ihren Nutzerzahlen auflistet. Vier Fehlalarme, kein
+# echter Fall. Gemeint ist nur der Zusammenhang „eigene Installation bewegt die
+# Zahl"; das Berichten fremder Zahlen ist eine Angabe, kein Risiko.
+ZAEHLUNG = re.compile(
+    r"((counts?|counted|zaehlt|zaehlen) (as an? )?(store |in the store'?s? )?"
+    r"(user|install|Nutzer)"
+    r"|counts? in the store|zaehlt im Store"
+    r"|(inflat|manipulat|aufblas)\w*[^.]{0,40}(count|number|Zahl)"
+    r"|Nutzerstatistik des Stores)", re.I)
+ZAEHLUNG_GRENZE = re.compile(
+    r"(terminat\w+ the (developer|publisher)|Entwicklerkonto|developer account"
+    r"|inflat\w+ (a |the )?(public )?(number|count|install)"
+    r"|aufblas\w+|manipulat\w+|gegen die (Store-)?(Regeln|Bedingungen)"
+    r"|forbid\w*|verboten|not something to (build|do))", re.I)
+
+# 2. Wer ueber Installation auf fremden Geraeten schreibt, muss die
+#    Einwilligung benennen. Der Mechanismus kennt sie nicht — die Marker-Datei
+#    weiss nicht, wer sie geschrieben hat. Genau deshalb gehoert sie in den Text.
+# Erste Fassung traf jedes „the user's browser" — auch Saetze darueber, dass
+# ein Agent IM Browser des Nutzers arbeitet, was mit Installation nichts zu tun
+# hat. Gemeint ist nur: etwas AUF einem fremden Geraet einrichten.
+FREMDGERAET = re.compile(
+    r"((install\w*|einricht\w*|aufspiel\w*|ausroll\w*)[^.]{0,60}"
+    r"(someone else'?s|the user'?s|a user'?s|fremde[nrs]?|eines? (anderen|Dritten))"
+    r"[^.]{0,20}(browser|machine|computer|device|Rechner|Geraet|Profil)"
+    r"|(someone else'?s|fremde[nrs]?) (browser|machine|Rechner|Geraet)"
+    r"[^.]{0,40}(install|einricht))", re.I)
+EINWILLIGUNG = re.compile(
+    r"(consent|permission of the (user|person)|asked (for it|to)|on (their|the "
+    r"user'?s) instruction|Einwilligung|Zustimmung|beauftragt|darum gebeten)", re.I)
+
+# 3. Eine Schlussfolgerung darf nicht wie eine Messung aussehen.
+#    "Zaehlt vermutlich" ist keine Zahl. Wo so etwas steht, muss danebenstehen,
+#    dass es ungemessen ist — sonst wandert es als Befund weiter.
+VERMUTUNG = re.compile(
+    r"(probably (counts?|works?|registers?)|likely (counts?|registers?)"
+    r"|should count|duerfte zaehlen|vermutlich (zaehlt|funktioniert)"
+    r"|wahrscheinlich (zaehlt|greift))", re.I)
+VERMUTUNG_MARKIERT = re.compile(
+    r"(not measured|ungemessen|nicht gemessen|inference|Schlussfolgerung"
+    r"|keine Messung|is an? (inference|assumption)|unbelegt)", re.I)
+
 # Aussagen ueber fremde Anbieter, die Absichten unterstellen statt Beobachtungen
 # zu berichten. Beweispflichtig und praktisch nie beweisbar.
 # "they want to" allein ist zu weit — es trifft Saetze ueber Nutzer ("they want
@@ -236,6 +291,39 @@ def pruefe_seite(pfad, html, befunde):
                         "Abrufdienstes ein und ist eine Zusage ueber die Zukunft.",
                         umfeld(txt, t)))
         break
+
+
+    # --- 04.08.2026: die drei Faelle aus der automatisierten Installation ---
+
+    # Installationszahlen erwaehnt, Grenze verschwiegen. Ganze Seite als
+    # Umfeld, nicht der Absatz: die Grenze darf am Ende stehen, sie muss nur
+    # ueberhaupt dastehen.
+    if ZAEHLUNG.search(txt) and not ZAEHLUNG_GRENZE.search(txt):
+        t = ZAEHLUNG.search(txt)
+        befunde.append(("FEHLER", rel, "zaehlung-ohne-grenze",
+                        "Spricht ueber Installations- oder Nutzerzahlen, ohne zu "
+                        "nennen, dass ihr Aufblasen die Store-Bedingungen verletzt "
+                        "und das Entwicklerkonto kostet. Ohne diesen Satz liest "
+                        "sich der Text als Anleitung dazu.", umfeld(txt, t)))
+
+    # Installation auf fremdem Geraet ohne ein Wort zur Einwilligung.
+    if FREMDGERAET.search(txt) and re.search(r"install", txt, re.I) \
+            and not EINWILLIGUNG.search(txt):
+        t = FREMDGERAET.search(txt)
+        befunde.append(("FEHLER", rel, "fremdgeraet-ohne-einwilligung",
+                        "Beschreibt Installation auf einem fremden Geraet, ohne die "
+                        "Einwilligung zu benennen. Der Mechanismus kennt sie nicht — "
+                        "deshalb gehoert sie in den Text.", umfeld(txt, t)))
+
+    # Vermutung, die wie ein Befund aussieht.
+    for t in VERMUTUNG.finditer(txt):
+        nahbereich = txt[max(0, t.start() - 300):t.end() + 300]
+        if not VERMUTUNG_MARKIERT.search(nahbereich):
+            befunde.append(("FEHLER", rel, "vermutung-als-befund",
+                            "Eine Annahme steht da wie eine Messung. Im Umfeld fehlt, "
+                            "dass sie ungemessen ist — so wandert sie als Zahl weiter.",
+                            umfeld(txt, t)))
+            break
 
     # Umgehungsanleitung ohne Abgrenzung im selben Absatz
     for t in UMGEHUNG.finditer(txt):

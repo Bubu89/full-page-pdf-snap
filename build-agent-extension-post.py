@@ -302,7 +302,12 @@ INHALT = f"""
     <code>InstallTrigger</code> from Firefox. The line does not run between
     loading and installing, as this article first put it — it runs between
     <em>having access to the machine</em> and not having it. That friction is
-    the security model, not an oversight.</li>
+    the security model, not an oversight.
+    <br><br>
+    And access is not permission. Installing into someone's profile because they
+    asked for the tool is setup; installing into it because you can is something
+    else, and nothing in the mechanism tells the two apart. The consent has to
+    come from outside it.</li>
   <li><strong>Version drift, disclosed.</strong> The build measured here is the
     Chrome one at 2.10.0; the Chrome Web Store serves 2.12.1 and Firefox 2.26.0.
     Permissions are identical across them, which is what this measurement turns

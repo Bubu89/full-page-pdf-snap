@@ -34,9 +34,16 @@ zaehlt (AMO: Telemetry/Update-Ping; CWS: Update-Check der letzten Woche).
 
 Verifikation ausschliesslich ueber Dateien. Jede Aktion landet als JSONL in
 _headless-lauf/aktionen-*.jsonl — der Lauf ist damit wiederholbar und
-belegbar. Eine Capture (Alt+Shift+Y) ist hier bewusst NICHT dabei: ohne
-Eingabe-Ebene gibt es keine Geste, die activeTab erteilt (gemessen). Dafuer
-steht die Xvfb/XTEST-Route im Protokoll.
+belegbar.
+
+Capture (Ausloesung): seit 2026-08-04 AUCH unsichtbar moeglich — Xvfb
+(unsichtbarer X-Display) + XTEST (echte Eingabe-Ebene, erfuellt activeTab,
+gemessen: valide PDF aus Chromium). Braucht python-xlib aus
+~/.venv/pl-agent; das Skript re-exekutiert sich bei Bedarf dorthin.
+Nur Chromium: weder das offizielle Firefox 153 noch der Playwright-Build
+146 mappen in dieser WSL2/Xvfb-Kombination ein Fenster (mit und ohne
+dbus, GPU-Flags und Sandbox-Flags gemessen) — Firefox-Captures bleiben
+der Windows-Route vorbehalten.
 """
 import argparse
 import json
@@ -243,14 +250,86 @@ def verify(browser):
     return ergebnis
 
 
+# --- Capture via Xvfb + XTEST (nur Chromium) ---------------------------------
+
+XVFB_DISPLAY = ":99"
+DOWNLOADS = Path.home() / "Downloads"
+
+
+def capture_chromium(url="https://example.com/", timeout=90):
+    """Ausloesung ohne sichtbares Fenster: Xvfb liefert den unsichtbaren
+    Display, XTEST die echte Geste, die activeTab erteilt. Gemessen
+    2026-08-04: valide PDF aus Chromium — unter demselben Xvfb mappt
+    kein Firefox-Build ein Fenster, darum nur Chromium."""
+    from Xlib import X, XK, display as xdisplay
+    from Xlib.ext import xtest
+
+    xvfb = subprocess.Popen(["Xvfb", XVFB_DISPLAY, "-screen", "0", "1400x900x24"],
+                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    time.sleep(1.5)
+    env = dict(os.environ, DISPLAY=XVFB_DISPLAY)
+    p = subprocess.Popen([str(CH_EXE), f"--user-data-dir={CH_PROFIL}",
+                          "--no-first-run", "--no-default-browser-check", url],
+                         env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                         start_new_session=True)
+    log("capture-start", url=url, pid=p.pid)
+    try:
+        d = xdisplay.Display(XVFB_DISPLAY)
+        # Fenster und Seite abwarten: XTEST vor dem ersten Frame verpufft.
+        time.sleep(12)
+        seit = time.time()
+        def kc(name):
+            return d.keysym_to_keycode(XK.string_to_keysym(name))
+        for m in ("Alt_L", "Shift_L"):
+            xtest.fake_input(d, X.KeyPress, detail=kc(m))
+        xtest.fake_input(d, X.KeyPress, detail=kc("y"))
+        xtest.fake_input(d, X.KeyRelease, detail=kc("y"))
+        for m in reversed(("Alt_L", "Shift_L")):
+            xtest.fake_input(d, X.KeyRelease, detail=kc(m))
+        d.sync()
+        log("capture-kommando", tasten="alt+shift+y (XTEST)")
+
+        def neue_pdf():
+            for datei in DOWNLOADS.rglob("*.pdf"):
+                if datei.stat().st_mtime > seit:
+                    return datei
+            return None
+
+        pdf = poll(neue_pdf, timeout)
+        if pdf:
+            kopf = pdf.open("rb").read(5)
+            ok = kopf == b"%PDF-"
+            log("capture-verifiziert", pdf=str(pdf), bytes=pdf.stat().st_size, kopf_ok=ok)
+            return ok
+        log("capture-fehlgeschlagen")
+        return False
+    finally:
+        stoppe(p)
+        xvfb.terminate()
+
+
 def main():
     global LOG
     p = argparse.ArgumentParser()
     p.add_argument("browser", choices=["firefox", "chromium", "both"])
-    p.add_argument("phase", choices=["install", "uninstall", "run", "verify", "all"])
+    p.add_argument("phase", choices=["install", "uninstall", "run", "verify", "capture", "all"])
     p.add_argument("--minuten", type=float, default=5)
+    p.add_argument("--url", default="https://example.com/")
     p.add_argument("--json", action="store_true")
     args = p.parse_args()
+
+    # python-xlib lebt isoliert in ~/.venv/pl-agent (Regel: keine globalen
+    # Pakete); fuer die Capture-Phase dort hin re-exekutieren.
+    if args.phase == "capture":
+        try:
+            import Xlib  # noqa: F401
+        except ImportError:
+            venv = Path.home() / ".venv/pl-agent/bin/python"
+            if venv.exists():
+                os.execv(str(venv), [str(venv), str(Path(__file__).resolve())] + sys.argv[1:])
+            print("python-xlib fehlt: python3 -m venv ~/.venv/pl-agent && "
+                  "~/.venv/pl-agent/bin/pip install python-xlib")
+            return 2
 
     ARBEIT.mkdir(exist_ok=True)
     LOG = (ARBEIT / f"aktionen-{datetime.now().strftime('%Y%m%d-%H%M%S')}.jsonl").open(
@@ -258,21 +337,28 @@ def main():
     log("lauf-beginn", browser=args.browser, phase=args.phase)
     t0 = time.time()
 
-    ziele = ["firefox", "chromium"] if args.browser == "both" else [args.browser]
     ok = True
-    for z in ziele:
-        if args.phase in ("install", "all"):
-            ok = install(z) and ok
-        if args.phase == "uninstall":
-            ok = uninstall(z) and ok
-        if args.phase in ("run", "all"):
-            ok = run(z, args.minuten) and ok
-    if args.phase == "verify" or args.json:
-        ergebnis = verify(args.browser)
-        if args.json:
-            (ARBEIT / "stand.json").write_text(json.dumps(
-                {"ts": datetime.now(timezone.utc).isoformat(), "stand": ergebnis},
-                indent=2), encoding="utf-8")
+    if args.phase == "capture":
+        if args.browser != "chromium":
+            log("capture-nur-chromium", grund="kein Firefox-Build mappt hier ein Fenster")
+            ok = False
+        else:
+            ok = capture_chromium(args.url)
+    else:
+        ziele = ["firefox", "chromium"] if args.browser == "both" else [args.browser]
+        for z in ziele:
+            if args.phase in ("install", "all"):
+                ok = install(z) and ok
+            if args.phase == "uninstall":
+                ok = uninstall(z) and ok
+            if args.phase in ("run", "all"):
+                ok = run(z, args.minuten) and ok
+        if args.phase == "verify" or args.json:
+            ergebnis = verify(args.browser)
+            if args.json:
+                (ARBEIT / "stand.json").write_text(json.dumps(
+                    {"ts": datetime.now(timezone.utc).isoformat(), "stand": ergebnis},
+                    indent=2), encoding="utf-8")
 
     log("lauf-ende", sekunden=round(time.time() - t0, 1), ok=ok)
     LOG.close()

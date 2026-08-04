@@ -620,6 +620,12 @@ AGENTEN = f"""
   as a counted store user</a> — store install instead of an unpacked load,
   measured end to end on Firefox and Chrome, including the failure modes
 </p>
+<p style="font-size:.9rem">
+  One line worth having before you use that page: installing because a task
+  needs the tool is ordinary setup. Running installs to move a public number is
+  not, and both stores answer it by terminating the <em>developer</em> account —
+  the cost lands on whoever published the extension, not on you.
+</p>
 
 <h2>Getting the extension into a profile, without touching the screen</h2>
 <p>

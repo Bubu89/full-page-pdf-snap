@@ -43,6 +43,25 @@ und Abrufdatum, oder sie wird zur Meinung umformuliert, oder sie fällt raus.
 beweispflichtig und nicht beweisbar. „Der Server antwortete mit 403" ist eine
 Beobachtung. Der Prüfer kennt das Muster und schlägt an.
 
+**2b. Drei Regeln aus der automatisierten Installation (seit 04.08.2026).**
+`rechtscheck.py` blockiert die Auslieferung, wenn eine davon verletzt ist:
+
+- **Installationszahlen ohne Grenze.** Wer schreibt, dass etwas als Installation
+  zaehlt, muss dazuschreiben, dass ihr Aufblasen die Store-Bedingungen verletzt
+  und das **Entwicklerkonto** kostet. Ohne diesen Satz liest sich der Text als
+  Anleitung dazu — auch wenn er es nicht meint.
+- **Fremdes Geraet ohne Einwilligung.** Wer beschreibt, wie man auf einem
+  fremden Rechner installiert, benennt die Einwilligung. Der Mechanismus kennt
+  sie nicht: eine Marker-Datei weiss nicht, wer sie geschrieben hat.
+- **Vermutung als Befund.** „Zaehlt vermutlich" ist keine Zahl. Wo so etwas
+  steht, muss im Umfeld stehen, dass es ungemessen ist — sonst wandert es als
+  Messwert weiter.
+
+Jede der drei hat Gegentests im Pruefer: ein Satz, der anschlagen muss, und
+einer, der es nicht darf. Ein Muster ohne Gegentest erzeugt Fehlalarme, bis
+niemand mehr hinsieht — beim ersten Lauf traf die Zaehl-Regel vier Messungen,
+die nur fremde Nutzerzahlen berichten.
+
 **3. Ein Vergleich, den das eigene Werkzeug nur gewinnt, ist Werbung.** Jede
 Gegenüberstellung nennt mindestens eine Kategorie, in der die Alternative besser
 ist. Der Druckexport des Browsers gewinnt beim Text — das steht so auf der
