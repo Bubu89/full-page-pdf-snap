@@ -104,7 +104,7 @@
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/reading-list-to-bibliography/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -146,7 +146,7 @@
   </url>
   <url>
     <loc>https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -277,8 +277,14 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://provinglab.dev/data/2026-08-04-kompression-aufnahme.json</loc>
+    <lastmod>2026-08-04</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://provinglab.dev/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -296,7 +302,7 @@
   </url>
   <url>
     <loc>https://provinglab.dev/for-agents/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
