@@ -139,6 +139,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://provinglab.dev/notes/smaller-files-better-ocr/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://provinglab.dev/notes/sources-a-machine-cannot-cite/</loc>
     <lastmod>2026-08-03</lastmod>
     <changefreq>yearly</changefreq>

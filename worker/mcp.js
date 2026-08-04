@@ -81,6 +81,27 @@ const TOOLS = [
     },
   },
   {
+    name: "extract_citations",
+    description:
+      "Batch variant of extract_citation: a whole reading list in one call, up to 50 " +
+      "addresses, five fetched in parallel. Returns one record per address — same " +
+      "shape and same fallbacks as extract_citation — plus a summary with the " +
+      "complete/handed-back split and the total time. Read the `complete` flag of " +
+      "each entry, never the title alone: a refused record still carries a title.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        urls: {
+          type: "array",
+          items: { type: "string" },
+          description: "Addresses to read, at most 50",
+        },
+      },
+      required: ["urls"],
+      additionalProperties: false,
+    },
+  },
+  {
     name: "how_to_capture",
     description:
       "Get the runnable route for saving a web page that this endpoint cannot read — " +
@@ -1242,205 +1263,40 @@ async function runTool(origin, name, args) {
   }
 
   if (name === "extract_citation") {
-    const roh = String((args && args.url) || "").trim();
-    if (!roh) throw new Error("url is required");
-    let ziel;
-    try { ziel = new URL(roh); } catch (_) { throw new Error("url is not a valid address"); }
-    // Nur oeffentliche Adressen. Ein Worker sitzt in fremdem Netz; ohne diese
-    // Pruefung liesse sich der Endpunkt als Sprungbrett auf interne Dienste
-    // verwenden — die klassische serverseitige Anfragefaelschung.
-    if (!/^https?:$/.test(ziel.protocol)) throw new Error("only http and https are supported");
-    if (!istOeffentlich(ziel)) throw new Error("only public addresses can be read");
+    return textResult(JSON.stringify(
+      await zitatFuerUrl(String((args && args.url) || "")), null, 2));
+  }
 
-    // Weiterleitungen selbst verfolgen. Mit redirect:"follow" wird nur die
-    // ZUERST genannte Adresse geprueft — eine oeffentliche Adresse, die auf
-    // 127.0.0.1 weiterleitet, umgeht die Pruefung vollstaendig. Die Plattform
-    // faengt das derzeit ab, aber darauf soll die Sicherheit nicht beruhen.
-    let r = await holeMitPruefung(ziel);
-    async function holeMitPruefung(start) {
-      let adresse = start;
-      for (let sprung = 0; sprung < 5; sprung++) {
-        const antwort = await fetchRoh(adresse);
-        if (![301, 302, 303, 307, 308].includes(antwort.status)) return antwort;
-        const ort = antwort.headers.get("location");
-        if (!ort) return antwort;
-        let naechste;
-        try { naechste = new URL(ort, adresse); } catch { return antwort; }
-        if (!/^https?:$/.test(naechste.protocol) || !istOeffentlich(naechste)) {
-          throw new Error("redirect target is not a public address");
+  if (name === "extract_citations") {
+    // Stapel-Variante: eine Leseliste in einem Aufruf. Fuenf gleichzeitig —
+    // mehr waere unhoeflich gegen dieselben Server, die wir sonst einzeln
+    // fragen. Jede Adresse laeuft durch denselben Weg wie extract_citation;
+    // ein Fehler faellt nur diese eine Position aus, nicht den Stapel.
+    const liste = (args && args.urls) || [];
+    if (!Array.isArray(liste) || !liste.length) throw new Error("urls is required (array of addresses)");
+    if (liste.length > 50) throw new Error("at most 50 urls per call");
+    const t0 = Date.now();
+    const ergebnisse = [];
+    for (let i = 0; i < liste.length; i += 5) {
+      const teil = await Promise.all(liste.slice(i, i + 5).map(async (u) => {
+        try { return await zitatFuerUrl(String(u)); }
+        catch (e) {
+          return { url: String(u), complete: false,
+                   warning: String((e && e.message) || e) };
         }
-        adresse = naechste;
-      }
-      throw new Error("too many redirects");
+      }));
+      ergebnisse.push(...teil);
     }
-    function fetchRoh(adresse) {
-      return fetch(adresse.href, {
-      redirect: "manual",
-      headers: {
-        // Offen benennen, wer anfragt. Wer den Zugriff nicht wuenscht, kann
-        // ihn so unterscheiden und aussperren.
-        "user-agent": "provinglab-mcp/1.5 (+https://provinglab.dev/; citation metadata reader)",
-        accept: "text/html,application/xhtml+xml",
-        "accept-language": "en,de;q=0.8",
-      },
-      // Nicht zwischenspeichern. Eine Zugangsschranke antwortet mit HTTP 200
-      // und landete damit fuer fuenf Minuten im Edge-Cache — die Pruefung auf
-      // Schrankenseiten lief danach gegen die gespeicherte Antwort und konnte
-      // gar nicht greifen. Bei einem Werkzeug, das selten aufgerufen wird und
-      // dessen Ergebnis zitiert wird, ist Aktualitaet mehr wert als Ersparnis.
-      cf: { cacheTtl: 0, cacheEverything: false },
-      });
-    }
-    // DOI in der Adresse? Dann steht ein zweiter Weg offen, falls die Seite
-    // sperrt — die Registrierungsstelle antwortet immer.
-    const doiInUrl = (ziel.href.match(/\b10\.\d{4,9}\/[-._;()A-Za-z0-9]+/) || [])[0];
-    // SSRN, OECD und EUR-Lex tragen ihre Kennung in einer anderen Form in
-    // der Adresse (Issues #16/#17). Die Uebersetzung ist streng an die
-    // verifizierte Form gebunden; was nicht passt, bleibt unuebersetzt.
-    const kennung = kennungAusAdresse(ziel.href);
-
-    // Zweiter Weg, wenn die Seite selbst nicht traegt: eine DOI steht in der
-    // Adresse oder ist aus ihr ableitbar (SSRN, OECD), eine CELEX-Nummer
-    // fuehrt zu Cellar (EUR-Lex). Liefert eine fertige Antwort oder null.
-    // Wirft selbst nichts — beide Abrufe scheitern still.
-    async function kennungsAntwort(seitenGrund) {
-      const doi = doiInUrl || (kennung && kennung.doi) || null;
-      if (doi) {
-        const reg = await ausRegistrierung(doi.replace(/[.,;)]+$/, ""));
-        if (reg && reg.title) {
-          const q2 = vervollstaendigen(reg, ziel.href);
-          return textResult(JSON.stringify({
-            ...q2, ris: risAus(q2), bibtex: bibtexAus(q2),
-            note: seitenGrund + " These details come from the DOI registration agency, "
-                + "which is authoritative for them. Nothing was read from the publisher's "
-                + "page."
-                + (doiInUrl ? "" : ` The DOI ${reg.doi || doi} was derived from the address `
-                + "itself, not read from the page."),
-          }, null, 2));
-        }
-      }
-      if (kennung && kennung.celex) {
-        const reg = await ausCellar(kennung.celex, kennung.sprache);
-        if (reg && reg.title) {
-          const q2 = vervollstaendigen(reg, ziel.href);
-          return textResult(JSON.stringify({
-            ...q2, ris: risAus(q2), bibtex: bibtexAus(q2),
-            note: seitenGrund + " This record comes from Cellar, Publications Office of "
-                + `the EU, addressed by the CELEX number ${kennung.celex}, which was `
-                + "derived from the address itself, not read from the page.",
-          }, null, 2));
-        }
-      }
-      return null;
-    }
-
-    if (!r.ok) {
-      const antwort = await kennungsAntwort(`The page itself answered ${r.status}.`);
-      if (antwort) return antwort;
-      return textResult(JSON.stringify({
-        url: ziel.href, httpStatus: r.status,
-        // `complete` MUSS auf jedem Rueckgabeweg stehen. Die Regel, die diese
-        // Seite ueberall propagiert, lautet „lies das complete-Feld, nie den
-        // Titel allein" — und genau hier fehlte es. Ein Agent, der auf
-        // `complete === false` prueft, sah bei einer 403-Ablehnung `undefined`
-        // und damit weder wahr noch falsch. Gefunden von tools/agenten-abnahme.py.
-        complete: false,
-        warning: `The server answered ${r.status} ${r.statusText}. No citation data was read.`,
-        hint: r.status === 403 || r.status === 503
-          ? "Publisher sites frequently block server-side readers, and no DOI was available "
-            + "as a fallback. Open the page in a browser and read it there."
-          : undefined,
-        nextStep: r.status === 403 || r.status === 503
-          ? naechsterSchritt("network") : undefined,
-      }, null, 2));
-    }
-    const typ = r.headers.get("content-type") || "";
-    if (!/html|xml/i.test(typ)) {
-      return textResult(JSON.stringify({
-        url: r.url, contentType: typ, complete: false,
-        warning: "The address does not return an HTML page, so it declares no citation metadata.",
-        nextStep: naechsterSchritt("not-html"),
-      }, null, 2));
-    }
-    // Gedeckelt, damit eine einzelne riesige Seite den Aufruf nicht sprengt;
-    // die Angaben stehen im Kopf, lange vor dieser Grenze.
-    const html = (await r.text()).slice(0, 1500000);
-    // Eine leere oder winzige Antwort ist keine Seite. EUR-Lex antwortet
-    // serverseitigen Lesern mit HTTP 202 und null Bytes — ohne diese Pruefung
-    // meldete das Werkzeug "nur der Seitenname steht da" und schob den Grund
-    // damit der Seite zu, statt die Sperre zu benennen.
-    if (html.trim().length < 500) {
-      // Der Kennungsweg muss VOR der Wand-Meldung laufen: EUR-Lex antwortet
-      // mit 202 und null Bytes, waehrend die CELEX-Nummer in der Adresse
-      // steht — ohne diesen Versuch bliebe die Rechtsquelle ungelesen,
-      // obwohl Cellar den Datensatz liefert (gemessen 03./04.08.2026).
-      const antwort = await kennungsAntwort(
-        `The page itself answered ${r.status} with an empty or near-empty response.`);
-      if (antwort) return antwort;
-      return textResult(JSON.stringify({
-        url: r.url, httpStatus: r.status, bytes: html.length, complete: false,
-        warning: "The server returned an empty or near-empty response. That is a block, "
-               + "not a page: nothing was declared and nothing could be read.",
-        hint: "Open the page in a browser and capture it there.",
-        nextStep: naechsterSchritt("wall"),
-      }, null, 2));
-    }
-    let q = quelleAusHtml(html, r.url);
-    // Sperrseite oder taube Angaben? Dann zaehlt die Registrierungsstelle.
-    // Neben der DOI aus Seite oder Adresse auch die abgeleitete Kennung
-    // (SSRN, OECD) — derselbe Weg, nur mit der Plattform-Uebersetzung davor.
-    const doiErsatz = q.doi || doiInUrl || (kennung && kennung.doi) || null;
-    const doiAbgeleitet = !q.doi && !doiInUrl && !!(kennung && kennung.doi);
-    if ((q.warning || !q.authors.length) && doiErsatz) {
-      const reg = await ausRegistrierung(doiErsatz.replace(/[.,;)]+$/, ""));
-      if (reg && reg.title && reg.authors.length) {
-        q = vervollstaendigen(reg, r.url);
-        q.note = "The page declared no usable citation data; these details come from the "
-               + "DOI registration agency."
-               + (doiAbgeleitet
-                  ? ` The DOI ${reg.doi} was derived from the address itself, not read from the page.`
-                  : "");
-      }
-    }
-    // EUR-Lex: CELEX aus der Adresse, Datensatz von Cellar. Derselbe Rang wie
-    // die DOI-Registrierung, vor dem letzten Rettungsweg ausPlattform.
-    if ((q.warning || !q.authors.length) && kennung && kennung.celex) {
-      const reg = await ausCellar(kennung.celex, kennung.sprache);
-      if (reg && reg.title) {
-        q = vervollstaendigen(reg, r.url);
-        q.note = "The page yielded no usable citation data; this record comes from Cellar, "
-               + "Publications Office of the EU, addressed by the CELEX number "
-               + kennung.celex + ", which was derived from the address itself, not read "
-               + "from the page.";
-      }
-    }
-    // Letzter Rettungsweg vor der Rueckgabe: die Maschinenschnittstelle der
-    // Plattform selbst (OAI-PMH/SRU). Greift nur, wenn weder die Seite noch
-    // die Registrierungsstelle getragen haben. Befragt wird nur dieselbe
-    // Institution, deren Seite ohnehin abgerufen wurde — kein Dritter lernt
-    // etwas Neues. Die angefragte Adresse zaehlt, nicht die Endadresse:
-    // d-nb.info/<idn> leitet mit 303 weiter und die IDN waere sonst verloren.
-    // ausPlattform wirft nie; ohne Treffer bleibt q, wie es ist.
-    // Kein pageType: der Satz stammt nicht aus einer Seitendeklaration —
-    // genau wie beim DOI-Fallback bleibt das Feld weg, statt geraten zu werden.
-    if (q.warning || !q.authors.length) {
-      const reg = await ausPlattform(ziel.href);
-      if (reg && reg.title && reg.authors.length) {
-        q = vervollstaendigen(reg, ziel.href);
-        q.note = "The page itself yielded nothing readable; this record comes from the "
-               + "platform's own machine interface, which is authoritative for it.";
-      }
-    }
+    const voll = ergebnisse.filter((e) => e.complete).length;
     return textResult(JSON.stringify({
-      ...q,
-      ris: risAus(q),
-      bibtex: bibtexAus(q),
-      limits: "Read server-side without JavaScript: details a page adds after loading are " +
-              "invisible here, and sites that block non-browser clients return nothing. " +
-              "Neither is reported as success.",
-      // Nur wo der Satz nicht traegt. Bei einem vollstaendigen Datensatz gibt es
-      // nichts vorzuschlagen, und ein Hinweis waere dort blosse Werbung.
-      nextStep: q.complete ? undefined : naechsterSchritt("no-metadata"),
+      results: ergebnisse,
+      summary: {
+        total: ergebnisse.length, complete: voll,
+        handed_back: ergebnisse.length - voll,
+        durationMs: Date.now() - t0,
+        note: "Read the `complete` flag of each entry, never the title alone — "
+            + "a refused record still carries a title.",
+      },
     }, null, 2));
   }
 

@@ -18,6 +18,14 @@
     <summary type="text">Measured 4 August 2026: Firefox in 5.2 s over Marionette, Chrome in 10.7 s over an external extension marker that makes Chrome fetch the store build itself. No window, no click, no administrator rights — the browser only has to belong to the agent. What that changes for an extension, and where consent stops being a technical question.</summary>
   </entry>
   <entry>
+    <title>A capture at 8.5 % of the size, and OCR reads it slightly better</title>
+    <id>https://provinglab.dev/notes/smaller-files-better-ocr/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/smaller-files-better-ocr/"/>
+    <published>2026-08-04T00:00:00Z</published>
+    <updated>2026-08-04T00:00:00Z</updated>
+    <summary type="text">Measured 4 August 2026: on a text page, black and white cuts the file to 8.5 % of the current JPEG while Tesseract reads back 989 words against 987 in colour. Built into 2.28.0 as a setting, not a default — on a page with photographs the same setting falls apart.</summary>
+  </entry>
+  <entry>
     <title>Who actually reads this site: 24 hours of crawler logs, published</title>
     <id>https://provinglab.dev/notes/who-actually-reads-this/</id>
     <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/who-actually-reads-this/"/>
