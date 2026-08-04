@@ -319,6 +319,31 @@ class Marionette:
             pass
 
 
+def kein_fenster(proc):
+    """Bricht ab, sobald der gestartete Browser ein sichtbares Fenster hat.
+
+    „Headless" ist eine Zusage, kein Ergebnis. `-headless` kann fehlen, von
+    einer Profileinstellung ueberstimmt werden oder in einer kuenftigen
+    Fassung anders heissen — und dann steht ein Fenster auf dem Bildschirm des
+    Benutzers, waehrend das Protokoll weiter „unsichtbar" meldet.
+
+    Geprueft wird deshalb der Zustand, nicht die Absicht: existiert zum
+    gestarteten Prozess ein Fenster mit einem Handle, wird sofort beendet und
+    der Lauf als gescheitert gemeldet. Lieber kein Ergebnis als ein Ergebnis,
+    das die Grundbedingung verletzt hat.
+    """
+    if os.name != "nt" and not UNTER_WSL:
+        # X11: ein Fenster existiert nur, wenn ein Display gesetzt ist.
+        return os.environ.get("DISPLAY") in (None, "")
+    r = subprocess.run(
+        ["powershell.exe", "-NoProfile", "-Command",
+         f"(Get-Process -Id {proc.pid} -EA SilentlyContinue)."
+         "MainWindowHandle"],
+        capture_output=True, text=True, errors="replace")
+    handle = r.stdout.strip()
+    return handle in ("", "0")
+
+
 def mit_firefox(profil, arbeit):
     """Firefox headless starten, Befehl absetzen, sauber beenden.
 
@@ -333,6 +358,15 @@ def mit_firefox(profil, arbeit):
         creationflags=0x08000000 if os.name == "nt" else 0)   # kein Konsolenblitz
     m = None
     try:
+        # Erst die Grundbedingung, dann die Arbeit. Ein Lauf, der ein Fenster
+        # oeffnet, ist kein langsamer Erfolg — er ist ein Fehlschlag.
+        time.sleep(1.5)
+        if not kein_fenster(proc):
+            proc.kill()
+            raise RuntimeError(
+                "Der Browser hat ein sichtbares Fenster geoeffnet. Abgebrochen: "
+                "unsichtbar zu bleiben ist die Bedingung dieses Wegs, nicht "
+                "sein Nebeneffekt.")
         m = Marionette()
         m.ruf("WebDriver:NewSession", {"capabilities": {}})
         return arbeit(m)
