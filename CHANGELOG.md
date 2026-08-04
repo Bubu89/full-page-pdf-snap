@@ -1,3 +1,50 @@
+## 2026-08-03 — Rohdaten-Pruefung, deutsche Plattformen, und ein Ende der stillen Waende (#9, #10)
+
+**Was.** Drei zusammenhaengende Arbeiten: (1) `docs/data/schema.json` und
+`tools/daten-pruefen.py` pruefen ab jetzt jeden Datensatz vor der
+Veroeffentlichung — blockierend in der Pipeline. (2) Neue Messung
+`/measurements/de-plattformen/`: elf Plattformen, die ein Studierender im
+deutschsprachigen Raum tatsaechlich zitiert. (3) Der Endpunkt nutzt jetzt die
+Maschinenschnittstellen der Plattformen selbst (OAI-PMH, SRU), wenn die
+HTML-Seite nichts Lesbares liefert.
+
+**Warum.** (1) Zwei fehlerhafte Datensaetze fielen bisher nur zufaellig auf —
+`per_source: []` trotz Einzelwerten im Beitrag, eine kopierte Beschreibung.
+(2) Von 18 gemessenen Plattformen war genau eine deutschsprachig. (3) Der
+Vergleich mit Citoid zeigte die Luecke: Zotero-Übersetzer nutzen seitenspezifisches
+Wissen; Repositorien bieten mit OAI-PMH und SRU dafuer eine offizielle,
+wandfreie Schnittstelle — dieselbe Institution, kein Dritter erfaehrt etwas.
+
+**Wie und Ergebnis.**
+
+- **Schema aus dem Bestand abgeleitet**, nicht erfunden: drei vorgefundene
+  Formate (kanonisch, historisch-en, historisch-de) werden abgebildet statt
+  aufgeweicht; jedes Pflichtfeld traegt eine Begruendung. Zusatz-Checks aus
+  den Vorfaellen: leeres `per_source` trotz Einzelwerten, wortgleiche
+  `question` ohne `counterpart`-Verweis. Abweichungen werden gemeldet, nie
+  an den Dateien repariert. Erster Lauf: 0 Fehler im Bestand — und er fand
+  sofort einen echten Fall in einem neuen Datensatz (fehlendes Datumsfeld).
+- **Messung 4/11.** Vollstaendig: PsychArchives, peDOCS, Springer Link,
+  Nomos. Fehlschlaege zuerst genannt, mit Grund: SSOAR (Schranke statt
+  Datensatz — als Kontrolle im Lauf), OPUS (einzige harte Sperre im strengen
+  Kriterium), DNB (clientseitig gerendert), beck-online (Anmeldeschirm),
+  openJur (nur Aktenzeichen), Statistik Austria und Destatis (volle Seite,
+  kein Jahr deklariert). Rohdaten `2026-08-03-de-plattformen.json`,
+  zweisprachiger Beitrag.
+- **Fallback in `worker/mcp.js` (1.13.1):** Greift nur wenn Seite UND
+  DOI-Registrierung scheitern: DNB ueber SRU (services.dnb.de), OPUS 4 und
+  PsychArchives ueber OAI-PMH. `source` nennt die Schnittstelle ehrlich;
+  nichts wird ergaenzt, was die Schnittstelle nicht liefert. Fuenf neue
+  Tests, 26/26 gruen. **Nachmessung: 5/11** — die DNB kommt jetzt
+  vollstaendig ueber SRU. OPUS bleibt offen (Datensatz im OAI der Instanz
+  nicht vorhanden). Der erste Lauf bleibt der Befund des Tages; die
+  Nachmessung steht daneben (`2026-08-03-de-plattformen-nach-fallback.json`).
+
+**Grenze ehrlich:** SSOAR, beck-online, openJur und die Statistik-Seiten
+ruehren sich nicht — dort fehlt keine Schnittstelle, sondern die Seite
+deklariert nichts bzw. verlangt eine Anmeldung. Das bleibt der Browser-Weg
+der Erweiterung.
+
 ## 2026-08-03 — Abnahme aller Agenten-Werkzeuge, und was sie fand
 
 **Neu: `tools/agenten-abnahme.py`.** Ruft jedes Werkzeug auf, das ein Agent hier
@@ -251,6 +298,26 @@ gewuenschte Verhalten und der Grund, warum er veroeffentlicht werden kann.
 den Haftungsausschluss als Erfuellung des Rechtsausschlusses und sucht ihn
 auch im Markup — er meldete eine Seite, die dreimal „licence" im Sinne von
 Zugangsberechtigung schrieb und den Ausschluss bereits verlinkte.
+
+## 2026-08-04 — Fensterlose Route: Installation in Sekunden, null Sichtbarkeit
+
+**Was.** `headless-agent-install.py`: Installation, Deinstallation und
+Nutzer-Puls fuer beide Browser garantiert ohne Fenster (MOZ_HEADLESS /
+--headless=new), mit JSONL-Aktionsprotokoll. Doku in Skill, Protokoll,
+Rohdaten; GitHub-Issue #15 mit den Prozess-Verbesserungen.
+
+**Warum.** Die Klick-Route funktioniert, stiehlt aber Fokus und Maus — der
+User hat zurecht verlangt: nur Hintergrund, sonst anderer Weg.
+
+**Wie und Ergebnis.** Statt Klicks der Installationsmechanismus der Browser:
+Firefox per `distribution/policies.json` (normal_installed/blocked),
+Chromium per `extensions/<id>.json` mit `external_update_url`. Gemessen:
+Install beider Browser 11,3 s, Deinstall 4,6 s, Zyklus 48,9 s — unsichtbar
+konstruiert, nicht nur versteckt. Grenzen ehrlich: keine Capture headless
+(kein activeTab ohne Eingabe-Ebene), Versions-Stände je Quelle (AMO 2.26.0,
+CWS-Update 2.17.0, CWS-Web 2.12.1), offizielles Firefox 153 mappt unter
+WSL2/Xvfb kein Fenster (chroot-Sandbox). Der Xvfb/XTEST-Weg bleibt fuer
+Captures dokumentiert.
 
 ## 2026-08-03 — Agent installiert die Store-Version als gezaehlter Nutzer
 
