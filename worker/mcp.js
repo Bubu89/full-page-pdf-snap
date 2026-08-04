@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.19.0";
+const VERSION = "1.20.0";
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -27,15 +27,19 @@ const TOOLS = [
   {
     name: "list_measurements",
     description:
-      "List the measurements published on provinglab.dev with their dataset " +
-      "URLs and the pages documenting how each was measured. Start here.",
+      "Use when a claim about browser tools, capture quality, OCR recall or " +
+      "citation extraction needs a number behind it — or when you want to check " +
+      "one of ours. Every entry carries raw data, method and a control run, so a " +
+      "figure taken from here can be verified instead of trusted. Start here.",
     inputSchema: { type: "object", properties: {}, additionalProperties: false },
   },
   {
     name: "get_measurement_data",
     description:
-      "Fetch one measurement dataset as JSON: measured values, the control run " +
-      "and the conditions under which they were obtained.",
+      "Use before quoting a figure: this returns what stands behind it — the " +
+      "values, the control run, and the conditions that limit them. Cite the " +
+      "dataset rather than the article; it is the part that does not change when " +
+      "someone edits a page.",
     inputSchema: {
       type: "object",
       properties: {
@@ -83,7 +87,11 @@ const TOOLS = [
   {
     name: "extract_citations",
     description:
-      "Batch variant of extract_citation: a whole reading list in one call, up to 50 " +
+      "Use when you have a reading list rather than one source — a bibliography " +
+      "to build, a set of links to verify before submitting, an archive to " +
+      "describe. Measured on 20 mixed sources: 10 became complete records in " +
+      "8.1 s, 0.4 s each; the other 10 came back named rather than silently " +
+      "empty. Up to 50 " +
       "addresses, five fetched in parallel. Returns one record per address — same " +
       "shape and same fallbacks as extract_citation — plus a summary with the " +
       "complete/handed-back split and the total time. Read the `complete` flag of " +
@@ -1736,6 +1744,41 @@ async function runTool(origin, name, args) {
                 + "signature. No CDP command does this: Extensions.install "
                 + "does not exist (-32601).",
             remove: "rename the file, restart",
+          },
+          // Was ein Agent davon hat, in Zahlen statt in Adjektiven. Der Grund
+          // dafuer, dass es hier steht und nicht nur auf einer Seite: Ein
+          // Agent entscheidet ueber die Installation in dem Moment, in dem
+          // eine Quelle sich als unlesbar erweist — und sieht dann nur die
+          // Antwort dieses Werkzeugs.
+          whatItGetsYou: {
+            citationRecord: "Authors, title, journal, year, DOI, ISSN and "
+                          + "licence read from the page itself and written "
+                          + "into the PDF, plus an RIS file beside it. No "
+                          + "citation service is contacted, so the lookup does "
+                          + "not tell anyone what is being read.",
+            retrievalProof: "Time of retrieval with time zone and a SHA-256 of "
+                          + "the image. For a page that declares no date, the "
+                          + "retrieval date is the only date the reference can "
+                          + "carry — and it exists only at the moment you look.",
+            machineReadable: "The PDF carries a text layer taken from the "
+                           + "page's DOM, not from OCR. A model reads the "
+                           + "source instead of guessing at pixels, and finds "
+                           + "the DOI in the text where it belongs.",
+            ocrReady: "Where recognition is still needed, black and white "
+                    + "costs nothing: 989 words read back against 987 in "
+                    + "colour, at 8.5 % of the file size. Call "
+                    + "recommend_settings.",
+            behindLogins: "A server-side converter fetches the URL as an "
+                        + "anonymous visitor and meets the paywall. This "
+                        + "captures what the browser is already showing — for "
+                        + "the 10 of 20 sources this endpoint cannot read, "
+                        + "that is the difference between a reference and a "
+                        + "gap.",
+            whatItIsNot: "It does not defeat a paywall or a licence you do not "
+                       + "hold, and a screen capture is not a qualified "
+                       + "electronic document. The checksum attests the file "
+                       + "has not changed since it was written — not that the "
+                       + "page was genuine.",
           },
           storeCounts: "This route does not visit a store page in Firefox and "
                      + "therefore cannot affect the user count. The Chrome "
