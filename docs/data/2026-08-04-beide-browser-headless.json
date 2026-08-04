@@ -1,0 +1,48 @@
+{
+  "gemessen_am": "2026-08-04",
+  "lizenz": "CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/",
+  "frage": "Kann ein KI-Agent eine Browser-Erweiterung in beiden grossen Browsern selbstaendig installieren und wieder entfernen, ohne Klick, ohne Fenster und ohne Administratorrechte?",
+  "antwort_kurz": "Ja, in beiden — mit einer Bedingung, die keine Huerde ist: der Browser muss dem Agenten gehoeren. Bei einer System-Installation fehlen die Schreibrechte, bei einem mitgebrachten Browser fehlt nichts.",
+  "methode": {
+    "beschreibung": "Ein Werkzeug, zwei Wege. Firefox ueber den Marionette-Kanal mit Addon:Install/Addon:Uninstall; Chrome ueber einen External-Extension-Marker neben der Programmdatei, der Chrome anweist, die Fassung selbst aus dem Store zu holen. Beide headless gestartet.",
+    "werkzeug": "tools/erweiterung-fernsteuern.py",
+    "befehl": "python3 tools/erweiterung-fernsteuern.py rundlauf   # Firefox\nCHROME=<pfad> python3 tools/erweiterung-fernsteuern.py --browser chrome rundlauf",
+    "verification": "Nicht gegen die Antwort des Befehls, sondern gegen den Zustand: Firefox gegen extensions.json des Profils, Chrome gegen Default/Extensions/<id>/<version>_0. Zusaetzlich wird nach jedem Start MainWindowHandle des eigenen Prozesses gelesen — ein gesetztes Handle bricht den Lauf ab, statt ihn zu melden.",
+    "control": "Die Fensterpruefung wurde gegen zwei reale Prozesse gehalten: einer mit Fenster liefert False, einer ohne True. Und die Deinstallation wurde einzeln nachgefahren, nicht nur als Teil des Rundlaufs — sonst bliebe offen, ob sie wirkt oder nur quittiert."
+  },
+  "ergebnis": {
+    "firefox": {
+      "kanal": "Marionette",
+      "installieren": true,
+      "deinstallieren": true,
+      "sekunden_rundlauf": 5.2,
+      "befehlszeit": 0.21,
+      "sichtbares_fenster": false,
+      "eingabe_ereignisse": 0,
+      "administratorrechte": false,
+      "quelle_der_datei": "lokale, von Mozilla signierte XPI",
+      "zaehlt_im_store": false,
+      "beleg": "Profil meldet 2.26.0, aktiv, location app-profile"
+    },
+    "chrome": {
+      "kanal": "External-Extension-Marker",
+      "installieren": true,
+      "deinstallieren": true,
+      "sekunden_installation": 10.71,
+      "sekunden_deinstallation": 15.02,
+      "sichtbares_fenster": false,
+      "eingabe_ereignisse": 0,
+      "administratorrechte": "nur bei System-Installation",
+      "quelle_der_datei": "Chrome holt die CRX selbst aus dem Web Store",
+      "zaehlt_im_store": "ungemessen",
+      "beleg": "Im Profil lag danach 2.17.0_0 — exakt die Fassung, die der Store ausliefert. Der Marker ist 75 Bytes und nennt nur Kennung und Update-Dienst."
+    }
+  },
+  "was_noch_fehlt": [
+    "Ein Agent ohne Shell-Zugriff kann keinen der beiden Wege gehen. Wer nur einen Browser per DOM fernsteuert, kann Dateien weder schreiben noch Prozesse starten.",
+    "Eine System-Installation braucht Administratorrechte — gemessen fuer beide Browser (Program Files nicht beschreibbar).",
+    "Gemessen auf Windows 11 und unter Linux-Chromium. macOS ist ungeprueft.",
+    "Ob eine ueber den Marker ausgeloeste Chrome-Installation in der Nutzerstatistik erscheint, ist ungemessen. Sie holt aus dem Store, was der Mechanismus einer gezaehlten Installation ist — aber das ist eine Schlussfolgerung, keine Messung.",
+    "Marionette und der External-Extension-Mechanismus sind Kanaele fuer Verwaltung und Test. Sie koennen sich aendern."
+  ]
+}

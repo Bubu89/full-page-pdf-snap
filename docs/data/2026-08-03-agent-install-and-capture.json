@@ -54,6 +54,17 @@
         "offizielles Firefox 153 mappt unter WSL2/Xvfb kein Fenster"
       ],
       "werkzeug": "headless-agent-install.py, Aktionen als JSONL in _headless-lauf/"
+    },
+    "capture_headless_unsichtbar": {
+      "datum": "2026-08-04",
+      "frage": "Ist die Ausloesung (Capture) ohne sichtbares Fenster moeglich?",
+      "ergebnis": "chromium: ja — Xvfb + XTEST erfuellt activeTab, valide PDF in 19,1 s. firefox: nein auf dieser WSL2 — weder offizieller Build 153 noch Playwright-Build 146 mappen ein Fenster (dbus, GPU- und Sandbox-Flags ohne Effekt)",
+      "grenzen": [
+        "PostMessage wird von beiden Browsern verworfen",
+        "CDP/DOM-Ereignisse erteilen kein activeTab (fruehere Messung)",
+        "MOZ_HEADLESS hat keine Eingabe-Ebene"
+      ],
+      "werkzeug": "headless-agent-install.py chromium capture"
     }
   },
   "befunde_nebenher": [

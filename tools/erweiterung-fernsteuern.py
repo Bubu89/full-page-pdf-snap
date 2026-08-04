@@ -262,6 +262,98 @@ def profil_belegt(profil):
     return False
 
 
+
+# ------------------------------------------------------- Chrome / Chromium
+
+CWS_ID = "ekjbgcdhpgijhbepkagefnkdbdfjpehn"
+CWS_UPDATE = "https://clients2.google.com/service/update2/crx"
+
+CH_KANDIDATEN = [
+    r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+    r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+    os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe"),
+    "/usr/bin/google-chrome", "/usr/bin/chromium", "/usr/bin/chromium-browser",
+    "/snap/bin/chromium",
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    str(Path.home() / ".cache/ms-playwright/chromium-1208/chrome-linux64/chrome"),
+]
+
+
+def chrome_exe():
+    eigen = os.environ.get("CHROME")
+    if eigen and Path(eigen).exists():
+        return eigen
+    for k in CH_KANDIDATEN:
+        if k and Path(k).exists():
+            return k
+    for name in ("google-chrome", "chromium", "chromium-browser"):
+        g = shutil.which(name)
+        if g:
+            return g
+    raise SystemExit("Chrome/Chromium nicht gefunden — Pfad ueber CHROME setzen.")
+
+
+def ch_marker(an, exe=None):
+    """External-Extension-Marker setzen oder zuruecknehmen.
+
+    Der entscheidende Unterschied zu allem anderen, was Chrome anbietet: hier
+    holt **Chrome selbst die Fassung aus dem Store**. Der Marker ist eine
+    75-Byte-Datei neben der Programmdatei, die nichts weiter sagt als „diese
+    Kennung, Update-Dienst dort". Beim naechsten Start laedt Chrome die CRX,
+    prueft die Signatur und legt sie im Profil ab.
+
+    `Extensions.install` gibt es ueber CDP nicht (gemessen: `-32601`), und
+    `--load-extension` nimmt nur entpackte Ordner. Dieser Weg ist der einzige
+    gemessene, mit dem eine **Store-Fassung** ohne Klick in ein Chrome-Profil
+    kommt — belegt am 4. August 2026: im Profil lag danach `2.17.0_0`, exakt
+    die Fassung, die der Store ausliefert.
+
+    Zuruecknehmen heisst umbenennen, nicht loeschen: `.json.disabled` laesst
+    sich zurueckdrehen, und ein geloeschter Marker waere bei einem Fehlversuch
+    verloren.
+    """
+    verzeichnis = Path(exe or chrome_exe()).parent / "extensions"
+    ziel = verzeichnis / f"{CWS_ID}.json"
+    aus = verzeichnis / f"{CWS_ID}.json.disabled"
+    try:
+        verzeichnis.mkdir(parents=True, exist_ok=True)
+    except PermissionError:
+        # Dieselbe Trennlinie wie bei Firefox: eine System-Installation
+        # gehoert dem System. Gemessen am 4. August 2026 —
+        # C:\Program Files\Google\Chrome\Application\extensions laesst sich
+        # ohne Administratorrechte nicht anlegen. Ein mitgebrachter Browser
+        # dagegen liegt in einem Verzeichnis, das dem Benutzer gehoert, und
+        # dort geht es ohne jedes zusaetzliche Recht.
+        raise SystemExit(
+            f"Kein Schreibrecht in {verzeichnis}.\n"
+            "Das ist eine System-Installation; der Marker gehoert neben die "
+            "Programmdatei.\n"
+            "Ausweg ohne Administratorrechte: einen eigenen Chromium "
+            "entpacken und\n"
+            "  CHROME=/pfad/zu/chrome python3 tools/erweiterung-fernsteuern.py "
+            "--browser chrome install\n"
+            "aufrufen. Der Weg selbst ist derselbe.")
+    if an:
+        if aus.exists():
+            aus.rename(ziel)
+        elif not ziel.exists():
+            ziel.write_text(json.dumps({"external_update_url": CWS_UPDATE}),
+                            encoding="utf-8")
+    elif ziel.exists():
+        ziel.rename(aus)
+    return ziel if an else aus
+
+
+def ch_installiert(profil):
+    """Wahrheit aus dem Profil, nicht aus dem Marker. Der Marker sagt nur, was
+    Chrome tun SOLL — ob es geklappt hat, steht im Extensions-Verzeichnis."""
+    d = Path(profil) / "Default" / "Extensions" / CWS_ID
+    if not d.exists():
+        return None
+    fassungen = sorted(x.name for x in d.iterdir() if x.is_dir())
+    return {"version": fassungen[-1].rsplit("_", 1)[0], "pfad": str(d)} if fassungen else None
+
+
 # ------------------------------------------------------------- Marionette
 
 class Marionette:
@@ -380,16 +472,95 @@ def mit_firefox(profil, arbeit):
         time.sleep(1.0)   # Firefox schreibt extensions.json beim Beenden
 
 
+
+def chrome_lauf(a):
+    """Chrome ueber den External-Extension-Marker. Kein Klick, kein Fenster.
+
+    Anders als bei Firefox wird hier nichts eingespielt, sondern nur gesagt,
+    was Chrome holen soll — den Rest macht Chrome beim naechsten Start selbst,
+    aus dem Store, mit Signaturpruefung.
+    """
+    exe = chrome_exe()
+    profil = Path(os.environ.get("TEMP", "/tmp")) / "pl-chrome-profil"
+    profil.mkdir(parents=True, exist_ok=True)
+    print(f"Chrome:  {exe}\nProfil:  {profil}", flush=True)
+
+    if a.aktion == "status":
+        z = ch_installiert(profil)
+        print("  " + (f"installiert: {z['version']}" if z else "nicht installiert"))
+        return 0
+
+    def starten_und_warten(sekunden=25):
+        proc = subprocess.Popen(
+            [exe, "--headless=new", f"--user-data-dir={profil}", "--no-first-run",
+             "--no-default-browser-check", "--disable-gpu", "about:blank"],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=0x08000000 if os.name == "nt" else 0)
+        time.sleep(2)
+        if not kein_fenster(proc):
+            proc.kill()
+            raise RuntimeError("Chrome hat ein Fenster geoeffnet — abgebrochen.")
+        # Chrome holt die Erweiterung kurz nach dem Start; frueher beenden
+        # heisst, den Download abzuschneiden und nichts vorzufinden.
+        ende = time.time() + sekunden
+        while time.time() < ende:
+            if ch_installiert(profil):
+                break
+            time.sleep(1)
+        proc.terminate()
+        try:
+            proc.wait(timeout=15)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+        time.sleep(1)
+
+    if a.aktion in ("deinstall", "rundlauf"):
+        vorher = ch_installiert(profil)
+        ch_marker(False, exe)
+        if vorher:
+            starten_und_warten(10)
+        schritt("Marker zurueckgenommen", True,
+                "als .json.disabled umbenannt, nicht geloescht")
+
+    if a.aktion in ("install", "rundlauf"):
+        ch_marker(True, exe)
+        schritt("Marker gesetzt", True, "external_update_url auf den Store")
+        starten_und_warten()
+        z = ch_installiert(profil)
+        schritt("Chrome hat geholt", z is not None,
+                f"Profil meldet {z['version'] if z else 'nichts'}")
+
+    z = ch_installiert(profil)
+    print("\nStand: " + (f"v{z['version']}" if z else "nicht installiert"))
+    if a.protokoll:
+        Path(a.protokoll).write_text(json.dumps(
+            {"browser": "chrome", "exe": exe, "profil": str(profil),
+             "kanal": "external-extension-marker", "sichtbares_fenster": False,
+             "eingabe_ereignisse": 0, "protokoll": PROTOKOLL, "zustand": z},
+            indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"Protokoll: {a.protokoll}")
+    return 0 if all(x["ok"] for x in PROTOKOLL) else 1
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("aktion", choices=["status", "install", "deinstall", "rundlauf"])
+    p.add_argument("--browser", choices=["firefox", "chrome"], default="firefox",
+                   help="Chrome holt die Store-Fassung selbst; Firefox spielt "
+                        "eine lokale, signierte XPI ein")
     p.add_argument("--json", action="store_true")
     p.add_argument("--protokoll", metavar="DATEI",
                    help="Rohdaten des Laufs als JSON schreiben")
     a = p.parse_args()
 
-    if UNTER_WSL:
+    # Der Chrome-Weg schreibt nur eine Datei — er braucht die Windows-Seite
+    # nicht. Nur Marionette haengt an einem Loopback-Port, der aus WSL2
+    # nicht erreichbar ist.
+    if UNTER_WSL and a.browser != "chrome":
         return an_windows_weiterreichen()
+
+    if a.browser == "chrome":
+        return chrome_lauf(a)
 
     profil = profil_pfad()
     print(f"Profil: {profil.name}", flush=True)
