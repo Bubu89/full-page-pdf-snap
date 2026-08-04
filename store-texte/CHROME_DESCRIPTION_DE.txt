@@ -1,0 +1,65 @@
+Speichert eine ganze Webseite als hochauflösendes PDF. Die Erweiterung scrollt die Seite selbst, nimmt jeden Abschnitt auf und fügt alles zusammen — kein Zuschneiden, kein Druckdialog, keine Seiteneinrichtung.
+
+Und sie schreibt auf Wunsch die Quellenangaben mit hinein: Verfasser, Titel, Zeitschrift, DOI, Lizenz und den genauen Zeitpunkt des Abrufs, im PDF und in einer RIS-Datei daneben. Beleg und Angabe an einem Ort.
+
+FÜR STUDIERENDE UND WISSENSCHAFT
+„Quellenangaben mitschreiben" einschalten, und jede Aufnahme kommt als zitierfähige Quelle an.
+• Verfasser, Titel, Zeitschrift, Jahr, Band, Seiten, DOI, ISSN und Lizenz, aus der Seite selbst gelesen — kein Zitationsdienst wird angefragt, also erfährt niemand, was Sie lesen
+• Eine RIS-Datei neben dem PDF, fertig für Zotero, Citavi, EndNote oder Mendeley
+• Der Abrufzeitpunkt mit Ihrer Zeitzone und eine SHA-256-Prüfsumme der Aufnahme — genau das, was eine Zeile „abgerufen am" im Literaturverzeichnis braucht
+• Dieselben Felder in den PDF-Metadaten, damit Dokumentenverwaltung und Systemsuche die Arbeit über Verfasser und Titel finden
+• Funktioniert bei PubMed, arXiv, SpringerLink, Wiley, ScienceDirect, JMIR, doi.org und vielen weiteren
+
+Quellen hinter einem Hochschulzugang sind der eigentliche Punkt. Ein Umwandlungsdienst auf einem Server ruft die Adresse als anonymer Besucher ab und landet vor der Bezahlschranke; diese Erweiterung nimmt auf, was Ihr eigener Browser bereits anzeigt — samt Lizenz.
+
+LESBAR AUCH FÜR KI-WERKZEUGE, NICHT NUR FÜR MENSCHEN
+Das PDF trägt eine echte Textebene — den Text der Seite, unsichtbar an der Stelle hinterlegt, an der er im Bild steht. Ein Sprachmodell liest damit die Quelle, statt aus Bildpunkten zu raten, und findet Verfasser und DOI dort, wo sie hingehören. Mit eingeschalteter Herkunftszeile stehen Abrufzeit und Prüfsumme zusätzlich sichtbar unter der Aufnahme, wo ein Modell sie ebenfalls sieht.
+
+Ein Ordner solcher Aufnahmen ist ein Literaturverzeichnis, das ein KI-Werkzeug zusammenstellen kann, ohne eine einzige der ursprünglichen Seiten zu öffnen.
+
+WAS SIE ANFORDERT — UND WAS NICHT
+Die Berechtigungsliste ist die kürzeste, die die Aufgabe noch erfüllt:
+• activeTab — der aktuelle Tab, und zwar erst nachdem Sie auf die Schaltfläche geklickt oder das Tastenkürzel gedrückt haben. Nicht „alle Websites". Popup zu, Zugriff weg.
+• downloads — um die Datei zu schreiben
+• downloads.open — damit die Fertig-Meldung das eben erzeugte PDF öffnen kann. Ohne Ihr Zutun wird nichts geöffnet.
+• storage — um Ihre Einstellungen zu merken, auf Ihrem Gerät
+• contextMenus, notifications, scripting — der Rechtsklick-Eintrag, die Fertig-Meldung und der Code, der das Scrollen erledigt
+
+Im Manifest stehen keine Host-Berechtigungen. Das können Sie selbst nachsehen: chrome://extensions öffnen, auf „Details" klicken und die Zeile mit den Berechtigungen lesen.
+
+VOLLSTÄNDIG KOSTENLOS — UND SO GEBAUT, DASS ES SO BLEIBT
+Freie Software unter der MIT-Lizenz, und kostenlos in jedem Sinn, der im Alltag zählt:
+• Keine Werbung, nirgends — nicht im Popup, nicht in den Einstellungen, nicht in Ihrem PDF
+• Kein Konto, keine Anmeldung, keine E-Mail-Adresse
+• Keine Testphase, keine „Pro"-Fassung, keine zurückgehaltene Funktion
+• Keine Telemetrie und keine Analytik — die Erweiterung stellt von sich aus keine Netzwerkanfragen
+• Alles geschieht auf Ihrem Gerät. Die Seite verlässt es nicht.
+
+SO WIRD SIE BENUTZT
+1. Die Seite öffnen, die Sie behalten wollen
+2. Auf das Symbol in der Leiste klicken, Alt+Umschalt+Y drücken oder im Rechtsklick-Menü „Seite als PDF speichern" wählen
+3. Warten, während die Seite scrollt — die Erweiterung lädt dabei die Teile nach, die noch nicht sichtbar waren
+4. Das PDF liegt im Download-Ordner
+
+WO SIE LÄUFT
+Chrome ab Fassung 116. Ebenso Edge, Brave, Vivaldi und andere Chromium-Browser — Edge fragt einmal nach, ob Erweiterungen aus anderen Stores erlaubt sind, und Opera braucht zuvor sein Zusatzmodul „Install Chrome Extensions".
+
+Nicht unter Chrome für Android: dieser Browser installiert überhaupt keine Erweiterungen, aus keinem Store. Wer das auf dem Telefon braucht, findet in Firefox für Android derzeit den einzigen verbreiteten Browser, bei dem sich die Frage überhaupt stellt — dort gibt es eine Firefox-Fassung.
+
+EINSTELLUNGEN, DIE SICH LOHNEN
+• Quellenangaben mitschreiben — die RIS-Datei und die Metadaten von oben
+• Herkunftszeile — druckt Adresse, Abrufzeit und Prüfsumme unter die Aufnahme
+• Cookie-Banner und mitlaufende Kopfzeilen vor der Aufnahme ausblenden — sonst wiederholt sich eine feststehende Leiste in jedem Abschnitt
+• Bildqualität und Seitengröße, falls die Voreinstellung nicht passt
+
+WAS SIE NICHT IST
+Kein Weg an einer Bezahlschranke vorbei. Sie nimmt die Seite auf, die Ihr Browser ohnehin anzeigt — eine Vervielfältigung zum eigenen Gebrauch, mehr nicht. Sie umgeht keine technische Schutzmaßnahme und kann Ihnen keine Seite zeigen, zu der Sie keinen Zugang haben.
+
+Eine Bildschirmaufnahme ist außerdem kein qualifiziertes elektronisches Dokument. Die Prüfsumme hält fest, dass die Datei seit dem Schreiben unverändert ist; über die Echtheit der Seite sagt sie nichts.
+
+Wo der Druckexport des Browsers besser passt, nehmen Sie ihn — er behält durchgehend auswählbaren Text, und bei einem schlichten Artikel ist das oft das bessere Ergebnis. Der Abtausch ist gemessen und veröffentlicht, statt beschönigt zu werden:
+https://provinglab.dev/measurements/print-to-pdf-vs-screenshot/
+
+Quelltext, Fehlermeldungen und die Messungen hinter diesen Angaben:
+https://github.com/Bubu89/full-page-pdf-snap
+https://provinglab.dev/
