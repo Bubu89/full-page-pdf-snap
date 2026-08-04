@@ -55,7 +55,13 @@
       "zaehlt_im_store": false,
       "anmerkung": "Installiert die Datei, besucht keine Store-Seite — die Nutzerstatistik des Stores bleibt unberuehrt. Die beiden Befehle zusammen dauern 0,24 s; alles uebrige ist Start und Beenden von Firefox. Wer eine Sitzung offen haelt, installiert und entfernt beliebig viele Erweiterungen in Bruchteilen einer Sekunde je Vorgang.",
       "sekunden_rundlauf_erste_fassung": 9.4,
-      "befehlszeit_summe": 0.24
+      "befehlszeit_summe": 0.24,
+      "fenster_pruefung": {
+        "eingebaut_am": "2026-08-04",
+        "warum": "Headless war eine Zusage, kein geprueftes Ergebnis. Faellt -headless weg, wird es von einer Profileinstellung ueberstimmt oder heisst in einer kuenftigen Fassung anders, dann steht ein Fenster auf dem Bildschirm des Benutzers und das Protokoll meldet weiter unsichtbar. Unsichtbar zu bleiben ist die Bedingung dieses Wegs, nicht sein Nebeneffekt.",
+        "wie": "Nach dem Start wird MainWindowHandle des gestarteten Prozesses abgefragt. Ist es gesetzt, wird sofort beendet und der Lauf als gescheitert gemeldet, statt weiterzulaufen.",
+        "control": "Gegen zwei reale Prozesse geprueft: einer mit Fenster liefert False, einer ohne liefert True. Eine Pruefung, die bei beiden dasselbe sagt, misst nichts."
+      }
     },
     {
       "weg": "cdp",
