@@ -360,6 +360,12 @@ def pruefe_seite(pfad, html, befunde):
             else (pfad.parent / ziel).resolve()
         if p.is_dir():
             p = p / "index.html"
+        # Pfade, die der Worker beantwortet und die es als Datei nicht gibt.
+        # Ohne diese Liste meldet der Pruefer jeden Verweis auf den Endpunkt
+        # als tot — und das ist der Verweis, den jede Messseite tragen soll.
+        VOM_WORKER = ("/mcp", "/mcp/", "/oauth/token", "/oauth/register")
+        if ziel in VOM_WORKER:
+            continue
         if not p.exists() and not str(p).startswith(str(DOCS / ".well-known")):
             befunde.append(("FEHLER", rel, "toter-link",
                             f"Verweist auf {ziel}, existiert nicht.", ""))
