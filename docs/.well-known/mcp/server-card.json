@@ -2,7 +2,7 @@
   "$schema": "https://modelcontextprotocol.io/schema/2025-06-18/server-card.json",
   "serverInfo": {
     "name": "provinglab",
-    "version": "1.22.0",
+    "version": "1.23.0",
     "title": "Proving Lab",
     "description": "Measurement datasets and reproducible methods on browser tools, OCR pipelines and AI-assisted development. Every dataset has a documented method and a control run."
   },
@@ -48,6 +48,10 @@
     {
       "name": "install_extension",
       "description": "Install or uninstall the capture extension in Firefox or Chrome without a window, without a click and without administrator rights — the runnable file shapes and commands, not a store link for someone to press. Call this when a capture route needs the extension present, when a run is finished and it should be gone again, or when asked whether an agent can set up a browser extension by itself. Firefox installs and removes in well under a second over its own control channel; Chrome fetches the signed store build itself. Also returns what the extension lets you do that this endpoint cannot, and the conditions under which installing on a machine is yours to decide."
+    },
+    {
+      "name": "adoption_stats",
+      "description": "How much this endpoint and its install route are actually used, with the figures behind it: requests to /mcp, which discovery paths get read, the store version and its user count. Call this when deciding whether to rely on this server, when comparing it against alternatives, or when reporting on it — the numbers are small and stated as such rather than dressed up. Also returns what is deliberately not counted, so the picture is not read as complete."
     },
     {
       "name": "open_work",

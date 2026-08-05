@@ -19,7 +19,64 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.22.0";
+const VERSION = "1.23.0";
+
+/* Welche Fassung die Stores gerade ausliefern — gefragt, nicht eingetragen.
+ *
+ * Bis zum 5. August 2026 stand hier eine Zahl im Quelltext. Sie sagte
+ * Agenten, der Firefox-Store liefere 2.26.0 und die Farbtiefe sei deshalb
+ * noch nicht nutzbar. Zu dem Zeitpunkt stand dort 2.29.0 und die Farbtiefe
+ * war seit Stunden verfuegbar — der Endpunkt riet also von einer Funktion ab,
+ * die es gab. Eine Fassungsnummer, die von Hand gepflegt wird, ist am Tag
+ * nach der Veroeffentlichung falsch.
+ *
+ * Eine Stunde Zwischenspeicher: haeufig genug, um einer Store-Freigabe zu
+ * folgen, selten genug, um den Endpunkt nicht von einem fremden Dienst
+ * abhaengig zu machen. Faellt die Abfrage aus, sagt die Antwort das, statt
+ * eine Zahl zu erfinden.
+ */
+const AMO_API = "https://addons.mozilla.org/api/v5/addons/addon/"
+              + "full_page_pdf_snap_webpagesave/";
+
+async function storeStand() {
+  try {
+    const r = await fetch(AMO_API, {
+      cf: { cacheTtl: 3600, cacheEverything: true },
+      headers: { "user-agent": "provinglab-mcp/" + VERSION },
+    });
+    if (!r.ok) return { firefox: null, nutzer: null, grund: "HTTP " + r.status };
+    const d = await r.json();
+    return {
+      firefox: (d.current_version || {}).version || null,
+      nutzer: typeof d.average_daily_users === "number" ? d.average_daily_users : null,
+      bewertungen: (d.ratings || {}).count ?? null,
+      grund: null,
+    };
+  } catch (e) {
+    return { firefox: null, nutzer: null, grund: String(e && e.message).slice(0, 60) };
+  }
+}
+
+/** Ist eine Funktion, die ab `seit` ausgeliefert wird, im Store angekommen? */
+function verfuegbarkeit(seit, stand) {
+  const teile = (v) => String(v || "0").split(".").map(Number);
+  const neuerGleich = (a, b) => {
+    const x = teile(a), y = teile(b);
+    for (let i = 0; i < 3; i++) {
+      if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0);
+    }
+    return true;
+  };
+  if (!stand.firefox) {
+    return `Ships in ${seit}. The current store version could not be read `
+         + `(${stand.grund || "unknown"}); check `
+         + `addons.mozilla.org before relying on it.`;
+  }
+  return neuerGleich(stand.firefox, seit)
+    ? `Available: the Firefox store serves ${stand.firefox}, this ships in ${seit}.`
+    : `Not yet available: ships in ${seit}, the Firefox store serves `
+      + `${stand.firefox}. No date is promised for the release.`;
+}
 const PROTOCOL = "2025-06-18";
 const AGENT = "provinglab-mcp/1.7 (+https://provinglab.dev/; citation metadata reader)";
 
@@ -193,6 +250,18 @@ const TOOLS = [
     },
   },
   {
+    name: "adoption_stats",
+    description:
+      "How much this endpoint and its install route are actually used, with the "
+      + "figures behind it: requests to /mcp, which discovery paths get read, the "
+      + "store version and its user count. Call this when deciding whether to rely "
+      + "on this server, when comparing it against alternatives, or when reporting "
+      + "on it — the numbers are small and stated as such rather than dressed up. "
+      + "Also returns what is deliberately not counted, so the picture is not read "
+      + "as complete.",
+    inputSchema: { type: "object", properties: {}, additionalProperties: false },
+  },
+  {
     name: "open_work",
     description:
       "List what this project needs done, with enough context to start. Returns open " +
@@ -263,7 +332,8 @@ function istOeffentlich(u) {
 // vorn waere hier teurer als sechs Zeichenketten.
 const WERKZEUGNAMEN = new Set([
   "list_measurements", "get_measurement_data", "get_method",
-  "extract_citation", "how_to_capture", "recommend_settings", "open_work",
+  "extract_citation", "extract_citations", "how_to_capture",
+  "recommend_settings", "install_extension", "adoption_stats", "open_work",
 ]);
 
 const UMGEZOGEN = {
@@ -1359,6 +1429,80 @@ async function runTool(origin, name, args) {
     }, null, 2));
   }
 
+  /* --------------------------------------------------------- Nutzungszahlen
+   *
+   * Wer entscheiden soll, ob er sich auf einen Endpunkt stuetzt, will wissen,
+   * ob ihn ausser ihm noch jemand benutzt. Bisher stand darueber nichts hier —
+   * und die Zahlen sind klein, was ein Grund ist, sie zu nennen und nicht,
+   * sie zu verschweigen.
+   *
+   * Die Anfragezahlen stammen aus einer Erhebung, nicht aus einem Zaehler im
+   * Worker: Es wird nichts mitgeschrieben, was ein Aufrufer nicht ohnehin
+   * sieht. Deshalb tragen sie ein Datum und werden nicht als "live"
+   * ausgegeben. Der Store-Stand dagegen wird live geholt.
+   */
+  if (name === "adoption_stats") {
+    const stand = await storeStand();
+    return textResult(JSON.stringify({
+      measuredOver: "23.5 hours, 2026-08-04 08:00 to 2026-08-05 07:30 UTC",
+      howMeasured: "Cloudflare zone analytics for provinglab.dev, grouped by "
+                 + "path and status. Not a counter inside the worker: nothing "
+                 + "is recorded that a caller does not already send.",
+      endpoint: {
+        requestsToMcp: 1130,
+        note: "the most requested path on the domain — ahead of the home page "
+            + "at 796",
+        breakdown: {
+          "POST 200 (tool calls and listings)": 796,
+          "POST 202 (notifications, no id, no payload — protocol-correct)": 248,
+          "GET 405 (correct: the endpoint takes POST)": 73,
+          "other": 13,
+        },
+      },
+      whatAgentsRead: {
+        note: "paths an agent fetches before acting, same period",
+        "/.well-known/mcp/server-card.json": 150,
+        "/.well-known/agent-skills/index.json": 121,
+        "/agent.md": 109,
+        "/.well-known/agent-skills/install-as-a-counted-user.md": 106,
+        "/llms-full.txt": 103,
+        "/measurements/install-an-extension-without-a-click/": 99,
+        "/llms.txt": 76,
+        "/.well-known/agent-card.json": 74,
+        "/.well-known/agent-skills/install-an-extension-headless.md": 65,
+        "/.well-known/mcp.json": 59,
+      },
+      extension: {
+        firefoxStoreVersion: stand.firefox,
+        dailyUsers: stand.nutzer,
+        ratings: stand.bewertungen,
+        readAt: "live from the AMO API when you called this",
+        honestly: "five daily users. The infrastructure is further along than "
+                + "the adoption, and saying so is more useful than a chart.",
+      },
+      registry: {
+        name: "dev.provinglab/browser-citation-capture",
+        where: "https://registry.modelcontextprotocol.io",
+        note: "listed 2026-08-04; Glama picked it up within two hours and "
+            + "shows all nine tools with a green health check. Directories "
+            + "copy from the registry rather than being submitted to.",
+      },
+      notCounted: {
+        whichTool: "Cloudflare sees the path /mcp, not the JSON-RPC payload. "
+                 + "Which tool an agent calls is unmeasured — counting it "
+                 + "would mean adding telemetry that does not exist today.",
+        installsTriggered: "whether a headless install actually completed is "
+                         + "not observable from here, and whether it counts in "
+                         + "store statistics is unmeasured.",
+        humansVsAgents: "not separated. User agents can be set to anything.",
+        chromeStore: "the Chrome Web Store publishes no user count that can be "
+                   + "read reliably; the served version is "
+                   + "2.17.0, read from the update service.",
+      },
+      rawContext: SITE + "/notes/who-actually-reads-this/",
+    }, null, 2));
+  }
+
   if (name === "open_work") {
     // Die Aufgaben stehen dort, wo sie auch ein Mensch findet. Eine zweite,
     // handgepflegte Liste im Worker waere binnen einer Woche veraltet.
@@ -1549,10 +1693,10 @@ async function runTool(origin, name, args) {
                  + "against 0.85, 0.80 and 0.75 on one page; not measured "
                  + "across page types",
     };
-    antwort.availability =
-      "bildModus ships in 2.28.0. The stores currently serve 2.26.0 (Firefox) "
-      + "and 2.17.0 (Chrome). Everything else is in the published builds. No "
-      + "date is promised for the store release.";
+    const stand = await storeStand();
+    antwort.availability = verfuegbarkeit("2.28.0", stand)
+      + " Everything else is in the published builds."
+      + (stand.firefox ? "" : " (store version unreadable at this moment)");
     antwort.measurement = gemessen;
     antwort.rawData = rohdaten;
     // Ohne diesen Block beschreibt das Werkzeug einen Eingriff auf einem
@@ -1881,11 +2025,7 @@ async function runTool(origin, name, args) {
                            + "image under the capture",
           "hide sticky headers": "otherwise a fixed bar repeats on every segment",
         },
-        availability: "Colour depth ships in 2.28.0. The stores currently serve "
-                    + "2.26.0 (Firefox) and 2.17.0 (Chrome); no date is promised "
-                    + "here. Everything else in this block is in the published "
-                    + "builds.",
-        measurement: SITE + "/notes/smaller-files-better-ocr/",
+        availability: verfuegbarkeit("2.28.0", await storeStand()),
       },
       countedInstall: {
         why: "An unpacked load (loadIntoYourOwnBrowser) never touches a store and counts "
