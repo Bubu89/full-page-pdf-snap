@@ -1,6 +1,6 @@
 # Arbeitsstand
 
-Stand 4. August 2026. Gedacht für den Fall, dass jemand — Mensch oder Agent —
+Stand 5. August 2026. Gedacht für den Fall, dass jemand — Mensch oder Agent —
 hier weitermacht, ohne die Vorgeschichte im Kopf zu haben. Was gebaut ist, was
 offen ist, und was beim Anfassen zu beachten ist.
 
@@ -12,17 +12,40 @@ in [PLAN-ERWEITERUNG.md](PLAN-ERWEITERUNG.md), die Historie im
 
 | | Version | Bemerkung |
 |---|---|---|
-| Quellstand Firefox | 2.28.0 | in keinem Store |
-| Quellstand Chrome | 2.28.0 | aus denselben Quellen erzeugt (`chrome-mv3/port.py`) |
-| Firefox-Store | 2.26.0 | zwei Fassungen zurück |
-| Chrome-Store | 2.17.0 | **elf Fassungen zurück** — Paket liegt hochladefertig |
-| MCP-Endpunkt | Worker 1.20.0 | acht Werkzeuge |
+| Quellstand, beide Zweige | 2.30.0 | aus einer Quelle (`chrome-mv3/port.py`) |
+| Firefox-Store | 2.29.0 | eine Fassung zurück, 2.30.0 liegt hochladefertig |
+| Chrome-Store | 2.17.0 | **dreizehn Fassungen zurück** |
+| MCP-Endpunkt | Worker 1.23.0 | zehn Werkzeuge |
+| MCP-Registry | 1.23.0 | `dev.provinglab/browser-citation-capture`, aktiv |
+| Nutzer | **5** täglich | Firefox-Store, 2 Bewertungen |
 
 Der Chrome-Rückstand hatte eine Ursache, keine Nachlässigkeit: `port.py` schrieb
 die Version hartkodiert ins Manifest. Behoben; das Packwerkzeug lehnt eine
 bereits vergebene Nummer außerdem ab.
 
-## Was in 2.28.0 neu ist und noch niemand im Store hat
+## Was seit dem 4. August dazukam
+
+**Zwei Fehler, beide auf echten Geräten aufgetreten.** Schwarzweiß zerfiel bei
+jeder Bildbreite, die nicht durch acht teilbar ist — PDF verlangt, dass jede
+Bildzeile an einer Byte-Grenze beginnt, und die Umwandlung packte fortlaufend
+durch. Bei 1440 Punkten fiel das nicht auf, bei 1617 verschob sich jede Zeile um
+sieben Bit. Und Seiten, die beim Scrollen nachladen, brachten Abschnitte doppelt
+ins PDF; die Aufnahme läuft jetzt einmal ohne Bilder durch, bis die Höhe steht.
+
+**Der Endpunkt liest den Store-Stand selbst.** Bis zum 5. August stand die
+Fassungsnummer im Quelltext und sagte Agenten, die Farbtiefe sei nicht
+verfügbar — zu einem Zeitpunkt, als sie es seit Stunden war.
+
+**`install_extension` und `adoption_stats`** sind dazugekommen. Das erste macht
+den Installationsweg als Werkzeug auffindbar, das zweite legt die Nutzungszahlen
+offen, samt dem, was bewusst nicht gezählt wird.
+
+**Die Vergleichsmessung ist wiederholt.** Sie sagte seit dem 2. August, der
+Druckexport gewinne beim Text. Das galt für eine Fassung ohne Textebene; mit
+Textebene führt die Aufnahme mit 91,5 % gegen 87,6 %. Die alten Zahlen sind
+zurückgezogen, nicht nach unten korrigiert — sie ließen sich nicht reproduzieren.
+
+## Was in 2.28.0 kam und noch immer in keinem Chrome-Store steht
 
 **Zwei Bildfilter, je Kachel gewählt.** Die Aufnahme vergleicht `DCTDecode`
 (JPEG) mit verlustfreiem `FlateDecode` und nimmt das kleinere. Bei Text gewinnt

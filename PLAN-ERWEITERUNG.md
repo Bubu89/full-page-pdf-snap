@@ -1,146 +1,159 @@
-# Plan: das Add-on verbessern
+# Plan: was als Nächstes dran ist
 
-Stand 4. August 2026. Sortiert nach Nutzen, nicht nach Aufwand. Jeder Punkt
+Stand 5. August 2026. Sortiert nach Wirkung, nicht nach Aufwand. Jeder Punkt
 nennt, worauf er sich stützt — ein Vorhaben ohne Beleg steht hier nicht drin.
 
-## Ausgangslage, gemessen
+## Ausgangslage, heute gemessen
 
 | | |
 |---|---|
-| Firefox-Store | 2.26.0, **4 Nutzer**, 8 Downloads/Woche, 2 Bewertungen (5,0) |
-| Chrome-Store | 2.17.0 — **zehn Fassungen zurück** |
-| Quellstand | 2.27.0, beide Zweige |
-| Rückmeldung | *„Super gelöst! Dankeschön!"* · *„Find ich gut, einfache Handhabung."* |
+| Quellstand | **2.30.0**, beide Zweige |
+| Firefox-Store | 2.29.0 · **5 tägliche Nutzer** · 2 Bewertungen |
+| Chrome-Store | **2.17.0 — dreizehn Fassungen zurück** |
+| Endpunkt | Worker 1.23.0, zehn Werkzeuge, 1.182 Anfragen in 23 Stunden |
+| Registry | `dev.provinglab/browser-citation-capture`, aktiv |
 
-Zwei kurze, positive Bewertungen und kein einziger Funktionswunsch. **Dieser Plan
-kann sich nicht auf Nutzerwünsche stützen** — es gibt zu wenige Nutzer, um daraus
-etwas abzuleiten. Er stützt sich auf die eigenen Messungen, und das ist bei
-diesem Projekt ohnehin der vorgesehene Weg.
+Das Missverhältnis ist der Ausgangspunkt jeder Planung: **Der Unterbau ist
+weiter als die Verbreitung.** Registry-Eintrag, DNS-Discovery, abgeleitete
+Metadaten, Rechtsprüfung mit Gegentests, 32 Abnahmeprüfungen — und fünf Nutzer.
 
-Von siebzehn bisherigen Issues betraf **keines** die Erweiterung. Alle
-verbesserten Domain, Endpunkt oder Werkzeuge. Das ist die Lücke, die dieser Plan
-schließt.
+Rückmeldungen gibt es zwei, beide kurz und positiv, kein einziger
+Funktionswunsch. **Dieser Plan kann sich nicht auf Nutzerwünsche stützen**, es
+gibt zu wenige. Er stützt sich auf Messungen.
 
-## Wer das Add-on braucht, gemessen
+## Wer die Erweiterung braucht, gemessen
 
 Von zwanzig Quellen einer echten Leseliste werden **zehn ohne Browser zu
 vollständigen Zitationsdatensätzen**. Die anderen zehn sind die Zielgruppe:
-
-| Art der Quelle | Anzahl |
-|---|---|
-| Behörden und Statistik | 3 |
-| Repositorien | 2 |
-| Verlag, Open Access, Preprint, graue Literatur, Nachrichten | je 1 |
-
-Das ist keine Vermutung über Zielgruppen, sondern die Liste der Fälle, in denen
-ein Server scheitert und ein Browser gebraucht wird. Jede Verbesserung sollte an
-dieser Liste gemessen werden.
+Behörden und Statistik (3), Repositorien (2), Verlag, Open Access, Preprint,
+graue Literatur und Nachrichten (je 1). Das ist keine Vermutung über
+Zielgruppen, sondern die Liste der Fälle, in denen ein Server scheitert und ein
+Browser gebraucht wird. Jede Verbesserung sollte an dieser Liste gemessen
+werden.
 
 ---
 
-## 1. Die eigene Vergleichsmessung ist überholt — und unterschätzt das Produkt
+## 1. Chrome-Store: 2.30.0 hochladen
 
-**Beleg:** [#18](https://github.com/Bubu89/full-page-pdf-snap/issues/18).
-`/measurements/print-to-pdf-vs-screenshot/` nennt 94,8 % gegen 92,7 %
-Textausbeute. Die Rohdaten sagen dazu `"text_layer": false` und
-`"Full Page PDF Snap 2.16.0, then Tesseract 5"` — die gemessene Fassung hatte
-keine Textebene, die 92,7 % sind ein **OCR**-Wert. Einen Tag später kam die
-Textebene aus dem DOM dazu (Commit `d89992c`, 2. August). Übernommener Text kann
-nicht falsch erkannt werden.
+**Der größte Einzelhebel, und er wartet seit Tagen.** Chrome liefert eine
+Fassung aus, die dreizehn Versionen alt ist: ohne Farbtiefe, ohne die zwei
+Bildfilter, ohne `storage.managed`, ohne die 224 Übersetzungen vom 4. August,
+ohne die Schwarzweiß-Korrektur vom 5.
 
-**Warum zuerst:** Die Zahlen stehen auf **dreizehn ausgelieferten Seiten**,
-Startseite eingeschlossen. Der Satz „der Druckexport gewinnt beim Text" ist
-möglicherweise seit zwei Tagen nicht mehr wahr. Eine Messung, die das eigene
-Produkt zu schlecht darstellt, ist genauso falsch wie eine, die es zu gut
-darstellt — sie fällt nur niemandem auf.
+Chrome hat ein Vielfaches der Firefox-Reichweite. Solange dort 2.17.0 steht,
+zeigt jede Empfehlung des Endpunkts auf ein Produkt, das die empfohlenen
+Einstellungen nicht kennt.
 
-**Aufwand:** ein Messlauf, aber mit Xvfb-Aufbau, weil die Aufnahme ein echtes
-Eingabe-Ereignis braucht.
+Nötig: Paket bauen, Beschreibungstexte auf den Stand von Firefox bringen,
+Screenshots prüfen. Die Firefox-Texte liegen fertig unter
+`Desktop\AMO_UPLOAD_2.30.0` und lassen sich übertragen.
 
-## 2. Die Datei ist sechsmal so groß wie der Druckexport
+## 2. Firefox-Store: 2.30.0 nachziehen
+
+2.29.0 ist live, 2.30.0 liegt hochladefertig. Sie enthält die
+Schwarzweiß-Korrektur (Zeilen bei Breiten, die nicht durch acht teilbar sind)
+und den Vorlauf gegen doppelte Abschnitte bei nachladenden Seiten. **Beide
+Fehler sind auf echten Geräten aufgetreten**, nicht in einem Test.
+
+## 3. Der Dateiname auf Android
+
+Alle drei Testaufnahmen heißen `document(N).pdf` statt nach der Namensvorlage.
+Auf dem Desktop hieße dieselbe Datei `shop-apotheke_com_2026-08-04_1727_0001.pdf`.
+
+Für ein Werkzeug, dessen Zweck das Wiederfinden ist, wiegt das schwerer, als es
+aussieht: Wer zwanzig Quellen sichert, hat zwanzigmal `document`. **Ungeklärt
+ist, ob Firefox für Android den Dateinamen verwirft oder ob die Erweiterung ihn
+dort nicht setzt.** Beides ist prüfbar, keines ist geprüft.
+
+## 4. Die Dateigröße messen statt schätzen
 
 **Beleg:** [#19](https://github.com/Bubu89/full-page-pdf-snap/issues/19).
-6,7 MB gegen 1,1 MB, derselbe Artikel, derselbe Tag. Gemessen und bisher ohne
-Einordnung stehengelassen.
+Die JPEG-Qualität steht auf 0,92, und ob dieser Wert je gemessen oder nur
+gesetzt wurde, ist offen. Vier Stufen gegen Dateigröße und Textausbeute wären
+ein Nachmittag. Halbiert 0,80 die Datei bei weniger als einem Punkt Verlust,
+gehört die Voreinstellung geändert.
 
-**Warum es zählt:** Für einen Belegordner zu einer Abschlussarbeit ist das der
-Unterschied zwischen 50 MB und 300 MB. Es fällt beim ersten Beleg nicht auf und
-beim dreißigsten sehr.
+Seit dem 4. August gibt es dafür einen zweiten Hebel: Schwarzweiß bringt eine
+Textseite auf ein Zehntel. Die Frage ist damit nicht mehr „wie klein geht es",
+sondern **welche Voreinstellung für welchen Zweck richtig ist** — und das
+beantwortet `recommend_settings` bereits, ohne dass es gemessen wäre.
 
-**Was zu tun ist:** die JPEG-Qualität überhaupt erst einmal messen — vier Stufen,
-je Dateigröße und Textausbeute. Ob der heutige Wert je gemessen oder nur gesetzt
-wurde, ist offen. Falls 80 % die Datei halbiert und die Ausbeute um weniger als
-einen Punkt senkt, ist das eine Voreinstellung, die geändert gehört.
+## 5. Neun Seiten ohne Werkzeugverweis
 
-## 3. Der Chrome-Store liegt zehn Fassungen zurück
+Drei sind am 5. August verbunden worden — Installationsmessung mit
+`install_extension`, Farbtiefe mit `recommend_settings`, Vergleichsmessung mit
+`get_measurement_data`. Neun weitere nennen kein einziges Werkzeug:
 
-**Beleg:** `tools/links-pruefen.py` meldet Chrome 2.17.0 gegen Quellstand
-2.27.0.
+```
+measurements/android-capture-extensions      measurements/webpage-to-pdf-for-ocr
+measurements/citation-by-platform            notes/building-with-ai-what-went-wrong
+measurements/extension-permissions-risk      notes/pages-gone-before-you-need-them
+measurements/pdf-extension-permissions       measurements/ (Übersicht)
+measurements/web-citations-that-vanish
+```
 
-**Ursache ist bekannt und behoben:** `chrome-mv3/port.py` schrieb die Version
-hartkodiert ins Manifest, jede Firefox-Fassung zog vorbei. Was fehlt, ist nur
-noch der Upload — Paket, Texte und Bilder liegen fertig unter
-`Desktop\PDF_SNAP_STORE_UPLOAD\CHROME_2.27.0\`.
+Die Werkzeugpfade werden rege abgerufen: 343 Aufrufe der Agenten-Karte, 266 der
+Installationsanleitung in 23 Stunden. Wer über eine Messseite kommt, findet den
+ausführbaren Weg bisher nicht.
 
-**Dazu gehört:** die deutsche Store-Fassung eintragen. Die Erweiterung liefert
-neun Sprachen aus (`_locales`), das Chrome-Listing bisher nur Englisch.
+## 6. Vier Messseiten ohne Korrekturweg
 
-## 4. Android ist deklariert und nie auf einem Gerät geprüft
+`rechtscheck.py` meldet sie als Warnung: `citation-by-platform`,
+`citation-extraction`, `citation-triage`, `de-plattformen`. Ein Korrekturweg
+belegt Sorgfalt und entschärft eine Auseinandersetzung, bevor sie entsteht — bei
+Seiten, die Zahlen über fremde Software veröffentlichen, ist das keine Formsache.
 
-**Beleg:** `/measurements/android-capture-extensions/` sagt es selbst:
-*„We did not install or test any of these on a device."* Das galt für die
-sechzig fremden Erweiterungen — und gilt für die eigene genauso.
+## 7. DNSSEC abschließen
 
-**Warum das unangenehm ist:** Der Store-Text nennt Android als Merkmal. Eine
-Vollseitenaufnahme muss scrollen, auf nachgeladene Bilder warten, Abschnitte
-zusammenfügen und die Datei an einen Dateiauswahldialog übergeben — jeder dieser
-Schritte verhält sich auf Android anders. Deklaration ist nicht Funktion, und
-das steht so auf der eigenen Messseite.
+Cloudflare hat die Schlüssel erzeugt, Status `pending`. Es fehlt der DS-Eintrag
+**beim Registrar**; beide Vault-Token bekommen dort 403. Ohne ihn validiert
+keine Antwort.
 
-**Aufwand:** ein Gerät, eine halbe Stunde, ein Protokoll. Der billigste Punkt
-auf dieser Liste, gemessen an dem, was er ausräumt.
+```
+provinglab.dev. 3600 IN DS 2371 13 2 D33571BBD2100AEE7DD8C63F13B19DFB5D60B0F6B1B4775D2677B7331A86FF12
+```
 
-## 5. Die Brücke vom Endpunkt zum Add-on ist dokumentiert, aber nicht gebaut
+## 8. macOS ist ungeprüft
 
-**Beobachtung, kein Messwert:** Wenn `extract_citation` eine Quelle mit
-`complete: false` zurückgibt, nennt die Antwort seit Worker 1.13.0 einen
-`nextStep` mit beiden Store-Adressen. Das ist ein Verweis — mehr nicht.
+Weder Marionette- noch Marker-Route wurde dort gelaufen. Die eigene Messseite
+hält über sechzig fremden Erweiterungen vor, dass „Deklaration nicht Funktion"
+ist — für die eigene gilt derselbe Satz. Eine Gegenmessung, die **scheitert**,
+ist wertvoller als eine, die bestätigt.
 
-**Was fehlen könnte:** Die Erweiterung schreibt einen RIS-Satz neben das PDF.
-Der Endpunkt erzeugt RIS-Sätze. Beide kennen einander nicht. Ob eine Verbindung
-Nutzen hätte — etwa dass die Erweiterung beim Aufnehmen die Angaben des
-Endpunkts einholt, wenn die Seite selbst nichts deklariert —, ist **ungemessen**
-und gehört gemessen, bevor es gebaut wird.
+## 9. Suchmaschinen
 
-**Warum es hier trotzdem steht:** Es ist der einzige Punkt, an dem das Projekt
-etwas könnte, was andere Aufnahme-Erweiterungen nicht können. Die anderen vier
-Punkte machen das Produkt besser; dieser würde es unterscheidbar machen.
+Die Domain ist indexiert und rankt für nichts. Der Weg über Verzeichnisse hat
+gezeigt, dass Sichtbarkeit für Agenten und für Suchmaschinen zwei verschiedene
+Baustellen sind: Der Registry-Eintrag half bei der ersten, nicht bei der
+zweiten.
 
 ---
 
-## Was nicht auf dieser Liste steht, und warum
+## Nachkontrollen mit Datum
 
-**Mehr Funktionen.** Dreizehn Einstellungen bei vier Nutzern sind nicht zu
-wenige. Beide Bewertungen loben die einfache Handhabung — das ist das einzige
-Signal, das es gibt, und es spricht gegen weitere Schalter.
+| Wann | Was |
+|---|---|
+| **12.08.2026** | Sind die Early-Hints-Zeitüberschreitungen weg? 167 in 23,5 Stunden, alle von Cloudflares Prüfsonden. Early Hints wurde abgeschaltet — bleibt die Zahl, hatte der Befund eine andere Ursache und die Abschaltung war unnötig. Eingetragen in `termin-waechter`. |
+| offen | Ob eine über Richtlinie oder Marker ausgelöste Installation im Store zählt. **Bleibt ungemessen** — messen ließe es sich nur durch das Erzeugen von Installationen, und das kostet das Entwicklerkonto. Keine Wissenslücke, die geschlossen werden muss. |
 
-**Nutzerzahlen steigern.** Nicht durch Automatik: Beide Stores beenden dafür
-das Entwicklerkonto, und die Firefox-Route ist für den Zähler ohnehin
-unsichtbar. Was zählt, sind Installationen von Menschen, die das Werkzeug
-brauchen — und dafür ist Punkt 3 (der Store liefert eine zehn Fassungen alte
-Version aus) der größte Hebel auf dieser Liste.
+## Was bewusst nicht auf diesem Plan steht
 
-**Eine eigene OCR.** Die Textebene aus dem DOM ist besser als jede Erkennung,
-weil sie den Originaltext übernimmt. Wo sie fehlt — bei eingebetteten Bildern —,
-löst OCR das Problem nicht, sondern verschiebt es.
+**Installationszahlen erzeugen.** Am 5. August standen drei solche Punkte in
+[#15](https://github.com/Bubu89/full-page-pdf-snap/issues/15) — ein Cron-Job für
+den Update-Puls, ein markierter Chrome-Lauf, die Beobachtung, ob
+Headless-Instanzen als Nutzer erscheinen. Alle drei zielten darauf, eine
+öffentliche Zahl zu bewegen. Derselbe Endpunkt warnt jeden Agenten davor, dass
+genau das die Bedingungen beider Stores verletzt und **das Entwicklerkonto**
+kostet — nicht das des Nutzers. Gestrichen, nicht verschoben.
 
-## Reihenfolge
+**Telemetrie im Worker.** Welches Werkzeug ein Agent aufruft, ist nicht messbar
+— Cloudflare sieht den Pfad, nicht die Nutzlast. Das ließe sich ändern, indem
+der Worker mitschreibt. Er schreibt heute nichts mit, was ein Aufrufer nicht
+ohnehin sendet, und das ist die bessere Voreinstellung.
 
-1. **#18** — weil dreizehn Seiten eine möglicherweise falsche Zahl tragen
-2. **Punkt 3** — weil der Upload fertig danebenliegt und zehn Fassungen kostet
-3. **#19** — weil die Dateigröße jeden Nutzer trifft, der mehr als drei Belege sammelt
-4. **Punkt 4** — weil er billig ist und eine Zusage im Store betrifft
-5. **Punkt 5** — erst messen, ob es Nutzen hat, dann entscheiden
+---
 
-Die ersten drei sind belegt und umrissen. Die letzten beiden sind offen genug,
-dass jemand anderes sie besser zuschneiden könnte.
+## Verwandte Dateien
+
+`STAND.md` — was gebaut ist · `AGENTS.md` — die Regeln ·
+`CHANGELOG.md` — die Historie
