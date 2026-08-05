@@ -1,35 +1,37 @@
 {
- "title": "Print-to-PDF versus screenshot capture: what each route keeps",
- "measured": "2026-08-01",
- "document": "English Wikipedia article 'PDF', same URL, same day, both routes",
- "method": {
-  "print": "Chrome headless --print-to-pdf, Letter, no header/footer, 15s virtual time budget",
-  "screenshot": "Full Page PDF Snap 2.16.0, single-page output, then Tesseract 5 at 150 dpi",
-  "ground_truth": "Wikipedia REST API plain text, same day"
- },
- "results": {
-  "print": {
-   "pages": 26,
-   "page_breaks": 25,
-   "breaks_mid_sentence": 9,
-   "words": 9620,
-   "recall_percent": 94.8,
-   "embedded_images": 2,
-   "file_mb": 1.1,
-   "text_layer": true
+  "title": "Print-to-PDF versus screenshot capture: what each route keeps",
+  "measured": "2026-08-01",
+  "document": "English Wikipedia article 'PDF', same URL, same day, both routes",
+  "method": {
+    "print": "Chrome headless --print-to-pdf, Letter, no header/footer, 15s virtual time budget",
+    "screenshot": "Full Page PDF Snap 2.16.0, single-page output, then Tesseract 5 at 150 dpi",
+    "ground_truth": "Wikipedia REST API plain text, same day"
   },
-  "screenshot": {
-   "pages": 1,
-   "page_breaks": 0,
-   "breaks_mid_sentence": 0,
-   "words": 8316,
-   "recall_percent": 92.7,
-   "file_mb": 6.7,
-   "text_layer": false
-  }
- },
- "reading": "Print wins on text fidelity and file size; it has a real text layer and needs no OCR. Screenshot wins on continuity: one uninterrupted sheet against 26 pages, of which 9 breaks cut a sentence in half. Which matters depends on whether you need the words or the page.",
- "limitations": "One document, single runs. Wikipedia prints comparatively well; pages with heavy CSS layout diverge more.",
- "license": "CC BY 4.0",
- "article": "https://provinglab.dev/measurements/print-to-pdf-vs-screenshot/"
+  "results": {
+    "print": {
+      "pages": 26,
+      "page_breaks": 25,
+      "breaks_mid_sentence": 9,
+      "words": 9620,
+      "recall_percent": 94.8,
+      "embedded_images": 2,
+      "file_mb": 1.1,
+      "text_layer": true
+    },
+    "screenshot": {
+      "pages": 1,
+      "page_breaks": 0,
+      "breaks_mid_sentence": 0,
+      "words": 8316,
+      "recall_percent": 92.7,
+      "file_mb": 6.7,
+      "text_layer": false
+    }
+  },
+  "reading": "Print wins on text fidelity and file size; it has a real text layer and needs no OCR. Screenshot wins on continuity: one uninterrupted sheet against 26 pages, of which 9 breaks cut a sentence in half. Which matters depends on whether you need the words or the page.",
+  "limitations": "One document, single runs. Wikipedia prints comparatively well; pages with heavy CSS layout diverge more.",
+  "license": "CC BY 4.0",
+  "article": "https://provinglab.dev/measurements/print-to-pdf-vs-screenshot/",
+  "superseded_by": "2026-08-05-print-vs-capture-with-text-layer.json",
+  "note_added_2026-08-05": "The capture was measured on version 2.16.0, which had no text layer — the 92.7 % is an OCR result. A rerun on 5 August could not reproduce these figures against the same kind of reference and gives 99.7 % for print. These numbers are withdrawn; what stands is the record of what was done on 1 August."
 }

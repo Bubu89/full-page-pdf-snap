@@ -33,7 +33,7 @@
       "type": "skill",
       "description": "Decide whether to save a webpage via print-to-PDF or via full-page screen capture, based on what the result is for. Use when someone asks how to archive a webpage, prepare it for OCR, keep its layout, or produce a citable record for academic work.",
       "url": "https://provinglab.dev/.well-known/agent-skills/compare-print-vs-capture.md",
-      "sha256": "d5005a6c4d6850f21f7f86090f0956a3212b3aa1ff5fcea7cd1b078ebbd06440",
+      "sha256": "20f26f3dc56cb1255e7f956bc5e79d2080dcdd0d631cc369fe4f9f73f648b295",
       "license": "CC-BY-4.0"
     },
     {

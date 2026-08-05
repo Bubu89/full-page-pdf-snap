@@ -15,15 +15,21 @@ the purpose.
 |---|---|---|
 | Pages | 26, with 25 breaks | 1 continuous sheet, or paged on request |
 | Breaks cutting a sentence | 9 of 25 | 0 |
-| Text recovered | 94.8 % | 100 % (see below) |
+| Text recovered | 87.6 % | 91.5 % (see below) |
 | File size | 1.1 MB | 6.7 MB |
 | Text layer | real, selectable | real, selectable |
 
-The figure for capture changed in August 2026. It used to be 92.7 %, measured
-by running OCR over the image. A capture PDF now carries a text layer taken
-from the page's own document rather than recognised from pixels, so every word
-that was on the page is in the file — no recognition step, nothing to misread.
-The old number described a method that is no longer the one being used.
+Both figures were remeasured on 5 August 2026 and both changed. The capture
+used to be listed at 92.7 %, measured by running OCR over the image; it now
+carries a text layer taken from the page's own document rather than recognised
+from pixels. On the identical image that is worth 4.5 points — 91.5 % against
+87.0 % by OCR.
+
+The figures above are measured against a reference that includes infoboxes,
+tables and captions. Against plain running text alone the two routes cannot be
+told apart at all: 99.7 % against 99.9 %. Neither reaches 100 %, and an earlier
+version of this page claiming it for the capture was wrong — the text layer
+carries what was captured, and hidden or excluded regions are not.
 
 ## How to choose
 

@@ -406,6 +406,25 @@
       ]
     },
     {
+      "anchor": "https://provinglab.dev/data/2026-08-05-print-vs-capture-with-text-layer.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
       "anchor": "https://provinglab.dev/data/ki-crawler-aktuell.json",
       "type": [
         {

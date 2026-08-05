@@ -1,0 +1,39 @@
+{
+  "title": "Print-to-PDF versus capture, measured again with a text layer",
+  "measured": "2026-08-05",
+  "corrects": "2026-08-01-print-vs-screenshot.json",
+  "why": "The 1 August comparison measured version 2.16.0, which had no text layer. Its 92.7 % for the capture is therefore an OCR result — Tesseract reading pixels. The text layer arrived the next day, taken from the page's DOM. A measurement that makes your own product look worse than it is is as wrong as one that flatters it, and harder to notice because nobody looks.",
+  "document": "English Wikipedia article 'PDF', same URL, both routes, same day",
+  "method": {
+    "print": "Chrome headless --print-to-pdf, no header/footer, 15 s virtual time budget",
+    "capture": "Full Page PDF Snap 2.30.0 loaded unpacked, triggered by a real key event via Xvfb + XTEST — the capture needs activeTab, which CDP and DOM events do not satisfy",
+    "recall_of_capture": "pdftotext on the embedded text layer. The OCR figure is carried alongside so the old number stays comparable.",
+    "two_references": "Reference A is the plain-text extract, as used on 1 August. Reference B is the rendered HTML with tags stripped, which also contains infoboxes, tables and captions. B is the stricter test and the one that separates the routes."
+  },
+  "reference_a_plain_text": {
+    "distinct_words": 1591,
+    "druck": 99.7,
+    "aufnahme_textebene": 99.9,
+    "aufnahme_ocr": 98.7
+  },
+  "reference_b_rendered_html": {
+    "distinct_words": 2156,
+    "druck": 87.6,
+    "aufnahme_textebene": 91.5,
+    "aufnahme_ocr": 87.0
+  },
+  "file_size_kb": {
+    "print": 1028,
+    "capture": 4665
+  },
+  "reading": "Against the plain-text reference both routes take nearly everything — 99.7 against 99.9 — so that reference cannot tell them apart. Against the stricter reference the capture leads by 3.9 points, 91.5 against 87.6. On the identical image, the text layer is worth 4.5 points over OCR: 91.5 against 87.0. What changed is not the picture but where the text comes from.",
+  "what_this_does_not_settle": [
+    "The 1 August figures could not be reproduced. Against the same kind of reference this run gives 99.7 % for print, not 94.8 %, and 98.7 % for OCR, not 92.7 %. The difference cannot come from the product. It lies in the word counting or in how the reference was fetched, and the old raw data describes that only as 'Wikipedia REST API plain text'. The old numbers are therefore withdrawn rather than corrected downward.",
+    "One document, one run per route, no averages.",
+    "Wikipedia prints comparatively well. Pages with heavy CSS layout diverge more, in both directions.",
+    "File size still favours print by a wide margin, and that has not changed."
+  ],
+  "license": "CC BY 4.0",
+  "article": "https://provinglab.dev/measurements/print-to-pdf-vs-screenshot/",
+  "issue": "https://github.com/Bubu89/full-page-pdf-snap/issues/18"
+}

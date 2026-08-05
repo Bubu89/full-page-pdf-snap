@@ -313,6 +313,12 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://provinglab.dev/data/2026-08-05-print-vs-capture-with-text-layer.json</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://provinglab.dev/data/ki-crawler-aktuell.json</loc>
     <lastmod>2026-08-03</lastmod>
     <changefreq>yearly</changefreq>

@@ -199,7 +199,64 @@ OMP_THREAD_LIMIT=1 tesseract page-1.png out --psm 6 -l eng</code></pre>
   the same day.
 </p>
 
-<h2>Result</h2>
+<h2>Correction, 5 August 2026</h2>
+
+<p>
+  <strong>The figures below were measured against a build without a text
+  layer, and the conclusion drawn from them no longer holds.</strong> The
+  capture was version 2.16.0; its 92.7 % came from running Tesseract over the
+  image. The text layer — taken from the page's DOM rather than from
+  recognition — arrived the following day.
+</p>
+
+<p>
+  Rerun on 5 August with version 2.30.0, same article, same print command,
+  reading the capture's text layer with <code>pdftotext</code> instead of
+  recognising it:
+</p>
+
+<div class="tblwrap">
+<table>
+  <thead><tr><th scope="col"></th><th class="num">Print to PDF</th><th class="num">Capture</th></tr></thead>
+  <tbody>
+    <tr><td>Recall, against plain-text reference</td><td class="num">99.7 %</td><td class="num">99.9 %</td></tr>
+    <tr><td>Recall, against rendered HTML</td><td class="num">87.6 %</td><td class="num win">91.5 %</td></tr>
+    <tr><td>Same capture, read by OCR instead</td><td class="num">—</td><td class="num">87.0 %</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>
+  Two things follow. Against the plain-text reference the routes are no longer
+  distinguishable — 99.7 against 99.9 — because that reference is only running
+  text, which both take almost completely. Against the stricter reference,
+  which includes infoboxes, tables and captions, <strong>the capture leads by
+  3.9 points</strong>. And on the identical image, the text layer is worth
+  <strong>4.5 points over OCR</strong>: 91.5 against 87.0. What changed is not
+  the picture but where the text comes from.
+</p>
+
+<p>
+  <strong>The old numbers are withdrawn, not adjusted.</strong> The rerun could
+  not reproduce them: against the same kind of reference it gives 99.7 % for
+  print where 1 August recorded 94.8 %, and 98.7 % for OCR where it recorded
+  92.7 %. That difference cannot come from the product. It lies in the word
+  counting or in how the reference was fetched, and the original raw data
+  describes that only as “Wikipedia REST API plain text”. Rather than correct a
+  figure downward on a guess, the earlier run is left standing as a record of
+  what was done, marked as superseded.
+  <a href="/data/2026-08-05-print-vs-capture-with-text-layer.json">Raw data of the rerun</a> ·
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/18">Issue 18</a>
+</p>
+
+<p>
+  What has not changed: print still produces a far smaller file, and it still
+  breaks sentences across pages. Those parts of the comparison stand.
+</p>
+
+<h2>The original measurement, 1 August</h2>
+
+<h3>Result as measured on 1 August</h3>
 
 <div class="tblwrap">
 <table>
@@ -218,7 +275,7 @@ OMP_THREAD_LIMIT=1 tesseract page-1.png out --psm 6 -l eng</code></pre>
 </div>
 
 <p>
-  Read plainly: <strong>print wins on text and size, capture wins on continuity.</strong>
+  Read as it was written on 1 August: <strong>print wins on text and size, capture wins on continuity.</strong> The first half of that no longer holds — see the correction above.
   Print keeps a real text layer, needs no OCR, and produces a file six times smaller. It also
   recovers more words, which is unsurprising — reading text out of a file beats reading it
   out of pixels.
