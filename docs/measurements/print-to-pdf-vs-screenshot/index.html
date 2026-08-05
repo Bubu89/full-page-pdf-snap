@@ -15,7 +15,7 @@
 
 <meta property="og:type" content="article">
 <meta property="og:title" content="Print to PDF or capture the screen? The same page measured both ways">
-<meta property="og:description" content="26 pages against one, 9 sentences cut in half — and the text layer print keeps.">
+<meta property="og:description" content="26 pages against one, 9 sentences cut in half. Remeasured 5 August 2026: both routes carry a text layer now, and the capture recovers more.">
 <meta property="og:url" content="https://provinglab.dev/measurements/print-to-pdf-vs-screenshot/">
 <meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
 <meta property="article:published_time" content="2026-08-01">
@@ -38,15 +38,15 @@
   "@context": "https://schema.org", "@type": "Dataset",
   "name": "Print-to-PDF versus screenshot capture, same document",
   "description": "Page counts, page-break analysis, word recall against the source text, embedded images and file sizes for the same Wikipedia article captured both ways on 1 August 2026.",
-  "url": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
-  "identifier": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
+  "url": "https://provinglab.dev/data/2026-08-05-print-vs-capture-with-text-layer.json",
+  "identifier": "https://provinglab.dev/data/2026-08-05-print-vs-capture-with-text-layer.json",
   "datePublished": "2026-08-01", "license": "https://creativecommons.org/licenses/by/4.0/",
   "isAccessibleForFree": true, "inLanguage": "en",
   "keywords": ["print to PDF","screenshot","page breaks","OCR","web archiving"],
   "variableMeasured": ["pages","page breaks","breaks mid-sentence","word recall","file size","embedded images"],
   "creator": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
   "distribution": [{ "@type": "DataDownload", "encodingFormat": "application/json",
-    "contentUrl": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json" }],
+    "contentUrl": "https://provinglab.dev/data/2026-08-05-print-vs-capture-with-text-layer.json" }],
   "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
 }
 </script>
@@ -168,7 +168,7 @@
   assessments are the author's own opinion. The author develops
   <a href="../../tools/full-page-pdf-snap/">Full Page PDF Snap</a>, one of the two routes
   measured here — read the numbers accordingly, and the
-  <a href="../../data/2026-08-01-print-vs-screenshot.json">raw data</a> is published so you
+  <a href="../../data/2026-08-05-print-vs-capture-with-text-layer.json">raw data</a> is published so you
   do not have to take them on trust.
   Corrections: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a>.
 </div>
@@ -372,7 +372,7 @@ page 5 begins:  At the end of a PDF file is a footer containing The ...</code></
 </div>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Is Firefox's built-in save as PDF good enough?","acceptedAnswer":{"@type":"Answer","text":"For most pages, yes. It keeps a real text layer, produces files around a sixth the size, and needs no extra software. It recovered 94.8% of the source text against 92.7% for the capture route."}},
+{"@type":"Question","name":"Is Firefox's built-in save as PDF good enough?","acceptedAnswer":{"@type":"Answer","text":"For most pages, yes — and its remaining advantage is file size, roughly a sixth. On text it no longer leads: remeasured on 5 August 2026 the capture recovered 91.5% against 87.6% for print, because the capture now carries a text layer taken from the page rather than read back by OCR."}},
 {"@type":"Question","name":"Why does a screenshot PDF recover less text than print?","acceptedAnswer":{"@type":"Answer","text":"Because it has no text layer at all. Every word must be recovered from pixels by OCR, which introduces errors. The gap measured here was 2.1 percentage points."}},
 {"@type":"Question","name":"What exactly do page breaks cost?","acceptedAnswer":{"@type":"Answer","text":"In this document 9 of 25 page breaks fell mid-sentence. Each break also inserts a header, footer and page number into the text stream, which matters for OCR pipelines and language models."}},
 {"@type":"Question","name":"Why is the capture file six times larger?","acceptedAnswer":{"@type":"Answer","text":"It stores pixels rather than characters: 6.7 MB against 1.1 MB for the same article."}},
@@ -385,9 +385,15 @@ page 5 begins:  At the end of a PDF file is a footer containing The ...</code></
     <li><a href="../webpage-to-pdf-for-ocr/">How much text survives OCR?</a> — 92.6 % recall and the resolution threshold where recognition collapses</li>
     <li><a href="../pdf-extension-permissions/">Does your PDF extension upload the page?</a> — what eight extensions declare, and why server-side converters cannot reach a login</li>
     <li><a href="../extension-permissions-risk/">Permissions as blast radius</a></li>
-    <li><a href="../../data/2026-08-01-print-vs-screenshot.json">Raw data for this measurement</a> (JSON, CC BY 4.0)</li>
+    <li><a href="../../data/2026-08-05-print-vs-capture-with-text-layer.json">Raw data for this measurement</a> (JSON, CC BY 4.0)</li>
   </ul>
 </div>
+
+<p>
+  <strong>These figures as data:</strong> <code>get_measurement_data</code> on
+  <a href="/mcp">the endpoint</a> returns this dataset including the control
+  run, so a number can be checked without scraping the page for it.
+</p>
 
 <footer>
   <strong>Method and limits.</strong> One document, single runs, one day. Both routes used the
