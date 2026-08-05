@@ -1,3 +1,60 @@
+## 2026-08-05 — Zeitanker: eine Zeitangabe, die ohne die Geraeteuhr auskommt
+
+**Die Luecke.** Die Fussnote sagte bisher zu Recht: *„Time from device clock."*
+Wer eine Aufnahme rueckdatieren will, muss nichts brechen — er stellt die Uhr.
+Damit war die Zeitangabe der schwaechste Teil des Belegs.
+
+**Das Verfahren.** Vor dem Speichern wird ein oeffentlicher Zufallswert des
+drand-Netzes geholt (League of Entropy: Cloudflare, EPFL, Protocol Labs u. a.;
+threshold-BLS, 3-Sekunden-Takt) und in die Aufnahme geschrieben. Diesen Wert
+konnte vorher niemand kennen — die Aufnahme ist also nicht aelter als seine
+Runde. Die Fussnote zeigt jetzt zusaetzlich `not before <Zeit> (drand r<Runde>)`,
+die PDF-Metadaten tragen Runde, Zufallswert, Zeit und einen Stempel-Hash ueber
+Bild **und** Herkunftsangaben.
+
+**Keine neue Berechtigung.** `api.drand.sh` sendet `Access-Control-Allow-Origin: *`,
+der Abruf laeuft ohne `host_permissions`. Die Liste bleibt bei `activeTab` — das
+Versprechen „verlangt fast nichts" haelt. Standard ist **aus**: es ist der
+einzige Netzzugriff der Erweiterung, und er findet nur statt, wenn er verlangt
+wurde. Gesendet wird nichts; ein GET holt einen oeffentlichen Wert ab. Faellt
+der Abruf aus, wird die Aufnahme ohne Anker gespeichert statt zu scheitern.
+
+**Ehrlichkeit in der Fussnote.** Mit Anker stimmt „Time from device clock" nicht
+mehr als ganze Wahrheit. Es gibt deshalb einen zweiten Hinweistext: *„'Not before'
+comes from a public drand beacon; 'captured' from this device's clock."* Der Rest
+der Einschraenkung bleibt — ein Anker sagt nichts darueber, ob die Seite zeigte,
+was sie zeigt, und macht die Datei nicht zu einem qualifizierten Zeitstempel
+nach eIDAS.
+
+**Drei Fehler, die erst der Test zeigte:**
+
+1. *Rundennummer riss am Rand ab.* Der Platz fuer die Fussnote wurde geschaetzt
+   (46 Zeichen), der Ankertext ist aber 60 lang. Im PDF stand `r3104519` statt
+   `r31045196` — das sieht wie ein anderer Wert aus und laesst jede Pruefung
+   scheitern. Die festen Teile werden jetzt **gemessen** statt geschaetzt.
+2. *Der laengere Hinweistext wurde mittendrin abgeschnitten* („not f...d' does.")
+   und war damit schlechter als gar keiner. Auf 216 Zeichen gekuerzt, gegen die
+   verfuegbaren 222 geprueft.
+3. *Der Chrome-Service-Worker waere gestorben.* `importScripts` laedt
+   `zeitanker.js`, `port.py` kopierte die Datei aber nicht — derselbe Fehler wie
+   frueher bei `pdf-writer.js`. Neben dem Eintrag in `COPY_AS_IS` prueft `port.py`
+   jetzt nach jedem Lauf, dass alle per `importScripts` geladenen Dateien auch
+   existieren, und bricht sonst mit Fehler ab.
+
+**Verifiziert:** End-to-End ein echtes PDF erzeugt (1280 px Seite, echter
+drand-Abruf), Metadatenfelder ausgelesen, Fusszeile gerendert und per Sichtpruefung
+kontrolliert — `not before 2026-08-05 16:10:57 +02:00 (drand r31045231)` steht
+vollstaendig da. Das Add-on-Modul rechnet **bitgleich** zur Python-Referenz in
+`~/repos/proof-stamp`, ohne die eine am Handy erzeugte Aufnahme am PC nicht
+pruefbar waere. Beide Zweige syntaktisch geprueft, Chrome-Port ohne Fehler.
+
+**Noch offen:** Die BLS-Signatur des Beacons wird nicht geprueft (WebCrypto kann
+BLS12-381 nicht, es braeuchte `@noble/curves`) — bis dahin verlaesst sich das
+Erzeugen darauf, dass der abgefragte Host ehrlich ist. Die Obergrenze
+(Bitcoin-Anker via OpenTimestamps) ist im Prototyp getestet, aber noch nicht
+eingebaut. Uebersetzt sind bisher nur Deutsch und Englisch; die anderen sieben
+Sprachen fallen auf den englischen Text im HTML zurueck.
+
 ## 2026-08-04 — Vorgegebene Einstellungen, und Vorlagen zum Kopieren
 
 **Die Luecke.** `recommend_settings` sagt einem Agenten seit heute, welche

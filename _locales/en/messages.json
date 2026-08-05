@@ -293,6 +293,12 @@
   "optProvenanceHint": {
     "message": "Writes the page address, the time of capture and a SHA-256 checksum of the image data into a strip under the image. Useful when the file has to be filed or handed on. A screen capture is not a qualified electronic document: the time comes from your device clock, and the checksum shows the file has not changed since it was made — not that the page looked this way. The same details are always written into the PDF metadata, with or without this option."
   },
+  "optTimeAnchor": {
+    "message": "Add a time anchor (needs internet)"
+  },
+  "optTimeAnchorHint": {
+    "message": "Fetches a public random value from the decentralised drand network before saving and writes it into the capture. Because nobody could know that value beforehand, it shows the capture is not older than that moment — without relying on your device clock. This is the only network access this extension makes, it is off unless you switch it on, and nothing is sent: the page, the capture and its checksum never leave your device. It still does not prove what the page showed, and it is not a qualified electronic timestamp under eIDAS. If the network is unavailable, the capture is saved without the anchor."
+  },
   "optTextLayer": {
     "message": "Make the PDF searchable (invisible text layer)"
   },

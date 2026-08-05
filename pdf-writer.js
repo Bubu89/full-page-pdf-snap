@@ -47,6 +47,18 @@
     "Time from device clock. Checksum covers this file's image data only, " +
     "not the authenticity of the page.";
 
+  // Mit Zeitanker stimmt "Time from device clock" nicht mehr als ganze
+  // Wahrheit: die untere Grenze stammt dann aus einem oeffentlichen Beacon und
+  // kommt ohne diese Uhr aus. Der Rest der Einschraenkung bleibt aber gueltig —
+  // ein Anker sagt nichts darueber, ob die Seite zeigte, was sie zeigt.
+  // Bewusst knapp gehalten: bei 1280 px Seitenbreite stehen rund 220 Zeichen
+  // zur Verfuegung. Eine laengere Fassung wurde mittendrin abgeschnitten
+  // ("not f...d' does.") und war damit schlechter als gar keine.
+  const HINWEIS_ANKER =
+    "Self-made screen capture. Not a qualified electronic document (eIDAS). " +
+    "'Not before' comes from a public drand beacon; 'captured' from this " +
+    "device's clock. Checksum covers image data only, not the page's authenticity.";
+
   function pdfString(s) {
     // Klammern und Backslash sind in PDF-Literalstrings Steuerzeichen.
     return String(s).replace(/[\\()]/g, "\\$&").replace(/[\r\n]/g, " ");
@@ -459,10 +471,23 @@
         // Wieviele Zeichen bei 7 pt Helvetica in die Breite passen — grob 0.5 em
         // je Zeichen, mit Rand. Lieber zu kurz kuerzen als ueber den Rand laufen.
         const platz = Math.max(40, Math.floor((breite - 20) / 3.4));
+        // Der Zeitanker ersetzt die Geraeteuhr nicht, er ergaenzt sie um eine
+        // Aussage, die ohne Vertrauen in dieses Geraet auskommt: der Wert der
+        // Runde war vorher niemandem bekannt, die Aufnahme also nicht aelter.
+        const ankerTxt = beleg.anchor
+          ? "  |  not before " + localIso(new Date(beleg.anchor.nichtVor * 1000)) +
+            " (drand r" + beleg.anchor.runde + ")"
+          : "";
+        const zeitTxt = "  |  captured " + localIso(beleg.capturedAt);
+        const sumTxt = beleg.sha256 ? "  |  SHA-256 " + beleg.sha256.slice(0, 16) + "..." : "";
+        // Die festen Teile werden GEMESSEN, nicht geschaetzt: eine geschaetzte
+        // Laenge (46 statt 60 Zeichen) liess die Rundennummer am Rand
+        // abreissen — "r3104519" statt "r31045196", was wie ein anderer Wert
+        // aussieht und die Pruefung scheitern laesst.
+        const festeLaenge = zeitTxt.length + sumTxt.length + ankerTxt.length;
         const zeile1 =
-          kuerzen(beleg.url, Math.max(24, platz - 62)) +
-          "  |  captured " + localIso(beleg.capturedAt) +
-          (beleg.sha256 ? "  |  SHA-256 " + beleg.sha256.slice(0, 16) + "..." : "");
+          kuerzen(beleg.url, Math.max(24, platz - festeLaenge)) +
+          zeitTxt + sumTxt + ankerTxt;
         contentStr +=
           "q\n0.85 0.85 0.85 rg\n0 0 " + breite.toFixed(2) + " " + fussPt + " re\nf\nQ\n";
         if (zitZeile) {
@@ -485,7 +510,8 @@
         }
         contentStr +=
           "BT /F1 7 Tf 0.15 0.15 0.15 rg 10 18 Td (" + pdfString(zeile1) + ") Tj ET\n" +
-          "BT /F1 5.5 Tf 0.35 0.35 0.35 rg 10 7 Td (" + pdfString(kuerzen(HINWEIS, platz + 40)) + ") Tj ET\n";
+          "BT /F1 5.5 Tf 0.35 0.35 0.35 rg 10 7 Td ("
+            + pdfString(kuerzen(beleg.anchor ? HINWEIS_ANKER : HINWEIS, platz + 40)) + ") Tj ET\n";
       }
 
       const contentBytes = strToBytes(
@@ -561,6 +587,13 @@
             "; captured=" + localIso(beleg.capturedAt) +
             "; image-sha256=" + beleg.sha256 +
             "; note=self-made screen capture, not a qualified electronic document (eIDAS)" +
+            (beleg.anchor
+              ? "; time-anchor=drand-quicknet round " + beleg.anchor.runde +
+                "; anchor-randomness=" + beleg.anchor.zufall +
+                "; not-before=" + localIso(new Date(beleg.anchor.nichtVor * 1000)) +
+                (beleg.stamp ? "; stamp-sha256=" + beleg.stamp : "") +
+                "; anchor-note=public beacon value, unknowable before that round; verify at https://api.drand.sh"
+              : "") +
             (woerter && woerter.length
               ? "; text-layer=extracted from the page's own DOM, not OCR"
               : "") +

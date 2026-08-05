@@ -132,6 +132,18 @@
       PDF metadata, with or without this option.</div>
   </label>
 
+  <label class="check"><input id="timeAnchor" type="checkbox">
+    <span data-i18n="optTimeAnchor">Add a time anchor (needs internet)</span>
+    <div class="hint" data-i18n="optTimeAnchorHint">Fetches a public random value from the
+      decentralised drand network before saving and writes it into the capture. Because nobody
+      could know that value beforehand, it shows the capture is not older than that moment —
+      without relying on your device clock. This is the only network access this extension makes,
+      it is off unless you switch it on, and nothing is sent: the page, the capture and its
+      checksum never leave your device. It still does not prove what the page showed, and it is
+      not a qualified electronic timestamp under eIDAS. If the network is unavailable, the capture
+      is saved without the anchor.</div>
+  </label>
+
   <label><span data-i18n="optColourMode">Colour and file size</span>
     <select id="bildModus" style="width:100%; padding: 8px 10px; border: 1px solid var(--rand); border-radius: 6px; font-size: 13px; background: var(--feld-bg); color: var(--fg);">
       <option value="farbe">Full colour (default)</option>

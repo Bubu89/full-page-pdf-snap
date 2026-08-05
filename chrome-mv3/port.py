@@ -99,7 +99,7 @@ PATCHES = [
 ]
 
 # Dateien, die unveraendert uebernommen werden
-COPY_AS_IS = ["content.js", "pdf-writer.js", "popup.html", "popup.js",
+COPY_AS_IS = ["content.js", "pdf-writer.js", "zeitanker.js", "popup.html", "popup.js",
               "options.html", "options.js", "i18n.js", "i18n-data.js",
               "result.html", "result.js"]
 
@@ -281,6 +281,26 @@ def main():
 
     print("\nGeschrieben: manifest.json, background.js, "
           f"{len(COPY_AS_IS)} uebernommene Dateien, Icons (PNG - Chrome kann kein SVG).")
+
+    # Jede Datei, die importScripts laedt, MUSS auch dasein. Fehlt eine, stirbt
+    # der Service Worker beim Start und die Erweiterung tut gar nichts mehr —
+    # ohne Fehlermeldung an der Oberflaeche. Das ist hier schon zweimal
+    # passiert (pdf-writer.js, zeitanker.js), deshalb wird es jetzt geprueft
+    # statt auf eine gepflegte Liste zu vertrauen.
+    fehlend = []
+    for zeile in (DST / "background.js").read_text(encoding="utf-8").split("\n"):
+        if zeile.strip().startswith("importScripts("):
+            for name in re.findall(r'"([^"]+)"', zeile):
+                if not (DST / name).exists():
+                    fehlend.append(name)
+            break
+    if fehlend:
+        print("\n  [FEHLER] importScripts laedt Dateien, die nicht kopiert wurden: "
+              + ", ".join(fehlend))
+        print("           -> in COPY_AS_IS eintragen. Der Service Worker wuerde sonst"
+              " beim Start sterben.")
+        return 1
+    print("  [OK  ] alle importScripts-Dateien vorhanden")
     return 0
 
 

@@ -293,6 +293,12 @@
   "optProvenanceHint": {
     "message": "Schreibt die Adresse der Seite, den Zeitpunkt der Aufnahme und eine SHA-256-Prüfsumme der Bilddaten in einen Streifen unter das Bild. Nützlich, wenn die Datei abgelegt oder weitergegeben wird. Eine Bildschirmaufnahme ist kein qualifiziertes elektronisches Dokument: Die Zeit stammt von der Uhr Ihres Geräts, und die Prüfsumme belegt, dass die Datei seit der Erstellung unverändert ist — nicht, dass die Seite so ausgesehen hat. Dieselben Angaben stehen mit und ohne diese Option immer in den PDF-Metadaten."
   },
+  "optTimeAnchor": {
+    "message": "Zeitanker hinzufügen (benötigt Internet)"
+  },
+  "optTimeAnchorHint": {
+    "message": "Holt vor dem Speichern einen öffentlichen Zufallswert aus dem dezentralen drand-Netz und schreibt ihn in die Aufnahme. Weil diesen Wert vorher niemand kennen konnte, belegt er, dass die Aufnahme nicht älter ist als dieser Moment — ohne der Uhr Ihres Geräts zu glauben. Das ist der einzige Netzzugriff dieser Erweiterung, er ist ausgeschaltet solange Sie ihn nicht einschalten, und gesendet wird dabei nichts: Seite, Aufnahme und Prüfsumme verlassen Ihr Gerät nicht. Es beweist weiterhin nicht, was die Seite gezeigt hat, und ist kein qualifizierter Zeitstempel nach eIDAS. Ist kein Netz da, wird die Aufnahme ohne Anker gespeichert."
+  },
   "optTextLayer": {
     "message": "PDF durchsuchbar machen (unsichtbare Textebene)"
   },

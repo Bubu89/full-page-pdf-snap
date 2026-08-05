@@ -72,6 +72,12 @@ const DEFAULTS_DESKTOP = {
   // Sichtbare Herkunftszeile unter der Aufnahme. Standard aus, weil sie das
   // Bild veraendert; die Metadaten im PDF stehen ohnehin immer drin.
   provenanceFooter: false,
+  // Zeitanker: holt vor dem Speichern einen oeffentlichen Zufallswert des
+  // drand-Netzes und legt ihn in die Aufnahme. Belegt "nicht vor dieser Runde
+  // entstanden", ohne der Geraeteuhr zu glauben. Standard AUS, weil es der
+  // einzige Netzzugriff des Add-ons ist — er findet nur statt, wenn er
+  // ausdruecklich verlangt wurde. Gesendet wird dabei nichts.
+  timeAnchor: false,
   // Unsichtbare Textebene aus dem Dokument. Standard an: sie macht das PDF
   // durchsuchbar, ohne das Bild zu veraendern.
   textLayer: true,
@@ -1238,6 +1244,24 @@ async function captureFullPageInner(tab, settings) {
       sha256: await bilddatenPruefsumme(pages),
       footer: !!settings.provenanceFooter,
     };
+    // Zeitanker nur auf ausdruecklichen Wunsch. Faellt er aus — kein Netz,
+    // Dienst nicht erreichbar — wird die Aufnahme trotzdem gespeichert, nur
+    // ohne Anker. Eine fehlende Untergrenze ist ein Verlust an Nachweis, kein
+    // Grund, dem Nutzer die Aufnahme zu verweigern.
+    if (settings.timeAnchor && typeof PageShotZeitanker !== "undefined") {
+      try {
+        const anker = await PageShotZeitanker.holen();
+        herkunft.anchor = anker;
+        herkunft.stamp = await PageShotZeitanker.stempeln(
+          herkunft.sha256,
+          { url: herkunft.url, erfasst: herkunft.capturedAt.toISOString() },
+          anker
+        );
+        log("Zeitanker: Runde", anker.runde, "via", anker.quelle);
+      } catch (e) {
+        log("Zeitanker nicht verfuegbar:", e && e.message);
+      }
+    }
   } catch (e) {
     log("Pruefsumme fehlgeschlagen:", e && e.message);
   }
