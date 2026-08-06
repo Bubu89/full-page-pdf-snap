@@ -5,10 +5,10 @@ Und sie schreibt auf Wunsch die Quellenangaben mit hinein: Verfasser, Titel, Zei
 FÜR STUDIERENDE UND WISSENSCHAFT
 „Quellenangaben mitschreiben" einschalten, und jede Aufnahme kommt als zitierfähige Quelle an.
 • Verfasser, Titel, Zeitschrift, Jahr, Band, Seiten, DOI, ISSN und Lizenz, aus der Seite selbst gelesen — kein Zitationsdienst wird angefragt, also erfährt niemand, was Sie lesen
-• Eine RIS-Datei neben dem PDF — das Standardformat, das Literaturverwaltungen lesen, darunter Zotero und Citavi
+• Eine RIS-Datei neben dem PDF, fertig für Zotero, Citavi, EndNote oder Mendeley
 • Der Abrufzeitpunkt mit Ihrer Zeitzone und eine SHA-256-Prüfsumme der Aufnahme — genau das, was eine Zeile „abgerufen am" im Literaturverzeichnis braucht
 • Dieselben Felder in den PDF-Metadaten, damit Dokumentenverwaltung und Systemsuche die Arbeit über Verfasser und Titel finden
-• Liest die Zitationsangaben, die Verlage, Zeitschriften und Preprint-Server in ihre Seiten einbetten
+• Funktioniert bei PubMed, arXiv, SpringerLink, Wiley, ScienceDirect, JMIR, doi.org und vielen weiteren
 
 Quellen hinter einem Hochschulzugang sind der eigentliche Punkt. Ein Umwandlungsdienst auf einem Server ruft die Adresse als anonymer Besucher ab und landet vor der Bezahlschranke; diese Erweiterung nimmt auf, was Ihr eigener Browser bereits anzeigt — samt Lizenz.
 
@@ -27,8 +27,8 @@ Die Berechtigungsliste ist die kürzeste, die die Aufgabe noch erfüllt:
 
 Im Manifest stehen keine Host-Berechtigungen. Das können Sie selbst nachsehen: chrome://extensions öffnen, auf „Details" klicken und die Zeile mit den Berechtigungen lesen.
 
-KEINE WERBUNG, KEIN KONTO, KEIN ABO
-Freie Software unter der MIT-Lizenz. Was das im Alltag bedeutet:
+VOLLSTÄNDIG KOSTENLOS — UND SO GEBAUT, DASS ES SO BLEIBT
+Freie Software unter der MIT-Lizenz, und kostenlos in jedem Sinn, der im Alltag zählt:
 • Keine Werbung, nirgends — nicht im Popup, nicht in den Einstellungen, nicht in Ihrem PDF
 • Kein Konto, keine Anmeldung, keine E-Mail-Adresse
 • Keine Testphase, keine „Pro"-Fassung, keine zurückgehaltene Funktion

@@ -33,6 +33,42 @@ ERLAUBT = [
 
 GRENZEN = {"chrome": {"summary": 132, "name": 45}, "amo": {"summary": 250, "name": 50}}
 
+# Am 05.08.2026 lehnte Google ein zweites Mal ab: "Spam and Placement in the
+# Store — Having excessive keywords in the item's description", genannt wurden
+# PubMed, arXiv, SpringerLink, Wiley, ScienceDirect, JMIR, doi.org. Es war eine
+# einzige Zeile mit sieben Anbieternamen hintereinander.
+#
+# Die Regel greift deshalb an der Bauart, nicht an einer Verbotsliste: eine
+# Aufzaehlung fremder Produkt- oder Anbieternamen ab einer bestimmten Zahl ist
+# das Muster, das als Keyword-Stuffing gelesen wird — unabhaengig davon, welche
+# Namen gerade darin stehen. Wer stattdessen die Faehigkeit beschreibt
+# ("liest die Zitationsangaben, die Verlage einbetten"), sagt ohnehin das
+# Genauere und faellt nicht darunter.
+FREMDNAMEN = [
+    "PubMed", "arXiv", "SpringerLink", "Springer", "Wiley", "ScienceDirect",
+    "Elsevier", "JMIR", "doi.org", "JSTOR", "ResearchGate", "Scopus", "PLOS",
+    "Zotero", "Citavi", "EndNote", "Mendeley", "Papers", "Paperpile",
+    "LinkedIn", "Twitter", "Facebook", "Instagram", "Reddit", "Notion",
+    "Gmail", "Outlook", "Confluence", "SharePoint", "VitePress", "Docusaurus",
+]
+NAMEN_JE_ZEILE = 3      # ab drei Namen in einer Zeile liegt eine Aufzaehlung vor
+
+
+def namen_haeufung(text):
+    """Zeilen, in denen sich fremde Produktnamen zu einer Aufzaehlung reihen."""
+    treffer = []
+    for i, z in enumerate(text.splitlines(), 1):
+        gefunden = []
+        for n in FREMDNAMEN:
+            if re.search(r"(?<![\w.])" + re.escape(n) + r"(?![\w])", z, re.I):
+                gefunden.append(n)
+        # "Springer" ist in "SpringerLink" enthalten - nicht doppelt zaehlen
+        if "SpringerLink" in gefunden and "Springer" in gefunden:
+            gefunden.remove("Springer")
+        if len(gefunden) >= NAMEN_JE_ZEILE:
+            treffer.append((i, gefunden, z.strip()))
+    return treffer
+
 
 def zeilen_mit_versalien(text):
     """Ueberschriften in Grossbuchstaben — bei Chrome als Werbebanner gelesen."""
@@ -68,6 +104,10 @@ def pruefe(pfad, amo):
             fehler.append(f"Zeile {i}: Versalien-Schlagzeile — {z[:56]}")
         for i, z in sonderzeichen_rahmen(text):
             fehler.append(f"Zeile {i}: Rahmen aus Sonderzeichen — {z[:30]}")
+        for i, namen, z in namen_haeufung(text):
+            fehler.append(f"Zeile {i}: {len(namen)} fremde Produktnamen in einer Zeile "
+                          f"({', '.join(namen)}) — als 'excessive keywords' abgelehnt am "
+                          f"05.08.2026. Faehigkeit beschreiben statt Anbieter aufzaehlen.")
         klein = text.lower()
         for w in WORTE:
             for m in re.finditer(r"\b" + re.escape(w) + r"\b", klein):

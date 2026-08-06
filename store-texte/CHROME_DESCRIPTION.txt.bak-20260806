@@ -5,10 +5,10 @@ And it can save the page's source details with it: authors, title, journal, DOI,
 FOR STUDENTS AND RESEARCHERS
 Switch on "Add citation details" and every capture arrives as a citable source.
 • Authors, title, journal, year, volume, pages, DOI, ISSN and licence, read from the page itself — no citation service is contacted, so nobody learns what you are reading
-• An RIS file saved next to the PDF — the standard format your reference manager reads, Zotero and Citavi among them
+• An RIS file saved next to the PDF, ready to import into Zotero, Citavi, EndNote or Mendeley
 • The time of retrieval with your time zone, and a SHA-256 checksum of the image — the two things a "retrieved on" line in a bibliography actually needs
 • The same fields written into the PDF metadata, so your document manager and your operating system's search find the work by author and title
-• Reads the citation metadata that academic publishers, journals and preprint servers embed in their pages
+• Works on PubMed, arXiv, SpringerLink, Wiley, ScienceDirect, JMIR, doi.org and many more
 
 Sources behind a university login are the point. A server-side converter fetches the URL as an anonymous visitor and hits the paywall; this extension captures what your own browser is already showing you, licence and all.
 
@@ -27,8 +27,8 @@ The permission list is the shortest one that still does the job:
 
 There are no host permissions in the manifest. You can check that yourself: open chrome://extensions, click Details, and read the permissions line.
 
-NO ADS, NO ACCOUNT, NO SUBSCRIPTION
-Free software under the MIT license. What that means day to day:
+COMPLETELY FREE — AND BUILT TO STAY THAT WAY
+Free software under the MIT license, and free in every sense that matters day to day:
 • No ads, anywhere — not in the popup, not in the settings, not in your PDF
 • No account, no sign-up, no email address
 • No trial, no "pro" version, no feature held back
