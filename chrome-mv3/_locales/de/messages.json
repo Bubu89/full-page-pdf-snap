@@ -406,5 +406,11 @@
   },
   "optNoReviewHint": {
     "message": "Nicht nach einer Bewertung dieser Erweiterung fragen. Sie fragt einmal, nach fünf Aufnahmen, und nie wieder — dieser Schalter verhindert auch dieses eine Mal."
+  },
+  "optLinkMap": {
+    "message": "Linkkarte neben dem PDF speichern"
+  },
+  "optLinkMapHint": {
+    "message": "Eine JSON-Datei mit allen Verweisen der Seite: wo sie im Bild liegen, wohin sie führen und zu welchem Teil der Seite sie gehören — Navigation, Fußzeile, Inhalt, Blätterung. Für KI-Werkzeuge, die zu einem Ziel finden müssen: Auf einer Enzyklopädie-Seite erwiesen sich 741 von 1.528 Verweisen als Seitengerüst und ließen sich vorab ausschließen. Kostet eine zusätzliche Datei je Aufnahme."
   }
 }

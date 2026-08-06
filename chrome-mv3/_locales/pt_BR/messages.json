@@ -400,5 +400,17 @@
   },
   "optNoReviewHint": {
     "message": "Não me pedir para avaliar esta extensão. Ela pergunta uma vez, após cinco capturas, e nunca mais — esta opção evita até essa única vez."
+  },
+  "optLinkMap": {
+    "message": "Salvar um mapa de links ao lado do PDF"
+  },
+  "optLinkMapHint": {
+    "message": "Um arquivo JSON com todos os links da página: onde ficam na imagem, para onde levam e a que parte da página pertencem — navegação, rodapé, conteúdo, paginação. Para ferramentas de IA que precisam chegar a um objetivo: em uma página de enciclopédia, 741 de 1.528 links mostraram-se estrutura da página e puderam ser descartados antes da busca. Acrescenta um arquivo por captura."
+  },
+  "optTimeAnchor": {
+    "message": "Adicionar uma âncora de tempo (requer internet)"
+  },
+  "optTimeAnchorHint": {
+    "message": "Antes de salvar, busca um valor aleatório público da rede descentralizada drand e o grava na captura. Como ninguém poderia conhecer esse valor de antemão, ele mostra que a captura não é anterior àquele momento — sem depender do relógio do dispositivo. É o único acesso de rede desta extensão, fica desligado a menos que você o ative, e nada é enviado: a página, a captura e sua soma de verificação nunca saem do seu dispositivo. Ainda assim não prova o que a página exibia, e não é um carimbo de tempo qualificado segundo o eIDAS. Se a rede não estiver disponível, a captura é salva sem a âncora."
   }
 }

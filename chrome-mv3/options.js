@@ -36,6 +36,7 @@ const DEFAULTS = {
   provenanceFooter: false,
   timeAnchor: false,
   textLayer: true,
+  linkMap: false,
   bildModus: "farbe",
   uiLanguage: "auto",
   appLayout: "context",
@@ -135,6 +136,7 @@ async function load() {
   $("provenanceFooter").checked = s.provenanceFooter === true;
   $("timeAnchor").checked = s.timeAnchor === true;
   $("textLayer").checked = s.textLayer !== false;
+  $("linkMap").checked = !!s.linkMap;
   $("bildModus").value = s.bildModus || "farbe";
   $("uiLanguage").value = s.uiLanguage || "auto";
   $("appLayout").value = s.appLayout || "context";
@@ -177,6 +179,7 @@ $("save").addEventListener("click", async () => {
     provenanceFooter: $("provenanceFooter").checked,
     timeAnchor: $("timeAnchor").checked,
     textLayer: $("textLayer").checked,
+    linkMap: $("linkMap").checked,
     bildModus: $("bildModus").value,
     reviewPromptOff: $("reviewPromptOff").checked,
     uiLanguage: $("uiLanguage").value,

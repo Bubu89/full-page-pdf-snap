@@ -113,6 +113,15 @@
     <div class="hint">Default 400 ms — covers lazy-loading pages such as LinkedIn, X/Twitter and news portals. Only reduce it if speed matters more to you than completeness.</div>
   </label>
 
+  <label class="check"><input id="linkMap" type="checkbox">
+    <span data-i18n="optLinkMap">Save a link map beside the PDF</span>
+    <div class="hint" data-i18n="optLinkMapHint">A JSON file listing every link on the page:
+      where it sits in the image, where it leads, and what part of the page it belongs to —
+      navigation, footer, content, pagination. For AI tools that have to find their way to a
+      goal: on one encyclopedia page, 741 of 1,528 links turned out to be page furniture and
+      could be ruled out before searching. Costs one extra file per capture.</div>
+  </label>
+
   <label class="check"><input id="textLayer" type="checkbox">
     <span data-i18n="optTextLayer">Make the PDF searchable (invisible text layer)</span>
     <div class="hint" data-i18n="optTextLayerHint">Copies the page's own text into the PDF,

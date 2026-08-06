@@ -572,6 +572,80 @@
    * kennt: Wo genau ein Wort in der Zeile sitzt, weiss nur der Range.
    * Kosten an der Messseite: 14 ms fuer 1068 Woerter.
    */
+
+  /* Sammelt die Verweise der Seite mit ihrer Lage und ihrer Rolle.
+   *
+   * Ein Agent mit Auftrag braucht nicht alle Adressen, sondern die richtige.
+   * Eine Liste von 1.528 Verweisen beantwortet "finde das Impressum" so wenig
+   * wie gar keine. Gemessen am 6. August 2026: Auf einer Enzyklopaedie-Seite
+   * gehoeren 741 von 1.528 Verweisen zum Seitengeruest — fast die Haelfte
+   * laesst sich vorab ausschliessen, wenn man weiss, welche das sind.
+   *
+   * Die Rolle kommt aus vier Quellen, in dieser Reihenfolge: was das Dokument
+   * selbst auszeichnet (nav, footer, main, role=), wie der Verweis heisst
+   * (weiter, zurueck), wo er liegt, und ob er nur springt. Was sich nicht
+   * zuordnen laesst, bekommt null — geraten wird nicht.
+   *
+   * Der letzte Punkt ist der Grund, warum das hier steht und nicht in einem
+   * Crawler: Ein Behoerdenportal in der Probe trug KEINE einzige Landmarke.
+   * Dort bleibt nur die Lage, und die kennt nur, wer die Seite gerendert hat.
+   */
+  function collectLinks() {
+    const BLAETTERN = /^(next|prev|previous|weiter|zurück|zurueck|nächste|vorige|»|«|›|‹|\d{1,3})$/i;
+
+    function rolleVon(a, kasten, seiteH) {
+      const rel = (a.getAttribute("rel") || "").toLowerCase();
+      if (rel === "next" || rel === "prev") return "blaettern";
+      for (let el = a; el && el !== document.body; el = el.parentElement) {
+        const tag = el.tagName;
+        const ro = (el.getAttribute("role") || "").toLowerCase();
+        if (tag === "NAV" || ro === "navigation") return "navigation";
+        if (tag === "FOOTER" || ro === "contentinfo") return "fusszeile";
+        if (tag === "HEADER" || ro === "banner") return "kopfzeile";
+        if (tag === "ASIDE" || ro === "complementary") return "randspalte";
+        if (tag === "MAIN" || ro === "main" || tag === "ARTICLE") return "inhalt";
+      }
+      const txt = (a.textContent || "").trim();
+      if (BLAETTERN.test(txt)) return "blaettern";
+      if ((a.getAttribute("href") || "").startsWith("#")) return "sprungmarke";
+      // Nur wenn das Dokument nichts hergibt: die Lage. Als solche benannt,
+      // damit ein Aufrufer den schwaecheren Beleg erkennt.
+      if (kasten.y < 200) return "kopfbereich?";
+      if (kasten.y > seiteH - 400) return "fussbereich?";
+      return null;
+    }
+
+    const seiteH = document.documentElement.scrollHeight;
+    const eigenerHost = location.host;
+    const links = [];
+    for (const a of document.querySelectorAll("a[href]")) {
+      const st = getComputedStyle(a);
+      if (st.visibility === "hidden" || st.display === "none" || +st.opacity === 0)
+        continue;
+      const k = a.getBoundingClientRect();
+      if (k.width < 2 || k.height < 2) continue;
+      const ziel = a.href;
+      if (!/^https?:/i.test(ziel)) continue;
+      let host = "";
+      try { host = new URL(ziel).host; } catch (_) { continue; }
+      links.push({
+        rolle: rolleVon(a, k, seiteH),
+        text: (a.textContent || "").trim().replace(/\s+/g, " ").slice(0, 120),
+        href: ziel,
+        x: Math.round(k.x + scrollX), y: Math.round(k.y + scrollY),
+        w: Math.round(k.width), h: Math.round(k.height),
+        intern: host === eigenerHost,
+        beschriftung: a.getAttribute("aria-label") || a.getAttribute("title") || "",
+      });
+      if (links.length > 4000) break;   // Reissleine wie bei der Textebene
+    }
+    return {
+      ok: true,
+      seite: { w: document.documentElement.scrollWidth, h: seiteH },
+      links,
+    };
+  }
+
   function collectText() {
     const raus = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEXTAREA", "SVG", "CANVAS"]);
     const geher = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
@@ -1064,6 +1138,9 @@
             break;
           case "collectText":
             sendResponse(collectText());
+            break;
+          case "collectLinks":
+            sendResponse(collectLinks());
             break;
           case "getLayout":
             sendResponse(measureLayout());

@@ -400,5 +400,17 @@
   },
   "optNoReviewHint": {
     "message": "Non chiedermi di valutare questa estensione. Lo chiede una volta, dopo cinque acquisizioni, e mai più: questo interruttore evita anche quell’unica volta."
+  },
+  "optLinkMap": {
+    "message": "Salvare una mappa dei collegamenti accanto al PDF"
+  },
+  "optLinkMapHint": {
+    "message": "Un file JSON con tutti i collegamenti della pagina: dove si trovano nell’immagine, dove portano e a quale parte della pagina appartengono — navigazione, piè di pagina, contenuto, impaginazione. Per gli strumenti di IA che devono raggiungere un obiettivo: su una pagina di enciclopedia, 741 collegamenti su 1.528 si sono rivelati struttura della pagina e sono stati esclusi prima della ricerca. Aggiunge un file per acquisizione."
+  },
+  "optTimeAnchor": {
+    "message": "Aggiungere un ancoraggio temporale (richiede Internet)"
+  },
+  "optTimeAnchorHint": {
+    "message": "Prima del salvataggio recupera un valore casuale pubblico dalla rete decentralizzata drand e lo scrive nell’acquisizione. Poiché nessuno poteva conoscere quel valore in anticipo, dimostra che l’acquisizione non è anteriore a quel momento, senza affidarsi all’orologio del dispositivo. È l’unico accesso di rete di questa estensione, è disattivato se non lo attivi, e non viene inviato nulla: la pagina, l’acquisizione e la sua impronta non lasciano mai il dispositivo. Non prova comunque che cosa mostrasse la pagina e non è una marca temporale qualificata ai sensi di eIDAS. Se la rete non è raggiungibile, l’acquisizione viene salvata senza ancoraggio."
   }
 }

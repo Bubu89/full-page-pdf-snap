@@ -400,5 +400,17 @@
   },
   "optNoReviewHint": {
     "message": "No pedirme que valore esta extensión. Lo pregunta una vez, tras cinco capturas, y nunca más; este interruptor evita incluso esa vez."
+  },
+  "optLinkMap": {
+    "message": "Guardar un mapa de enlaces junto al PDF"
+  },
+  "optLinkMapHint": {
+    "message": "Un archivo JSON con todos los enlaces de la página: dónde están en la imagen, adónde llevan y a qué parte de la página pertenecen: navegación, pie, contenido, paginación. Para herramientas de IA que deben llegar a un objetivo: en una página de enciclopedia, 741 de 1.528 enlaces resultaron ser estructura de la página y pudieron descartarse antes de buscar. Añade un archivo por captura."
+  },
+  "optTimeAnchor": {
+    "message": "Añadir un anclaje temporal (requiere internet)"
+  },
+  "optTimeAnchorHint": {
+    "message": "Antes de guardar, obtiene un valor aleatorio público de la red descentralizada drand y lo escribe en la captura. Como nadie podía conocer ese valor de antemano, demuestra que la captura no es anterior a ese momento, sin depender del reloj del dispositivo. Es el único acceso a la red que hace esta extensión, está desactivado salvo que lo actives, y no se envía nada: la página, la captura y su suma de verificación nunca salen de tu dispositivo. Aun así no prueba lo que mostraba la página, y no es un sello de tiempo cualificado según eIDAS. Si la red no está disponible, la captura se guarda sin el anclaje."
   }
 }

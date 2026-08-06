@@ -85,6 +85,11 @@ const DEFAULTS_DESKTOP = {
   // Unsichtbare Textebene aus dem Dokument. Standard an: sie macht das PDF
   // durchsuchbar, ohne das Bild zu veraendern.
   textLayer: true,
+  // Linkkarte neben dem PDF: Verweise mit Lage, Ziel und Rolle. Fuer einen
+  // Agenten, der ein Bild der Seite hat und wissen muss, wo er hin kann.
+  // Standard aus — sie erzeugt eine zweite Datei, und wer sie nicht liest,
+  // hat nur eine mehr im Ordner.
+  linkMap: false,
   uiLanguage: "auto",
   appLayout: "context",
   afterCapture: "show",
@@ -500,6 +505,7 @@ async function captureFullPageInner(tab, settings) {
   const fehlteStill = [];
   // Wie oft die Seite waehrend der Aufnahme nachgewachsen ist.
   const seiteWuchs = [];
+  let linkKarte = null;
   // Blieb die Hoehe auch nach drei Vorlaufrunden in Bewegung?
   let vorlaufUnruhig = false;
   let textWoerter = null;
@@ -771,6 +777,22 @@ async function captureFullPageInner(tab, settings) {
         fehlteStill.push({ was: "quelle", grund: (e && e.message) || "unbekannt" });
       }
     }
+    if (settings.linkMap) {
+      // Im selben Zustand wie die Bilder erheben. Nach dem Zuruecksetzen
+      // waeren die Koordinaten die einer anderen Seite.
+      try {
+        const lm = await browser.tabs.sendMessage(tab.id, { cmd: "collectLinks" });
+        if (lm && lm.ok && lm.links && lm.links.length) {
+          linkKarte = lm;
+          log("Linkkarte:", lm.links.length, "Verweise");
+        } else {
+          fehlteStill.push({ was: "linkkarte", grund: "keine Verweise gefunden" });
+        }
+      } catch (e) {
+        log("Linkkarte nicht verfuegbar:", e && e.message);
+        fehlteStill.push({ was: "linkkarte", grund: (e && e.message) || "unbekannt" });
+      }
+    }
     if (settings.textLayer !== false) {
       try {
         const tl = await browser.tabs.sendMessage(tab.id, { cmd: "collectText" });
@@ -806,7 +828,8 @@ async function captureFullPageInner(tab, settings) {
   }
   // Was still fehlte, gehoert in dieselbe Meldung wie eine luckenhafte
   // Abdeckung: beides macht das PDF unbrauchbarer, als es aussieht.
-  const NAMEN = { textebene: "Textebene", quelle: "Quellenangaben" };
+  const NAMEN = { textebene: "Textebene", quelle: "Quellenangaben",
+                  linkkarte: "Linkkarte" };
   const stilleLuecken = fehlteStill.map(
     f => (NAMEN[f.was] || f.was) + " (" + f.grund + ")");
 
@@ -1389,6 +1412,47 @@ async function captureFullPageInner(tab, settings) {
         // Kein Grund, die Aufnahme scheitern zu lassen — die Angaben stehen
         // ohnehin im PDF.
         log("RIS-Datei nicht gespeichert:", e && e.message);
+      }
+    }
+
+    // Linkkarte als Datei neben dem PDF.
+    //
+    // Sie beantwortet, was eine Adressliste nicht beantwortet: welcher von
+    // 1.528 Verweisen zum Ziel fuehrt. Jeder traegt seine Lage im Bild —
+    // dieselbe Bezugsgroesse wie die Textebene —, sein Ziel und seine Rolle.
+    // Ein Agent kann damit das Seitengeruest ausschliessen, bevor er sucht;
+    // auf einer Enzyklopaedie-Seite sind das 741 von 1.528 Verweisen.
+    if (linkKarte && linkKarte.links && linkKarte.links.length) {
+      try {
+        const gez = {};
+        for (const l of linkKarte.links) {
+          const r = l.rolle || "nicht zugeordnet";
+          gez[r] = (gez[r] || 0) + 1;
+        }
+        const karte = {
+          erzeugt: "Full Page PDF Snap "
+                 + ((browser.runtime.getManifest() || {}).version || ""),
+          quelle: tab.url,
+          aufgenommen: new Date().toISOString(),
+          seite: linkKarte.seite,
+          hinweis: "Koordinaten in CSS-Pixeln des Dokuments, gleicher Bezug "
+                 + "wie die Textebene des PDF. Rollen mit Fragezeichen stammen "
+                 + "aus der Lage, nicht aus einer Auszeichnung des Dokuments — "
+                 + "der schwaechere Beleg. null heisst: nicht zuzuordnen, "
+                 + "nicht geraten.",
+          anzahl: linkKarte.links.length,
+          nach_rolle: gez,
+          links: linkKarte.links,
+        };
+        const kartenName = relPath.replace(/\.pdf$/i, "") + ".links.json";
+        const kartenUrl = "data:application/json;charset=utf-8,"
+                        + encodeURIComponent(JSON.stringify(karte, null, 2));
+        await browser.downloads.download({ url: kartenUrl, filename: kartenName,
+                                           conflictAction: "uniquify" });
+        log("Linkkarte gespeichert:", kartenName, linkKarte.links.length, "Verweise");
+      } catch (e) {
+        // Wie bei der RIS-Datei: kein Grund, die Aufnahme scheitern zu lassen.
+        log("Linkkarte nicht gespeichert:", e && e.message);
       }
     }
 

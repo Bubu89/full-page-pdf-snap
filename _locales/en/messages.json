@@ -406,5 +406,11 @@
   },
   "optNoReviewHint": {
     "message": "Do not ask me to rate this extension. It asks once, after five captures, and never again — this switch prevents even that one."
+  },
+  "optLinkMap": {
+    "message": "Save a link map beside the PDF"
+  },
+  "optLinkMapHint": {
+    "message": "A JSON file listing every link on the page: where it sits in the image, where it leads, and what part of the page it belongs to — navigation, footer, content, pagination. For AI tools that have to find their way to a goal: on one encyclopedia page, 741 of 1,528 links turned out to be page furniture and could be ruled out before searching. Costs one extra file per capture."
   }
 }

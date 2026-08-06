@@ -120,6 +120,14 @@ jobs:
             echo "::error::Discovery-Dateien veraltet — build-agent-discovery.py ausfuehren"
             exit 1
           }
+          # Gleiche Schluesselzahl heisst nicht gleiche Schluessel. Am 4. August
+          # fehlten zwoelf Texte in jeder Sprache, am 6. zwei in sieben — beide
+          # Male, weil beim Einbau nur Englisch und Deutsch geschrieben wurden
+          # und es niemandem auffiel.
+          python3 tools/sprachen-pruefen.py || {
+            echo "::error::Oberflaechentexte unvollstaendig — tools/sprachen-pruefen.py zeigt, welche"
+            exit 1
+          }
 
       # Zweimal an einem Tag standen Platzhalter in ausgelieferten Seiten
       # ({TITEL}, {AMO}), weil ein Textblock in einen f-String geriet. Im
