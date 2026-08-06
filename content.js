@@ -639,9 +639,21 @@
       });
       if (links.length > 4000) break;   // Reissleine wie bei der Textebene
     }
+    // Die gemeldete Dokumenthoehe enthaelt nicht zwingend alle Elemente:
+    // gemessen am 6. August 2026 nennt eine Enzyklopaedie-Seite 24.784 px,
+    // waehrend ihr tiefster Verweis bei 27.694 liegt — 384 Verweise einer
+    // aufgeklappten Navigationsbox ragen darueber hinaus. Wer die Karte
+    // gegen das Bild legt, braucht die Hoehe, die alle Koordinaten umfasst.
+    let tiefster = seiteH;
+    for (const l of links) tiefster = Math.max(tiefster, l.y + l.h);
     return {
       ok: true,
-      seite: { w: document.documentElement.scrollWidth, h: seiteH },
+      seite: {
+        w: document.documentElement.scrollWidth,
+        h: tiefster,
+        dokumentHoehe: seiteH,
+        ueberhang: tiefster - seiteH,
+      },
       links,
     };
   }
