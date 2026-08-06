@@ -1553,14 +1553,14 @@ _Quelle: change-stream, 16 Events, generiert 2026-08-06T09:00_
 **Aktivitaet:** 8 Datei(en), 16 Tool-Calls (13 Edit, 2 Write, 1 Bash), 2 Session(s).
 
 **Beruehrte Dateien:**
-- `/home/holo/repos/full-page-pdf-snap-public/pdf-writer.js` (6x)
-- `/home/holo/repos/full-page-pdf-snap-public/background.js` (2x)
-- `/home/holo/repos/full-page-pdf-snap-public/chrome-mv3/port.py` (2x)
-- `/home/holo/repos/full-page-pdf-snap-public/rechtscheck.py` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/zeitanker.js` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/background.html` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/options.html` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/PLAN-ERWEITERUNG.md` (1x)
+- `pdf-writer.js` (6x)
+- `background.js` (2x)
+- `chrome-mv3/port.py` (2x)
+- `rechtscheck.py` (1x)
+- `zeitanker.js` (1x)
+- `background.html` (1x)
+- `options.html` (1x)
+- `PLAN-ERWEITERUNG.md` (1x)
 
 **Bemerkenswerte Commands:**
 - `cd ~/repos/full-page-pdf-snap-public && git add -A && git -c user.name="Bubu89" -c user.email="parkplatz.hallwang@gmail.`
@@ -1574,26 +1574,26 @@ _Quelle: change-stream, 32 Events, generiert 2026-08-06T08:51_
 **Aktivitaet:** 21 Datei(en), 32 Tool-Calls (17 Edit, 15 Write), 1 Session(s).
 
 **Beruehrte Dateien:**
-- `/home/holo/repos/full-page-pdf-snap-public/background.js` (5x)
-- `/home/holo/repos/full-page-pdf-snap-public/worker/mcp.js` (3x)
-- `/home/holo/repos/full-page-pdf-snap-public/store-texte/CHROME_DESCRIPTION.txt` (2x)
-- `/home/holo/repos/full-page-pdf-snap-public/build-server-card.py` (2x)
-- `/home/holo/repos/full-page-pdf-snap-public/.github/workflows/pruefen-und-ausliefern.yml` (2x)
-- `/home/holo/repos/full-page-pdf-snap-public/.github/workflows/registry-veroeffentlichen.yml` (2x)
-- `/home/holo/repos/full-page-pdf-snap-public/tools/registry-stand.py` (2x)
-- `/home/holo/repos/full-page-pdf-snap-public/store-texte/CHROME_DESCRIPTION_DE.txt` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/build-agent-install-post.py` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/build-einstiegsseiten.py` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/PLAN-ERWEITERUNG.md` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/tests/bildfilter.test.mjs` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/build-kompression-teaser.py` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/tools/store-bilder-abgleich.py` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/build-issues-post.py` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/vorlagen/README.md` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/STAND.md` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/rechtscheck.py` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/build-agent-citation-post.py` (1x)
-- `/home/holo/repos/full-page-pdf-snap-public/tools/agenten-abnahme.py` (1x)
+- `background.js` (5x)
+- `worker/mcp.js` (3x)
+- `store-texte/CHROME_DESCRIPTION.txt` (2x)
+- `build-server-card.py` (2x)
+- `.github/workflows/pruefen-und-ausliefern.yml` (2x)
+- `.github/workflows/registry-veroeffentlichen.yml` (2x)
+- `tools/registry-stand.py` (2x)
+- `store-texte/CHROME_DESCRIPTION_DE.txt` (1x)
+- `build-agent-install-post.py` (1x)
+- `build-einstiegsseiten.py` (1x)
+- `PLAN-ERWEITERUNG.md` (1x)
+- `tests/bildfilter.test.mjs` (1x)
+- `build-kompression-teaser.py` (1x)
+- `tools/store-bilder-abgleich.py` (1x)
+- `build-issues-post.py` (1x)
+- `vorlagen/README.md` (1x)
+- `STAND.md` (1x)
+- `rechtscheck.py` (1x)
+- `build-agent-citation-post.py` (1x)
+- `tools/agenten-abnahme.py` (1x)
 
 <!-- change-stream:auto-block:2026-08-04:END -->
 
