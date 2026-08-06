@@ -86,7 +86,7 @@
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/install-an-extension-without-a-click/</loc>
-    <lastmod>2026-08-04</lastmod>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -152,7 +152,7 @@
   </url>
   <url>
     <loc>https://provinglab.dev/notes/smaller-files-better-ocr/</loc>
-    <lastmod>2026-08-04</lastmod>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -315,6 +315,12 @@
   <url>
     <loc>https://provinglab.dev/data/2026-08-05-print-vs-capture-with-text-layer.json</loc>
     <lastmod>2026-08-05</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://provinglab.dev/data/2026-08-06-linkkarte-machbarkeit.json</loc>
+    <lastmod>2026-08-03</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>

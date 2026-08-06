@@ -1,0 +1,238 @@
+{
+  "title": "Can a capture carry its links, with their positions?",
+  "measured": "2026-08-06",
+  "question": "Before building a second product for mapping pages: does the data even exist, how much of it is there, and where does the approach break?",
+  "method": "Three pages of deliberately different kinds, loaded in headless Chromium 1208, every visible a[href] measured with getBoundingClientRect in document coordinates. One run each.",
+  "pages": {
+    "Enzyklopädie": {
+      "seite": {
+        "w": 765,
+        "h": 24784,
+        "titel": "PDF - Wikipedia"
+      },
+      "anzahl": 1528,
+      "intern": 1297,
+      "anker": 273,
+      "bild": 10,
+      "ohne_text": 0,
+      "beispiele": [
+        {
+          "x": 64,
+          "y": 14,
+          "w": 140,
+          "h": 38,
+          "href": "https://en.wikipedia.org/wiki/Main_Page",
+          "text": "",
+          "intern": true,
+          "anker": false,
+          "bild": true
+        },
+        {
+          "x": 443,
+          "y": 11,
+          "w": 44,
+          "h": 44,
+          "href": "https://en.wikipedia.org/wiki/Special:Search",
+          "text": "Search",
+          "intern": true,
+          "anker": false,
+          "bild": false
+        },
+        {
+          "x": 543,
+          "y": 25,
+          "w": 45,
+          "h": 16,
+          "href": "https://donate.wikimedia.org/?wmf_source=donate&wmf_medium=sidebar&wmf_campaign=en.wikipedia.org&uselang=en",
+          "text": "Donate",
+          "intern": false,
+          "anker": false,
+          "bild": false
+        },
+        {
+          "x": 596,
+          "y": 25,
+          "w": 95,
+          "h": 16,
+          "href": "https://en.wikipedia.org/w/index.php?title=Special%3ACreateAccount&returnto=PDF&experiments%5B0%5D=we-1-8-account-creation-no-desktop-benefits%3Aunsampled",
+          "text": "Create account",
+          "intern": true,
+          "anker": false,
+          "bild": false
+        },
+        {
+          "x": 699,
+          "y": 25,
+          "w": 38,
+          "h": 16,
+          "href": "https://en.wikipedia.org/w/index.php?title=Special%3AUserLogin&returnto=PDF&experiments%5B0%5D=we-1-8-account-creation-no-desktop-benefits%3Aunsampled",
+          "text": "Log in",
+          "intern": true,
+          "anker": false,
+          "bild": false
+        },
+        {
+          "x": 24,
+          "y": 134,
+          "w": 39,
+          "h": 32,
+          "href": "https://en.wikipedia.org/wiki/PDF",
+          "text": "Article",
+          "intern": true,
+          "anker": false,
+          "bild": false
+        },
+        {
+          "x": 79,
+          "y": 134,
+          "w": 25,
+          "h": 32,
+          "href": "https://en.wikipedia.org/wiki/Talk:PDF",
+          "text": "Talk",
+          "intern": true,
+          "anker": false,
+          "bild": false
+        },
+        {
+          "x": 544,
+          "y": 134,
+          "w": 33,
+          "h": 32,
+          "href": "https://en.wikipedia.org/wiki/PDF",
+          "text": "Read",
+          "intern": true,
+          "anker": false,
+          "bild": false
+        }
+      ]
+    },
+    "Verlag": {
+      "seite": {
+        "w": 780,
+        "h": 437,
+        "titel": "403"
+      },
+      "anzahl": 0,
+      "intern": 0,
+      "anker": 0,
+      "bild": 0,
+      "ohne_text": 0,
+      "beispiele": []
+    },
+    "Behörde": {
+      "seite": {
+        "w": 768,
+        "h": 1126,
+        "titel": "RIS Informationsangebote"
+      },
+      "anzahl": 28,
+      "intern": 23,
+      "anker": 1,
+      "bild": 1,
+      "ohne_text": 0,
+      "beispiele": [
+        {
+          "x": 139,
+          "y": 8,
+          "w": 74,
+          "h": 15,
+          "href": "https://www.ris.bka.gv.at/UI/Kontakt.aspx",
+          "text": "Kontakt (Accesskey 4)",
+          "intern": true,
+          "anker": false,
+          "bild": false
+        },
+        {
+          "x": 212,
+          "y": 8,
+          "w": 93,
+          "h": 15,
+          "href": "https://www.ris.bka.gv.at/UI/Impressum.aspx",
+          "text": "Impressum (Accesskey 5)",
+          "intern": true,
+          "anker": false,
+          "bild": false
+        },
+        {
+          "x": 306,
+          "y": 8,
+          "w": 155,
+          "h": 15,
+          "href": "https://www.ris.bka.gv.at/UI/Datenschutz.aspx",
+          "text": "Datenschutzerklärung (Accesskey 6)",
+          "intern": true,
+          "anker": false,
+          "bild": false
+        },
+        {
+          "x": 460,
+          "y": 8,
+          "w": 174,
+          "h": 15,
+          "href": "https://www.ris.bka.gv.at/UI/Barrierefreiheit.aspx",
+          "text": "Barrierefreiheitserklärung (Accesskey 7)",
+          "intern": true,
+          "anker": false,
+          "bild": false
+        },
+        {
+          "x": 634,
+          "y": 8,
+          "w": 77,
+          "h": 15,
+          "href": "https://www.ris.bka.gv.at/UI/SiteMap.aspx",
+          "text": "Sitemap (Accesskey 8)",
+          "intern": true,
+          "anker": false,
+          "bild": false
+        },
+        {
+          "x": 711,
+          "y": 8,
+          "w": 57,
+          "h": 15,
+          "href": "https://www.ris.bka.gv.at/defaultEn.aspx",
+          "text": "English",
+          "intern": true,
+          "anker": false,
+          "bild": false
+        },
+        {
+          "x": 3,
+          "y": 89,
+          "w": 762,
+          "h": 17,
+          "href": "https://www.ris.bka.gv.at/default.aspx",
+          "text": "",
+          "intern": true,
+          "anker": false,
+          "bild": true
+        },
+        {
+          "x": 0,
+          "y": 103,
+          "w": 63,
+          "h": 54,
+          "href": "https://www.ris.bka.gv.at/Bund/",
+          "text": "Bund",
+          "intern": true,
+          "anker": false,
+          "bild": false
+        }
+      ]
+    }
+  },
+  "finding": "Wikipedia yields 1,528 links with positions, a government portal 28. PubMed yields nothing — the page did not render headless at all, 437 px tall instead of several thousand. The sources that are hard for a crawler are hard for a headless link map for the same reason, which is the argument for collecting inside the browser where the capture already happens.",
+  "context": {
+    "print_to_pdf_link_annotations": 1450,
+    "capture_link_annotations": 0,
+    "note": "Measured 5 August on the same Wikipedia article. Chrome's print export already writes complete link annotations; the capture writes none. That gap, not the mapping idea, is the concrete shortfall."
+  },
+  "limitations": [
+    "Three pages, one run each, no averages.",
+    "Headless rendering is the wrong instrument for the hard cases and was used here only to answer the machbarkeit question cheaply.",
+    "Whether an agent would use such a map is unmeasured. Nobody has asked for it."
+  ],
+  "license": "CC BY 4.0",
+  "plan": "https://github.com/Bubu89/full-page-pdf-snap/blob/main/PLAN-LINKKARTE.md"
+}
