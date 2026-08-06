@@ -1,0 +1,9 @@
+_VERALTET_promo_tile_440x280_mit_free_badge.png
+
+Traegt ein gruenes "FREE"-Badge — der Ablehnungsgrund vom 02.08.2026
+("free badge in media"). Im Store laeuft seither eine korrigierte Fassung
+mit "100% LOCAL" und "NO TRACKING", die hier nie nachgezogen wurde.
+
+Wer promo_tile_440x280.png aus diesem Ordner hochlaedt, holt die Ablehnung
+zurueck. Vor jeder Verwendung gegen den Store abgleichen:
+    python3 tools/store-bilder-abgleich.py
