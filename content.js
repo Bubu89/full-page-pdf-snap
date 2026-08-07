@@ -155,6 +155,43 @@
       log("Clip verworfen (zu klein):", w, "x", h);
       return null;
     }
+
+    /* Eine feste Navigationsspalte gehoert in den Ausschnitt.
+     *
+     * Der Scroll-Container einer App-Oberflaeche ist der Inhaltsbereich - die
+     * Menuespalte liegt daneben und faellt beim Zuschnitt heraus. Sie wurde
+     * also nicht ausgeblendet, sondern schlicht abgeschnitten; alle Versuche
+     * an der Ausblende-Logik gingen deshalb ins Leere.
+     *
+     * Gemessen am 07.08.2026 am Cloudflare-Dashboard: Auf einer Seite mit
+     * Fenster-Scroll (kein Clip) war die Spalte im PDF, auf einer mit innerem
+     * Scroll-Container fehlte sie - dieselbe Fassung, derselbe Rechner.
+     *
+     * Deshalb: Steht links oder rechts des Ausschnitts eine Spalte, die nach
+     * Lage und Form eine Navigation ist, wird der Ausschnitt bis zu ihr
+     * erweitert. Was zwischen ihr und dem Inhalt liegt, kommt mit - das ist
+     * bei App-Oberflaechen der Zwischenraum, kein fremder Inhalt.
+     */
+    let links = x, rechts = x + w;
+    try {
+      for (const el of document.querySelectorAll("*")) {
+        let cs, nr;
+        try { cs = getComputedStyle(el); nr = el.getBoundingClientRect(); } catch (_) { continue; }
+        if (cs.position !== "fixed" && cs.position !== "sticky") continue;
+        if (cs.visibility === "hidden" || cs.display === "none") continue;
+        if (!isSideNavigation(nr)) continue;
+        // nur Spalten, die neben dem Ausschnitt stehen, nicht darin
+        if (nr.right <= x + 4 && nr.left < links) links = Math.max(0, Math.round(nr.left));
+        else if (nr.left >= x + w - 4 && nr.right > rechts) rechts = Math.round(nr.right);
+      }
+    } catch (_) { /* im Zweifel bleibt es beim Container */ }
+
+    if (links !== x || rechts !== x + w) {
+      const nw = Math.round(Math.min(rechts - links, window.innerWidth - links));
+      log("Clip um Navigationsspalte erweitert:", x, "->", links, "| Breite", w, "->", nw);
+      return { x: links, y, w: nw, h };
+    }
+
     log("Clip auf Scroll-Container:", x, y, w, h);
     return { x, y, w, h };
   }

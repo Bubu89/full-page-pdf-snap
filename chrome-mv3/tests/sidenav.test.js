@@ -122,6 +122,55 @@ B("erklaert scrollbar: overlay",     "overlay", true);
 B("hidden zaehlt nicht mehr",        "hidden",  false);
 B("visible zaehlt nie",              "visible", false);
 
+/* --- Der Ausschnitt muss die Navigationsspalte einschliessen -------------
+ *
+ * Die eigentliche Ursache, gefunden am 07.08.2026 nach mehreren Fehlgriffen:
+ * Bei App-Oberflaechen wird auf den Scroll-Container zugeschnitten, und der
+ * ist der Inhaltsbereich. Die Menuespalte liegt daneben und faellt heraus -
+ * sie wurde nie ausgeblendet, sondern abgeschnitten. Deshalb half keine
+ * Aenderung an der Ausblende-Logik.
+ *
+ * Beleg aus der Praxis: Auf einer Seite mit Fenster-Scroll (kein Clip) war
+ * die Spalte im PDF, auf einer mit innerem Scroll-Container fehlte sie -
+ * dieselbe Fassung, derselbe Rechner, derselbe Nutzer.
+ */
+function clipMitNavi(container, spalten, winW) {
+  let links = container.x, rechts = container.x + container.w;
+  for (const s of spalten) {
+    if (!isSideNavigation({ ...s, right: s.left + s.width })) continue;
+    const sr = s.left + s.width;
+    if (sr <= container.x + 4 && s.left < links) links = Math.max(0, s.left);
+    else if (s.left >= container.x + container.w - 4 && sr > rechts) rechts = sr;
+  }
+  return { x: links, w: Math.min(rechts - links, winW - links) };
+}
+
+const C = (name, container, spalten, erwX, erwW) => {
+  const r = clipMitNavi(container, spalten, 1384);
+  const ok = r.x === erwX && r.w === erwW;
+  R.push(`${ok ? "OK  " : "FEHL"}  Ausschnitt   ${name}: x=${r.x} w=${r.w} (erwartet ${erwX}/${erwW})`);
+};
+
+// Cloudflare-artig: Inhalt ab 245, Navigation 0..245
+C("Navigation links wird eingeschlossen",
+  { x: 245, w: 1139 }, [{ left: 0, width: 245, height: 805 }], 0, 1384);
+// Inhaltsverzeichnis rechts
+C("Spalte rechts wird eingeschlossen",
+  { x: 0, w: 1160 }, [{ left: 1160, width: 224, height: 805 }], 0, 1384);
+// Beides
+C("beide Spalten",
+  { x: 245, w: 915 }, [{ left: 0, width: 245, height: 805 }, { left: 1160, width: 224, height: 805 }], 0, 1384);
+// Kein Nachbar: unveraendert
+C("ohne Navigationsspalte unveraendert",
+  { x: 245, w: 1139 }, [], 245, 1139);
+// Ein Cookie-Banner ist keine Navigation
+C("Banner unten zaehlt nicht",
+  { x: 245, w: 1139 }, [{ left: 0, width: 1384, height: 180 }], 245, 1139);
+// Eine Spalte INNERHALB des Ausschnitts erweitert nichts
+C("Spalte im Ausschnitt aendert nichts",
+  { x: 0, w: 1384 }, [{ left: 300, width: 220, height: 805 }], 0, 1384);
+
 console.log(R.join("\n"));
 console.log("\nERGEBNIS: " + (R.some(l => l.startsWith("FEHL")) ? "FEHLER" : "ALLE BESTANDEN"));
 process.exit(R.some(l => l.startsWith("FEHL")) ? 1 : 0);
+
