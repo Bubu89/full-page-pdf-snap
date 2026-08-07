@@ -160,3 +160,62 @@ test("Graustufen bleibt 8 bit und unveraendert lang", () => {
   assert.equal(kanaele, 1);
   assert.equal(daten.length, breite * hoehe, "Graustufen kennt keine Auffuellung");
 });
+
+/* --- Farbtiefe muss den Weg bis in den PDF-Kopf ueberstehen --------------
+ *
+ * Gefunden am 07.08.2026: Im mehrseitigen Druckmodus mit Schwarzweiss kam ein
+ * PDF heraus, das oben ein paar Zeilen Rauschen zeigte und darunter nichts.
+ * Der Kopf sagte /DeviceRGB /BitsPerComponent 8, im Strom lagen 1-Bit-Daten -
+ * ein Achtel der angekuendigten Menge.
+ *
+ * Die Umrechnung war nie schuld. Verloren gingen die Angaben erst im Writer:
+ * Wege, die eine Seite als EIN Bild ablegen (mehrseitiger Druck, kurze Seiten
+ * ohne Kachelung), bekamen eine Ersatzkachel gebaut - und die uebernahm
+ * kanaele/bits nicht. Der gekachelte Weg trug sie immer schon, deshalb fiel
+ * es an langen Seiten nie auf.
+ */
+{
+  // Der Normalisierungsschritt aus pdf-writer.js, wie er sein muss
+  const normalisiere = (pg) => pg.tiles && pg.tiles.length
+    ? pg.tiles
+    : [{ bytes: pg.bytes, filter: pg.filter,
+         kanaele: pg.kanaele, bits: pg.bits,
+         xPx: 0, yPx: 0, wPx: pg.widthPx, hPx: pg.heightPx }];
+
+  const kopf = (t) => {
+    const kanaele = t.kanaele || 3, bits = t.bits || 8;
+    return { farbraum: kanaele === 1 ? "/DeviceGray" : "/DeviceRGB", bits };
+  };
+
+  const faelle = [
+    ["Schwarzweiss, eine Seite als ein Bild", { kanaele: 1, bits: 1 }, "/DeviceGray", 1],
+    ["Graustufen, eine Seite als ein Bild",   { kanaele: 1, bits: 8 }, "/DeviceGray", 8],
+    ["Farbe, eine Seite als ein Bild",        { kanaele: 3, bits: 8 }, "/DeviceRGB",  8],
+  ];
+  for (const [name, tiefe, wantFarbraum, wantBits] of faelle) {
+    const seite = { bytes: new Uint8Array(10), filter: "FlateDecode",
+                    widthPx: 1617, heightPx: 2400, ...tiefe };
+    const k = kopf(normalisiere(seite)[0]);
+    const ok = k.farbraum === wantFarbraum && k.bits === wantBits;
+    console.log(`${ok ? "ok  " : "FEHL"} ${name}: ${k.farbraum} ${k.bits} bit`);
+    if (!ok) process.exitCode = 1;
+  }
+
+  // Gekachelt: die Angaben stehen je Kachel und muessen unangetastet bleiben
+  const gekachelt = { widthPx: 1617, heightPx: 9000,
+                      tiles: [{ bytes: new Uint8Array(4), filter: "FlateDecode",
+                                kanaele: 1, bits: 1, xPx: 0, yPx: 0, wPx: 1617, hPx: 2400 }] };
+  const kg = kopf(normalisiere(gekachelt)[0]);
+  const okg = kg.farbraum === "/DeviceGray" && kg.bits === 1;
+  console.log(`${okg ? "ok  " : "FEHL"} Schwarzweiss, gekachelt: ${kg.farbraum} ${kg.bits} bit`);
+  if (!okg) process.exitCode = 1;
+
+  // Gegenprobe: ohne Uebernahme faellt genau der Schwarzweiss-Fall durch
+  const ohne = (pg) => [{ bytes: pg.bytes, filter: pg.filter,
+                          xPx: 0, yPx: 0, wPx: pg.widthPx, hPx: pg.heightPx }];
+  const kaputt = kopf(ohne({ bytes: new Uint8Array(10), filter: "FlateDecode",
+                             widthPx: 1617, heightPx: 2400, kanaele: 1, bits: 1 }));
+  const zeigtFehler = kaputt.farbraum === "/DeviceRGB" && kaputt.bits === 8;
+  console.log(`${zeigtFehler ? "ok  " : "FEHL"} Gegenprobe: ohne Uebernahme entsteht ${kaputt.farbraum} ${kaputt.bits} bit`);
+  if (!zeigtFehler) process.exitCode = 1;
+}

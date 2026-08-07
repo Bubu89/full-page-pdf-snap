@@ -399,9 +399,23 @@
       const hPt = (pg.heightPx * pxToPt + fussPt).toFixed(2);
 
       // Normalisiere: legacy einzelnes Bild -> Tile-Liste mit einem Eintrag.
+      //
+      // kanaele und bits MUESSEN mituebernommen werden. Ohne sie greift weiter
+      // unten die Ersatzannahme RGB/8 - und die ist falsch, sobald der Nutzer
+      // Graustufen oder Schwarzweiss gewaehlt hat. Bei Schwarzweiss stehen im
+      // Strom ein Achtel der Daten, die der Kopf ankuendigt: Das PDF zeigt
+      // oben ein paar Zeilen Rauschen und darunter nichts.
+      //
+      // Betroffen waren die beiden Wege, die eine Seite als EIN Bild ablegen -
+      // der mehrseitige Druckmodus und kurze Seiten ohne Kachelung. Der
+      // gekachelte Weg trug die Angaben immer schon in jeder Kachel, deshalb
+      // fiel es an langen Seiten nie auf. Gemessen am 07.08.2026 an einer
+      // neunseitigen Aufnahme: /DeviceRGB /BitsPerComponent 8 im Kopf,
+      // 1-Bit-Daten im Strom.
       const tiles = pg.tiles && pg.tiles.length
         ? pg.tiles
         : [{ jpegBytes: pg.jpegBytes, bytes: pg.bytes, filter: pg.filter,
+             kanaele: pg.kanaele, bits: pg.bits,
              xPx: 0, yPx: 0, wPx: pg.widthPx, hPx: pg.heightPx }];
 
       const xobjs = [];
