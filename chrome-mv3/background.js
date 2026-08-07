@@ -253,7 +253,14 @@ function dataUrlToBlob(dataUrl) {
  */
 /* Wendet die gewaehlte Farbtiefe an. Gibt Kanalzahl und Bittiefe mit zurueck,
  * weil das PDF beides im Bildobjekt braucht. */
-function farbtiefeAnwenden(d, modus, breite) {
+/* umkehrenVorgabe: Bei gekachelter Ausgabe wird die Entscheidung EINMAL fuer
+ * das ganze Bild getroffen und hier hereingereicht. Ohne das entschiede jede
+ * Kachel fuer sich - und eine Seite, die oben hell und unten dunkel ist,
+ * bekaeme im PDF an der Kachelgrenze einen Bruch, der nichts mit dem Aufbau
+ * der Seite zu tun hat, sondern nur mit dem Zuschnitt. Gemessen am
+ * 07.08.2026: obere Kachel unveraendert, untere umgekehrt, beide fuer sich
+ * richtig, zusammen unbrauchbar. */
+function farbtiefeAnwenden(d, modus, breite, umkehrenVorgabe) {
   if (modus === "graustufen" || modus === "sw") {
     const n = d.length / 4;
     const hoehe = breite ? Math.round(n / breite) : 0;
@@ -339,7 +346,9 @@ function farbtiefeAnwenden(d, modus, breite) {
     // gebrochen. Vom Test am 07.08.2026 sofort gefunden.
     const haeufigsterWert = groesster * 8 + 4;
 
-    const umkehren = n > 0 && randMittel < 128 && haeufigsterWert < 128;
+    const umkehren = typeof umkehrenVorgabe === "boolean"
+      ? umkehrenVorgabe
+      : (n > 0 && randMittel < 128 && haeufigsterWert < 128);
 
     const bytesJeZeile = Math.ceil(breite / 8);
     const bin = new Uint8Array(bytesJeZeile * hoehe);
@@ -375,13 +384,13 @@ function farbtiefeAnwenden(d, modus, breite) {
   return { daten: rgb, kanaele: 3, bits: 8 };
 }
 
-async function canvasToFlateBytes(canvas, modus) {
+async function canvasToFlateBytes(canvas, modus, umkehrenVorgabe) {
   if (typeof CompressionStream === "undefined") return null;
   const ctx = canvas.getContext("2d", { willReadFrequently: true });
   const d = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
   // RGBA -> gewaehlte Farbtiefe. PDF kennt keinen Alphakanal, und die Aufnahme
   // hat keinen: der Hintergrund wurde vor dem Zeichnen gefuellt.
-  const { daten, kanaele, bits } = farbtiefeAnwenden(d, modus, canvas.width);
+  const { daten, kanaele, bits } = farbtiefeAnwenden(d, modus, canvas.width, umkehrenVorgabe);
   const strom = new Blob([daten]).stream().pipeThrough(new CompressionStream("deflate"));
   const buf = await new Response(strom).arrayBuffer();
   return { bytes: new Uint8Array(buf), kanaele, bits };
@@ -393,11 +402,55 @@ async function canvasToFlateBytes(canvas, modus) {
  * Speichergrenze, was auch immer —, bleibt es beim bisherigen Verhalten;
  * ein Fehler in der Sparfassung darf die Aufnahme nicht kosten.
  */
-async function canvasToBildBytes(canvas, quality, modus) {
+/* Einmal fuer das ganze Bild entscheiden, ob umgekehrt wird.
+ *
+ * Wird vor der Kachelung aufgerufen und an jede Kachel weitergereicht. Liest
+ * das Bild in Schritten statt Punkt fuer Punkt: Bei einer langen Aufnahme
+ * sind das Millionen Werte, und fuer Randhelligkeit und haeufigsten Grauwert
+ * genuegt eine Stichprobe. Der Rand wird vollstaendig gelesen - er ist
+ * schmal, und genau dort steht die Antwort.
+ */
+function sollUmkehren(canvas, modus) {
+  if (modus !== "sw") return undefined;      // nur Schwarzweiss kehrt um
+  try {
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const b = canvas.width, h = canvas.height;
+    const d = ctx.getImageData(0, 0, b, h).data;
+    const grau = (i) => (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114) | 0;
+
+    const randTiefe = Math.max(4, Math.round(Math.min(b, h) * 0.03));
+    let randSumme = 0, randAnzahl = 0;
+    for (let y = 0; y < h; y++) {
+      const obenUnten = y < randTiefe || y >= h - randTiefe;
+      for (let x = 0; x < b; x++) {
+        if (obenUnten || x < randTiefe || x >= b - randTiefe) {
+          randSumme += grau((y * b + x) * 4); randAnzahl++;
+        }
+      }
+    }
+    const randMittel = randAnzahl ? randSumme / randAnzahl : 255;
+
+    const eimer = new Uint32Array(32);
+    const schritt = Math.max(1, Math.floor((b * h) / 400000));   // hoechstens 400k Proben
+    for (let i = 0; i < b * h; i += schritt) eimer[grau(i * 4) >> 3]++;
+    let groesster = 0;
+    for (let i = 1; i < 32; i++) if (eimer[i] > eimer[groesster]) groesster = i;
+
+    const entscheidung = randMittel < 128 && (groesster * 8 + 4) < 128;
+    log("Schwarzweiss: Rand", Math.round(randMittel), "| haeufigster",
+        groesster * 8 + 4, "->", entscheidung ? "umkehren" : "lassen");
+    return entscheidung;
+  } catch (e) {
+    log("Umkehr-Entscheidung nicht moeglich:", e && e.message);
+    return undefined;      // dann entscheidet jede Kachel wie bisher
+  }
+}
+
+async function canvasToBildBytes(canvas, quality, modus, umkehrenVorgabe) {
   const m = modus || "farbe";
   let flate = null;
   try {
-    flate = await canvasToFlateBytes(canvas, m);
+    flate = await canvasToFlateBytes(canvas, m, umkehrenVorgabe);
   } catch (e) {
     log("Flate uebersprungen:", e && e.message);
   }
@@ -1305,10 +1358,13 @@ async function captureFullPageInner(tab, settings) {
   }
 
   const pages = [];
+  // Einmal fuer das ganze Bild entscheiden, damit alle Kacheln und alle
+  // Seiten dieselbe Polaritaet bekommen.
+  const umkehrenGanz = sollUmkehren(big, settings.bildModus);
   if (settings.singlePagePdf) {
     const tilePx = Math.max(800, Math.min(8000, effectiveTilePx));
     if (bigH <= tilePx) {
-      const bild = await canvasToBildBytes(big, settings.jpegQuality, settings.bildModus);
+      const bild = await canvasToBildBytes(big, settings.jpegQuality, settings.bildModus, umkehrenGanz);
       pages.push({ bytes: bild.bytes, filter: bild.filter, kanaele: bild.kanaele,
                    bits: bild.bits, widthPx: pxW, heightPx: bigH });
       log("Single-page PDF: 1 page, 1 tile,", bild.bytes.length, "bytes", bild.filter);
@@ -1321,7 +1377,7 @@ async function captureFullPageInner(tab, settings) {
         slice.height = h;
         slice.getContext("2d").drawImage(big, 0, y, pxW, h, 0, 0, pxW, h);
         tasks.push(
-          canvasToBildBytes(slice, settings.jpegQuality, settings.bildModus).then(b => ({
+          canvasToBildBytes(slice, settings.jpegQuality, settings.bildModus, umkehrenGanz).then(b => ({
             bytes: b.bytes, filter: b.filter, kanaele: b.kanaele, bits: b.bits,
             xPx: 0, yPx: y, wPx: pxW, hPx: h
           }))
@@ -1353,7 +1409,7 @@ async function captureFullPageInner(tab, settings) {
       slice.getContext("2d").drawImage(big, 0, y, pxW, h, 0, 0, pxW, h);
       // yPx merkt sich, wo diese Seite im Gesamtbild beginnt. Ohne diese
       // Angabe laesst sich die Textebene den Seiten nicht zuordnen.
-      tasks.push(canvasToBildBytes(slice, settings.jpegQuality, settings.bildModus).then(b => ({
+      tasks.push(canvasToBildBytes(slice, settings.jpegQuality, settings.bildModus, umkehrenGanz).then(b => ({
         bytes: b.bytes, filter: b.filter, kanaele: b.kanaele, bits: b.bits,
         widthPx: pxW, heightPx: h, yPx: y
       })));

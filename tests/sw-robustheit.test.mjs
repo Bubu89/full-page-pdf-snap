@@ -107,7 +107,26 @@ console.log("\n  Breiten (Bildschirm x Pixeldichte):");
 // ganze Flaeche, also wird zu Recht umgekehrt - die Probe wuerde ihre eigene
 // Voraussetzung pruefen, nicht die Bitpackung. Die Laenge stimmt auch dort,
 // das deckt der Fall "Breite 7" mit ab (beide fuellen auf ein Byte auf).
-const BREITEN = [1280, 1366, 1440, 1512, 1600, 1617, 1920, 2560, 999, 8, 7];
+//
+// Die Werte entstehen aus Fensterbreite mal Pixeldichte - das ist die Breite,
+// mit der captureVisibleTab liefert. Rechner und Telefone liegen dabei weit
+// auseinander, und auf Android sind krumme Werte die Regel statt die
+// Ausnahme: 412 x 2,625 ergibt 1081,5, und was der Browser daraus macht,
+// ist nicht durch acht teilbar.
+const BREITEN = [
+  // Rechner
+  1280, 1366, 1440, 1512, 1600, 1617, 1920, 2560,
+  // Telefone: CSS-Breite x Pixeldichte
+  720,   // 360 x 2      aeltere Geraete
+  1080,  // 360 x 3      verbreitetster Fall
+  1081,  // 412 x 2,625  Pixel-Reihe, abgerundet
+  1082,  // dieselbe Rechnung, aufgerundet
+  1179,  // 393 x 3      iPhone-Klasse im Querformat-Browser
+  828,   // 414 x 2
+  1344,  // 448 x 3      Falt-Telefon aufgeklappt
+  // Randwerte
+  999, 8, 7,
+];
 let formatFehler = 0;
 for (const breite of BREITEN) {
   const hoehe = 6;
@@ -126,6 +145,111 @@ for (const breite of BREITEN) {
   if (!ok) { formatFehler++; fehler++; }
   console.log(`  ${ok ? "ok  " : "FEHL"} Breite ${String(breite).padStart(4)}  ` +
               `${daten.length} Byte (erwartet ${bpz*hoehe})`);
+}
+
+/* --- Dark Reader ---------------------------------------------------------
+ *
+ * Das Add-on faerbt Seiten nachtraeglich um. Fuer die Aufnahme ist das keine
+ * Sonderbehandlung wert - captureVisibleTab liefert, was auf dem Bildschirm
+ * steht -, aber es erzeugt Farbkombinationen, die von Hand gebaute Dunkelmodi
+ * so nicht haben:
+ *
+ *   - Der Hintergrund ist nicht schwarz, sondern ein dunkles Grau mit
+ *     Farbstich (#181a1b, Grauwert um 26).
+ *   - Die Schrift ist nicht weiss, sondern ein warmes Hellgrau (#e8e6e3).
+ *   - Bilder und Videos laesst es je nach Einstellung unangetastet oder
+ *     dimmt sie nur. Auf einer sonst dunklen Seite steht dann ein helles
+ *     Rechteck - genau die Lage, in der die Umkehr schwer zu entscheiden ist.
+ *
+ * Geprueft wird deshalb mit den echten Standardfarben des Add-ons.
+ */
+console.log("\n  Dark Reader (Standardfarben #181a1b / #e8e6e3):");
+const DR_HG = 26, DR_TX = 230;
+const DR = [
+  ["reine Textseite",                    text(DR_HG, DR_TX),                             0.75],
+  ["mit Kopfzeile in Markenfarbe",       block(text(DR_HG, DR_TX), 70, 0, 45, 0, B),     0.50],
+  ["mit ungedimmtem Bild (klein)",       block(text(DR_HG, DR_TX), 235, 60, 160, 120, 280), 0.50],
+  ["mit gedimmtem Bild",                 block(text(DR_HG, DR_TX), 90, 40, 260, 60, 340), 0.50],
+  ["Code-Block etwas heller",            block(text(DR_HG, DR_TX), 45, 100, 200, 30, 370), 0.60],
+  ["Tabelle mit hellen Zeilen",          block(block(text(DR_HG,DR_TX),200,80,110,20,380), 200, 150, 180, 20, 380), 0.50],
+];
+for (const [name, bild, mindestens] of DR) {
+  const w = weissAnteil(bild);
+  const ok = w >= mindestens;
+  if (!ok) fehler++;
+  console.log(`  ${ok ? "ok  " : "FEHL"} ${name.padEnd(31)} ${(w*100).toFixed(1).padStart(6)} %   ${(mindestens*100).toFixed(0)} %`);
+}
+
+/* Der Fall, der die Umkehr am ehesten kippt: ein ungedimmtes Bild, das mehr
+ * Platz einnimmt als der Text. Hier bleibt es beim Original - dokumentiert,
+ * nicht behauptet, dass es gut waere. Weniger als die Haelfte des Blattes ist
+ * dann schwarz, verfaelscht wird nichts. */
+{
+  const grenzfall = block(text(DR_HG, DR_TX), 235, 20, 280, 30, 370);
+  const w = weissAnteil(grenzfall);
+  const schwarz = 1 - w;
+  const ok = schwarz < 0.5;
+  if (!ok) fehler++;
+  console.log(`  ${ok ? "ok  " : "FEHL"} ${"Grenzfall: Bild groesser als Text".padEnd(31)} ${(schwarz*100).toFixed(1).padStart(6)} % schwarz   unter 50 %`);
+}
+
+/* --- Alle Kacheln entscheiden gleich ------------------------------------
+ *
+ * Bei langen Aufnahmen wird das Bild in Kacheln zerlegt, und jede lief bisher
+ * einzeln durch die Umwandlung. Eine Seite mit hellem oberem und dunklem
+ * unterem Teil bekam dadurch an der Kachelgrenze einen Bruch: obere Kachel
+ * unveraendert, untere umgekehrt. Beide fuer sich richtig, zusammen
+ * unbrauchbar - und die Grenze lag dort, wo der Zuschnitt zufaellig hinfiel.
+ *
+ * Jetzt wird einmal fuer das ganze Bild entschieden und die Vorgabe an jede
+ * Kachel gereicht. Geprueft wird genau das: dieselbe Vorgabe, dasselbe
+ * Verhalten - unabhaengig davon, wie die einzelne Kachel aussieht.
+ */
+console.log("\n  Gemeinsame Entscheidung fuer alle Kacheln:");
+{
+  const HOCH = 400, KACHEL = 200;
+  const ganz = new Uint8Array(B * HOCH);
+  for (let y = 0; y < HOCH; y++)
+    for (let x = 0; x < B; x++) {
+      const obenHell = y < HOCH / 2;
+      const i = y * B + x;
+      ganz[i] = obenHell ? 250 : 25;
+      if (i % 13 === 0) ganz[i] = obenHell ? 20 : 235;
+    }
+
+  const kachelWeiss = (vorgabe) => {
+    const anteile = [];
+    for (let k = 0; k < HOCH / KACHEL; k++) {
+      const teil = ganz.slice(k * KACHEL * B, (k + 1) * KACHEL * B);
+      const { daten } = kontext.farbtiefeAnwenden(alsRGBA(teil), "sw", B, vorgabe);
+      const bpz = Math.ceil(B / 8);
+      let gesetzt = 0;
+      for (let y = 0; y < KACHEL; y++)
+        for (let x = 0; x < B; x++)
+          if (daten[y * bpz + (x >> 3)] & (0x80 >> (x & 7))) gesetzt++;
+      anteile.push(gesetzt / (B * KACHEL));
+    }
+    return anteile;
+  };
+
+  const ohne = kachelWeiss(undefined);            // wie bisher: jede fuer sich
+  const mit  = kachelWeiss(false);                // gemeinsame Vorgabe
+
+  const unterschiedOhne = Math.abs(ohne[0] - ohne[1]);
+  const unterschiedMit  = Math.abs(mit[0]  - mit[1]);
+
+  const zeigtProblem = unterschiedOhne < 0.05;    // beide ~gleich hell = beide "optimiert"
+  const okMit = unterschiedMit > 0.5;             // mit Vorgabe bleibt der Unterschied sichtbar
+
+  console.log(`  ${zeigtProblem ? "ok  " : "FEHL"} Gegenprobe ohne Vorgabe: Kacheln ${(ohne[0]*100).toFixed(0)} % / ${(ohne[1]*100).toFixed(0)} % weiss - der Bruch faellt nicht auf`);
+  console.log(`  ${okMit ? "ok  " : "FEHL"} mit gemeinsamer Vorgabe:  Kacheln ${(mit[0]*100).toFixed(0)} % / ${(mit[1]*100).toFixed(0)} % weiss - die Seite bleibt, wie sie war`);
+  if (!zeigtProblem || !okMit) fehler++;
+
+  // Und die Vorgabe muss in beide Richtungen durchschlagen
+  const erzwungen = kachelWeiss(true);
+  const beideUmgekehrt = erzwungen.every((w, i) => Math.abs(w - (1 - mit[i])) < 0.02);
+  console.log(`  ${beideUmgekehrt ? "ok  " : "FEHL"} Vorgabe 'umkehren' wirkt auf jede Kachel gleich`);
+  if (!beideUmgekehrt) fehler++;
 }
 
 console.log(fehler === 0
