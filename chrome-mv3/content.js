@@ -291,15 +291,25 @@
       if (delta <= 4) continue;
       let cs;
       try { cs = getComputedStyle(el); } catch (_) { continue; }
-      // "hidden" ist bewusst dabei: Ein Container mit overflow:hidden laesst
-      // sich per JavaScript sehr wohl scrollen - scrollTop wirkt dort - und
-      // genau so bauen viele Oberflaechen ihre Navigationsspalte, damit keine
-      // Bildlaufleiste zu sehen ist. Ohne "hidden" fiel die Menuespalte des
-      // Cloudflare-Dashboards durch: Ihr unterer Teil (die letzten Eintraege)
-      // fehlte im PDF, obwohl die Spalte selbst erfasst wurde.
-      // "visible" bleibt draussen - was ueberlaeuft statt zu scrollen, ist
-      // kein eigener Bereich, und scrollTop bewegt dort nichts.
-      if (!/auto|scroll|overlay|hidden/.test(cs.overflowY)) {
+      // Erklaert scrollbar (auto/scroll/overlay) genuegt fuer sich.
+      //
+      // "hidden" laesst sich per JavaScript ebenfalls scrollen - scrollTop
+      // wirkt dort -, und genau so bauen viele Oberflaechen ihre
+      // Navigationsspalte, damit keine Bildlaufleiste zu sehen ist. Nur ist
+      // "hidden" auch das haeufigste Overflow-Verhalten ueberhaupt: Karten,
+      // Umbruchcontainer, Abschnitte. Sie alle als eigenstaendige Bereiche zu
+      // behandeln und durchzuscrollen bringt die Seite durcheinander, bevor
+      // der Hauptdurchlauf beginnt.
+      //
+      // Gemessen am 07.08.2026: Mit "hidden" ohne weitere Bedingung kam vom
+      // Cloudflare-Dashboard nur noch ein Bildschirm ins PDF statt der ganzen
+      // Seite - ein Rueckschritt gegenueber der Fassung davor. Deshalb zaehlt
+      // "hidden" nur, wenn das Element auch nach Lage und Form eine
+      // Navigationsspalte ist. "visible" bleibt ganz draussen: Was ueberlaeuft
+      // statt zu scrollen, ist kein eigener Bereich.
+      const erklaertScrollbar = /auto|scroll|overlay/.test(cs.overflowY);
+      const verstecktScrollbar = cs.overflowY === "hidden" && isSideNavigation(el.getBoundingClientRect());
+      if (!erklaertScrollbar && !verstecktScrollbar) {
         rejected.push(`${tagOf(el)} overflowY=${cs.overflowY} delta=${delta}`);
         continue;
       }

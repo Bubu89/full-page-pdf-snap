@@ -94,6 +94,35 @@ R.push((!a.sichtbar(banner) ? "OK  " : "FEHL") + "  ausblenden  Cookie-Banner da
 const b = auswahl([huelle, banner], true);
 R.push((!b.sichtbar(navi) ? "OK  " : "FEHL") + "  ausblenden  Navigationsspalte ab dem zweiten Segment");
 
+
+/* --- Wann zaehlt ein Bereich als eigenstaendig scrollend? --------------
+ *
+ * Am 07.08.2026 wurde "hidden" ohne weitere Bedingung zugelassen, damit
+ * Navigationsspalten mit verborgener Bildlaufleiste erfasst werden. Das war
+ * zu weit gefasst: "hidden" ist das haeufigste Overflow-Verhalten ueberhaupt.
+ * Karten, Umbruchcontainer und Abschnitte wurden dadurch zu eigenstaendigen
+ * Bereichen erklaert und einzeln durchgescrollt - vom Cloudflare-Dashboard kam
+ * danach nur noch ein Bildschirm ins PDF statt der ganzen Seite.
+ *
+ * Jetzt gilt: erklaert scrollbar genuegt fuer sich; "hidden" nur, wenn das
+ * Element auch nach Lage und Form eine Navigationsspalte ist.
+ */
+function zaehltAlsBereich(overflowY, rect) {
+  if (/auto|scroll|overlay/.test(overflowY)) return true;
+  if (overflowY === "hidden") return isSideNavigation({ ...rect, right: rect.left + rect.width });
+  return false;
+}
+const B = (name, overflowY, rect, want) =>
+  R.push(`${zaehltAlsBereich(overflowY, rect) === want ? "OK  " : "FEHL"}  ${want ? "Bereich   " : "kein Bereich"}  ${name}`);
+
+B("Navigationsspalte, erklaert scrollbar", "auto",   {left:0,   width:245, height:805}, true);
+B("Navigationsspalte, Leiste verborgen",   "hidden", {left:0,   width:245, height:805}, true);
+B("Inhaltskarte mit hidden",               "hidden", {left:320, width:900, height:400}, false);
+B("Umbruchcontainer mit hidden",           "hidden", {left:320, width:900, height:805}, false);
+B("schmaler Kasten mittig, hidden",        "hidden", {left:600, width:200, height:700}, false);
+B("Inhaltsbereich, erklaert scrollbar",    "scroll", {left:320, width:900, height:805}, true);
+B("visible zaehlt nie",                    "visible",{left:0,   width:245, height:805}, false);
+
 console.log(R.join("\n"));
 console.log("\nERGEBNIS: " + (R.some(l => l.startsWith("FEHL")) ? "FEHLER" : "ALLE BESTANDEN"));
 process.exit(R.some(l => l.startsWith("FEHL")) ? 1 : 0);
