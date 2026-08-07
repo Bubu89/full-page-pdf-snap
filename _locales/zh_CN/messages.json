@@ -430,5 +430,11 @@
   },
   "diagTitel": {
     "message": "系统信息（用于错误报告）"
+  },
+  "optFertigTon": {
+    "message": "抓取完成时播放短提示音"
+  },
+  "optFertigTonHint": {
+    "message": "两个柔和的音，约五分之一秒。在手机上，页面自动滚动时很少一直盯着屏幕，仅有通知容易错过。Android 默认开启，电脑端默认关闭。"
   }
 }

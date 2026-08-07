@@ -61,6 +61,7 @@ const DEFAULTS_DESKTOP = {
   // darunter leidet.
   bildModus: "farbe",
   hellerDruck: true,      // dunkle Oberflaechen umkehren, damit das Blatt weiss bleibt
+  fertigTon: null,        // null = nach Plattform (Android an, Rechner aus)
   settlingMs: 400,
   filenameTemplate: "{site}_{date}_{time}_{n}",
   titleMaxLen: 40,
@@ -1628,6 +1629,7 @@ async function captureFullPageInner(tab, settings) {
         _lastFilename = filename;
         _lastFallbackTabId = newTab && newTab.id;
         notifyInfo("PDF im Browser bereit — dort steht die Download-Option zur Verfuegung.");
+        fertigTon(tab && tab.id, settings, platform);
         return { ok: true, downloadId: null, filename: usedFilename, pages: pages.length, segments: segments.length, method: saveMethod };
       } catch (e3) {
         log("Save A3 (tab open) failed:", e3.message);
@@ -1738,6 +1740,10 @@ async function captureFullPageInner(tab, settings) {
         : "";
       notifyInfo(`Fertig — ${pages.length} Seite${pages.length === 1 ? "" : "n"} gespeichert${fallbackHint}. Tippen zum Anzeigen.`);
     }
+    // Kurzer Ton, wenn die Aufnahme steht. Absichtlich nach der Meldung und
+    // ohne await: Er darf die Rueckgabe nicht verzoegern und nicht scheitern
+    // lassen.
+    fertigTon(tab && tab.id, settings, platform);
 
     // Originaldatei des Verlags dazulegen, wenn die Seite eine angibt.
     //
@@ -2295,6 +2301,28 @@ async function vielleichtNachBewertungFragen() {
       message: `Schon ${s.counter} Seiten aufgenommen. Wenn es taugt: eine kurze Bewertung hilft anderen beim Finden. Tippen zum Oeffnen — sonst einfach wegwischen.`
     });
   } catch (_) { /* Benachrichtigungen ggf. nicht erlaubt — dann eben nicht */ }
+}
+
+/* Den Fertig-Ton anstossen.
+ *
+ * Laeuft im Inhaltsskript des aufgenommenen Tabs - der Hintergrunddienst hat
+ * in Chrome MV3 keinen AudioContext. Schlaegt es fehl (Tab geschlossen, Seite
+ * gewechselt, Skript nicht geladen), passiert nichts weiter: Ein fehlender
+ * Ton darf eine gelungene Aufnahme nicht zu einem Fehler machen.
+ *
+ * Standardmaessig nur auf Android. Am Rechner sieht man die Benachrichtigung
+ * ohnehin, und ein Ton aus dem Browser waere dort eher stoerend - abschalten
+ * laesst er sich in beiden Faellen.
+ */
+async function fertigTon(tabId, settings, plattform) {
+  try {
+    const an = settings.fertigTon === true
+      || (settings.fertigTon !== false && plattform && plattform.isAndroid);
+    if (!an || !tabId) return;
+    await browser.tabs.sendMessage(tabId, { cmd: "fertigTon" });
+  } catch (e) {
+    log("Fertig-Ton uebersprungen:", e && e.message);
+  }
 }
 
 function notifyError(text) {

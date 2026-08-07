@@ -247,6 +247,50 @@
     return Math.max(...kandidaten);
   }
 
+  /* Ein kurzer Ton, wenn die Aufnahme fertig ist.
+   *
+   * Auf dem Telefon liegt der Blick waehrend der Aufnahme selten auf dem
+   * Bildschirm - die Seite scrollt von selbst durch, das dauert. Die
+   * Benachrichtigung allein sieht man erst, wenn man wieder hinschaut.
+   *
+   * Erzeugt statt abgespielt: Zwei Sinustoene, A5 und D6, je 90 ms mit
+   * weicher Huellkurve. Kein Rechteck, kein harter Einsatz - das klingt nach
+   * Fehler statt nach fertig. Kein mitgeliefertes Tonstueck, weil eine
+   * Audiodatei das Paket vergroessert und in jedem Store erklaert werden
+   * muesste; zwei Oszillatoren sind zwei Zeilen.
+   *
+   * Der Ton entsteht hier und nicht im Hintergrunddienst: In Chrome MV3 ist
+   * der ein Service Worker ohne AudioContext.
+   */
+  function spieleFertigTon() {
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return false;
+      const ctx = new AC();
+      const jetzt = ctx.currentTime;
+      const toene = [[880, 0], [1174.66, 0.085]];   // A5, D6 - eine Quart
+      for (const [hz, ab] of toene) {
+        const osz = ctx.createOscillator();
+        const huelle = ctx.createGain();
+        osz.type = "sine";
+        osz.frequency.value = hz;
+        // Weich ein, weich aus. Ohne die Rampen knackt es am Anfang.
+        huelle.gain.setValueAtTime(0.0001, jetzt + ab);
+        huelle.gain.exponentialRampToValueAtTime(0.14, jetzt + ab + 0.012);
+        huelle.gain.exponentialRampToValueAtTime(0.0001, jetzt + ab + 0.09);
+        osz.connect(huelle); huelle.connect(ctx.destination);
+        osz.start(jetzt + ab);
+        osz.stop(jetzt + ab + 0.1);
+      }
+      // Den Kontext wieder freigeben, sonst bleibt er offen stehen.
+      setTimeout(() => { try { ctx.close(); } catch (_) {} }, 400);
+      return true;
+    } catch (e) {
+      log("Fertig-Ton nicht moeglich:", e && e.message);
+      return false;
+    }
+  }
+
   function pageBackgroundColor(state) {
     const opaque = (c) =>
       c && !/^rgba\(0,\s*0,\s*0,\s*0\)$/.test(c) && c !== "transparent";
@@ -1298,6 +1342,9 @@
             break;
           case "pageEnd":
             sendResponse({ ende: findePageEnd(scrollState) });
+            break;
+          case "fertigTon":
+            sendResponse({ ok: spieleFertigTon() });
             break;
           case "restore":
             restorePage();

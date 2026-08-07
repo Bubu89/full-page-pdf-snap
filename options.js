@@ -39,6 +39,7 @@ const DEFAULTS = {
   linkMap: false,
   bildModus: "farbe",
   hellerDruck: true,
+  fertigTon: null,
   uiLanguage: "auto",
   appLayout: "context",
   afterCapture: "show",
@@ -140,6 +141,9 @@ async function load() {
   $("linkMap").checked = !!s.linkMap;
   $("bildModus").value = s.bildModus || "farbe";
   $("hellerDruck").checked = s.hellerDruck !== false;
+  // null bedeutet "nach Plattform" - das Haekchen zeigt dann den Ist-Zustand.
+  $("fertigTon").checked = s.fertigTon === null || s.fertigTon === undefined
+    ? isAndroid : s.fertigTon === true;
   $("uiLanguage").value = s.uiLanguage || "auto";
   $("appLayout").value = s.appLayout || "context";
   $("afterCapture").value = s.afterCapture || "show";
@@ -232,6 +236,7 @@ $("save").addEventListener("click", async () => {
     linkMap: $("linkMap").checked,
     bildModus: $("bildModus").value,
     hellerDruck: $("hellerDruck").checked,
+    fertigTon: $("fertigTon").checked,
     reviewPromptOff: $("reviewPromptOff").checked,
     uiLanguage: $("uiLanguage").value,
     appLayout: $("appLayout").value,

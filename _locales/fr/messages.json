@@ -430,5 +430,11 @@
   },
   "diagTitel": {
     "message": "Informations système (pour les rapports d'erreur)"
+  },
+  "optFertigTon": {
+    "message": "Émettre un bref signal sonore à la fin de la capture"
+  },
+  "optFertigTonHint": {
+    "message": "Deux notes douces, environ un cinquième de seconde. Sur téléphone, on regarde rarement l'écran pendant le défilement : la notification seule passe inaperçue. Activé par défaut sur Android, désactivé sur ordinateur."
   }
 }

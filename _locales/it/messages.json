@@ -430,5 +430,11 @@
   },
   "diagTitel": {
     "message": "Informazioni di sistema (per le segnalazioni di errori)"
+  },
+  "optFertigTon": {
+    "message": "Riproduci un breve suono al termine dell'acquisizione"
+  },
+  "optFertigTonHint": {
+    "message": "Due note morbide, circa un quinto di secondo. Sul telefono lo schermo è raramente sotto gli occhi mentre la pagina scorre, quindi la sola notifica sfugge facilmente. Attivo di default su Android, disattivo su computer."
   }
 }

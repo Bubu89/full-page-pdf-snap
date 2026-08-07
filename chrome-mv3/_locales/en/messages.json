@@ -430,5 +430,11 @@
   },
   "diagTitel": {
     "message": "System information (for bug reports)"
+  },
+  "optFertigTon": {
+    "message": "Play a short sound when the capture is done"
+  },
+  "optFertigTonHint": {
+    "message": "Two soft notes, about a fifth of a second. On a phone the screen is rarely in view while the page scrolls through, so the notification alone is easy to miss. On by default on Android, off on the desktop — where the notification is visible anyway."
   }
 }

@@ -430,5 +430,11 @@
   },
   "diagTitel": {
     "message": "Systemangaben (für Fehlermeldungen)"
+  },
+  "optFertigTon": {
+    "message": "Kurzen Ton abspielen, wenn die Aufnahme fertig ist"
+  },
+  "optFertigTonHint": {
+    "message": "Zwei weiche Töne, etwa eine Fünftelsekunde. Am Telefon liegt der Blick selten auf dem Bildschirm, während die Seite durchscrollt — die Benachrichtigung allein übersieht man leicht. Auf Android standardmäßig an, am Rechner aus, wo die Benachrichtigung ohnehin sichtbar ist."
   }
 }
