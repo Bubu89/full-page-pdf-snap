@@ -436,5 +436,20 @@
   },
   "optFertigTonHint": {
     "message": "Two soft notes, about a fifth of a second. On a phone the screen is rarely in view while the page scrolls through, so the notification alone is easy to miss. On by default on Android, off on the desktop — where the notification is visible anyway."
+  },
+  "androidFertig": {
+    "message": "PDF ready — open it to view or download"
+  },
+  "fehlerAllgemein": {
+    "message": "The capture could not be completed. Please try again."
+  },
+  "desktopGespeichert": {
+    "message": "Saved: $DATEI$",
+    "placeholders": {
+      "datei": {
+        "content": "$1",
+        "example": "seite.pdf"
+      }
+    }
   }
 }

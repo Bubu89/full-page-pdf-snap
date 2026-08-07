@@ -436,5 +436,20 @@
   },
   "optFertigTonHint": {
     "message": "やわらかな二音、約 0.2 秒。スマートフォンではページが自動でスクロールする間、画面を見ていないことが多く、通知だけでは見落としがちです。Android では既定でオン、パソコンではオフ。"
+  },
+  "androidFertig": {
+    "message": "PDF ができました — タップして表示・保存"
+  },
+  "fehlerAllgemein": {
+    "message": "取り込みを完了できませんでした。もう一度お試しください。"
+  },
+  "desktopGespeichert": {
+    "message": "保存しました: $DATEI$",
+    "placeholders": {
+      "datei": {
+        "content": "$1",
+        "example": "seite.pdf"
+      }
+    }
   }
 }

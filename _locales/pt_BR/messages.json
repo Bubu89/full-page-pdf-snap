@@ -436,5 +436,20 @@
   },
   "optFertigTonHint": {
     "message": "Duas notas suaves, cerca de um quinto de segundo. No celular raramente se olha a tela enquanto a página rola, então só a notificação passa despercebida. Ativado por padrão no Android, desativado no computador."
+  },
+  "androidFertig": {
+    "message": "PDF pronto — abra para visualizar ou baixar"
+  },
+  "fehlerAllgemein": {
+    "message": "Não foi possível concluir a captura. Tente novamente."
+  },
+  "desktopGespeichert": {
+    "message": "Salvo: $DATEI$",
+    "placeholders": {
+      "datei": {
+        "content": "$1",
+        "example": "seite.pdf"
+      }
+    }
   }
 }

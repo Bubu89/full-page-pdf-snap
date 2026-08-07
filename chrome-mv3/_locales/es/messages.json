@@ -436,5 +436,20 @@
   },
   "optFertigTonHint": {
     "message": "Dos notas suaves, alrededor de un quinto de segundo. En el móvil rara vez se mira la pantalla mientras la página se desplaza, así que la notificación sola pasa desapercibida. Activado por defecto en Android, desactivado en el escritorio."
+  },
+  "androidFertig": {
+    "message": "PDF listo: ábrelo para verlo o descargarlo"
+  },
+  "fehlerAllgemein": {
+    "message": "No se pudo completar la captura. Inténtalo de nuevo."
+  },
+  "desktopGespeichert": {
+    "message": "Guardado: $DATEI$",
+    "placeholders": {
+      "datei": {
+        "content": "$1",
+        "example": "seite.pdf"
+      }
+    }
   }
 }

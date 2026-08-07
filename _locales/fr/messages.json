@@ -436,5 +436,20 @@
   },
   "optFertigTonHint": {
     "message": "Deux notes douces, environ un cinquième de seconde. Sur téléphone, on regarde rarement l'écran pendant le défilement : la notification seule passe inaperçue. Activé par défaut sur Android, désactivé sur ordinateur."
+  },
+  "androidFertig": {
+    "message": "PDF prêt — ouvrez-le pour le consulter ou le télécharger"
+  },
+  "fehlerAllgemein": {
+    "message": "La capture n'a pas pu être terminée. Veuillez réessayer."
+  },
+  "desktopGespeichert": {
+    "message": "Enregistré : $DATEI$",
+    "placeholders": {
+      "datei": {
+        "content": "$1",
+        "example": "seite.pdf"
+      }
+    }
   }
 }

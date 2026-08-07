@@ -436,5 +436,20 @@
   },
   "optFertigTonHint": {
     "message": "Due note morbide, circa un quinto di secondo. Sul telefono lo schermo è raramente sotto gli occhi mentre la pagina scorre, quindi la sola notifica sfugge facilmente. Attivo di default su Android, disattivo su computer."
+  },
+  "androidFertig": {
+    "message": "PDF pronto: aprilo per visualizzarlo o scaricarlo"
+  },
+  "fehlerAllgemein": {
+    "message": "Non è stato possibile completare l'acquisizione. Riprova."
+  },
+  "desktopGespeichert": {
+    "message": "Salvato: $DATEI$",
+    "placeholders": {
+      "datei": {
+        "content": "$1",
+        "example": "seite.pdf"
+      }
+    }
   }
 }

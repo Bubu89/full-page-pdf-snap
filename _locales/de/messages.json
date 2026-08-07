@@ -436,5 +436,20 @@
   },
   "optFertigTonHint": {
     "message": "Zwei weiche Töne, etwa eine Fünftelsekunde. Am Telefon liegt der Blick selten auf dem Bildschirm, während die Seite durchscrollt — die Benachrichtigung allein übersieht man leicht. Auf Android standardmäßig an, am Rechner aus, wo die Benachrichtigung ohnehin sichtbar ist."
+  },
+  "androidFertig": {
+    "message": "PDF fertig — zum Ansehen oder Herunterladen öffnen"
+  },
+  "fehlerAllgemein": {
+    "message": "Die Aufnahme konnte nicht abgeschlossen werden. Bitte erneut versuchen."
+  },
+  "desktopGespeichert": {
+    "message": "Gespeichert: $DATEI$",
+    "placeholders": {
+      "datei": {
+        "content": "$1",
+        "example": "seite.pdf"
+      }
+    }
   }
 }

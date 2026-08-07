@@ -1602,6 +1602,22 @@ async function captureFullPageInner(tab, settings) {
       new Promise((_, rej) => setTimeout(() => rej(new Error("TIMEOUT_" + tag + "_" + ms + "ms")), ms))
     ]);
 
+    /* Auf Android geht das PDF direkt in einen Tab.
+     *
+     * Bisher liefen dort zuerst zwei Download-Versuche mit je fuenf Sekunden
+     * Wartezeit, bevor der Tab-Weg griff. Beide scheitern auf dem Telefon
+     * regelmaessig - und jeder Fehlschlag erzeugte eine Meldung, bevor die
+     * eigentliche Erfolgsmeldung kam. In der Leiste standen dann drei
+     * Benachrichtigungen fuer einen Vorgang, zwei davon Fehler.
+     *
+     * Der Tab ist auf dem Telefon ohnehin das Ziel: Dort laesst sich das PDF
+     * ansehen und mit einem Tippen herunterladen. Also gleich dorthin, ohne
+     * Umweg und ohne zehn Sekunden Wartezeit.
+     */
+    if (p.isAndroid) {
+      log("Android: PDF direkt im Tab oeffnen (kein Download-Versuch)");
+      id = null;
+    } else {
     // Attempt 1 — mit Subfolder
     try {
       id = await withTimeout(browser.downloads.download({
@@ -1615,25 +1631,10 @@ async function captureFullPageInner(tab, settings) {
       log("Save A1 failed:", e1.message);
       id = null;
     }
-
-    // Attempt 2 — Android-Fallback ohne Subfolder
-    if (id === null && p.isAndroid && subfolder) {
-      log("Save A2: retrying without subfolder ...");
-      try {
-        id = await withTimeout(browser.downloads.download({
-          url,
-          filename: filename,
-          saveAs: false,
-          conflictAction: "uniquify"
-        }), 5000, "A2");
-        usedFilename = filename;
-        saveMethod = "download-root";
-        log("Save A2 OK:", id, filename);
-      } catch (e2) {
-        log("Save A2 failed:", e2.message);
-        id = null;
-      }
     }
+    // Der frueher hier stehende zweite Download-Versuch ohne Unterordner
+    // entfaellt: Er galt nur fuer Android, und dort wird gar nicht mehr
+    // heruntergeladen.
 
     // Attempt 3 — Auf Android: PDF direkt im Browser oeffnen.
     // Der User speichert dann selbst wenn er will (via Firefox-Download-Icon).
@@ -1647,13 +1648,28 @@ async function captureFullPageInner(tab, settings) {
         _lastDownloadId = null;
         _lastFilename = filename;
         _lastFallbackTabId = newTab && newTab.id;
-        notifyInfo("PDF im Browser bereit — dort steht die Download-Option zur Verfuegung.");
-        fertigTon(tab && tab.id, settings, platform);
+        _anzeigeTabSeit = Date.now();
+        // Die eine Meldung, die auf Android zaehlt: Das PDF ist da und laesst
+        // sich ansehen oder herunterladen. Uebersetzt statt fest auf Deutsch -
+        // am Telefon stand hier bisher deutscher Text, egal welche Sprache.
+        notifyInfo(browser.i18n.getMessage("androidFertig")
+          || "PDF ready — open it to view or download");
+        // platformForSave, NICHT platform: Letzteres wird erst weiter unten
+        // mit const deklariert. Der Zugriff hier oben laeuft in die temporale
+        // Todeszone und wirft "can't access lexical declaration 'platform'
+        // before initialization" - unter Android am 07.08.2026 beobachtet,
+        // die Aufnahme brach danach mit "Speichern fehlgeschlagen" ab.
+        fertigTon(tab && tab.id, settings, platformForSave);
         return { ok: true, downloadId: null, filename: usedFilename, pages: pages.length, segments: segments.length, method: saveMethod };
       } catch (e3) {
         log("Save A3 (tab open) failed:", e3.message);
         try { await browser.notifications.clear("pdfsnap-progress"); } catch (_) {}
-        notifyError("Speichern fehlgeschlagen.");
+        // Auf Android ist das kein Fehler, sondern der vorgesehene Weg: Der
+        // Download-Zweig ist dort oft nicht verfuegbar, das PDF wird
+        // stattdessen im Browser geoeffnet. Eine Fehlermeldung davor
+        // verunsichert, obwohl gleich darauf die Fertig-Meldung kommt.
+        if (!platformForSave.isAndroid) notifyError("Speichern fehlgeschlagen.");
+        else log("Download-Weg nicht verfuegbar — weiter ueber den Browser-Tab");
         throw e3;
       }
     }
@@ -1757,7 +1773,10 @@ async function captureFullPageInner(tab, settings) {
       const fallbackHint = usedFilename === filename && subfolder
         ? " (Root Download-Ordner)"
         : "";
-      notifyInfo(`Fertig — ${pages.length} Seite${pages.length === 1 ? "" : "n"} gespeichert${fallbackHint}. Tippen zum Anzeigen.`);
+      // Auf Android wird nicht mehr heruntergeladen; falls dieser Zweig doch
+      // einmal greift, gilt dieselbe eine Meldung wie sonst.
+      notifyInfo(browser.i18n.getMessage("androidFertig")
+        || "PDF ready — open it to view or download");
     }
     // Kurzer Ton, wenn die Aufnahme steht. Absichtlich nach der Meldung und
     // ohne await: Er darf die Rueckgabe nicht verzoegern und nicht scheitern
@@ -2016,7 +2035,8 @@ async function capturePdfDirect(tab, pdfUrl) {
   // ist direkt sichtbar. Notification kurz und hilfreich.
   if (id === null) {
     try { await browser.notifications.clear("pdfsnap-progress"); } catch (_) {}
-    notifyInfo("PDF im Browser bereit — dort steht die Download-Option zur Verfuegung.");
+    notifyInfo(browser.i18n.getMessage("androidFertig")
+      || "PDF ready — open it to view or download");
     throw makeUserHintError("PDF im Browser bereit — nutze das Download-Icon.");
   }
 
@@ -2034,7 +2054,8 @@ async function capturePdfDirect(tab, pdfUrl) {
 
   try { await browser.notifications.clear("pdfsnap-progress"); } catch (_) {}
   if (platform.isAndroid) {
-    notifyInfo(`PDF gespeichert: ${filename}. Tippen zum Anzeigen.`);
+    notifyInfo(browser.i18n.getMessage("desktopGespeichert", [filename])
+      || `Saved: ${filename}`);
   }
   return { ok: true, downloadId: id, filename: relPath, pages: null, segments: null, method: "pdf-direct" };
 }
@@ -2122,7 +2143,19 @@ async function runOnActiveTab(wahl) {
     } else {
       await setBadge("!", "#b91c1c");
       setTimeout(() => { setBadge("", ""); }, 4000);
-      notifyError(e && e.message ? e.message : String(e));
+      // Dem Nutzer wird gesagt, was er tun kann - nicht, was intern schiefging.
+      //
+      // Am 07.08.2026 stand auf einem Telefon "can't access lexical
+      // declaration 'platform' before initialization" in der Leiste. Das ist
+      // fuer die Fehlersuche unverzichtbar und fuer den Nutzer wertlos: Er
+      // kann daraus nichts ableiten und weiss nur, dass etwas kaputt ist.
+      //
+      // Der technische Wortlaut bleibt vollstaendig im Protokoll. Meldungen
+      // mit userHint - geschuetzte Seite, kein Tab - haben ihren eigenen,
+      // verstaendlichen Text und laufen oben durch.
+      log("Aufnahme fehlgeschlagen:", e && e.stack ? e.stack : e);
+      notifyError(browser.i18n.getMessage("fehlerAllgemein")
+        || "The capture could not be completed. Please try again.");
     }
     // Nicht weiterwerfen — Notification hat den Nutzer bereits informiert.
     return { ok: false, error: e && e.message ? e.message : String(e) };
@@ -2138,7 +2171,9 @@ if (browser.commands && typeof browser.commands.onCommand?.addListener === "func
     // anders als in Firefox noch Luft hat. Beide Kommandos loesen dasselbe aus.
     if (!name.startsWith("capture-full-page")) return;
     try { await runOnActiveTab(); }
-    catch (e) { console.error(TAG, e); notifyError(e.message); }
+    catch (e) { console.error(TAG, e); log("Fehler:", e && e.stack ? e.stack : e);
+      notifyError(browser.i18n.getMessage("fehlerAllgemein")
+        || "The capture could not be completed. Please try again."); }
   });
 }
 
@@ -2223,7 +2258,9 @@ async function zeigeErgebnisseite() {
 // statt popup.html zu laden. Desktop bleibt unveraendert.
 browser.action.onClicked.addListener(async () => {
   try { await runOnActiveTab(); }
-  catch (e) { console.error(TAG, e); notifyError(e.message); }
+  catch (e) { console.error(TAG, e); log("Fehler:", e && e.stack ? e.stack : e);
+      notifyError(browser.i18n.getMessage("fehlerAllgemein")
+        || "The capture could not be completed. Please try again."); }
 });
 
 (async () => {
@@ -2335,6 +2372,50 @@ async function vielleichtNachBewertungFragen() {
  * ohnehin, und ein Ton aus dem Browser waere dort eher stoerend - abschalten
  * laesst er sich in beiden Faellen.
  */
+/* Den Anzeige-Tab schliessen, sobald der Nutzer das PDF heruntergeladen hat.
+ *
+ * Auf Android wird das PDF nicht gespeichert, sondern in einem Tab geoeffnet -
+ * dort laesst es sich ansehen und mit einem Tippen herunterladen. Danach hat
+ * der Tab seinen Zweck erfuellt und steht nur noch im Weg.
+ *
+ * Erkannt wird das am Download-Ereignis: Sobald ein Download abgeschlossen
+ * ist, waehrend ein Anzeige-Tab offen steht, wird dieser geschlossen. Der
+ * Abgleich ueber die Adresse waere genauer, aber Firefox liefert bei einem
+ * blob: aus einer Erweiterung nicht immer eine, die sich vergleichen laesst.
+ * Ein zeitlicher Zusammenhang genuegt hier: Der Tab wurde gerade fuer dieses
+ * eine PDF geoeffnet.
+ *
+ * Scheitert das Schliessen - Tab schon weg, Berechtigung fehlt, Android
+ * verhaelt sich anders -, passiert nichts weiter. Eine Fehlermeldung dafuer
+ * waere sinnlos: Der Nutzer hat sein PDF, und ein offener Tab ist kein
+ * Schaden.
+ */
+let _anzeigeTabSeit = 0;
+
+function beobachteDownloadUndSchliesse() {
+  if (!browser.downloads || !browser.downloads.onChanged) return;
+  browser.downloads.onChanged.addListener((delta) => {
+    try {
+      if (!delta || !delta.state || delta.state.current !== "complete") return;
+      if (!_lastFallbackTabId) return;
+      // Nur wenn der Tab fuer diese Aufnahme geoeffnet wurde. Zehn Minuten
+      // sind grosszuegig - laenger schaut niemand ein PDF an, bevor er es
+      // speichert, und laenger soll ein alter Verweis nicht nachwirken.
+      if (_anzeigeTabSeit && Date.now() - _anzeigeTabSeit > 600000) return;
+      const tabId = _lastFallbackTabId;
+      _lastFallbackTabId = null;
+      _anzeigeTabSeit = 0;
+      browser.tabs.remove(tabId).then(
+        () => log("Anzeige-Tab nach dem Herunterladen geschlossen:", tabId),
+        (e) => log("Anzeige-Tab liess sich nicht schliessen:", e && e.message)
+      );
+    } catch (e) {
+      log("Download-Beobachter:", e && e.message);
+    }
+  });
+}
+beobachteDownloadUndSchliesse();
+
 async function fertigTon(tabId, settings, plattform) {
   try {
     const an = settings.fertigTon === true
@@ -2433,7 +2514,10 @@ async function applyMenuClick(id, checked) {
   const patch = {};
   switch (id) {
     case MENU_IDS.capture:
-      runOnActiveTab().catch(e => { console.error(TAG, e); notifyError(e.message); });
+      runOnActiveTab().catch(e => { console.error(TAG, e);
+    log("Fehler:", e && e.stack ? e.stack : e);
+    notifyError(browser.i18n.getMessage("fehlerAllgemein")
+      || "The capture could not be completed. Please try again."); });
       return;
     case MENU_IDS.saveAs:
       patch.saveAs = !!checked; break;
