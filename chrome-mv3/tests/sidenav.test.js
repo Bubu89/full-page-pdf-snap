@@ -97,31 +97,30 @@ R.push((!b.sichtbar(navi) ? "OK  " : "FEHL") + "  ausblenden  Navigationsspalte 
 
 /* --- Wann zaehlt ein Bereich als eigenstaendig scrollend? --------------
  *
- * Am 07.08.2026 wurde "hidden" ohne weitere Bedingung zugelassen, damit
- * Navigationsspalten mit verborgener Bildlaufleiste erfasst werden. Das war
- * zu weit gefasst: "hidden" ist das haeufigste Overflow-Verhalten ueberhaupt.
- * Karten, Umbruchcontainer und Abschnitte wurden dadurch zu eigenstaendigen
- * Bereichen erklaert und einzeln durchgescrollt - vom Cloudflare-Dashboard kam
- * danach nur noch ein Bildschirm ins PDF statt der ganzen Seite.
+ * Nur erklaert scrollbare Bereiche: auto, scroll, overlay.
  *
- * Jetzt gilt: erklaert scrollbar genuegt fuer sich; "hidden" nur, wenn das
- * Element auch nach Lage und Form eine Navigationsspalte ist.
+ * "hidden" war am 07.08.2026 zwischenzeitlich zugelassen, damit
+ * Navigationsspalten mit verborgener Bildlaufleiste ganz erfasst werden. Das
+ * war zweimal falsch: erst zu weit gefasst (jede Karte wurde ein eigener
+ * Bereich), dann auch eingeschraenkt noch schaedlich - denn was hier als
+ * eigener Bereich gilt, wird getrennt erfasst UND im Hauptdurchlauf
+ * ausgeblendet. Die Menuespalte verschwand dadurch ganz aus dem PDF, statt
+ * bloss unten abgeschnitten zu sein.
+ *
+ * Der Zielkonflikt ist bewusst so entschieden: Ein sichtbares, unten
+ * abgeschnittenes Menue ist brauchbarer als gar keines.
  */
-function zaehltAlsBereich(overflowY, rect) {
-  if (/auto|scroll|overlay/.test(overflowY)) return true;
-  if (overflowY === "hidden") return isSideNavigation({ ...rect, right: rect.left + rect.width });
-  return false;
+function zaehltAlsBereich(overflowY) {
+  return /auto|scroll|overlay/.test(overflowY);
 }
-const B = (name, overflowY, rect, want) =>
-  R.push(`${zaehltAlsBereich(overflowY, rect) === want ? "OK  " : "FEHL"}  ${want ? "Bereich   " : "kein Bereich"}  ${name}`);
+const B = (name, overflowY, want) =>
+  R.push(`${zaehltAlsBereich(overflowY) === want ? "OK  " : "FEHL"}  ${want ? "Bereich     " : "kein Bereich"}  ${name}`);
 
-B("Navigationsspalte, erklaert scrollbar", "auto",   {left:0,   width:245, height:805}, true);
-B("Navigationsspalte, Leiste verborgen",   "hidden", {left:0,   width:245, height:805}, true);
-B("Inhaltskarte mit hidden",               "hidden", {left:320, width:900, height:400}, false);
-B("Umbruchcontainer mit hidden",           "hidden", {left:320, width:900, height:805}, false);
-B("schmaler Kasten mittig, hidden",        "hidden", {left:600, width:200, height:700}, false);
-B("Inhaltsbereich, erklaert scrollbar",    "scroll", {left:320, width:900, height:805}, true);
-B("visible zaehlt nie",                    "visible",{left:0,   width:245, height:805}, false);
+B("erklaert scrollbar: auto",        "auto",    true);
+B("erklaert scrollbar: scroll",      "scroll",  true);
+B("erklaert scrollbar: overlay",     "overlay", true);
+B("hidden zaehlt nicht mehr",        "hidden",  false);
+B("visible zaehlt nie",              "visible", false);
 
 console.log(R.join("\n"));
 console.log("\nERGEBNIS: " + (R.some(l => l.startsWith("FEHL")) ? "FEHLER" : "ALLE BESTANDEN"));

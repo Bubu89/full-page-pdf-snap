@@ -259,7 +259,7 @@
         let cs;
         try { cs = getComputedStyle(el); } catch (_) { continue; }
         if (cs.position !== "fixed" && cs.position !== "sticky") continue;
-        if (!/auto|scroll|overlay|hidden/.test(cs.overflowY)) continue;
+        if (!/auto|scroll|overlay/.test(cs.overflowY)) continue;
         let r;
         try { r = el.getBoundingClientRect(); } catch (_) { continue; }
         if (!isSideNavigation(r)) continue;
@@ -291,25 +291,23 @@
       if (delta <= 4) continue;
       let cs;
       try { cs = getComputedStyle(el); } catch (_) { continue; }
-      // Erklaert scrollbar (auto/scroll/overlay) genuegt fuer sich.
+      // Nur erklaert scrollbare Bereiche zaehlen: auto, scroll, overlay.
       //
-      // "hidden" laesst sich per JavaScript ebenfalls scrollen - scrollTop
-      // wirkt dort -, und genau so bauen viele Oberflaechen ihre
-      // Navigationsspalte, damit keine Bildlaufleiste zu sehen ist. Nur ist
-      // "hidden" auch das haeufigste Overflow-Verhalten ueberhaupt: Karten,
-      // Umbruchcontainer, Abschnitte. Sie alle als eigenstaendige Bereiche zu
-      // behandeln und durchzuscrollen bringt die Seite durcheinander, bevor
-      // der Hauptdurchlauf beginnt.
+      // "hidden" laesst sich per JavaScript zwar ebenfalls scrollen, und
+      // Navigationsspalten werden oft so gebaut, damit keine Bildlaufleiste
+      // zu sehen ist. Es aufzunehmen war trotzdem falsch, und zwar aus einem
+      // Grund, der erst am Ergebnis sichtbar wurde: Was hier als eigener
+      // Bereich gilt, wird getrennt erfasst UND im Hauptdurchlauf
+      // ausgeblendet. Die Menuespalte des Cloudflare-Dashboards verschwand
+      // dadurch ganz aus dem PDF - vorher war sie im ersten Segment
+      // vollstaendig zu sehen.
       //
-      // Gemessen am 07.08.2026: Mit "hidden" ohne weitere Bedingung kam vom
-      // Cloudflare-Dashboard nur noch ein Bildschirm ins PDF statt der ganzen
-      // Seite - ein Rueckschritt gegenueber der Fassung davor. Deshalb zaehlt
-      // "hidden" nur, wenn das Element auch nach Lage und Form eine
-      // Navigationsspalte ist. "visible" bleibt ganz draussen: Was ueberlaeuft
-      // statt zu scrollen, ist kein eigener Bereich.
-      const erklaertScrollbar = /auto|scroll|overlay/.test(cs.overflowY);
-      const verstecktScrollbar = cs.overflowY === "hidden" && isSideNavigation(el.getBoundingClientRect());
-      if (!erklaertScrollbar && !verstecktScrollbar) {
+      // Der Zielkonflikt bleibt bestehen und ist bewusst so entschieden:
+      // Eine Spalte, die laenger ist als das Fenster, wird nur so weit
+      // aufgenommen, wie sie hineinpasst. Ein sichtbares, oben abgeschnittenes
+      // Menue ist brauchbarer als gar keines.
+      // (Gemessen 07.08.2026 an derselben Seite, Fassungen 2.31.1 und 2.31.10.)
+      if (!/auto|scroll|overlay/.test(cs.overflowY)) {
         rejected.push(`${tagOf(el)} overflowY=${cs.overflowY} delta=${delta}`);
         continue;
       }
