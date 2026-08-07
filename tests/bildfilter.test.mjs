@@ -219,3 +219,62 @@ test("Graustufen bleibt 8 bit und unveraendert lang", () => {
   console.log(`${zeigtFehler ? "ok  " : "FEHL"} Gegenprobe: ohne Uebernahme entsteht ${kaputt.farbraum} ${kaputt.bits} bit`);
   if (!zeigtFehler) process.exitCode = 1;
 }
+
+/* --- Dunkle Oberflaechen werden vor der Schwelle umgekehrt ---------------
+ *
+ * Frage aus der Praxis (07.08.2026): Warum ist die Schrift in Schwarzweiss so
+ * grob? Zwei Ursachen, und nur eine liess sich beheben.
+ *
+ * Die eine ist prinzipbedingt: Bei einem Bit je Punkt gibt es kein
+ * Antialiasing, die weichen Kanten der Bildschirmschrift fallen weg. Dagegen
+ * hilft nur eine hoehere Aufnahmeskalierung oder Graustufen.
+ *
+ * Die andere war ein echter Mangel: Eine Seite im Dunkelmodus wurde zur
+ * schwarzen Flaeche mit weisser Schrift, weil der Hintergrund unter der
+ * Schwelle liegt und der Text darueber. Gemessen an einer Textprobe
+ * (Hintergrund 30, Schrift 235): 93,9 % der Punkte schwarz.
+ */
+{
+  const schwelle = (grau, umkehren) => {
+    let n = 0;
+    for (const g of grau) { const w = umkehren ? 255 - g : g; if (w < 128) n++; }
+    return n / grau.length;
+  };
+  const mittelwert = (a) => a.reduce((s, x) => s + x, 0) / a.length;
+
+  // Textprobe: 6 % Schrift auf Flaeche - einmal hell, einmal dunkel
+  const machProbe = (hg, schrift) => {
+    const a = new Uint8Array(1000).fill(hg);
+    for (let i = 0; i < 60; i++) a[i * 16] = schrift;
+    return a;
+  };
+
+  const hell = machProbe(255, 20);
+  const dunkel = machProbe(30, 235);
+
+  const mH = mittelwert([...hell]), mD = mittelwert([...dunkel]);
+  console.log(`ok   mittlere Helligkeit hell=${mH.toFixed(0)} dunkel=${mD.toFixed(0)}`);
+
+  // Helle Vorlage: keine Umkehr, wenig Schwarz - und die Umkehr aendert nichts
+  const a1 = schwelle(hell, mH < 128);
+  const okHell = mH >= 128 && a1 < 0.2;
+  console.log(`${okHell ? "ok  " : "FEHL"} helle Vorlage bleibt unangetastet: ${(a1*100).toFixed(1)} % schwarz`);
+  if (!okHell) process.exitCode = 1;
+
+  // Dunkle Vorlage OHNE Umkehr: fast alles schwarz - der Zustand vorher
+  const a2 = schwelle(dunkel, false);
+  const zeigtFehler = a2 > 0.8;
+  console.log(`${zeigtFehler ? "ok  " : "FEHL"} Gegenprobe ohne Umkehr: ${(a2*100).toFixed(1)} % schwarz`);
+  if (!zeigtFehler) process.exitCode = 1;
+
+  // Dunkle Vorlage MIT Umkehr: so wenig Schwarz wie bei der hellen
+  const a3 = schwelle(dunkel, mD < 128);
+  const okDunkel = mD < 128 && a3 < 0.2;
+  console.log(`${okDunkel ? "ok  " : "FEHL"} dunkle Vorlage umgekehrt: ${(a3*100).toFixed(1)} % schwarz`);
+  if (!okDunkel) process.exitCode = 1;
+
+  // Beide Wege muessen zum selben Ergebnis fuehren - das ist der Sinn
+  const gleich = Math.abs(a1 - a3) < 0.02;
+  console.log(`${gleich ? "ok  " : "FEHL"} hell und dunkel ergeben denselben Schwarzanteil (${(a1*100).toFixed(1)} vs ${(a3*100).toFixed(1)} %)`);
+  if (!gleich) process.exitCode = 1;
+}

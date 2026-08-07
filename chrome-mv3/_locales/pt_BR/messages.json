@@ -421,5 +421,8 @@
   },
   "optTimeAnchorHint": {
     "message": "Antes de salvar, busca um valor aleatório público da rede descentralizada drand e o grava na captura. Como ninguém poderia conhecer esse valor de antemão, ele mostra que a captura não é anterior àquele momento — sem depender do relógio do dispositivo. É o único acesso de rede desta extensão, fica desligado a menos que você o ative, e nada é enviado: a página, a captura e sua soma de verificação nunca saem do seu dispositivo. Ainda assim não prova o que a página exibia, e não é um carimbo de tempo qualificado segundo o eIDAS. Se a rede não estiver disponível, a captura é salva sem a âncora."
+  },
+  "diagTitel": {
+    "message": "Informações do sistema (para relatórios de erro)"
   }
 }

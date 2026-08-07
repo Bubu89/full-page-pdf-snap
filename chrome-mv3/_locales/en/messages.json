@@ -421,5 +421,8 @@
   },
   "optLinkMapHint": {
     "message": "A JSON file listing every link on the page: where it sits in the image, where it leads, and what part of the page it belongs to — navigation, footer, content, pagination. For AI tools that have to find their way to a goal: on one encyclopedia page, 741 of 1,528 links turned out to be page furniture and could be ruled out before searching. Costs one extra file per capture."
+  },
+  "diagTitel": {
+    "message": "System information (for bug reports)"
   }
 }

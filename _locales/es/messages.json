@@ -421,5 +421,8 @@
   },
   "optTimeAnchorHint": {
     "message": "Antes de guardar, obtiene un valor aleatorio público de la red descentralizada drand y lo escribe en la captura. Como nadie podía conocer ese valor de antemano, demuestra que la captura no es anterior a ese momento, sin depender del reloj del dispositivo. Es el único acceso a la red que hace esta extensión, está desactivado salvo que lo actives, y no se envía nada: la página, la captura y su suma de verificación nunca salen de tu dispositivo. Aun así no prueba lo que mostraba la página, y no es un sello de tiempo cualificado según eIDAS. Si la red no está disponible, la captura se guarda sin el anclaje."
+  },
+  "diagTitel": {
+    "message": "Información del sistema (para informes de errores)"
   }
 }

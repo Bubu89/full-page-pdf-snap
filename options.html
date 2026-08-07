@@ -324,7 +324,12 @@
     </div>
   </div>
 
-  <div class="box" id="diagBox" style="background: var(--diag-bg); border-color: var(--diag-rand);">
+  <!-- Zugeklappt: Diese Angaben braucht, wer einen Fehler meldet. Im Alltag
+       stehen sie im Weg - auf dem Rechner sagen sie sogar ausdruecklich, dass
+       die angezeigte Kachelgroesse dort gar nicht angepasst wird. -->
+  <details class="box" id="diagBox" style="background: var(--diag-bg); border-color: var(--diag-rand);">
+    <summary style="cursor:pointer; font-weight:600;" data-i18n="diagTitel">System information (for bug reports)</summary>
+    <div style="margin-top:10px;">
     <strong>Detected system:</strong> <span id="diagPlatform" style="font-family: monospace;">checking …</span><br>
     <strong>Extension version:</strong> <span id="diagVersion" style="font-family: monospace;">?</span><br>
     <strong>Screen resolution:</strong> <span id="diagScreen" style="font-family: monospace;">?</span><br>
@@ -332,7 +337,8 @@
     <strong>Memory:</strong> <span id="diagRam" style="font-family: monospace;">?</span> GB &middot; <strong>CPU cores:</strong> <span id="diagCpu" style="font-family: monospace;">?</span><br>
     <strong>Adaptive tile size:</strong> <span id="diagTile" style="font-family: monospace;">?</span> px
     <div class="hint" style="margin-top:8px;">On Android the tile size adapts to your device — higher resolution and more memory allow larger tiles and a faster PDF build. It can be overridden above under "Tile height for single-page".</div>
-  </div>
+    </div>
+  </details>
 
   <script src="i18n-data.js"></script>
   <script src="i18n.js"></script>

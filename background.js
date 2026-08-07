@@ -296,18 +296,36 @@ function farbtiefeAnwenden(d, modus, breite) {
     // Punkten rutscht jede Zeile um sieben Bit, nach hundert Zeilen sind es
     // 87 Punkte, und das Bild zerfaellt in Diagonalen. Gemessen am
     // 4. August 2026 an einer Aufnahme aus Firefox unter Windows.
+    // Dunkle Oberflaechen werden umgekehrt, bevor die Schwelle greift.
+    //
+    // Ohne das wird eine Seite im Dunkelmodus zur schwarzen Flaeche mit weisser
+    // Schrift: Der Hintergrund liegt unter der Schwelle, der Text darueber.
+    // Gemessen an einer Textprobe (Hintergrund 30, Schrift 235): 93,9 % der
+    // Punkte schwarz. Nach der Umkehr sind es 6,1 % - schwarze Schrift auf
+    // weiss, so wie man es aus dem Drucker erwartet. Eine helle Seite bleibt
+    // unangetastet, dort faellt die Pruefung negativ aus.
+    //
+    // Nur fuer Schwarzweiss. Graustufen geben die Seite wieder, wie sie war -
+    // wer sie waehlt, will das Aussehen behalten. Wer Schwarzweiss waehlt,
+    // will drucken, und eine vollflaechig schwarze Seite ist dafuer unbrauchbar.
+    let summe = 0;
+    for (let i = 0; i < n; i++) summe += grau[i];
+    const mittel = n ? summe / n : 255;
+    const umkehren = mittel < 128;
+
     const bytesJeZeile = Math.ceil(breite / 8);
     const bin = new Uint8Array(bytesJeZeile * hoehe);
     for (let y = 0; y < hoehe; y++) {
       const zeilenAnfang = y * bytesJeZeile;
       const quellAnfang = y * breite;
       for (let x = 0; x < breite; x++) {
-        if (grau[quellAnfang + x] < 128) {
+        const wert = umkehren ? 255 - grau[quellAnfang + x] : grau[quellAnfang + x];
+        if (wert < 128) {
           bin[zeilenAnfang + (x >> 3)] |= 0x80 >> (x & 7);
         }
       }
     }
-    return { daten: bin, kanaele: 1, bits: 1 };
+    return { daten: bin, kanaele: 1, bits: 1, umgekehrt: umkehren };
   }
   const rgb = new Uint8Array((d.length / 4) * 3);
   for (let i = 0, j = 0; i < d.length; i += 4, j += 3) {

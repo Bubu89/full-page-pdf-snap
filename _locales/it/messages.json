@@ -421,5 +421,8 @@
   },
   "optTimeAnchorHint": {
     "message": "Prima del salvataggio recupera un valore casuale pubblico dalla rete decentralizzata drand e lo scrive nell’acquisizione. Poiché nessuno poteva conoscere quel valore in anticipo, dimostra che l’acquisizione non è anteriore a quel momento, senza affidarsi all’orologio del dispositivo. È l’unico accesso di rete di questa estensione, è disattivato se non lo attivi, e non viene inviato nulla: la pagina, l’acquisizione e la sua impronta non lasciano mai il dispositivo. Non prova comunque che cosa mostrasse la pagina e non è una marca temporale qualificata ai sensi di eIDAS. Se la rete non è raggiungibile, l’acquisizione viene salvata senza ancoraggio."
+  },
+  "diagTitel": {
+    "message": "Informazioni di sistema (per le segnalazioni di errori)"
   }
 }

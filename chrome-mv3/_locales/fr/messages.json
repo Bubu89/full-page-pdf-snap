@@ -421,5 +421,8 @@
   },
   "optTimeAnchorHint": {
     "message": "Avant l’enregistrement, récupère une valeur aléatoire publique du réseau décentralisé drand et l’inscrit dans la capture. Puisque personne ne pouvait connaître cette valeur à l’avance, elle montre que la capture n’est pas antérieure à cet instant — sans se fier à l’horloge de l’appareil. C’est le seul accès réseau de cette extension, il est désactivé sauf activation explicite, et rien n’est envoyé : la page, la capture et son empreinte ne quittent jamais votre appareil. Cela ne prouve pas pour autant ce que la page affichait, et ce n’est pas un horodatage qualifié au sens d’eIDAS. Si le réseau est indisponible, la capture est enregistrée sans ancrage."
+  },
+  "diagTitel": {
+    "message": "Informations système (pour les rapports d'erreur)"
   }
 }
