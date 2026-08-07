@@ -235,6 +235,12 @@ test("Graustufen bleibt 8 bit und unveraendert lang", () => {
  * (Hintergrund 30, Schrift 235): 93,9 % der Punkte schwarz.
  */
 {
+  // Das Kriterium aus dem Code: gezaehlt wird das ERGEBNIS, nicht die Vorlage.
+  const schwarzAnteil = (grau) => {
+    let n = 0; for (const g of grau) if (g < 128) n++;
+    return n / grau.length;
+  };
+  const umkehrNoetig = (grau) => schwarzAnteil(grau) > 0.5;
   const schwelle = (grau, umkehren) => {
     let n = 0;
     for (const g of grau) { const w = umkehren ? 255 - g : g; if (w < 128) n++; }
@@ -256,8 +262,8 @@ test("Graustufen bleibt 8 bit und unveraendert lang", () => {
   console.log(`ok   mittlere Helligkeit hell=${mH.toFixed(0)} dunkel=${mD.toFixed(0)}`);
 
   // Helle Vorlage: keine Umkehr, wenig Schwarz - und die Umkehr aendert nichts
-  const a1 = schwelle(hell, mH < 128);
-  const okHell = mH >= 128 && a1 < 0.2;
+  const a1 = schwelle(hell, umkehrNoetig(hell));
+  const okHell = !umkehrNoetig(hell) && a1 < 0.2;
   console.log(`${okHell ? "ok  " : "FEHL"} helle Vorlage bleibt unangetastet: ${(a1*100).toFixed(1)} % schwarz`);
   if (!okHell) process.exitCode = 1;
 
@@ -268,8 +274,8 @@ test("Graustufen bleibt 8 bit und unveraendert lang", () => {
   if (!zeigtFehler) process.exitCode = 1;
 
   // Dunkle Vorlage MIT Umkehr: so wenig Schwarz wie bei der hellen
-  const a3 = schwelle(dunkel, mD < 128);
-  const okDunkel = mD < 128 && a3 < 0.2;
+  const a3 = schwelle(dunkel, umkehrNoetig(dunkel));
+  const okDunkel = umkehrNoetig(dunkel) && a3 < 0.2;
   console.log(`${okDunkel ? "ok  " : "FEHL"} dunkle Vorlage umgekehrt: ${(a3*100).toFixed(1)} % schwarz`);
   if (!okDunkel) process.exitCode = 1;
 
@@ -277,4 +283,27 @@ test("Graustufen bleibt 8 bit und unveraendert lang", () => {
   const gleich = Math.abs(a1 - a3) < 0.02;
   console.log(`${gleich ? "ok  " : "FEHL"} hell und dunkel ergeben denselben Schwarzanteil (${(a1*100).toFixed(1)} vs ${(a3*100).toFixed(1)} %)`);
   if (!gleich) process.exitCode = 1;
+
+  // Der Fall, an dem die mittlere Helligkeit scheitert: heller Kopfbereich,
+  // dunkler Inhalt. Im Mittel ueber 128 - und trotzdem waere die Seite zu
+  // zwei Dritteln schwarz. Genau dafuer zaehlt das Ergebnis, nicht die Vorlage.
+  {
+    // 45 % sehr hell (Rand, Kopfzeile), 55 % mittelgrau (Inhaltsflaeche).
+    // Mittlere Helligkeit 0.45*255 + 0.55*100 = 170 - klar ueber 128, das alte
+    // Kriterium haette die Seite so gelassen. Der Schwarzanteil liegt aber bei
+    // 55 %: mehr als die Haelfte des Blattes waere Toner.
+    const gemischt = new Uint8Array(2000);
+    gemischt.fill(255, 0, 900);
+    gemischt.fill(100, 900, 2000);
+    const m = mittelwert([...gemischt]);
+    const vorher = m < 128;                       // altes Kriterium
+    const jetzt = umkehrNoetig(gemischt);         // neues Kriterium
+    const nachher = schwelle(gemischt, jetzt);
+    console.log(`ok   gemischte Seite: mittlere Helligkeit ${m.toFixed(0)} (altes Kriterium haette ${vorher ? "umgekehrt" : "NICHT umgekehrt"})`);
+    const gut = jetzt && nachher < 0.5;
+    console.log(`${gut ? "ok  " : "FEHL"} gemischte Seite wird umgekehrt: ${(nachher*100).toFixed(1)} % schwarz`);
+    if (!gut) process.exitCode = 1;
+    console.log(`${!vorher ? "ok  " : "FEHL"} Gegenprobe: mittlere Helligkeit haette hier versagt`);
+    if (vorher) process.exitCode = 1;
+  }
 }

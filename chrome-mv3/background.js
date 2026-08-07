@@ -277,22 +277,27 @@ function farbtiefeAnwenden(d, modus, breite) {
     // Punkten rutscht jede Zeile um sieben Bit, nach hundert Zeilen sind es
     // 87 Punkte, und das Bild zerfaellt in Diagonalen. Gemessen am
     // 4. August 2026 an einer Aufnahme aus Firefox unter Windows.
-    // Dunkle Oberflaechen werden umgekehrt, bevor die Schwelle greift.
+    // Der Hintergrund ist bei Schwarzweiss immer weiss.
     //
-    // Ohne das wird eine Seite im Dunkelmodus zur schwarzen Flaeche mit weisser
-    // Schrift: Der Hintergrund liegt unter der Schwelle, der Text darueber.
-    // Gemessen an einer Textprobe (Hintergrund 30, Schrift 235): 93,9 % der
-    // Punkte schwarz. Nach der Umkehr sind es 6,1 % - schwarze Schrift auf
-    // weiss, so wie man es aus dem Drucker erwartet. Eine helle Seite bleibt
-    // unangetastet, dort faellt die Pruefung negativ aus.
+    // Wer Schwarzweiss waehlt, will drucken. Eine vollflaechig schwarze Seite
+    // kostet Toner und ist schlecht zu lesen. Also wird umgekehrt, sobald das
+    // Ergebnis ueberwiegend schwarz waere.
+    //
+    // Entschieden wird am ERGEBNIS, nicht an der Vorlage. Die mittlere
+    // Helligkeit der Vorlage waere das naheliegende Mass, geht aber daneben:
+    // Eine Seite mit hellem Kopf und dunklem Inhaltsbereich kommt im Mittel
+    // ueber 128 und wird trotzdem grossflaechig schwarz gedruckt. Gezaehlt
+    // wird deshalb, wie viele Punkte nach der Schwelle schwarz waeren - liegt
+    // das ueber der Haelfte, ist Schwarz offensichtlich der Hintergrund.
+    //
+    // Gemessen an einer Textprobe im Dunkelmodus (Hintergrund 30, Schrift 235):
+    // 93,9 % schwarz ohne Umkehr, 6,1 % mit. Helle Seiten bleiben unangetastet.
     //
     // Nur fuer Schwarzweiss. Graustufen geben die Seite wieder, wie sie war -
-    // wer sie waehlt, will das Aussehen behalten. Wer Schwarzweiss waehlt,
-    // will drucken, und eine vollflaechig schwarze Seite ist dafuer unbrauchbar.
-    let summe = 0;
-    for (let i = 0; i < n; i++) summe += grau[i];
-    const mittel = n ? summe / n : 255;
-    const umkehren = mittel < 128;
+    // wer sie waehlt, will das Aussehen behalten.
+    let dunkelPunkte = 0;
+    for (let i = 0; i < n; i++) if (grau[i] < 128) dunkelPunkte++;
+    const umkehren = n > 0 && dunkelPunkte * 2 > n;
 
     const bytesJeZeile = Math.ceil(breite / 8);
     const bin = new Uint8Array(bytesJeZeile * hoehe);
