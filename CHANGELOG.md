@@ -1,3 +1,30 @@
+## 2026-08-07 — Kontaktadressen laufen ueber die eigene Domain
+
+**Der Befund.** Kontakt und Sicherheitsmeldungen liefen ueber eine private
+Adresse einer fremden Domain, die einen Namen trug. Auf einer Seite, die
+ausdruecklich unter Pseudonym veroeffentlicht, ist das ein Widerspruch. Die
+Rechtspruefung im Repo wies zwei Fundstellen aus — es waren sechs. Sie hatte
+nur `/about/` durchsucht, nicht `.well-known/` und nicht das
+Wurzelverzeichnis. Ein Pruefer, der einen Teil des Bestands nicht ansieht,
+meldet nicht „unvollstaendig", sondern „sauber".
+
+**Was jetzt gilt.** `contact@provinglab.dev` fuer allgemeine Post,
+`security@provinglab.dev` fuer Sicherheitsmeldungen — eine eigene Adresse,
+weil RFC 9116 das vorsieht und eine Meldung nicht im allgemeinen Eingang
+untergehen soll. Beide werden ueber Cloudflare Email Routing an das Postfach
+der Domaininhaberschaft weitergeleitet.
+
+**Was das am DNS kostete.** Die Zone war bewusst als Nicht-Mail-Domain
+gehaertet: Null-MX nach RFC 7505, `v=spf1 -all`, DMARC `p=reject`, DKIM mit
+leerem Schluessel. Fuer den Empfang musste der Null-MX weichen. SPF und DMARC
+blieben unveraendert streng — sie regeln, wer im Namen der Domain *sendet*,
+und daran aendert eine Weiterleitung nichts.
+
+**Geprueft, nicht angenommen.** Vor der Veroeffentlichung gingen echte Mails
+an beide Adressen. Cloudflare meldet fuer beide `delivered`. Erst danach
+wurden die sechs Fundstellen umgestellt — eine tote Adresse in `security.txt`
+waere schlechter gewesen als die private, die vorher dort stand.
+
 ## 2026-08-05 — Zeitanker: eine Zeitangabe, die ohne die Geraeteuhr auskommt
 
 **Die Luecke.** Die Fussnote sagte bisher zu Recht: *„Time from device clock."*
@@ -1544,6 +1571,23 @@ Vergleich zugunsten der eigenen Seite verfaelscht. Der Lauf wartet jetzt
 zwischen den Aufrufen und wiederholt nach einem 429.
 
 # Changelog
+
+<!-- change-stream:auto-block:2026-08-06:START -->
+### 2026-08-06 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 4 Events, generiert 2026-08-07T09:00_
+
+**Aktivitaet:** 2 Datei(en), 4 Tool-Calls (2 Edit, 1 Write, 1 Bash), 2 Session(s).
+
+**Beruehrte Dateien:**
+- `full-page-pdf-snap-public/tools/store-text-pruefen.py` (2x)
+- `full-page-pdf-snap-public/PLAN-LINKKARTE.md` (1x)
+
+**Bemerkenswerte Commands:**
+- `cd ~/repos/full-page-pdf-snap-public && git add -A store-texte tools && git -c user.name="Bubu89" -c user.email="<adress`
+
+<!-- change-stream:auto-block:2026-08-06:END -->
+
 
 <!-- change-stream:auto-block:2026-08-05:START -->
 ### 2026-08-05 — Auto-Aggregat (change-stream)
