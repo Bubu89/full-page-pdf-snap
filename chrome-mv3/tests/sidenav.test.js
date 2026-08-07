@@ -33,5 +33,67 @@ check("Schmale Navi mit Aussenabstand (200x700)",  {left:40,   width:200,  heigh
 check("Halbhohe Spalte am Rand (200x300)",         {left:0,    width:200,  height:300}, false);
 check("Breite Spalte am Rand (700x805)",           {left:0,    width:700,  height:805}, false);
 
+
+/* --- Zweiter Teil: wer wird tatsaechlich ausgeblendet? -----------------
+ *
+ * Die Geometrie-Erkennung allein genuegt nicht. visibility:hidden vererbt
+ * sich: Wird ein VORFAHRE der Navigationsspalte ausgeblendet, verschwindet
+ * die Spalte mit - obwohl sie ausdruecklich behalten werden sollte.
+ *
+ * Gefunden am 07.08.2026 am Cloudflare-Dashboard: Im PDF blieb der Platz
+ * der Navigation leer, oben ragte noch das halbe Logo herein. Der Fehler
+ * war nicht die Erkennung - die Spalte stand korrekt in "keep" - sondern
+ * dass ihr Elterncontainer als grossflaechiges Overlay eingestuft und
+ * ausgeblendet wurde.
+ */
+const SCHUTZ_VORFAHREN = process.env.OHNE_SCHUTZ !== '1';
+function auswahl(baum, includeSideNav) {
+  // baum: [{name, rect, fixiert, overlay, kinder:[...]}]
+  const alle = [];
+  (function sammle(liste, eltern) {
+    for (const k of liste) {
+      k.eltern = eltern; alle.push(k);
+      sammle(k.kinder || [], k);
+    }
+  })(baum, null);
+  const enthaelt = (a, b) => { for (let e = b; e; e = e.eltern) if (e === a) return true; return false; };
+
+  const keep = [], candidates = [];
+  for (const el of alle) {
+    if (!el.fixiert && !el.overlay) continue;
+    const r = { ...el.rect, right: el.rect.left + el.rect.width };
+    if (!includeSideNav && isSideNavigation(r)) keep.push(el);
+    else candidates.push(el);
+  }
+  const versteckt = [];
+  for (const el of candidates) {
+    // Wie im Code: k.contains(el) - was INNERHALB einer behaltenen Spalte
+    // liegt, bleibt stehen.
+    if (keep.some(k => enthaelt(k, el))) continue;
+    // Der Zusatz vom 07.08.2026: umgekehrt ebenso. Ein Element, das eine
+    // behaltene Spalte UMSCHLIESST, darf nicht ausgeblendet werden -
+    // visibility:hidden vererbt sich und nimmt die Spalte mit.
+    if (SCHUTZ_VORFAHREN && keep.some(k => enthaelt(el, k))) continue;
+    versteckt.push(el);
+  }
+  // sichtbar = nicht selbst versteckt und kein Vorfahre versteckt
+  const sichtbar = n => !versteckt.some(v => enthaelt(v, n));
+  return { versteckt, sichtbar };
+}
+
+// Cloudflare-Dashboard: Navigationsspalte in einem grossflaechigen,
+// hoch gestapelten Container.
+const navi   = { name: "nav",   rect: {left:0, width:245, height:1000}, fixiert: true,  kinder: [] };
+const huelle = { name: "shell", rect: {left:0, width:1600, height:1000}, overlay: true, kinder: [navi] };
+const banner = { name: "cookie", rect: {left:0, width:1600, height:180}, fixiert: true, kinder: [] };
+const a = auswahl([huelle, banner], false);
+R.push((a.sichtbar(navi) ? "OK  " : "FEHL") + "  behalten    Navigationsspalte im ausgeblendeten Elterncontainer");
+R.push((!a.sichtbar(banner) ? "OK  " : "FEHL") + "  ausblenden  Cookie-Banner daneben");
+
+// Und im zweiten Durchgang muss die Spalte weg sein, sonst wandert sie mit.
+const b = auswahl([huelle, banner], true);
+R.push((!b.sichtbar(navi) ? "OK  " : "FEHL") + "  ausblenden  Navigationsspalte ab dem zweiten Segment");
+
 console.log(R.join("\n"));
 console.log("\nERGEBNIS: " + (R.some(l => l.startsWith("FEHL")) ? "FEHLER" : "ALLE BESTANDEN"));
+process.exit(R.some(l => l.startsWith("FEHL")) ? 1 : 0);

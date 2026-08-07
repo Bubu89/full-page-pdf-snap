@@ -483,6 +483,17 @@
       // Was innerhalb einer behaltenen Navigation liegt, bleibt ebenfalls -
       // sonst verschwinden einzelne Bedienelemente aus der Spalte.
       if (keep.some(k => k.contains(el))) continue;
+      // Und umgekehrt: Was eine behaltene Navigation UMSCHLIESST, darf
+      // ebenfalls nicht ausgeblendet werden. visibility:hidden vererbt sich -
+      // ein ausgeblendeter Elterncontainer nimmt die Spalte mit, obwohl sie
+      // ausdruecklich behalten werden sollte.
+      //
+      // Gemessen am 07.08.2026 am Cloudflare-Dashboard: Die Navigation lag in
+      // einem grossflaechigen, hoch gestapelten Container, der als Overlay
+      // eingestuft wurde. Im PDF blieb ihr Platz leer, oben ragte noch das
+      // halbe Logo herein - der Fehler sah aus wie ein Zuschnitt, war aber
+      // eine vererbte Ausblendung.
+      if (keep.some(k => el.contains(k))) continue;
       saved.stickyChanges.push({ el, prevVisibility: el.style.visibility });
       el.style.setProperty("visibility", "hidden", "important");
       n++;
