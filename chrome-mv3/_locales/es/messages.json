@@ -219,10 +219,10 @@
     "message": "Aumenta en uno con cada PDF nuevo. Restablecer lo devuelve a cero."
   },
   "optPdfFormatHint": {
-    "message": "Una única página continua elimina las uniones visibles entre segmentos. El modo de varias páginas divide el resultado en páginas de la altura indicada abajo."
+    "message": "Una página continua elimina las juntas visibles entre segmentos. El modo de varias páginas divide el resultado en páginas: A4 de forma predeterminada, o la altura fija indicada abajo."
   },
   "optPageHeightHint": {
-    "message": "Solo tiene efecto si se ha seleccionado «Varias páginas». Predeterminado: 2400 px."
+    "message": "Solo se aplica si arriba está seleccionada «Altura fija en píxeles». Predeterminado: 2400 px."
   },
   "optShortcut": {
     "message": "Atajo de teclado"
@@ -382,6 +382,12 @@
   },
   "optPageFormat": {
     "message": "Tamaño de página en varias páginas"
+  },
+  "optPageFormatA4": {
+    "message": "A4 — las páginas encajan en el papel impreso (predeterminado)"
+  },
+  "optPageFormatFest": {
+    "message": "Altura fija en píxeles (se ajusta abajo)"
   },
   "optPageFormatHint": {
     "message": "A4 deriva la altura de página del ancho capturado, de modo que una página impresa llena la hoja sin escalado."

@@ -219,10 +219,10 @@
     "message": "每生成一个新 PDF 就加一。重置后归零。"
   },
   "optPdfFormatHint": {
-    "message": "单页连续输出可消除各段之间可见的接缝。多页模式则按下方设定的高度切分结果。"
+    "message": "单页连续输出可消除片段之间的可见接缝。多页模式会将结果分页——默认 A4，或使用下方设置的固定高度。"
   },
   "optPageHeightHint": {
-    "message": "仅在选择“多页”时有效。默认 2400 像素。"
+    "message": "仅在上方选择“固定高度（像素）”时生效。默认 2400 px。"
   },
   "optShortcut": {
     "message": "键盘快捷键"
@@ -382,6 +382,12 @@
   },
   "optPageFormat": {
     "message": "多页输出的页面尺寸"
+  },
+  "optPageFormatA4": {
+    "message": "A4 — 页面适合打印纸张（默认）"
+  },
+  "optPageFormatFest": {
+    "message": "固定高度（像素，在下方设置）"
   },
   "optPageFormatHint": {
     "message": "A4 会根据抓取宽度推算页面高度，因此打印出的页面无需缩放即可填满纸张。"

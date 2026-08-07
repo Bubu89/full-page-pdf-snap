@@ -219,10 +219,10 @@
     "message": "Augmente de un à chaque nouveau PDF. La réinitialisation le remet à zéro."
   },
   "optPdfFormatHint": {
-    "message": "Une page continue unique supprime les raccords visibles entre les segments. Le mode multipage découpe le résultat en pages de la hauteur réglée ci-dessous."
+    "message": "Une page continue supprime les raccords visibles entre les segments. Le mode multipage découpe le résultat en pages : A4 par défaut, ou la hauteur fixe réglée ci-dessous."
   },
   "optPageHeightHint": {
-    "message": "Actif uniquement si « Plusieurs pages » est sélectionné. Par défaut 2400 px."
+    "message": "Ne s'applique que si « Hauteur fixe en pixels » est sélectionné ci-dessus. Par défaut 2400 px."
   },
   "optShortcut": {
     "message": "Raccourci clavier"
@@ -382,6 +382,12 @@
   },
   "optPageFormat": {
     "message": "Format de page en mode multipage"
+  },
+  "optPageFormatA4": {
+    "message": "A4 — les pages tiennent sur le papier imprimé (par défaut)"
+  },
+  "optPageFormatFest": {
+    "message": "Hauteur fixe en pixels (réglable ci-dessous)"
   },
   "optPageFormatHint": {
     "message": "A4 déduit la hauteur de page de la largeur capturée, afin qu’une page imprimée remplisse la feuille sans mise à l’échelle."

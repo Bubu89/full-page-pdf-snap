@@ -219,10 +219,10 @@
     "message": "Erhöht sich mit jedem neuen PDF um eins. Zurücksetzen stellt auf null."
   },
   "optPdfFormatHint": {
-    "message": "Eine fortlaufende Seite beseitigt die sichtbaren Schnittkanten zwischen den Streifen. Mehrseitig teilt das Ergebnis in Seiten der unten eingestellten Höhe."
+    "message": "Eine fortlaufende Seite beseitigt die sichtbaren Schnittkanten zwischen den Streifen. Mehrseitig teilt das Ergebnis in Seiten — standardmäßig A4, wahlweise die unten eingestellte feste Höhe."
   },
   "optPageHeightHint": {
-    "message": "Nur wirksam, wenn „Mehrere Seiten“ gewählt ist. Standard 2400 px."
+    "message": "Nur wirksam, wenn oben „Feste Höhe in Pixeln“ gewählt ist. Standard 2400 px."
   },
   "optShortcut": {
     "message": "Tastenkürzel"
@@ -388,6 +388,12 @@
   },
   "optPageFormat": {
     "message": "Seitengröße bei mehrseitiger Ausgabe"
+  },
+  "optPageFormatA4": {
+    "message": "A4 — Seiten passen auf Druckpapier (Standard)"
+  },
+  "optPageFormatFest": {
+    "message": "Feste Höhe in Pixeln (unten einstellbar)"
   },
   "optPageFormatHint": {
     "message": "A4 leitet die Seitenhöhe aus der aufgenommenen Breite ab, damit eine gedruckte Seite das Blatt ohne Skalierung füllt."

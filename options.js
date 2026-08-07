@@ -25,7 +25,7 @@ const DEFAULTS = {
   counter: 0,
   singlePagePdf: true,
   pageHeightPx: 2400,
-  pageFormat: "free",
+  pageFormat: "a4",
   breakAtLines: true,
   sourceMetadata: true,
   copyPath: false,

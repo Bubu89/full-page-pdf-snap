@@ -219,10 +219,10 @@
     "message": "Aumenta em um a cada novo PDF. Redefinir volta a zero."
   },
   "optPdfFormatHint": {
-    "message": "Uma única página contínua elimina as emendas visíveis entre os segmentos. O modo de várias páginas divide o resultado em páginas com a altura definida abaixo."
+    "message": "Uma página contínua elimina as emendas visíveis entre os segmentos. O modo de várias páginas divide o resultado em páginas — A4 por padrão, ou a altura fixa definida abaixo."
   },
   "optPageHeightHint": {
-    "message": "Só tem efeito se «Várias páginas» estiver selecionado. Padrão 2400 px."
+    "message": "Só se aplica quando \"Altura fixa em pixels\" está selecionado acima. Padrão 2400 px."
   },
   "optShortcut": {
     "message": "Atalho de teclado"
@@ -382,6 +382,12 @@
   },
   "optPageFormat": {
     "message": "Tamanho da página em várias páginas"
+  },
+  "optPageFormatA4": {
+    "message": "A4 — as páginas cabem no papel impresso (padrão)"
+  },
+  "optPageFormatFest": {
+    "message": "Altura fixa em pixels (definida abaixo)"
   },
   "optPageFormatHint": {
     "message": "A4 deriva a altura da página da largura capturada, de modo que uma página impressa preencha a folha sem redimensionamento."

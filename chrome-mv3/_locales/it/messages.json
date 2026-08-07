@@ -219,10 +219,10 @@
     "message": "Aumenta di uno a ogni nuovo PDF. Il ripristino lo riporta a zero."
   },
   "optPdfFormatHint": {
-    "message": "Un’unica pagina continua elimina le giunzioni visibili tra i segmenti. La modalità multipagina divide il risultato in pagine dell’altezza impostata sotto."
+    "message": "Una pagina continua elimina le giunture visibili tra i segmenti. La modalità multipagina divide il risultato in pagine: A4 come impostazione predefinita, oppure l'altezza fissa impostata sotto."
   },
   "optPageHeightHint": {
-    "message": "Attivo solo se è selezionato «Più pagine». Predefinito 2400 px."
+    "message": "Vale solo se sopra è selezionato «Altezza fissa in pixel». Predefinito 2400 px."
   },
   "optShortcut": {
     "message": "Scorciatoia da tastiera"
@@ -382,6 +382,12 @@
   },
   "optPageFormat": {
     "message": "Formato pagina per l’output su più pagine"
+  },
+  "optPageFormatA4": {
+    "message": "A4 — le pagine si adattano alla carta stampata (predefinito)"
+  },
+  "optPageFormatFest": {
+    "message": "Altezza fissa in pixel (impostabile sotto)"
   },
   "optPageFormatHint": {
     "message": "A4 ricava l’altezza della pagina dalla larghezza acquisita, così una pagina stampata riempie il foglio senza ridimensionamenti."

@@ -61,7 +61,7 @@ const DEFAULTS_DESKTOP = {
   titleMaxLen: 40,
   singlePagePdf: true,
   pageHeightPx: 2400,
-  pageFormat: "free",     // "a4" bricht auf Druckseiten um
+  pageFormat: "a4",       // Standard: Seiten fuellen ein A4-Blatt beim Drucken
   breakAtLines: true,      // Schnitt in die naechste Luecke ziehen
   sourceMetadata: true,    // Quellenangaben aus der Seite lesen (kein Netz)
   copyPath: false,         // Pfad nach dem Speichern in die Zwischenablage

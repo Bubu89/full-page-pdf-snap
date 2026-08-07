@@ -219,10 +219,10 @@
     "message": "Increases by one with every new PDF. Reset sets it back to zero."
   },
   "optPdfFormatHint": {
-    "message": "A single continuous page removes the visible seams between segments. Multi-page splits the result into pages of the height set below."
+    "message": "A single continuous page removes the visible seams between segments. Multi-page splits the result into pages — A4 by default, or the fixed height set below."
   },
   "optPageHeightHint": {
-    "message": "Only relevant when \"Multiple pages\" is selected. Default 2400 px."
+    "message": "Only applies when \"Fixed height in pixels\" is selected above. Default 2400 px."
   },
   "optShortcut": {
     "message": "Keyboard shortcut"
@@ -388,6 +388,12 @@
   },
   "optPageFormat": {
     "message": "Page size for multi-page"
+  },
+  "optPageFormatA4": {
+    "message": "A4 — pages fit printed paper (default)"
+  },
+  "optPageFormatFest": {
+    "message": "Fixed height in pixels (set below)"
   },
   "optPageFormatHint": {
     "message": "A4 derives the page height from the captured width, so a printed page fills the sheet without scaling."
