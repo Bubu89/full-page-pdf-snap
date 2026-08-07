@@ -178,12 +178,34 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          # Der ganze Push wird betrachtet, nicht nur sein letzter Commit -
+          # deshalb die volle Historie statt fetch-depth: 2.
+          fetch-depth: 0
 
       - name: Hat sich am Worker etwas geaendert?
         id: geaendert
         run: |
-          if git diff --name-only HEAD~1 HEAD | grep -q '^worker/'; then
+          # Verglichen wird der GESAMTE Push, nicht HEAD~1..HEAD.
+          #
+          # Mit HEAD~1 sah der Schritt nur den letzten Commit. Wird der Worker
+          # in einem frueheren Commit desselben Pushes geaendert - und drei
+          # Commits auf einmal sind hier der Normalfall -, faellt die Aenderung
+          # durch und der Server laeuft weiter mit der alten Fassung. Ohne
+          # Fehlermeldung, denn der Lauf ist ja gruen.
+          #
+          # github.event.before ist der Stand VOR dem Push. Bei einem neuen
+          # Zweig steht dort eine Null-Kennung; dann wird ausgeliefert, statt
+          # zu raten.
+          VORHER="${{ github.event.before }}"
+          if [ -z "$VORHER" ] || [ "$VORHER" = "0000000000000000000000000000000000000000" ]; then
+            echo "Kein Vorzustand bekannt (neuer Zweig oder manueller Start) — wird ausgeliefert."
+            echo "ja=true" >> "$GITHUB_OUTPUT"
+          elif ! git cat-file -e "$VORHER^{commit}" 2>/dev/null; then
+            echo "Vorzustand $VORHER nicht auffindbar — wird ausgeliefert."
+            echo "ja=true" >> "$GITHUB_OUTPUT"
+          elif git diff --name-only "$VORHER" "${{ github.sha }}" | grep -q '^worker/'; then
+            echo "Worker im Push geaendert:"
+            git diff --name-only "$VORHER" "${{ github.sha }}" | grep '^worker/' | sed 's/^/  /'
             echo "ja=true" >> "$GITHUB_OUTPUT"
           else
             echo "ja=false" >> "$GITHUB_OUTPUT"
