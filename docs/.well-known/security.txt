@@ -1,7 +1,7 @@
 # Sicherheitsmeldungen zu provinglab.dev und Full Page PDF Snap
 # RFC 9116
 
-Contact: mailto:chris.vis@goldfishgateway.com
+Contact: mailto:security@provinglab.dev
 Contact: https://github.com/Bubu89/full-page-pdf-snap/issues
 Expires: 2027-08-03T00:00:00.000Z
 Preferred-Languages: de, en

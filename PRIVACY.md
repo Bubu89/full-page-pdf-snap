@@ -70,7 +70,7 @@ None. No data is shared with anyone, because none is collected.
 
 ## Contact
 
-Questions: chris.vis@goldfishgateway.com
+Questions: contact@provinglab.dev
 Source code: https://github.com/Bubu89/full-page-pdf-snap
 
 ## Liability

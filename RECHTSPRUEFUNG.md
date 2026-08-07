@@ -16,7 +16,12 @@ Gemessen an den ausgelieferten Dateien:
 |---|---|---|
 | `Bubu89` (GitHub-Konto) | 73 | gewollt — Repo-Verweise, Releases, Issues |
 | `Silence` (Pseudonym) | 3 | auf `/about/` offengelegt |
-| `chris.vis@goldfishgateway.com` | 2 (nur `/about/`) | Kontaktadresse |
+| `contact@provinglab.dev` | 4 (`/about/` ×2, `glama.json`, `PRIVACY.md`) | Kontaktadresse der Domain |
+| `security@provinglab.dev` | 1 (`security.txt`) | Sicherheitsmeldungen |
+| private Adresse einer fremden Domain | **0** | am 07.08.2026 ersetzt — lief zuvor auf eine
+  Adresse ausserhalb dieser Domain und trug einen Namen. Beide neuen Adressen leiten dorthin
+  weiter, ohne sie zu nennen. Die frühere Zeile nannte 2 Fundstellen; es waren 6 — die
+  Aufnahme hatte nur `/about/` durchsucht, nicht `.well-known/` und nicht das Repo-Wurzelverzeichnis. |
 | Klarname, Anschrift, Telefon | **0** | nicht veröffentlicht |
 
 `/about/` sagt ausdrücklich: Veröffentlichung unter dem Pseudonym *Silence*,
