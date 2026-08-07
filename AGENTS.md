@@ -18,9 +18,10 @@ kein Beitrag.
 
 ## Wo du stehst
 
-[STAND.md](STAND.md) — was gebaut ist, was offen ist, was beim Anfassen leicht
-schiefgeht. Gedacht fuer den Einstieg ohne Vorgeschichte. Die Reihenfolge der
-offenen Arbeit steht in [PLAN-ERWEITERUNG.md](PLAN-ERWEITERUNG.md).
+Der Arbeitsstand und die Reihenfolge der offenen Punkte werden nicht mehr
+oeffentlich gefuehrt — sie enthielten Betriebsinterna, die niemand ausserhalb
+des Projekts braucht. Was ein Beitrag wissen muss, steht in dieser Datei, im
+[README](README.md) und im [CHANGELOG](CHANGELOG.md).
 
 ## Vor der ersten Änderung
 

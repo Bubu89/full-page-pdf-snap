@@ -30,3 +30,16 @@ bump-version.py
 # sie ueber ein `git add -A` in einen Commit geraten, der sie nicht
 # meinte — die Pfadpruefung der Pipeline hat sie gefangen.
 _headless-lauf/
+
+# Betriebsinterna — gehoeren nicht ins oeffentliche Repo (07.08.2026).
+# Entfernt wurden: Arbeitsstand, Plaene, Wachstumsstrategie, Fehlerhistorie,
+# die Schwachstellen-Landkarte und die Einreich-Notizen mit Konto-Adressen.
+STAND.md
+FEHLERHISTORIE.md
+PLAN-*.md
+WACHSTUMSPLAN*.md
+RECHTSPRUEFUNG-ANGRIFFSFLAECHEN.md
+protokoll-agent-install.md
+store-texte/ANLEITUNG_NAECHSTE_SCHRITTE.md
+store-texte/EINREICHEN_*.md
+_visual-check/
