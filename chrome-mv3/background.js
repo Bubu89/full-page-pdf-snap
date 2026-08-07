@@ -1973,7 +1973,7 @@ if (browser.notifications && browser.notifications.onClicked) {
           type: "basic",
           iconUrl: browser.runtime.getURL("icons/icon-48.png"),
           title: "Full Page PDF Snap",
-          message: "Aufnahme laeuft noch — bitte warten. Bei Fehler wird eine Meldung angezeigt."
+          message: browser.i18n.getMessage("busy") || "Aufnahme laeuft noch — bitte warten. Bei Fehler wird eine Meldung angezeigt."
         });
       } catch (_) { /* ignore */ }
       return;
@@ -2050,7 +2050,7 @@ function notifyError(text) {
     browser.notifications?.create({
       type: "basic",
       iconUrl: browser.runtime.getURL("icons/icon-48.png"),
-      title: "Full Page PDF Snap — Fehler",
+      title: browser.i18n.getMessage("errTitle") || "Full Page PDF Snap — Fehler",
       message: text
     });
   } catch (_) { /* permission ggf. fehlt */ }
@@ -2061,7 +2061,7 @@ function notifyHint(text) {
     browser.notifications?.create({
       type: "basic",
       iconUrl: browser.runtime.getURL("icons/icon-48.png"),
-      title: "Full Page PDF Snap — Hinweis",
+      title: browser.i18n.getMessage("hintTitle") || "Full Page PDF Snap — Hinweis",
       message: text
     });
   } catch (_) { /* ignore */ }
@@ -2104,12 +2104,12 @@ async function buildMenus() {
   const s = await getSettings();
   const ctx = ["action"];
 
-  browser.menus.create({ id: MENU_IDS.capture, title: "Ganze Seite als PDF speichern", contexts: ctx });
+  browser.menus.create({ id: MENU_IDS.capture, title: browser.i18n.getMessage("menuCapture") || "Ganze Seite als PDF speichern", contexts: ctx });
   browser.menus.create({ id: MENU_IDS.sep1, type: "separator", contexts: ctx });
-  browser.menus.create({ id: MENU_IDS.saveAs, type: "checkbox", checked: !!s.saveAs, title: "Speicher-Dialog jedes Mal anzeigen", contexts: ctx });
-  browser.menus.create({ id: MENU_IDS.afterShow, type: "checkbox", checked: s.afterCapture === "show" || s.afterCapture === "both", title: "Nach Save: Ordner zeigen", contexts: ctx });
-  browser.menus.create({ id: MENU_IDS.afterOpen, type: "checkbox", checked: s.afterCapture === "open" || s.afterCapture === "both", title: "Nach Save: PDF oeffnen", contexts: ctx });
-  browser.menus.create({ id: MENU_IDS.hideSticky, type: "checkbox", checked: !!s.hideSticky, title: "Sticky/Sidebar verstecken", contexts: ctx });
+  browser.menus.create({ id: MENU_IDS.saveAs, type: "checkbox", checked: !!s.saveAs, title: browser.i18n.getMessage("menuSaveAs") || "Speicher-Dialog jedes Mal anzeigen", contexts: ctx });
+  browser.menus.create({ id: MENU_IDS.afterShow, type: "checkbox", checked: s.afterCapture === "show" || s.afterCapture === "both", title: browser.i18n.getMessage("menuShowFolder") || "Nach Save: Ordner zeigen", contexts: ctx });
+  browser.menus.create({ id: MENU_IDS.afterOpen, type: "checkbox", checked: s.afterCapture === "open" || s.afterCapture === "both", title: browser.i18n.getMessage("menuOpenPdf") || "Nach Save: PDF oeffnen", contexts: ctx });
+  browser.menus.create({ id: MENU_IDS.hideSticky, type: "checkbox", checked: !!s.hideSticky, title: browser.i18n.getMessage("menuHideSticky") || "Sticky/Sidebar verstecken", contexts: ctx });
   // Quellenangaben gehoeren neben das Ausblenden: beide veraendern das
   // Ergebnis sichtbar und werden je nach Seite anders gewollt.
   browser.menus.create({ id: MENU_IDS.sourceMetadata, type: "checkbox",
@@ -2117,14 +2117,14 @@ async function buildMenus() {
     title: browser.i18n.getMessage("popupCite") || "Quellenangaben mitschreiben",
     contexts: ctx });
   browser.menus.create({ id: MENU_IDS.sep2, type: "separator", contexts: ctx });
-  browser.menus.create({ id: MENU_IDS.scaleParent, title: "Capture-Qualitaet", contexts: ctx });
+  browser.menus.create({ id: MENU_IDS.scaleParent, title: browser.i18n.getMessage("menuQuality") || "Capture-Qualitaet", contexts: ctx });
   const scale = Number(s.captureScale || 1.0);
-  browser.menus.create({ parentId: MENU_IDS.scaleParent, id: MENU_IDS.scale1, type: "radio", checked: scale === 1.0, title: "1.0x — wie am Bildschirm", contexts: ctx });
-  browser.menus.create({ parentId: MENU_IDS.scaleParent, id: MENU_IDS.scale125, type: "radio", checked: scale === 1.25, title: "1.25x — Balance", contexts: ctx });
-  browser.menus.create({ parentId: MENU_IDS.scaleParent, id: MENU_IDS.scale15, type: "radio", checked: scale === 1.5, title: "1.5x — scharf", contexts: ctx });
-  browser.menus.create({ parentId: MENU_IDS.scaleParent, id: MENU_IDS.scale2, type: "radio", checked: scale === 2.0, title: "2.0x — maximal", contexts: ctx });
+  browser.menus.create({ parentId: MENU_IDS.scaleParent, id: MENU_IDS.scale1, type: "radio", checked: scale === 1.0, title: browser.i18n.getMessage("menuScale10") || "1.0x — wie am Bildschirm", contexts: ctx });
+  browser.menus.create({ parentId: MENU_IDS.scaleParent, id: MENU_IDS.scale125, type: "radio", checked: scale === 1.25, title: browser.i18n.getMessage("menuScale125") || "1.25x — Balance", contexts: ctx });
+  browser.menus.create({ parentId: MENU_IDS.scaleParent, id: MENU_IDS.scale15, type: "radio", checked: scale === 1.5, title: browser.i18n.getMessage("menuScale15") || "1.5x — scharf", contexts: ctx });
+  browser.menus.create({ parentId: MENU_IDS.scaleParent, id: MENU_IDS.scale2, type: "radio", checked: scale === 2.0, title: browser.i18n.getMessage("menuScale20") || "2.0x — maximal", contexts: ctx });
   browser.menus.create({ id: MENU_IDS.sep4, type: "separator", contexts: ctx });
-  browser.menus.create({ id: MENU_IDS.options, title: "Alle Einstellungen…", contexts: ctx });
+  browser.menus.create({ id: MENU_IDS.options, title: browser.i18n.getMessage("menuAllSettings") || "Alle Einstellungen…", contexts: ctx });
 }
 
 async function applyMenuClick(id, checked) {

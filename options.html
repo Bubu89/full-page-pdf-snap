@@ -94,7 +94,7 @@
   <label><span data-i18n="optCounter">Sequential numbering</span>
     <div class="row" style="margin-top: 4px;">
       <span id="counterVal" style="font-family: monospace; background: var(--code-bg); color: var(--fg); padding: 4px 10px; border-radius: 4px;">0000</span>
-      <button id="resetCounter" type="button" style="margin: 0; background: var(--grau-knopf);">Reset counter</button>
+      <button id="resetCounter" type="button" data-i18n="optCounterReset" style="margin: 0; background: var(--grau-knopf);">Reset counter</button>
     </div>
     <div class="hint"><span data-i18n="optCounterHint">Increases by one with every new PDF. Reset sets it back to zero.</span></div>
   </label>
@@ -164,8 +164,8 @@
 
   <label><span data-i18n="optPdfFormat">PDF format</span>
     <select id="singlePagePdf" style="width:100%; padding: 8px 10px; border: 1px solid var(--rand); border-radius: 6px; font-size: 13px; background: var(--feld-bg); color: var(--fg);">
-      <option value="true">One continuous page (default — no visible seams)</option>
-      <option value="false">Multiple pages (for printing)</option>
+      <option value="true" data-i18n="optSinglePage">One continuous page (default — no visible seams)</option>
+      <option value="false" data-i18n="optMultiPage">Multiple pages (for printing)</option>
     </select>
     <div class="hint"><span data-i18n="optPdfFormatHint">A single continuous page removes the visible seams between segments. Multi-page splits the result into pages of the height set below.</span></div>
   </label>
