@@ -129,6 +129,15 @@
     .topnav a.n{font-size:.85rem}
   }
 
+
+  /* Messtabelle — das Notes-Grundgeruest kennt keine Tabellen, ohne diese
+     Regeln zerfaellt sie im Browser zu Fliesstext. */
+  .case table{width:100%;border-collapse:collapse;margin:18px 0 4px;font-size:.95rem}
+  .case th,.case td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line)}
+  .case th{color:var(--dim);font-weight:600;font-size:.86rem;letter-spacing:.02em;
+           text-transform:uppercase;border-bottom-width:2px}
+  .case td:not(:first-child){font-variant-numeric:tabular-nums;white-space:nowrap}
+  .case tbody tr:last-child td{border-bottom:none}
 </style>
 </head>
 <body>
@@ -188,7 +197,7 @@
   by about 14 dB while leaving speech untouched. That number was measured and it is
   correct.</p>
   <p>It also did not apply to a single person who followed the install instructions.
-  The filter needs <code>scipy</code>. <code>scipy</code> was not in
+  The filter needs <code>scipy</code>, and <code>scipy</code> was missing from
   <code>requirements.txt</code>. The import sits inside a <code>try</code> block, so
   nothing crashed — the code fell back to removing the DC offset and logged one line at
   debug level, which nobody reads.</p>
