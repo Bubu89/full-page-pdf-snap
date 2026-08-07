@@ -29,6 +29,20 @@ BREITE, HOEHE = 1280, 800
 KUERZEL = "Alt+Shift+Y"
 KUERZEL2 = "Ctrl+Shift+Y"
 
+# --- Einzige Quelle fuer das Beispielzitat -----------------------------------
+# Es steht im Bild "ready to cite" und soll zeigen, wie eine erfasste Quelle
+# aussieht. Anforderungen an das Beispiel, in dieser Reihenfolge:
+#
+#   1. Eine echte, nachschlagbare Arbeit. Ein erfundenes Zitat waere in einem
+#      Werkzeug, das mit belegbaren Quellenangaben wirbt, ein Eigentor.
+#   2. Fachlich neutral. Das vorige Beispiel stand in einer Zeitschrift, deren
+#      Titel bei einer Store-Pruefung unnoetig Aufmerksamkeit auf sich zieht -
+#      inhaltlich unbedenklich, aber Anlass fuer Rueckfragen, die niemand
+#      braucht (getauscht am 07.08.2026).
+#   3. Kurz genug fuer zwei Zeilen bei 11,5px in einer 392px breiten Karte.
+BEISPIEL_ZITAT = ("Shannon, C. E. (1948). A Mathematical Theory of "
+                  "Communication. <i>Bell System Technical Journal, 27</i>(3).")
+
 
 # --- Die Schalter im Aufnahmefenster -----------------------------------------
 # Sie stehen hier, weil das Bild sie zeigen muss wie das Fenster selbst. Als das
@@ -311,8 +325,7 @@ BILD5 = html(f"""
       </div>
       <div style="background:#e2e8f0;padding:11px 21px 13px;border-top:1px solid #cbd5e1">
         <div style="font-size:11.5px;color:#0f172a;font-weight:600;line-height:1.35">
-          Fr&uuml;hauf, S., Gerger, H. &amp; Barth, J. (2013). Efficacy of
-          Psychological Interventions. <i>Archives of Sexual Behavior, 42</i>(6).</div>
+          {BEISPIEL_ZITAT}</div>
         <div style="font-size:10px;color:#475569;margin-top:5px;font-family:ui-monospace,monospace">
           captured 2026-08-03 09:14 +02:00 &nbsp;|&nbsp; SHA-256 5516fdd6&hellip;</div>
       </div>

@@ -5,10 +5,10 @@ Und sie schreibt auf Wunsch die Quellenangaben mit hinein: Verfasser, Titel, Zei
 FÜR STUDIERENDE UND WISSENSCHAFT
 „Quellenangaben mitschreiben" einschalten, und jede Aufnahme kommt als zitierfähige Quelle an.
 • Verfasser, Titel, Zeitschrift, Jahr, Band, Seiten, DOI, ISSN und Lizenz, aus der Seite selbst gelesen — kein Zitationsdienst wird angefragt, also erfährt niemand, was Sie lesen
-• Eine RIS-Datei neben dem PDF, fertig für Zotero, Citavi, EndNote oder Mendeley
+• Eine RIS-Datei neben dem PDF — das Standardformat, das Literaturverwaltungen lesen, darunter Zotero und Citavi
 • Der Abrufzeitpunkt mit Zeitzone und eine SHA-256-Prüfsumme des Bildes — genau das, was eine „zuletzt abgerufen am"-Zeile im Literaturverzeichnis braucht
 • Dieselben Felder in den PDF-Metadaten, sodass Dokumentenverwaltung und Systemsuche das Werk über Verfasser und Titel finden
-• Funktioniert auf PubMed, arXiv, SpringerLink, Wiley, ScienceDirect, JMIR, doi.org und vielen weiteren
+• Liest die Zitationsangaben, die Verlage, Zeitschriften und Preprint-Server in ihre Seiten einbetten
 
 Quellen hinter einer Hochschulanmeldung sind der eigentliche Punkt. Ein serverseitiger Umwandler ruft die Adresse als anonymer Besucher ab und landet an der Bezahlschranke; diese Erweiterung nimmt auf, was Ihr eigener Browser bereits anzeigt — samt Lizenz.
 
