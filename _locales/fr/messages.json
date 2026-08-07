@@ -53,6 +53,9 @@
   "incompleteHint": {
     "message": "Certaines parties de la page n'ont pas pu être capturées entièrement :"
   },
+  "endlessScrollHint": {
+    "message": "La page continue de charger du contenu au défilement. La capture correspond à l'état initial : le PDF est plus court que la page actuelle."
+  },
   "menuCapture": {
     "message": "Enregistrer toute la page en PDF"
   },

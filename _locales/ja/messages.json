@@ -53,6 +53,9 @@
   "incompleteHint": {
     "message": "ページの一部を完全に取得できませんでした:"
   },
+  "endlessScrollHint": {
+    "message": "ページはスクロールするたびに読み込みを続けます。開始時点の内容を取り込みました。PDF は現在のページより短くなります。"
+  },
   "menuCapture": {
     "message": "ページ全体を PDF として保存"
   },

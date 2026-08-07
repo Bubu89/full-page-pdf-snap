@@ -549,6 +549,28 @@ async function captureFullPageInner(tab, settings) {
   let lastActualY = -1;
   let stuckCount = 0;
 
+  /* Deckel gegen endlosen Nachschub.
+   *
+   * Seiten mit unendlichem Scroll (Zeitleisten, Suchergebnisse, Foren) laden
+   * beim Scrollen immer weiter nach. Dann waechst totalH schneller, als
+   * gescrollt wird, maxScroll waechst mit, und die Abbruchbedingung
+   * "actualY >= maxScroll" tritt nie ein. Vorher endete das nach 400
+   * Schritten in einem geworfenen Fehler: kein PDF, nur eine Meldung -
+   * obwohl bis dahin hunderte brauchbare Segmente vorlagen.
+   *
+   * Deshalb zwei Grenzen. Die erste zaehlt, wie oft die Seite waehrend der
+   * Aufnahme nachgewachsen ist; ab einer Schwelle gilt die Hoehe, die beim
+   * Start gemessen wurde, als Ziel - was danach nachkommt, waere ohnehin
+   * nie zu Ende zu fotografieren. Die zweite ist eine harte Schrittgrenze,
+   * die nicht mehr wirft, sondern abschliesst und den Nutzer informiert.
+   */
+  const NACHWUCHS_SCHWELLE = 12;      // so oft darf die Seite wachsen
+  const SCHRITT_GRENZE = 400;         // harte Obergrenze, danach wird geliefert
+  let nachgewachsen = 0;
+  let endlosVerdacht = false;
+  const hoeheBeimStart = totalH;
+  let abgeschnitten = false;
+
   /* Vorlauf: die Seite einmal durchscrollen, bevor fotografiert wird.
    *
    * Seiten, die beim Scrollen nachladen, wachsen mitten in der Aufnahme.
@@ -729,7 +751,16 @@ async function captureFullPageInner(tab, settings) {
       }
 
       const fresh = await browser.tabs.sendMessage(tab.id, { cmd: "currentTotalH" }).catch(() => null);
-      if (fresh && fresh.totalH && fresh.totalH > totalH) {
+      if (fresh && fresh.totalH && fresh.totalH > totalH && !endlosVerdacht) {
+        if (++nachgewachsen >= NACHWUCHS_SCHWELLE) {
+          endlosVerdacht = true;
+          maxScroll = Math.max(0, hoeheBeimStart - layout.viewportH);
+          log("Endloser Nachschub erkannt (", nachgewachsen, "x gewachsen) - "
+              + "Aufnahme endet bei der Hoehe vom Start:", hoeheBeimStart);
+          if (actualY >= maxScroll - 2) { abgeschnitten = true; break; }
+        }
+      }
+      if (fresh && fresh.totalH && fresh.totalH > totalH && !endlosVerdacht) {
         log("Lazy-load grew page:", totalH, "->", fresh.totalH);
         // Das Nachwachsen wird hier aufgefangen, damit das Ende nicht fehlt.
         // Was es mit dem bereits Aufgenommenen macht, faengt es nicht auf:
@@ -749,10 +780,16 @@ async function captureFullPageInner(tab, settings) {
         maxScroll = Math.max(0, totalH - layout.viewportH);
       }
 
-      if (actualY >= maxScroll - 2) break;
+      if (actualY >= maxScroll - 2) { if (endlosVerdacht) abgeschnitten = true; break; }
       y += stepCss;
       if (y > maxScroll) y = maxScroll;
-      if (++safety > 400) throw new Error("Zu viele Scroll-Schritte");
+      if (++safety > SCHRITT_GRENZE) {
+        // Nicht werfen: bis hierher liegen brauchbare Segmente vor, und ein
+        // unvollstaendiges PDF ist mehr wert als eine Fehlermeldung.
+        log("Schrittgrenze erreicht (", SCHRITT_GRENZE, ") - Aufnahme wird abgeschlossen");
+        abgeschnitten = true;
+        break;
+      }
     }
     // Text jetzt einsammeln — nach dem Ausblenden fixierter Elemente und
     // bevor die Seite zurueckgesetzt wird. Spaeter waere der Zustand ein
@@ -848,12 +885,22 @@ async function captureFullPageInner(tab, settings) {
       + "erscheinen; mit hoeherer Wartezeit je Schritt erneut aufnehmen");
   }
 
+  // Endloser Nachschub: eigene Meldung, weil hier nichts schiefging - die
+  // Seite hat schlicht kein Ende. Der Nutzer soll wissen, warum das PDF
+  // kuerzer ist als das, was er auf dem Bildschirm weiterscrollen koennte.
+  if (abgeschnitten) {
+    log("Aufnahme bei endlosem Nachschub abgeschlossen nach", segments.length, "Segmenten");
+    notifyHint(browser.i18n.getMessage("endlessScrollHint")
+      || "Die Seite laedt beim Scrollen immer weiter nach. Aufgenommen wurde der Stand vom Anfang.");
+  }
+
   const unvollstaendig = coverage.filter(c => !c.ok);
   if (unvollstaendig.length || stilleLuecken.length) {
     const teile = unvollstaendig.map(c => c.meldung).concat(stilleLuecken);
     log("WARNUNG: unvollstaendig —", teile.join(" | "));
-    notifyHint("Teile der Seite konnten nicht vollstaendig erfasst werden: "
-               + teile.join(" · "));
+    notifyHint((browser.i18n.getMessage("incompleteHint")
+                || "Teile der Seite konnten nicht vollstaendig erfasst werden:")
+               + " " + teile.join(" · "));
   } else {
     log("Abdeckung vollstaendig in allen", coverage.length, "Scroll-Ebene(n).");
   }

@@ -53,6 +53,9 @@
   "incompleteHint": {
     "message": "页面的部分内容无法完整捕获："
   },
+  "endlessScrollHint": {
+    "message": "该页面在滚动时会持续加载内容。已抓取起始时的状态，PDF 比当前页面短。"
+  },
   "menuCapture": {
     "message": "将整页保存为 PDF"
   },

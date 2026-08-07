@@ -53,6 +53,9 @@
   "incompleteHint": {
     "message": "Teile der Seite konnten nicht vollständig erfasst werden:"
   },
+  "endlessScrollHint": {
+    "message": "Die Seite lädt beim Scrollen immer weiter nach. Aufgenommen wurde der Stand vom Anfang — das PDF ist kürzer als die Seite inzwischen ist."
+  },
   "menuCapture": {
     "message": "Ganze Seite als PDF speichern"
   },
