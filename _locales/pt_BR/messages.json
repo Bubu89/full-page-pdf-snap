@@ -374,6 +374,12 @@
   "optColourModeHint": {
     "message": "Escala de cinza e preto e branco reduzem o arquivo para 58 % e 27 % — e ajudam o OCR em vez de prejudicá-lo: 989 palavras relidas contra 987 em cores. Páginas com fotografias precisam de cor."
   },
+  "optHellerDruck": {
+    "message": "Manter sempre o fundo branco"
+  },
+  "optHellerDruckHint": {
+    "message": "Para escala de cinza e preto e branco: uma página em modo escuro é invertida para que a folha fique branca e o texto escuro. Economiza toner e mantém a letra miúda legível. Desative se o PDF precisar ficar igual à tela. Capturas coloridas nunca são alteradas."
+  },
   "optSourceMetadata": {
     "message": "Ler dados de citação da página"
   },

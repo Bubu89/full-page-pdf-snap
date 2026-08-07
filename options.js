@@ -38,6 +38,7 @@ const DEFAULTS = {
   textLayer: true,
   linkMap: false,
   bildModus: "farbe",
+  hellerDruck: true,
   uiLanguage: "auto",
   appLayout: "context",
   afterCapture: "show",
@@ -138,6 +139,7 @@ async function load() {
   $("textLayer").checked = s.textLayer !== false;
   $("linkMap").checked = !!s.linkMap;
   $("bildModus").value = s.bildModus || "farbe";
+  $("hellerDruck").checked = s.hellerDruck !== false;
   $("uiLanguage").value = s.uiLanguage || "auto";
   $("appLayout").value = s.appLayout || "context";
   $("afterCapture").value = s.afterCapture || "show";
@@ -229,6 +231,7 @@ $("save").addEventListener("click", async () => {
     textLayer: $("textLayer").checked,
     linkMap: $("linkMap").checked,
     bildModus: $("bildModus").value,
+    hellerDruck: $("hellerDruck").checked,
     reviewPromptOff: $("reviewPromptOff").checked,
     uiLanguage: $("uiLanguage").value,
     appLayout: $("appLayout").value,

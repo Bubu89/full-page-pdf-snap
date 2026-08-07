@@ -380,6 +380,12 @@
   "optColourModeHint": {
     "message": "Greyscale and black and white cut the file to 58 % and 27 % — and they help OCR rather than hurt it: 989 words read back against 987 in colour. Pages with photographs need colour."
   },
+  "optHellerDruck": {
+    "message": "Always keep the background white"
+  },
+  "optHellerDruckHint": {
+    "message": "For greyscale and black and white: a page in dark mode is inverted so that the sheet stays white and the text dark. Saves toner and keeps small type legible. Turn this off if the PDF should look exactly like the screen. Colour captures are never changed."
+  },
   "optSourceMetadata": {
     "message": "Read citation details from the page"
   },

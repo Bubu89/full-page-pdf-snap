@@ -162,6 +162,11 @@
     <div class="hint"><span data-i18n="optColourModeHint">Greyscale and black and white cut the file to 58 % and 27 % — and they help OCR rather than hurt it: 989 words read back against 987 in colour. Pages with photographs need colour.</span></div>
   </label>
 
+  <label class="check"><input id="hellerDruck" type="checkbox">
+    <span data-i18n="optHellerDruck">Always keep the background white</span>
+    <div class="hint" data-i18n="optHellerDruckHint">For greyscale and black and white: a page in dark mode is inverted so that the sheet stays white and the text dark. Saves toner and keeps small type legible. Turn this off if the PDF should look exactly like the screen. Colour captures are never changed.</div>
+  </label>
+
   <label><span data-i18n="optPdfFormat">PDF format</span>
     <select id="singlePagePdf" style="width:100%; padding: 8px 10px; border: 1px solid var(--rand); border-radius: 6px; font-size: 13px; background: var(--feld-bg); color: var(--fg);">
       <option value="true" data-i18n="optSinglePage">One continuous page (default — no visible seams)</option>

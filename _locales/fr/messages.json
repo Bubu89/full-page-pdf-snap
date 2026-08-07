@@ -374,6 +374,12 @@
   "optColourModeHint": {
     "message": "Les niveaux de gris et le noir et blanc réduisent le fichier à 58 % et 27 % — et ils aident la reconnaissance de texte au lieu de la gêner : 989 mots relus contre 987 en couleur. Les pages comportant des photographies ont besoin de la couleur."
   },
+  "optHellerDruck": {
+    "message": "Garder toujours le fond blanc"
+  },
+  "optHellerDruckHint": {
+    "message": "Pour les niveaux de gris et le noir et blanc : une page en mode sombre est inversée afin que la feuille reste blanche et le texte foncé. Économise le toner et garde les petits caractères lisibles. À désactiver si le PDF doit ressembler exactement à l'écran. Les captures en couleur ne sont jamais modifiées."
+  },
   "optSourceMetadata": {
     "message": "Lire les données de citation depuis la page"
   },

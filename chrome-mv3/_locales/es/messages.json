@@ -374,6 +374,12 @@
   "optColourModeHint": {
     "message": "La escala de grises y el blanco y negro reducen el archivo al 58 % y al 27 %, y ayudan al OCR en lugar de perjudicarlo: se releen 989 palabras frente a 987 en color. Las páginas con fotografías necesitan color."
   },
+  "optHellerDruck": {
+    "message": "Mantener siempre el fondo blanco"
+  },
+  "optHellerDruckHint": {
+    "message": "Para escala de grises y blanco y negro: una página en modo oscuro se invierte para que la hoja quede blanca y el texto oscuro. Ahorra tóner y mantiene legible la letra pequeña. Desactívalo si el PDF debe verse igual que la pantalla. Las capturas en color no se modifican."
+  },
   "optSourceMetadata": {
     "message": "Leer los datos de cita desde la página"
   },

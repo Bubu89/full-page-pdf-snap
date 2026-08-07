@@ -60,6 +60,7 @@ const DEFAULTS_DESKTOP = {
   // rund 92 % gegenueber dem heutigen JPEG, ohne dass die Texterkennung
   // darunter leidet.
   bildModus: "farbe",
+  hellerDruck: true,      // dunkle Oberflaechen umkehren, damit das Blatt weiss bleibt
   settlingMs: 400,
   filenameTemplate: "{site}_{date}_{time}_{n}",
   titleMaxLen: 40,
@@ -271,7 +272,15 @@ function farbtiefeAnwenden(d, modus, breite, umkehrenVorgabe) {
     for (let i = 0, j = 0; j < n; i += 4, j++) {
       grau[j] = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114) | 0;
     }
-    if (modus === "graustufen") return { daten: grau, kanaele: 1, bits: 8 };
+    if (modus === "graustufen") {
+      // Dieselbe Entscheidung wie bei Schwarzweiss, nur ohne Schwelle: Die
+      // Grauwerte werden gespiegelt, aus dunkel wird hell. Die Abstufungen
+      // bleiben erhalten, nur die Richtung dreht sich.
+      if (umkehrenVorgabe === true) {
+        for (let i = 0; i < n; i++) grau[i] = 255 - grau[i];
+      }
+      return { daten: grau, kanaele: 1, bits: 8, umgekehrt: umkehrenVorgabe === true };
+    }
     // 1 bit, acht Punkte je Byte. Feste Schwelle statt Dithering: Dithering
     // sieht besser aus und komprimiert schlechter, und fuer Text zaehlt hier
     // die Kante, nicht der Halbton.
@@ -451,8 +460,12 @@ async function canvasToFlateBytes(canvas, modus, umkehrenVorgabe) {
  * genuegt eine Stichprobe. Der Rand wird vollstaendig gelesen - er ist
  * schmal, und genau dort steht die Antwort.
  */
-function sollUmkehren(canvas, modus) {
-  if (modus !== "sw") return undefined;      // nur Schwarzweiss kehrt um
+function sollUmkehren(canvas, modus, erlaubt) {
+  // Gilt fuer Graustufen UND Schwarzweiss - beide werden gedruckt, und ein
+  // schwarzes Blatt kostet in beiden Faellen Toner. Farbaufnahmen bleiben
+  // unberuehrt: Dort waere eine Umkehr eine Verfaelschung, keine Aufbereitung.
+  if (modus !== "sw" && modus !== "graustufen") return undefined;
+  if (erlaubt === false) return false;       // Schalter in den Einstellungen
   try {
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
     const b = canvas.width, h = canvas.height;
@@ -1401,7 +1414,7 @@ async function captureFullPageInner(tab, settings) {
   const pages = [];
   // Einmal fuer das ganze Bild entscheiden, damit alle Kacheln und alle
   // Seiten dieselbe Polaritaet bekommen.
-  const umkehrenGanz = sollUmkehren(big, settings.bildModus);
+  const umkehrenGanz = sollUmkehren(big, settings.bildModus, settings.hellerDruck !== false);
   if (settings.singlePagePdf) {
     const tilePx = Math.max(800, Math.min(8000, effectiveTilePx));
     if (bigH <= tilePx) {

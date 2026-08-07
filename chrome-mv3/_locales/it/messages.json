@@ -374,6 +374,12 @@
   "optColourModeHint": {
     "message": "La scala di grigi e il bianco e nero riducono il file al 58 % e al 27 % — e aiutano l’OCR invece di ostacolarlo: 989 parole rilette contro 987 a colori. Le pagine con fotografie hanno bisogno del colore."
   },
+  "optHellerDruck": {
+    "message": "Mantieni sempre lo sfondo bianco"
+  },
+  "optHellerDruckHint": {
+    "message": "Per scala di grigi e bianco e nero: una pagina in modalità scura viene invertita, così il foglio resta bianco e il testo scuro. Risparmia toner e mantiene leggibili i caratteri piccoli. Disattiva se il PDF deve apparire esattamente come lo schermo. Le acquisizioni a colori non vengono modificate."
+  },
   "optSourceMetadata": {
     "message": "Leggere i dati di citazione dalla pagina"
   },

@@ -380,6 +380,12 @@
   "optColourModeHint": {
     "message": "Graustufen und Schwarzweiß verkleinern die Datei auf 58 % und 27 % — und helfen der Texterkennung, statt ihr zu schaden: 989 Wörter werden zurückgelesen gegenüber 987 in Farbe. Seiten mit Fotos brauchen Farbe."
   },
+  "optHellerDruck": {
+    "message": "Hintergrund immer weiß halten"
+  },
+  "optHellerDruckHint": {
+    "message": "Für Graustufen und Schwarzweiß: Eine Seite im Dunkelmodus wird umgekehrt, damit das Blatt weiß bleibt und die Schrift dunkel. Spart Toner und hält kleine Schrift lesbar. Ausschalten, wenn das PDF genau so aussehen soll wie der Bildschirm. Farbaufnahmen bleiben unberührt."
+  },
   "optSourceMetadata": {
     "message": "Zitationsangaben aus der Seite lesen"
   },
