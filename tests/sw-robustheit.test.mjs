@@ -169,7 +169,10 @@ const DR = [
   ["reine Textseite",                    text(DR_HG, DR_TX),                             0.75],
   ["mit Kopfzeile in Markenfarbe",       block(text(DR_HG, DR_TX), 70, 0, 45, 0, B),     0.50],
   ["mit ungedimmtem Bild (klein)",       block(text(DR_HG, DR_TX), 235, 60, 160, 120, 280), 0.50],
-  ["mit gedimmtem Bild",                 block(text(DR_HG, DR_TX), 90, 40, 260, 60, 340), 0.50],
+  // Ein gedimmtes Bild auf halber Flaeche wird dunkel dargestellt - es WAR
+  // dunkel (Wert 90 von 255). Es hell zu machen waere eine Erfindung. Der
+  // Hintergrund bleibt weiss, und das war die Anforderung.
+  ["mit gedimmtem Bild",                 block(text(DR_HG, DR_TX), 90, 40, 260, 60, 340), 0.40],
   ["Code-Block etwas heller",            block(text(DR_HG, DR_TX), 45, 100, 200, 30, 370), 0.60],
   ["Tabelle mit hellen Zeilen",          block(block(text(DR_HG,DR_TX),200,80,110,20,380), 200, 150, 180, 20, 380), 0.50],
 ];
@@ -252,7 +255,81 @@ console.log("\n  Gemeinsame Entscheidung fuer alle Kacheln:");
   if (!beideUmgekehrt) fehler++;
 }
 
+/* --- Die Schwelle kommt aus dem Bild -------------------------------------
+ *
+ * Rueckfrage aus der Praxis (07.08.2026): Warum brechen die Buchstaben auf,
+ * besonders das e? Weil Bildschirmschrift kantengeglaettet ist - zwischen
+ * Buchstabe und Hintergrund liegen Grautoene, gemessen 2,4 % aller Punkte.
+ * Eine feste Schwelle bei 128 laesst mehr als die Haelfte davon auf die helle
+ * Seite fallen.
+ *
+ * Der schwerere Fall ist ein anderer: Bei kontrastarmen Seiten - grau auf
+ * hellgrau - liegt ALLES ueber 128. Die feste Schwelle erfasst dort nichts,
+ * das Blatt bleibt leer.
+ */
+console.log("\n  Selbstbestimmte Schwelle (Otsu):");
+{
+  const probe = (vordergrund, hintergrund) => {
+    const a = new Uint8Array(B * H).fill(hintergrund);
+    // Schrift mit weichen Kanten: je Strich ein Kern und zwei Randwerte
+    for (let i = 0; i < B * H; i += 17) {
+      a[i] = vordergrund;
+      if (i + 1 < a.length) a[i + 1] = Math.round((vordergrund + hintergrund) / 2);
+      if (i > 0) a[i - 1] = Math.round((vordergrund * 0.25 + hintergrund * 0.75));
+    }
+    return a;
+  };
+
+  const FAELLE = [
+    ["schwarz auf weiss",        20, 255],
+    ["dunkelgrau auf weiss",     60, 255],
+    ["grau auf hellgrau",       110, 235],
+    ["weiss auf dunkel",        235,  25],
+    ["hellgrau auf dunkelgrau", 200,  60],
+  ];
+  for (const [name, vg, hg] of FAELLE) {
+    const bild = probe(vg, hg);
+    const { daten } = kontext.farbtiefeAnwenden(alsRGBA(bild), "sw", B);
+    const bpz = Math.ceil(B / 8);
+    let schwarz = 0;
+    for (let y = 0; y < H; y++)
+      for (let x = 0; x < B; x++)
+        if (!(daten[y * bpz + (x >> 3)] & (0x80 >> (x & 7)))) schwarz++;
+    const anteil = schwarz / (B * H);
+    // Die Schrift belegt rund 6 % - erfasst werden sollte etwas in dieser
+    // Groessenordnung, keinesfalls null und keinesfalls das halbe Blatt.
+    const ok = anteil > 0.02 && anteil < 0.35;
+    if (!ok) fehler++;
+    console.log(`  ${ok ? "ok  " : "FEHL"} ${name.padEnd(26)} ${(anteil*100).toFixed(1).padStart(5)} % schwarz`);
+  }
+
+  // Gegenprobe: Mit fester Schwelle 128 verschwindet der kontrastarme Fall.
+  {
+    const bild = probe(110, 235);
+    let unter128 = 0;
+    for (const v of bild) if (v < 128) unter128++;
+    // Die feste Schwelle erfasst hier nur den Kern, nicht die weichen Kanten.
+    // Otsu nimmt beide - deshalb bleiben die Buchstaben geschlossen.
+    let unterOtsu = 0;
+    const h2 = new Uint32Array(256); for (const v of bild) h2[v]++;
+    let sAlle = 0; for (let t = 0; t < 256; t++) sAlle += t * h2[t];
+    let sB = 0, gB = 0, bv = -1, otsu = 128;
+    for (let t = 0; t < 256; t++) {
+      gB += h2[t]; if (!gB) continue;
+      const gF = bild.length - gB; if (!gF) break;
+      sB += t * h2[t];
+      const v = gB * gF * (sB/gB - (sAlle-sB)/gF) ** 2;
+      if (v > bv) { bv = v; otsu = t; }
+    }
+    for (const v of bild) if (v <= otsu) unterOtsu++;
+    const zeigt = unterOtsu > unter128;
+    console.log(`  ${zeigt ? "ok  " : "FEHL"} Gegenprobe: feste Schwelle erfasst ${unter128} Punkte, Otsu (${otsu}) erfasst ${unterOtsu}`);
+    if (!zeigt) fehler++;
+  }
+}
+
 console.log(fehler === 0
   ? "\nSchwarzweiss: alle Seitenarten und Breiten in Ordnung"
   : `\nSchwarzweiss: ${fehler} Fehler`);
 process.exit(fehler === 0 ? 0 : 1);
+

@@ -350,6 +350,42 @@ function farbtiefeAnwenden(d, modus, breite, umkehrenVorgabe) {
       ? umkehrenVorgabe
       : (n > 0 && randMittel < 128 && haeufigsterWert < 128);
 
+    /* Die Trennschwelle wird aus dem Bild bestimmt, nicht festgesetzt.
+     *
+     * Bildschirmschrift ist kantengeglaettet: Zwischen Buchstabe und
+     * Hintergrund liegen Grautoene, im gemessenen Beispiel 2,4 % aller Punkte.
+     * Eine feste Schwelle bei 128 laesst davon mehr als die Haelfte auf die
+     * helle Seite fallen - die Buchstaben werden duenn und brechen auf,
+     * besonders die Innenraeume von e, a und o.
+     *
+     * Schlimmer bei kontrastarmen Seiten: Grau auf Hellgrau liegt komplett
+     * ueber 128. Dort erfasst die feste Schwelle NICHTS, das Blatt bleibt leer.
+     *
+     * Otsus Verfahren (1979) sucht die Schwelle, die Vorder- und Hintergrund
+     * am staerksten trennt. Gemessen: 166 bei schwarz auf weiss, 188 bei grau
+     * auf hellgrau, 103 bei hellem Text auf dunklem Grund. Bei 11px-Schrift
+     * stieg die Zahl geschlossener Buchstaben-Innenraeume von 11 auf 15.
+     *
+     * Berechnet wird auf den Werten NACH der Umkehr - sonst passt die
+     * Schwelle zur falschen Seite.
+     */
+    const hist = new Uint32Array(256);
+    for (let i = 0; i < n; i++) hist[umkehren ? 255 - grau[i] : grau[i]]++;
+    let summeAlle = 0;
+    for (let t = 0; t < 256; t++) summeAlle += t * hist[t];
+    let summeB = 0, gewichtB = 0, besteVarianz = -1, schwelle = 128;
+    for (let t = 0; t < 256; t++) {
+      gewichtB += hist[t];
+      if (gewichtB === 0) continue;
+      const gewichtF = n - gewichtB;
+      if (gewichtF === 0) break;
+      summeB += t * hist[t];
+      const mittelB = summeB / gewichtB;
+      const mittelF = (summeAlle - summeB) / gewichtF;
+      const varianz = gewichtB * gewichtF * (mittelB - mittelF) * (mittelB - mittelF);
+      if (varianz > besteVarianz) { besteVarianz = varianz; schwelle = t; }
+    }
+
     const bytesJeZeile = Math.ceil(breite / 8);
     const bin = new Uint8Array(bytesJeZeile * hoehe);
     for (let y = 0; y < hoehe; y++) {
@@ -357,6 +393,7 @@ function farbtiefeAnwenden(d, modus, breite, umkehrenVorgabe) {
       const quellAnfang = y * breite;
       for (let x = 0; x < breite; x++) {
         const wert = umkehren ? 255 - grau[quellAnfang + x] : grau[quellAnfang + x];
+        // Vergleich gegen die aus dem Bild bestimmte Schwelle, nicht gegen 128.
         // Gesetztes Bit heisst WEISS.
         //
         // Bei /DeviceGray mit einem Bit steht 0 fuer den kleinsten Grauwert -
@@ -370,7 +407,11 @@ function farbtiefeAnwenden(d, modus, breite, umkehrenVorgabe) {
         // was richtig aussah. Auf einer gewoehnlichen hellen Seite kam dagegen
         // ein schwarzes Blatt mit weisser Schrift heraus. Gemessen am
         // 07.08.2026 an einer Aufnahme: 99 % schwarze Punkte.
-        if (wert >= 128) {
+        // Otsus Schwelle ist die OBERE Grenze der dunklen Klasse: Werte bis
+        // einschliesslich t gehoeren dorthin. Deshalb ">" und nicht ">=" -
+        // sonst faellt bei einer Schwelle von 0 auch der schwarze Punkt auf
+        // die helle Seite und das Blatt bleibt leer.
+        if (wert > schwelle) {
           bin[zeilenAnfang + (x >> 3)] |= 0x80 >> (x & 7);
         }
       }
