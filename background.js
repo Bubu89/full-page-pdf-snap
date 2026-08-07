@@ -325,7 +325,20 @@ function farbtiefeAnwenden(d, modus, breite) {
       const quellAnfang = y * breite;
       for (let x = 0; x < breite; x++) {
         const wert = umkehren ? 255 - grau[quellAnfang + x] : grau[quellAnfang + x];
-        if (wert < 128) {
+        // Gesetztes Bit heisst WEISS.
+        //
+        // Bei /DeviceGray mit einem Bit steht 0 fuer den kleinsten Grauwert -
+        // schwarz - und 1 fuer den groessten - weiss (ISO 32000-1, 8.9.5.2;
+        // ohne /Decode-Array gilt der Vorgabebereich [0 1]). Die erste Fassung
+        // setzte das Bit fuer DUNKLE Punkte: Damit wurde die Schrift weiss und
+        // der Hintergrund schwarz, das ganze Bild also verkehrt.
+        //
+        // Aufgefallen ist es nie, weil es sich bei dunklen Oberflaechen
+        // zufaellig aufhob: Dort ist der Hintergrund dunkel, wurde also weiss -
+        // was richtig aussah. Auf einer gewoehnlichen hellen Seite kam dagegen
+        // ein schwarzes Blatt mit weisser Schrift heraus. Gemessen am
+        // 07.08.2026 an einer Aufnahme: 99 % schwarze Punkte.
+        if (wert >= 128) {
           bin[zeilenAnfang + (x >> 3)] |= 0x80 >> (x & 7);
         }
       }

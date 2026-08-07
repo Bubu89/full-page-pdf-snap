@@ -138,16 +138,31 @@ for (const breite of [1440, 1617, 999, 8, 7]) {
 
     // Der schwarze Punkt jeder Zeile muss am Zeilenanfang stehen — genau das
     // verrutscht ohne Auffuellung.
+    //
+    // Seit 07.08.2026 heisst ein gesetztes Bit WEISS (PDF: 0 = schwarz,
+    // 1 = weiss). Der schwarze Punkt ganz links ist also das EINZIGE nicht
+    // gesetzte Bit; alles andere ist 1. Geprueft wird weiterhin dasselbe -
+    // dass der Punkt am Zeilenanfang liegt und nicht verrutscht.
+    const letztesByteVoll = breite % 8 === 0;
     for (let y = 0; y < hoehe; y++) {
       const erstesByte = daten[y * bytesJeZeile];
-      assert.equal(erstesByte & 0x80, 0x80,
-        `Zeile ${y}: linker Punkt muss gesetzt sein, Byte war 0x${erstesByte.toString(16)}`);
-      // und der Rest der Zeile leer
+      assert.equal(erstesByte & 0x80, 0,
+        `Zeile ${y}: linker Punkt ist schwarz, Bit muss 0 sein, Byte war 0x${erstesByte.toString(16)}`);
+      // Der Rest der Zeile ist weiss, also gesetzt. Im letzten Byte zaehlen
+      // nur die Bits, die noch zu Punkten gehoeren - der Rest bleibt 0.
       for (let b = 1; b < bytesJeZeile; b++) {
-        assert.equal(daten[y * bytesJeZeile + b], 0,
-          `Zeile ${y}, Byte ${b}: darf nichts enthalten`);
+        const rest = breite - b * 8;
+        const erwartet = (b === bytesJeZeile - 1 && !letztesByteVoll)
+          ? (0xff << (8 - rest)) & 0xff
+          : 0xff;
+        assert.equal(daten[y * bytesJeZeile + b], erwartet,
+          `Zeile ${y}, Byte ${b}: erwartet 0x${erwartet.toString(16)}`);
       }
-      assert.equal(erstesByte, 0x80, `Zeile ${y}: nur der linke Punkt`);
+      const restImErsten = Math.min(8, breite) - 1;
+      const erwartetErstes = restImErsten > 0
+        ? ((0xff >> 1) & (0xff << (7 - restImErsten))) & 0xff : 0;
+      assert.equal(erstesByte, erwartetErstes,
+        `Zeile ${y}: linker Punkt schwarz, die uebrigen weiss`);
     }
   });
 }
@@ -305,5 +320,55 @@ test("Graustufen bleibt 8 bit und unveraendert lang", () => {
     if (!gut) process.exitCode = 1;
     console.log(`${!vorher ? "ok  " : "FEHL"} Gegenprobe: mittlere Helligkeit haette hier versagt`);
     if (vorher) process.exitCode = 1;
+  }
+}
+
+/* --- Gesetztes Bit heisst weiss ------------------------------------------
+ *
+ * Bei /DeviceGray mit einem Bit steht 0 fuer schwarz und 1 fuer weiss
+ * (ISO 32000-1, 8.9.5.2; ohne /Decode-Array gilt der Vorgabebereich [0 1]).
+ * Die erste Fassung setzte das Bit fuer DUNKLE Punkte - damit wurde die
+ * Schrift weiss und der Hintergrund schwarz, das ganze Bild verkehrt.
+ *
+ * Aufgefallen ist es nie, weil zwei Fehler sich zeitweise aufhoben. Gemessen
+ * am 07.08.2026 an einer echten Aufnahme: 99 % schwarze Punkte auf einem
+ * Blatt, das ueberwiegend Text auf hellem Grund zeigen sollte.
+ */
+{
+  const packe = (grau, breite, umkehren, bitFuerHell) => {
+    const hoehe = grau.length / breite, bpz = Math.ceil(breite / 8);
+    const bin = new Uint8Array(bpz * hoehe);
+    for (let y = 0; y < hoehe; y++)
+      for (let x = 0; x < breite; x++) {
+        const w = umkehren ? 255 - grau[y * breite + x] : grau[y * breite + x];
+        if (bitFuerHell ? w >= 128 : w < 128) bin[y * bpz + (x >> 3)] |= 0x80 >> (x & 7);
+      }
+    return bin;
+  };
+  // So liest ein Betrachter das Bild: nicht gesetztes Bit = schwarz
+  const schwarz = (bin, breite, hoehe) => {
+    const bpz = Math.ceil(breite / 8);
+    let n = 0;
+    for (let y = 0; y < hoehe; y++)
+      for (let x = 0; x < breite; x++)
+        if (!(bin[y * bpz + (x >> 3)] & (0x80 >> (x & 7)))) n++;
+    return n / (breite * hoehe);
+  };
+  const umkehr = (g) => { let d = 0; for (const v of g) if (v < 128) d++; return d * 2 > g.length; };
+
+  const B = 16, H = 10;
+  const seite = (hg, schrift) => {
+    const a = new Uint8Array(B * H).fill(hg);
+    for (let i = 0; i < B * H; i += 12) a[i] = schrift;
+    return a;
+  };
+
+  for (const [name, s] of [["helle Seite", seite(255, 20)], ["dunkle Seite", seite(30, 235)]]) {
+    const alt = schwarz(packe(s, B, umkehr(s), false), B, H);
+    const neu = schwarz(packe(s, B, umkehr(s), true), B, H);
+    const gut = neu < 0.25, zeigt = alt > 0.75;
+    console.log(`${gut ? "ok  " : "FEHL"} ${name}: Hintergrund weiss, ${(neu*100).toFixed(0)} % schwarz`);
+    console.log(`${zeigt ? "ok  " : "FEHL"} ${name}: Gegenprobe alte Polaritaet ${(alt*100).toFixed(0)} % schwarz`);
+    if (!gut || !zeigt) process.exitCode = 1;
   }
 }
