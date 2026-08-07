@@ -754,9 +754,26 @@ async function captureFullPageInner(tab, settings) {
       if (fresh && fresh.totalH && fresh.totalH > totalH && !endlosVerdacht) {
         if (++nachgewachsen >= NACHWUCHS_SCHWELLE) {
           endlosVerdacht = true;
-          maxScroll = Math.max(0, hoeheBeimStart - layout.viewportH);
-          log("Endloser Nachschub erkannt (", nachgewachsen, "x gewachsen) - "
-              + "Aufnahme endet bei der Hoehe vom Start:", hoeheBeimStart);
+          // Zuerst die Seite selbst fragen, wo sie endet. Der Seitenfuss steht
+          // im Dokument unterhalb des Inhalts - auch bei Seiten, die darueber
+          // endlos nachladen. Wo es ihn gibt, ist er die ehrliche Grenze;
+          // ein Zaehler waere willkuerlich und schnitte je nach
+          // Netzgeschwindigkeit woanders ab.
+          let grenze = null;
+          try {
+            const pe = await browser.tabs.sendMessage(tab.id, { cmd: "pageEnd" });
+            if (pe && Number.isFinite(pe.ende) && pe.ende > layout.viewportH) grenze = pe.ende;
+          } catch (_) { /* alte Fassung des Inhaltsskripts: Deckel greift */ }
+
+          if (grenze) {
+            maxScroll = Math.max(0, grenze - layout.viewportH);
+            log("Endloser Nachschub - Seitenfuss bei y=", Math.round(grenze),
+                "gefunden, Aufnahme endet dort");
+          } else {
+            maxScroll = Math.max(0, hoeheBeimStart - layout.viewportH);
+            log("Endloser Nachschub (", nachgewachsen, "x gewachsen), kein Seitenfuss - "
+                + "Aufnahme endet bei der Hoehe vom Start:", hoeheBeimStart);
+          }
           if (actualY >= maxScroll - 2) { abgeschnitten = true; break; }
         }
       }

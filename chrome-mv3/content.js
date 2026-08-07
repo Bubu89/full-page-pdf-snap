@@ -163,6 +163,53 @@
    * ersten Segments kein Menue mehr gezeichnet wird. Ohne sie entstuende dort
    * ein weisser Block, der bei dunklen Oberflaechen wie ein Fehler wirkt.
    */
+  /* Wo endet die Seite, wenn sie kein Ende hat?
+   *
+   * Seiten mit endlosem Nachschub wachsen beim Scrollen immer weiter. Ein
+   * blosser Zaehler ("nach zwoelf Nachladungen ist Schluss") waere willkuerlich
+   * und schnitte je nach Netzgeschwindigkeit woanders ab.
+   *
+   * Die meisten dieser Seiten tragen aber sehr wohl eine Endmarke: den
+   * Seitenfuss. Er steht im Dokument unterhalb des Inhalts, auch wenn darueber
+   * endlos nachgeladen wird - bei Foren, Suchergebnissen und Shops. Wo es ihn
+   * gibt, ist seine Unterkante das ehrliche Ende der Seite.
+   *
+   * Nicht gemeint sind mitlaufende Leisten (position: fixed/sticky) und
+   * Fusszeilen in einer Seitenleiste: Beide stehen nicht fuer das Ende des
+   * Inhalts. Deshalb werden sie ausgeschlossen.
+   *
+   * Rueckgabe: Dokument-Y der Unterkante, oder null wenn es keine brauchbare
+   * Marke gibt (dann bleibt es beim Deckel im Hintergrunddienst).
+   */
+  function findePageEnd(state) {
+    const kandidaten = [];
+    let els;
+    try {
+      els = document.querySelectorAll(
+        "footer, [role=contentinfo], .footer, #footer, .site-footer, .page-footer");
+    } catch (_) { return null; }
+
+    const scrollTop = state && !state.isWindow && state.root
+      ? state.root.scrollTop : (window.scrollY || window.pageYOffset || 0);
+    const sichtBreite = window.innerWidth;
+
+    for (const el of els) {
+      let cs, r;
+      try { cs = getComputedStyle(el); r = el.getBoundingClientRect(); } catch (_) { continue; }
+      if (cs.position === "fixed" || cs.position === "sticky") continue;   // mitlaufende Leiste
+      if (cs.display === "none" || cs.visibility === "hidden") continue;
+      if (r.height < 20) continue;
+      // Ein Seitenfuss nimmt die Breite des Inhalts ein. Was schmal ist,
+      // steht in einer Spalte und markiert nicht das Ende der Seite.
+      if (r.width < sichtBreite * 0.5) continue;
+      kandidaten.push(Math.round(r.bottom + scrollTop));
+    }
+    if (!kandidaten.length) return null;
+    // Der unterste gefundene Fuss gilt - bei verschachtelten Fusszeilen ist
+    // das der aeussere.
+    return Math.max(...kandidaten);
+  }
+
   function pageBackgroundColor(state) {
     const opaque = (c) =>
       c && !/^rgba\(0,\s*0,\s*0,\s*0\)$/.test(c) && c !== "transparent";
@@ -1195,6 +1242,9 @@
           }
           case "currentTotalH":
             sendResponse({ totalH: scrollState ? getTotalHeight(scrollState) : 0 });
+            break;
+          case "pageEnd":
+            sendResponse({ ende: findePageEnd(scrollState) });
             break;
           case "restore":
             restorePage();

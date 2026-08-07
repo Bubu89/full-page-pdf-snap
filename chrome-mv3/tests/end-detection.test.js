@@ -95,5 +95,60 @@ for (const [max, h, label] of [
   ok(holes.length === 0, `${label}: lueckenlos abgedeckt`);
 }
 
+
+/* --- Seitenfuss als Endmarke bei endlosem Nachschub -------------------
+ *
+ * Frage aus der Praxis (07.08.2026): Seiten mit endlosem Scroll tragen
+ * meist trotzdem einen Seitenfuss. Kann man daran nicht erkennen, wo die
+ * Seite eigentlich endet, statt nach einer festen Zahl von Nachladungen
+ * abzubrechen? Ja - und der Fuss ist das bessere Kriterium, weil ein
+ * Zaehler je nach Netzgeschwindigkeit woanders schneidet.
+ */
+function findePageEnd(elemente, winW) {
+  const treffer = [];
+  for (const e of elemente) {
+    if (e.position === "fixed" || e.position === "sticky") continue;
+    if (e.display === "none" || e.visibility === "hidden") continue;
+    if (e.height < 20) continue;
+    if (e.width < winW * 0.5) continue;
+    treffer.push(e.bottomDoc);
+  }
+  return treffer.length ? Math.max(...treffer) : null;
+}
+
+const W = 1384;
+const pe = (name, els, want) => ok(findePageEnd(els, W) === want,
+  `Seitenfuss ${name}: ${findePageEnd(els, W)} (erwartet ${want})`);
+
+pe("gewoehnlicher Fuss unter dem Inhalt",
+   [{ width: 1384, height: 220, bottomDoc: 48200, position: "static" }], 48200);
+pe("mitlaufende Leiste zaehlt nicht",
+   [{ width: 1384, height: 60, bottomDoc: 900, position: "fixed" }], null);
+pe("Fuss in einer schmalen Spalte zaehlt nicht",
+   [{ width: 260, height: 400, bottomDoc: 5000, position: "static" }], null);
+pe("ausgeblendeter Fuss zaehlt nicht",
+   [{ width: 1384, height: 220, bottomDoc: 48200, position: "static", display: "none" }], null);
+pe("verschachtelt - der aeussere gewinnt",
+   [{ width: 1384, height: 90,  bottomDoc: 47800, position: "static" },
+    { width: 1384, height: 220, bottomDoc: 48200, position: "static" }], 48200);
+pe("kein Fuss vorhanden -> Deckel greift", [], null);
+
+// Zusammenspiel: mit Fuss endet die Aufnahme dort, ohne bei der Starthoehe.
+// Beides muss endlich sein - dass es das nicht war, war der eigentliche Fehler.
+function endlosLauf(startH, viewportH, fussEnde) {
+  const grenze = fussEnde !== null ? fussEnde : startH;
+  const maxScroll = Math.max(0, grenze - viewportH);
+  const step = Math.max(100, viewportH - 40);
+  let y = 0, schritte = 0;
+  while (y < maxScroll && ++schritte < 500) y = Math.min(y + step, maxScroll);
+  return { schritte, endeBei: y + viewportH };
+}
+const mitFuss = endlosLauf(20000, 800, 48200);
+ok(mitFuss.schritte < 500 && Math.abs(mitFuss.endeBei - 48200) < 900,
+   `mit Seitenfuss: endet bei ${mitFuss.endeBei} nach ${mitFuss.schritte} Schritten`);
+const ohneFuss = endlosLauf(20000, 800, null);
+ok(ohneFuss.schritte < 500 && Math.abs(ohneFuss.endeBei - 20000) < 900,
+   `ohne Seitenfuss: endet bei ${ohneFuss.endeBei} nach ${ohneFuss.schritte} Schritten`);
+
 console.log("\n" + R.join("\n"));
 console.log("\nERGEBNIS: " + (R.some(l => l.startsWith("FEHL")) ? "FEHLER" : "ALLE BESTANDEN"));
