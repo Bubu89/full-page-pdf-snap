@@ -144,7 +144,55 @@ async function load() {
   // String(1.0) ergibt "1", die Option heisst aber "1.0" - ohne Zuordnung
   // ueber den Zahlenwert bliebe das Feld bei 1.0 und 2.0 leer.
   setNumericSelect("captureScale", s.captureScale, 1.0);
+  // Ein gespeichertes Format gilt als Wahl des Nutzers.
+  seitenformatVomNutzer = s.pageFormat === "free";
+  mehrseitigFelderAktualisieren();
 }
+
+/* Die Seitengroesse gilt nur bei mehrseitiger Ausgabe.
+ *
+ * Bisher standen die drei Felder unabhaengig nebeneinander: Wer "Eine
+ * fortlaufende Seite" gewaehlt hatte, konnte darunter eine Seitengroesse und
+ * eine Pixelhoehe einstellen, die nichts bewirkten. Und wer auf "Mehrere
+ * Seiten (zum Drucken)" wechselte, musste das Druckformat in einem zweiten
+ * Feld nachziehen - obwohl der Zweck schon im Namen der Auswahl steht.
+ *
+ * Deshalb: Was ohne Wirkung ist, wird ausgegraut. Und beim Wechsel auf
+ * mehrseitig wird A4 gesetzt, wenn nichts anderes ausdruecklich gewaehlt
+ * wurde - "zum Drucken" heisst Druckformat.
+ */
+let seitenformatVomNutzer = false;
+
+function mehrseitigFelderAktualisieren() {
+  const mehrseitig = $("singlePagePdf").value === "false";
+  for (const id of ["pageFormat", "pageHeightPx"]) {
+    const el = $(id);
+    if (!el) continue;
+    el.disabled = !mehrseitig;
+    // Ein ausgegrautes Feld erklaert sich sonst nicht: Der Hinweis darunter
+    // verblasst mit, damit der Zusammenhang sichtbar wird.
+    const box = el.closest("label");
+    if (box) box.style.opacity = mehrseitig ? "1" : "0.45";
+  }
+  // Die feste Pixelhoehe wirkt nur, wenn nicht A4 gewaehlt ist.
+  const hoehe = $("pageHeightPx");
+  if (hoehe && mehrseitig) {
+    const festeHoehe = $("pageFormat").value !== "a4";
+    hoehe.disabled = !festeHoehe;
+    const box = hoehe.closest("label");
+    if (box) box.style.opacity = festeHoehe ? "1" : "0.45";
+  }
+}
+$("singlePagePdf").addEventListener("change", () => {
+  if ($("singlePagePdf").value === "false" && !seitenformatVomNutzer) {
+    $("pageFormat").value = "a4";      // "zum Drucken" heisst A4
+  }
+  mehrseitigFelderAktualisieren();
+});
+$("pageFormat").addEventListener("change", () => {
+  seitenformatVomNutzer = true;        // ab jetzt nicht mehr selbst umstellen
+  mehrseitigFelderAktualisieren();
+});
 
 $("resetCounter").addEventListener("click", async () => {
   await browser.storage.local.set({ counter: 0 });
