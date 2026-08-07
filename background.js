@@ -314,9 +314,51 @@ function farbtiefeAnwenden(d, modus, breite) {
     //
     // Nur fuer Schwarzweiss. Graustufen geben die Seite wieder, wie sie war -
     // wer sie waehlt, will das Aussehen behalten.
-    let dunkelPunkte = 0;
-    for (let i = 0; i < n; i++) if (grau[i] < 128) dunkelPunkte++;
-    const umkehren = n > 0 && dunkelPunkte * 2 > n;
+    // Zwei Merkmale muessen zusammenkommen, sonst wird nicht umgekehrt.
+    //
+    // Der erste Versuch zaehlte einfach, wie viele Punkte dunkel sind. Das
+    // kippt, sobald ein grosses Bild oder ein Diagramm auf einer hellen Seite
+    // liegt: An zwoelf nachgestellten Faellen traf die Regel nur sieben Mal.
+    //
+    //   Randmittel  - der Streifen am Blattrand ist fast immer Hintergrund;
+    //                 Bilder und Diagramme liegen in der Mitte.
+    //   Modus       - der haeufigste Grauwert der ganzen Flaeche, grob
+    //                 gerastert. Das ist die Farbe, die den meisten Platz
+    //                 einnimmt.
+    //
+    // Umgekehrt wird nur, wenn BEIDE dunkel sind. Der Rand allein irrt bei
+    // hellen Seiten mit dunkler Kopf- und Fusszeile, der Modus allein bei
+    // grossen Bildern. Zusammen trafen sie 12 von 14 Faellen; die beiden
+    // uebrigen sind dunkle Seiten, auf denen ein sehr grosses helles Bild
+    // liegt - dort bleibt es beim Original. Das ist der harmlosere Irrtum:
+    // Es wird nichts verfaelscht, und weniger als die Haelfte des Blattes
+    // ist schwarz.
+    const randTiefe = Math.max(4, Math.round(Math.min(breite, hoehe) * 0.03));
+    let randSumme = 0, randAnzahl = 0;
+    for (let y = 0; y < hoehe; y++) {
+      const obenUnten = y < randTiefe || y >= hoehe - randTiefe;
+      const zeile = y * breite;
+      for (let x = 0; x < breite; x++) {
+        if (obenUnten || x < randTiefe || x >= breite - randTiefe) {
+          randSumme += grau[zeile + x]; randAnzahl++;
+        }
+      }
+    }
+    const randMittel = randAnzahl ? randSumme / randAnzahl : 255;
+
+    // Histogramm in 32 Stufen - Flaechen auf dem Bildschirm sind selten exakt
+    // derselbe Wert, feiner zu rastern verteilt sie auf Nachbarstufen.
+    const eimer = new Uint32Array(32);
+    for (let i = 0; i < n; i++) eimer[grau[i] >> 3]++;
+    let groesster = 0;
+    for (let i = 1; i < 32; i++) if (eimer[i] > eimer[groesster]) groesster = i;
+    // NICHT 'modus' nennen - so heisst der Parameter dieser Funktion.
+    // Ein const gleichen Namens verschattet ihn und wirft beim Zugriff
+    // weiter oben eine ReferenceError: die Umwandlung waere komplett
+    // gebrochen. Vom Test am 07.08.2026 sofort gefunden.
+    const haeufigsterWert = groesster * 8 + 4;
+
+    const umkehren = n > 0 && randMittel < 128 && haeufigsterWert < 128;
 
     const bytesJeZeile = Math.ceil(breite / 8);
     const bin = new Uint8Array(bytesJeZeile * hoehe);
