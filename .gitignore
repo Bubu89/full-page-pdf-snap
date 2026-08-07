@@ -43,3 +43,5 @@ protokoll-agent-install.md
 store-texte/ANLEITUNG_NAECHSTE_SCHRITTE.md
 store-texte/EINREICHEN_*.md
 _visual-check/
+store-texte/*.bak-*
+*.bak-*

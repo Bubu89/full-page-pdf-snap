@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PushDictate — push-to-talk dictation for Windows that works in the terminal</title>
+<meta name="description" content="Hold Ctrl+Space, speak, release — the text appears where your cursor is. Works in Windows Terminal, WSL, SSH and coding agents, where the built-in Windows dictation does not. Free, MIT, your own OpenAI key.">
+<link rel="icon" href="../../icon-128.png">
+<link rel="canonical" href="https://provinglab.dev/tools/pushdictate/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/tools/pushdictate/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/tools/pushdictate/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/tools/pushdictate/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:title" content="PushDictate">
+<meta property="og:description" content="Push-to-talk dictation for Windows that also works in the terminal, WSL and SSH. The text lands wherever your cursor is.">
+<meta property="og:url" content="https://provinglab.dev/tools/pushdictate/">
+<meta name="twitter:card" content="summary">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "PushDictate",
+  "alternateName": "PushDictate — Push-to-Talk Dictation for Windows",
+  "applicationCategory": "UtilitiesApplication",
+  "applicationSubCategory": "Speech to Text",
+  "operatingSystem": "Windows 10, Windows 11",
+  "softwareRequirements": "Python 3.10 or later (64-bit), an OpenAI API key",
+  "url": "https://provinglab.dev/tools/pushdictate/",
+  "downloadUrl": "https://github.com/Bubu89/pushdictate",
+  "codeRepository": "https://github.com/Bubu89/pushdictate",
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+  "inLanguage": ["en","de"],
+  "privacyPolicy": "https://provinglab.dev/privacy.html",
+  "description": "Push-to-talk dictation for Windows. Hold Ctrl+Space, speak, release — the transcribed text is inserted wherever the text cursor is. Because it pastes through the clipboard instead of the Windows text-services layer, it also works in console windows: Windows Terminal, PowerShell, WSL, SSH sessions and terminal-based coding agents, where the built-in Windows dictation does not.",
+  "keywords": "push to talk dictation Windows, dictation in terminal, PowerShell voice input, WSL dictation, speech to text Windows, voice typing, dictate to coding agent, OpenAI Whisper client, hands-free typing, transcription tool, Windows dictation alternative, Diktiersoftware Windows, Spracherkennung Windows, Diktat im Terminal, Sprache zu Text, an Coding-Agent diktieren",
+  "featureList": [
+    "Inserts text wherever the cursor is, in any window that accepts text input",
+    "Works in Windows Terminal, PowerShell, WSL and SSH sessions",
+    "Push-to-talk — the microphone opens only while the hotkey is held",
+    "Setup assistant takes the API key on first launch, no config file editing",
+    "Custom vocabulary file for proper nouns, applied without restart",
+    "Pauses and resumes media playback around each dictation",
+    "Queues dictations and retries them after network failures",
+    "Recovers from crashes and from standby"
+  ]
+}
+</script>
+<style>
+
+  :root{
+    --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --acc2:#7c5cff;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--tx); line-height:1.65;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* --- Header --- */
+  header{
+    padding:80px 0 64px; text-align:center;
+    background:radial-gradient(ellipse 900px 500px at 50% -10%,rgba(76,122,255,.22),transparent 70%);
+    border-bottom:1px solid var(--line);
+  }
+  header img.logo{width:88px;height:88px;margin-bottom:20px}
+  h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.15;letter-spacing:-.02em;margin-bottom:16px}
+  .tagline{font-size:clamp(1.05rem,2.4vw,1.3rem);color:var(--dim);max-width:640px;margin:0 auto 34px}
+  .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn{
+    display:inline-block;padding:14px 30px;border-radius:10px;font-weight:600;
+    font-size:1.02rem;border:1px solid transparent;transition:transform .12s ease;
+  }
+  .btn:hover{text-decoration:none;transform:translateY(-2px)}
+  .btn-primary{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff}
+  .btn-ghost{border-color:var(--line);color:var(--tx);background:var(--card)}
+  .meta{margin-top:24px;font-size:.9rem;color:var(--dim)}
+  .meta span{margin:0 10px;white-space:nowrap}
+
+  /* --- Sprachumschalter --- */
+  .lang{display:flex;gap:6px;justify-content:center;margin-bottom:36px}
+  .lang button{
+    font:inherit;font-size:.86rem;font-weight:600;padding:7px 18px;cursor:pointer;
+    background:var(--card);color:var(--dim);border:1px solid var(--line);border-radius:8px;
+  }
+  .lang button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
+
+  section{padding:72px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:clamp(1.5rem,3.4vw,2.1rem);letter-spacing:-.01em;margin-bottom:12px}
+  .sub{color:var(--dim);margin-bottom:40px;max-width:680px}
+
+  /* --- Screenshots --- */
+  figure{margin-bottom:56px}
+  figure img{
+    width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;
+    border-radius:14px;border:1px solid var(--line);
+    box-shadow:0 20px 50px rgba(0,0,0,.35);display:block;
+    background:var(--card);
+  }
+  figcaption{margin-top:14px;color:var(--dim);font-size:.95rem;text-align:center}
+
+  /* --- Features --- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px}
+  .card h3{font-size:1.06rem;margin-bottom:8px}
+  .card p{color:var(--dim);font-size:.95rem}
+
+  /* --- Privacy --- */
+  .privacy{
+    background:linear-gradient(135deg,rgba(76,122,255,.1),rgba(124,92,255,.1));
+    border:1px solid var(--line);border-radius:16px;padding:38px;
+  }
+  .privacy ul{list-style:none;margin-top:18px;display:grid;gap:11px}
+  .privacy li{padding-left:30px;position:relative;color:var(--dim)}
+  .privacy li::before{
+    content:"✓";position:absolute;left:0;color:var(--acc);font-weight:700;
+  }
+
+  table{width:100%;border-collapse:collapse;margin-top:22px;font-size:.94rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+  th{color:var(--dim);font-weight:600}
+  .tw{overflow-x:auto}
+
+  footer{padding:52px 0;text-align:center;color:var(--dim);font-size:.9rem}
+  footer p{margin-bottom:8px}
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on,span[data-lang].on{display:list-item}
+  span[data-lang].on{display:inline}
+
+  .faq{margin:44px 0 0}
+  .faq h2{margin-bottom:8px}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;font-size:1rem;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+
+  /* --- Galerie: klein nebeneinander, Klick vergroessert --- */
+  .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+  @media (max-width:760px){ .shots{grid-template-columns:1fr;gap:14px} }
+  .shot{margin:0;cursor:zoom-in;border:0;padding:0;background:none;text-align:left;
+        font:inherit;color:inherit;display:block}
+  .shot picture{display:block}
+  .shot img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;display:block;
+        border-radius:10px;border:1px solid var(--line);background:var(--card);
+        transition:transform .15s ease,border-color .15s ease}
+  .shot:hover img,.shot:focus-visible img{transform:translateY(-3px);border-color:var(--acc)}
+  .shot:focus-visible{outline:2px solid var(--acc);outline-offset:4px;border-radius:12px}
+  .shot figcaption{margin-top:9px;font-size:.85rem;color:var(--dim);line-height:1.45}
+  dialog.gross{border:0;padding:0;background:transparent;max-width:96vw;max-height:96vh}
+  dialog.gross::backdrop{background:rgba(0,0,0,.82)}
+  dialog.gross img{max-width:96vw;max-height:88vh;width:auto;height:auto;display:block;
+        border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  dialog.gross p{color:#f2f2f7;text-align:center;margin-top:12px;font-size:.9rem}
+  dialog.gross .zu{position:fixed;top:18px;right:22px;font:inherit;font-size:1.6rem;
+        background:none;border:0;color:#f2f2f7;cursor:pointer;line-height:1}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/">Notes</a>
+    <a class="n" href="../../measurements/">Measurements</a>
+    <a class="n" href="../../recipes/">Recipes</a>
+    <a class="n" href="../../for-agents/">For&nbsp;agents</a>
+    <a class="n" href="../../tools/" aria-current="page">Tools</a>
+    <a class="n" href="../../about/">About</a>
+    <a class="n" href="#de-start" hreflang="de" lang="de" title="Zur deutschen Fassung">Deutsch</a>
+    <a class="dl" href="https://github.com/Bubu89/pushdictate">GitHub</a>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <h1>PushDictate</h1>
+
+    <p class="tagline" data-lang="en" lang="en">Hold <b>Ctrl+Space</b>, speak, release — the text appears where your cursor is blinking. Also in the terminal, where the built-in Windows dictation gives up.</p>
+    <p class="tagline" data-lang="de" lang="de">
+      <b>Strg+Leertaste</b> halten, sprechen, loslassen — der Text erscheint dort, wo der Cursor blinkt. Auch im Terminal, wo die Windows-Spracherkennung aufgibt.</p>
+
+    <div class="cta">
+      <a class="btn btn-primary" href="https://github.com/Bubu89/pushdictate">
+        <span data-lang="en" class="on" lang="en">Get it on GitHub</span><span data-lang="de" lang="de">Auf GitHub holen</span>
+      </a>
+      <button class="btn" id="b-en" onclick="setLang('en')" aria-pressed="true">English</button>
+      <button class="btn" id="b-de" onclick="setLang('de')" aria-pressed="false">Deutsch</button>
+    </div>
+
+    <p class="sub" data-lang="en" lang="en">Windows 10/11 · Python 3.10+ · MIT licence · your own OpenAI key</p>
+    <p class="sub" data-lang="de" lang="de">Windows 10/11 · Python 3.10+ · MIT-Lizenz · eigener OpenAI-Schlüssel</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section>
+  <div data-lang="en" class="on" lang="en">
+    <h2>Why it exists</h2>
+    <p>Windows Speech Recognition and most dictation tools insert text through Windows' text-services layer. That layer is unavailable in console windows, in many Electron apps, and in anything running inside WSL. So exactly when you want to dictate a commit message, a prompt to a coding agent, or a shell command, the built-in dictation stops working.</p>
+    <p>PushDictate takes a different route: <b>record → transcribe → clipboard → paste</b>. A clipboard paste is accepted by every window that takes text. That single design decision is the whole point of the tool.</p>
+
+    <h2>Where it works that others don't</h2>
+    <table>
+      <thead><tr><th>Target</th><th>Windows dictation</th><th>PushDictate</th></tr></thead>
+      <tbody>
+        <tr><td>Windows Terminal, PowerShell, cmd</td><td>✗</td><td>✓</td></tr>
+        <tr><td>WSL / Ubuntu shell</td><td>✗</td><td>✓</td></tr>
+        <tr><td>Coding agents in the terminal</td><td>✗</td><td>✓</td></tr>
+        <tr><td>VS Code integrated terminal</td><td>✗</td><td>✓</td></tr>
+        <tr><td>SSH sessions</td><td>✗</td><td>✓</td></tr>
+        <tr><td>Word, Outlook, browsers</td><td>✓</td><td>✓</td></tr>
+      </tbody>
+    </table>
+    <p class="fineprint">Verified in daily use on Windows 11, not in a systematic test series across Windows versions. If a row is wrong on your setup, open an issue and it gets corrected here.</p>
+    <p class="fineprint">Other push-to-talk dictation tools exist — several open-source projects cover Linux and macOS with local models. PushDictate is the Windows-plus-cloud-API case, so this table compares against the built-in Windows dictation, not against those projects.</p>
+  </div>
+
+  <div data-lang="de" lang="de" id="de-start">
+    <h2>Warum es das gibt</h2>
+    <p>Die Windows-Spracherkennung und die meisten Diktierwerkzeuge schreiben über die Text-Services-Schicht von Windows. Die steht in Konsolenfenstern nicht zur Verfügung, in vielen Electron-Apps ebenso wenig, und in allem, was in WSL läuft, erst recht nicht. Genau dann, wenn eine Commit-Nachricht, ein Prompt an einen Coding-Agenten oder ein Shell-Befehl diktiert werden soll, gibt sie auf.</p>
+    <p>PushDictate geht einen anderen Weg: <b>aufnehmen → transkribieren → Zwischenablage → einfügen</b>. Ein Einfügen aus der Zwischenablage nimmt jedes Fenster an, das Text akzeptiert. Diese eine Entwurfsentscheidung ist der ganze Sinn des Werkzeugs.</p>
+
+    <h2>Wo es funktioniert und anderes nicht</h2>
+    <table>
+      <thead><tr><th>Ziel</th><th>Windows-Diktat</th><th>PushDictate</th></tr></thead>
+      <tbody>
+        <tr><td>Windows Terminal, PowerShell, cmd</td><td>✗</td><td>✓</td></tr>
+        <tr><td>WSL / Ubuntu-Shell</td><td>✗</td><td>✓</td></tr>
+        <tr><td>Coding-Agenten im Terminal</td><td>✗</td><td>✓</td></tr>
+        <tr><td>Integriertes Terminal in VS Code</td><td>✗</td><td>✓</td></tr>
+        <tr><td>SSH-Sitzungen</td><td>✗</td><td>✓</td></tr>
+        <tr><td>Word, Outlook, Browser</td><td>✓</td><td>✓</td></tr>
+      </tbody>
+    </table>
+    <p class="fineprint">Im Alltag auf Windows 11 verifiziert, nicht in einer systematischen Messreihe über mehrere Windows-Versionen. Stimmt eine Zeile auf einem anderen System nicht, bitte ein Issue öffnen — dann wird sie hier korrigiert.</p>
+    <p class="fineprint">Es gibt weitere Push-to-Talk-Diktierwerkzeuge — mehrere Open-Source-Projekte decken Linux und macOS mit lokalen Modellen ab. PushDictate ist der Fall Windows plus Cloud-API, deshalb vergleicht diese Tabelle mit der Windows-Bordfunktion, nicht mit jenen Projekten.</p>
+  </div>
+</section>
+
+<section id="install">
+  <div data-lang="en" class="on" lang="en">
+    <h2>Install</h2>
+    <pre><code>git clone https://github.com/Bubu89/pushdictate.git
+cd pushdictate
+pip install -r requirements.txt</code></pre>
+    <p>Then start it — <code>wscript start_silent.vbs</code> for everyday use, or <code>python pushdictate.py</code> with a console for debugging.</p>
+
+    <h2>First start: the setup assistant</h2>
+    <p>PushDictate ships <b>without</b> an API key and never will. Whisper transcription is billed to whoever owns the key, so it has to be yours. On the first launch a window opens and walks you through it:</p>
+    <ol>
+      <li>A button opens the OpenAI key page in your browser</li>
+      <li>You paste the key into the field</li>
+      <li>Click <b>Save and start</b> — done</li>
+    </ol>
+    <p>The assistant writes the configuration file itself. No copying, no renaming, no editing config by hand. The key is checked for plausibility before it is stored, so an empty field or a typo gets a clear message instead of a failure three steps later.</p>
+    <p><b>Cost:</b> billed per minute of audio. Ten minutes of dictation a day lands in the low single-digit euros per month. Rates change, so check <a href="https://openai.com/api/pricing/">OpenAI's pricing page</a> rather than trusting a number frozen into a web page.</p>
+
+    <h2>Use it</h2>
+    <table>
+      <thead><tr><th>Action</th><th>Key</th></tr></thead>
+      <tbody>
+        <tr><td>Start recording</td><td><code>Ctrl + Space</code></td></tr>
+        <tr><td>Stop and insert</td><td><code>Space</code></td></tr>
+      </tbody>
+    </table>
+    <p>A coloured dot sits at the screen edge: <b>red</b> idle, <b>yellow</b> microphone opening — don't speak yet, <b>green</b> recording, <b>orange</b> transcribing. Wait for green; starting at yellow cuts off your first word. Two low tones mean nothing was inserted.</p>
+    <p>Right-click the dot for the quick guide at any time.</p>
+  </div>
+
+  <div data-lang="de" lang="de">
+    <h2>Installation</h2>
+    <pre><code>git clone https://github.com/Bubu89/pushdictate.git
+cd pushdictate
+pip install -r requirements.txt</code></pre>
+    <p>Danach starten — <code>wscript start_silent.vbs</code> für den Alltag, oder <code>python pushdictate.py</code> mit Konsole zum Debuggen.</p>
+
+    <h2>Erster Start: der Einrichtungs-Assistent</h2>
+    <p>PushDictate wird <b>ohne</b> Schlüssel ausgeliefert und wird das auch bleiben. Die Transkription wird dem Schlüssel-Inhaber verrechnet, also muss es der eigene sein. Beim ersten Start öffnet sich ein Fenster, das durchführt:</p>
+    <ol>
+      <li>Eine Schaltfläche öffnet die OpenAI-Schlüsselseite im Browser</li>
+      <li>Der Schlüssel wird ins Feld eingefügt</li>
+      <li><b>Speichern und starten</b> — fertig</li>
+    </ol>
+    <p>Der Assistent legt die Konfigurationsdatei selbst an. Kein Kopieren, kein Umbenennen, kein Hantieren mit Konfigurationsdateien. Vor dem Speichern wird der Schlüssel auf Plausibilität geprüft — ein leeres Feld oder ein Tippfehler bekommt eine klare Meldung, statt drei Schritte später zu scheitern.</p>
+    <p><b>Kosten:</b> Abrechnung pro Audiominute. Zehn Minuten Diktat am Tag landen im niedrigen einstelligen Eurobereich pro Monat. Preise ändern sich, deshalb besser die <a href="https://openai.com/api/pricing/">Preisseite von OpenAI</a> ansehen als einer Zahl vertrauen, die auf einer Webseite einbetoniert wurde.</p>
+
+    <h2>Bedienung</h2>
+    <table>
+      <thead><tr><th>Aktion</th><th>Taste</th></tr></thead>
+      <tbody>
+        <tr><td>Aufnahme starten</td><td><code>Strg + Leertaste</code></td></tr>
+        <tr><td>Beenden und einfügen</td><td><code>Leertaste</code></td></tr>
+      </tbody>
+    </table>
+    <p>Am Bildschirmrand sitzt ein farbiger Punkt: <b>rot</b> bereit, <b>gelb</b> Mikrofon öffnet — noch nicht sprechen, <b>grün</b> Aufnahme läuft, <b>orange</b> wird transkribiert. Auf Grün warten; wer bei Gelb anfängt, verliert das erste Wort. Zwei tiefe Töne heißen: nichts eingefügt.</p>
+    <p>Rechtsklick auf den Punkt öffnet die Kurzanleitung jederzeit.</p>
+  </div>
+</section>
+
+<section>
+  <div data-lang="en" class="on" lang="en">
+    <h2>Privacy</h2>
+    <p><b>Audio leaves your machine.</b> Recordings go to the OpenAI API for transcription, under your key and OpenAI's terms. No other server is involved: no telemetry, no analytics, no account with the author. The key, your settings, the logs and any queued audio stay on your machine.</p>
+    <p>If your audio must not reach a third party, a local Whisper model is the right choice and this tool is the wrong one. That is a real limitation, not a detail.</p>
+  </div>
+  <div data-lang="de" lang="de">
+    <h2>Datenschutz</h2>
+    <p><b>Die Aufnahme verlässt den Rechner.</b> Sie geht zur Transkription an die OpenAI-API — unter dem eigenen Schlüssel und OpenAIs Bedingungen. Sonst ist kein Server beteiligt: keine Telemetrie, keine Auswertung, kein Konto beim Autor. Schlüssel, Einstellungen, Protokolle und zurückgestellte Aufnahmen bleiben lokal.</p>
+    <p>Wenn die Audiodaten das Gerät nicht verlassen dürfen, ist ein lokales Whisper-Modell die richtige Wahl und dieses Werkzeug die falsche. Das ist eine echte Einschränkung, keine Fußnote.</p>
+  </div>
+</section>
+
+<section class="faq">
+  <div data-lang="en" class="on" lang="en">
+    <h2>Questions</h2>
+    <details><summary>Why does it need my own API key?</summary><p>Transcription is billed to the key that requests it. A key shipped with the app would bill the author for everyone's dictation and would be revoked within days. Your key stays on your machine.</p></details>
+    <details><summary>Does it listen all the time?</summary><p>No. The microphone opens when you hold the hotkey and closes when you release it. Nothing is recorded in between.</p></details>
+    <details><summary>Transcription fails with a connection error.</summary><p>If Cloudflare WARP is running, its Gateway blocks DNS for the OpenAI API — it is categorised as a tracker. You need to allow it in two places: the Split-Tunnel exclusions and a Gateway allow rule. Either one alone is not enough.</p></details>
+    <details><summary>Proper nouns come back misspelled.</summary><p>Put them into <code>vocab.txt</code>, one per line. The list is passed to the model as a hint and applies immediately, without a restart. Keep it short — an overlong list makes the model guess.</p></details>
+    <details><summary>Does it run on macOS or Linux?</summary><p>No. It uses Windows APIs for the hotkey, the overlay and the audio device handling. For those platforms there are other open-source push-to-talk tools, several of them with local models.</p></details>
+  </div>
+  <div data-lang="de" lang="de">
+    <h2>Fragen</h2>
+    <details><summary>Warum braucht es einen eigenen Schlüssel?</summary><p>Die Transkription wird dem Schlüssel verrechnet, der sie anfordert. Ein mitgelieferter Schlüssel würde dem Autor das Diktat aller Nutzer in Rechnung stellen und wäre binnen Tagen gesperrt. Der eigene Schlüssel bleibt auf dem eigenen Rechner.</p></details>
+    <details><summary>Hört es dauernd mit?</summary><p>Nein. Das Mikrofon öffnet, während die Taste gehalten wird, und schließt beim Loslassen. Dazwischen wird nichts aufgenommen.</p></details>
+    <details><summary>Die Transkription scheitert mit einem Verbindungsfehler.</summary><p>Läuft Cloudflare WARP, blockiert dessen Gateway das DNS für die OpenAI-API — sie ist dort als Tracker eingestuft. Die Freigabe muss an zwei Stellen erfolgen: in den Split-Tunnel-Ausnahmen und als Gateway-Regel. Eines allein reicht nicht.</p></details>
+    <details><summary>Eigennamen kommen falsch geschrieben an.</summary><p>In <code>vocab.txt</code> eintragen, einen pro Zeile. Die Liste geht als Hinweis an das Modell und wirkt sofort, ohne Neustart. Kurz halten — eine überlange Liste verleitet das Modell zum Raten.</p></details>
+    <details><summary>Läuft es auf macOS oder Linux?</summary><p>Nein. Es nutzt Windows-APIs für Tastenkürzel, Overlay und Audiogeräte. Für diese Systeme gibt es andere Open-Source-Werkzeuge, mehrere davon mit lokalen Modellen.</p></details>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p><a href="../../">Proving Lab</a> · <a href="https://github.com/Bubu89/pushdictate">GitHub</a> · <a href="../../privacy.html">Privacy</a> · <a href="../../about/">About</a></p>
+  <p data-lang="en" class="on" lang="en">MIT licensed. Published with the measurements behind it — no number without a measurement, no claim without a test.</p>
+  <p data-lang="de" lang="de">MIT-lizenziert. Veröffentlicht mit den Messungen dahinter — keine Zahl ohne Messung, keine Behauptung ohne Test.</p>
+</footer>
+
+<script>
+function setLang(l){
+  document.documentElement.lang = l;
+  document.querySelectorAll('[data-lang]').forEach(function(el){
+    el.classList.toggle('on', el.dataset.lang === l);
+  });
+  document.getElementById('b-en').setAttribute('aria-pressed', l === 'en');
+  document.getElementById('b-de').setAttribute('aria-pressed', l === 'de');
+  try { localStorage.setItem('pd-lang', l); } catch (e) {}
+}
+var saved = null;
+try { saved = localStorage.getItem('pd-lang'); } catch (e) {}
+var browserLang = (navigator.language || '').slice(0, 2) === 'de' ? 'de' : 'en';
+setLang(saved === 'de' || saved === 'en' ? saved : browserLang);
+</script>
+</body>
+</html>
