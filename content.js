@@ -259,7 +259,7 @@
         let cs;
         try { cs = getComputedStyle(el); } catch (_) { continue; }
         if (cs.position !== "fixed" && cs.position !== "sticky") continue;
-        if (!/auto|scroll|overlay/.test(cs.overflowY)) continue;
+        if (!/auto|scroll|overlay|hidden/.test(cs.overflowY)) continue;
         let r;
         try { r = el.getBoundingClientRect(); } catch (_) { continue; }
         if (!isSideNavigation(r)) continue;
@@ -291,7 +291,15 @@
       if (delta <= 4) continue;
       let cs;
       try { cs = getComputedStyle(el); } catch (_) { continue; }
-      if (!/auto|scroll|overlay/.test(cs.overflowY)) {
+      // "hidden" ist bewusst dabei: Ein Container mit overflow:hidden laesst
+      // sich per JavaScript sehr wohl scrollen - scrollTop wirkt dort - und
+      // genau so bauen viele Oberflaechen ihre Navigationsspalte, damit keine
+      // Bildlaufleiste zu sehen ist. Ohne "hidden" fiel die Menuespalte des
+      // Cloudflare-Dashboards durch: Ihr unterer Teil (die letzten Eintraege)
+      // fehlte im PDF, obwohl die Spalte selbst erfasst wurde.
+      // "visible" bleibt draussen - was ueberlaeuft statt zu scrollen, ist
+      // kein eigener Bereich, und scrollTop bewegt dort nichts.
+      if (!/auto|scroll|overlay|hidden/.test(cs.overflowY)) {
         rejected.push(`${tagOf(el)} overflowY=${cs.overflowY} delta=${delta}`);
         continue;
       }
