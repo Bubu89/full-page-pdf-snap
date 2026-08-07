@@ -127,6 +127,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://provinglab.dev/notes/installing-your-own-tool/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://provinglab.dev/notes/agent-cites-a-source/</loc>
     <lastmod>2026-08-04</lastmod>
     <changefreq>yearly</changefreq>

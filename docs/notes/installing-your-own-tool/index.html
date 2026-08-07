@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>I installed my own tool as a stranger would. Four things were wrong.</title>
+<meta name="description" content="The install instructions were tested — by the author, on the machine where everything was already present. A clean install on the same computer found a setup window no script can click, a documented measurement that applied to nobody, an exception on every window message, and two unstated assumptions.">
+<link rel="canonical" href="https://provinglab.dev/notes/installing-your-own-tool/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="I installed my own tool as a stranger would. Four things were wrong.">
+<meta property="og:description" content="A clean install found a setup window no script can click, a measured filter that applied to nobody, and an exception on every window message.">
+<meta property="og:url" content="https://provinglab.dev/notes/installing-your-own-tool/">
+<meta property="article:published_time" content="2026-08-07">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="I installed my own tool as a stranger would. Four things were wrong.">
+<meta name="twitter:description" content="Documentation that is only ever read by the person who wrote it is not documentation.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "I installed my own tool as a stranger would. Four things were wrong.",
+  "description": "A clean install of a published tool, following its own README, surfaced four defects: a setup dialog that blocks scripts and agents, two dependencies missing from requirements.txt that silently disabled a documented audio filter, an unchecked ctypes signature throwing on every window message, and two unstated prerequisites.",
+  "datePublished": "2026-08-07",
+  "dateModified": "2026-08-07",
+  "inLanguage": "en",
+  "mainEntityOfPage": "https://provinglab.dev/notes/installing-your-own-tool/",
+  "author": { "@type": "Organization", "name": "Proving Lab" },
+  "publisher": { "@type": "Organization", "name": "Proving Lab" },
+  "about": ["software installation", "developer tooling", "dependency management", "AI agents", "documentation"],
+  "keywords": "clean install test, requirements.txt missing dependency, silent fallback, ctypes argtypes, headless install, agent-friendly CLI, unattended setup, Python multiple installations, pip wrong interpreter"
+}
+</script>
+
+<style>
+
+  :root{
+    --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --acc2:#7c5cff;
+    --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.87em;
+       background:var(--card);padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:34px 0 38px;border-bottom:1px solid var(--line);margin-bottom:34px}
+  h1{font-size:clamp(1.8rem,4.6vw,2.7rem);line-height:1.15;letter-spacing:-.025em;
+     margin-bottom:20px;text-wrap:balance}
+  .standfirst{font-size:1.13rem;color:var(--dim);max-width:60ch}
+  .meta-line{margin-top:22px;font-size:.85rem;color:var(--dim)}
+
+  h2{font-size:1.42rem;line-height:1.25;margin:46px 0 14px;letter-spacing:-.015em;text-wrap:balance}
+  h3{font-size:1.05rem;margin:28px 0 8px}
+  p{margin-bottom:17px} ul,ol{margin:0 0 18px 24px} li{margin-bottom:9px}
+
+  .case{border-left:3px solid var(--line);padding-left:22px;margin:36px 0}
+  .case.caught{border-left-color:var(--good)}
+  .case.nearmiss{border-left-color:var(--warn)}
+  .case-n{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.74rem;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+  .case h2{margin-top:0}
+
+  .verdict{background:var(--card);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:18px 0 0;font-size:.94rem}
+  .verdict b{color:var(--good)}
+  .verdict.miss b{color:var(--warn)}
+
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.84rem;line-height:1.6}
+  pre code{background:none;border:none;padding:0}
+
+  blockquote{border-left:3px solid var(--line);padding-left:18px;margin:20px 0;color:var(--dim);
+    font-style:italic}
+
+  .lesson{background:var(--bg2);border:1px solid var(--line);border-radius:10px;
+    padding:24px 26px;margin:40px 0}
+  .lesson h2{margin-top:0}
+  .lesson ol{margin-bottom:0}
+  .lesson li{margin-bottom:14px}
+  .lesson strong{color:var(--tx)}
+
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:20px 22px;margin:44px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+
+  footer{margin-top:52px;padding:24px 0 64px;border-top:1px solid var(--line);
+    font-size:.83rem;color:var(--dim);line-height:1.6}
+
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/" aria-current="page">Notes</a>
+    <a class="n" href="../../measurements/">Measurements</a>
+    <a class="n" href="../../how-to/save-a-webpage-as-pdf/">How&nbsp;to</a>
+    <a class="n" href="../../recipes/">Recipes</a>
+    <a class="n" href="../../for-agents/">For&nbsp;agents</a>
+    <a class="n" href="../../mitmachen/">Mitmachen</a>
+    <a class="n" href="../../tools/">Tools</a>
+    <a class="n" href="../../about/">About</a>
+    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
+      <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header>
+  <p class="crumb"><a href="../">Notes</a></p>
+  <h1>I installed my own tool as a stranger would. Four things were wrong.</h1>
+  <p class="standfirst">The install instructions had been tested. By me, on the machine
+  where every dependency was already present, the key already in place and the program
+  already running. That is not a test of the instructions. It is a test of my memory.</p>
+  <p class="meta-line">7 August 2026 &middot; a clean install on the same computer &middot; four defects, all fixed</p>
+</header>
+
+<div class="privhint">
+  <strong>Why this was worth doing.</strong> The tool had been published for hours, not
+  months. Everything in it had been checked — except the one path every user takes first.
+</div>
+
+<div class="case caught">
+  <p class="case-n">Finding 1</p>
+  <h2>A setup window that no script can click</h2>
+  <p>Without an API key, the first start opens a small window and waits for someone to
+  paste one in. At a desk that is exactly right — better than telling people to copy a
+  file and edit it by hand.</p>
+  <p>From a script, a remote session, or an AI agent doing the installation, it is
+  useless in a specific and nasty way: the process starts, prints nothing, and never
+  exits. No error, no timeout, no exit code. Measured: alive after twelve seconds, no
+  output, no indication of what it was waiting for. Whoever automated the install would
+  see a hung command and no reason.</p>
+  <div class="verdict">The window is not the mistake. Having <em>only</em> the window
+  is. Every step now has a path without one — write the key, check the installation,
+  fail cleanly instead of waiting. Exit codes: 0 fine, 1 check failed, 2 bad
+  invocation, 3 key missing and no window allowed.</div>
+</div>
+
+<div class="case nearmiss">
+  <p class="case-n">Finding 2</p>
+  <h2>A measurement that was true and applied to nobody</h2>
+  <p>The changelog states the recording high-pass filter attenuates mains hum at 50 Hz
+  by about 14 dB while leaving speech untouched. That number was measured and it is
+  correct.</p>
+  <p>It also did not apply to a single person who followed the install instructions.
+  The filter needs <code>scipy</code>. <code>scipy</code> was not in
+  <code>requirements.txt</code>. The import sits inside a <code>try</code> block, so
+  nothing crashed — the code fell back to removing the DC offset and logged one line at
+  debug level, which nobody reads.</p>
+  <p>Measured on a fresh install, 16 kHz sine input, with and without the package:</p>
+  <table>
+    <thead><tr><th>Input</th><th>With scipy</th><th>Without</th><th>Documented</th></tr></thead>
+    <tbody>
+      <tr><td>30 Hz</td><td>&minus;31.0 dB</td><td>0.0 dB</td><td>&minus;32 dB</td></tr>
+      <tr><td>50 Hz</td><td>&minus;14.2 dB</td><td>0.0 dB</td><td>&minus;14.3 dB</td></tr>
+      <tr><td>110 Hz</td><td>&minus;0.2 dB</td><td>0.0 dB</td><td>&minus;0.2 dB</td></tr>
+    </tbody>
+  </table>
+  <p>The same applied to <code>pycaw</code>, which mutes playback during a recording.
+  Both are genuinely optional in the sense that the program runs without them. Neither
+  is optional in the sense that the program behaves as described.</p>
+  <div class="verdict miss">A defensive <code>try</code> around an import converts a
+  loud failure into a quiet difference in behaviour. That is usually what you want — but
+  it means "it runs" and "it works as documented" stop being the same statement, and
+  only the first one gets tested. Both packages are now listed, with a comment saying
+  what is lost without them.</div>
+</div>
+
+<div class="case nearmiss">
+  <p class="case-n">Finding 3</p>
+  <h2>An exception on every window message, for months, unnoticed</h2>
+  <p>The program keeps a hidden window to receive power events, so it can recover after
+  standby. Its message handler ended by passing anything it did not handle to
+  <code>DefWindowProcW</code> — called through ctypes without declared argument
+  types.</p>
+  <p><code>LPARAM</code> is pointer-wide. On 64-bit Windows, ctypes without
+  <code>argtypes</code> tries to squeeze it into a 32-bit int and raises
+  <code>OverflowError: int too long to convert</code>. Every window message. The reason
+  nobody noticed: the exception is raised inside a ctypes callback, where Python cannot
+  propagate it. It gets printed and discarded. Nothing crashes, nothing is reported —
+  the message simply goes unanswered.</p>
+  <div class="verdict miss">It surfaced only because the clean install was started with
+  its output captured. On a normal start there is no console, so the text goes nowhere at
+  all. Signatures are now declared and the return type is pointer-wide.</div>
+</div>
+
+<div class="case caught">
+  <p class="case-n">Finding 4</p>
+  <h2>Two assumptions the instructions never stated</h2>
+  <p>The first line of the install block was <code>git clone</code>. Windows on the test
+  machine has no <code>git</code> — the very first command fails for anyone who has not
+  installed it separately. It is an unremarkable prerequisite among developers and an
+  invisible wall for everyone else.</p>
+  <p>The second line was <code>pip install -r requirements.txt</code>. On that machine,
+  <code>python</code> resolves to 3.14 and <code>pip</code> to the scripts folder of a
+  different, 32-bit 3.11 installation. Following the instructions literally installs
+  every package where nothing will ever look for it, and the resulting error names a
+  missing module rather than the real cause.</p>
+  <div class="verdict">Instructions now name <code>git</code> and offer the ZIP download
+  as an alternative, and use <code>py -m pip</code> throughout, which is guaranteed to
+  match the interpreter that <code>py</code> starts.</div>
+</div>
+
+<div class="lesson">
+  <h2>What this cost, and what would have caught it</h2>
+  <p>None of the four came from complicated code. Three came from the same blind spot:
+  the author's machine already had everything, so the paths a newcomer walks were never
+  walked.</p>
+  <p>The checks that existed did their job on what they covered. A legal-and-links
+  linter runs on every push and caught a missing liability notice on the new page the
+  same afternoon. It cannot catch a missing dependency, because a missing dependency
+  is not visible in the source — only in the gap between the source and the machine it
+  lands on.</p>
+  <p>The cheap fix is not a bigger test suite. It is one command that reports what is
+  actually present:</p>
+  <pre><code>py pushdictate.py --check</code></pre>
+  <p>It names packages, key and write access, exits non-zero when the program would not
+  start, and speaks JSON when something other than a human is asking. Three of the four
+  findings above would have shown up in its output. The fourth — the ctypes overflow —
+  needed the program to actually run with its output captured, which is the other half
+  of the exercise and cannot be replaced by a check.</p>
+</div>
+
+<div class="related">
+  <strong>Related</strong>
+  <p><a href="../building-with-ai-what-went-wrong/">Six things went wrong building
+  software with an AI assistant in one day</a> &middot;
+  <a href="../../tools/pushdictate/">PushDictate</a> &middot;
+  <a href="../../tools/">All tools</a></p>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>
+  <strong>Disclosure and limits.</strong> The tool described here is developed by the
+  author of this site. This is one clean install on one Windows 11 machine, not a survey
+  across systems — a report, not a study. The filter figures come from a sine sweep at
+  16 kHz against the shipped code path; the script and the fixes are public in the
+  <a href="https://github.com/Bubu89/pushdictate">project repository</a>, so the account
+  can be checked rather than taken on trust. Corrections via
+  <a href="https://github.com/Bubu89/pushdictate/issues">GitHub issues</a>.
+  <br><br>
+  <a href="../../">&larr; Proving Lab</a>
+ &middot; <a href="../../disclaimer/">Disclaimer</a></footer>
+
+</body>
+</html>

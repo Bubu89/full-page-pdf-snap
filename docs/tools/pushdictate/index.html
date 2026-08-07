@@ -283,10 +283,21 @@
 <section id="install">
   <div data-lang="en" class="on" lang="en">
     <h2>Install</h2>
+    <p>Needs Windows 10 or 11, Python 3.10+ (64-bit) and git. No git? Use <i>Code &rarr; Download ZIP</i> on GitHub instead of the first line.</p>
     <pre><code>git clone https://github.com/Bubu89/pushdictate.git
 cd pushdictate
-pip install -r requirements.txt</code></pre>
+py -m pip install -r requirements.txt
+py pushdictate.py --check</code></pre>
+    <p><code>py -m pip</code> rather than plain <code>pip</code> on purpose: on machines with several Python installations, <code>pip</code> often belongs to a different one than <code>py</code>, and the packages land where nothing will look for them. <code>--check</code> reports packages, key and write access before you start anything.</p>
     <p>Then start it — <code>wscript start_silent.vbs</code> for everyday use, or <code>python pushdictate.py</code> with a console for debugging.</p>
+
+    <h2>Installing without a window</h2>
+    <p>The first start opens a setup window. That is right at a desk and useless in a script, over a remote session, or when an agent does the installing — the window waits and nothing is reported. Every step therefore has a window-free path:</p>
+    <pre><code>py pushdictate.py --set-key sk-...          # write the key into .env
+echo sk-... | py pushdictate.py --set-key -  # or from standard input
+py pushdictate.py --check --json             # machine-readable status
+py pushdictate.py --no-setup                 # fail instead of opening a window</code></pre>
+    <p>Exit codes: <code>0</code> fine, <code>1</code> check failed, <code>2</code> bad invocation, <code>3</code> key missing and no window allowed. A full unattended install is four lines — clone, install, set the key, check.</p>
 
     <h2>First start: the setup assistant</h2>
     <p>PushDictate ships <b>without</b> an API key and never will. Whisper transcription is billed to whoever owns the key, so it has to be yours. On the first launch a window opens and walks you through it:</p>
@@ -312,10 +323,21 @@ pip install -r requirements.txt</code></pre>
 
   <div data-lang="de" lang="de">
     <h2>Installation</h2>
+    <p>Braucht Windows 10 oder 11, Python 3.10+ (64-Bit) und git. Kein git? Dann auf GitHub <i>Code &rarr; Download ZIP</i> statt der ersten Zeile.</p>
     <pre><code>git clone https://github.com/Bubu89/pushdictate.git
 cd pushdictate
-pip install -r requirements.txt</code></pre>
+py -m pip install -r requirements.txt
+py pushdictate.py --check</code></pre>
+    <p><code>py -m pip</code> statt bloßem <code>pip</code> mit Absicht: Auf Rechnern mit mehreren Python-Installationen gehört <code>pip</code> oft zu einer anderen als <code>py</code>. Die Pakete landen dann dort, wo niemand sie sucht. <code>--check</code> meldet Pakete, Schlüssel und Schreibrechte, bevor irgendetwas startet.</p>
     <p>Danach starten — <code>wscript start_silent.vbs</code> für den Alltag, oder <code>python pushdictate.py</code> mit Konsole zum Debuggen.</p>
+
+    <h2>Einrichten ohne Fenster</h2>
+    <p>Der erste Start öffnet ein Einrichtungsfenster. Am Schreibtisch ist das richtig, in einem Skript, über eine Fernsitzung oder wenn ein Agent die Installation übernimmt, ist es unbrauchbar — das Fenster wartet, und nichts wird gemeldet. Deshalb hat jeder Schritt einen Weg ohne Fenster:</p>
+    <pre><code>py pushdictate.py --set-key sk-...           # Schlüssel in .env schreiben
+echo sk-... | py pushdictate.py --set-key -  # oder von der Standardeingabe
+py pushdictate.py --check --json             # Status maschinenlesbar
+py pushdictate.py --no-setup                 # abbrechen statt Fenster öffnen</code></pre>
+    <p>Rückgabewerte: <code>0</code> in Ordnung, <code>1</code> Prüfung fehlgeschlagen, <code>2</code> Aufruffehler, <code>3</code> Schlüssel fehlt und kein Fenster erlaubt. Eine vollständige Installation ohne Zutun sind vier Zeilen — klonen, installieren, Schlüssel setzen, prüfen.</p>
 
     <h2>Erster Start: der Einrichtungs-Assistent</h2>
     <p>PushDictate wird <b>ohne</b> Schlüssel ausgeliefert und wird das auch bleiben. Die Transkription wird dem Schlüssel-Inhaber verrechnet, also muss es der eigene sein. Beim ersten Start öffnet sich ein Fenster, das durchführt:</p>
