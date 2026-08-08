@@ -1,3 +1,46 @@
+# CHANGELOG — Full Page PDF Snap
+
+## 2.31.18 — 7. August 2026
+
+**Auf Android bekommen Aufnahmen wieder ihren Namen.** Im Testordner lag
+`document(10).pdf`, während dieselbe Fassung am Rechner den sprechenden Namen
+schrieb. Die Namensbildung war nicht schuld — sie lief korrekt. Der Weg danach
+war es: Das fertige PDF wurde als nackte `data:`-URL im Reiter geöffnet, und
+eine solche URL trägt keinen Dateinamen. Der Browser vergibt dann seinen
+eigenen, aufsteigend durchnummeriert. Jetzt öffnet Android die Ergebnisseite;
+sie kennt den Namen und hängt ihn beim Herunterladen an. Fällt der
+Download-Zweig aus — auf dem Telefon ist er oft nicht verfügbar —, greift ein
+Anker mit `download`-Attribut, der als einziger dort den Namen trägt.
+
+**Der Dateiname nennt jetzt den Titel.** Bisher lautete die Voreinstellung
+`{site}_{date}_{time}_{n}` — Website, Datum, Uhrzeit, laufende Nummer. Wer eine
+Aufnahme ein Jahr später wiederfand, sah daran nicht, worum es ging. Sie lautet
+jetzt `{title}_{site}_{date}_{time}`, und der Titel kommt aus den
+Verlagsangaben der Seite statt aus dem Fenstertitel: Letzterer trägt fast immer
+Zusätze wie „ - PubMed" mit, die im Namen nur Platz kosten. Die Titellänge
+steigt von 40 auf 60 Zeichen — bei 40 brach der Titel mitten im Wort ab.
+
+Bestehende Installationen ziehen beim Update mit, aber nur, wenn Vorlage und
+Länge nie angepasst wurden. Ein selbst gewähltes Muster ist eine Entscheidung
+und wird nicht überschrieben.
+
+**Die Quellenangaben sind jetzt auffindbar, nicht nur vorhanden.** Adresse,
+DOI, Band und Jahr standen bisher als Fließtext in den Stichwörtern
+beziehungsweise in der Zitation — daraus kann kein Betrachter und kein
+Literaturverwaltungsprogramm eine einzelne Angabe herauslösen, und einen
+XMP-Strom, aus dem Citavi, Zotero und Mendeley lesen, hatte die Datei gar
+nicht. Jetzt trägt jedes PDF einen XMP-Strom mit Dublin Core und PRISM sowie
+zwölf eigene Felder im Dokument-Informationsblock, die Acrobat unter
+„Benutzerdefiniert" anzeigt. `pdfinfo` meldet für beides „yes" statt „no".
+
+Dabei fiel ein zweiter Fehler auf: Der ganze Block hing an der Bedingung, dass
+eine Prüfsumme vorliegt. Ohne sie verlor die Datei auch ihre Quell-Adresse,
+obwohl beides nichts miteinander zu tun hat.
+
+Die Dokumenteigenschaften waren davon nie betroffen: Titel, Autoren, Zitation
+mit DOI, Quell-Adresse, Prüfsumme und Aufnahmezeit standen auch in den
+Android-Aufnahmen vollständig drin.
+
 ## 2026-08-07 — Kontaktadressen laufen ueber die eigene Domain
 
 **Der Befund.** Kontakt und Sicherheitsmeldungen liefen ueber eine private
@@ -24,6 +67,7 @@ und daran aendert eine Weiterleitung nichts.
 an beide Adressen. Cloudflare meldet fuer beide `delivered`. Erst danach
 wurden die sechs Fundstellen umgestellt — eine tote Adresse in `security.txt`
 waere schlechter gewesen als die private, die vorher dort stand.
+
 
 ## 2026-08-05 — Zeitanker: eine Zeitangabe, die ohne die Geraeteuhr auskommt
 

@@ -84,9 +84,18 @@ def sammeln():
         datei = DOCS / name
         if datei.exists():
             eintraege.append((f"{BASIS}/{name}", geaendert(datei), "yearly", "0.3"))
-    for datei in sorted(DOCS.glob("data/*.json")):
-        rel = datei.relative_to(DOCS).as_posix()
-        eintraege.append((f"{BASIS}/{rel}", geaendert(datei), "yearly", "0.5"))
+    # Die JSON-Messdateien unter data/ stehen bewusst NICHT in der Sitemap.
+    #
+    # Eine Sitemap nennt Seiten, die in den Suchergebnissen erscheinen sollen.
+    # Diese Dateien werden mit Content-Type application/json ausgeliefert und
+    # koennen dort nie erscheinen. Google folgt der Sitemap trotzdem, crawlt sie
+    # und meldet sie anschliessend als "Gefunden – zurzeit nicht indexiert" —
+    # am 08.08.2026 betraf das 16 von 20 nicht indexierten Adressen, bei
+    # 25 JSON-Dateien in der Sitemap.
+    #
+    # Auffindbar bleiben sie ueber /.well-known/api-catalog und ueber die
+    # Verweise aus den Messberichten, die sie belegen. Das sind die Wege, auf
+    # denen ein Agent sie ohnehin findet.
     # Startseite zuerst, dann nach Rang, dann alphabetisch — stabile Reihenfolge,
     # damit ein Diff nur echte Aenderungen zeigt.
     eintraege.sort(key=lambda e: (-float(e[3]), e[0]))

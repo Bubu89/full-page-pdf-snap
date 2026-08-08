@@ -20,8 +20,8 @@ const DEFAULTS = {
   saveAs: false,
   jpegQuality: 0.92,
   settlingMs: 400,
-  filenameTemplate: "{site}_{date}_{time}_{n}",
-  titleMaxLen: 40,
+  filenameTemplate: "{title}_{site}_{date}_{time}",
+  titleMaxLen: 60,
   counter: 0,
   singlePagePdf: true,
   pageHeightPx: 2400,
@@ -120,8 +120,8 @@ async function load() {
   $("jpegQuality").value = String(s.jpegQuality);
   $("qVal").textContent = Number(s.jpegQuality).toFixed(2);
   $("settlingMs").value = String(s.settlingMs);
-  $("filenameTemplate").value = s.filenameTemplate || "{site}_{date}_{time}_{n}";
-  $("titleMaxLen").value = String(s.titleMaxLen || 40);
+  $("filenameTemplate").value = s.filenameTemplate || "{title}_{site}_{date}_{time}";
+  $("titleMaxLen").value = String(s.titleMaxLen || 60);
   $("counterVal").textContent = String(s.counter || 0).padStart(4, "0");
   $("singlePagePdf").value = s.singlePagePdf ? "true" : "false";
   $("pageHeightPx").value = String(s.pageHeightPx || 2400);
@@ -218,8 +218,8 @@ $("save").addEventListener("click", async () => {
     saveAs: $("saveAs").checked,
     jpegQuality: parseFloat($("jpegQuality").value),
     settlingMs: Math.max(50, Math.min(5000, parseInt($("settlingMs").value, 10) || 400)),
-    filenameTemplate: $("filenameTemplate").value.trim() || "{site}_{date}_{time}_{n}",
-    titleMaxLen: Math.max(10, Math.min(120, parseInt($("titleMaxLen").value, 10) || 40)),
+    filenameTemplate: $("filenameTemplate").value.trim() || "{title}_{site}_{date}_{time}",
+    titleMaxLen: Math.max(10, Math.min(120, parseInt($("titleMaxLen").value, 10) || 60)),
     singlePagePdf: $("singlePagePdf").value === "true",
     pageHeightPx: Math.max(400, Math.min(8000, parseInt($("pageHeightPx").value, 10) || 2400)),
     pageFormat: $("pageFormat").value === "a4" ? "a4" : "free",

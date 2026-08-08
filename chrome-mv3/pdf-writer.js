@@ -338,6 +338,13 @@
       (off === 0 ? "Z" : sign + p(off / 60) + "'" + p(off % 60) + "'");
   }
 
+  /* Dieselbe Zeitangabe in der Schreibweise, die XMP verlangt: ISO 8601 mit
+   * "T" zwischen Datum und Uhrzeit, ohne Leerzeichen. localIso schreibt sie
+   * fuer Menschen mit Leerzeichen - damit koennen Betrachter nichts anfangen. */
+  function isoUtc(d) {
+    return localIso(d).replace(" ", "T").replace(" ", "");
+  }
+
   function localIso(d) {
     const p = (n) => String(Math.abs(n)).padStart(2, "0");
     const off = -d.getTimezoneOffset();
@@ -573,8 +580,64 @@
       namesEintrag = " /Names << /EmbeddedFiles " + namesId + " 0 R >>";
     }
 
+    /* XMP-Metadaten. Das Info-Dictionary allein reicht nicht: Citavi, Zotero,
+     * Mendeley und die meisten Betrachter lesen die bibliografischen Angaben
+     * aus dem XMP-Strom, nicht aus /Keywords. Bis 2.31.18 hatte die Datei gar
+     * keinen ("Metadata Stream: no"), weshalb kein Programm Adresse, DOI, Band
+     * oder Jahr finden konnte, obwohl alles in der Datei stand.
+     * Dublin Core traegt Titel, Urheber, Quelle und Kennung; PRISM die Angaben
+     * zur Zeitschrift, fuer die Dublin Core keine eigenen Felder hat. */
+    let metaEintrag = "";
+    if (beleg || (quelle && quelle.titel)) {
+      const x = (s) => String(s == null ? "" : s)
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      const liste = (werte, tag) => werte && werte.length
+        ? "<dc:" + tag + "><rdf:Seq>" +
+          werte.map((w) => "<rdf:li>" + x(w) + "</rdf:li>").join("") +
+          "</rdf:Seq></dc:" + tag + ">"
+        : "";
+      const feld = (tag, wert) => wert ? "<" + tag + ">" + x(wert) + "</" + tag + ">" : "";
+      const titel = (quelle && quelle.titel) || opts.title;
+      const q = quelle || {};
+      const xmp =
+        '<?xpacket begin="\uFEFF" id="W5M0MpCehiHzreSzNTczkc9d"?>' +
+        '<x:xmpmeta xmlns:x="adobe:ns:meta/">' +
+        '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">' +
+        '<rdf:Description rdf:about="" ' +
+          'xmlns:dc="http://purl.org/dc/elements/1.1/" ' +
+          'xmlns:prism="http://prismstandard.org/namespaces/basic/2.0/" ' +
+          'xmlns:xmp="http://ns.adobe.com/xap/1.0/" ' +
+          'xmlns:pdf="http://ns.adobe.com/pdf/1.3/">' +
+        (titel ? "<dc:title><rdf:Alt><rdf:li xml:lang=\"x-default\">" + x(titel) +
+                 "</rdf:li></rdf:Alt></dc:title>" : "") +
+        liste(q.autoren, "creator") +
+        (beleg ? feld("dc:source", beleg.url) : "") +
+        (q.doi ? feld("dc:identifier", "doi:" + q.doi) + feld("prism:doi", q.doi) : "") +
+        feld("prism:publicationName", q.journal || q.sammelwerk) +
+        feld("prism:volume", q.band) +
+        feld("prism:number", q.heft) +
+        feld("prism:startingPage", q.seiteVon) +
+        feld("prism:endingPage", q.seiteBis) +
+        feld("prism:issn", q.issn) +
+        feld("dc:publisher", q.verlag) +
+        feld("dc:language", q.sprache) +
+        (q.jahr ? feld("dc:date", q.jahr) : "") +
+        (beleg ? feld("xmp:CreateDate", isoUtc(beleg.capturedAt)) +
+                 feld("xmp:ModifyDate", isoUtc(beleg.capturedAt)) : "") +
+        feld("pdf:Producer", "Full Page PDF Snap" + (opts.version ? " " + opts.version : "")) +
+        '</rdf:Description></rdf:RDF></x:xmpmeta>' +
+        '<?xpacket end="w"?>';
+      const xmpBytes = strToBytes(xmp);
+      const metaId = addObject(concatBytes([
+        strToBytes("<< /Type /Metadata /Subtype /XML /Length " + xmpBytes.length + " >>\nstream\n"),
+        xmpBytes,
+        strToBytes("\nendstream"),
+      ]));
+      metaEintrag = " /Metadata " + metaId + " 0 R";
+    }
+
     objects[catalogId] = strToBytes(
-      "<< /Type /Catalog /Pages " + pagesId + " 0 R" + namesEintrag + " >>"
+      "<< /Type /Catalog /Pages " + pagesId + " 0 R" + namesEintrag + metaEintrag + " >>"
     );
 
     // Dokumentinformationen: dieselben Angaben wie in der Fussnote, aber
@@ -595,11 +658,43 @@
           quelle && quelle.titel ? zitation(quelle) : "Screen capture of " + beleg.url));
         felder.push("/CreationDate (" + pdfDate(beleg.capturedAt) + ")");
         felder.push("/ModDate (" + pdfDate(beleg.capturedAt) + ")");
-        if (beleg.sha256) {
+
+        /* Eigene Felder je Angabe. Bis 2.31.18 standen Adresse, DOI, Band und
+         * Jahr ausschliesslich als Fliesstext - in /Keywords beziehungsweise in
+         * der Zitation unter /Subject. Daraus kann kein Betrachter und kein
+         * Literaturverwaltungsprogramm eine einzelne Angabe herausloesen, und
+         * /Keywords zeigen viele gar nicht erst an. Als eigene Schluessel
+         * erscheinen sie in Acrobat unter "Benutzerdefiniert" und lassen sich
+         * gezielt auslesen. */
+        const eigen = [
+          ["SourceURL",      beleg.url],
+          ["CapturedAt",     localIso(beleg.capturedAt)],
+          ["DOI",            quelle && quelle.doi],
+          ["Journal",        quelle && (quelle.journal || quelle.sammelwerk)],
+          ["Volume",         quelle && quelle.band],
+          ["Issue",          quelle && quelle.heft],
+          ["Year",           quelle && quelle.jahr],
+          ["Pages",          quelle && quelle.seiteVon
+            ? quelle.seiteVon + (quelle.seiteBis ? "-" + quelle.seiteBis : "") : null],
+          ["Publisher",      quelle && quelle.verlag],
+          ["ISSN",           quelle && quelle.issn],
+          ["ISBN",           quelle && quelle.isbn],
+          ["ImageSHA256",    beleg.sha256],
+          ["CitationSource", quelle && quelle.titel ? quelle.herkunft : null],
+        ];
+        for (const [schluessel, wert] of eigen) {
+          if (wert) felder.push("/" + schluessel + " " + pdfTextString(String(wert)));
+        }
+
+        /* Frueher hing der ganze folgende Block an "if (beleg.sha256)". Fehlte
+         * die Pruefsumme - etwa weil ihre Berechnung nicht durchlief -, verlor
+         * die Datei damit auch ihre Quell-Adresse. Die Adresse ist aber das
+         * Wichtigste am Beleg und haengt an der Pruefsumme in keiner Weise. */
+        {
           felder.push("/Keywords " + pdfTextString(
             "source-url=" + beleg.url +
             "; captured=" + localIso(beleg.capturedAt) +
-            "; image-sha256=" + beleg.sha256 +
+            (beleg.sha256 ? "; image-sha256=" + beleg.sha256 : "") +
             "; note=self-made screen capture, not a qualified electronic document (eIDAS)" +
             (beleg.anchor
               ? "; time-anchor=drand-quicknet round " + beleg.anchor.runde +

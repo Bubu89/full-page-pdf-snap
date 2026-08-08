@@ -63,8 +63,8 @@ const DEFAULTS_DESKTOP = {
   hellerDruck: true,      // dunkle Oberflaechen umkehren, damit das Blatt weiss bleibt
   fertigTon: null,        // null = nach Plattform (Android an, Rechner aus)
   settlingMs: 400,
-  filenameTemplate: "{site}_{date}_{time}_{n}",
-  titleMaxLen: 40,
+  filenameTemplate: "{title}_{site}_{date}_{time}",
+  titleMaxLen: 60,
   singlePagePdf: true,
   pageHeightPx: 2400,
   pageFormat: "a4",       // Standard: Seiten fuellen ein A4-Blatt beim Drucken
@@ -1533,12 +1533,18 @@ async function captureFullPageInner(tab, settings) {
     source: quelle,
   });
 
-  const baseTitle = sanitizeFilename(tab.title || "page", settings.titleMaxLen);
+  /* Fuer den Dateinamen denselben Titel nehmen wie fuer die
+   * Dokumenteigenschaften: den aus den Verlagsangaben der Seite, wenn es ihn
+   * gibt. Der Fenstertitel traegt fast immer Zusaetze mit - "… - PubMed",
+   * "… | Zeitschrift" -, die im Dateinamen nur Platz kosten und bei der
+   * Laengengrenze den eigentlichen Titel abschneiden. */
+  const baseTitle = sanitizeFilename(
+    (quelle && quelle.titel) || tab.title || "page", settings.titleMaxLen);
   const site = siteFromUrl(tab.url);
   const stamp = nowStamp();
   const n = await nextCounter();
 
-  const filename = (settings.filenameTemplate || "{site}_{date}_{time}_{n}")
+  const filename = (settings.filenameTemplate || "{title}_{site}_{date}_{time}")
     .replace("{title}", baseTitle)
     .replace("{site}", site)
     .replace("{date}", stamp.date)
@@ -1624,8 +1630,16 @@ async function captureFullPageInner(tab, settings) {
       log("Save A3: opening PDF in new tab (Android default fallback) ...");
       try {
         try { await browser.notifications.clear("pdfsnap-progress"); } catch (_) {}
-        const newTab = await browser.tabs.create({ url, active: true });
-        saveMethod = "tab-open";
+        /* Nicht die nackte data:-URL oeffnen. Sie traegt keinen Dateinamen,
+         * deshalb legt der Browser sie beim Speichern als "document.pdf" ab,
+         * beim naechsten Mal "document(1).pdf" und so fort. Am 07.08.2026 lag
+         * im Testordner "document(10).pdf", waehrend dieselbe Fassung am
+         * Rechner den sprechenden Namen schrieb - dort laeuft der Weg ueber
+         * downloads.download({filename}), auf dem Telefon gar nicht.
+         * Die Ergebnisseite kennt den Namen und haengt ihn an den Anker. */
+        await zeigeErgebnisseite();
+        const newTab = { id: _lastFallbackTabId };
+        saveMethod = "result-page";
         _lastDownloadId = null;
         _lastFilename = filename;
         _lastFallbackTabId = newTab && newTab.id;
@@ -2568,6 +2582,34 @@ browser.runtime.onInstalled.addListener(async (details) => {
     }
   } catch (e) {
     log("Update-Anpassung fehlgeschlagen:", e);
+  }
+
+  /* Der Dateiname trug bisher nur Website, Datum, Uhrzeit und eine laufende
+   * Nummer - keinen Titel. Wer die Datei spaeter wiederfindet, sieht daran
+   * nicht, worum es ging. Die Voreinstellung nennt jetzt den Titel zuerst.
+   * Umgestellt wird nur, wer die alte Vorlage nie angefasst hat: Ein selbst
+   * gewaehltes Muster ist eine Entscheidung und wird nicht ueberschrieben. */
+  try {
+    const ALT = "{site}_{date}_{time}_{n}";
+    const NEU = "{title}_{site}_{date}_{time}";
+    const { filenameTemplate } = await browser.storage.local.get({ filenameTemplate: null });
+    if (filenameTemplate === ALT) {
+      await browser.storage.local.set({ filenameTemplate: NEU });
+      log("Update: Dateinamen-Vorlage auf " + NEU + " gesetzt (Titel voran).");
+    } else {
+      log("Update: Dateinamen-Vorlage unveraendert (" + filenameTemplate + ").");
+    }
+    /* Mit dem Titel im Namen sind 40 Zeichen zu knapp - er brach mitten im
+     * Wort ab ("...detection of g"). 60 lassen die meisten Titel ganz stehen
+     * und bleiben weit unter der Laengengrenze fuer Dateinamen. Auch hier nur
+     * umstellen, wer den alten Wert nie geaendert hat. */
+    const { titleMaxLen } = await browser.storage.local.get({ titleMaxLen: null });
+    if (titleMaxLen === 40) {
+      await browser.storage.local.set({ titleMaxLen: 60 });
+      log("Update: Titellaenge im Dateinamen von 40 auf 60 gesetzt.");
+    }
+  } catch (e) {
+    log("Update: Dateinamen-Vorlage nicht angepasst:", e);
   }
 });
 

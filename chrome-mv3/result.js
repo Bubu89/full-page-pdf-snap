@@ -155,12 +155,31 @@ async function herunterladen() {
       setzeHinweis("");
       return;
     }
-    await browser.downloads.download({
-      url: blobUrl,
-      filename: (stand && stand.filename) || "capture.pdf",
-      conflictAction: "uniquify",
-      saveAs: false
-    });
+    const name = (stand && stand.filename) || "capture.pdf";
+    try {
+      await browser.downloads.download({
+        url: blobUrl,
+        filename: name,
+        conflictAction: "uniquify",
+        saveAs: false
+      });
+    } catch (eDownload) {
+      /* Auf Android ist der Download-Zweig oft nicht verfuegbar. Dann bleibt
+       * der Anker mit download-Attribut - und nur er traegt den Dateinamen.
+       * Wird das PDF stattdessen als nackte data:-URL im Reiter geoeffnet,
+       * kennt der Browser keinen Namen und legt es als "document.pdf" ab;
+       * beim zweiten Mal "document(1).pdf" und so fort. Genau das war am
+       * 07.08.2026 an einer Aufnahme aus pCloud zu sehen: "document(10).pdf"
+       * statt des Seitentitels, waehrend dieselbe Fassung am Rechner richtig
+       * benannte. */
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = name.split("/").pop();
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
     setzeHinweis(t("resultDownloadDone") || "Saved to your downloads folder.");
   } catch (e) {
     console.warn("[PDFSnap/result] Download:", e);
