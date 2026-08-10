@@ -2527,6 +2527,17 @@ export default {
         "/.well-known/mcp.json",
         "/.well-known/mcp/server-cards.json",
         "/.well-known/mcp-server.json",
+        // Gemessen am 9./10. August 2026, 23 Stunden: 18 Anfragen auf
+        // /mcp/.well-known/mcp, alle mit 404 beantwortet. Der Client haengt
+        // den Suchpfad an die Server-Adresse an statt an den Zonennamen — eine
+        // naheliegende Lesart, wenn der Server unter /mcp sitzt.
+        "/mcp/.well-known/mcp",
+        "/mcp/.well-known/mcp.json",
+        // Der Pfad ohne Endung ging bisher an das Origin und landete dort auf
+        // der 404-Seite: docs/.well-known/mcp ist ein Verzeichnis, GitHub Pages
+        // sucht darin eine index.html und findet keine. Fuer einen Client sieht
+        // das aus, als gaebe es hier keinen MCP-Server.
+        "/.well-known/mcp",
       ]);
       if (KARTENPFADE.has(url.pathname)) {
         const karte = await fetch(`${SITE}/.well-known/mcp/server-card.json`);
@@ -2540,6 +2551,36 @@ export default {
               // naechsten Mal direkt dorthin geht.
               "content-location": "/.well-known/mcp/server-card.json",
               "link": `<${SITE}/.well-known/mcp/server-card.json>; rel="canonical"`,
+            },
+          });
+        }
+      }
+
+      // Die Auth-Metadaten liegen unter /.well-known/…, gesucht werden sie aber
+      // auch relativ zur Server-Adresse und in der Form aus RFC 9728, die den
+      // Ressourcenpfad anhaengt. Gemessen am 9./10. August 2026, 23 Stunden:
+      // 24 Anfragen auf /mcp/.well-known/oauth-authorization-server und
+      // 20 auf /mcp/.well-known/oauth-protected-resource — samt der 18 auf
+      // /mcp/.well-known/mcp waren das 62 vergebliche Aufrufe an einem Tag.
+      //
+      // Ausgeliefert wird auch hier die vorhandene Datei, keine zweite Fassung.
+      const AUTHPFADE = {
+        "/mcp/.well-known/oauth-protected-resource": "/.well-known/oauth-protected-resource",
+        "/mcp/.well-known/oauth-authorization-server": "/.well-known/oauth-authorization-server",
+        "/.well-known/oauth-protected-resource/mcp": "/.well-known/oauth-protected-resource",
+        "/.well-known/oauth-authorization-server/mcp": "/.well-known/oauth-authorization-server",
+      };
+      if (AUTHPFADE[url.pathname]) {
+        const quelle = AUTHPFADE[url.pathname];
+        const antwort = await fetch(`${SITE}${quelle}`);
+        if (antwort.ok) {
+          return new Response(await antwort.text(), {
+            status: 200,
+            headers: {
+              "content-type": "application/json; charset=utf-8",
+              "cache-control": "public, max-age=300",
+              "content-location": quelle,
+              "link": `<${SITE}${quelle}>; rel="canonical"`,
             },
           });
         }
