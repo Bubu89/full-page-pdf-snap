@@ -390,6 +390,12 @@
   "optSourceMetadataHint": {
     "message": "Lit les auteurs, la revue, le volume, le DOI, la licence et l’heure de consultation sur la page déjà ouverte, puis les inscrit dans les métadonnées du PDF, avec un enregistrement RIS joint pour Citavi, Zotero et EndNote. Aucun service n’est interrogé."
   },
+  "optRisSidecar": {
+    "message": "Enregistrer aussi la notice RIS dans un fichier séparé"
+  },
+  "optRisSidecarHint": {
+    "message": "La notice de citation est de toute façon jointe au PDF sous le nom « quelle.ris » — la désactiver ne fait rien perdre. Le fichier séparé n'est qu'un confort : les logiciels de gestion bibliographique l'importent par double-clic ou glisser-déposer, alors qu'une pièce jointe doit d'abord être extraite du PDF. Désactivez-le si vous préférez garder un seul fichier par capture."
+  },
   "optPageFormat": {
     "message": "Format de page en mode multipage"
   },

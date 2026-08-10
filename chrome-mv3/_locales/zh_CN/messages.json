@@ -390,6 +390,12 @@
   "optSourceMetadataHint": {
     "message": "从已打开的页面读取作者、期刊、卷号、DOI、许可协议和访问时间，写入 PDF 元数据，并附带可供 Citavi、Zotero 和 EndNote 使用的 RIS 记录。不会向任何服务发出请求。"
   },
+  "optRisSidecar": {
+    "message": "同时将 RIS 记录另存为单独文件"
+  },
+  "optRisSidecarHint": {
+    "message": "引用记录本就作为附件「quelle.ris」嵌在 PDF 之中——关闭不会丢失任何内容。单独的文件只是图个方便：文献管理软件双击或拖拽即可导入，而附件需要先从 PDF 中取出。如果您希望每次保存只留一个文件，请关闭此项。"
+  },
   "optPageFormat": {
     "message": "多页输出的页面尺寸"
   },

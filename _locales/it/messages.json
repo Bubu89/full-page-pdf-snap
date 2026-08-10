@@ -390,6 +390,12 @@
   "optSourceMetadataHint": {
     "message": "Legge autori, rivista, volume, DOI, licenza e ora di consultazione dalla pagina già aperta e li scrive nei metadati del PDF, con un record RIS allegato per Citavi, Zotero ed EndNote. Non viene interrogato alcun servizio."
   },
+  "optRisSidecar": {
+    "message": "Salvare il record RIS anche come file separato"
+  },
+  "optRisSidecarHint": {
+    "message": "Il record di citazione è comunque incluso nel PDF come allegato «quelle.ris» — disattivarlo non fa perdere nulla. Il file separato è solo una comodità: i gestori bibliografici lo importano con un doppio clic o trascinandolo, mentre un allegato va prima estratto dal PDF. Disattivatelo se preferite conservare un unico file per ogni acquisizione."
+  },
   "optPageFormat": {
     "message": "Formato pagina per l’output su più pagine"
   },

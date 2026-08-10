@@ -390,6 +390,12 @@
   "optSourceMetadataHint": {
     "message": "Lê autores, periódico, volume, DOI, licença e hora de acesso da página já aberta e os grava nos metadados do PDF, além de um registro RIS anexo para Citavi, Zotero e EndNote. Nenhum serviço é consultado."
   },
+  "optRisSidecar": {
+    "message": "Salvar o registro RIS também como arquivo separado"
+  },
+  "optRisSidecarHint": {
+    "message": "O registro de citação já vai embutido no PDF como anexo «quelle.ris» — desativar não perde nada. O arquivo separado é apenas comodidade: gerenciadores de referências o importam com duplo clique ou arrastando, enquanto um anexo precisa ser extraído do PDF antes. Desative se preferir manter um único arquivo por captura."
+  },
   "optPageFormat": {
     "message": "Tamanho da página em várias páginas"
   },
