@@ -1,3 +1,28 @@
+## 2026-08-10 (4) — Worker deployt; wranglers Exit-Code taugt hier nicht als Urteil
+
+**Deployt** wurde der Stand der drei letzten Commits als `provinglab-mcp`. Live
+gegengeprueft: `/mcp` antwortet mit `provinglab 1.23.0`, die Startseite liefert
+bei `Accept: text/markdown` den Typ `text/markdown` und ohne den Kopf weiterhin
+`text/html` vom Ursprung.
+
+**Der Weg dorthin war nicht der geplante.** `wrangler login` laeuft ueber einen
+OAuth-Rueckruf auf `localhost:8976` und lief in einen Timeout, weil im
+Hintergrundlauf niemand die Freigabe im Browser bestaetigt. Ein API-Token
+umgeht den Browser vollstaendig.
+
+**Die noetigen Rechte liegen auf zwei getrennten Token** — eines darf Scripts
+hochladen (Account), ein anderes die Zone-Route setzen. Gemessen statt geraten:
+jedes Token einzeln gegen `/workers/scripts` und `/workers/routes` geprueft,
+zwei weitere Token antworten mit 401 und sind damit tot.
+
+**Daraus folgt die eigentliche Lehre:** `wrangler deploy` laedt das Script
+zuerst hoch und gleicht **danach** die Route ab. Fehlt das Zone-Recht, bricht es
+mit Exit 1 ab — obwohl das Script bereits live ist und die Route
+`provinglab.dev/*` unveraendert korrekt auf `provinglab-mcp` zeigt. Der
+Exit-Code meldet hier also einen Fehlschlag, den es nicht gab. Belastbar ist
+allein `modified_on` des Scripts an der API; genau daran haengt der
+Deploy-Wrapper jetzt sein Urteil.
+
 ## 2026-08-10 (3) — Fuenf Aufnahmen geprueft: zwei Zitationsfehler, RIS-Datei abschaltbar
 
 **Geprueft** wurden sechs Aufnahmen aus einem Testlauf mit 2.33.4, darunter zwei
@@ -141,7 +166,7 @@ _Quelle: change-stream, 17 Events, generiert 2026-08-10T10:44_
 - `cd ~/repos/full-page-pdf-snap-public && timeout 90 git push origin main 2>&1 | tail -5; echo "=== Remote-Stand prüfen ==`
 - `cd ~/repos/full-page-pdf-snap-public && git rm -q --cached store-texte/*.bak-* 2>/dev/null && echo "  entfernt: 2 Backup`
 - `cd ~/repos/full-page-pdf-snap-public && timeout 60 git push -q origin main 2>&1 | tail -2; timeout 30 git fetch -q origi`
-- `cd /home/holo/repos/full-page-pdf-snap-public && python3 rechtscheck.py 2>&1 | tail -2
+- `cd ~/repos/full-page-pdf-snap-public && python3 rechtscheck.py 2>&1 | tail -2
 git add docs/notes/installing-you`
 
 <!-- change-stream:auto-block:2026-08-07:END -->

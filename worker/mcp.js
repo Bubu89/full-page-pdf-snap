@@ -2564,14 +2564,25 @@ export default {
       // /mcp/.well-known/mcp waren das 62 vergebliche Aufrufe an einem Tag.
       //
       // Ausgeliefert wird auch hier die vorhandene Datei, keine zweite Fassung.
+      // Die beiden Quellen sind ungleicher Natur, und das entscheidet hier:
+      // oauth-protected-resource liegt als Datei am Ursprung, den
+      // Autorisierungsserver erzeugt dieser Worker weiter unten selbst. Ein
+      // Subrequest auf die eigene Zone laeuft am Worker vorbei direkt zum
+      // Ursprung — fuer die Datei geht das gut, fuer die erzeugte Antwort
+      // ergab es einen 404. Deshalb wird die Funktion direkt aufgerufen,
+      // statt sich selbst ueber das Netz zu befragen.
       const AUTHPFADE = {
-        "/mcp/.well-known/oauth-protected-resource": "/.well-known/oauth-protected-resource",
-        "/mcp/.well-known/oauth-authorization-server": "/.well-known/oauth-authorization-server",
-        "/.well-known/oauth-protected-resource/mcp": "/.well-known/oauth-protected-resource",
-        "/.well-known/oauth-authorization-server/mcp": "/.well-known/oauth-authorization-server",
+        "/mcp/.well-known/oauth-protected-resource": "datei",
+        "/.well-known/oauth-protected-resource/mcp": "datei",
+        "/mcp/.well-known/oauth-authorization-server": "erzeugt",
+        "/.well-known/oauth-authorization-server/mcp": "erzeugt",
       };
-      if (AUTHPFADE[url.pathname]) {
-        const quelle = AUTHPFADE[url.pathname];
+      const authArt = AUTHPFADE[url.pathname];
+      if (authArt === "erzeugt") {
+        return json(autorisierungsserver());
+      }
+      if (authArt === "datei") {
+        const quelle = "/.well-known/oauth-protected-resource";
         const antwort = await fetch(`${SITE}${quelle}`);
         if (antwort.ok) {
           return new Response(await antwort.text(), {
