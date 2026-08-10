@@ -28,6 +28,7 @@ const DEFAULTS = {
   pageFormat: "a4",
   breakAtLines: true,
   sourceMetadata: true,
+  risSidecar: true,
   copyPath: false,
   copyPathFormat: "windows",
   fetchOriginal: false,
@@ -128,6 +129,7 @@ async function load() {
   $("pageFormat").value = s.pageFormat === "a4" ? "a4" : "free";
   $("breakAtLines").checked = s.breakAtLines !== false;
   $("sourceMetadata").checked = s.sourceMetadata !== false;
+  $("risSidecar").checked = s.risSidecar !== false;
   $("copyPath").checked = s.copyPath === true;
   $("copyPathFormat").value = ["windows","wsl","posix"].includes(s.copyPathFormat)
     ? s.copyPathFormat : "windows";
@@ -225,6 +227,7 @@ $("save").addEventListener("click", async () => {
     pageFormat: $("pageFormat").value === "a4" ? "a4" : "free",
     breakAtLines: $("breakAtLines").checked,
     sourceMetadata: $("sourceMetadata").checked,
+    risSidecar: $("risSidecar").checked,
     copyPath: $("copyPath").checked,
     copyPathFormat: $("copyPathFormat").value,
     fetchOriginal: $("fetchOriginal").checked,

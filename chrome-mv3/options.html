@@ -220,6 +220,12 @@
     </span>
   </label>
 
+  <label class="row"><input id="risSidecar" type="checkbox" checked>
+    <span><span data-i18n="optRisSidecar">Also save the RIS record as a separate file</span>
+      <div class="hint"><span data-i18n="optRisSidecarHint">The citation record is always embedded inside the PDF as an attachment called <code>quelle.ris</code> — switching this off loses nothing. The separate file exists only for convenience: reference managers import it by double-click or drag, whereas an attachment has to be extracted from the PDF first. Turn it off if you would rather keep one file per capture.</span></div>
+    </span>
+  </label>
+
   <label class="row"><input id="fetchOriginal" type="checkbox">
     <span><span data-i18n="optFetchOriginal">Also download the publisher's original file</span>
       <div class="hint"><span data-i18n="optFetchOriginalHint">Off by default: this is the only feature that opens a network connection. It downloads the full-text address the page itself declares — the same request a click on "PDF" makes, with the same access rights. Nothing behind a paywall becomes reachable.</span></div>

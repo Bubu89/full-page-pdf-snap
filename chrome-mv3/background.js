@@ -70,6 +70,11 @@ const DEFAULTS_DESKTOP = {
   pageFormat: "a4",       // Standard: Seiten fuellen ein A4-Blatt beim Drucken
   breakAtLines: true,      // Schnitt in die naechste Luecke ziehen
   sourceMetadata: true,    // Quellenangaben aus der Seite lesen (kein Netz)
+  // Die RIS-Angaben stecken IMMER als Anlage 'quelle.ris' im PDF. Die
+  // zusaetzliche Datei daneben ist reine Bequemlichkeit: Zotero und Citavi
+  // importieren sie per Doppelklick, eine Anlage muss erst herausgeholt
+  // werden. Wer lieber eine Datei je Aufnahme behaelt, schaltet sie ab.
+  risSidecar: true,
   copyPath: false,         // Pfad nach dem Speichern in die Zwischenablage
   copyPathFormat: "windows", // "windows" | "wsl" | "posix"
   fetchOriginal: false,    // Verlags-PDF holen — einziger Netzzugriff, daher aus
@@ -1777,7 +1782,8 @@ async function captureFullPageInner(tab, settings) {
     // braucht die Anlagen-Ansicht des Betrachters oder ein Werkzeug auf der
     // Kommandozeile. Eine Datei neben dem PDF laesst sich per Doppelklick in
     // Citavi oder Zotero ziehen — das ist der Weg, den die Funktion meint.
-    if (!p.isAndroid && settings.sourceMetadata !== false && quelle && quelle.titel && PageShotPdf.risSatz) {
+    if (!p.isAndroid && settings.sourceMetadata !== false && settings.risSidecar !== false
+        && quelle && quelle.titel && PageShotPdf.risSatz) {
       try {
         const ris = PageShotPdf.risSatz(quelle);
         const risName = (p.isAndroid ? filename : relPath).replace(/\.pdf$/i, "") + ".ris";

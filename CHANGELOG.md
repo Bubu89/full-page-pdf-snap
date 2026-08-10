@@ -1,3 +1,37 @@
+## 2026-08-10 (3) — Fuenf Aufnahmen geprueft: zwei Zitationsfehler, RIS-Datei abschaltbar
+
+**Geprueft** wurden sechs Aufnahmen aus einem Testlauf mit 2.33.4, darunter zwei
+PubMed-Artikel, zwei Doku-Seiten und zweimal dieselbe Preisseite.
+
+**Der PubMed-Fall ist der Goldfall.** `citation_*`-Tags vorhanden, vier Verfasser
+korrekt zerlegt ("Basek A" → "Basek, A."), zwoelf XMP-Felder, DOI, ISSN, Band,
+Heft, Jahr. Genau so soll es aussehen.
+
+**Fehler 1 — Zitation ohne Verfasser begann mit "(o. J.).".** Bei der Preisseite
+stand im Subject: `(o. J.). Kimi-Preise | …`. Das liest sich wie ein Defekt und
+ist auch einer: Nach APA rueckt bei fehlendem Verfasser der **Titel** an dessen
+Stelle. Jetzt: `Kimi-Preise | …. (o. J.). https://…`.
+
+**Fehler 2 — der Zeitschriftenname stand doppelt, einmal als Verlag.** Im
+RIS-Satz des PubMed-Artikels: `JO  - Cancers` und `PB  - Cancers (Basel)`.
+PubMed traegt in `citation_publisher` den Journaltitel in NLM-Schreibweise ein;
+das ist kein Verlag. Steckt der eine Name im anderen, bleibt `PB` jetzt leer.
+Ein echter Verlag ("Nature Methods" / "Springer Nature") bleibt erhalten —
+gegengeprueft.
+
+**Befund ohne Fix: dieselbe Seite, zwei Ergebnisse.** Die Preisseite wurde um
+14:47 und 14:48 aufgenommen. Der erste Lauf brachte **keine** Quellenangaben
+(kein Autor, kein RIS, kein Anhang, Subject nur "Screen capture of …"), der
+zweite alle. Das deutet auf einen Zeitpunkt: `collectSource` lief, bevor die
+Seite ihre Metadaten gesetzt hatte. Nicht behoben — die Ursache muss erst
+gemessen werden, bevor daran etwas geaendert wird.
+
+**Neu: die separate RIS-Datei laesst sich abschalten** (`risSidecar`, Standard
+an). Der Datensatz steckt ohnehin **immer** als Anlage `quelle.ris` im PDF —
+Abschalten verliert also keine Angabe, nur den bequemen Importweg. Der
+Hinweistext in den Einstellungen sagt genau das, statt es zu verschweigen.
+Deutsch und Englisch uebersetzt, Chrome-Zweig portiert.
+
 ## 2026-08-10 (2) — Quellenangaben vollstaendig ins PDF, RIS-Ausgabe fuer Chrome
 
 **Lueckenanalyse.** Verglichen wurde, welche erfassten Angaben wo landen:

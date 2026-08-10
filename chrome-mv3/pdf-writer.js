@@ -139,10 +139,19 @@
     if (q.warnung) return "Keine belastbare Quellenangabe: " + q.warnung;
     var t = [];
     var au = autorenListe(q.autoren, q.koerperschaft);
-    if (au) t.push(au + " ");
-    t.push("(" + (q.jahr || "o. J.") + "). ");
-    t.push(q.titel.replace(/\s+/g, " ").trim());
-    if (!/[.?!]$/.test(q.titel.trim())) t.push(".");
+    var tit = q.titel.replace(/\s+/g, " ").trim();
+    var titPunkt = /[.?!]$/.test(tit) ? "" : ".";
+    if (au) {
+      t.push(au + " ");
+      t.push("(" + (q.jahr || "o. J.") + "). ");
+      t.push(tit + titPunkt);
+    } else {
+      // Ohne Verfasser ruecke nach APA der Titel an dessen Stelle. Vorher
+      // begann die Angabe mit "(o. J.). …" — gemessen an einer Aufnahme vom
+      // 10.08.2026. Das liest sich wie ein Fehler und ist auch einer.
+      t.push(tit + titPunkt + " ");
+      t.push("(" + (q.jahr || "o. J.") + ").");
+    }
     var seiten = q.seiteVon
       ? q.seiteVon + (q.seiteBis && q.seiteBis !== q.seiteVon ? "–" + q.seiteBis : "")
       : "";
@@ -205,7 +214,15 @@
     setze("EP", q.seiteBis);
     setze("DO", q.doi);
     setze("SN", q.isbn || q.issn);
-    setze("PB", q.verlag);
+    // PubMed traegt in citation_publisher den Zeitschriftennamen in
+    // NLM-Schreibweise ein: gemessen "JO - Cancers" neben "PB - Cancers
+    // (Basel)". Das ist kein Verlag, sondern dieselbe Angabe zweimal.
+    // Steckt der eine Name im anderen, bleibt PB leer.
+    var jo = String(q.journal || q.sammelwerk || "").toLowerCase();
+    var pb = String(q.verlag || "").toLowerCase();
+    var dieselbe = jo && pb &&
+      (jo.indexOf(pb) === 0 || pb.indexOf(jo) === 0);
+    if (!dieselbe) setze("PB", q.verlag);
     setze("LA", q.sprache);
     setze("UR", q.urlZitat || q.url);
     // Y2 ist im RIS-Standard das Abrufdatum. Die Uhrzeit gehoert dazu:

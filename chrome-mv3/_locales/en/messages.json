@@ -396,6 +396,12 @@
   "optSourceMetadataHint": {
     "message": "Reads authors, journal, volume, DOI, licence and access time from the page that is already open, and writes them into the PDF metadata plus an attached RIS record for Citavi, Zotero and EndNote. No request is made to any service."
   },
+  "optRisSidecar": {
+    "message": "Also save the RIS record as a separate file"
+  },
+  "optRisSidecarHint": {
+    "message": "The citation record is always embedded inside the PDF as an attachment called „quelle.ris“ — switching this off loses nothing. The separate file exists only for convenience: reference managers import it by double-click or drag, whereas an attachment has to be extracted from the PDF first. Turn it off if you would rather keep one file per capture."
+  },
   "optPageFormat": {
     "message": "Page size for multi-page"
   },

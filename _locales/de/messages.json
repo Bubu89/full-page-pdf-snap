@@ -396,6 +396,12 @@
   "optSourceMetadataHint": {
     "message": "Liest Verfasser, Zeitschrift, Jahrgang, DOI, Lizenz und Abrufzeit aus der bereits geöffneten Seite und schreibt sie in die PDF-Metadaten, dazu einen RIS-Datensatz für Citavi, Zotero und EndNote. Es wird kein Dienst angefragt."
   },
+  "optRisSidecar": {
+    "message": "RIS-Satz zusätzlich als eigene Datei speichern"
+  },
+  "optRisSidecarHint": {
+    "message": "Der Zitationsdatensatz steckt ohnehin als Anlage „quelle.ris“ im PDF — ausschalten verliert nichts. Die Datei daneben ist reine Bequemlichkeit: Literaturverwaltungen übernehmen sie per Doppelklick oder Ziehen, eine Anlage muss erst aus dem PDF geholt werden. Abschalten, wenn Sie lieber eine einzige Datei je Aufnahme behalten."
+  },
   "optPageFormat": {
     "message": "Seitengröße bei mehrseitiger Ausgabe"
   },
