@@ -37,38 +37,23 @@ ROHDATEN = "/data/2026-08-03-reading-list-to-bibliography.json"
 TITEL_M_DE = ("Zwanzig Links, zehn Nachweise: was eine Maschine erledigt "
               "und was sie zurückgibt")
 
-# Deutsche Fassung auf derselben Adresse, Umschaltung per #b-de — das Muster
-# dafuer ist measurements/web-citations-that-vanish. Sprachbloecke tragen
-# data-lang, build-de-index.py findet die Seite am Anker id="b-de".
+# Deutsche Fassung auf derselben Adresse. Sprachbloecke tragen data-lang;
+# build-de-index.py findet die Seite daran.
+#
+# Bis zum 10.08.2026 trug jede Seite ihr eigenes Umschalt-Skript und ein
+# Schaltflaechenpaar fuer Englisch und Deutsch. Beides ist entfallen: die
+# Sprachwahl steht fuer neun Sprachen im Menue und liegt in docs/site-lang.js.
+# Eine je Seite mitgelieferte Kopie waere neunmal dieselbe Logik — und die
+# Stelle, an der eine Seite still hinter den anderen zurueckbleibt.
 SPRACHE_CSS = """
   /* --- Sprachumschaltung --- */
   [data-lang]{display:none}
   [data-lang].on{display:block}
   li[data-lang].on{display:list-item}
   span[data-lang].on,a[data-lang].on{display:inline}
-  .lang{display:flex;gap:6px;margin:0 0 26px}
-  .lang button{font:inherit;font-size:.86rem;font-weight:600;padding:7px 18px;cursor:pointer;
-    background:var(--card);color:var(--dim);border:1px solid var(--line);border-radius:8px}
-  .lang button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
 """
 
-SPRACHE_SKRIPT = """<script>
-function setLang(l){
-  document.querySelectorAll('[data-lang]').forEach(function(e){
-    e.classList.toggle('on', e.dataset.lang === l);
-  });
-  document.getElementById('b-en').setAttribute('aria-pressed', l === 'en');
-  document.getElementById('b-de').setAttribute('aria-pressed', l === 'de');
-  document.documentElement.lang = l;
-  try { localStorage.setItem('pl-lang', l); } catch (e) {}
-}
-(function(){
-  var gespeichert = null;
-  try { gespeichert = localStorage.getItem('pl-lang'); } catch (e) {}
-  var l = gespeichert || ((navigator.language || 'en').slice(0,2) === 'de' ? 'de' : 'en');
-  if (l === 'de') setLang('de');
-})();
-</script>"""
+SPRACHE_SKRIPT = """<script src="/site-lang.js" defer></script>"""
 
 
 # ---------------------------------------------------------------- Geruest
@@ -245,11 +230,6 @@ def messseite(d):
     <a href="{ROHDATEN}">raw data</a></span><span data-lang="de" lang="de">{DATUM_DE} · {r['sources']} Quellen, ein Durchlauf ·
     <a href="{ROHDATEN}">Rohdaten</a></span></p>
 </header>
-
-<div class="lang">
-  <button id="b-en" aria-pressed="true" onclick="setLang('en')">English</button>
-  <button id="b-de" aria-pressed="false" onclick="setLang('de')">Deutsch</button>
-</div>
 
 <div data-lang="en" class="on" lang="en">
 
@@ -905,14 +885,12 @@ def schreiben(ziel, vorlage, inhalt, url, titel, besch, og, tiefe, art, fusssatz
     ziel.mkdir(parents=True, exist_ok=True)
     seite = (anpassen(kopf, url, titel, besch, og, tiefe, art, deutsch)
              + inhalt + fuss_setzen(fuss, fusssatz, tiefe, offenlegung))
-    # Das Umschalt-Skript gehoert nur auf Seiten mit deutschem Abschnitt. Es
-    # kann aus einer zweisprachigen Vorlage mitkommen oder fehlen — beides
-    # ausgleichen, sonst setzt es auf einer rein englischen Seite bei
-    # deutschen Besuchern die Dokumentsprache auf de.
-    if deutsch and "function setLang" not in seite:
-        seite = seite.replace("</body>", SPRACHE_SKRIPT + "\n</body>")
-    if not deutsch and "function setLang" in seite:
-        seite = seite.replace(SPRACHE_SKRIPT + "\n</body>", "</body>")
+    # Die Sprachwahl gehoert auf jede Seite, nicht nur auf zweisprachige: sie
+    # traegt das Menue und sagt auf einsprachigen Seiten, dass auf Englisch
+    # zurueckgefallen wird. Frueher stand hier das Gegenteil — damals bestimmte
+    # das Skript die Dokumentsprache, heute bestimmt sie der vorhandene Block.
+    if SPRACHE_SKRIPT not in seite:
+        seite = seite.replace("</head>", SPRACHE_SKRIPT + "\n</head>")
     (ziel / "index.html").write_text(seite, encoding="utf-8")
     print(f"  geschrieben: {(ziel / 'index.html').relative_to(DOCS)}")
 

@@ -126,6 +126,41 @@ eingebetteter Textblock mit `{NAME}` wird zu `{{NAME}}` maskiert — und landet
 dann als literale Klammer auf der ausgelieferten Seite. Die Pipeline prüft
 darauf; lokal hilft `grep -rE '\{[A-Z_]{3,}\}' docs`.
 
+## Sprachen — ein neuer Beitrag entsteht mehrsprachig
+
+Die Seite spricht neun Sprachen: `en de es fr it ja pt-BR ru zh-CN` — dieselben,
+die die Erweiterung in `_locales/` führt. Englisch ist die Ausgangsfassung.
+
+**Wie es funktioniert.** Alle Sprachen einer Seite stehen in *derselben* Datei,
+jede in einem Block mit `data-lang="xx"`; sichtbar ist genau einer. Die Wahl
+trifft `docs/site-lang.js`, steht als Auswahl im Menü, liegt in
+`localStorage['pl-lang']` und gilt damit **domainweit** — sie überlebt den
+Seitenwechsel. Ohne gespeicherte Wahl entscheidet die Browsersprache.
+
+Eine Adresse für alle Sprachen ist Absicht: ein geteilter Link öffnet beim
+Empfänger in *dessen* Sprache, und es entsteht kein hreflang-Geflecht aus neun
+URLs je Beitrag. Der Preis ist Seitengröße — rund 66 kB bei neun Fassungen, das
+ist weniger als ein Bild.
+
+**Für einen neuen Beitrag:**
+
+1. Text je Sprache in ein eigenes Modul, Muster: `texte_artikel_studierende.py`
+   — gleiche Schlüssel (`title`, `description`, `h1`, `standfirst`, `meta`,
+   `body`), gleiche Reihenfolge.
+2. Rendering über ein `build-*-post.py`, Muster: `build-studierende-post.py`.
+   Es setzt `hreflang` für alle neun plus `x-default` auf dieselbe Adresse.
+3. `python3 pruefe-sprachwahl.py` — bedient die Umschaltung in echtem Chrome.
+
+**Was nicht mehr gebaut wird:** ein eigenes `setLang()` je Seite und ein
+Schaltflächenpaar für Englisch und Deutsch. Das war das Muster bis zum
+10.08.2026 und trug die Logik in jeder Seite erneut — bei neun Sprachen wären
+das neun Kopien und die Stelle, an der eine Seite still zurückbleibt.
+
+**Bestandsseiten.** Nicht jede Seite gibt es in jeder Sprache. Wählt jemand eine
+fehlende, fällt die Seite auf Englisch zurück **und sagt das in der gewählten
+Sprache**. Ein stummer Rückfall liest sich wie ein Defekt. Eine Seite bekommt
+eine Sprache, indem ein `data-lang`-Block dazukommt — sonst nichts.
+
 ## Nach dem Ausliefern
 
 ```bash
@@ -219,6 +254,8 @@ kommentiert. Zwei Zeilen haetten das erspart.
 - `rechtscheck.py` 0 Fehler meldet,
 - die Tests grün sind,
 - eine neue Zahl ihre Rohdaten unter `docs/data/` hat,
+- der Beitrag in **allen neun Sprachen** vorliegt und `pruefe-sprachwahl.py`
+  grün ist — eine Fassung fehlt sonst still, denn Englisch springt ein,
 - `CHANGELOG.md` sagt **was, warum, wie und mit welchem Ergebnis** — der
   Aggregator erfasst nur Dateipfade, das Warum gehört von Hand hinein,
 - und keine lokalen Pfade im Auslieferungsstand stehen. Das Repo ist öffentlich,

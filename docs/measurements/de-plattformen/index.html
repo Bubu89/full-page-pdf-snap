@@ -165,6 +165,7 @@
   .lang button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
 </style>
 <script src="/agent-tools.js" defer></script>
+<script src="/site-lang.js" defer></script>
 </head>
 <body>
 <nav class="topnav">
@@ -178,7 +179,6 @@
     <a class="n" href="../../mitmachen/">Mitmachen</a>
     <a class="n" href="../../tools/">Tools</a>
     <a class="n" href="../../about/">About</a>
-    <a class="n" href="#b-de" hreflang="de" lang="de" title="Zur deutschen Fassung auf dieser Seite">Deutsch</a>
       <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
   </div>
 </nav>
@@ -206,11 +206,6 @@
     <a href="/data/2026-08-03-de-plattformen.json">raw data</a></span><span data-lang="de" lang="de">3. August 2026 · 11 Plattformen, ein Durchlauf ·
     <a href="/data/2026-08-03-de-plattformen.json">Rohdaten</a></span></p>
 </header>
-
-<div class="lang">
-  <button id="b-en" aria-pressed="true" onclick="setLang('en')">English</button>
-  <button id="b-de" aria-pressed="false" onclick="setLang('de')">Deutsch</button>
-</div>
 
 <div data-lang="en" class="on" lang="en">
 
@@ -480,22 +475,5 @@
     </footer>
 
 </div>
-<script>
-function setLang(l){
-  document.querySelectorAll('[data-lang]').forEach(function(e){
-    e.classList.toggle('on', e.dataset.lang === l);
-  });
-  document.getElementById('b-en').setAttribute('aria-pressed', l === 'en');
-  document.getElementById('b-de').setAttribute('aria-pressed', l === 'de');
-  document.documentElement.lang = l;
-  try { localStorage.setItem('pl-lang', l); } catch (e) {}
-}
-(function(){
-  var gespeichert = null;
-  try { gespeichert = localStorage.getItem('pl-lang'); } catch (e) {}
-  var l = gespeichert || ((navigator.language || 'en').slice(0,2) === 'de' ? 'de' : 'en');
-  if (l === 'de') setLang('de');
-})();
-</script>
 </body>
 </html>

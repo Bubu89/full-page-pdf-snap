@@ -197,6 +197,7 @@
     .topnav a.n{font-size:.85rem}
   }
 </style>
+<script src="/site-lang.js" defer></script>
 </head>
 <body>
 <nav class="topnav">
@@ -404,20 +405,5 @@ py pushdictate.py --no-setup                 # abbrechen statt Fenster öffnen</
   <p data-lang="de" lang="de">MIT-lizenziert. Veröffentlicht mit den Messungen dahinter — keine Zahl ohne Messung, keine Behauptung ohne Test.</p>
 </footer>
 
-<script>
-function setLang(l){
-  document.documentElement.lang = l;
-  document.querySelectorAll('[data-lang]').forEach(function(el){
-    el.classList.toggle('on', el.dataset.lang === l);
-  });
-  document.getElementById('b-en').setAttribute('aria-pressed', l === 'en');
-  document.getElementById('b-de').setAttribute('aria-pressed', l === 'de');
-  try { localStorage.setItem('pd-lang', l); } catch (e) {}
-}
-var saved = null;
-try { saved = localStorage.getItem('pd-lang'); } catch (e) {}
-var browserLang = (navigator.language || '').slice(0, 2) === 'de' ? 'de' : 'en';
-setLang(saved === 'de' || saved === 'en' ? saved : browserLang);
-</script>
 </body>
 </html>

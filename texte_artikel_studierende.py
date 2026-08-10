@@ -1,0 +1,1189 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Der Artikeltext in neun Sprachen — getrennt vom Bauen der Seite.
+
+Warum getrennt: Wer eine Uebersetzung nachbessert, soll keine HTML-Vorlage
+anfassen muessen, und wer die Seite umbaut, keine neun Texte. ENGLISCH ist die
+Ausgangsfassung; faellt eine Sprache aus, faellt die Seite auf sie zurueck.
+
+Jede Zahl im Text stammt aus einem Datensatz unter docs/data/ und traegt ihr
+Erhebungsdatum im selben Satz. Wer eine Zahl aendert, aendert sie zuerst dort.
+
+Vorlage fuer weitere mehrsprachige Beitraege: gleiche Schluessel, gleiche
+Reihenfolge, Rendering ueber build-studierende-post.py.
+"""
+
+SLUG = "for-students"
+URL = "https://provinglab.dev/how-to/for-students/"
+DATUM = "2026-08-10"
+
+# Reihenfolge bestimmt die Reihenfolge der Bloecke in der Seite.
+SPRACHEN = ["en", "de", "es", "fr", "it", "ja", "pt-BR", "ru", "zh-CN"]
+
+TEXTE = {}
+
+# --------------------------------------------------------------- English ----
+TEXTE["en"] = {
+    "title": "For students: a source that cites itself, survives, and can be read by a machine",
+    "description": (
+        "Three things go wrong with a web source in a term paper: it disappears, its "
+        "citation is missing, and the file is unreadable for a language model. What a "
+        "full-page capture does about each — with the measurements, including where it fails."
+    ),
+    "h1": "For students: a source that cites itself, survives, and can be read by a machine",
+    "standfirst": (
+        "Three things go wrong with a web source in a term paper. It disappears before "
+        "the deadline. Its citation has to be typed out by hand. And the file you kept "
+        "is a picture, so no tool can search it. Here is what a full-page capture does "
+        "about each of the three — and where it hands the work back to you."
+    ),
+    "meta": "10 August 2026 · three uses, each with its measurement",
+    "body": """
+<h2>1. The source that cites itself</h2>
+<p>
+  The tedious part is not the citing. It is reconstructing, weeks later, what you
+  read, when you read it, and who wrote it. A capture carries authors, journal,
+  DOI, licence and the time of retrieval on the sheet itself, and an attached RIS
+  record goes straight into Citavi, Zotero or EndNote.
+</p>
+<p>
+  Does a purpose-built reader beat the established one? On 2 August 2026 it was
+  measured against <a href="https://www.mediawiki.org/wiki/Citoid">Citoid</a> —
+  the Wikimedia service built on the Zotero translators — across 18 works drawn
+  at random from OpenAlex. The random draw matters: an earlier hand-picked list
+  showed parity and flattered us.
+</p>
+<table>
+  <thead><tr><th>18 works, drawn at random</th><th>This reader</th><th>Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>Coverage</td><td>61 %</td><td>61 %</td></tr>
+    <tr><td>Accuracy of what came back</td><td>100 %</td><td>79 %</td></tr>
+    <tr><td>Records that were wrong</td><td>0</td><td>3</td></tr>
+    <tr><td>Median time per source</td><td>0.68 s</td><td>1.92 s</td></tr>
+  </tbody>
+</table>
+<p>
+  Read honestly: <strong>coverage is identical</strong>. The difference is what
+  comes back. Citoid returned "Redirect URL" as the title of a work, one empty
+  title, and one prefixed "Article: ". For a bibliography a wrong record is worse
+  than none, because it looks finished and travels unnoticed.
+  <a href="/data/2026-08-02-citation-extraction.json">Raw data</a>.
+</p>
+<p>
+  Two runs asked what a real reading list does. Of 20 sources collected for a term
+  paper (4 August 2026), 14 became complete records; 6 were handed back — one
+  behind a wall, one unreachable, four pages too thin to declare anything. Of 11
+  German-language platforms students actually cite (3 August 2026) — repositories,
+  the national library, German publishers, case law — 5 came back complete, at
+  0.69 s per source.
+  <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">Raw</a> ·
+  <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">raw</a>.
+</p>
+<p>
+  Legal sources were the instructive gap. EU regulations and Austrian consolidated
+  law declare neither author nor year — not an oversight, simply a different kind
+  of document. They are now treated as their own source type instead of being
+  forced into a shape that does not fit.
+</p>
+
+<h2>2. The page, before it is gone</h2>
+<p>
+  Pages are edited, moved and taken down, and a dead link in a bibliography is
+  your problem, not the publisher's. A capture keeps the page as one continuous
+  sheet with the date of retrieval on it — including pages behind a login you
+  hold, because everything runs in your own browser and nothing is uploaded.
+</p>
+<p>
+  Consent banners are why this is harder than it sounds: they often lock
+  scrolling. On one news site the page reported 900 pixels of height instead of
+  43,101 — a full-page capture would have quietly collapsed to a single screen
+  and looked like it worked. The banner is hidden for the duration and every
+  change is put back afterwards. Nothing is clicked away on your behalf: a click
+  on "accept" is a decision in your name and sets cookies. Hiding is not deciding.
+</p>
+
+<h2>3. One sheet a machine can read</h2>
+<p>
+  Language models read text, not pixels. A capture keeps the page's own text
+  layer, so words arrive as words — searchable, quotable, and intact across page
+  breaks. Where a document has no text layer, recognition has to recover it, and
+  that is measurable.
+</p>
+<p>
+  On 1 August 2026 an English Wikipedia article was captured as one continuous PDF
+  with no text layer (700 × 11,008 pt) and read by Tesseract 5 at 150 dpi. Against
+  the article's own text from the Wikipedia REST API the same day — 10,285 words —
+  recognition recovered <strong>92.6 %</strong> of the vocabulary and 73.9 % of
+  five-word phrases. The control run, scoring the same output against unrelated
+  vocabulary, returned 0.0 %: the method distinguishes rather than rewarding any
+  text at all. <a href="/data/2026-08-01-ocr-recall.json">Raw data</a>.
+</p>
+<p>
+  The single-sheet default earns its keep here. Page breaks cut sentences in half,
+  and a model handed a severed sentence will complete it rather than flag it. One
+  uninterrupted sheet has no seams to fall into. For agents there is a second
+  route that skips the file entirely: the
+  <a href="/notes/mcp-server-what-it-solves/">MCP endpoint</a> takes a URL and
+  returns the citation directly — see the <a href="/recipes/">recipes</a>.
+</p>
+
+<h2>What it does not do</h2>
+<ul>
+  <li>The citation reader works server-side without JavaScript. Whatever a page
+      adds after loading is invisible to it.</li>
+  <li>Six of twenty sources came back without a record. A thin page cannot be made
+      to declare what it never declared.</li>
+  <li>All figures are single runs, not averages. Timing is dominated by the target
+      site: two runs against the same address differed by up to 176 %.</li>
+  <li>The OCR figure is one measurement on one document — an order of magnitude,
+      not a promise for yours.</li>
+  <li>Capture only what you have legitimate access to. The extension reaches
+      exactly what your browser already shows you, and that limit is yours to keep.</li>
+  <li>A capture is documentation, not a legally certified record.</li>
+</ul>
+
+<p class="note">
+  Disclosure: these measurements were carried out by us on our own tool; the raw
+  data and the commands to repeat them are linked above. Figures were taken on the
+  dates stated and reflect the state of those services then; services change.
+  Citoid is a Wikimedia project, named here only to identify the service compared.
+  Corrections via <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">an
+  issue</a> are taken up.
+</p>
+""",
+}
+
+# ---------------------------------------------------------------- Deutsch ----
+TEXTE["de"] = {
+    "title": "Für Studierende: eine Quelle, die sich selbst zitiert, überlebt und maschinenlesbar ist",
+    "description": (
+        "Drei Dinge gehen mit einer Webquelle in einer Seminararbeit schief: sie verschwindet, "
+        "ihre Zitation fehlt, und die Datei ist für ein Sprachmodell unlesbar. Was eine "
+        "Ganzseiten-Aufnahme dagegen tut — mit den Messungen, auch dort, wo sie versagt."
+    ),
+    "h1": "Für Studierende: eine Quelle, die sich selbst zitiert, überlebt und maschinenlesbar ist",
+    "standfirst": (
+        "Drei Dinge gehen mit einer Webquelle in einer Seminararbeit schief. Sie verschwindet "
+        "vor der Abgabe. Ihre Zitation muss von Hand abgetippt werden. Und die Datei, die Sie "
+        "aufgehoben haben, ist ein Bild, also durchsucht sie kein Werkzeug. Hier steht, was "
+        "eine Ganzseiten-Aufnahme gegen jedes der drei tut — und wo die Arbeit an Sie zurückgeht."
+    ),
+    "meta": "10. August 2026 · drei Anwendungen, jede mit ihrer Messung",
+    "body": """
+<h2>1. Die Quelle, die sich selbst zitiert</h2>
+<p>
+  Das Mühsame ist nicht das Zitieren. Es ist, Wochen später zu rekonstruieren, was
+  man gelesen hat, wann man es gelesen hat und wer es geschrieben hat. Eine
+  Aufnahme trägt Verfasser, Zeitschrift, DOI, Lizenz und den Abrufzeitpunkt auf dem
+  Blatt selbst, und ein beigelegter RIS-Datensatz geht direkt nach Citavi, Zotero
+  oder EndNote.
+</p>
+<p>
+  Schlägt ein eigens gebauter Leser den etablierten? Am 2. August 2026 wurde er
+  gegen <a href="https://www.mediawiki.org/wiki/Citoid">Citoid</a> gemessen — den
+  Wikimedia-Dienst auf Basis der Zotero-Translatoren — an 18 zufällig aus OpenAlex
+  gezogenen Werken. Die Zufallsziehung ist der Punkt: eine frühere, von Hand
+  zusammengestellte Liste zeigte Gleichstand und schmeichelte uns.
+</p>
+<table>
+  <thead><tr><th>18 Werke, zufällig gezogen</th><th>Dieser Leser</th><th>Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>Abdeckung</td><td>61 %</td><td>61 %</td></tr>
+    <tr><td>Richtigkeit des Zurückgelieferten</td><td>100 %</td><td>79 %</td></tr>
+    <tr><td>Falsche Datensätze</td><td>0</td><td>3</td></tr>
+    <tr><td>Median je Quelle</td><td>0,68 s</td><td>1,92 s</td></tr>
+  </tbody>
+</table>
+<p>
+  Ehrlich gelesen: <strong>die Abdeckung ist gleich</strong>. Der Unterschied liegt
+  darin, was zurückkommt. Citoid lieferte „Redirect URL" als Titel eines Werks,
+  einen leeren Titel und einen mit vorangestelltem „Article: ". Für ein
+  Literaturverzeichnis ist ein falscher Datensatz schlimmer als keiner, weil er
+  fertig aussieht und unbemerkt mitwandert.
+  <a href="/data/2026-08-02-citation-extraction.json">Rohdaten</a>.
+</p>
+<p>
+  Zwei Läufe fragten, was eine echte Leseliste ergibt. Von 20 Quellen, wie sie für
+  eine Seminararbeit zusammenkommen (4. August 2026), wurden 14 zu vollständigen
+  Datensätzen; 6 kamen zurück — eine hinter einer Schranke, eine nicht erreichbar,
+  vier Seiten zu dünn, um überhaupt etwas zu deklarieren. Von 11 deutschsprachigen
+  Plattformen, die Studierende tatsächlich zitieren (3. August 2026) —
+  Repositorien, Nationalbibliothek, deutsche Verlage, Rechtsprechung — kamen 5
+  vollständig zurück, bei 0,69 s je Quelle.
+  <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">Rohdaten</a> ·
+  <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">Rohdaten</a>.
+</p>
+<p>
+  Die aufschlussreiche Lücke waren Rechtsquellen. EU-Verordnungen und
+  österreichisches konsolidiertes Recht deklarieren weder Verfasser noch Jahr —
+  kein Versäumnis, sondern eine andere Art von Dokument. Sie gelten jetzt als
+  eigener Quellentyp, statt in eine Form gezwungen zu werden, die nicht passt.
+</p>
+
+<h2>2. Die Seite, bevor sie weg ist</h2>
+<p>
+  Seiten werden bearbeitet, verschoben und abgeschaltet, und ein toter Link im
+  Literaturverzeichnis ist Ihr Problem, nicht das des Anbieters. Eine Aufnahme
+  bewahrt die Seite als ein durchgehendes Blatt mit dem Abrufdatum darauf — auch
+  hinter einem Login, zu dem Sie Zugang haben, denn alles läuft im eigenen Browser
+  und nichts wird hochgeladen.
+</p>
+<p>
+  Zustimmungsbanner sind der Grund, warum das schwieriger ist, als es klingt: sie
+  sperren häufig das Scrollen. Auf einer Nachrichtenseite meldete die Seite 900
+  Pixel Höhe statt 43.101 — eine Ganzseiten-Aufnahme wäre still auf einen einzigen
+  Bildschirm zusammengefallen und hätte ausgesehen, als hätte sie funktioniert.
+  Das Banner wird für die Dauer der Aufnahme verborgen, jede Änderung danach
+  zurückgenommen. Nichts wird in Ihrem Namen weggeklickt: ein Klick auf
+  „akzeptieren" ist eine Entscheidung in Ihrem Namen und setzt Cookies. Verbergen
+  ist nicht entscheiden.
+</p>
+
+<h2>3. Ein Blatt, das eine Maschine lesen kann</h2>
+<p>
+  Sprachmodelle lesen Text, keine Pixel. Eine Aufnahme behält die Textebene der
+  Seite, die Wörter kommen also als Wörter an — durchsuchbar, zitierbar und über
+  Seitenumbrüche hinweg unversehrt. Wo ein Dokument keine Textebene hat, muss die
+  Erkennung sie zurückgewinnen, und das ist messbar.
+</p>
+<p>
+  Am 1. August 2026 wurde ein englischer Wikipedia-Artikel als ein durchgehendes
+  PDF ohne Textebene aufgenommen (700 × 11.008 pt) und mit Tesseract 5 bei 150 dpi
+  gelesen. Gegen den Text desselben Artikels aus der Wikipedia-REST-API vom selben
+  Tag — 10.285 Wörter — gewann die Erkennung <strong>92,6 %</strong> des
+  Wortschatzes zurück und 73,9 % der Fünf-Wort-Folgen. Der Kontrolllauf, der
+  dieselbe Ausgabe gegen fremdes Vokabular prüfte, ergab 0,0 %: die Methode
+  unterscheidet also wirklich, statt jeden beliebigen Text zu belohnen.
+  <a href="/data/2026-08-01-ocr-recall.json">Rohdaten</a>.
+</p>
+<p>
+  Hier zahlt sich das Einzelblatt aus. Seitenumbrüche zerschneiden Sätze, und ein
+  Modell, dem ein abgetrennter Satz vorgelegt wird, vervollständigt ihn, statt ihn
+  zu melden. Ein durchgehendes Blatt hat keine Nahtstellen, in die etwas fallen
+  kann. Für Agenten gibt es einen zweiten Weg, der die Datei ganz überspringt: der
+  <a href="/notes/mcp-server-what-it-solves/">MCP-Endpunkt</a> nimmt eine URL und
+  gibt die Zitation direkt zurück — siehe die <a href="/recipes/">Rezepte</a>.
+</p>
+
+<h2>Was es nicht leistet</h2>
+<ul>
+  <li>Der Zitationsleser arbeitet serverseitig ohne JavaScript. Was eine Seite erst
+      nach dem Laden ergänzt, ist für ihn unsichtbar.</li>
+  <li>Sechs von zwanzig Quellen kamen ohne Datensatz zurück. Einer dünnen Seite
+      lässt sich nicht entlocken, was sie nie deklariert hat.</li>
+  <li>Alle Zahlen sind Einzelläufe, keine Mittelwerte. Die Zeit bestimmt die
+      Zielseite: zwei Läufe gegen dieselbe Adresse unterschieden sich um bis zu 176 %.</li>
+  <li>Der OCR-Wert ist eine Messung an einem Dokument — eine Größenordnung, keine
+      Zusage für Ihres.</li>
+  <li>Nehmen Sie nur auf, wozu Sie rechtmäßigen Zugang haben. Die Erweiterung
+      erreicht genau das, was Ihr Browser Ihnen ohnehin zeigt; diese Grenze zu
+      wahren liegt bei Ihnen.</li>
+  <li>Eine Aufnahme ist eine Dokumentation, keine beglaubigte Urkunde.</li>
+</ul>
+
+<p class="note">
+  Offenlegung: Diese Messungen haben wir an unserem eigenen Werkzeug durchgeführt;
+  Rohdaten und die Befehle zur Wiederholung sind oben verlinkt. Die Werte wurden an
+  den genannten Tagen erhoben und geben den damaligen Stand der Dienste wieder;
+  Dienste ändern sich. Citoid ist ein Wikimedia-Projekt und wird nur genannt, um
+  den verglichenen Dienst zu bezeichnen. Korrekturen über
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">ein Issue</a>
+  werden übernommen.
+</p>
+""",
+}
+
+# ---------------------------------------------------------------- Español ----
+TEXTE["es"] = {
+    "title": "Para estudiantes: una fuente que se cita sola, sobrevive y es legible por una máquina",
+    "description": (
+        "Tres cosas fallan con una fuente web en un trabajo académico: desaparece, le falta "
+        "la cita y el archivo resulta ilegible para un modelo de lenguaje. Qué hace una "
+        "captura de página completa al respecto — con las mediciones, también donde falla."
+    ),
+    "h1": "Para estudiantes: una fuente que se cita sola, sobrevive y es legible por una máquina",
+    "standfirst": (
+        "Tres cosas fallan con una fuente web en un trabajo académico. Desaparece antes de la "
+        "entrega. Su cita hay que teclearla a mano. Y el archivo que guardó es una imagen, así "
+        "que ninguna herramienta puede buscar en él. Esto es lo que hace una captura de página "
+        "completa con cada una de las tres — y dónde le devuelve el trabajo a usted."
+    ),
+    "meta": "10 de agosto de 2026 · tres usos, cada uno con su medición",
+    "body": """
+<h2>1. La fuente que se cita sola</h2>
+<p>
+  Lo tedioso no es citar. Es reconstruir, semanas después, qué leyó, cuándo lo leyó
+  y quién lo escribió. Una captura lleva autores, revista, DOI, licencia y la hora
+  de consulta en la propia hoja, y un registro RIS adjunto entra directamente en
+  Citavi, Zotero o EndNote.
+</p>
+<p>
+  ¿Supera un lector hecho a medida al establecido? El 2 de agosto de 2026 se midió
+  frente a <a href="https://www.mediawiki.org/wiki/Citoid">Citoid</a> — el servicio
+  de Wikimedia basado en los traductores de Zotero — sobre 18 obras extraídas al
+  azar de OpenAlex. El sorteo aleatorio importa: una lista anterior elegida a mano
+  mostraba empate y nos favorecía.
+</p>
+<table>
+  <thead><tr><th>18 obras, al azar</th><th>Este lector</th><th>Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>Cobertura</td><td>61 %</td><td>61 %</td></tr>
+    <tr><td>Exactitud de lo devuelto</td><td>100 %</td><td>79 %</td></tr>
+    <tr><td>Registros erróneos</td><td>0</td><td>3</td></tr>
+    <tr><td>Mediana por fuente</td><td>0,68 s</td><td>1,92 s</td></tr>
+  </tbody>
+</table>
+<p>
+  Leído con honestidad: <strong>la cobertura es idéntica</strong>. La diferencia
+  está en lo que vuelve. Citoid devolvió «Redirect URL» como título de una obra, un
+  título vacío y otro precedido de «Article: ». Para una bibliografía, un registro
+  erróneo es peor que ninguno, porque parece terminado y viaja sin que nadie lo note.
+  <a href="/data/2026-08-02-citation-extraction.json">Datos brutos</a>.
+</p>
+<p>
+  Dos ejecuciones preguntaron qué da una lista de lectura real. De 20 fuentes
+  reunidas para un trabajo (4 de agosto de 2026), 14 se convirtieron en registros
+  completos; 6 fueron devueltas — una tras un muro, una inalcanzable, cuatro
+  páginas demasiado escuetas para declarar nada. De 11 plataformas en alemán que
+  los estudiantes citan de verdad (3 de agosto de 2026), 5 volvieron completas, a
+  0,69 s por fuente.
+  <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">Datos</a> ·
+  <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">datos</a>.
+</p>
+<p>
+  El hueco revelador fueron las fuentes jurídicas. Los reglamentos de la UE y el
+  derecho consolidado austriaco no declaran ni autor ni año — no es un descuido,
+  sino otro tipo de documento. Ahora se tratan como un tipo de fuente propio en
+  lugar de forzarlos a una forma que no les corresponde.
+</p>
+
+<h2>2. La página, antes de que desaparezca</h2>
+<p>
+  Las páginas se editan, se mueven y se retiran, y un enlace muerto en la
+  bibliografía es problema suyo, no del editor. Una captura conserva la página como
+  una hoja continua con la fecha de consulta encima — también páginas tras un acceso
+  que usted posee, porque todo ocurre en su navegador y nada se sube.
+</p>
+<p>
+  Los avisos de consentimiento son la razón de que esto sea más difícil de lo que
+  parece: a menudo bloquean el desplazamiento. En un sitio de noticias la página
+  declaró 900 píxeles de alto en lugar de 43 101 — una captura completa se habría
+  reducido en silencio a una sola pantalla y habría parecido correcta. El aviso se
+  oculta mientras dura la captura y todo cambio se restituye después. Nada se
+  descarta en su nombre: pulsar «aceptar» es una decisión suya y fija cookies.
+  Ocultar no es decidir.
+</p>
+
+<h2>3. Una hoja que una máquina puede leer</h2>
+<p>
+  Los modelos de lenguaje leen texto, no píxeles. Una captura conserva la capa de
+  texto de la página, así que las palabras llegan como palabras — buscables,
+  citables e intactas a través de los saltos de página. Donde un documento carece
+  de capa de texto, el reconocimiento debe recuperarla, y eso es medible.
+</p>
+<p>
+  El 1 de agosto de 2026 se capturó un artículo de Wikipedia en inglés como un PDF
+  continuo sin capa de texto (700 × 11 008 pt) y se leyó con Tesseract 5 a 150 ppp.
+  Frente al texto del propio artículo obtenido ese mismo día de la API REST de
+  Wikipedia — 10 285 palabras — el reconocimiento recuperó el <strong>92,6 %</strong>
+  del vocabulario y el 73,9 % de las secuencias de cinco palabras. La ejecución de
+  control, que puntuó la misma salida contra vocabulario ajeno, dio 0,0 %: el método
+  distingue de verdad, en lugar de premiar cualquier texto.
+  <a href="/data/2026-08-01-ocr-recall.json">Datos brutos</a>.
+</p>
+<p>
+  Aquí la hoja única se gana su sitio. Los saltos de página parten las frases, y un
+  modelo al que se le entrega una frase cortada la completa en lugar de señalarla.
+  Una hoja continua no tiene costuras donde caerse. Para agentes existe una segunda
+  vía que se salta el archivo por completo: el
+  <a href="/notes/mcp-server-what-it-solves/">endpoint MCP</a> recibe una URL y
+  devuelve la cita directamente — véanse las <a href="/recipes/">recetas</a>.
+</p>
+
+<h2>Lo que no hace</h2>
+<ul>
+  <li>El lector de citas trabaja del lado del servidor sin JavaScript. Lo que una
+      página añade tras cargarse le resulta invisible.</li>
+  <li>Seis de veinte fuentes volvieron sin registro. A una página escueta no se le
+      puede sacar lo que nunca declaró.</li>
+  <li>Todas las cifras son ejecuciones únicas, no promedios. El tiempo lo domina el
+      sitio de destino: dos ejecuciones contra la misma dirección difirieron hasta
+      un 176 %.</li>
+  <li>La cifra de OCR es una medición sobre un documento — un orden de magnitud, no
+      una promesa para el suyo.</li>
+  <li>Capture solo aquello a lo que tenga acceso legítimo. La extensión alcanza
+      exactamente lo que su navegador ya le muestra; mantener ese límite le
+      corresponde a usted.</li>
+  <li>Una captura es documentación, no un acta con fe pública.</li>
+</ul>
+
+<p class="note">
+  Declaración: estas mediciones las realizamos nosotros sobre nuestra propia
+  herramienta; los datos brutos y las órdenes para repetirlas están enlazados
+  arriba. Las cifras se tomaron en las fechas indicadas y reflejan el estado de esos
+  servicios entonces; los servicios cambian. Citoid es un proyecto de Wikimedia,
+  nombrado aquí solo para identificar el servicio comparado. Las correcciones vía
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue</a> se recogen.
+</p>
+""",
+}
+
+# --------------------------------------------------------------- Français ----
+TEXTE["fr"] = {
+    "title": "Pour les étudiants : une source qui se cite elle-même, survit et se laisse lire par une machine",
+    "description": (
+        "Trois choses tournent mal avec une source web dans un travail universitaire : elle "
+        "disparaît, sa citation manque, et le fichier est illisible pour un modèle de langue. "
+        "Ce qu'une capture pleine page y change — mesures à l'appui, y compris ses échecs."
+    ),
+    "h1": "Pour les étudiants : une source qui se cite elle-même, survit et se laisse lire par une machine",
+    "standfirst": (
+        "Trois choses tournent mal avec une source web dans un travail universitaire. Elle "
+        "disparaît avant la remise. Sa citation doit être saisie à la main. Et le fichier que "
+        "vous avez gardé est une image : aucun outil ne peut y chercher. Voici ce qu'une "
+        "capture pleine page fait pour chacune des trois — et où le travail vous revient."
+    ),
+    "meta": "10 août 2026 · trois usages, chacun avec sa mesure",
+    "body": """
+<h2>1. La source qui se cite elle-même</h2>
+<p>
+  Le fastidieux n'est pas de citer. C'est de reconstituer, des semaines plus tard,
+  ce qu'on a lu, quand on l'a lu et qui l'a écrit. Une capture porte auteurs, revue,
+  DOI, licence et heure de consultation sur la feuille même, et un enregistrement
+  RIS joint entre directement dans Citavi, Zotero ou EndNote.
+</p>
+<p>
+  Un lecteur conçu pour cela bat-il l'établi ? Le 2 août 2026, il a été mesuré face
+  à <a href="https://www.mediawiki.org/wiki/Citoid">Citoid</a> — le service Wikimedia
+  fondé sur les traducteurs Zotero — sur 18 œuvres tirées au hasard d'OpenAlex. Le
+  tirage aléatoire compte : une liste antérieure choisie à la main montrait l'égalité
+  et nous flattait.
+</p>
+<table>
+  <thead><tr><th>18 œuvres, tirées au hasard</th><th>Ce lecteur</th><th>Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>Couverture</td><td>61 %</td><td>61 %</td></tr>
+    <tr><td>Exactitude de ce qui revient</td><td>100 %</td><td>79 %</td></tr>
+    <tr><td>Enregistrements faux</td><td>0</td><td>3</td></tr>
+    <tr><td>Médiane par source</td><td>0,68 s</td><td>1,92 s</td></tr>
+  </tbody>
+</table>
+<p>
+  Lu honnêtement : <strong>la couverture est identique</strong>. La différence tient
+  à ce qui revient. Citoid a rendu « Redirect URL » comme titre d'une œuvre, un titre
+  vide et un autre précédé de « Article: ». Pour une bibliographie, un enregistrement
+  faux est pire qu'aucun : il a l'air fini et voyage sans qu'on le remarque.
+  <a href="/data/2026-08-02-citation-extraction.json">Données brutes</a>.
+</p>
+<p>
+  Deux passages ont demandé ce que donne une vraie liste de lecture. Sur 20 sources
+  réunies pour un travail (4 août 2026), 14 sont devenues des enregistrements
+  complets ; 6 ont été rendues — une derrière un mur, une injoignable, quatre pages
+  trop maigres pour déclarer quoi que ce soit. Sur 11 plateformes germanophones que
+  les étudiants citent réellement (3 août 2026), 5 sont revenues complètes, à 0,69 s
+  par source.
+  <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">Données</a> ·
+  <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">données</a>.
+</p>
+<p>
+  La lacune instructive : les sources juridiques. Les règlements de l'UE et le droit
+  consolidé autrichien ne déclarent ni auteur ni année — non par négligence, mais
+  parce que ce sont d'autres documents. Ils sont désormais traités comme un type de
+  source à part, au lieu d'être forcés dans une forme qui ne leur convient pas.
+</p>
+
+<h2>2. La page, avant qu'elle disparaisse</h2>
+<p>
+  Les pages sont modifiées, déplacées, retirées, et un lien mort dans une
+  bibliographie est votre problème, pas celui de l'éditeur. Une capture conserve la
+  page en une feuille continue portant la date de consultation — y compris derrière
+  un accès dont vous disposez, puisque tout se déroule dans votre navigateur et que
+  rien n'est téléversé.
+</p>
+<p>
+  Les bandeaux de consentement sont la raison pour laquelle c'est plus difficile
+  qu'il n'y paraît : ils bloquent souvent le défilement. Sur un site d'actualité, la
+  page annonçait 900 pixels de haut au lieu de 43 101 — une capture pleine page se
+  serait silencieusement réduite à un seul écran en ayant l'air de fonctionner. Le
+  bandeau est masqué le temps de la capture et chaque modification est rétablie
+  ensuite. Rien n'est cliqué en votre nom : cliquer « accepter » est une décision
+  prise en votre nom et pose des cookies. Masquer n'est pas décider.
+</p>
+
+<h2>3. Une feuille qu'une machine peut lire</h2>
+<p>
+  Les modèles de langue lisent du texte, pas des pixels. Une capture conserve la
+  couche de texte de la page : les mots arrivent comme des mots — cherchables,
+  citables, intacts par-delà les sauts de page. Là où un document n'a pas de couche
+  de texte, la reconnaissance doit la retrouver, et cela se mesure.
+</p>
+<p>
+  Le 1<sup>er</sup> août 2026, un article de Wikipédia en anglais a été capturé en un
+  PDF continu sans couche de texte (700 × 11 008 pt) et lu par Tesseract 5 à 150 ppp.
+  Face au texte du même article tiré le jour même de l'API REST de Wikipédia —
+  10 285 mots — la reconnaissance a retrouvé <strong>92,6 %</strong> du vocabulaire
+  et 73,9 % des séquences de cinq mots. Le passage de contrôle, notant la même sortie
+  contre un vocabulaire étranger, a donné 0,0 % : la méthode distingue réellement au
+  lieu de récompenser n'importe quel texte.
+  <a href="/data/2026-08-01-ocr-recall.json">Données brutes</a>.
+</p>
+<p>
+  La feuille unique prend ici tout son sens. Les sauts de page coupent les phrases,
+  et un modèle à qui l'on présente une phrase tronquée la complète au lieu de la
+  signaler. Une feuille continue n'a pas de couture où tomber. Pour les agents, une
+  seconde voie évite le fichier : le
+  <a href="/notes/mcp-server-what-it-solves/">point d'accès MCP</a> reçoit une URL et
+  renvoie la citation directement — voir les <a href="/recipes/">recettes</a>.
+</p>
+
+<h2>Ce qu'il ne fait pas</h2>
+<ul>
+  <li>Le lecteur de citations travaille côté serveur sans JavaScript. Ce qu'une page
+      ajoute après chargement lui reste invisible.</li>
+  <li>Six sources sur vingt sont revenues sans enregistrement. On ne tire pas d'une
+      page maigre ce qu'elle n'a jamais déclaré.</li>
+  <li>Tous les chiffres sont des passages uniques, non des moyennes. Le temps dépend
+      du site visé : deux passages sur la même adresse ont différé jusqu'à 176 %.</li>
+  <li>Le chiffre d'OCR est une mesure sur un document — un ordre de grandeur, pas une
+      promesse pour le vôtre.</li>
+  <li>Ne capturez que ce à quoi vous avez légitimement accès. L'extension atteint
+      exactement ce que votre navigateur vous montre déjà ; tenir cette limite vous
+      revient.</li>
+  <li>Une capture est une documentation, non un acte authentique.</li>
+</ul>
+
+<p class="note">
+  Divulgation : ces mesures ont été réalisées par nous sur notre propre outil ; les
+  données brutes et les commandes pour les répéter sont liées ci-dessus. Les chiffres
+  ont été relevés aux dates indiquées et reflètent l'état de ces services à ce
+  moment ; les services changent. Citoid est un projet Wikimedia, nommé ici seulement
+  pour identifier le service comparé. Les corrections via
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">un ticket</a> sont
+  reprises.
+</p>
+""",
+}
+
+# --------------------------------------------------------------- Italiano ----
+TEXTE["it"] = {
+    "title": "Per studenti: una fonte che si cita da sola, sopravvive ed è leggibile da una macchina",
+    "description": (
+        "Tre cose vanno storte con una fonte web in una tesina: sparisce, manca la citazione e "
+        "il file è illeggibile per un modello linguistico. Che cosa fa una cattura a pagina "
+        "intera — con le misurazioni, anche dove fallisce."
+    ),
+    "h1": "Per studenti: una fonte che si cita da sola, sopravvive ed è leggibile da una macchina",
+    "standfirst": (
+        "Tre cose vanno storte con una fonte web in una tesina. Sparisce prima della consegna. "
+        "La citazione va battuta a mano. E il file che avete conservato è un'immagine, quindi "
+        "nessuno strumento può cercarci dentro. Ecco che cosa fa una cattura a pagina intera "
+        "per ciascuna delle tre — e dove il lavoro torna a voi."
+    ),
+    "meta": "10 agosto 2026 · tre usi, ciascuno con la sua misurazione",
+    "body": """
+<h2>1. La fonte che si cita da sola</h2>
+<p>
+  La parte noiosa non è citare. È ricostruire, settimane dopo, che cosa si è letto,
+  quando e chi l'ha scritto. Una cattura porta autori, rivista, DOI, licenza e ora
+  di consultazione sul foglio stesso, e un record RIS allegato entra direttamente in
+  Citavi, Zotero o EndNote.
+</p>
+<p>
+  Un lettore costruito apposta batte quello affermato? Il 2 agosto 2026 è stato
+  misurato contro <a href="https://www.mediawiki.org/wiki/Citoid">Citoid</a> — il
+  servizio Wikimedia basato sui traduttori di Zotero — su 18 opere estratte a caso da
+  OpenAlex. L'estrazione casuale conta: un elenco precedente scelto a mano mostrava
+  parità e ci lusingava.
+</p>
+<table>
+  <thead><tr><th>18 opere, estratte a caso</th><th>Questo lettore</th><th>Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>Copertura</td><td>61 %</td><td>61 %</td></tr>
+    <tr><td>Correttezza di ciò che torna</td><td>100 %</td><td>79 %</td></tr>
+    <tr><td>Record sbagliati</td><td>0</td><td>3</td></tr>
+    <tr><td>Mediana per fonte</td><td>0,68 s</td><td>1,92 s</td></tr>
+  </tbody>
+</table>
+<p>
+  Letto onestamente: <strong>la copertura è identica</strong>. La differenza sta in
+  ciò che torna. Citoid ha restituito «Redirect URL» come titolo di un'opera, un
+  titolo vuoto e uno preceduto da «Article: ». Per una bibliografia un record
+  sbagliato è peggio di nessuno: sembra finito e viaggia senza che nessuno se ne
+  accorga. <a href="/data/2026-08-02-citation-extraction.json">Dati grezzi</a>.
+</p>
+<p>
+  Due passaggi hanno chiesto che cosa dia una vera lista di letture. Su 20 fonti
+  raccolte per una tesina (4 agosto 2026), 14 sono diventate record completi; 6 sono
+  state restituite — una dietro un muro, una irraggiungibile, quattro pagine troppo
+  scarne per dichiarare alcunché. Su 11 piattaforme in lingua tedesca che gli
+  studenti citano davvero (3 agosto 2026), 5 sono tornate complete, a 0,69 s per
+  fonte.
+  <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">Dati</a> ·
+  <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">dati</a>.
+</p>
+<p>
+  La lacuna istruttiva sono state le fonti giuridiche. I regolamenti UE e il diritto
+  consolidato austriaco non dichiarano né autore né anno — non una svista, ma un
+  altro tipo di documento. Ora sono trattati come tipo di fonte a sé, invece di
+  essere forzati in una forma che non li riguarda.
+</p>
+
+<h2>2. La pagina, prima che sparisca</h2>
+<p>
+  Le pagine vengono modificate, spostate e ritirate, e un link morto in bibliografia
+  è un problema vostro, non dell'editore. Una cattura conserva la pagina come un
+  foglio continuo con la data di consultazione sopra — anche dietro un accesso di cui
+  disponete, perché tutto avviene nel vostro browser e nulla viene caricato.
+</p>
+<p>
+  I banner di consenso sono il motivo per cui la faccenda è più difficile di quanto
+  sembri: spesso bloccano lo scorrimento. Su un sito di notizie la pagina dichiarava
+  900 pixel di altezza invece di 43.101 — una cattura a pagina intera si sarebbe
+  ridotta in silenzio a una sola schermata, con l'aria di aver funzionato. Il banner
+  viene nascosto per la durata e ogni modifica ripristinata dopo. Nulla viene
+  cliccato in vostro nome: premere «accetta» è una decisione a vostro nome e imposta
+  cookie. Nascondere non è decidere.
+</p>
+
+<h2>3. Un foglio che una macchina può leggere</h2>
+<p>
+  I modelli linguistici leggono testo, non pixel. Una cattura conserva il livello di
+  testo della pagina, così le parole arrivano come parole — ricercabili, citabili e
+  intatte attraverso le interruzioni di pagina. Dove un documento non ha livello di
+  testo, il riconoscimento deve recuperarlo, e questo si misura.
+</p>
+<p>
+  Il 1º agosto 2026 un articolo di Wikipedia in inglese è stato catturato come un PDF
+  continuo senza livello di testo (700 × 11.008 pt) e letto con Tesseract 5 a 150 dpi.
+  Contro il testo dello stesso articolo preso quel giorno dall'API REST di Wikipedia
+  — 10.285 parole — il riconoscimento ha recuperato il <strong>92,6 %</strong> del
+  lessico e il 73,9 % delle sequenze di cinque parole. Il passaggio di controllo, che
+  ha valutato la stessa uscita contro lessico estraneo, ha dato 0,0 %: il metodo
+  distingue davvero, invece di premiare qualsiasi testo.
+  <a href="/data/2026-08-01-ocr-recall.json">Dati grezzi</a>.
+</p>
+<p>
+  Qui il foglio unico si ripaga. Le interruzioni di pagina tagliano le frasi a metà, e
+  un modello a cui si porge una frase troncata la completa invece di segnalarla. Un
+  foglio continuo non ha cuciture in cui cadere. Per gli agenti c'è una seconda via
+  che salta del tutto il file: l'<a href="/notes/mcp-server-what-it-solves/">endpoint
+  MCP</a> riceve un URL e restituisce la citazione direttamente — si vedano le
+  <a href="/recipes/">ricette</a>.
+</p>
+
+<h2>Che cosa non fa</h2>
+<ul>
+  <li>Il lettore di citazioni lavora lato server senza JavaScript. Ciò che una pagina
+      aggiunge dopo il caricamento gli resta invisibile.</li>
+  <li>Sei fonti su venti sono tornate senza record. A una pagina scarna non si può
+      far dichiarare ciò che non ha mai dichiarato.</li>
+  <li>Tutte le cifre sono passaggi singoli, non medie. Il tempo lo detta il sito di
+      destinazione: due passaggi sullo stesso indirizzo hanno differito fino al 176 %.</li>
+  <li>La cifra OCR è una misurazione su un documento — un ordine di grandezza, non una
+      promessa per il vostro.</li>
+  <li>Catturate solo ciò a cui avete accesso legittimo. L'estensione raggiunge
+      esattamente ciò che il vostro browser già vi mostra; tenere quel limite spetta a
+      voi.</li>
+  <li>Una cattura è documentazione, non un atto con valore legale.</li>
+</ul>
+
+<p class="note">
+  Dichiarazione: queste misurazioni le abbiamo svolte noi sul nostro stesso strumento;
+  i dati grezzi e i comandi per ripeterle sono collegati sopra. Le cifre sono state
+  rilevate nelle date indicate e riflettono lo stato di quei servizi allora; i servizi
+  cambiano. Citoid è un progetto Wikimedia, nominato qui solo per identificare il
+  servizio confrontato. Le correzioni via
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue</a> vengono accolte.
+</p>
+""",
+}
+
+# ------------------------------------------------------------------ 日本語 ----
+TEXTE["ja"] = {
+    "title": "学生のために：自分で出典を名乗り、消えず、機械が読めるソース",
+    "description": (
+        "レポートのウェブ出典では三つのことが起きる。ページが消える、書誌情報が足りない、"
+        "ファイルが言語モデルに読めない。ページ全体のキャプチャがそれぞれに何をするか——"
+        "失敗する場面も含めて、実測とともに。"
+    ),
+    "h1": "学生のために：自分で出典を名乗り、消えず、機械が読めるソース",
+    "standfirst": (
+        "レポートのウェブ出典では三つのことが起きます。締切前にページが消える。書誌情報を"
+        "手で打ち直すことになる。そして保存したファイルは画像なので、どの道具でも検索でき"
+        "ない。ページ全体のキャプチャがこの三つに何をするのか——そしてどこで作業があなたに"
+        "戻ってくるのかを示します。"
+    ),
+    "meta": "2026年8月10日 · 三つの用途、それぞれに実測",
+    "body": """
+<h2>1. 自分で出典を名乗るソース</h2>
+<p>
+  面倒なのは引用そのものではありません。数週間後に、何を、いつ読み、誰が書いたのかを
+  たどり直すことです。キャプチャは著者・掲載誌・DOI・ライセンス・取得時刻を紙面自体に
+  載せ、添付されたRISレコードはCitavi、Zotero、EndNoteへそのまま取り込めます。
+</p>
+<p>
+  専用に作った読み取りは、既存のものに勝るのか。2026年8月2日、
+  <a href="https://www.mediawiki.org/wiki/Citoid">Citoid</a>——Zoteroトランスレータを
+  基盤とするWikimediaのサービス——と、OpenAlexから無作為に抽出した18件で比較しました。
+  無作為抽出が肝心です。以前の手選びのリストでは互角に見え、こちらに有利でした。
+</p>
+<table>
+  <thead><tr><th>無作為抽出の18件</th><th>この読み取り</th><th>Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>取得できた割合</td><td>61 %</td><td>61 %</td></tr>
+    <tr><td>返ってきた内容の正確さ</td><td>100 %</td><td>79 %</td></tr>
+    <tr><td>誤ったレコード</td><td>0</td><td>3</td></tr>
+    <tr><td>1件あたり中央値</td><td>0.68 秒</td><td>1.92 秒</td></tr>
+  </tbody>
+</table>
+<p>
+  正直に読めば、<strong>取得率は同じ</strong>です。違うのは返ってくる中身です。Citoidは
+  ある文献の題名として「Redirect URL」を返し、空の題名を一件、「Article: 」が前に付いた
+  ものを一件返しました。文献表にとって誤ったレコードは、何もないより悪い。完成して見え、
+  気づかれないまま運ばれるからです。
+  <a href="/data/2026-08-02-citation-extraction.json">生データ</a>。
+</p>
+<p>
+  実際の文献リストではどうか、二度試しました。レポート用に集めた20件（2026年8月4日）の
+  うち14件が完全なレコードになり、6件は差し戻し——1件は壁の向こう、1件は到達不能、4件は
+  ページの記述が薄すぎて何も宣言していませんでした。学生が実際に引用するドイツ語圏の
+  11プラットフォーム（2026年8月3日）では5件が完全に返り、1件あたり0.69秒でした。
+  <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">データ</a>・
+  <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">データ</a>。
+</p>
+<p>
+  示唆的だったのは法令です。EU規則やオーストリアの統合法令は著者も年も宣言しません。
+  手抜かりではなく、種類の違う文書だからです。現在はこれを独自の出典種別として扱い、
+  合わない型に押し込めることをやめました。
+</p>
+
+<h2>2. 消える前のページ</h2>
+<p>
+  ページは編集され、移され、取り下げられます。文献表の切れたリンクは、発行元ではなく
+  あなたの問題です。キャプチャはページを一枚の連続した紙面として、取得日を載せて残します。
+  あなたが正当に持つログインの内側でも同じです。すべてが自分のブラウザで動き、どこにも
+  アップロードされないからです。
+</p>
+<p>
+  これが見た目より難しい理由が同意バナーです。多くはスクロールを止めます。あるニュース
+  サイトでは、ページの高さが43,101ピクセルではなく900ピクセルと申告されました。全体
+  キャプチャは黙って一画面分に縮み、うまくいったように見えたはずです。バナーは撮影の
+  あいだ隠され、変更はすべて後で戻されます。あなたの代わりに何かを押すことはありません。
+  「同意する」を押すのはあなたの名による決定であり、Cookieを設定します。隠すことは
+  決めることではありません。
+</p>
+
+<h2>3. 機械が読める一枚</h2>
+<p>
+  言語モデルが読むのは文字であって画素ではありません。キャプチャはページ自身のテキスト
+  層を保つため、語は語として届きます——検索でき、引用でき、改ページをまたいでも壊れま
+  せん。テキスト層のない文書では認識が復元するほかなく、それは測れます。
+</p>
+<p>
+  2026年8月1日、英語版Wikipediaの記事をテキスト層のない連続PDF（700 × 11,008 pt）として
+  取り込み、Tesseract 5で150 dpiで読ませました。同日にWikipedia REST APIから取得した同記事
+  の本文——10,285語——と照合すると、語彙の<strong>92.6 %</strong>、5語連続では73.9 %が
+  復元されました。同じ出力を無関係な語彙と照合した対照試行は0.0 %。この方法は本当に
+  区別しており、どんな文字列でも褒めるわけではないということです。
+  <a href="/data/2026-08-01-ocr-recall.json">生データ</a>。
+</p>
+<p>
+  一枚仕上げが効くのはここです。改ページは文を断ち切り、断片を渡されたモデルはそれを
+  報告せずに補ってしまいます。連続した一枚には落ちる継ぎ目がありません。エージェント
+  にはファイルを介さない第二の経路もあります。
+  <a href="/notes/mcp-server-what-it-solves/">MCPエンドポイント</a>はURLを受け取り、
+  書誌情報を直接返します——<a href="/recipes/">レシピ</a>を参照してください。
+</p>
+
+<h2>できないこと</h2>
+<ul>
+  <li>書誌の読み取りはJavaScriptなしのサーバー側で動きます。読み込み後にページが足す
+      ものは見えません。</li>
+  <li>20件のうち6件はレコードなしで戻りました。記述の薄いページから、宣言されていない
+      ものは取り出せません。</li>
+  <li>数値はいずれも単発の実行で、平均ではありません。時間は相手のサイトに左右され、
+      同じアドレスへの2回で最大176 %の差が出ました。</li>
+  <li>OCRの数値は1文書での1回の測定です。桁の目安であって、あなたの文書への約束では
+      ありません。</li>
+  <li>正当にアクセスできるものだけを取り込んでください。この拡張が届く範囲は、ブラウザ
+      がすでに見せている範囲そのものです。その線を守るのはあなたです。</li>
+  <li>キャプチャは記録であって、公証された文書ではありません。</li>
+</ul>
+
+<p class="note">
+  開示：これらの測定は自分たちの道具に対して自分たちで行ったものです。生データと再現用の
+  コマンドは上にリンクしてあります。数値は記載の日付に取得したもので、当時のサービスの
+  状態を示します。サービスは変わります。CitoidはWikimediaのプロジェクトであり、ここでは
+  比較対象を示すためだけに名前を挙げています。訂正は
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">Issue</a> から反映します。
+</p>
+""",
+}
+
+# ------------------------------------------------------------- Português ----
+TEXTE["pt-BR"] = {
+    "title": "Para estudantes: uma fonte que se cita sozinha, sobrevive e é legível por uma máquina",
+    "description": (
+        "Três coisas dão errado com uma fonte da web num trabalho acadêmico: ela some, falta a "
+        "citação e o arquivo é ilegível para um modelo de linguagem. O que uma captura de "
+        "página inteira faz quanto a isso — com as medições, inclusive onde falha."
+    ),
+    "h1": "Para estudantes: uma fonte que se cita sozinha, sobrevive e é legível por uma máquina",
+    "standfirst": (
+        "Três coisas dão errado com uma fonte da web num trabalho acadêmico. Ela some antes da "
+        "entrega. A citação precisa ser digitada à mão. E o arquivo que você guardou é uma "
+        "imagem, então nenhuma ferramenta consegue buscar nele. Veja o que uma captura de "
+        "página inteira faz com cada uma das três — e onde o trabalho volta para você."
+    ),
+    "meta": "10 de agosto de 2026 · três usos, cada um com sua medição",
+    "body": """
+<h2>1. A fonte que se cita sozinha</h2>
+<p>
+  O trabalhoso não é citar. É reconstruir, semanas depois, o que você leu, quando leu
+  e quem escreveu. Uma captura leva autores, periódico, DOI, licença e a hora de
+  consulta na própria folha, e um registro RIS anexo entra direto no Citavi, Zotero
+  ou EndNote.
+</p>
+<p>
+  Um leitor feito para isso supera o consagrado? Em 2 de agosto de 2026 ele foi medido
+  contra o <a href="https://www.mediawiki.org/wiki/Citoid">Citoid</a> — o serviço da
+  Wikimedia baseado nos tradutores do Zotero — em 18 obras sorteadas ao acaso no
+  OpenAlex. O sorteio importa: uma lista anterior escolhida a dedo mostrava empate e
+  nos favorecia.
+</p>
+<table>
+  <thead><tr><th>18 obras, sorteadas</th><th>Este leitor</th><th>Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>Cobertura</td><td>61 %</td><td>61 %</td></tr>
+    <tr><td>Exatidão do que voltou</td><td>100 %</td><td>79 %</td></tr>
+    <tr><td>Registros errados</td><td>0</td><td>3</td></tr>
+    <tr><td>Mediana por fonte</td><td>0,68 s</td><td>1,92 s</td></tr>
+  </tbody>
+</table>
+<p>
+  Lido com honestidade: <strong>a cobertura é igual</strong>. A diferença está no que
+  volta. O Citoid devolveu «Redirect URL» como título de uma obra, um título vazio e
+  um com «Article: » na frente. Para uma bibliografia, um registro errado é pior do
+  que nenhum: parece pronto e viaja sem que ninguém perceba.
+  <a href="/data/2026-08-02-citation-extraction.json">Dados brutos</a>.
+</p>
+<p>
+  Duas rodadas perguntaram o que uma lista de leitura real produz. De 20 fontes
+  reunidas para um trabalho (4 de agosto de 2026), 14 viraram registros completos; 6
+  voltaram — uma atrás de um muro, uma inalcançável, quatro páginas magras demais para
+  declarar qualquer coisa. De 11 plataformas em alemão que estudantes de fato citam
+  (3 de agosto de 2026), 5 voltaram completas, a 0,69 s por fonte.
+  <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">Dados</a> ·
+  <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">dados</a>.
+</p>
+<p>
+  A lacuna instrutiva foram as fontes jurídicas. Regulamentos da UE e o direito
+  consolidado austríaco não declaram nem autor nem ano — não é descuido, é outro tipo
+  de documento. Agora são tratados como um tipo de fonte próprio, em vez de forçados
+  a uma forma que não lhes cabe.
+</p>
+
+<h2>2. A página, antes de sumir</h2>
+<p>
+  Páginas são editadas, movidas e retiradas, e um link morto na bibliografia é
+  problema seu, não do editor. Uma captura guarda a página como uma folha contínua
+  com a data de consulta — inclusive atrás de um acesso que você tem, porque tudo
+  roda no seu navegador e nada é enviado.
+</p>
+<p>
+  Os avisos de consentimento são a razão de isso ser mais difícil do que parece: eles
+  costumam travar a rolagem. Num site de notícias a página informou 900 pixels de
+  altura em vez de 43.101 — uma captura completa teria encolhido em silêncio para uma
+  única tela e pareceria ter funcionado. O aviso fica oculto durante a captura e toda
+  alteração é desfeita depois. Nada é clicado em seu nome: clicar em «aceitar» é uma
+  decisão sua e grava cookies. Ocultar não é decidir.
+</p>
+
+<h2>3. Uma folha que uma máquina consegue ler</h2>
+<p>
+  Modelos de linguagem leem texto, não pixels. Uma captura mantém a camada de texto da
+  própria página, então palavras chegam como palavras — pesquisáveis, citáveis e
+  intactas através das quebras de página. Onde um documento não tem camada de texto, o
+  reconhecimento precisa recuperá-la, e isso é mensurável.
+</p>
+<p>
+  Em 1º de agosto de 2026, um artigo da Wikipédia em inglês foi capturado como um PDF
+  contínuo sem camada de texto (700 × 11.008 pt) e lido pelo Tesseract 5 a 150 dpi.
+  Contra o texto do próprio artigo obtido no mesmo dia pela API REST da Wikipédia —
+  10.285 palavras — o reconhecimento recuperou <strong>92,6 %</strong> do vocabulário
+  e 73,9 % das sequências de cinco palavras. A rodada de controle, comparando a mesma
+  saída com vocabulário alheio, deu 0,0 %: o método de fato distingue, em vez de
+  premiar qualquer texto. <a href="/data/2026-08-01-ocr-recall.json">Dados brutos</a>.
+</p>
+<p>
+  Aqui a folha única se paga. Quebras de página cortam frases ao meio, e um modelo que
+  recebe uma frase cortada a completa em vez de apontá-la. Uma folha contínua não tem
+  emendas onde cair. Para agentes há um segundo caminho que dispensa o arquivo: o
+  <a href="/notes/mcp-server-what-it-solves/">endpoint MCP</a> recebe uma URL e
+  devolve a citação diretamente — veja as <a href="/recipes/">receitas</a>.
+</p>
+
+<h2>O que ele não faz</h2>
+<ul>
+  <li>O leitor de citações trabalha no servidor sem JavaScript. O que uma página
+      acrescenta depois de carregar é invisível para ele.</li>
+  <li>Seis de vinte fontes voltaram sem registro. De uma página magra não se extrai o
+      que ela nunca declarou.</li>
+  <li>Todos os números são rodadas únicas, não médias. O tempo é ditado pelo site de
+      destino: duas rodadas no mesmo endereço diferiram até 176 %.</li>
+  <li>O número de OCR é uma medição em um documento — uma ordem de grandeza, não uma
+      promessa para o seu.</li>
+  <li>Capture apenas aquilo a que você tem acesso legítimo. A extensão alcança
+      exatamente o que seu navegador já lhe mostra; manter esse limite é com você.</li>
+  <li>Uma captura é documentação, não um documento com fé pública.</li>
+</ul>
+
+<p class="note">
+  Divulgação: estas medições foram feitas por nós na nossa própria ferramenta; os dados
+  brutos e os comandos para repeti-las estão ligados acima. Os números foram tomados
+  nas datas indicadas e refletem o estado daqueles serviços então; serviços mudam. O
+  Citoid é um projeto da Wikimedia, citado aqui apenas para identificar o serviço
+  comparado. Correções via
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue</a> são acolhidas.
+</p>
+""",
+}
+
+# ------------------------------------------------------------------ Русский ----
+TEXTE["ru"] = {
+    "title": "Студентам: источник, который сам себя цитирует, не исчезает и читается машиной",
+    "description": (
+        "С веб-источником в курсовой случаются три вещи: он исчезает, у него нет описания для "
+        "списка литературы, и файл нечитаем для языковой модели. Что делает с этим снимок всей "
+        "страницы — с измерениями, включая те места, где он не справляется."
+    ),
+    "h1": "Студентам: источник, который сам себя цитирует, не исчезает и читается машиной",
+    "standfirst": (
+        "С веб-источником в курсовой случаются три вещи. Он исчезает до сдачи. Описание для "
+        "списка литературы приходится набирать вручную. А сохранённый файл — картинка, и ни "
+        "один инструмент по нему не ищет. Вот что делает снимок всей страницы с каждой из трёх "
+        "— и где работа возвращается к вам."
+    ),
+    "meta": "10 августа 2026 · три применения, каждое со своим измерением",
+    "body": """
+<h2>1. Источник, который сам себя цитирует</h2>
+<p>
+  Утомительно не цитировать. Утомительно спустя недели восстанавливать, что вы читали,
+  когда читали и кто это написал. Снимок несёт авторов, журнал, DOI, лицензию и время
+  обращения на самом листе, а вложенная запись RIS отправляется прямо в Citavi, Zotero
+  или EndNote.
+</p>
+<p>
+  Побеждает ли специально сделанный считыватель признанный? 2 августа 2026 года его
+  сравнили с <a href="https://www.mediawiki.org/wiki/Citoid">Citoid</a> — сервисом
+  Wikimedia на основе трансляторов Zotero — на 18 работах, выбранных случайно из
+  OpenAlex. Случайная выборка здесь и есть суть: прежний список, собранный вручную,
+  показывал равенство и льстил нам.
+</p>
+<table>
+  <thead><tr><th>18 работ, случайная выборка</th><th>Этот считыватель</th><th>Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>Охват</td><td>61 %</td><td>61 %</td></tr>
+    <tr><td>Точность возвращённого</td><td>100 %</td><td>79 %</td></tr>
+    <tr><td>Ошибочные записи</td><td>0</td><td>3</td></tr>
+    <tr><td>Медиана на источник</td><td>0,68 с</td><td>1,92 с</td></tr>
+  </tbody>
+</table>
+<p>
+  Если читать честно: <strong>охват одинаков</strong>. Разница в том, что возвращается.
+  Citoid выдал «Redirect URL» в качестве заглавия работы, одно пустое заглавие и одно с
+  приставкой «Article: ». Для списка литературы ошибочная запись хуже, чем никакой:
+  она выглядит готовой и путешествует незамеченной.
+  <a href="/data/2026-08-02-citation-extraction.json">Исходные данные</a>.
+</p>
+<p>
+  Два прогона спросили, что даёт настоящий список чтения. Из 20 источников, собранных
+  для курсовой (4 августа 2026), 14 стали полными записями; 6 вернулись обратно — один
+  за стеной, один недостижим, четыре страницы слишком скудны, чтобы вообще что-то
+  объявить. Из 11 немецкоязычных платформ, которые студенты действительно цитируют
+  (3 августа 2026), 5 вернулись полными, по 0,69 с на источник.
+  <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">Данные</a> ·
+  <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">данные</a>.
+</p>
+<p>
+  Показательным пробелом оказались правовые источники. Регламенты ЕС и консолидированное
+  австрийское право не объявляют ни автора, ни года — это не упущение, а другой род
+  документа. Теперь они считаются отдельным типом источника, вместо того чтобы их
+  втискивали в неподходящую форму.
+</p>
+
+<h2>2. Страница, пока она не исчезла</h2>
+<p>
+  Страницы правят, переносят и снимают, и мёртвая ссылка в списке литературы — ваша
+  беда, а не издателя. Снимок сохраняет страницу одним непрерывным листом с датой
+  обращения на нём — в том числе за входом, которым вы правомерно располагаете, потому
+  что всё происходит в вашем браузере и ничего не выгружается.
+</p>
+<p>
+  Баннеры согласия — причина, по которой это сложнее, чем кажется: они часто блокируют
+  прокрутку. На одном новостном сайте страница сообщила высоту 900 пикселей вместо
+  43 101 — снимок всей страницы молча сжался бы до одного экрана и выглядел бы удачным.
+  Баннер скрывается на время съёмки, и каждое изменение затем возвращается. Ничего не
+  нажимается от вашего имени: клик по «принять» — это решение от вашего имени, и он
+  ставит cookie. Скрыть — не значит решить.
+</p>
+
+<h2>3. Лист, который может прочесть машина</h2>
+<p>
+  Языковые модели читают текст, а не пиксели. Снимок сохраняет собственный текстовый
+  слой страницы, поэтому слова приходят словами — их можно искать, цитировать, и они
+  целы через разрывы страниц. Там, где текстового слоя нет, распознавание должно его
+  восстановить, и это измеримо.
+</p>
+<p>
+  1 августа 2026 года статья англоязычной Википедии была снята как непрерывный PDF без
+  текстового слоя (700 × 11 008 pt) и прочитана Tesseract 5 при 150 dpi. Против текста
+  той же статьи, взятого в тот же день из REST API Википедии — 10 285 слов —
+  распознавание вернуло <strong>92,6 %</strong> словаря и 73,9 % пятисловных
+  последовательностей. Контрольный прогон, сверявший тот же вывод с посторонним
+  словарём, дал 0,0 %: метод действительно различает, а не поощряет любой текст.
+  <a href="/data/2026-08-01-ocr-recall.json">Исходные данные</a>.
+</p>
+<p>
+  Здесь единый лист себя оправдывает. Разрывы страниц режут предложения пополам, а
+  модель, которой подали обрезанное предложение, дополнит его, вместо того чтобы
+  сообщить о нём. У непрерывного листа нет швов, куда можно провалиться. Для агентов
+  есть второй путь, минующий файл: <a href="/notes/mcp-server-what-it-solves/">точка
+  MCP</a> принимает URL и возвращает описание напрямую — см.
+  <a href="/recipes/">рецепты</a>.
+</p>
+
+<h2>Чего он не делает</h2>
+<ul>
+  <li>Считыватель описаний работает на стороне сервера без JavaScript. Всё, что
+      страница добавляет после загрузки, для него невидимо.</li>
+  <li>Шесть источников из двадцати вернулись без записи. Из скудной страницы не
+      вытянуть того, чего она никогда не объявляла.</li>
+  <li>Все цифры — одиночные прогоны, а не средние. Время задаёт целевой сайт: два
+      прогона по одному адресу различались до 176 %.</li>
+  <li>Цифра OCR — одно измерение на одном документе. Это порядок величины, а не
+      обещание для вашего.</li>
+  <li>Снимайте только то, к чему у вас есть законный доступ. Расширение достаёт ровно
+      то, что браузер вам и так показывает; держать эту границу — на вас.</li>
+  <li>Снимок — это документация, а не нотариально заверенный акт.</li>
+</ul>
+
+<p class="note">
+  Раскрытие: эти измерения провели мы сами на собственном инструменте; исходные данные и
+  команды для повторения приведены выше. Цифры сняты в указанные дни и отражают
+  тогдашнее состояние этих сервисов; сервисы меняются. Citoid — проект Wikimedia,
+  назван здесь лишь для обозначения сравниваемого сервиса. Исправления через
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue</a> принимаются.
+</p>
+""",
+}
+
+# ---------------------------------------------------------------- 简体中文 ----
+TEXTE["zh-CN"] = {
+    "title": "写给学生：一份自带出处、不会消失、机器能读的来源",
+    "description": (
+        "论文里的网页来源常出三种问题：页面消失、缺少著录信息、文件对语言模型不可读。"
+        "整页捕获分别做了什么——附实测数据，也包括它失手的地方。"
+    ),
+    "h1": "写给学生：一份自带出处、不会消失、机器能读的来源",
+    "standfirst": (
+        "论文里的网页来源常出三种问题。交稿前页面就没了。著录信息得一个字一个字敲。"
+        "而你保存下来的文件是一张图，任何工具都搜不了。下面是整页捕获对这三件事各自"
+        "做了什么——以及它在哪里把活儿退回给你。"
+    ),
+    "meta": "2026年8月10日 · 三种用途，各有实测",
+    "body": """
+<h2>一、自带出处的来源</h2>
+<p>
+  麻烦的不是引用本身，而是几周之后再去还原：你读了什么、什么时候读的、谁写的。
+  捕获会把作者、期刊、DOI、许可与获取时间写在页面本身上，随附的 RIS 记录可直接
+  导入 Citavi、Zotero 或 EndNote。
+</p>
+<p>
+  专门做的读取器能胜过成名的那个吗？2026 年 8 月 2 日，我们把它与
+  <a href="https://www.mediawiki.org/wiki/Citoid">Citoid</a>——基于 Zotero 转换器的
+  Wikimedia 服务——放在从 OpenAlex 随机抽取的 18 篇文献上比较。随机抽取是关键：
+  此前手工挑选的清单显示旗鼓相当，那是在讨好我们自己。
+</p>
+<table>
+  <thead><tr><th>随机抽取的 18 篇</th><th>本读取器</th><th>Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>覆盖率</td><td>61 %</td><td>61 %</td></tr>
+    <tr><td>返回内容的准确率</td><td>100 %</td><td>79 %</td></tr>
+    <tr><td>错误记录</td><td>0</td><td>3</td></tr>
+    <tr><td>每条来源中位耗时</td><td>0.68 秒</td><td>1.92 秒</td></tr>
+  </tbody>
+</table>
+<p>
+  老实说：<strong>覆盖率是一样的</strong>。差别在于返回的是什么。Citoid 把
+  「Redirect URL」当作一篇文献的标题返回，还返回了一个空标题和一个前面多了
+  「Article: 」的标题。对参考文献表来说，错误记录比没有更糟：它看上去已经完成，
+  就这么不被察觉地流传下去。
+  <a href="/data/2026-08-02-citation-extraction.json">原始数据</a>。
+</p>
+<p>
+  另有两轮测试了真实的阅读清单。为一篇论文收集的 20 条来源中（2026 年 8 月 4 日），
+  14 条成为完整记录，6 条被退回——1 条在墙后，1 条无法访问，4 条页面过于单薄，
+  根本没有声明任何信息。在学生真正会引用的 11 个德语平台上（2026 年 8 月 3 日），
+  5 条完整返回，每条 0.69 秒。
+  <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">数据</a>·
+  <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">数据</a>。
+</p>
+<p>
+  最有启发的缺口是法律来源。欧盟条例和奥地利汇编法既不声明作者也不声明年份——这不是
+  疏漏，而是另一类文件。现在它们被当作独立的来源类型处理，而不再被硬塞进不合身的格式。
+</p>
+
+<h2>二、趁页面还在</h2>
+<p>
+  页面会被修改、迁移和下架，而参考文献里的死链是你的问题，不是出版方的问题。捕获把
+  页面存成一整张连续的页面，并写上获取日期——包括你有权访问的登录之后的内容，因为
+  一切都在你自己的浏览器里完成，不会上传到任何地方。
+</p>
+<p>
+  同意横幅正是这件事比看上去更难的原因：它们常常锁住滚动。在一个新闻网站上，页面
+  报告的高度是 900 像素，而不是 43,101 像素——整页捕获会悄悄缩成一屏，而且看起来
+  像是成功了。横幅只在捕获期间被隐藏，之后每一处改动都会还原。不会有人替你点掉它：
+  点击「接受」是以你的名义作出的决定，并会写入 Cookie。隐藏不等于决定。
+</p>
+
+<h2>三、机器能读的一张页面</h2>
+<p>
+  语言模型读的是文字，不是像素。捕获保留页面自身的文本层，因此词是以词的形式抵达的
+  ——可检索、可引用，并且跨越分页依然完整。若文档没有文本层，就只能靠识别把它找回来，
+  而这是可以测量的。
+</p>
+<p>
+  2026 年 8 月 1 日，一篇英文维基百科条目被捕获为无文本层的连续 PDF（700 × 11,008 pt），
+  用 Tesseract 5 以 150 dpi 识别。与当天从维基百科 REST API 取得的同一条目正文
+  ——10,285 个词——相比，识别找回了 <strong>92.6 %</strong> 的词汇量，五词短语为
+  73.9 %。对照组用同一份输出去比对无关词汇，结果为 0.0 %：这说明该方法确实在区分，
+  而不是对任何文字都给分。<a href="/data/2026-08-01-ocr-recall.json">原始数据</a>。
+</p>
+<p>
+  单页输出的价值在这里体现。分页会把句子拦腰截断，而拿到半截句子的模型会去补全它，
+  而不是指出问题。连续的一张页面没有可供跌落的接缝。对智能体还有第二条路，完全绕开
+  文件：<a href="/notes/mcp-server-what-it-solves/">MCP 端点</a>接收一个网址，直接
+  返回著录信息——参见<a href="/recipes/">配方</a>。
+</p>
+
+<h2>它做不到什么</h2>
+<ul>
+  <li>著录读取在服务端运行且不执行 JavaScript。页面加载后才补上的内容，它看不见。</li>
+  <li>二十条来源中有六条没有返回记录。页面从未声明过的信息，无法从单薄的页面里挖出来。</li>
+  <li>以上数字都是单次运行，不是平均值。耗时由目标网站主导：对同一地址的两次运行
+      相差最多 176 %。</li>
+  <li>OCR 数字是对一份文档的一次测量，是数量级参考，不是对你那份文档的承诺。</li>
+  <li>只捕获你有正当访问权的内容。该扩展所能触及的，恰好就是浏览器已经显示给你的
+      内容；守住这条界线在于你自己。</li>
+  <li>捕获是留存记录，不是具有公证效力的文书。</li>
+</ul>
+
+<p class="note">
+  披露：这些测量由我们对自己的工具进行，原始数据与可复现的命令已在上文链接。数字于
+  文中所述日期取得，反映当时各服务的状态；服务会变化。Citoid 是 Wikimedia 的项目，
+  此处提及仅为标明所比较的服务。欢迎通过
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue</a> 提出更正。
+</p>
+""",
+}

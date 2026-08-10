@@ -1,3 +1,45 @@
+## 2026-08-10 (5) — Neun Sprachen, eine Bedienstelle; und ein Beitrag fuer Studierende
+
+**Neu** ist `/how-to/for-students/`: die drei Arten, wie eine Webquelle in einer
+Seminararbeit scheitert — sie verschwindet, ihre Zitation fehlt, die Datei ist
+ein Bild —, jede mit ihrer Messung. Alle Zahlen stammen aus `docs/data/` und
+tragen ihr Erhebungsdatum im selben Satz. Der Beitrag nennt auch, was **nicht**
+geht: sechs von zwanzig Quellen kommen ohne Datensatz zurueck, und die Abdeckung
+liegt mit 61 % genau auf dem Wert von Citoid, nicht darueber.
+
+**Die Seite spricht jetzt neun Sprachen** statt zwei, waehlbar im Menue. Die Wahl
+liegt in `localStorage['pl-lang']` und gilt domainweit — sie ueberlebt den
+Seitenwechsel. Alle Fassungen stehen unter derselben Adresse, damit ein geteilter
+Link beim Empfaenger in *dessen* Sprache oeffnet.
+
+**Warum die alte Loesung nicht mitwachsen konnte.** Bis heute trug jede
+zweisprachige Seite ihre eigene Kopie von `setLang()` und ein Schaltflaechenpaar
+fuer Englisch und Deutsch. Bei neun Sprachen waeren das neun Kopien derselben
+Logik in 43 Dateien — und die Stelle, an der eine Seite still hinter den anderen
+zurueckbleibt. Die Logik liegt jetzt einmal in `docs/site-lang.js`;
+`build-sprachwahl.py` hat sie in alle Seiten eingezogen und die doppelte
+Bedienung entfernt.
+
+**Drei Folgefehler, vor dem Ausliefern gefunden.** Der Menuepunkt „Deutsch" sprang
+auf den Anker `#b-de` — also auf die Schaltflaeche, die es nun nicht mehr gibt:
+ohne JavaScript ein Link ins Leere. `build-de-index.py` erkannte deutsche Seiten
+an genau diesem Anker und haette die deutsche Uebersicht beim naechsten Lauf
+geleert; es prueft jetzt auf den Sprachblock selbst, also auf ein Merkmal des
+Inhalts statt der Bedienung. Und `build-bibliography-post.py` haette den alten
+Apparat beim naechsten Lauf neu erzeugt und den Umbau damit stillschweigend
+zurueckgenommen.
+
+**Der Rueckfall sagt sich an.** Nicht jede Seite gibt es in jeder Sprache. Wer
+Japanisch waehlt und auf eine einsprachige Seite kommt, sieht Englisch — und
+darueber einen Hinweis auf Japanisch. Ein stummer Rueckfall liest sich wie ein
+Defekt.
+
+**Geprueft** wurde nicht das Markup, sondern die Bedienung: `pruefe-sprachwahl.py`
+schaltet in echtem Chrome alle neun Sprachen durch, liest den *sichtbaren* Text
+zurueck, belegt an einem Kennsatz je Sprache, dass genau eine Fassung dasteht,
+und prueft Persistenz ueber den Seitenwechsel sowie den Rueckfall. 12 Node-Tests
+gruen, `rechtscheck.py` 0 Fehler.
+
 ## 2026-08-10 (4) — Worker deployt; wranglers Exit-Code taugt hier nicht als Urteil
 
 **Deployt** wurde der Stand der drei letzten Commits als `provinglab-mcp`. Live

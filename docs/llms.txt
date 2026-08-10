@@ -17,6 +17,7 @@ measurements. Disclosed on every page where it is relevant.
 
 - [For AI agents](https://provinglab.dev/for-agents/): The whole surface on one page — connect with `claude mcp add --transport http provinglab https://provinglab.dev/mcp`, five tools, and the one rule worth hard-coding: read the `complete` flag, never the title alone …
 - [How to save a web page as a PDF](https://provinglab.dev/how-to/save-a-webpage-as-pdf/): The answer for a person, with every figure linked to its measurement.
+- [For students: a source that cites itself, survives, and can be read by a machine](https://provinglab.dev/how-to/for-students/): The three failure modes of a web source in a term paper, each with its measurement.
 
 ## Notes
 

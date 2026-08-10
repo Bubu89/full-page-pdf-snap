@@ -24,7 +24,12 @@ def deutsche_seiten():
     out = []
     for datei in sorted(glob.glob(str(DOCS / "**" / "*.html"), recursive=True)):
         s = Path(datei).read_text(encoding="utf-8")
-        if 'id="b-de"' not in s:
+        # Bis zum 10.08.2026 wurde die Seite am Anker id="b-de" erkannt. Den gab
+        # es nur, solange jede Seite ihr eigenes Schaltflaechenpaar trug. Seit
+        # die Sprachwahl fuer neun Sprachen im Menue steht, ist das Merkmal der
+        # Sprachblock selbst — der Anker waere ein Merkmal der Bedienung, nicht
+        # des Inhalts.
+        if 'data-lang="de"' not in s:
             continue
         pfad = str(Path(datei).relative_to(DOCS).parent).replace("\\", "/")
         url = "/" if pfad == "." else f"/{pfad}/"
@@ -82,7 +87,7 @@ def inhalt(seiten):
     zeilen = []
     for s in seiten:
         zeilen.append(f'''<div class="item">
-  <h2><a href="{s['url']}#b-de">{s['titel']}</a></h2>
+  <h2><a href="{s['url']}">{s['titel']}</a></h2>
   <p>{s['vorschau']}</p>
 </div>''')
     return f'''<div class="wrap">
