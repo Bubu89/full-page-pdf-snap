@@ -13,16 +13,20 @@
 (function () {
   "use strict";
 
+  // kurz: was im zugeklappten Feld steht. Der volle Name erscheint beim
+  // Aufklappen. Grund: die Menueleiste hat eine feste Hoechstbreite und war mit
+  // den vollen Namen (114 px) auf jeder Fensterbreite zweizeilig — gemessen,
+  // nicht vermutet.
   var LANGS = [
-    { code: "en",    name: "English" },
-    { code: "de",    name: "Deutsch" },
-    { code: "es",    name: "Español" },
-    { code: "fr",    name: "Français" },
-    { code: "it",    name: "Italiano" },
-    { code: "ja",    name: "日本語" },
-    { code: "pt-BR", name: "Português" },
-    { code: "ru",    name: "Русский" },
-    { code: "zh-CN", name: "简体中文" }
+    { code: "en",    name: "English",   kurz: "EN" },
+    { code: "de",    name: "Deutsch",   kurz: "DE" },
+    { code: "es",    name: "Español",   kurz: "ES" },
+    { code: "fr",    name: "Français",  kurz: "FR" },
+    { code: "it",    name: "Italiano",  kurz: "IT" },
+    { code: "ja",    name: "日本語",     kurz: "JA" },
+    { code: "pt-BR", name: "Português", kurz: "PT" },
+    { code: "ru",    name: "Русский",   kurz: "RU" },
+    { code: "zh-CN", name: "简体中文",   kurz: "ZH" }
   ];
 
   // Rueckfall-Hinweis in der jeweils gewaehlten Sprache. Kurz halten: er steht
@@ -125,7 +129,10 @@
     else hinweisVerbergen();
 
     var sel = document.getElementById("pl-langpick");
-    if (sel && sel.value !== wahl) sel.value = wahl;
+    if (sel && sel.value !== wahl) {
+      sel.value = wahl;
+      if (sel.beschriften) sel.beschriften(false);
+    }
 
     // Alte Seiten tragen noch zwei Schaltflaechen. Solange sie da sind,
     // sollen sie den Zustand richtig anzeigen.
@@ -143,22 +150,48 @@
     sel.id = "pl-langpick";
     sel.className = "n";
     sel.setAttribute("aria-label", LABEL[aktuell] || LABEL.en);
+    // Feste Breite ist noetig, nicht Geschmack: ein <select> mit width:auto
+    // bemisst sich nach seiner *breitesten* Option, nicht nach der angezeigten.
+    // Der Kurzcode allein haette also nichts gespart. Die aufgeklappte Liste
+    // darf breiter werden — das entscheidet der Browser.
     sel.style.cssText =
       "font:inherit;color:inherit;background:transparent;border:1px solid rgba(128,128,128,.45);" +
-      "border-radius:4px;padding:.15rem .35rem;margin-left:.15rem;cursor:pointer;";
+      "border-radius:4px;padding:.15rem .2rem;margin-left:.15rem;cursor:pointer;" +
+      "width:4.2rem;max-width:4.2rem;";
 
     var da = vorhanden();
     LANGS.forEach(function (l) {
       var o = document.createElement("option");
       o.value = l.code;
       // Sprachen, die es auf dieser Seite gibt, zuerst erkennbar machen.
-      o.textContent = (da[l.code] ? "• " : "") + l.name;
+      o.dataset.voll = (da[l.code] ? "• " : "") + l.name;
+      o.dataset.kurz = l.kurz;
+      o.textContent = o.dataset.voll;
       o.style.color = "#111";
       if (l.code === aktuell) o.selected = true;
       sel.appendChild(o);
     });
 
-    sel.addEventListener("change", function () { setLang(sel.value); });
+    // Zugeklappt genuegt der Code, aufgeklappt braucht es den Namen. Ein
+    // <select> zeigt immer den Text der gewaehlten Option — also wird der Text
+    // umgeschaltet, statt ein eigenes Bedienelement nachzubauen.
+    function beschriften(voll) {
+      for (var i = 0; i < sel.options.length; i++) {
+        var o = sel.options[i];
+        o.textContent = (voll || !o.selected) ? o.dataset.voll : o.dataset.kurz;
+      }
+    }
+    // setLang kann die Auswahl auch ohne Zutun des Lesers aendern (Rueckfall,
+    // gespeicherte Wahl). Dann muss die Beschriftung mitziehen.
+    sel.beschriften = beschriften;
+    sel.addEventListener("mousedown", function () { beschriften(true); });
+    sel.addEventListener("focus", function () { beschriften(true); });
+    sel.addEventListener("blur", function () { beschriften(false); });
+    sel.addEventListener("change", function () {
+      setLang(sel.value);
+      beschriften(false);
+    });
+    beschriften(false);
 
     // Der alte Menuepunkt "Deutsch" zeigte auf einen Anker in der Seite. Die
     // Sprachwahl ersetzt ihn — zwei Bedienstellen fuer dieselbe Sache sind eine

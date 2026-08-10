@@ -8,7 +8,11 @@ einsprachige Seite das auch zugibt. Das entscheidet erst der Browser.
 Geprueft wird gegen einen lokalen Server, nicht gegen file:// — localStorage
 haette dort den Ursprung "null", und die Persistenz waere nicht dieselbe.
 
-    python3 pruefe-sprachwahl.py
+    python3 pruefe-sprachwahl.py          # gegen den Arbeitsstand
+    python3 pruefe-sprachwahl.py --live   # gegen provinglab.dev
+
+Der Live-Lauf ist die eigentliche Abnahme: lokal fehlt der Cache davor, und eine
+Seite, die am Ursprung richtig liegt, kann beim Leser trotzdem alt ankommen.
 """
 import http.server
 import socketserver
@@ -23,8 +27,11 @@ HIER = Path(__file__).resolve().parent
 DOCS = HIER / "docs"
 PORT = 8731
 
-ARTIKEL = f"http://127.0.0.1:{PORT}/how-to/for-students/"
-EINSPRACHIG = f"http://127.0.0.1:{PORT}/recipes/"
+LIVE = "--live" in sys.argv
+BASIS = "https://provinglab.dev" if LIVE else f"http://127.0.0.1:{PORT}"
+
+ARTIKEL = f"{BASIS}/how-to/for-students/"
+EINSPRACHIG = f"{BASIS}/recipes/"
 
 SPRACHEN = ["en", "de", "es", "fr", "it", "ja", "pt-BR", "ru", "zh-CN"]
 
@@ -64,8 +71,9 @@ def sichtbarer_text(seite):
 
 
 def main():
-    srv = server_starten()
+    srv = None if LIVE else server_starten()
     fehler = []
+    print(f"Prueft: {ARTIKEL}")
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
@@ -118,7 +126,22 @@ def main():
         if PROBE["ja"] not in sichtbarer_text(seite):
             fehler.append("Rueckkehr: japanische Fassung nicht wiederhergestellt")
 
-        # 6. Ohne gespeicherte Wahl entscheidet die Browsersprache.
+        # 6. Die Sprachwahl darf die Menueleiste nicht zweizeilig machen.
+        #    Der erste Entwurf schrieb die vollen Sprachnamen ins zugeklappte
+        #    Feld — 114 px, und die Leiste brach auf *jeder* Fensterbreite um,
+        #    weil sie eine feste Hoechstbreite hat. Im HTML war davon nichts zu
+        #    sehen; gefunden hat es erst ein Blick auf die Seite.
+        for breite in (1180, 1440, 1920):
+            mess = ctx.new_page()
+            mess.set_viewport_size({"width": breite, "height": 400})
+            mess.goto(ARTIKEL, wait_until="networkidle")
+            mess.wait_for_timeout(150)
+            hoehe = mess.eval_on_selector(".topnav .inner", "e => e.getBoundingClientRect().height")
+            if hoehe > 70:
+                fehler.append(f"Menueleiste bei {breite} px zweizeilig ({hoehe:.0f} px hoch)")
+            mess.close()
+
+        # 7. Ohne gespeicherte Wahl entscheidet die Browsersprache.
         ctx2 = browser.new_context(locale="de-AT")
         s2 = ctx2.new_page()
         s2.goto(ARTIKEL, wait_until="networkidle")
@@ -127,7 +150,8 @@ def main():
 
         browser.close()
 
-    srv.shutdown()
+    if srv:
+        srv.shutdown()
 
     if fehler:
         print("FEHLER:")
