@@ -114,7 +114,13 @@ async function laden() {
 
   // Firefox kann Dateien nicht an Apps uebergeben. Statt eine Schaltflaeche
   // anzubieten, die dann nichts tut, steht der Weg vorher da.
-  if (!kannDateiTeilen(datei)) {
+  /* Wenn der Download scheiterte, gehoert der Grund hierher - sichtbar, nicht
+   * nur ins Protokoll. Ohne ihn blieb ueber mehrere Fassungen unklar, warum
+   * das PDF nicht in der Ablage landete, und es wurde am Symptom geraten. */
+  if (antwort.downloadFehler) {
+    setzeHinweis((t("resultDownloadError") || "Download failed.") +
+                 " " + antwort.downloadFehler, true);
+  } else if (!kannDateiTeilen(datei)) {
     setzeHinweis(t("resultShareHint") ||
       "This browser cannot hand files to other apps directly. The PDF opens in the app chooser — share it from there.");
   }
@@ -133,7 +139,53 @@ function zeigeVorschau(url) {
   bild.src = url;
 }
 
+/* Herunterladen ueber einen Anker mit download-Attribut.
+ *
+ * Auf Android ist das der einzige Weg, der den Dateinamen traegt: Weder eine
+ * data:- noch eine blob:-URL fuehrt einen mit sich, und die Download-Schnitt-
+ * stelle ist dort haeufig nicht verfuegbar. Ohne diesen Weg legt der Browser
+ * die Datei als "document.pdf" ab, beim naechsten Mal "document(1).pdf". */
+/* Woher die Bytes zum Herunterladen kommen.
+ *
+ * Bevorzugt der eigene Blob dieser Seite. Fehlt er, tut es die Adresse aus dem
+ * Hintergrund unmittelbar: In Chrome MV3 ist das eine data:-URL, in Firefox
+ * eine blob:-URL derselben Herkunft - ein Anker kann beide laden, ohne dass
+ * die Seite die Daten noch einmal durch fetch() ziehen muss.
+ *
+ * Das ist der Punkt, an dem es am 07.08.2026 auf dem Telefon hakte: Bei einer
+ * 6-MB-Aufnahme wird die data:-URL ueber acht Megabyte gross. Ging fetch()
+ * dabei aus, blieben blobUrl und datei leer - und beide Schaltflaechen fielen
+ * auf "pdfsnap:open" zurueck, das nur einen Reiter oeffnet. Fuer den Nutzer
+ * sah es so aus, als taete "Herunterladen" etwas voellig anderes. */
+function downloadQuelle() {
+  return blobUrl || (stand && stand.url) || null;
+}
+
+function ankerDownload(url, name) {
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = String(name || "capture.pdf").split("/").pop();
+  a.style.display = "none";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
 async function oeffneImBetrachter() {
+  /* Auf Android nicht die blob:-URL im Reiter oeffnen. Sie traegt so wenig
+   * einen Dateinamen wie eine data:-URL, und wer das PDF von dort ueber den
+   * Browser sichert, findet es als "document.pdf" wieder - beim naechsten Mal
+   * "document(1).pdf". Am 07.08.2026 entstand so "document(11).pdf", obwohl
+   * 2.31.18 schon lief: Der Aufnahmeweg war repariert, dieser hier nicht.
+   * Stattdessen der benannte Weg. Android bietet die geladene Datei in der
+   * Leiste zum Oeffnen an - angesehen wird sie also weiterhin, nur eben unter
+   * ihrem Namen. */
+  const quelle = downloadQuelle();
+  if (quelle && stand && stand.isAndroid) {
+    ankerDownload(quelle, (stand && stand.filename) || "capture.pdf");
+    setzeHinweis(t("resultDownloadDone") || "Saved to your downloads folder.");
+    return;
+  }
   if (blobUrl) {
     try { await browser.tabs.create({ url: blobUrl, active: true }); return; }
     catch (_) { /* weiter zum System-Weg */ }
@@ -149,16 +201,29 @@ async function herunterladen() {
   const knopf = $("download");
   knopf.disabled = true;
   try {
-    if (!blobUrl) {
-      // Ohne Bytes bleibt nur, die bereits gespeicherte Datei zu oeffnen.
-      await browser.runtime.sendMessage({ type: "pdfsnap:open" });
-      setzeHinweis("");
+    const quelle = downloadQuelle();
+    if (!quelle) {
+      /* Kein Reiter mehr an dieser Stelle. Bis 2.31.19 wurde hier
+       * "pdfsnap:open" geschickt, was das PDF in einem neuen Reiter oeffnete -
+       * die Schaltflaeche heisst aber "Herunterladen", und der Nutzer musste
+       * dort von Hand noch einmal speichern. Wenn die Daten wirklich weg sind,
+       * gehoert das gesagt statt kaschiert. */
+      setzeHinweis(t("resultGone") || "No capture available.", true);
       return;
     }
     const name = (stand && stand.filename) || "capture.pdf";
+    /* Auf Android gar nicht erst ueber die Download-Schnittstelle gehen. Sie
+     * ist dort haeufig nicht verfuegbar, und wenn sie es ist, scheitert sie
+     * mitunter still - dann greift auch kein catch, und die Datei landet ohne
+     * Namen. Der Anker traegt ihn zuverlaessig. */
+    if (stand && stand.isAndroid) {
+      ankerDownload(quelle, name);
+      setzeHinweis(t("resultDownloadDone") || "Saved to your downloads folder.");
+      return;
+    }
     try {
       await browser.downloads.download({
-        url: blobUrl,
+        url: quelle,
         filename: name,
         conflictAction: "uniquify",
         saveAs: false
@@ -172,13 +237,7 @@ async function herunterladen() {
        * 07.08.2026 an einer Aufnahme aus pCloud zu sehen: "document(10).pdf"
        * statt des Seitentitels, waehrend dieselbe Fassung am Rechner richtig
        * benannte. */
-      const a = document.createElement("a");
-      a.href = blobUrl;
-      a.download = name.split("/").pop();
-      a.style.display = "none";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+      ankerDownload(quelle, name);
     }
     setzeHinweis(t("resultDownloadDone") || "Saved to your downloads folder.");
   } catch (e) {
@@ -209,10 +268,20 @@ async function weiterleiten() {
       }
       return;
     }
-    const antwort = await browser.runtime.sendMessage({ type: "pdfsnap:open" });
-    if (antwort && antwort.ok) {
-      setzeHinweis(t("resultShareHint") ||
-        "This browser cannot hand files to other apps directly. The PDF opens in the app chooser — share it from there.");
+    /* Kann dieser Browser keine Datei an andere Apps uebergeben, fuehrt der
+     * bisherige Weg ins Leere: "pdfsnap:open" oeffnete nur einen Reiter mit
+     * dem PDF, und darin gibt es keine App-Auswahl. Am 07.08.2026 auf dem
+     * Telefon genau so beobachtet - die Schaltflaeche fuehrte nicht dorthin,
+     * wo man auswaehlt, ueber welche App weitergeleitet wird.
+     *
+     * Der Weg, der ans Ziel fuehrt, ist die Datei selbst: heruntergeladen
+     * liegt sie in der Ablage, und von dort bietet jedes Android-System das
+     * Teilen-Menue an. Also laden und genau das sagen. */
+    const quelle = downloadQuelle();
+    if (quelle) {
+      ankerDownload(quelle, (stand && stand.filename) || "capture.pdf");
+      setzeHinweis(t("resultShareViaDownload") ||
+        "This browser cannot hand files to other apps directly. The PDF has been saved — open it from your downloads and share it from there.");
     } else {
       setzeHinweis(t("resultShareError") || "Could not forward the file.", true);
     }

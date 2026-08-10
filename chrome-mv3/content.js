@@ -1297,6 +1297,67 @@
           case "ping":
             sendResponse({ ok: true, injected: true, version: "1.1.0" });
             break;
+          /* Das PDF aus der Seite heraus ablegen.
+           *
+           * Notwendig geworden, weil die Download-Schnittstelle der Erweiterung
+           * in Firefox fuer Android seit Version 79 nicht mehr existiert
+           * (Kompatibilitaetsdaten von MDN: version_removed 79). Aufrufe darauf
+           * bewirken dort nichts, werfen aber auch nichts - gemessen am Geraet
+           * am 07.08.2026: erst eine Zeitgrenze, die verstrich, dann ein
+           * onCreated, das stumm blieb.
+           *
+           * Ein Anker mit download-Attribut ist dagegen gewoehnliches Web und
+           * funktioniert in jedem Browser. Er laeuft in der Seite, in der die
+           * Aufnahme entstand - also genau dort, wo der Nutzer ohnehin steht,
+           * ohne neuen Reiter. */
+          case "savePdf": {
+            try {
+              /* Bewusst NICHT "application/pdf".
+               *
+               * Firefox kann PDF selbst anzeigen, und dann gewinnt der eigene
+               * Betrachter gegen das download-Attribut: Der Klick navigiert in
+               * den Betrachter, statt die Datei abzulegen. Am 07.08.2026 auf dem
+               * Telefon genau so zu sehen - in der Adresszeile stand
+               * "blob:https://…", darueber eine Leiste mit einem
+               * Download-Knopf, den der Nutzer von Hand druecken musste.
+               *
+               * Ein Typ, den der Browser nicht darstellen kann, laesst ihm nur
+               * das Ablegen. Die Endung .pdf im Dateinamen bleibt, das System
+               * ordnet die Datei also weiterhin richtig zu. */
+              const blob = new Blob([new Uint8Array(msg.bytes)],
+                                    { type: "application/octet-stream" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = String(msg.name || "capture.pdf");
+              a.style.display = "none";
+              document.body.appendChild(a);
+              const vorher = location.href;
+              a.click();
+              a.remove();
+              // Erst spaeter freigeben: Firefox laedt sonst mitunter ins Leere.
+              setTimeout(() => { try { URL.revokeObjectURL(url); } catch (_) { /* egal */ } }, 60000);
+
+              /* Nachsehen, ob wirklich abgelegt wurde.
+               *
+               * Ein Klick auf den Anker kann zweierlei bewirken: die Datei
+               * ablegen - oder, wenn der Browser den Inhalt selbst anzeigen
+               * kann, dorthin navigieren. Im zweiten Fall aendert sich die
+               * Adresse der Seite. Genau das war am 07.08.2026 zu sehen, und die
+               * Erweiterung meldete trotzdem "gespeichert", waehrend der
+               * Download-Ordner leer blieb.
+               *
+               * Aus "kein Fehler" folgt nicht "Erfolg". Also nachschauen. */
+              await new Promise((r) => setTimeout(r, 400));
+              const navigiert = location.href !== vorher;
+              sendResponse(navigiert
+                ? { ok: false, error: "Der Browser hat die Datei angezeigt statt abgelegt" }
+                : { ok: true });
+            } catch (e) {
+              sendResponse({ ok: false, error: (e && e.message) || String(e) });
+            }
+            break;
+          }
           case "selectRegion":
             sendResponse(await selectRegion(msg.hint));
             break;

@@ -30,7 +30,9 @@ for (const datei of ["background.js", "chrome-mv3/background.js"]) {
 
   // 2. Die Erfolgsmeldung laeuft ueber die Uebersetzung
   ok(s.includes('getMessage("androidFertig")'),
-     `${kurz}: Erfolgsmeldung uebersetzt (androidFertig)`);
+     `${kurz}: Rueckfall-Meldung uebersetzt (androidFertig)`);
+  ok(s.includes('getMessage("androidGespeichert"'),
+     `${kurz}: Erfolgsmeldung nennt die abgelegte Datei (androidGespeichert)`);
   ok(!s.includes('notifyInfo("PDF im Browser bereit'),
      `${kurz}: alte deutsche Erfolgsmeldung entfernt`);
 
@@ -39,9 +41,17 @@ for (const datei of ["background.js", "chrome-mv3/background.js"]) {
   ok(i === -1 || s.slice(Math.max(0, i - 120), i).includes("!platformForSave.isAndroid"),
      `${kurz}: "Speichern fehlgeschlagen" nur ausserhalb von Android`);
 
-  // 4. Auf Android wird gar nicht erst heruntergeladen
-  ok(s.includes("Android: PDF direkt im Tab oeffnen"),
-     `${kurz}: kein Download-Versuch auf Android`);
+  /* 4. Auf Android wird wieder heruntergeladen - ohne Unterordner.
+   *
+   * Bis 2.31.20 stand hier das Gegenteil: "kein Download-Versuch auf Android".
+   * Diese Annahme war falsch. Firefox fuer Android beherrscht
+   * downloads.download; was scheiterte, war der Unterordner im Dateinamen, den
+   * die Android-Fassung nicht kennt. Der Reiter, der stattdessen aufging, war
+   * fuer den Nutzer der eigentliche Aerger. */
+  ok(s.includes("speichereImTab("),
+     `${kurz}: Android legt aus der Seite heraus ab statt einen Reiter zu oeffnen`);
+  ok(!s.includes("Android: PDF direkt im Tab oeffnen"),
+     `${kurz}: die alte Begruendung steht nicht mehr im Code`);
 
   // 5. Der Anzeige-Tab schliesst sich nach dem Herunterladen, still
   ok(s.includes("beobachteDownloadUndSchliesse"),

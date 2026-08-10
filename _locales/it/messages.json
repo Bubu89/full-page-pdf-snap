@@ -275,6 +275,10 @@
   "resultShareHint": {
     "message": "Questo browser non può passare file direttamente ad altre app. Il PDF si apre nella scelta delle app — condividilo da lì."
   },
+  "resultShareViaDownload": {
+    "message": "Questo browser non può passare file direttamente ad altre app. Il PDF è stato salvato: aprilo dai download e condividilo da lì.",
+    "description": "Shown when the browser cannot share files; the PDF was downloaded instead."
+  },
   "resultShareDone": {
     "message": "Inviato."
   },
@@ -439,6 +443,20 @@
   },
   "androidFertig": {
     "message": "PDF pronto: aprilo per visualizzarlo o scaricarlo"
+  },
+  "androidGespeichert": {
+    "message": "Salvato nei download: $DATEI$",
+    "description": "Android: the PDF was downloaded; $DATEI$ is the filename.",
+    "placeholders": {
+      "datei": {
+        "content": "$1",
+        "example": "Titel_seite_2026-08-07.pdf"
+      }
+    }
+  },
+  "androidDownloadFehler": {
+    "message": "Non è stato possibile salvare il PDF.",
+    "description": "Android: the download could not be started; the reason is appended."
   },
   "fehlerAllgemein": {
     "message": "Non è stato possibile completare l'acquisizione. Riprova."

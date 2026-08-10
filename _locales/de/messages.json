@@ -275,6 +275,10 @@
   "resultShareHint": {
     "message": "Dieser Browser kann Dateien nicht direkt an andere Apps übergeben. Das PDF öffnet sich in der App-Auswahl — von dort weiterleiten."
   },
+  "resultShareViaDownload": {
+    "message": "Dieser Browser kann Dateien nicht direkt an andere Apps übergeben. Das PDF wurde gespeichert — öffnen Sie es in Ihren Downloads und leiten Sie es von dort weiter.",
+    "description": "Shown when the browser cannot share files; the PDF was downloaded instead."
+  },
   "resultShareDone": {
     "message": "Weitergeleitet."
   },
@@ -439,6 +443,20 @@
   },
   "androidFertig": {
     "message": "PDF fertig — zum Ansehen oder Herunterladen öffnen"
+  },
+  "androidGespeichert": {
+    "message": "In Downloads gespeichert: $DATEI$",
+    "description": "Android: the PDF was downloaded; $DATEI$ is the filename.",
+    "placeholders": {
+      "datei": {
+        "content": "$1",
+        "example": "Titel_seite_2026-08-07.pdf"
+      }
+    }
+  },
+  "androidDownloadFehler": {
+    "message": "Das PDF konnte nicht gespeichert werden.",
+    "description": "Android: the download could not be started; the reason is appended."
   },
   "fehlerAllgemein": {
     "message": "Die Aufnahme konnte nicht abgeschlossen werden. Bitte erneut versuchen."

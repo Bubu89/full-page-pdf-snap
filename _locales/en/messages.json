@@ -275,6 +275,10 @@
   "resultShareHint": {
     "message": "This browser cannot pass files to other apps directly. The PDF opens in the app chooser — share it from there."
   },
+  "resultShareViaDownload": {
+    "message": "This browser cannot hand files to other apps directly. The PDF has been saved — open it from your downloads and share it from there.",
+    "description": "Shown when the browser cannot share files; the PDF was downloaded instead."
+  },
   "resultShareDone": {
     "message": "Sent."
   },
@@ -439,6 +443,20 @@
   },
   "androidFertig": {
     "message": "PDF ready — open it to view or download"
+  },
+  "androidGespeichert": {
+    "message": "Saved to your downloads: $DATEI$",
+    "description": "Android: the PDF was downloaded; $DATEI$ is the filename.",
+    "placeholders": {
+      "datei": {
+        "content": "$1",
+        "example": "Titel_seite_2026-08-07.pdf"
+      }
+    }
+  },
+  "androidDownloadFehler": {
+    "message": "The PDF could not be saved.",
+    "description": "Android: the download could not be started; the reason is appended."
   },
   "fehlerAllgemein": {
     "message": "The capture could not be completed. Please try again."

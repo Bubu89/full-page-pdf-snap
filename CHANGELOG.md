@@ -1,4 +1,303 @@
+## 2026-08-10 — Pruefung einer echten Aufnahme: zwei Fehler in den Quellenangaben
+
+**Anlass.** Stichprobe an einer mit 2.33.4 erzeugten Aufnahme
+(`platform.kimi.ai/docs/overview`, Chrome).
+
+**Was in Ordnung war.** Metadaten vollstaendig: Titel, Zitation im Subject,
+Autor, `source-url`, `captured`, `image-sha256`, eIDAS-Hinweis, Herkunft der
+Angaben, Producer mit Version. Textebene 6.315 Zeichen aus dem DOM, saubere
+Reihenfolge, Sonderzeichen erhalten. Darstellung originalgetreu: dunkles Thema,
+Seitenleiste, Syntaxfarben, keine sichtbaren Naehte, vollstaendig bis zum
+Fussbereich.
+
+**Pruefsumme unabhaengig nachgerechnet.** Die im PDF angegebene SHA-256 wurde
+gegen die tatsaechlich eingebetteten Bildstroeme geprueft und stimmt exakt.
+Wichtig fuer die Methode: `pdfimages` taugt dafuer nicht — es dekodiert neu und
+liefert andere Bytes. Nur die rohen Streams vor `endstream` ergeben den Wert.
+
+**Fehler 1 — Koerperschaft wurde wie ein Personenname umgestellt.** Aus
+"Kimi API Platform" wurde in der Zitation "Platform, K. A.": das letzte Wort
+galt als Nachname, der Rest als Vornamen. `content.js` erkennt den Fall bereits
+und setzt `q.koerperschaft`, aber **das Flag wurde nirgends ausgewertet**.
+`autorenListe()` nimmt es jetzt entgegen und laesst den Namen stehen. Nach APA
+ist die herausgebende Einrichtung der Urheber und wird nicht invertiert.
+Gegenprobe: Personennamen bleiben unveraendert, auch der PubMed-Fall
+("Graham TA" → "Graham, T. A.").
+
+**Fehler 2 — die RIS-Datei kam als `.txt` an.** Der Code schreibt `.ris`, die
+Datei hiess aber `Quickstart_….txt`. Ursache ist der MIME-Typ: mit
+`data:text/plain` erzwingt Chrome die passende Endung und benennt um. Jetzt
+`application/x-research-info-systems`. Das ist keine Kosmetik — Zotero und
+Citavi erkennen `.ris` von selbst, bei `.txt` muss der Nutzer erst umbenennen,
+und genau diesen Schritt soll die Datei ersparen. Der Inhalt war korrekt
+(TY/AU/TI/LA/UR/Y2/N1/ER).
+
+**Nicht beanstandet:** Zeitanker und sichtbare Herkunftszeile fehlten in der
+Aufnahme — beide sind standardmaessig aus, das ist gewolltes Verhalten.
+
+**Offen:** Der MIME-Fix ist nicht gegengeprueft, weil dafuer eine Aufnahme mit
+der neuen Fassung in Chrome noetig ist. Beim naechsten Testlauf pruefen, ob die
+Datei als `.ris` ankommt.
+
 # CHANGELOG — Full Page PDF Snap
+
+<!-- change-stream:auto-block:2026-08-08:START -->
+### 2026-08-08 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 1 Events, generiert 2026-08-10T10:44_
+
+**Aktivitaet:** 1 Datei(en), 1 Tool-Calls (1 Edit), 1 Session(s).
+
+**Beruehrte Dateien:**
+- `full-page-pdf-snap-public/build-sitemap.py` (1x)
+
+<!-- change-stream:auto-block:2026-08-08:END -->
+
+
+<!-- change-stream:auto-block:2026-08-07:START -->
+### 2026-08-07 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 17 Events, generiert 2026-08-10T10:44_
+
+**Aktivitaet:** 9 Datei(en), 17 Tool-Calls (8 Bash, 7 Write, 2 Edit), 2 Session(s).
+
+**Beruehrte Dateien:**
+- `full-page-pdf-snap-public/docs/tools/pushdictate/index.html` (1x)
+- `full-page-pdf-snap-public/tests/i18n.test.mjs` (1x)
+- `full-page-pdf-snap-public/build-i18n-data.py` (1x)
+- `full-page-pdf-snap-public/tests/seitenformat.test.mjs` (1x)
+- `full-page-pdf-snap-public/tests/sw-robustheit.test.mjs` (1x)
+- `full-page-pdf-snap-public/tests/tdz.test.mjs` (1x)
+- `full-page-pdf-snap-public/chrome-mv3/result.js` (1x)
+- `full-page-pdf-snap-public/tests/android-dateiname.test.mjs` (1x)
+- `full-page-pdf-snap-public/tests/quellenangaben.test.mjs` (1x)
+
+**Bemerkenswerte Commands:**
+- `cd ~/repos/full-page-pdf-snap-public && cat >> .gitignore <<'EOF'
+
+# Betriebsinterna — gehoeren nicht ins oeffentliche R`
+- `cd ~/repos/full-page-pdf-snap-public && git commit -q -m "Betriebsinterna aus dem oeffentlichen Repo nehmen, Adresse aus`
+- `cd ~/repos/full-page-pdf-snap-public && timeout 90 git push origin main 2>&1 | tail -5; echo "=== Remote-Stand prüfen ==`
+- `cd ~/repos/full-page-pdf-snap-public && git rm -q --cached store-texte/*.bak-* 2>/dev/null && echo "  entfernt: 2 Backup`
+- `cd ~/repos/full-page-pdf-snap-public && timeout 60 git push -q origin main 2>&1 | tail -2; timeout 30 git fetch -q origi`
+- `cd /home/holo/repos/full-page-pdf-snap-public && python3 rechtscheck.py 2>&1 | tail -2
+git add docs/notes/installing-you`
+
+<!-- change-stream:auto-block:2026-08-07:END -->
+
+
+## 2.33.4 — 7. August 2026
+
+**Eine Meldung je Aufnahme, mehr nicht.** Der Hinweis auf eine unvollständige
+Erfassung („Hauptbereich: Anfang ok, Ende FEHLT, 1 Lücke(n) [[10873,10899]]")
+erscheint auf dem Telefon nicht mehr. Er sagt niemandem etwas, der den Quelltext
+nicht kennt, und stand als dritte Benachrichtigung für einen einzigen Vorgang in
+der Leiste. Im Protokoll bleibt die Einzelheit erhalten; am Rechner ändert sich
+nichts.
+
+**Nachtrag zum Fix aus 2.33.3, jetzt belegt:** Mozilla führt den Fall als
+Bug 1766420 — „application/pdf files are not downloaded when an anchor has the
+download attribute and a blob: URL as href". Dort steht ausdrücklich, dass
+andere Dateitypen nicht betroffen sind. Genau darauf beruht die Umstellung auf
+`application/octet-stream`.
+
+## 2.33.3 — 7. August 2026
+
+**Der Klick legte die Datei nicht ab, er navigierte in den PDF-Betrachter.** In
+der Adresszeile stand `blob:https://…`, darüber eine Leiste mit einem
+Download-Knopf, den man von Hand drücken musste. Firefox kann PDF selbst
+anzeigen, und dann gewinnt der eigene Betrachter gegen das `download`-Attribut
+des Ankers.
+
+Der Blob trägt jetzt `application/octet-stream` statt `application/pdf`. Einen
+Typ, den er nicht darstellen kann, muss der Browser ablegen. Die Endung `.pdf`
+im Dateinamen bleibt, das System ordnet die Datei also weiterhin richtig zu.
+
+**Und es wird nachgesehen, statt Erfolg anzunehmen.** Navigiert die Seite trotz
+allem, ändert sich ihre Adresse — das prüft das Inhaltsskript nach dem Klick und
+meldet den Unterschied zurück. Bisher galt „kein Fehler" als „Erfolg", weshalb
+die Meldung „In Downloads gespeichert" auch dann erschien, wenn nichts abgelegt
+wurde.
+
+## 2.33.2 — 7. August 2026
+
+**Kein zusätzlicher Reiter mehr, und die Erfolgsmeldung sagt die Wahrheit.**
+
+Das Menü mit dem blauen Aufnahme-Knopf ging nach jedem Browser-Neustart als
+eigene Ebene auf. Es wurde zwar abgeschaltet, sobald das Hintergrundskript lädt
+— aber das lädt in Firefox erst, wenn ein Ereignis es weckt, nach einem Neustart
+also unter Umständen erst durch den Tastendruck selbst. Da stand das Menü schon
+offen. Jetzt hängt das Abschalten zusätzlich an `onStartup` und `onInstalled`;
+damit sind alle drei Wege abgedeckt, auf denen die Erweiterung in Gang kommt.
+Sollte es doch einmal erscheinen, nimmt es sich selbst aus dem Weg: Auf Android
+löst es sofort die Aufnahme aus und schließt sich.
+
+**Die Meldung „In Downloads gespeichert" stand auch dann da, wenn nichts
+ankam.** Gemeldet am 7.8.2026: Die Benachrichtigung nannte Pfad und Dateinamen,
+der Download-Ordner von Firefox war leer. Die entfernte Download-Schnittstelle
+meldet weder Erfolg noch Fehler — der Code nahm Erfolg an, weil kein Fehler kam.
+Eine Meldung, die etwas Falsches behauptet, ist schlimmer als keine: Sie kostet
+den Nutzer die Zeit, in der er die Datei sucht.
+
+Dazu nannte sie einen Pfad mit Unterordner („Full Page PDF Snap/…"), den es auf
+Android gar nicht gibt — dort legt die Seite die Datei unmittelbar ab.
+
+## 2.33.0 — 7. August 2026
+
+**Die Download-Schnittstelle existiert in Firefox für Android nicht mehr.** Die
+Kompatibilitätsdaten von MDN sind eindeutig: `downloads`, `downloads.download`
+und `downloads.onCreated` tragen dort `version_added: 48` und
+`version_removed: 79`. Sie wurden aus der Android-Fassung entfernt. Deshalb
+bewirkte jeder Aufruf nichts, deshalb löste sich das Versprechen nie auf,
+deshalb blieb `onCreated` stumm — beides am Gerät gemessen.
+
+Damit war die ursprüngliche Entscheidung im Code — auf Android nicht
+herunterzuladen — richtig. Falsch war nur der Umweg, der daraus folgte: erst ein
+namenloser Reiter, dann eine Ergebnisseite mit Schaltflächen, die ihrerseits
+nicht taten, was sie versprachen.
+
+**Der Weg, der ohne die Schnittstelle auskommt:** Das Inhaltsskript der
+aufgenommenen Seite klickt einen Anker mit `download`-Attribut. Das ist
+gewöhnliches Web und funktioniert in jedem Browser. Es läuft in der Seite, in
+der die Aufnahme entstand — also genau dort, wo der Nutzer ohnehin steht, ohne
+neuen Reiter. Die Bytes gehen als strukturierte Kopie durch die
+Nachrichtenschicht, nicht als Zeichenkette.
+
+Auf Android entfallen damit auch die drei Beidateien (RIS-Datensatz, Linkkarte,
+Verlagsdatei): Sie liefen über dieselbe Schnittstelle und wären still verpufft.
+Die Angaben stecken ohnehin im PDF selbst — als Anhang und in den
+Dokumenteigenschaften.
+
+**Statt drei Meldungen nur noch eine.** Der Fehlerzweig warf zusätzlich, worauf
+der obere Handler ein zweites Mal meldete; dazu kam der Hinweis auf eine
+unvollständige Erfassung. In der Leiste standen drei Benachrichtigungen für
+einen Vorgang, zwei davon sagten dasselbe.
+
+Am Rechner bleibt alles unverändert — dort funktioniert die Schnittstelle, und
+der Unterordner wird weiter verwendet.
+
+## 2.32.2 — 7. August 2026
+
+**Der Download hing, weil auf eine Antwort gewartet wurde, die nie kommt.** Die
+sichtbar gemachte Diagnose aus 2.32.1 hat es gezeigt: `TIMEOUT_A1-Android_30000ms`.
+`downloads.download()` schlägt in Firefox für Android nicht fehl — es antwortet
+überhaupt nicht. Der Vorgang geht an den System-Download-Dienst, und das
+Versprechen löst sich nicht auf. Wer darauf wartet, wartet endlos und wertet am
+Ende einen laufenden Download als Fehlschlag.
+
+Jetzt wird angestoßen und getrennt davon zugesehen, ob ein Vorgang entsteht:
+`downloads.onCreated` meldet das binnen Sekundenbruchteilen, unabhängig davon,
+ob die Antwort je kommt. Das Versprechen wird nur noch protokolliert, damit ein
+echter Fehler nicht still verschwindet.
+
+**Auf Android gibt es keine Ergebnisseite mehr.** Aufnahme, Download, fertig —
+mit Ton und Benachrichtigung im Ursprungsreiter. Die Seite mit „Herunterladen"
+und „Weiterleiten" war als Rettung gedacht und wurde zur eigenen Fehlerquelle:
+ein Reiter, den niemand wollte, mit Schaltflächen, die nicht taten, was sie
+versprachen. Kommt der Download nicht zustande, bleibt eine Meldung mit dem
+Grund — kein Reiter, der Betrieb vortäuscht. Ein Tippen auf die Benachrichtigung
+öffnet die abgelegte Datei; von dort bietet Android sein eigenes Teilen-Menü an.
+
+Am Rechner bleibt die Ergebnisseite unverändert.
+
+**Zur Vorgeschichte:** Drei Vermutungen gingen dem voraus — Android könne nicht
+herunterladen, der Unterordner sei schuld, der Dateiname sei ungültig. Die
+ersten beiden waren falsch, die dritte war ein echter, aber anderer Fehler.
+Gefunden wurde die Ursache erst, als der Grund auf dem Gerät sichtbar gemacht
+wurde, statt nur ins Protokoll zu laufen.
+
+## 2.32.1 — 7. August 2026
+
+**Der Dateiname konnte den Download selbst verhindern.** Seit der Titel im
+Namen steht, kommt darin vor, was Seiten eben im Titel führen — eine Aufnahme
+hieß „Online Apotheke für Deutschland ▷ Shop Apotheke_…", mit einem Symbol aus
+dem Pfeil-Block. Die Bereinigung entfernte bisher nur die klassisch verbotenen
+Zeichen. Die Dokumentation der Download-Schnittstelle nennt darüber hinaus
+Pfadteile, die mit einem Punkt beginnen oder enden, ausdrücklich als Fehlerfall;
+Steuerzeichen und Symbole aus höheren Unicode-Blöcken sind auf
+Android-Dateisystemen ebenfalls heikel. Ein Name, den die Schnittstelle
+ablehnt, ließ die ganze Aufnahme in den Rückfall laufen — und das sah aus wie
+„der Download geht auf Android eben nicht".
+
+Entfernt werden jetzt Steuerzeichen, Pfeile, Symbole und Emoji sowie Punkte am
+Rand. Umlaute und Akzente bleiben: „Café Résumé Über" ist ein gültiger
+Dateiname, „▷" ist keiner.
+
+**Und der Grund eines Fehlschlags wird sichtbar.** Bisher stand er nur im
+Protokoll — auf dem Telefon kommt niemand daran. Über mehrere Fassungen hinweg
+blieb deshalb unklar, warum das PDF nicht in der Ablage landete, und es wurde
+am Symptom gearbeitet statt an der Ursache. Die Ergebnisseite nennt den Grund
+jetzt im Klartext.
+
+## 2.32.0 — 7. August 2026
+
+**Auf Android wird wieder heruntergeladen — der Reiter entfällt.** Das PDF
+landet unter seinem Namen direkt im Download-Ordner, im Ursprungsreiter meldet
+ein kurzer Ton, dass es fertig ist, und die Benachrichtigung nennt den Dateinamen.
+
+Der Download-Weg war auf Android früher aufgegeben worden, weil er
+„regelmäßig scheiterte". Diese Begründung war falsch. Nicht die Plattform war
+das Hindernis: Firefox für Android beherrscht `downloads.download` durchaus —
+was scheiterte, war der **Unterordner** im Dateinamen, den die Android-Fassung
+nicht kennt. Wird nur der bloße Name übergeben, läuft es. Dazu kam eine
+Zeitgrenze von fünf Sekunden, die für eine mehrere Megabyte große Aufnahme zu
+knapp war; sie steht jetzt bei dreißig.
+
+Aus einer falsch gestellten Diagnose war so ein Umweg entstanden, der immer
+neue Folgefehler nach sich zog: erst der namenlose Reiter, dann die
+Ergebnisseite mit Schaltflächen, die ihrerseits nicht taten, was sie
+versprachen. Der Umweg ist jetzt fort.
+
+Die drei Beidateien — RIS-Datensatz, Linkkarte und Verlagsdatei — werden auf
+Android ebenfalls ohne Unterordner abgelegt; sonst hätten sie am selben
+Hindernis gescheitert wie zuvor das PDF.
+
+Die Ergebnisseite bleibt als Rückfall, falls der Download doch einmal nicht
+durchgeht. Neue Meldung `androidGespeichert` in allen neun Sprachen.
+
+## 2.31.20 — 7. August 2026
+
+**„Herunterladen" lud nicht, „Weiterleiten" führte nicht zur App-Auswahl.**
+Beides auf dem Telefon beobachtet, und beides hatte dieselbe Wurzel: Die
+Ergebnisseite holt sich die Bytes per `fetch` aus einer `data:`-URL, die bei
+einer 6-MB-Aufnahme über acht Megabyte groß wird. Ging das aus, blieben Blob
+und Datei leer — und **beide** Schaltflächen fielen auf denselben Notweg
+zurück, der bloß einen Reiter mit dem PDF öffnet. Für den Nutzer sah es so aus,
+als täte „Herunterladen" etwas völlig anderes als angeschrieben, und man musste
+dort von Hand noch einmal speichern.
+
+Die Seite braucht die Bytes jetzt nicht mehr doppelt: Der Anker lädt die
+Adresse aus dem Hintergrund unmittelbar — in Chrome eine `data:`-URL, in
+Firefox eine `blob:`-URL derselben Herkunft. Kein `fetch`, kein zweiter
+Speicherabzug.
+
+Keine der beiden Schaltflächen öffnet noch einen Reiter. Sind die Daten
+wirklich fort, wird das gesagt statt kaschiert. Kann der Browser keine Dateien
+an andere Apps übergeben — Firefox kann es bis heute nicht —, legt
+„Weiterleiten" die Datei ab und nennt den Weg: aus der Ablage heraus bietet
+jedes Android-System sein Teilen-Menü an. Der neue Hinweis steht in allen neun
+Sprachen.
+
+## 2.31.19 — 7. August 2026
+
+**Derselbe Mangel steckte ein zweites Mal in der Ergebnisseite.** In 2.31.18
+war der Aufnahmeweg repariert, das Antippen der Vorschau nicht: Es öffnete die
+`blob:`-URL im Reiter, und die trägt so wenig einen Dateinamen wie eine
+`data:`-URL. Wer das PDF von dort über den Browser sicherte, bekam wieder
+„document.pdf". Genau so entstand `document(11).pdf`, obwohl 2.31.18 bereits
+lief — die Dokumenteigenschaften waren darin schon vollständig richtig, nur der
+Dateiname nicht.
+
+Auf Android führt das Antippen jetzt über den benannten Weg. Angesehen wird das
+PDF weiterhin — Android bietet die geladene Datei in der Leiste zum Öffnen an,
+nur eben unter ihrem Namen. Am Rechner bleibt es beim Öffnen im Reiter, dort ist
+die Datei ohnehin schon benannt abgelegt.
+
+Ebenfalls geändert: Beim Herunterladen wird auf Android gar nicht mehr erst die
+Download-Schnittstelle versucht. Sie ist dort häufig nicht verfügbar, und wenn
+sie es ist, scheitert sie mitunter still — dann greift auch kein `catch`, und
+die Datei landet ohne Namen. Die Ankerlogik stand an drei Stellen im Code und
+steht jetzt an einer.
 
 ## 2.31.18 — 7. August 2026
 

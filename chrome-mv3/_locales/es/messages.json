@@ -275,6 +275,10 @@
   "resultShareHint": {
     "message": "Este navegador no puede pasar archivos a otras aplicaciones directamente. El PDF se abre en el selector de aplicaciones — compártelo desde ahí."
   },
+  "resultShareViaDownload": {
+    "message": "Este navegador no puede pasar archivos directamente a otras aplicaciones. El PDF se ha guardado: ábralo desde sus descargas y compártalo desde allí.",
+    "description": "Shown when the browser cannot share files; the PDF was downloaded instead."
+  },
   "resultShareDone": {
     "message": "Enviado."
   },
@@ -439,6 +443,20 @@
   },
   "androidFertig": {
     "message": "PDF listo: ábrelo para verlo o descargarlo"
+  },
+  "androidGespeichert": {
+    "message": "Guardado en tus descargas: $DATEI$",
+    "description": "Android: the PDF was downloaded; $DATEI$ is the filename.",
+    "placeholders": {
+      "datei": {
+        "content": "$1",
+        "example": "Titel_seite_2026-08-07.pdf"
+      }
+    }
+  },
+  "androidDownloadFehler": {
+    "message": "No se pudo guardar el PDF.",
+    "description": "Android: the download could not be started; the reason is appended."
   },
   "fehlerAllgemein": {
     "message": "No se pudo completar la captura. Inténtalo de nuevo."

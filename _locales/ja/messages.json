@@ -275,6 +275,10 @@
   "resultShareHint": {
     "message": "このブラウザーはファイルを他のアプリに直接渡せません。PDF はアプリ選択画面で開きます — そこから共有してください。"
   },
+  "resultShareViaDownload": {
+    "message": "このブラウザーはファイルを他のアプリに直接渡せません。PDF は保存されました。ダウンロードから開いて、そこから共有してください。",
+    "description": "Shown when the browser cannot share files; the PDF was downloaded instead."
+  },
   "resultShareDone": {
     "message": "送信しました。"
   },
@@ -439,6 +443,20 @@
   },
   "androidFertig": {
     "message": "PDF ができました — タップして表示・保存"
+  },
+  "androidGespeichert": {
+    "message": "ダウンロードに保存しました: $DATEI$",
+    "description": "Android: the PDF was downloaded; $DATEI$ is the filename.",
+    "placeholders": {
+      "datei": {
+        "content": "$1",
+        "example": "Titel_seite_2026-08-07.pdf"
+      }
+    }
+  },
+  "androidDownloadFehler": {
+    "message": "PDF を保存できませんでした。",
+    "description": "Android: the download could not be started; the reason is appended."
   },
   "fehlerAllgemein": {
     "message": "取り込みを完了できませんでした。もう一度お試しください。"

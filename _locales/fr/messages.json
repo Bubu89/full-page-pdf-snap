@@ -275,6 +275,10 @@
   "resultShareHint": {
     "message": "Ce navigateur ne peut pas transmettre de fichiers directement à d’autres applications. Le PDF s’ouvre dans le sélecteur d’applications — partagez-le depuis là."
   },
+  "resultShareViaDownload": {
+    "message": "Ce navigateur ne peut pas transmettre de fichiers directement à d'autres applications. Le PDF a été enregistré : ouvrez-le depuis vos téléchargements et partagez-le de là.",
+    "description": "Shown when the browser cannot share files; the PDF was downloaded instead."
+  },
   "resultShareDone": {
     "message": "Envoyé."
   },
@@ -439,6 +443,20 @@
   },
   "androidFertig": {
     "message": "PDF prêt — ouvrez-le pour le consulter ou le télécharger"
+  },
+  "androidGespeichert": {
+    "message": "Enregistré dans vos téléchargements : $DATEI$",
+    "description": "Android: the PDF was downloaded; $DATEI$ is the filename.",
+    "placeholders": {
+      "datei": {
+        "content": "$1",
+        "example": "Titel_seite_2026-08-07.pdf"
+      }
+    }
+  },
+  "androidDownloadFehler": {
+    "message": "Le PDF n'a pas pu être enregistré.",
+    "description": "Android: the download could not be started; the reason is appended."
   },
   "fehlerAllgemein": {
     "message": "La capture n'a pas pu être terminée. Veuillez réessayer."

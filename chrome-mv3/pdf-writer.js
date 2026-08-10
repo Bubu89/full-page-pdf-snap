@@ -112,7 +112,17 @@
     return nachname + ", " + ini;
   }
 
-  function autorenListe(autoren) {
+  function autorenListe(autoren, koerperschaft) {
+    // Eine Koerperschaft wird NICHT umgestellt. content.js erkennt sie bereits
+    // und setzt q.koerperschaft; ausgewertet wurde das Flag bisher nirgends.
+    // Folge, gemessen an einer echten Aufnahme vom 10.08.2026: aus
+    // "Kimi API Platform" wurde "Platform, K. A." — das letzte Wort galt als
+    // Nachname, der Rest als Vornamen. Nach APA steht die herausgebende
+    // Einrichtung unveraendert.
+    if (koerperschaft) {
+      var k = (autoren || []).map(function (x) { return String(x).trim(); }).filter(Boolean);
+      return k.join(" & ");
+    }
     var a = (autoren || []).map(autorKurz).filter(Boolean);
     if (!a.length) return "";
     if (a.length === 1) return a[0];
@@ -128,7 +138,7 @@
     // erfasst wurde. Dann steht dort der Hinweis statt der Zitation.
     if (q.warnung) return "Keine belastbare Quellenangabe: " + q.warnung;
     var t = [];
-    var au = autorenListe(q.autoren);
+    var au = autorenListe(q.autoren, q.koerperschaft);
     if (au) t.push(au + " ");
     t.push("(" + (q.jahr || "o. J.") + "). ");
     t.push(q.titel.replace(/\s+/g, " ").trim());

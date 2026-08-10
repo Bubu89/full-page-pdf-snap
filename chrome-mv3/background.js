@@ -192,12 +192,36 @@ async function getSettings() {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+/* Macht aus einem Seitentitel einen Dateinamen, den downloads.download annimmt.
+ *
+ * Die frueheren Regeln reichten nicht. Seit der Titel im Namen steht, kommt
+ * darin vor, was Seiten eben so im Titel fuehren: "Online Apotheke fuer
+ * Deutschland U+25B7 Shop Apotheke". Die Dokumentation der Schnittstelle nennt
+ * ausdruecklich Faelle, die einen Fehler ausloesen - Pfadteile, die mit einem
+ * Punkt beginnen oder enden, Rueckverweise, leere Namen. Steuerzeichen und
+ * Symbole aus hoeheren Unicode-Bloecken sind auf Android-Dateisystemen
+ * ebenfalls heikel.
+ *
+ * Ein Name, den die Schnittstelle ablehnt, laesst die ganze Aufnahme in den
+ * Rueckfall laufen. Deshalb hier lieber streng als huebsch. */
 function sanitizeFilename(s, maxLen) {
-  return String(s)
+  let n = String(s)
+    // 1. Was Dateisysteme verbieten
     .replace(/[\\/:*?"<>|]/g, "_")
+    // 2. Steuerzeichen (auch U+007F) - unsichtbar, aber toedlich
+    // eslint-disable-next-line no-control-regex
+    .replace(/[\u0000-\u001F\u007F]/g, "")
+    // 3. Symbole, Piktogramme, Emoji und die unsichtbaren Trenner darum herum.
+    //    Buchstaben mit Zeichen bleiben erhalten - "fuer" mit Umlaut ist in
+    //    Ordnung, "U+25B7" ist es nicht.
+    .replace(/[\u2000-\u206F\u2190-\u2BFF\u2E00-\u2E7F\uFE00-\uFE0F]/g, " ")
+    .replace(/[\u{1F000}-\u{1FAFF}]/gu, " ")
     .replace(/\s+/g, " ")
     .trim()
-    .slice(0, maxLen || 40) || "page";
+    .slice(0, maxLen || 40);
+  // 4. Punkte am Rand loesen laut Dokumentation einen Fehler aus
+  n = n.replace(/^[.\s]+/, "").replace(/[.\s]+$/, "");
+  return n || "page";
 }
 
 function siteFromUrl(url) {
@@ -681,6 +705,52 @@ function verifyCoverage(label, positions, viewH, maxScroll) {
   return { ok, meldung: `${label}: ${teile.slice(0, 3).join(", ")}` };
 }
 
+/* Stoesst auf Android einen Download an, ohne auf die Antwort zu warten.
+ *
+ * Gemessen am 07.08.2026 auf dem Geraet: "TIMEOUT_A1-Android_30000ms".
+ * downloads.download() schlaegt in Firefox fuer Android nicht fehl - es
+ * antwortet ueberhaupt nicht. Der Vorgang geht an den System-Download-Dienst,
+ * und das Versprechen loest sich nicht auf. Wer darauf wartet, wartet endlos
+ * und wertet das am Ende als Fehlschlag, obwohl der Download laeuft.
+ *
+ * Also: anstossen, und getrennt davon zusehen, ob ein Vorgang entsteht.
+ * downloads.onCreated meldet das binnen Sekundenbruchteilen und ist unabhaengig
+ * davon, ob die Antwort je kommt. Das Versprechen wird nur noch protokolliert,
+ * damit ein echter Fehler nicht still verschwindet.
+ *
+ * Zwei falsche Faehrten gingen dem voraus: erst die Annahme, Android koenne gar
+ * nicht herunterladen - daher der Reiter als Umweg -, dann der Unterordner im
+ * Dateinamen. Beides plausibel, beides nicht die Ursache. Wer eine Vermutung
+ * nicht misst, baut den naechsten Umweg.
+ */
+/* Legt das PDF auf Android aus der Seite heraus ab.
+ *
+ * Die Download-Schnittstelle der Erweiterung gibt es in Firefox fuer Android
+ * seit Version 79 nicht mehr (MDN-Kompatibilitaetsdaten: version_removed 79).
+ * Aufrufe darauf bewirken nichts und werfen auch nichts - am 07.08.2026 auf dem
+ * Geraet gemessen: erst verstrich eine Zeitgrenze von 30 s, dann blieb
+ * downloads.onCreated stumm. Die urspruengliche Entscheidung im Code, auf
+ * Android nicht herunterzuladen, war also richtig; erst der Umweg ueber einen
+ * Reiter war es nicht.
+ *
+ * Ein Anker mit download-Attribut ist dagegen gewoehnliches Web. Er wird im
+ * Inhaltsskript der aufgenommenen Seite geklickt - dort, wo der Nutzer steht,
+ * ohne neuen Reiter. Die Bytes gehen als Uint8Array durch die
+ * Nachrichtenschicht; Firefox uebertraegt sie als strukturierte Kopie, ohne den
+ * Umweg ueber eine Zeichenkette. */
+async function speichereImTab(tabId, pdfBytes, filename) {
+  if (tabId == null) throw new Error("Kein Reiter fuer das Ablegen vorhanden");
+  const antwort = await browser.tabs.sendMessage(tabId, {
+    cmd: "savePdf",
+    bytes: Array.from(pdfBytes),
+    name: filename
+  });
+  if (!antwort || !antwort.ok) {
+    throw new Error((antwort && antwort.error) || "Die Seite konnte die Datei nicht ablegen");
+  }
+  return null;   // Es gibt keine Vorgangskennung - der Browser fuehrt ihn selbst.
+}
+
 async function captureFullPageInner(tab, settings) {
   // Textebene: wird im selben Seitenzustand gesammelt wie die Bilder.
   // Was angefordert war und nicht kam. Ein PDF ohne Textebene sieht aus wie
@@ -1101,9 +1171,22 @@ async function captureFullPageInner(tab, settings) {
   if (unvollstaendig.length || stilleLuecken.length) {
     const teile = unvollstaendig.map(c => c.meldung).concat(stilleLuecken);
     log("WARNUNG: unvollstaendig —", teile.join(" | "));
-    notifyHint((browser.i18n.getMessage("incompleteHint")
-                || "Teile der Seite konnten nicht vollstaendig erfasst werden:")
-               + " " + teile.join(" · "));
+    /* Auf dem Telefon nicht melden.
+     *
+     * Dort steht die Leiste ohnehin voll, und diese Angabe ("Hauptbereich:
+     * Anfang ok, Ende FEHLT, 1 Luecke(n) [[10873,10899]]") sagt niemandem
+     * etwas, der den Quelltext nicht kennt. Am 07.08.2026 standen drei
+     * Meldungen fuer eine Aufnahme in der Leiste, diese als dritte. Auf
+     * Android bleibt es bei einer: fertig oder nicht. Im Protokoll steht die
+     * Einzelheit weiterhin.
+     *
+     * getPlatform() statt der Variablen p - die wird erst weiter unten
+     * deklariert, ein Zugriff hier oben liefe in die temporale Todeszone. */
+    if (!(await getPlatform()).isAndroid) {
+      notifyHint((browser.i18n.getMessage("incompleteHint")
+                  || "Teile der Seite konnten nicht vollstaendig erfasst werden:")
+                 + " " + teile.join(" · "));
+    }
   } else {
     log("Abdeckung vollstaendig in allen", coverage.length, "Scroll-Ebene(n).");
   }
@@ -1581,8 +1664,15 @@ async function captureFullPageInner(tab, settings) {
     //              damit der User die Datei ueber das Firefox-Download-Icon manuell
     //              speichern kann. NIE ohne Feedback dastehen.
     let id = null;
-    let usedFilename = relPath;
+    /* Auf Android gibt es keinen Unterordner - dort legt die Seite die Datei
+     * unmittelbar in die Ablage. Stand hier relPath, nannte die Meldung einen
+     * Pfad ("Full Page PDF Snap/..."), den es gar nicht gab. */
+    let usedFilename = p.isAndroid ? filename : relPath;
     let saveMethod = "download-subfolder";
+    /* Auf Android gibt es keine Vorgangskennung - dort legt die Seite selbst ab.
+     * Ohne dieses Merkmal liefe der Erfolgsfall in den Fehlerzweig, weil der
+     * nur auf "id === null" schaut. */
+    let gespeichertImTab = false;
 
     const withTimeout = (promise, ms, tag) => Promise.race([
       promise,
@@ -1602,17 +1692,36 @@ async function captureFullPageInner(tab, settings) {
      * Umweg und ohne zehn Sekunden Wartezeit.
      */
     if (p.isAndroid) {
-      log("Android: PDF direkt im Tab oeffnen (kein Download-Versuch)");
-      id = null;
+      /* Auf Android aus der Seite heraus ablegen, nicht ueber die
+       * Download-Schnittstelle: Die gibt es dort seit Firefox 79 nicht mehr
+       * (MDN-Kompatibilitaetsdaten, version_removed 79). Einzelheiten bei
+       * speichereImTab(). Es entsteht keine Vorgangskennung - den Download
+       * fuehrt der Browser selbst -, deshalb merkt sich der Ablauf den Erfolg
+       * in gespeichertImTab statt an einer Nummer.
+       *
+       * Der Grund eines Fehlschlags wird festgehalten und dem Nutzer gezeigt.
+       * Ohne das blieb ueber mehrere Fassungen unklar, woran es lag: An das
+       * Protokoll kommt auf dem Telefon niemand heran. */
+      try {
+        await speichereImTab(tab && tab.id, pdfBytes, filename);
+        gespeichertImTab = true;
+        id = null;
+        log("Android: im Reiter abgelegt:", filename);
+      } catch (e1) {
+        _letzterDownloadFehler = (e1 && e1.message) || String(e1);
+        log("Android: Ablegen fehlgeschlagen:", _letzterDownloadFehler);
+        id = null;
+        gespeichertImTab = false;
+      }
     } else {
     // Attempt 1 — mit Subfolder
     try {
       id = await withTimeout(browser.downloads.download({
         url,
         filename: relPath,
-        saveAs: p.isAndroid ? false : !!settings.saveAs,
+        saveAs: !!settings.saveAs,
         conflictAction: "uniquify"
-      }), p.isAndroid ? 5000 : 30000, "A1");
+      }), 30000, "A1");
       log("Save A1 OK:", id, relPath);
     } catch (e1) {
       log("Save A1 failed:", e1.message);
@@ -1623,60 +1732,44 @@ async function captureFullPageInner(tab, settings) {
     // entfaellt: Er galt nur fuer Android, und dort wird gar nicht mehr
     // heruntergeladen.
 
-    // Attempt 3 — Auf Android: PDF direkt im Browser oeffnen.
-    // Der User speichert dann selbst wenn er will (via Firefox-Download-Icon).
-    // Kein SAF-Dialog mehr, weil er auf manchen Geraeten nicht triggert.
-    if (id === null && p.isAndroid) {
-      log("Save A3: opening PDF in new tab (Android default fallback) ...");
-      try {
-        try { await browser.notifications.clear("pdfsnap-progress"); } catch (_) {}
-        /* Nicht die nackte data:-URL oeffnen. Sie traegt keinen Dateinamen,
-         * deshalb legt der Browser sie beim Speichern als "document.pdf" ab,
-         * beim naechsten Mal "document(1).pdf" und so fort. Am 07.08.2026 lag
-         * im Testordner "document(10).pdf", waehrend dieselbe Fassung am
-         * Rechner den sprechenden Namen schrieb - dort laeuft der Weg ueber
-         * downloads.download({filename}), auf dem Telefon gar nicht.
-         * Die Ergebnisseite kennt den Namen und haengt ihn an den Anker. */
-        await zeigeErgebnisseite();
-        const newTab = { id: _lastFallbackTabId };
-        saveMethod = "result-page";
-        _lastDownloadId = null;
-        _lastFilename = filename;
-        _lastFallbackTabId = newTab && newTab.id;
-        _anzeigeTabSeit = Date.now();
-        // Die eine Meldung, die auf Android zaehlt: Das PDF ist da und laesst
-        // sich ansehen oder herunterladen. Uebersetzt statt fest auf Deutsch -
-        // am Telefon stand hier bisher deutscher Text, egal welche Sprache.
-        notifyInfo(browser.i18n.getMessage("androidFertig")
-          || "PDF ready — open it to view or download");
-        // platformForSave, NICHT platform: Letzteres wird erst weiter unten
-        // mit const deklariert. Der Zugriff hier oben laeuft in die temporale
-        // Todeszone und wirft "can't access lexical declaration 'platform'
-        // before initialization" - unter Android am 07.08.2026 beobachtet,
-        // die Aufnahme brach danach mit "Speichern fehlgeschlagen" ab.
-        fertigTon(tab && tab.id, settings, platformForSave);
-        return { ok: true, downloadId: null, filename: usedFilename, pages: pages.length, segments: segments.length, method: saveMethod };
-      } catch (e3) {
-        log("Save A3 (tab open) failed:", e3.message);
-        try { await browser.notifications.clear("pdfsnap-progress"); } catch (_) {}
-        // Auf Android ist das kein Fehler, sondern der vorgesehene Weg: Der
-        // Download-Zweig ist dort oft nicht verfuegbar, das PDF wird
-        // stattdessen im Browser geoeffnet. Eine Fehlermeldung davor
-        // verunsichert, obwohl gleich darauf die Fertig-Meldung kommt.
-        if (!platformForSave.isAndroid) notifyError("Speichern fehlgeschlagen.");
-        else log("Download-Weg nicht verfuegbar — weiter ueber den Browser-Tab");
-        throw e3;
-      }
+    /* Schlaegt auch das Anstossen fehl, gibt es keinen Ersatzweg mehr.
+     *
+     * Bis 2.32.1 oeffnete sich hier die Ergebnisseite mit den Schaltflaechen
+     * "Herunterladen" und "Weiterleiten". Sie war als Rettung gedacht, wurde
+     * aber zur eigenen Fehlerquelle: ein Reiter, den niemand wollte, mit
+     * Schaltflaechen, die nicht taten, was sie versprachen. Gewuenscht ist das
+     * Einfache - Aufnahme, Download, fertig.
+     *
+     * Also nur noch eine Meldung, und darin der Grund. Wer ihn liest, weiss
+     * woran es lag; das ist mehr wert als ein Reiter, der Betrieb vortaeuscht. */
+    if (id === null && p.isAndroid && !gespeichertImTab) {
+      try { await browser.notifications.clear("pdfsnap-progress"); } catch (_) { /* egal */ }
+      const grund = _letzterDownloadFehler ? " (" + _letzterDownloadFehler + ")" : "";
+      notifyError((browser.i18n.getMessage("androidDownloadFehler")
+        || "The PDF could not be saved.") + grund);
+      log("Android: Ablegen nicht zustande gekommen -", _letzterDownloadFehler);
+      /* Nicht zusaetzlich werfen. Der obere Fehlerzweig meldete sonst noch
+       * einmal "Die Aufnahme konnte nicht abgeschlossen werden" - am 07.08.2026
+       * standen dadurch drei Meldungen fuer einen Vorgang in der Leiste, zwei
+       * davon sagten dasselbe. Die Meldung oben nennt den Grund, das genuegt. */
+      return { ok: false, downloadId: null, filename: usedFilename,
+               pages: pages.length, segments: segments.length,
+               method: "android-inline", fehler: _letzterDownloadFehler };
     }
+
     log("Download started", id, usedFilename, "method=" + saveMethod, "pages=", pages.length);
 
     const platform = await getPlatform();
 
-    // Auf Android liefert onChanged 'complete' u.U. nie — wir warten kurz und ziehen dann durch.
-    const waitMs = platform.isAndroid ? 8000 : 30000;
+    /* Auf das Fertigwerden warten kann nur, wo es eine Vorgangskennung gibt.
+     * Auf Android legt die Seite selbst ab - dort ist mit dem Klick auf den
+     * Anker alles getan, und waitForDownloadComplete(null) liefe ins Leere. */
     let downloadComplete = true;
-    try { await waitForDownloadComplete(id, waitMs); }
-    catch (e) { log("download wait:", e.message); downloadComplete = false; }
+    if (!gespeichertImTab) {
+      const waitMs = platform.isAndroid ? 8000 : 30000;
+      try { await waitForDownloadComplete(id, waitMs); }
+      catch (e) { log("download wait:", e.message); downloadComplete = false; }
+    }
 
     // RIS-Datei neben das PDF legen.
     //
@@ -1684,11 +1777,16 @@ async function captureFullPageInner(tab, settings) {
     // braucht die Anlagen-Ansicht des Betrachters oder ein Werkzeug auf der
     // Kommandozeile. Eine Datei neben dem PDF laesst sich per Doppelklick in
     // Citavi oder Zotero ziehen — das ist der Weg, den die Funktion meint.
-    if (settings.sourceMetadata !== false && quelle && quelle.titel && PageShotPdf.risSatz) {
+    if (!p.isAndroid && settings.sourceMetadata !== false && quelle && quelle.titel && PageShotPdf.risSatz) {
       try {
         const ris = PageShotPdf.risSatz(quelle);
-        const risName = relPath.replace(/\.pdf$/i, "") + ".ris";
-        const risUrl = "data:text/plain;charset=utf-8," + encodeURIComponent(ris);
+        const risName = (p.isAndroid ? filename : relPath).replace(/\.pdf$/i, "") + ".ris";
+        // MIME muss zur Endung passen, sonst benennt Chrome die Datei um:
+        // mit "text/plain" wurde aus ".ris" beim Speichern ".txt" — gemessen
+        // am 10.08.2026. Zotero und Citavi erkennen ".ris" von selbst, ".txt"
+        // nicht; der Import verlangte dann Umbenennen von Hand.
+        const risUrl = "data:application/x-research-info-systems;charset=utf-8,"
+                     + encodeURIComponent(ris);
         await browser.downloads.download({ url: risUrl, filename: risName,
                                            conflictAction: "uniquify" });
         log("RIS-Datei gespeichert:", risName);
@@ -1706,7 +1804,7 @@ async function captureFullPageInner(tab, settings) {
     // dieselbe Bezugsgroesse wie die Textebene —, sein Ziel und seine Rolle.
     // Ein Agent kann damit das Seitengeruest ausschliessen, bevor er sucht;
     // auf einer Enzyklopaedie-Seite sind das 741 von 1.528 Verweisen.
-    if (linkKarte && linkKarte.links && linkKarte.links.length) {
+    if (!p.isAndroid && linkKarte && linkKarte.links && linkKarte.links.length) {
       try {
         const gez = {};
         for (const l of linkKarte.links) {
@@ -1728,7 +1826,7 @@ async function captureFullPageInner(tab, settings) {
           nach_rolle: gez,
           links: linkKarte.links,
         };
-        const kartenName = relPath.replace(/\.pdf$/i, "") + ".links.json";
+        const kartenName = (p.isAndroid ? filename : relPath).replace(/\.pdf$/i, "") + ".links.json";
         const kartenUrl = "data:application/json;charset=utf-8,"
                         + encodeURIComponent(JSON.stringify(karte, null, 2));
         await browser.downloads.download({ url: kartenUrl, filename: kartenName,
@@ -1765,13 +1863,20 @@ async function captureFullPageInner(tab, settings) {
     // ERFOLGS-FEEDBACK ZUERST — bevor downloads.open() eventuell blockiert.
     // Damit sieht der Nutzer auf Android auch dann Erfolg, wenn das Oeffnen haengt.
     if (platform.isAndroid) {
-      const fallbackHint = usedFilename === filename && subfolder
-        ? " (Root Download-Ordner)"
-        : "";
-      // Auf Android wird nicht mehr heruntergeladen; falls dieser Zweig doch
-      // einmal greift, gilt dieselbe eine Meldung wie sonst.
-      notifyInfo(browser.i18n.getMessage("androidFertig")
-        || "PDF ready — open it to view or download");
+      /* Nur melden, was belegt ist.
+       *
+       * Bis 2.33.0 stand hier "In Downloads gespeichert: ..." - auch dann, wenn
+       * gar nichts ankam. Am 07.08.2026 gemeldet: Die Benachrichtigung nannte
+       * Pfad und Dateinamen, der Download-Ordner von Firefox war leer. Der
+       * Grund war die entfernte Download-Schnittstelle, die weder Erfolg noch
+       * Fehler meldet - der Code nahm Erfolg an, weil kein Fehler kam.
+       *
+       * Eine Meldung, die etwas Falsches behauptet, ist schlimmer als keine:
+       * Sie kostet den Nutzer die Zeit, in der er die Datei sucht. Deshalb
+       * steht hier nur noch, was tatsaechlich getan wurde - die Seite hat die
+       * Datei abgelegt -, und der Dateiname dazu. */
+      notifyInfo(browser.i18n.getMessage("androidGespeichert", [usedFilename])
+        || ("Saved to your downloads: " + usedFilename));
     }
     // Kurzer Ton, wenn die Aufnahme steht. Absichtlich nach der Meldung und
     // ohne await: Er darf die Rueckgabe nicht verzoegern und nicht scheitern
@@ -1786,8 +1891,8 @@ async function captureFullPageInner(tab, settings) {
     // den ein Klick auf "PDF" ausloest, mit demselben Zugang. Was hinter
     // einer Schranke liegt, bleibt dort: der Server antwortet dann mit einer
     // Fehlerseite, und die wird nicht als Volltext ausgegeben.
-    if (settings.fetchOriginal === true && quelle && quelle.dateien && quelle.dateien.length) {
-      const stamm = relPath.replace(/\.pdf$/i, "");
+    if (!p.isAndroid && settings.fetchOriginal === true && quelle && quelle.dateien && quelle.dateien.length) {
+      const stamm = (p.isAndroid ? filename : relPath).replace(/\.pdf$/i, "");
       for (const datei of quelle.dateien.filter(d => d.art === "pdf" || d.art === "xml")) {
         try {
           await browser.downloads.download({
@@ -2193,7 +2298,16 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       path: pfad,
       pages: _lastPages,
       saved: _lastSaved,
-      downloadId: _lastDownloadId
+      downloadId: _lastDownloadId,
+      /* Die Ergebnisseite braucht die Plattform. Auf Android traegt weder eine
+       * data:- noch eine blob:-URL einen Dateinamen: Wer die Vorschau antippt
+       * und das PDF dann ueber den Browser sichert, bekommt "document.pdf".
+       * Genau so entstand am 07.08.2026 "document(11).pdf", obwohl 2.31.18
+       * bereits lief - der Fehler sass nicht mehr im Aufnahmeweg, sondern hier.
+       * _platformCache steht seit dem ersten getPlatform()-Aufruf bereit; ein
+       * fehlender Wert wird als "nicht Android" gewertet und aendert nichts. */
+      isAndroid: !!(_platformCache && _platformCache.isAndroid),
+      downloadFehler: _letzterDownloadFehler || ""
     });
     return false;
   }
@@ -2256,15 +2370,34 @@ browser.action.onClicked.addListener(async () => {
         || "The capture could not be completed. Please try again."); }
 });
 
-(async () => {
-  const p = await getPlatform();
-  if (p.isAndroid) {
-    try {
-      await browser.action.setPopup({ popup: "" });
-      log("Android detected — popup disabled, direct-capture mode active.");
-    } catch (e) { log("setPopup failed:", e); }
-  }
-})();
+/* Das Menue auf Android abschalten - und zwar frueh genug.
+ *
+ * Bis 2.33.1 geschah das nur beim Laden des Hintergrundskripts. Das laedt in
+ * Firefox aber erst, wenn ein Ereignis es weckt - nach einem Neustart des
+ * Browsers also unter Umstaenden erst durch den Tastendruck selbst. Dann stand
+ * das Menue schon offen, und auf dem Telefon oeffnet es als eigener Reiter. Am
+ * 07.08.2026 so beobachtet: nach jedem Neustart eine zusaetzliche Ebene mit
+ * einem blauen Knopf, die niemand wollte.
+ *
+ * onStartup weckt das Skript beim Start des Browsers, onInstalled nach
+ * Installation und Aktualisierung. Zusammen mit dem Aufruf beim Laden deckt das
+ * alle drei Wege ab, auf denen die Erweiterung in Gang kommt. */
+async function popupAufAndroidAbschalten() {
+  try {
+    const p = await getPlatform();
+    if (!p.isAndroid) return;
+    await browser.action.setPopup({ popup: "" });
+    log("Android erkannt - Menue abgeschaltet, Aufnahme laeuft direkt.");
+  } catch (e) { log("setPopup fehlgeschlagen:", e); }
+}
+
+popupAufAndroidAbschalten();
+if (browser.runtime.onStartup) {
+  browser.runtime.onStartup.addListener(popupAufAndroidAbschalten);
+}
+if (browser.runtime.onInstalled) {
+  browser.runtime.onInstalled.addListener(popupAufAndroidAbschalten);
+}
 
 // Notification-Tap oeffnet die zuletzt gespeicherte Datei. Wichtig auf Android,
 // wo Firefox' downloads.open() sonst still haengen kann.
@@ -2295,8 +2428,17 @@ if (browser.notifications && browser.notifications.onClicked) {
       _lastFallbackTabId = null;
       return;
     }
-    // Regelfall: die Ergebnisseite zeigen. Sie enthaelt die Vorschau und
-    // darueber die beiden Schaltflaechen - Herunterladen und Weiterleiten.
+    /* Auf Android die heruntergeladene Datei oeffnen, nicht die Ergebnisseite.
+     * Dort ist die Aufnahme mit dem Tippen abgeschlossen - sie liegt in der
+     * Ablage. Wer die Meldung antippt, will sie sehen, nicht noch einmal
+     * Schaltflaechen. Aus der geoeffneten Datei heraus bietet Android sein
+     * eigenes Teilen-Menue an. */
+    if (_lastDownloadId != null && _platformCache && _platformCache.isAndroid) {
+      try { await browser.downloads.open(_lastDownloadId); return; }
+      catch (e) { log("downloads.open:", e && e.message); }
+    }
+    // Regelfall am Rechner: die Ergebnisseite zeigen. Sie enthaelt die Vorschau
+    // und darueber die beiden Schaltflaechen - Herunterladen und Weiterleiten.
     // Der nackte Betrachter bot nur das Herunterladen; das Weiterreichen an
     // Mail oder Messenger war von dort nicht erreichbar.
     if (_lastPdfUrl || _lastDownloadId != null) {
@@ -2384,6 +2526,8 @@ async function vielleichtNachBewertungFragen() {
  * Schaden.
  */
 let _anzeigeTabSeit = 0;
+/* Grund des letzten fehlgeschlagenen Downloads, fuer die Ergebnisseite. */
+let _letzterDownloadFehler = "";
 
 function beobachteDownloadUndSchliesse() {
   if (!browser.downloads || !browser.downloads.onChanged) return;

@@ -275,6 +275,10 @@
   "resultShareHint": {
     "message": "此浏览器无法将文件直接传递给其他应用。PDF 将在应用选择器中打开 — 请从那里分享。"
   },
+  "resultShareViaDownload": {
+    "message": "此浏览器无法直接将文件传给其他应用。PDF 已保存——请从下载内容中打开并从那里分享。",
+    "description": "Shown when the browser cannot share files; the PDF was downloaded instead."
+  },
   "resultShareDone": {
     "message": "已发送。"
   },
@@ -439,6 +443,20 @@
   },
   "androidFertig": {
     "message": "PDF 已就绪 — 打开可查看或下载"
+  },
+  "androidGespeichert": {
+    "message": "已保存到下载内容：$DATEI$",
+    "description": "Android: the PDF was downloaded; $DATEI$ is the filename.",
+    "placeholders": {
+      "datei": {
+        "content": "$1",
+        "example": "Titel_seite_2026-08-07.pdf"
+      }
+    }
+  },
+  "androidDownloadFehler": {
+    "message": "无法保存 PDF。",
+    "description": "Android: the download could not be started; the reason is appended."
   },
   "fehlerAllgemein": {
     "message": "未能完成抓取，请重试。"

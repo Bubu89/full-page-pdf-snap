@@ -275,6 +275,10 @@
   "resultShareHint": {
     "message": "Этот браузер не может передавать файлы другим приложениям напрямую. PDF откроется в выборе приложений — поделитесь оттуда."
   },
+  "resultShareViaDownload": {
+    "message": "Этот браузер не может передавать файлы другим приложениям напрямую. PDF сохранён — откройте его в загрузках и поделитесь оттуда.",
+    "description": "Shown when the browser cannot share files; the PDF was downloaded instead."
+  },
   "resultShareDone": {
     "message": "Отправлено."
   },
@@ -439,6 +443,20 @@
   },
   "androidFertig": {
     "message": "PDF готов — откройте, чтобы посмотреть или скачать"
+  },
+  "androidGespeichert": {
+    "message": "Сохранено в загрузках: $DATEI$",
+    "description": "Android: the PDF was downloaded; $DATEI$ is the filename.",
+    "placeholders": {
+      "datei": {
+        "content": "$1",
+        "example": "Titel_seite_2026-08-07.pdf"
+      }
+    }
+  },
+  "androidDownloadFehler": {
+    "message": "Не удалось сохранить PDF.",
+    "description": "Android: the download could not be started; the reason is appended."
   },
   "fehlerAllgemein": {
     "message": "Не удалось завершить съёмку. Попробуйте ещё раз."

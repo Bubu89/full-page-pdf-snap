@@ -147,3 +147,27 @@ $("opts").addEventListener("click", () => {
     el.textContent = "—";
   }
 })();
+
+/* Auf Android gar nicht erst dieses Menue zeigen.
+ *
+ * Das Hintergrundskript schaltet das Popup zwar ab (action.setPopup mit leerem
+ * Wert), aber erst wenn es geladen ist. Nach einem Neustart des Browsers laedt
+ * es unter Umstaenden erst durch den Tastendruck selbst - da steht das Menue
+ * schon offen. Am 07.08.2026 auf dem Geraet so beobachtet.
+ *
+ * Deshalb hier noch einmal, aus der Seite heraus: Ist es ein Telefon, sofort
+ * aufnehmen und schliessen. Wer es einmal sieht, sieht es nie wieder - der
+ * naechste Tastendruck laeuft dann ueber onClicked. */
+(async () => {
+  try {
+    const p = await browser.runtime.getPlatformInfo();
+    if (!p || p.os !== "android") return;
+    document.body.classList.add("android-sofort");
+    // Nicht auf die Antwort warten - die Aufnahme dauert, das Fenster soll weg.
+    browser.runtime.sendMessage({ cmd: "capture", region: false })
+      .catch((e) => console.warn("[PDFSnap/popup] Aufnahme:", e));
+    setTimeout(() => { try { window.close(); } catch (_) { /* egal */ } }, 150);
+  } catch (e) {
+    console.warn("[PDFSnap/popup] Plattform unbekannt:", e);
+  }
+})();
