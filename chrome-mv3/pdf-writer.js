@@ -574,7 +574,12 @@
     if (quelle && quelle.titel) {
       const ris = strToBytes(risSatz(quelle));
       const risId = addObject(concatBytes([
-        strToBytes("<< /Type /EmbeddedFile /Subtype /text#2Fplain /Length " +
+        // Subtype ist der MIME-Typ der Anlage. "text/plain" liess Betrachter
+        // die Datei als Textdatei anbieten; mit dem RIS-Typ erkennen
+        // Literaturprogramme sie beim Herausholen von selbst. Das "#2F" ist
+        // die PDF-Schreibweise fuer den Schraegstrich im Namen.
+        strToBytes("<< /Type /EmbeddedFile " +
+                   "/Subtype /application#2Fx-research-info-systems /Length " +
                    ris.length + " >>\nstream\n"),
         ris,
         strToBytes("\nendstream"),
@@ -632,6 +637,15 @@
         feld("dc:publisher", q.verlag) +
         feld("dc:language", q.sprache) +
         (q.jahr ? feld("dc:date", q.jahr) : "") +
+        // Lizenz, Werkart, Fassung und Aenderungsdatum standen bisher nur im
+        // RIS-Satz (C1, C2, TY). Wer die .ris-Datei verliert oder gar nicht
+        // erst mitnimmt, hatte sie nirgends mehr — obwohl die Angaben erfasst
+        // waren. dc:rights ist das Standardfeld fuer Nutzungsrechte und wird
+        // von Dokumentenverwaltungen und der Systemsuche gelesen.
+        feld("dc:rights", q.lizenz) +
+        feld("dc:type", q.art) +
+        feld("prism:versionIdentifier", q.fassung) +
+        feld("prism:modificationDate", q.geaendert) +
         (beleg ? feld("xmp:CreateDate", isoUtc(beleg.capturedAt)) +
                  feld("xmp:ModifyDate", isoUtc(beleg.capturedAt)) : "") +
         feld("pdf:Producer", "Full Page PDF Snap" + (opts.version ? " " + opts.version : "")) +

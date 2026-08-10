@@ -1,3 +1,30 @@
+## 2026-08-10 (2) — Quellenangaben vollstaendig ins PDF, RIS-Ausgabe fuer Chrome
+
+**Lueckenanalyse.** Verglichen wurde, welche erfassten Angaben wo landen:
+PDF-Info, XMP-Metadaten, RIS-Satz. Ergebnis: **Lizenz, Werkart, Fassung und
+Aenderungsdatum standen nur im RIS** (C1, C2, TY), nicht im XMP. Wer die
+`.ris`-Datei nicht mitnimmt oder verliert, hatte sie nirgends mehr — obwohl die
+Store-Beschreibung "dieselben Felder in den PDF-Metadaten" zusagt.
+
+Ergaenzt: `dc:rights` (Lizenz — das Standardfeld fuer Nutzungsrechte, von
+Dokumentenverwaltungen und der Systemsuche gelesen), `dc:type` (Werkart),
+`prism:versionIdentifier` (Fassung), `prism:modificationDate`. Gegen eine
+vollstaendige Fachquelle geprueft: 18 XMP-Felder werden geschrieben, darunter
+DOI in `dc:identifier` **und** `prism:doi`, Journal, Band, Heft, Seiten, ISSN.
+
+**Die RIS steckt bereits im PDF.** Nicht neu, aber wenig bekannt und hier
+bestaetigt: Jede Aufnahme mit Quellenangaben traegt `quelle.ris` als
+eingebettete Datei. Damit gibt es einen zweiten Weg, der von Chromes Umgang mit
+Downloads unabhaengig ist — `pdfdetach -saveall` oder die Anlagen-Ansicht des
+Betrachters. Der Subtype der Anlage stand auf `text/plain` und ist jetzt
+`application/x-research-info-systems`, damit Literaturprogramme sie beim
+Herausholen erkennen.
+
+**Offen und ausdruecklich ungetestet:** Ob der MIME-Wechsel beim separaten
+Download in Chrome wirklich `.ris` statt `.txt` liefert, laesst sich nur mit
+einer echten Aufnahme im Browser feststellen. Der Weg ueber die eingebettete
+Datei funktioniert unabhaengig davon — geprueft: herausgeholt und gelesen.
+
 ## 2026-08-10 — Pruefung einer echten Aufnahme: zwei Fehler in den Quellenangaben
 
 **Anlass.** Stichprobe an einer mit 2.33.4 erzeugten Aufnahme
