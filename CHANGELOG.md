@@ -1,3 +1,44 @@
+## 2026-08-11 — Die „fehlgeschlagenen Anfragen" waren zu 97 % Angriffe, nicht Defekte
+
+**Anlass** war das Cloudflare-Dashboard: 347 Anfragen von KI-Crawlern, davon 309
+fehlgeschlagen, ein Anstieg um 505 %. Das liest sich wie ein Defekt an der Seite.
+
+**Erste Gegenprobe entlastete die Seite:** alle 40 Adressen der sitemap.xml
+liefern 200. Es gibt keine toten Links.
+
+**Die Auswertung der tatsaechlich angefragten Pfade** (GraphQL-Analytics, 24 h,
+1078 Antworten mit 404) zeigte etwas anderes: `/wp-admin/install.php` 194-mal,
+dazu `/.env`, `/.git/config`, `/.aws/credentials`, `/id_rsa`,
+`/@fs/proc/self/cmdline` — Suche nach Zugangsdaten und Konfigurationsdateien.
+Die 404-Antwort ist hier die richtige und bleibt es.
+
+**Der eigentliche Befund steckte in den Namen.** Die Anfragen gaben sich als
+GPTBot, OAI-SearchBot und ClaudeBot aus. Gegen die 56 offiziellen IP-Bereiche
+von OpenAI geprueft: **keine einzige** stammte daher. Alle 207 kamen von einer
+Adresse, 34.91.197.153, die sich abwechselnd als jeder dieser Crawler ausgab —
+insgesamt 74 % aller Fehlanfragen. Cloudflares KI-Uebersicht erkennt Crawler am
+User-Agent, und der ist frei waehlbar; die Statistik dort zaehlt die Faelschung
+mit. Wer ihr glaubt, sieht einen Crawler-Ansturm, wo ein Scanner laeuft.
+
+**Neu: Weiterleitungen fuer geratene Adressen.** Uebrig blieben 19 Anfragen, die
+etwas bedeuten: `MCP-Cloud-AboutBot` probierte `/faq`, `/docs`, `/documentation`,
+`/support`, `/product`, `/features`, ein `research-bot` `/trust` und
+`/compliance`. Diese Adressen sind nirgends verlinkt — die Bots raten die
+ueblichen Namen. Sie fuehren jetzt per 301 auf die Seiten, die es hier
+tatsaechlich gibt.
+
+**Neu: eine Firewall-Regel auf 19 Pfadmuster**, die es hier nie geben wird
+(WordPress, `.env`, Schluesseldateien, Vite-`@fs`). Bewusst **kein** Filter auf
+den User-Agent: Die Scanner faelschen ihn ohnehin, und eine UA-Regel koennte
+echte KI-Crawler treffen — also genau die, um deren Sichtbarkeit es hier geht.
+Gegengeprueft: 9 Scanner-Pfade blockiert, alle 40 Sitemap-Adressen weiterhin 200.
+
+**Nicht angelegt: `/.well-known/owners.json`.** Ein `VerifyMCP-OwnersBot` fragt
+es acht Mal taeglich ab. Es ist kein Standard, sondern der Vorschlag eines
+Anbieters, und er verlangt eine **oeffentliche E-Mail-Adresse** in der Datei.
+Das ist eine Entscheidung ueber die eigene Erreichbarkeit, keine technische —
+sie faellt nicht nebenbei beim Aufraeumen von Logdateien.
+
 ## 2026-08-10 (5) — Neun Sprachen, eine Bedienstelle; und ein Beitrag fuer Studierende
 
 **Neu** ist `/how-to/for-students/`: die drei Arten, wie eine Webquelle in einer

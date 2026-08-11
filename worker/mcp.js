@@ -340,6 +340,25 @@ const UMGEZOGEN = {
   "/extension-permissions-risk/": "/measurements/extension-permissions-risk/",
   "/pdf-extension-permissions/":  "/measurements/pdf-extension-permissions/",
   "/webpage-to-pdf-for-ocr/":     "/measurements/webpage-to-pdf-for-ocr/",
+
+  // Adressen, die Agenten von sich aus probieren, ohne dass sie irgendwo
+  // verlinkt waeren — sie raten die ueblichen Namen. Gemessen am 11.08.2026
+  // ueber 24 Stunden: MCP-Cloud-AboutBot fragte /faq, /docs, /documentation,
+  // /support, /product und /features; ein research-bot /trust und /compliance.
+  // Zusammen 19 Anfragen, alle mit 404 beantwortet.
+  //
+  // Das ist der einzige Teil der Fehlanfragen, der etwas bedeutet: hier sucht
+  // jemand echte Auskunft an einer geratenen Stelle. Der Rest sind Scanner,
+  // fuer die 404 die richtige Antwort ist und bleibt.
+  "/docs/":          "/for-agents/",
+  "/documentation/": "/for-agents/",
+  "/faq/":           "/about/",
+  "/support/":       "/mitmachen/",
+  "/product/":       "/tools/full-page-pdf-snap/",
+  "/features/":      "/tools/full-page-pdf-snap/",
+  "/trust/":         "/disclaimer/",
+  "/compliance/":    "/privacy.html",
+  "/privacy/":       "/privacy.html",
 };
 
 // fall: "wall" | "network" | "no-metadata" | "not-html"
