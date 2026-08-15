@@ -210,6 +210,50 @@ Datei als `.ris` ankommt.
 
 # CHANGELOG — Full Page PDF Snap
 
+<!-- change-stream:auto-block:2026-08-11:START -->
+### 2026-08-11 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 1 Events, generiert 2026-08-14T19:40_
+
+**Aktivitaet:** 0 Datei(en), 1 Tool-Calls (1 Bash), 1 Session(s).
+
+**Bemerkenswerte Commands:**
+- `cd ~/repos/full-page-pdf-snap-public && git add -A && git commit -q -F - <<'MSG' && git log --oneline -1
+Redirect the ad`
+
+<!-- change-stream:auto-block:2026-08-11:END -->
+
+
+<!-- change-stream:auto-block:2026-08-10:START -->
+### 2026-08-10 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 38 Events, generiert 2026-08-14T19:40_
+
+**Aktivitaet:** 11 Datei(en), 38 Tool-Calls (26 Edit, 7 Bash, 5 Write), 2 Session(s).
+
+**Beruehrte Dateien:**
+- `full-page-pdf-snap-public/docs/site-lang.js` (7x)
+- `full-page-pdf-snap-public/pruefe-sprachwahl.py` (7x)
+- `full-page-pdf-snap-public/build-bibliography-post.py` (4x)
+- `full-page-pdf-snap-public/build-sprachwahl.py` (3x)
+- `full-page-pdf-snap-public/build-studierende-post.py` (2x)
+- `full-page-pdf-snap-public/build-de-index.py` (2x)
+- `full-page-pdf-snap-public/AGENTS.md` (2x)
+- `full-page-pdf-snap-public/build-anwendungen-post.py` (1x)
+- `full-page-pdf-snap-public/texte_artikel_studierende.py` (1x)
+- `full-page-pdf-snap-public/docs/llms-full.txt` (1x)
+- `full-page-pdf-snap-public/docs/index.html` (1x)
+
+**Bemerkenswerte Commands:**
+- `cd ~/repos/full-page-pdf-snap-public && git add -A && git commit -q -F - <<'MSG' && echo "--- committed ---" && git log `
+- `cd ~/repos/full-page-pdf-snap-public && git status -sb | head -3 && echo "--- push ---" && timeout 180 git push origin m`
+- `cd ~/repos/full-page-pdf-snap-public && git add -A && git commit -q -F - <<'MSG' && git log --oneline -1
+Language picker`
+- `cd ~/repos/full-page-pdf-snap-public && git status -sb | head -2 && timeout 120 git push origin main 2>&1 | tail -3; ech`
+
+<!-- change-stream:auto-block:2026-08-10:END -->
+
+
 <!-- change-stream:auto-block:2026-08-08:START -->
 ### 2026-08-08 — Auto-Aggregat (change-stream)
 
