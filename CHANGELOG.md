@@ -1,3 +1,69 @@
+## 2026-08-15 — Neuer Beitrag: Einrichtung in Firefox und Chrome fuer die Wissenschaft
+
+**Was.** Neu ist `/how-to/firefox-and-chrome/`: die praktische Schwester zu
+`/how-to/for-students/`. Dort steht, warum eine Webquelle in der Seminararbeit
+scheitert; hier steht, wie die Erweiterung in Firefox (Desktop und Android) und
+Chrome eingerichtet wird und wie der Ablauf aufnehmen–zitieren–archivieren in
+der Praxis laeuft — Installationswege, RIS auf zwei Wegen (eingebettet als
+`quelle.ris`, immer; separater Download, abschaltbar), die vier Einstellungen,
+die fuer Arbeiten zaehlen, und eine ehrliche Liste dessen, was sie nicht tut.
+
+**Warum.** Der Studierenden-Beitrag begruendet, der allgemeine Einstieg
+vergleicht — aber nirgends stand der Weg von der Installation bis zum Import
+nach Citavi, Zotero oder EndNote an einem Stueck, und genau das fragen
+Wissenschaftler:innen und Studierende, die neu dazukommen.
+
+**Wie.** Gleiches Muster wie der Studierenden-Beitrag: Texte in
+`texte_artikel_firefox_chrome.py`, Rendering ueber
+`build-firefox-chrome-post.py`, neun Sprachen in einer Datei unter einer
+Adresse. Keine neuen Messwerte — jede Zahl verweist auf die bereits
+veroeffentlichte Messung mit ihrem Datum. Verlinkt: Startseite (Notes),
+Sitemap, Feed, llms-full.txt (Index daraus neu gebaut), deutsche Uebersicht.
+
+**Mit welchem Ergebnis.** `rechtscheck.py` 0 Fehler, `daten-pruefen.py`
+0 Fehler, alle 23 Node-Tests gruen, `links-pruefen.py` ohne totes Ziel (185
+interne Adressen erreichbar; beide Stores melden inzwischen 2.33.4),
+`pruefe-sprachwahl.py` gruen — fuer die neue Seite mit einer auf ihre
+KennSaetze angepassten Kopie des Pruefers, neun Sprachen in echtem Browser
+durchgeschaltet, Persistenz und Rueckfall-Hinweis einbezogen.
+
+**Beim Bauen gefunden.** Eine nach `/tmp` kopierte Pruefdatei loest
+`Path(__file__)` dort auf und findet `docs/` nicht mehr — der 404 liest sich
+wie ein Seitendefekt und ist einer im Werkzeug. Gilt fuer jede Kopie der
+Pruefskripte ausserhalb des Baums.
+
+## 2026-08-15 — Das Menü spricht jetzt die gewählte Sprache mit
+
+**Anlass:** Die Sprachwahl im Menü schaltete nur die `data-lang`-Blöcke der
+Artikel um. Die Menüleiste selbst — also genau die Stelle, über die sich die
+Sprache einstellen lässt — blieb auf jeder der neun Sprachen englisch
+(„Notes", „Measurements", „Download").
+
+**Was geändert wurde:** `docs/site-lang.js` trägt jetzt ein NAV-Wörterbuch
+(9 Menüeinträge × 9 Sprachen) und beschriftet die Leiste bei jeder Wahl neu.
+Erkannt wird der Eintrag am `href`, nicht am Text — der ist je nach Seite
+schon uneinheitlich. Das Menü folgt der *gewählten* Sprache, nicht der
+angezeigten: Fällt eine Seite auf Englisch zurück, findet der Leser in der
+Leiste trotzdem seine eigene Sprache wieder. „Mitmachen" bleibt auf Englisch
+stehen — so steht es heute auf allen Seiten, eine Umbenennung ist eine
+inhaltliche Entscheidung, keine Übersetzung.
+
+**Nebenbefund, gleich mit behoben:** Übersetzte Einträge sind länger als das
+Englische, und die Leiste hat eine feste Höchstbreite — de, es, ru und fr
+brachen bei 1180 px auf zwei Zeilen um. `site-lang.js` misst die Leistenhöhe
+nach jeder Wahl und verkleinert bei Umbruch Abstand und Schrift in bis zu drei
+Stufen; zurück auf Englisch nimmt die Regel sich wieder raus. Keine
+Sprachliste zu pflegen: die Messung entscheidet.
+
+**Abnahme:** `pruefe-sprachwahl.py` prüft neu zusätzlich den
+„Measurements"-Eintrag des Menüs in allen neun Sprachen und die Leistenhöhe
+unter de/es/ru bei 1180 px — grün. Matrix-Messung 4 Breiten × 9 Sprachen:
+überall einzeilig (980–1920 px; bei 820 px bricht die Leiste auch auf
+Englisch um, das war schon so). `rechtscheck.py`, `daten-pruefen.py`,
+`links-pruefen.py` und die Node-Tests: 0 Fehler.
+
+---
+
 ## 2026-08-11 — Die „fehlgeschlagenen Anfragen" waren zu 97 % Angriffe, nicht Defekte
 
 **Anlass** war das Cloudflare-Dashboard: 347 Anfragen von KI-Crawlern, davon 309
