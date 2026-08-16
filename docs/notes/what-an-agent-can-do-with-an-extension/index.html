@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Can an AI agent use a browser extension? Measured — and the answer has two halves — Proving Lab</title>
 <meta name="description" content="An agent cannot install a browser extension into a browser it has no access to — no store has an API for that, and inline install was removed years ago. On a machine it does reach, it can: the signed store build goes into the real profile headless in 4.1 s over Firefox's Marionette channel. What it still cannot do is see the page afterwards without a real input event. Measured, including the flag that fails silently.">
+<meta name="keywords" content="AI agent, browser extension, input events, XTEST, CDP, Playwright, activeTab">
 <link rel="canonical" href="https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
@@ -43,7 +44,8 @@
     "url": "https://provinglab.dev/"
   },
   "isAccessibleForFree": true,
-  "license": "https://creativecommons.org/licenses/by/4.0/"
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "keywords": "AI agent, browser extension, input events, XTEST, CDP, Playwright, activeTab"
 }
 </script>
 <script type="application/ld+json">

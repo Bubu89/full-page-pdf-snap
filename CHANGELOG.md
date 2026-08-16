@@ -74,8 +74,63 @@ durchgeschaltet, Persistenz und Rueckfall-Hinweis einbezogen.
 wie ein Seitendefekt und ist einer im Werkzeug. Gilt fuer jede Kopie der
 Pruefskripte ausserhalb des Baums.
 
-## 2026-08-15 — Das Menü spricht jetzt die gewählte Sprache mit
+## 2026-08-15 — Wahrnehmungs-Metadaten geschlossen, Agenten-Doku auf zehn Werkzeuge
 
+**Anlass:** Zwei Prüfungen — wie die Seite von außen wahrgenommen wird, und ob
+Agenten über den MCP-Endpunkt arbeiten können.
+
+**Befund MCP:** Der Endpunkt funktioniert vollständig — `initialize`, alle
+**zehn** Werkzeuge beantwortet, Fehlerwege korrekt (unbekanntes Werkzeug →
+`isError`, Parsefehler → −32700, unbekannte Methode → −32601, GET → 405,
+Notification → 202). Aber die Agenten-Doku lag dahinter: `/for-agents/`
+sagte „five tools", `agent.md` „six tools", der Server liefert zehn. Ein
+Agent, der sich nach der Doku richtet, kennt `extract_citations`,
+`recommend_settings`, `install_extension` und `adoption_stats` nicht.
+Angleichung an der Quelle: `build-einstiegsseiten.py` und `build-llms-index.py`
+(`agent.md`), dazu die Zeile in `llms-full.txt` — danach beide Builder neu
+gelaufen. Die Notiz „four tools" in `mcp-server-what-it-solves` bleibt: sie
+ist ein datierter Bericht und war am 3. August zutreffend.
+
+**Befund Meta:** `<meta name="keywords">` fehlte auf allen 45 Seiten, und die
+Hub-Seiten (about, data, deutsch, disclaimer, measurements/, notes/, tools/,
+privacy) trugen weder Open Graph noch Twitter-Card noch JSON-LD — ein
+geteilter Link dorthin zeigte keine Vorschau. Neues Werkzeug
+`build-meta-nachschlag.py` (Muster: `build-sprachwahl.py`, idempotent, mit
+`--check`): keywords je Seite aus einer kuratierten Karte (sie schlägt
+vorhandene JSON-LD-keywords — mehrere Seiten trugen kopierte Fremd-keywords);
+OG/Twitter auf Hub-Seiten aus den vorhandenen
+Texten der Seite abgeleitet; JSON-LD-WebPage/CollectionPage wo ganz fehlend,
+keywords in bestehende TechArticle-/Article-/HowTo-Blöcke wo fehlend.
+41 Seiten ergänzt, alle JSON-LD-Blöcke valide. `privacy.html` bekam außerdem
+das fehlende robots-meta.
+
+**Nachtrag, schwererer Befund:** Die strukturierten Dataset-Blöcke logen —
+elf Seiten beschrieben im JSON-LD einen fremden Datensatz, aus der Vorlage
+kopiert (`who-actually-reads-this` beschrieb die Android-Erhebung,
+`citation-by-platform` die Druck-gegen-Aufnahme-Messung). Für Dataset-Indexer
+sagte jede dieser Seiten das Falsche. `build-dataset-jsonld.py` repariert das
+aus einer expliziten Zuordnung (je Seite der Datensatz, auf den ihr eigener
+Text verweist; Name/Beschreibung aus der Datensatz-JSON). `nineteen-issues`
+verweist auf keinen Datensatz — dort wurde der fremde Block entfernt.
+`for-students` verweist auf vier gleichberechtigte und bleibt, bis geklärt
+ist, ob es einen ItemList-Block bekommen soll. Derselbe Kopiermechanismus
+hatte seitenfremde keywords in TechArticle-Blöcke und (durch den ersten
+Entwurf von build-meta-nachschlag.py) ins keywords-meta getragen — die
+kuratierte Karte hat seitdem Vorrang vor vorhandenen JSON-LD-keywords.
+
+**Mit erledigt, gehört dem anderen Prozess:** `build-einstiegsseiten.py` trug
+bereits die neuen Messwerte der Gegenmessung Druckexport/Aufnahme (94,8 % zu
+92,6 % OCR), die Seiten waren nur nicht neu erzeugt — der Lauf hat das
+nachgeholt. Beim Commit als eigener Vorgang benennen.
+
+**Abnahme:** `rechtscheck.py` 0 Fehler, `daten-pruefen.py` 0 Fehler,
+Node-Tests 23/23, `links-pruefen.py` keine toten Adressen,
+`build-llms-index.py --check` und `build-meta-nachschlag.py --check` aktuell,
+`pruefe-sprachwahl.py` grün.
+
+---
+
+## 2026-08-15 — Das Menü spricht jetzt die gewählte Sprache mit
 **Anlass:** Die Sprachwahl im Menü schaltete nur die `data-lang`-Blöcke der
 Artikel um. Die Menüleiste selbst — also genau die Stelle, über die sich die
 Sprache einstellen lässt — blieb auf jeder der neun Sprachen englisch
@@ -317,6 +372,20 @@ der neuen Fassung in Chrome noetig ist. Beim naechsten Testlauf pruefen, ob die
 Datei als `.ris` ankommt.
 
 # CHANGELOG — Full Page PDF Snap
+
+<!-- change-stream:auto-block:2026-08-14:START -->
+### 2026-08-14 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 2 Events, generiert 2026-08-15T18:00_
+
+**Aktivitaet:** 2 Datei(en), 2 Tool-Calls (2 Write), 1 Session(s).
+
+**Beruehrte Dateien:**
+- `full-page-pdf-snap-public/tools/zugriffsstatistik.py` (1x)
+- `full-page-pdf-snap-public/tools/abnahme.py` (1x)
+
+<!-- change-stream:auto-block:2026-08-14:END -->
+
 
 <!-- change-stream:auto-block:2026-08-11:START -->
 ### 2026-08-11 — Auto-Aggregat (change-stream)

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Recipes: turn a web source into a citation — Proving Lab</title>
 <meta name="description" content="Copy-paste recipes for the citation endpoint: Claude Code, Claude Desktop, the terminal, WSL and Python. Each one was run before it was written down.">
+<meta name="keywords" content="recipes, citation workflow, web source, RIS, BibTeX, reading list">
 <link rel="canonical" href="https://provinglab.dev/recipes/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
@@ -31,29 +32,59 @@
   "datePublished": "2026-08-03",
   "inLanguage": "en",
   "totalTime": "PT2M",
-  "supply": [{"@type": "HowToSupply", "name": "A list of source URLs"}],
+  "supply": [
+    {
+      "@type": "HowToSupply",
+      "name": "A list of source URLs"
+    }
+  ],
   "tool": [
-    {"@type": "HowToTool", "name": "curl or Python"},
-    {"@type": "HowToTool", "name": "An MCP client such as Claude Code or Claude Desktop"},
-    {"@type": "HowToTool", "name": "Zotero, Citavi, EndNote or Mendeley for the import"}
+    {
+      "@type": "HowToTool",
+      "name": "curl or Python"
+    },
+    {
+      "@type": "HowToTool",
+      "name": "An MCP client such as Claude Code or Claude Desktop"
+    },
+    {
+      "@type": "HowToTool",
+      "name": "Zotero, Citavi, EndNote or Mendeley for the import"
+    }
   ],
   "step": [
-    {"@type": "HowToStep", "name": "Collect the URLs",
-     "text": "Put one source URL per line into a text file.",
-     "url": "https://provinglab.dev/recipes/#reading-list"},
-    {"@type": "HowToStep", "name": "Call the endpoint for each",
-     "text": "POST a JSON-RPC tools/call for extract_citation to https://provinglab.dev/mcp. No account or key is needed.",
-     "url": "https://provinglab.dev/recipes/#reading-list"},
-    {"@type": "HowToStep", "name": "Keep the complete records",
-     "text": "Write the ris field of every record whose complete flag is true into one file; report the others, which name the paywall or bot check that stopped them.",
-     "url": "https://provinglab.dev/recipes/#reading-list"},
-    {"@type": "HowToStep", "name": "Import",
-     "text": "Import the resulting .ris file into Zotero, Citavi, EndNote or Mendeley.",
-     "url": "https://provinglab.dev/recipes/#reading-list"},
-    {"@type": "HowToStep", "name": "Capture what the endpoint refused",
-     "text": "Sources behind a login are captured in the browser with Full Page PDF Snap, which writes the same fields into the PDF and saves the same RIS format beside it.",
-     "url": "https://provinglab.dev/recipes/#which-route"}
-  ]
+    {
+      "@type": "HowToStep",
+      "name": "Collect the URLs",
+      "text": "Put one source URL per line into a text file.",
+      "url": "https://provinglab.dev/recipes/#reading-list"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Call the endpoint for each",
+      "text": "POST a JSON-RPC tools/call for extract_citation to https://provinglab.dev/mcp. No account or key is needed.",
+      "url": "https://provinglab.dev/recipes/#reading-list"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Keep the complete records",
+      "text": "Write the ris field of every record whose complete flag is true into one file; report the others, which name the paywall or bot check that stopped them.",
+      "url": "https://provinglab.dev/recipes/#reading-list"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Import",
+      "text": "Import the resulting .ris file into Zotero, Citavi, EndNote or Mendeley.",
+      "url": "https://provinglab.dev/recipes/#reading-list"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Capture what the endpoint refused",
+      "text": "Sources behind a login are captured in the browser with Full Page PDF Snap, which writes the same fields into the PDF and saves the same RIS format beside it.",
+      "url": "https://provinglab.dev/recipes/#which-route"
+    }
+  ],
+  "keywords": "recipes, citation workflow, web source, RIS, BibTeX, reading list"
 }
 </script>
 

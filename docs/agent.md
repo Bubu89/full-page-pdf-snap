@@ -31,16 +31,20 @@ needs. This costs one header and is the single cheapest thing you can do here.
 carries a title. Of twenty measured sources, two returned a title *and* an
 author while `complete` was false.
 
-## Six tools
+## Ten tools
 
 | Tool | For |
 |---|---|
 | `extract_citation` | URL in, structured record out — authors, title, year, DOI, RIS, BibTeX. Or a named refusal with a `nextStep`. |
+| `extract_citations` | a whole reading list in one call — one record or one named refusal per source |
 | `how_to_capture` | what to do with a source this endpoint cannot read, resolved for your agent type and browser |
-| `open_work` | the open tasks, machine-readable |
 | `list_measurements` | everything published here, with dataset URLs |
 | `get_measurement_data` | one dataset as JSON, including the control run |
 | `get_method` | a reproducible method, to repeat a measurement rather than cite it |
+| `recommend_settings` | the capture settings that fit your purpose, each with the measurement behind it |
+| `install_extension` | install or uninstall the capture extension without a window or a click |
+| `adoption_stats` | how much this endpoint and its install route are actually used, with the figures behind it |
+| `open_work` | the open tasks, machine-readable |
 
 ## What a reading list actually yields
 

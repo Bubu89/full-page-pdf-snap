@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>For AI agents: citations without a browser, and the step that needs one — Proving Lab</title>
 <meta name="description" content="An MCP endpoint that turns a URL into a citation record with RIS and BibTeX — no account, no key — plus the measured rule for the sources it hands back, and whether your agent can drive the capture extension itself.">
+<meta name="keywords" content="MCP server, AI agents, citation endpoint, extract_citation, RIS, BibTeX, headless install, browser extension">
 <link rel="canonical" href="https://provinglab.dev/for-agents/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
@@ -15,7 +16,7 @@
 
 <meta property="og:type" content="article">
 <meta property="og:title" content="For AI agents: citations without a browser, and the step that needs one">
-<meta property="og:description" content="Five tools, one hard rule (read the completeness flag, never the title), and the measured line between agents that can trigger a browser extension and agents that cannot.">
+<meta property="og:description" content="Ten tools, one hard rule (read the completeness flag, never the title), and the measured line between agents that can trigger a browser extension and agents that cannot.">
 <meta property="og:url" content="https://provinglab.dev/for-agents/">
 <meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
 <meta property="article:published_time" content="2026-08-02">
@@ -43,7 +44,8 @@
     "url": "https://provinglab.dev/"
   },
   "isAccessibleForFree": true,
-  "license": "https://creativecommons.org/licenses/by/4.0/"
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "keywords": "MCP server, AI agents, citation endpoint, extract_citation, RIS, BibTeX, headless install, browser extension"
 }
 </script>
 <script type="application/ld+json">
@@ -203,13 +205,15 @@
   answers normally.
 </p>
 
-<h2>Five tools</h2>
+<h2>Ten tools</h2>
 <table>
   <thead><tr><th scope="col">Tool</th><th scope="col">What it is for</th></tr></thead>
   <tbody>
     <tr><th scope="row"><code>extract_citation</code></th>
         <td>URL in, structured record out — authors, title, journal, year, DOI, licence,
             plus RIS and BibTeX. Or a named refusal.</td></tr>
+    <tr><th scope="row"><code>extract_citations</code></th>
+        <td>A whole reading list in one call — one record or one named refusal per source.</td></tr>
     <tr><th scope="row"><code>how_to_capture</code></th>
         <td>What to do with a source this endpoint cannot read, resolved for your agent
             type and target browser.</td></tr>
@@ -219,6 +223,17 @@
         <td>One dataset as JSON, including the control run.</td></tr>
     <tr><th scope="row"><code>get_method</code></th>
         <td>A reproducible method, to repeat a measurement rather than cite it.</td></tr>
+    <tr><th scope="row"><code>recommend_settings</code></th>
+        <td>The capture settings that fit your purpose, each with the measurement
+            behind it — or an explicit note that none exists.</td></tr>
+    <tr><th scope="row"><code>install_extension</code></th>
+        <td>Install or uninstall the capture extension in Firefox or Chrome without
+            a window, without a click.</td></tr>
+    <tr><th scope="row"><code>adoption_stats</code></th>
+        <td>How much this endpoint and its install route are actually used, with the
+            figures behind it.</td></tr>
+    <tr><th scope="row"><code>open_work</code></th>
+        <td>The open tasks, machine-readable — GitHub issues with labels and context.</td></tr>
   </tbody>
 </table>
 

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How an AI agent turns a web page into a citable PDF — Proving Lab</title>
 <meta name="description" content="An agent asked to cite a source meets a paywall, a login or a page built by script, and an anonymous fetch returns nothing citable — 10 of 20 sources in our own test. Measured 4 August 2026: installing the capture extension takes 0.12 s in Firefox and 5.49 s in Chrome, with no window and no input event, and removing it is the same route backwards. What that gives an agent, what it does not, and the mistake that kept it hidden.">
+<meta name="keywords" content="MCP server, Model Context Protocol, AI agent automation, citable PDF, web page archiving, source citation, DOI extraction, RIS export, Zotero, Citavi, EndNote, OCR, browser extension, headless install, Firefox, Chrome, retrieval date, provenance, literature review, thesis research">
 <link rel="canonical" href="https://provinglab.dev/notes/agent-cites-a-source/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
@@ -67,28 +68,17 @@
 {
   "@context": "https://schema.org",
   "@type": "Dataset",
-  "name": "Installing and uninstalling a browser extension without a click, both browsers, 2026-08-04",
-  "description": "One install-and-remove cycle per browser, measured with no visible window and no synthetic input event. Firefox over Marionette: install 0.12 s, uninstall 0.10 s, whole cycle 5.16 s including process start. Chrome over the external extension marker: marker written 0.00 s, store build fetched and registered 5.49 s. Verified by reading the profile, not by the command's return code. One run each, no averages.",
-  "url": "https://provinglab.dev/notes/agent-cites-a-source/",
+  "name": "AI crawler traffic on provinglab.dev, rolling snapshot",
+  "description": "",
+  "url": "https://provinglab.dev/data/2026-08-04-install-uninstall-beide-richtungen.json",
+  "identifier": "https://provinglab.dev/data/2026-08-04-install-uninstall-beide-richtungen.json",
   "datePublished": "2026-08-04",
   "license": "https://creativecommons.org/licenses/by/4.0/",
-  "creator": {"@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/"},
-  "measurementTechnique": "Marionette remote protocol over TCP 2828; Chromium external extension marker with external_update_url",
-  "variableMeasured": [
-    {"@type": "PropertyValue", "name": "Firefox install", "value": 0.12, "unitText": "s"},
-    {"@type": "PropertyValue", "name": "Firefox uninstall", "value": 0.10, "unitText": "s"},
-    {"@type": "PropertyValue", "name": "Chrome install", "value": 5.49, "unitText": "s"},
-    {"@type": "PropertyValue", "name": "Visible windows", "value": 0},
-    {"@type": "PropertyValue", "name": "Synthetic input events", "value": 0}
-  ],
-  "distribution": [{
-    "@type": "DataDownload",
-    "encodingFormat": "application/json",
-    "contentUrl": "https://provinglab.dev/data/2026-08-04-install-uninstall-beide-richtungen.json"
-  }]
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "keywords": "MCP server, Model Context Protocol, AI agent automation, citable PDF, web page archiving, source citation, DOI extraction, RIS export, Zotero, Citavi, EndNote, OCR, browser extension, headless install, Firefox, Chrome, retrieval date, provenance, literature review, thesis research"
 }
 </script>
-
 <style>
   :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
     --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c; }

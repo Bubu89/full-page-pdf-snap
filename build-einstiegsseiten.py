@@ -546,13 +546,15 @@ AGENTEN = f"""
   answers normally.
 </p>
 
-<h2>Five tools</h2>
+<h2>Ten tools</h2>
 <table>
   <thead><tr><th scope="col">Tool</th><th scope="col">What it is for</th></tr></thead>
   <tbody>
     <tr><th scope="row"><code>extract_citation</code></th>
         <td>URL in, structured record out — authors, title, journal, year, DOI, licence,
             plus RIS and BibTeX. Or a named refusal.</td></tr>
+    <tr><th scope="row"><code>extract_citations</code></th>
+        <td>A whole reading list in one call — one record or one named refusal per source.</td></tr>
     <tr><th scope="row"><code>how_to_capture</code></th>
         <td>What to do with a source this endpoint cannot read, resolved for your agent
             type and target browser.</td></tr>
@@ -562,6 +564,17 @@ AGENTEN = f"""
         <td>One dataset as JSON, including the control run.</td></tr>
     <tr><th scope="row"><code>get_method</code></th>
         <td>A reproducible method, to repeat a measurement rather than cite it.</td></tr>
+    <tr><th scope="row"><code>recommend_settings</code></th>
+        <td>The capture settings that fit your purpose, each with the measurement
+            behind it — or an explicit note that none exists.</td></tr>
+    <tr><th scope="row"><code>install_extension</code></th>
+        <td>Install or uninstall the capture extension in Firefox or Chrome without
+            a window, without a click.</td></tr>
+    <tr><th scope="row"><code>adoption_stats</code></th>
+        <td>How much this endpoint and its install route are actually used, with the
+            figures behind it.</td></tr>
+    <tr><th scope="row"><code>open_work</code></th>
+        <td>The open tasks, machine-readable — GitHub issues with labels and context.</td></tr>
   </tbody>
 </table>
 
@@ -796,7 +809,7 @@ def main():
         ("An MCP endpoint that turns a URL into a citation record with RIS and BibTeX — no "
          "account, no key — plus the measured rule for the sources it hands back, and "
          "whether your agent can drive the capture extension itself."),
-        ("Five tools, one hard rule (read the completeness flag, never the title), and the "
+        ("Ten tools, one hard rule (read the completeness flag, never the title), and the "
          "measured line between agents that can trigger a browser extension and agents that "
          "cannot."),
         "../", "TechArticle", f"Every command on this page was run on {DATUM_LANG} before it "

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Web citations that vanish: what happens to a source after you cite it</title>
 <meta name="description" content="150 web sources from reference lists, checked: 19.3% are gone, and the newest archived copy is a median of 603 days old. What that means for a thesis, and how to secure a source in the moment you cite it. Mit deutscher Fassung.">
+<meta name="keywords" content="link rot, reference rot, content drift, cite a website, retrieval date, Abrufdatum, Internetquellen zitieren, Quellen sichern, Literaturverzeichnis, Bachelorarbeit Quellen, Masterarbeit Internetquellen">
 <link rel="canonical" href="https://provinglab.dev/measurements/web-citations-that-vanish/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
@@ -53,21 +54,17 @@
 {
   "@context": "https://schema.org",
   "@type": "Dataset",
-  "name": "Availability and archive coverage of 150 cited web sources, August 2026",
-  "description": "For each of 150 web sources drawn from the reference sections of German-language Wikipedia articles in economics and social policy: live HTTP status, verdict (reachable, gone, unresolved), whether the Internet Archive holds a snapshot, and the age of the newest snapshot.",
-  "url": "https://provinglab.dev/measurements/web-citations-that-vanish/",
-  "distribution": {
-    "@type": "DataDownload",
-    "encodingFormat": "application/json",
-    "contentUrl": "https://provinglab.dev/data/2026-08-02-quellen-archiv.json"
-  },
-  "temporalCoverage": "2026-08-02",
+  "name": "AI crawler traffic on provinglab.dev, rolling snapshot",
+  "description": "",
+  "url": "https://provinglab.dev/data/2026-08-02-quellen-archiv.json",
+  "identifier": "https://provinglab.dev/data/2026-08-02-quellen-archiv.json",
+  "datePublished": "2026-08-02",
   "license": "https://creativecommons.org/licenses/by/4.0/",
-  "creator": { "@type": "Organization", "name": "Proving Lab" },
-  "measurementTechnique": "HTTP HEAD with GET fallback and one retry; Internet Archive availability API with CDX cross-check and up to three retries. Cases where a service did not answer are reported separately rather than counted as negative results."
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "keywords": "link rot, reference rot, content drift, cite a website, retrieval date, Abrufdatum, Internetquellen zitieren, Quellen sichern, Literaturverzeichnis, Bachelorarbeit Quellen, Masterarbeit Internetquellen"
 }
 </script>
-
 <style>
   :root{
     --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
