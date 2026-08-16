@@ -110,9 +110,17 @@
      verschachtelt ("../../notes/"), deshalb nur auf den Zielnamen pruefen. */
   function navSchluessel(a) {
     if (a.className === "dl") return "download";
-    var m = (a.getAttribute("href") || "").match(/\/(notes|measurements|recipes|tools|about|for-agents|mitmachen)\/$/);
+    // Der fuehrende Schraegstrich darf nicht Pflicht sein. Unterseiten
+    // verweisen mit "../notes/", die STARTSEITE aber mit "notes/" — dort fand
+    // die Erkennung nichts und die Leiste blieb englisch, waehrend der Text
+    // deutsch war. Auf der meistbesuchten Seite. (16.08.2026, gemeldet)
+    var m = (a.getAttribute("href") || "").match(
+      /(?:^|\/)(notes|measurements|recipes|tools|about|for-agents|mitmachen)\/$/);
     if (m) return m[1];
-    if (/\/how-to\//.test(a.getAttribute("href") || "")) return "how-to";
+    // Auch hier ohne Pflicht-Schraegstrich: auf der Startseite heisst der
+    // Verweis "how-to/". Beim ersten Anlauf war nur die Zeile darueber
+    // korrigiert — sieben von acht Punkten wurden uebersetzt, dieser nicht.
+    if (/(?:^|\/)how-to\//.test(a.getAttribute("href") || "")) return "how-to";
     return null;
   }
 
