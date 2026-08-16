@@ -1,3 +1,21 @@
+## 2026-08-16 — /for-agents/ spricht neun Sprachen
+
+**Was.** Die Agenten-Seite — die, die ein KI-Leser zuerst findet — liegt jetzt
+in allen neun Sprachen vor (`texte_for_agents.py` + `build-for-agents.py`).
+Bisher fiel sie stumm auf Englisch zurueck; ein Nutzer-PDF mit Wahl „FR"
+zeigte englischen Inhalt, weil es die Fassung schlicht nicht gab.
+
+**Wie.** Gleiches Muster wie die Index-Seiten: Inhalt als Daten mit
+Uebersetzung je Sprache, Kopf aus der bestehenden Seite, `data-lang`-Bloecke.
+Die drei Code-Bloecke (MCP-Verbindung, `complete`-Regel, Marionette-Protokoll)
+bleiben in jeder Sprache unveraendert — Befehle sind keine Prosa.
+
+**Mit welchem Ergebnis.** Browsertest: neun Sprachen durchgeschaltet, Kennsatz
+je Sprache sichtbar, genau eine Fassung sichtbar, `<html lang>` korrekt,
+Code-Block in jeder Sprache bytegleich, Wahl ueberlebt den Seitenwechsel zur
+Startseite. `rechtscheck.py` 0 Fehler, 187 interne Links erreichbar, Bauer
+idempotent.
+
 ## 2026-08-15 (3) — Auch Notizen- und Werkzeug-Index sprechen neun Sprachen
 
 **Was.** Nach Startseite und Messungs-Index liegen jetzt auch

@@ -7,6 +7,16 @@
 <meta name="description" content="An MCP endpoint that turns a URL into a citation record with RIS and BibTeX — no account, no key — plus the measured rule for the sources it hands back, and whether your agent can drive the capture extension itself.">
 <meta name="keywords" content="MCP server, AI agents, citation endpoint, extract_citation, RIS, BibTeX, headless install, browser extension">
 <link rel="canonical" href="https://provinglab.dev/for-agents/">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/for-agents/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/for-agents/">
+<link rel="alternate" hreflang="es" href="https://provinglab.dev/for-agents/">
+<link rel="alternate" hreflang="fr" href="https://provinglab.dev/for-agents/">
+<link rel="alternate" hreflang="it" href="https://provinglab.dev/for-agents/">
+<link rel="alternate" hreflang="ja" href="https://provinglab.dev/for-agents/">
+<link rel="alternate" hreflang="pt-BR" href="https://provinglab.dev/for-agents/">
+<link rel="alternate" hreflang="ru" href="https://provinglab.dev/for-agents/">
+<link rel="alternate" hreflang="zh-CN" href="https://provinglab.dev/for-agents/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/for-agents/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
 <link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
@@ -28,10 +38,19 @@
   "@context": "https://schema.org",
   "@type": "TechArticle",
   "headline": "For AI agents: citations without a browser, and the step that needs one",
-  "description": "An MCP endpoint that turns a URL into a citation record with RIS and BibTeX — no account, no key — plus the measured rule for the sources it hands back, and whether your agent can drive the capture extension itself.",
   "datePublished": "2026-08-03",
-  "dateModified": "2026-08-03",
-  "inLanguage": "en",
+  "dateModified": "2026-08-16",
+  "inLanguage": [
+    "en",
+    "de",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "pt-BR",
+    "ru",
+    "zh-CN"
+  ],
   "url": "https://provinglab.dev/for-agents/",
   "author": {
     "@type": "Organization",
@@ -42,10 +61,7 @@
     "@type": "Organization",
     "name": "Proving Lab",
     "url": "https://provinglab.dev/"
-  },
-  "isAccessibleForFree": true,
-  "license": "https://creativecommons.org/licenses/by/4.0/",
-  "keywords": "MCP server, AI agents, citation endpoint, extract_citation, RIS, BibTeX, headless install, browser extension"
+  }
 }
 </script>
 <script type="application/ld+json">
@@ -156,6 +172,10 @@
     .topnav .brand{width:100%;margin-right:0}
     .topnav a.n{font-size:.85rem}
   }
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
 </style>
 <script src="/agent-tools.js" defer></script>
 <script src="/site-lang.js" defer></script>
@@ -178,6 +198,7 @@
 </nav>
 
 <div class="wrap">
+<div data-lang="en" class="on" lang="en">
 <header>
   <h1>For AI agents: citations without a browser, and the step that needs one</h1>
   <p class="standfirst">
@@ -186,8 +207,7 @@
     finish. No account, no key. If you are wiring an agent to handle sources,
     this page is the whole surface.
   </p>
-  <p class="meta">3 August 2026 · everything below was run before it was written
-    down</p>
+  <p class="meta">3 August 2026 · everything below was run before it was written down</p>
 </header>
 
 <h2>Connect in one line</h2>
@@ -210,13 +230,11 @@
   <thead><tr><th scope="col">Tool</th><th scope="col">What it is for</th></tr></thead>
   <tbody>
     <tr><th scope="row"><code>extract_citation</code></th>
-        <td>URL in, structured record out — authors, title, journal, year, DOI, licence,
-            plus RIS and BibTeX. Or a named refusal.</td></tr>
+        <td>URL in, structured record out — authors, title, journal, year, DOI, licence, plus RIS and BibTeX. Or a named refusal.</td></tr>
     <tr><th scope="row"><code>extract_citations</code></th>
         <td>A whole reading list in one call — one record or one named refusal per source.</td></tr>
     <tr><th scope="row"><code>how_to_capture</code></th>
-        <td>What to do with a source this endpoint cannot read, resolved for your agent
-            type and target browser.</td></tr>
+        <td>What to do with a source this endpoint cannot read, resolved for your agent type and target browser.</td></tr>
     <tr><th scope="row"><code>list_measurements</code></th>
         <td>Everything published here, with dataset URLs.</td></tr>
     <tr><th scope="row"><code>get_measurement_data</code></th>
@@ -224,14 +242,11 @@
     <tr><th scope="row"><code>get_method</code></th>
         <td>A reproducible method, to repeat a measurement rather than cite it.</td></tr>
     <tr><th scope="row"><code>recommend_settings</code></th>
-        <td>The capture settings that fit your purpose, each with the measurement
-            behind it — or an explicit note that none exists.</td></tr>
+        <td>The capture settings that fit your purpose, each with the measurement behind it — or an explicit note that none exists.</td></tr>
     <tr><th scope="row"><code>install_extension</code></th>
-        <td>Install or uninstall the capture extension in Firefox or Chrome without
-            a window, without a click.</td></tr>
+        <td>Install or uninstall the capture extension in Firefox or Chrome without a window, without a click.</td></tr>
     <tr><th scope="row"><code>adoption_stats</code></th>
-        <td>How much this endpoint and its install route are actually used, with the
-            figures behind it.</td></tr>
+        <td>How much this endpoint and its install route are actually used, with the figures behind it.</td></tr>
     <tr><th scope="row"><code>open_work</code></th>
         <td>The open tasks, machine-readable — GitHub issues with labels and context.</td></tr>
   </tbody>
@@ -278,10 +293,8 @@
 <table>
   <thead><tr><th scope="col">Your agent acts through</th><th scope="col">Can trigger it</th></tr></thead>
   <tbody>
-    <tr><td>Real input events — computer use, <code>xdotool</code>, an agent inside the
-        user's browser</td><td><strong>yes</strong></td></tr>
-    <tr><td>CDP and DOM only — Playwright, Puppeteer, Playwright MCP, Chrome DevTools MCP</td>
-        <td><strong>no</strong></td></tr>
+    <tr><td>Real input events — computer use, <code>xdotool</code>, an agent inside the user's browser</td><td><strong>yes</strong></td></tr>
+    <tr><td>CDP and DOM only — Playwright, Puppeteer, Playwright MCP, Chrome DevTools MCP</td><td><strong>no</strong></td></tr>
     <tr><td>No browser</td><td>not needed for half the work</td></tr>
   </tbody>
 </table>
@@ -313,12 +326,18 @@
 <table>
   <thead><tr><th scope="col">Measured</th><th scope="col">Value</th></tr></thead>
   <tbody>
-    <tr><th scope="row">Round trip, uninstall and install</th><td>4.1 s</td></tr>
-    <tr><th scope="row">The two commands themselves</th><td><strong>0.24 s</strong></td></tr>
-    <tr><th scope="row">Input events required</th><td>0</td></tr>
-    <tr><th scope="row">Visible window</th><td>none</td></tr>
-    <tr><th scope="row">Administrator rights</th><td>none</td></tr>
-    <tr><th scope="row">Counts in the store's user statistics</th><td><strong>no</strong></td></tr>
+    <tr><th scope="row">Round trip, uninstall and install</th>
+        <td>4.1 s</td></tr>
+    <tr><th scope="row">The two commands themselves</th>
+        <td><strong>0.24 s</strong></td></tr>
+    <tr><th scope="row">Input events required</th>
+        <td>0</td></tr>
+    <tr><th scope="row">Visible window</th>
+        <td>none</td></tr>
+    <tr><th scope="row">Administrator rights</th>
+        <td>none</td></tr>
+    <tr><th scope="row">Counts in the store's user statistics</th>
+        <td><strong>no</strong></td></tr>
   </tbody>
 </table>
 <p>
@@ -410,7 +429,1887 @@
       <br><br>
       <a href="../">← Proving Lab</a> · <a href="../disclaimer/">Disclaimer</a>
     </footer>
+</div>
 
+<div data-lang="de" lang="de">
+<header>
+  <h1>Für KI-Agenten: Zitationen ohne Browser — und der Schritt, der einen braucht</h1>
+  <p class="standfirst">
+    Ein Endpunkt, der eine URL in einen Zitationsdatensatz verwandelt, ein
+    Skill-Index, der beschreibt, wann man ihn nutzt, und eine gemessene Regel
+    für die Fälle, die er nicht zu Ende bringt. Kein Konto, kein Schlüssel.
+    Wenn Sie einen Agenten für den Umgang mit Quellen verdrahten, ist diese
+    Seite die gesamte Oberfläche.
+  </p>
+  <p class="meta">3. August 2026 · alles Folgende wurde ausgeführt, bevor es aufgeschrieben wurde</p>
+</header>
+
+<h2>Verbinden mit einer Zeile</h2>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  Claude Desktop und andere MCP-Clients: tragen Sie
+  <code>https://provinglab.dev/mcp</code> als Remote-Server ein, Transport
+  <em>streamable HTTP</em>. Clients, die nur lokale Server akzeptieren, können
+  mit <code>npx -y mcp-remote https://provinglab.dev/mcp</code> brücken.
+  Authentifizierung wird angeboten, ist aber nicht nötig; anonyme Anfragen
+  bekommen identische Antworten.
+</p>
+<p style="font-size:.9rem">
+  Ein Vorbehalt, der einen Nachmittag kostet: Das CDN verweigert den User-Agent,
+  den Pythons <code>urllib</code> standardmäßig sendet. Setzen Sie irgendeinen
+  eigenen, und es antwortet normal.
+</p>
+
+<h2>Zehn Werkzeuge</h2>
+<table>
+  <thead><tr><th scope="col">Werkzeug</th><th scope="col">Wozu es dient</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>extract_citation</code></th>
+        <td>URL hinein, strukturierter Datensatz heraus — Verfasser:innen, Titel, Zeitschrift, Jahr, DOI, Lizenz, plus RIS und BibTeX. Oder eine benannte Weigerung.</td></tr>
+    <tr><th scope="row"><code>extract_citations</code></th>
+        <td>Eine ganze Leseliste in einem Aufruf — ein Datensatz oder eine benannte Weigerung je Quelle.</td></tr>
+    <tr><th scope="row"><code>how_to_capture</code></th>
+        <td>Was mit einer Quelle zu tun ist, die dieser Endpunkt nicht lesen kann — aufgelöst für Ihren Agententyp und Zielbrowser.</td></tr>
+    <tr><th scope="row"><code>list_measurements</code></th>
+        <td>Alles hier Veröffentlichte, mit Datensatz-URLs.</td></tr>
+    <tr><th scope="row"><code>get_measurement_data</code></th>
+        <td>Ein Datensatz als JSON, einschließlich des Kontrolllaufs.</td></tr>
+    <tr><th scope="row"><code>get_method</code></th>
+        <td>Eine reproduzierbare Methode, um eine Messung zu wiederholen statt sie zu zitieren.</td></tr>
+    <tr><th scope="row"><code>recommend_settings</code></th>
+        <td>Die Aufnahme-Einstellungen, die zu Ihrem Zweck passen, jede mit der Messung dahinter — oder einem ausdrücklichen Hinweis, dass keine existiert.</td></tr>
+    <tr><th scope="row"><code>install_extension</code></th>
+        <td>Die Aufnahme-Erweiterung in Firefox oder Chrome installieren oder deinstallieren — ohne Fenster, ohne Klick.</td></tr>
+    <tr><th scope="row"><code>adoption_stats</code></th>
+        <td>Wie sehr dieser Endpunkt und sein Installationsweg tatsächlich genutzt werden, mit den Zahlen dahinter.</td></tr>
+    <tr><th scope="row"><code>open_work</code></th>
+        <td>Die offenen Aufgaben, maschinenlesbar — GitHub-Issues mit Labels und Kontext.</td></tr>
+  </tbody>
+</table>
+
+<h2>Die eine Regel, die sich zu hartkodieren lohnt</h2>
+<p>
+  <strong>Lesen Sie <code>complete</code>, niemals nur den Titel.</strong> Ein
+  verweigerter Datensatz trägt trotzdem einen Titel, und zwei von zwanzig
+  gemessenen Quellen lieferten Titel <em>und</em> Verfasser, während
+  <code>complete</code> falsch war — ein Zenodo-Software-Release und eine
+  Statistikportal-Seite. Was so etwas als Quelle ablegt, hat die fehlende
+  Hälfte erfunden.
+</p>
+<pre><code>if not record["complete"]:
+    hand_back(url, record.get("warning"), record.get("nextStep"))</code></pre>
+<p>
+  Wo der Endpunkt nicht zu Ende kommt, trägt die Antwort <code>nextStep</code>:
+  was geschehen muss, warum, beide Installationslinks für die
+  Aufnahme-Erweiterung und die Offenlegung, dass das Werkzeug von uns ist.
+</p>
+
+<h2>Was eine Leseliste tatsächlich ergibt</h2>
+<div class="kf-row">
+  <div class="kf b"><div class="n">10/20</div><div class="l">vollständige Datensätze</div></div>
+  <div class="kf"><div class="n">0,4 s</div><div class="l">pro Quelle</div></div>
+  <div class="kf"><div class="n">1</div><div class="l">von einer Bot-Abwehr gestoppt</div></div>
+  <div class="kf"><div class="n">5</div><div class="l">erklären keine Zitationsdaten</div></div>
+</div>
+<p>
+  Die Trennlinie läuft nicht zwischen kostenpflichtig und frei. Sie läuft
+  zwischen Seiten, die zum Zitieren gebaut sind, und Seiten, die zum Lesen
+  gebaut sind: Fachverlage liefern in beiden Fällen Datensätze,
+  Statistikportale und Zeitungen liefern keine.
+  <a href="/measurements/reading-list-to-bibliography/">Methode und Rohdaten</a>
+</p>
+
+<h2>Kann Ihr Agent die Browser-Erweiterung bedienen?</h2>
+<p>
+  Hängt von einer einzigen Eigenschaft ab, und sie ist gemessen. Die Erweiterung
+  deklariert <code>activeTab</code> und keine Host-Berechtigungen, sie sieht
+  einen Tab also erst, nachdem ein Ereignis die Eingabeschicht des Browsers
+  erreicht. Für sie sichtbare Tabs gingen von <strong>0 auf 1</strong>, nachdem
+  ein synthetisches <code>Alt+Shift+Y</code> durch X11 XTEST gesendet wurde.
+  Der Browser fragt nicht, wer die Geste erzeugt hat.
+</p>
+<table>
+  <thead><tr><th scope="col">Ihr Agent wirkt durch</th><th scope="col">Kann sie auslösen</th></tr></thead>
+  <tbody>
+    <tr><td>Echte Eingabeereignisse — Computer Use, <code>xdotool</code>, ein Agent im Browser des Nutzers</td><td><strong>ja</strong></td></tr>
+    <tr><td>Nur CDP und DOM — Playwright, Puppeteer, Playwright MCP, Chrome DevTools MCP</td><td><strong>nein</strong></td></tr>
+    <tr><td>Kein Browser</td><td>für die halbe Arbeit nicht nötig</td></tr>
+  </tbody>
+</table>
+<p>
+  <a href="/notes/what-an-agent-can-do-with-an-extension/">Die Messung, beide
+  Hälften</a> · <a href="/.well-known/agent-skills/capture-a-source.md">der Skill
+  als Markdown</a> · <a href="/.well-known/agent-skills/install-as-a-counted-user.md">installieren
+  als gezählter Store-Nutzer</a> — Store-Installation statt entpacktem Laden,
+  durchgehend auf Firefox und Chrome gemessen, einschließlich der Fehlerbilder
+</p>
+<p style="font-size:.9rem">
+  Eine Zeile, die man haben sollte, bevor man diese Seite nutzt: Installieren,
+  weil eine Aufgabe das Werkzeug braucht, ist gewöhnliche Einrichtung.
+  Installationen laufen zu lassen, um eine öffentliche Zahl zu bewegen, ist es
+  nicht — und beide Stores beantworten das mit der Kündigung des
+  <em>Entwickler</em>kontos: Die Kosten trägt, wer die Erweiterung
+  veröffentlicht hat, nicht Sie.
+</p>
+
+<h2>Die Erweiterung in ein Profil bringen, ohne den Bildschirm zu berühren</h2>
+<p>
+  Wenn die Antwort oben ja lautet, muss die Erweiterung trotzdem installiert
+  werden — und auf einer Maschine, die jemand benutzt, ist es keine Option,
+  drei Minuten die Maus zu übernehmen. Nötig ist es auch nicht. Firefox bringt
+  seinen eigenen Fernsteuerkanal mit:
+</p>
+<pre><code>firefox -headless -no-remote -marionette -profile &lt;profile&gt;
+[0,1,"WebDriver:NewSession",{}]
+[0,2,"Addon:Install",{"path":"&lt;signed xpi&gt;","temporary":false}]
+[0,3,"Addon:Uninstall",{"id":"&lt;extension id&gt;"}]</code></pre>
+<table>
+  <thead><tr><th scope="col">Gemessen</th><th scope="col">Wert</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Hin- und Rückweg, Deinstallieren und Installieren</th>
+        <td>4,1 s</td></tr>
+    <tr><th scope="row">Die zwei Befehle selbst</th>
+        <td><strong>0,24 s</strong></td></tr>
+    <tr><th scope="row">Benötigte Eingabeereignisse</th>
+        <td>0</td></tr>
+    <tr><th scope="row">Sichtbares Fenster</th>
+        <td>keines</td></tr>
+    <tr><th scope="row">Administratorrechte</th>
+        <td>keine</td></tr>
+    <tr><th scope="row">Zählt in den Nutzerstatistiken des Stores</th>
+        <td><strong>nein</strong></td></tr>
+  </tbody>
+</table>
+<p>
+  Der Prozessstart ist die Kostenstelle, nicht die Arbeit — halten Sie eine
+  Sitzung offen, und jede weitere Installation oder Entfernung kostet etwa zwei
+  Zehntelsekunden. Chrome hat kein Äquivalent: Über CDP lädt und entfernt es
+  eine <em>entpackte</em> Erweiterung, aber <code>Extensions.install</code>
+  existiert überhaupt nicht — eine Store-Version braucht dort die Oberfläche.
+</p>
+<p>
+  <a href="/measurements/install-an-extension-without-a-click/">Alle vier Wege
+  gemessen</a>, einschließlich der Frage, warum der Klick-Weg bei jedem Schritt
+  Erfolg meldete und nichts installierte ·
+  <a href="/.well-known/agent-skills/install-an-extension-headless.md">der Skill</a>
+  — Voraussetzungen in Prüfreihenfolge, das Protokoll, die WSL-Falle und das
+  Muster, verallgemeinert auf andere Software
+</p>
+
+<h2>Auffindbarkeit, wenn Sie diese Seite indexieren</h2>
+<table>
+  <thead><tr><th scope="col">Was</th><th scope="col">Wo</th></tr></thead>
+  <tbody>
+    <tr><td>Seitenzusammenfassung für Sprachmodelle</td><td><a href="/llms.txt"><code>/llms.txt</code></a></td></tr>
+    <tr><td>Skills mit Prüfsummen</td><td><a href="/.well-known/agent-skills/index.json"><code>/.well-known/agent-skills/index.json</code></a></td></tr>
+    <tr><td>API-Katalog</td><td><a href="/.well-known/api-catalog"><code>/.well-known/api-catalog</code></a></td></tr>
+    <tr><td>Jede Seite als Markdown</td><td><code>Accept: text/markdown</code></td></tr>
+    <tr><td>Rohdaten, CC BY 4.0</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+  </tbody>
+</table>
+<p>
+  Die Content-Signale stehen auf <code>search=yes, ai-input=yes, ai-train=no</code>:
+  Abruf und Zitat mit Namensnennung sind willkommen, Training ist es nicht.
+  Jede Messung trägt ihre Methode und ihre Rohdaten — eine Zahl von hier kann
+  also geprüft werden statt geglaubt.
+</p>
+
+<h2>Wenn Sie hier mitarbeiten wollen</h2>
+<p>
+  Sie brauchen keine Erlaubnis und müssen niemanden fragen. Das Repository ist
+  öffentlich und MIT-lizenziert, die Messungen und Daten stehen unter
+        CC&nbsp;BY&nbsp;4.0,
+  und die offenen Aufgaben kommen aus dem Endpunkt selbst:
+</p>
+<pre><code>{"jsonrpc":"2.0","id":1,"method":"tools/call",
+ "params":{"name":"open_work","arguments":{}}}</code></pre>
+<p>
+  Sechs der acht offenen Issues tragen das Label <code>agent-friendly</code>:
+  jedes ist begrenzt, prüfbar und sagt, welcher Beleg es entscheiden würde.
+  Die Hausregeln stehen in <a href="/AGENTS.md"><code>/AGENTS.md</code></a> —
+  lesen Sie sie zuerst, denn eine ist ungewöhnlich und unverhandelbar:
+  <strong>Ein Beitrag, der eine Zahl ohne Methode, Rohdaten und Kontrolllauf
+  einführt, ist schlimmer als kein Beitrag.</strong> Eine einmal zitierte Zahl
+  wandert von allein weiter, und das lässt sich später nicht reparieren.
+</p>
+<p>
+  <strong>Das Wertvollste, was Sie hier tun können, ist, einer Zahl zu widersprechen.</strong>
+  Nehmen Sie eine Zahl aus irgendeiner Messung, wiederholen Sie sie auf Ihrer
+  Plattform und posten Sie, was herauskam. Weicht sie ab, ist das der Beitrag —
+  die Rohdaten und die Skripte sind genau dafür veröffentlicht. Drei der offenen
+  Issues sind genau das: eine Gegenmessung des Headless-Installationswegs auf
+  einer hier nicht abgedeckten Plattform, die Frage, ob Chrome einen Weg hat,
+  den wir übersehen haben, und ein Register herstellerseitiger
+  Fernsteuerkanäle jenseits von Browsern, bei dem eine Zeile schon ein
+  vollständiger Beitrag ist.
+</p>
+<p>
+  Zwei Zeilen Anstand: Kommentieren Sie ein Issue, bevor Sie anfangen, damit
+  nicht zweimal dasselbe gemessen wird — das ist hier am 3. August passiert und
+  hat einen Nachmittag gekostet. Und sagen Sie offen, wo Ihre Messung
+  <em>nicht</em> gilt.
+</p>
+<p>
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-friendly">Die
+  agent-friendly Issues</a> · <a href="/mitmachen/">warum das über dieses Projekt
+  hinaus zählen könnte</a> · <a href="/AGENTS.md">die Regeln</a>
+</p>
+
+<h2>Bitte maßvoll nutzen</h2>
+<p>
+  Dies ist ein kleiner Endpunkt auf einem kostenlosen Kontingent, betrieben von
+  einer Person. Eine Leseliste ist eine Handvoll Aufrufe; ein Crawl ist es
+  nicht. Anfragen werden mit unserem eigenen User-Agent abgeholt —
+  unangemessene Nutzung landet also mit unserem Namen im Log einer fremden
+  Seite. Heute gibt es kein hartes Limit — das ist eine Beschreibung des
+  aktuellen Zustands, kein Versprechen.
+</p>
+<footer>
+      Jeder Befehl auf dieser Seite wurde am 3. August 2026 ausgeführt, bevor er aufgeschrieben wurde.
+      <br><br>
+      Korrekturen sind willkommen und werden öffentlich gemacht: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">ein Issue öffnen</a>.
+      <br><br>
+      Offenlegung: Der Autor entwickelt Full Page PDF Snap, die auf dieser Seite genannte Erweiterung. Der eigene PDF-Druck des Browsers ist <a href="/measurements/print-to-pdf-vs-screenshot/">dagegen gemessen</a>, einschließlich der Stelle, an der der Druck gewinnt.
+      <br><br>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">Haftungsausschluss</a>
+    </footer>
+</div>
+
+<div data-lang="es" lang="es">
+<header>
+  <h1>Para agentes de IA: citas sin navegador, y el paso que necesita uno</h1>
+  <p class="standfirst">
+    Un endpoint que convierte una URL en un registro de cita, un índice de
+    skills que describe cuándo usarlo, y una regla medida para los casos que
+    no puede terminar. Sin cuenta, sin clave. Si estás conectando un agente
+    para manejar fuentes, esta página es toda la superficie.
+  </p>
+  <p class="meta">3 de agosto de 2026 · todo lo siguiente se ejecutó antes de escribirse</p>
+</header>
+
+<h2>Conectar con una línea</h2>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  Claude Desktop y otros clientes MCP: añade
+  <code>https://provinglab.dev/mcp</code> como servidor remoto, transporte
+  <em>streamable HTTP</em>. Los clientes que solo aceptan servidores locales
+  pueden puentear con <code>npx -y mcp-remote https://provinglab.dev/mcp</code>.
+  La autenticación se ofrece pero no es necesaria; las peticiones anónimas
+  reciben respuestas idénticas.
+</p>
+<p style="font-size:.9rem">
+  Una advertencia que cuesta una tarde: la CDN rechaza el user agent que
+  <code>urllib</code> de Python envía por defecto. Define cualquiera propio
+  y responde con normalidad.
+</p>
+
+<h2>Diez herramientas</h2>
+<table>
+  <thead><tr><th scope="col">Herramienta</th><th scope="col">Para qué sirve</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>extract_citation</code></th>
+        <td>URL dentro, registro estructurado fuera — autores, título, revista, año, DOI, licencia, más RIS y BibTeX. O una negativa nombrada.</td></tr>
+    <tr><th scope="row"><code>extract_citations</code></th>
+        <td>Una lista de lectura entera en una llamada — un registro o una negativa nombrada por fuente.</td></tr>
+    <tr><th scope="row"><code>how_to_capture</code></th>
+        <td>Qué hacer con una fuente que este endpoint no puede leer, resuelto para tu tipo de agente y navegador destino.</td></tr>
+    <tr><th scope="row"><code>list_measurements</code></th>
+        <td>Todo lo publicado aquí, con URLs de conjuntos de datos.</td></tr>
+    <tr><th scope="row"><code>get_measurement_data</code></th>
+        <td>Un conjunto de datos como JSON, incluida la ejecución de control.</td></tr>
+    <tr><th scope="row"><code>get_method</code></th>
+        <td>Un método reproducible, para repetir una medición en lugar de citarla.</td></tr>
+    <tr><th scope="row"><code>recommend_settings</code></th>
+        <td>Los ajustes de captura que encajan con tu propósito, cada uno con la medición detrás — o una nota explícita de que no existe.</td></tr>
+    <tr><th scope="row"><code>install_extension</code></th>
+        <td>Instala o desinstala la extensión de captura en Firefox o Chrome sin ventana, sin clic.</td></tr>
+    <tr><th scope="row"><code>adoption_stats</code></th>
+        <td>Cuánto se usa realmente este endpoint y su vía de instalación, con las cifras detrás.</td></tr>
+    <tr><th scope="row"><code>open_work</code></th>
+        <td>Las tareas abiertas, legibles por máquina — issues de GitHub con etiquetas y contexto.</td></tr>
+  </tbody>
+</table>
+
+<h2>La única regla que vale la pena fijar en el código</h2>
+<p>
+  <strong>Lee <code>complete</code>, nunca el título solo.</strong> Un registro
+  rechazado sigue llevando un título, y dos de veinte fuentes medidas devolvieron
+  título <em>y</em> autor mientras <code>complete</code> era falso — una versión
+  de software en Zenodo y una página de portal de estadística. Lo que archive
+  eso como fuentes ha inventado la mitad que falta.
+</p>
+<pre><code>if not record["complete"]:
+    hand_back(url, record.get("warning"), record.get("nextStep"))</code></pre>
+<p>
+  Donde el endpoint no puede terminar, la respuesta lleva <code>nextStep</code>:
+  qué tiene que pasar, por qué, ambos enlaces de instalación de la extensión
+  de captura, y la divulgación de que la herramienta es nuestra.
+</p>
+
+<h2>Lo que una lista de lectura rinde realmente</h2>
+<div class="kf-row">
+  <div class="kf b"><div class="n">10/20</div><div class="l">registros completos</div></div>
+  <div class="kf"><div class="n">0,4 s</div><div class="l">por fuente</div></div>
+  <div class="kf"><div class="n">1</div><div class="l">detenida por una defensa contra bots</div></div>
+  <div class="kf"><div class="n">5</div><div class="l">no declaran datos de cita</div></div>
+</div>
+<p>
+  La división no corre entre de pago y gratis. Corre entre páginas construidas
+  para ser citadas y páginas construidas para ser leídas: las editoriales
+  científicas dan registros en ambos casos, los portales de estadística y los
+  periódicos no dan ninguno.
+  <a href="/measurements/reading-list-to-bibliography/">Método y datos brutos</a>
+</p>
+
+<h2>¿Puede tu agente manejar la extensión del navegador?</h2>
+<p>
+  Depende de una sola propiedad, y está medida. La extensión declara
+  <code>activeTab</code> y ningún permiso de host, así que solo ve una pestaña
+  después de que un evento alcance la capa de entrada del navegador. Las
+  pestañas visibles para ella pasaron de <strong>0 a 1</strong> tras un
+  <code>Alt+Shift+Y</code> sintético enviado por X11 XTEST. El navegador no
+  pregunta quién produjo el gesto.
+</p>
+<table>
+  <thead><tr><th scope="col">Tu agente actúa a través de</th><th scope="col">Puede dispararla</th></tr></thead>
+  <tbody>
+    <tr><td>Eventos de entrada reales — computer use, <code>xdotool</code>, un agente dentro del navegador del usuario</td><td><strong>sí</strong></td></tr>
+    <tr><td>Solo CDP y DOM — Playwright, Puppeteer, Playwright MCP, Chrome DevTools MCP</td><td><strong>no</strong></td></tr>
+    <tr><td>Sin navegador</td><td>no hace falta para la mitad del trabajo</td></tr>
+  </tbody>
+</table>
+<p>
+  <a href="/notes/what-an-agent-can-do-with-an-extension/">La medición, ambas
+  mitades</a> · <a href="/.well-known/agent-skills/capture-a-source.md">el skill
+  en Markdown</a> · <a href="/.well-known/agent-skills/install-as-a-counted-user.md">instalar
+  como usuario contado de la tienda</a> — instalación desde la tienda en lugar
+  de carga descomprimida, medida de punta a punta en Firefox y Chrome, incluidos
+  los modos de fallo
+</p>
+<p style="font-size:.9rem">
+  Una línea que conviene tener antes de usar esa página: instalar porque una
+  tarea necesita la herramienta es configuración ordinaria. Ejecutar
+  instalaciones para mover una cifra pública no lo es, y ambas tiendas lo
+  responden cerrando la cuenta de <em>desarrollador</em> — el coste cae sobre
+  quien publicó la extensión, no sobre ti.
+</p>
+
+<h2>Meter la extensión en un perfil, sin tocar la pantalla</h2>
+<p>
+  Si la respuesta de arriba es sí, aún hay que instalar la extensión — y en una
+  máquina que alguien está usando, tomar el ratón durante tres minutos no es
+  una opción. Tampoco es necesario. Firefox trae su propio canal de control
+  remoto:
+</p>
+<pre><code>firefox -headless -no-remote -marionette -profile &lt;profile&gt;
+[0,1,"WebDriver:NewSession",{}]
+[0,2,"Addon:Install",{"path":"&lt;signed xpi&gt;","temporary":false}]
+[0,3,"Addon:Uninstall",{"id":"&lt;extension id&gt;"}]</code></pre>
+<table>
+  <thead><tr><th scope="col">Medido</th><th scope="col">Valor</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Ida y vuelta, desinstalar e instalar</th>
+        <td>4,1 s</td></tr>
+    <tr><th scope="row">Los dos comandos en sí</th>
+        <td><strong>0,24 s</strong></td></tr>
+    <tr><th scope="row">Eventos de entrada necesarios</th>
+        <td>0</td></tr>
+    <tr><th scope="row">Ventana visible</th>
+        <td>ninguna</td></tr>
+    <tr><th scope="row">Derechos de administrador</th>
+        <td>ninguno</td></tr>
+    <tr><th scope="row">Cuenta en las estadísticas de usuarios de la tienda</th>
+        <td><strong>no</strong></td></tr>
+  </tbody>
+</table>
+<p>
+  El arranque del proceso es el coste, no el trabajo — mantén una sesión abierta
+  y cada instalación o retirada posterior cuesta unas dos décimas de segundo.
+  Chrome no tiene equivalente: por CDP carga y quita una extensión
+  <em>descomprimida</em>, pero <code>Extensions.install</code> no existe en
+  absoluto, así que una compilación de la tienda allí necesita la interfaz.
+</p>
+<p>
+  <a href="/measurements/install-an-extension-without-a-click/">Las cuatro vías
+  medidas</a>, incluido por qué la vía del clic informó éxito en cada paso y no
+  instaló nada ·
+  <a href="/.well-known/agent-skills/install-an-extension-headless.md">el skill</a>
+  — prerrequisitos en orden de comprobación, el protocolo, la trampa de WSL y
+  el patrón generalizado a otro software
+</p>
+
+<h2>Descubrimiento, si estás indexando este sitio</h2>
+<table>
+  <thead><tr><th scope="col">Qué</th><th scope="col">Dónde</th></tr></thead>
+  <tbody>
+    <tr><td>Resumen del sitio para modelos de lenguaje</td><td><a href="/llms.txt"><code>/llms.txt</code></a></td></tr>
+    <tr><td>Skills con sumas de verificación</td><td><a href="/.well-known/agent-skills/index.json"><code>/.well-known/agent-skills/index.json</code></a></td></tr>
+    <tr><td>Catálogo de API</td><td><a href="/.well-known/api-catalog"><code>/.well-known/api-catalog</code></a></td></tr>
+    <tr><td>Cada página como Markdown</td><td><code>Accept: text/markdown</code></td></tr>
+    <tr><td>Datos brutos, CC BY 4.0</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+  </tbody>
+</table>
+<p>
+  Las señales de contenido están en <code>search=yes, ai-input=yes, ai-train=no</code>:
+  la recuperación y la cita con atribución son bienvenidas, el entrenamiento no.
+  Cada medición lleva su método y sus datos brutos, así que una cifra tomada de
+  aquí puede comprobarse en lugar de creerse.
+</p>
+
+<h2>Si quieres trabajar en esto</h2>
+<p>
+  No necesitas permiso y no necesitas preguntar. El repositorio es público y
+  con licencia MIT, las mediciones y los datos son CC&nbsp;BY&nbsp;4.0, y las
+  tareas abiertas salen del propio endpoint:
+</p>
+<pre><code>{"jsonrpc":"2.0","id":1,"method":"tools/call",
+ "params":{"name":"open_work","arguments":{}}}</code></pre>
+<p>
+  Seis de las ocho issues abiertas llevan la etiqueta <code>agent-friendly</code>:
+  cada una está acotada, es comprobable y declara qué evidencia la resolvería.
+  Las reglas de la casa están en <a href="/AGENTS.md"><code>/AGENTS.md</code></a>
+  — léelas primero, porque una es inusual e innegociable: <strong>una
+  contribución que introduce una cifra sin método, datos brutos y ejecución de
+  control es peor que ninguna contribución.</strong> Una cifra una vez citada
+  viaja por su cuenta, y eso no se puede arreglar después.
+</p>
+<p>
+  <strong>Lo más valioso que puedes hacer aquí es discrepar de una cifra.</strong>
+  Toma una cifra de cualquier medición, repítela en tu plataforma y publica lo
+  que obtuviste. Si difiere, esa es la contribución — los datos brutos y los
+  scripts están publicados precisamente para que eso sea posible. Tres de las
+  issues abiertas son exactamente esto: una contra-medición de la vía de
+  instalación headless en una plataforma no cubierta aquí, si Chrome tiene una
+  vía que pasamos por alto, y un registro de canales de control de fabricantes
+  más allá de los navegadores, donde una fila ya es una contribución completa.
+</p>
+<p>
+  Dos líneas de cortesía: comenta en una issue antes de empezar, para que dos
+  no midamos lo mismo — eso pasó aquí el 3 de agosto y costó una tarde. Y di
+  claramente dónde tu medición <em>no</em> se sostiene.
+</p>
+<p>
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-friendly">Las
+  issues agent-friendly</a> · <a href="/mitmachen/">por qué esto podría importar
+  más allá de este proyecto</a> · <a href="/AGENTS.md">las reglas</a>
+</p>
+
+<h2>Úsalo con medida, por favor</h2>
+<p>
+  Esto es un pequeño endpoint en un nivel gratuito, operado por una persona.
+  Una lista de lectura es un puñado de llamadas; un rastreo no lo es. Las
+  peticiones se traen con nuestro propio user agent, así que un uso
+  desmedido aterriza en el registro de otra persona con nuestro nombre.
+  Hoy no hay límite duro — eso es una descripción del estado actual, no una
+  promesa.
+</p>
+<footer>
+      Cada comando de esta página se ejecutó el 3 de agosto de 2026 antes de escribirse.
+      <br><br>
+      Las correcciones son bienvenidas y se hacen en público: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">abrir una issue</a>.
+      <br><br>
+      Divulgación: el autor desarrolla Full Page PDF Snap, la extensión nombrada en esta página. La impresión a PDF del propio navegador está <a href="/measurements/print-to-pdf-vs-screenshot/">medida contra ella</a>, incluido dónde gana la impresión.
+      <br><br>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">Aviso legal</a>
+    </footer>
+</div>
+
+<div data-lang="fr" lang="fr">
+<header>
+  <h1>Pour les agents IA : des citations sans navigateur, et l'étape qui en exige un</h1>
+  <p class="standfirst">
+    Un point d'accès qui transforme une URL en notice de citation, un index de
+    skills qui décrit quand l'utiliser, et une règle mesurée pour les cas qu'il
+    ne peut terminer. Ni compte, ni clé. Si vous câblez un agent pour traiter
+    des sources, cette page est toute la surface.
+  </p>
+  <p class="meta">3 août 2026 · tout ce qui suit a été exécuté avant d'être écrit</p>
+</header>
+
+<h2>Se connecter en une ligne</h2>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  Claude Desktop et autres clients MCP : ajoutez
+  <code>https://provinglab.dev/mcp</code> comme serveur distant, transport
+  <em>streamable HTTP</em>. Les clients qui n'acceptent que les serveurs locaux
+  peuvent faire un pont avec <code>npx -y mcp-remote https://provinglab.dev/mcp</code>.
+  L'authentification est proposée mais non requise ; les requêtes anonymes
+  reçoivent des réponses identiques.
+</p>
+<p style="font-size:.9rem">
+  Un avertissement qui coûte un après-midi : le CDN refuse l'agent utilisateur
+  que <code>urllib</code> de Python envoie par défaut. Définissez n'importe
+  lequel de votre choix et il répond normalement.
+</p>
+
+<h2>Dix outils</h2>
+<table>
+  <thead><tr><th scope="col">Outil</th><th scope="col">À quoi il sert</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>extract_citation</code></th>
+        <td>Une URL en entrée, une notice structurée en sortie — auteurs, titre, revue, année, DOI, licence, plus RIS et BibTeX. Ou un refus nommé.</td></tr>
+    <tr><th scope="row"><code>extract_citations</code></th>
+        <td>Une liste de lecture entière en un appel — une notice ou un refus nommé par source.</td></tr>
+    <tr><th scope="row"><code>how_to_capture</code></th>
+        <td>Que faire d'une source que ce point d'accès ne peut lire, résolu pour votre type d'agent et le navigateur cible.</td></tr>
+    <tr><th scope="row"><code>list_measurements</code></th>
+        <td>Tout ce qui est publié ici, avec les URL des jeux de données.</td></tr>
+    <tr><th scope="row"><code>get_measurement_data</code></th>
+        <td>Un jeu de données en JSON, y compris l'essai de contrôle.</td></tr>
+    <tr><th scope="row"><code>get_method</code></th>
+        <td>Une méthode reproductible, pour refaire une mesure plutôt que la citer.</td></tr>
+    <tr><th scope="row"><code>recommend_settings</code></th>
+        <td>Les réglages de capture adaptés à votre usage, chacun avec la mesure derrière — ou une note explicite qu'il n'en existe pas.</td></tr>
+    <tr><th scope="row"><code>install_extension</code></th>
+        <td>Installer ou désinstaller l'extension de capture dans Firefox ou Chrome sans fenêtre, sans clic.</td></tr>
+    <tr><th scope="row"><code>adoption_stats</code></th>
+        <td>Combien ce point d'accès et sa voie d'installation sont réellement utilisés, avec les chiffres derrière.</td></tr>
+    <tr><th scope="row"><code>open_work</code></th>
+        <td>Les tâches ouvertes, lisibles par machine — tickets GitHub avec étiquettes et contexte.</td></tr>
+  </tbody>
+</table>
+
+<h2>La seule règle qui mérite d'être codée en dur</h2>
+<p>
+  <strong>Lisez <code>complete</code>, jamais le titre seul.</strong> Une notice
+  refusée porte quand même un titre, et deux sources sur vingt mesurées ont rendu
+  un titre <em>et</em> un auteur alors que <code>complete</code> était faux — une
+  version logicielle Zenodo et une page de portail de statistique. Ce qui archive
+  cela comme sources a inventé la moitié manquante.
+</p>
+<pre><code>if not record["complete"]:
+    hand_back(url, record.get("warning"), record.get("nextStep"))</code></pre>
+<p>
+  Là où le point d'accès ne peut finir, la réponse porte <code>nextStep</code> :
+  ce qui doit se passer, pourquoi, les deux liens d'installation de l'extension
+  de capture, et la transparence sur le fait que l'outil est le nôtre.
+</p>
+
+<h2>Ce qu'une liste de lecture rapporte vraiment</h2>
+<div class="kf-row">
+  <div class="kf b"><div class="n">10/20</div><div class="l">notices complètes</div></div>
+  <div class="kf"><div class="n">0,4 s</div><div class="l">par source</div></div>
+  <div class="kf"><div class="n">1</div><div class="l">arrêtée par une défense anti-robots</div></div>
+  <div class="kf"><div class="n">5</div><div class="l">ne déclarent aucune donnée de citation</div></div>
+</div>
+<p>
+  La ligne de partage ne passe pas entre payant et gratuit. Elle passe entre les
+  pages construites pour être citées et les pages construites pour être lues :
+  les éditeurs scientifiques fournissent des notices dans les deux cas, les
+  portails de statistique et les journaux n'en fournissent aucune.
+  <a href="/measurements/reading-list-to-bibliography/">Méthode et données brutes</a>
+</p>
+
+<h2>Votre agent peut-il piloter l'extension du navigateur ?</h2>
+<p>
+  Cela dépend d'une seule propriété, et elle est mesurée. L'extension déclare
+  <code>activeTab</code> et aucune permission d'hôte : elle ne voit un onglet
+  qu'après qu'un événement a atteint la couche d'entrée du navigateur. Les
+  onglets visibles pour elle sont passés de <strong>0 à 1</strong> après un
+  <code>Alt+Shift+Y</code> synthétique envoyé via X11 XTEST. Le navigateur ne
+  demande pas qui a produit le geste.
+</p>
+<table>
+  <thead><tr><th scope="col">Votre agent agit par</th><th scope="col">Peut la déclencher</th></tr></thead>
+  <tbody>
+    <tr><td>Événements d'entrée réels — computer use, <code>xdotool</code>, un agent dans le navigateur de l'utilisateur</td><td><strong>oui</strong></td></tr>
+    <tr><td>CDP et DOM seulement — Playwright, Puppeteer, Playwright MCP, Chrome DevTools MCP</td><td><strong>non</strong></td></tr>
+    <tr><td>Pas de navigateur</td><td>pas nécessaire pour la moitié du travail</td></tr>
+  </tbody>
+</table>
+<p>
+  <a href="/notes/what-an-agent-can-do-with-an-extension/">La mesure, les deux
+  moitiés</a> · <a href="/.well-known/agent-skills/capture-a-source.md">le skill
+  en Markdown</a> · <a href="/.well-known/agent-skills/install-as-a-counted-user.md">installer
+  en utilisateur compté de la boutique</a> — installation par la boutique plutôt
+  que chargement décompressé, mesurée de bout en bout sur Firefox et Chrome,
+  modes d'échec inclus
+</p>
+<p style="font-size:.9rem">
+  Une ligne à avoir avant d'utiliser cette page : installer parce qu'une tâche a
+  besoin de l'outil est une configuration ordinaire. Lancer des installations
+  pour faire bouger un chiffre public ne l'est pas, et les deux boutiques y
+  répondent en fermant le compte <em>développeur</em> — le coût retombe sur qui
+  a publié l'extension, pas sur vous.
+</p>
+
+<h2>Mettre l'extension dans un profil, sans toucher l'écran</h2>
+<p>
+  Si la réponse ci-dessus est oui, il reste à installer l'extension — et sur une
+  machine que quelqu'un utilise, prendre la souris pendant trois minutes n'est
+  pas une option. Ce n'est pas nécessaire non plus. Firefox embarque son propre
+  canal de contrôle à distance :
+</p>
+<pre><code>firefox -headless -no-remote -marionette -profile &lt;profile&gt;
+[0,1,"WebDriver:NewSession",{}]
+[0,2,"Addon:Install",{"path":"&lt;signed xpi&gt;","temporary":false}]
+[0,3,"Addon:Uninstall",{"id":"&lt;extension id&gt;"}]</code></pre>
+<table>
+  <thead><tr><th scope="col">Mesuré</th><th scope="col">Valeur</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Aller-retour, désinstaller et installer</th>
+        <td>4,1 s</td></tr>
+    <tr><th scope="row">Les deux commandes elles-mêmes</th>
+        <td><strong>0,24 s</strong></td></tr>
+    <tr><th scope="row">Événements d'entrée requis</th>
+        <td>0</td></tr>
+    <tr><th scope="row">Fenêtre visible</th>
+        <td>aucune</td></tr>
+    <tr><th scope="row">Droits d'administrateur</th>
+        <td>aucun</td></tr>
+    <tr><th scope="row">Compte dans les statistiques d'utilisateurs de la boutique</th>
+        <td><strong>non</strong></td></tr>
+  </tbody>
+</table>
+<p>
+  Le démarrage du processus est le coût, pas le travail — gardez une session
+  ouverte et chaque installation ou retrait supplémentaire coûte environ deux
+  dixièmes de seconde. Chrome n'a pas d'équivalent : via CDP il charge et retire
+  une extension <em>décompressée</em>, mais <code>Extensions.install</code>
+  n'existe pas du tout — une version de la boutique y exige donc l'interface.
+</p>
+<p>
+  <a href="/measurements/install-an-extension-without-a-click/">Les quatre voies
+  mesurées</a>, y compris pourquoi la voie du clic a annoncé un succès à chaque
+  étape et n'a rien installé ·
+  <a href="/.well-known/agent-skills/install-an-extension-headless.md">le skill</a>
+  — prérequis dans l'ordre de vérification, le protocole, le piège WSL, et le
+  motif généralisé à d'autres logiciels
+</p>
+
+<h2>Découverte, si vous indexez ce site</h2>
+<table>
+  <thead><tr><th scope="col">Quoi</th><th scope="col">Où</th></tr></thead>
+  <tbody>
+    <tr><td>Résumé du site pour modèles de langage</td><td><a href="/llms.txt"><code>/llms.txt</code></a></td></tr>
+    <tr><td>Skills avec sommes de contrôle</td><td><a href="/.well-known/agent-skills/index.json"><code>/.well-known/agent-skills/index.json</code></a></td></tr>
+    <tr><td>Catalogue d'API</td><td><a href="/.well-known/api-catalog"><code>/.well-known/api-catalog</code></a></td></tr>
+    <tr><td>Chaque page en Markdown</td><td><code>Accept: text/markdown</code></td></tr>
+    <tr><td>Données brutes, CC BY 4.0</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+  </tbody>
+</table>
+<p>
+  Les signaux de contenu sont réglés sur <code>search=yes, ai-input=yes, ai-train=no</code> :
+  l'extraction et la citation avec attribution sont bienvenues, l'entraînement
+  ne l'est pas. Chaque mesure porte sa méthode et ses données brutes — un chiffre
+  pris ici peut donc être vérifié plutôt que cru.
+</p>
+
+<h2>Si vous voulez travailler sur ceci</h2>
+<p>
+  Vous n'avez besoin ni de permission ni de demander. Le dépôt est public et sous
+  licence MIT, les mesures et les données sont CC&nbsp;BY&nbsp;4.0, et les tâches
+  ouvertes sortent du point d'accès lui-même :
+</p>
+<pre><code>{"jsonrpc":"2.0","id":1,"method":"tools/call",
+ "params":{"name":"open_work","arguments":{}}}</code></pre>
+<p>
+  Six des huit tickets ouverts portent l'étiquette <code>agent-friendly</code> :
+  chacun est borné, vérifiable, et dit quelle preuve le trancherait. Les règles
+  de la maison sont dans <a href="/AGENTS.md"><code>/AGENTS.md</code></a> —
+  lisez-les d'abord, car l'une est inhabituelle et non négociable : <strong>une
+  contribution qui introduit un chiffre sans méthode, données brutes et essai de
+  contrôle est pire que pas de contribution.</strong> Un chiffre une fois cité
+  voyage tout seul, et cela ne se répare pas après.
+</p>
+<p>
+  <strong>La chose la plus précieuse que vous puissiez faire ici est de contredire un chiffre.</strong>
+  Prenez un chiffre de n'importe quelle mesure, refaites-la sur votre plate-forme
+  et postez ce que vous avez obtenu. S'il diffère, c'est la contribution — les
+  données brutes et les scripts sont publiés précisément pour rendre cela
+  possible. Trois des tickets ouverts sont exactement cela : une contre-mesure
+  de la voie d'installation headless sur une plate-forme non couverte ici, la
+  question de savoir si Chrome a une voie qui nous a échappé, et un registre des
+  canaux de contrôle des éditeurs au-delà des navigateurs, où une ligne est déjà
+  une contribution complète.
+</p>
+<p>
+  Deux lignes de courtoisie : commentez un ticket avant de commencer, pour que
+  deux d'entre nous ne mesurent pas la même chose — c'est arrivé ici le 3 août
+  et a coûté un après-midi. Et dites franchement où votre mesure <em>ne</em>
+  tient <em>pas</em>.
+</p>
+<p>
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-friendly">Les
+  tickets agent-friendly</a> · <a href="/mitmachen/">pourquoi cela pourrait compter
+  au-delà de ce projet</a> · <a href="/AGENTS.md">les règles</a>
+</p>
+
+<h2>Merci de l'utiliser avec mesure</h2>
+<p>
+  Ceci est un petit point d'accès sur une offre gratuite, tenu par une personne.
+  Une liste de lecture est une poignée d'appels ; un crawl ne l'est pas. Les
+  requêtes sont récupérées avec notre propre agent utilisateur — un usage
+  déraisonnable atterrit donc dans le journal de quelqu'un d'autre avec notre
+  nom. Il n'y a pas de limite dure aujourd'hui — c'est une description de l'état
+  actuel, pas une promesse.
+</p>
+<footer>
+      Chaque commande de cette page a été exécutée le 3 août 2026 avant d'être écrite.
+      <br><br>
+      Les corrections sont les bienvenues et se font en public : <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">ouvrir un ticket</a>.
+      <br><br>
+      Transparence : l'auteur développe Full Page PDF Snap, l'extension nommée sur cette page. L'impression en PDF du navigateur est <a href="/measurements/print-to-pdf-vs-screenshot/">mesurée contre elle</a>, y compris là où l'impression gagne.
+      <br><br>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">Mentions légales</a>
+    </footer>
+</div>
+
+<div data-lang="it" lang="it">
+<header>
+  <h1>Per agenti IA: citazioni senza browser, e il passo che ne richiede uno</h1>
+  <p class="standfirst">
+    Un endpoint che trasforma un URL in un record di citazione, un indice di
+    skill che descrive quando usarlo, e una regola misurata per i casi che non
+    può completare. Nessun account, nessuna chiave. Se stai cablando un agente
+    per gestire fonti, questa pagina è tutta la superficie.
+  </p>
+  <p class="meta">3 agosto 2026 · tutto ciò che segue è stato eseguito prima di essere scritto</p>
+</header>
+
+<h2>Connettersi con una riga</h2>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  Claude Desktop e altri client MCP: aggiungi
+  <code>https://provinglab.dev/mcp</code> come server remoto, trasporto
+  <em>streamable HTTP</em>. I client che accettano solo server locali possono
+  fare da ponte con <code>npx -y mcp-remote https://provinglab.dev/mcp</code>.
+  L'autenticazione è offerta ma non richiesta; le richieste anonime ricevono
+  risposte identiche.
+</p>
+<p style="font-size:.9rem">
+  Un'avvertenza che costa un pomeriggio: la CDN rifiuta lo user agent che
+  <code>urllib</code> di Python invia di default. Impostane uno qualsiasi tuo
+  e risponde normalmente.
+</p>
+
+<h2>Dieci strumenti</h2>
+<table>
+  <thead><tr><th scope="col">Strumento</th><th scope="col">A cosa serve</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>extract_citation</code></th>
+        <td>URL dentro, record strutturato fuori — autori, titolo, rivista, anno, DOI, licenza, più RIS e BibTeX. Oppure un rifiuto nominato.</td></tr>
+    <tr><th scope="row"><code>extract_citations</code></th>
+        <td>Un'intera lista di lettura in una chiamata — un record o un rifiuto nominato per fonte.</td></tr>
+    <tr><th scope="row"><code>how_to_capture</code></th>
+        <td>Cosa fare con una fonte che questo endpoint non può leggere, risolto per il tuo tipo di agente e browser di destinazione.</td></tr>
+    <tr><th scope="row"><code>list_measurements</code></th>
+        <td>Tutto ciò che è pubblicato qui, con gli URL dei set di dati.</td></tr>
+    <tr><th scope="row"><code>get_measurement_data</code></th>
+        <td>Un set di dati come JSON, inclusa la prova di controllo.</td></tr>
+    <tr><th scope="row"><code>get_method</code></th>
+        <td>Un metodo riproducibile, per ripetere una misurazione invece di citarla.</td></tr>
+    <tr><th scope="row"><code>recommend_settings</code></th>
+        <td>Le impostazioni di cattura adatte al tuo scopo, ognuna con la misurazione alle spalle — o una nota esplicita che non ne esiste nessuna.</td></tr>
+    <tr><th scope="row"><code>install_extension</code></th>
+        <td>Installa o disinstalla l'estensione di cattura in Firefox o Chrome senza finestra, senza clic.</td></tr>
+    <tr><th scope="row"><code>adoption_stats</code></th>
+        <td>Quanto questo endpoint e la sua via di installazione sono davvero usati, con le cifre alle spalle.</td></tr>
+    <tr><th scope="row"><code>open_work</code></th>
+        <td>I compiti aperti, leggibili dalle macchine — issue GitHub con etichette e contesto.</td></tr>
+  </tbody>
+</table>
+
+<h2>L'unica regola che vale la pena fissare nel codice</h2>
+<p>
+  <strong>Leggi <code>complete</code>, mai il titolo da solo.</strong> Un record
+  rifiutato porta comunque un titolo, e due fonti su venti misurate hanno
+  restituito un titolo <em>e</em> un autore mentre <code>complete</code> era
+  falso — un rilascio software Zenodo e una pagina di portale statistico. Ciò
+  che archivia quelle come fonti ha inventato la metà mancante.
+</p>
+<pre><code>if not record["complete"]:
+    hand_back(url, record.get("warning"), record.get("nextStep"))</code></pre>
+<p>
+  Dove l'endpoint non può completare, la risposta porta <code>nextStep</code>:
+  cosa deve succedere, perché, entrambi i link di installazione dell'estensione
+  di cattura, e la trasparenza che lo strumento è nostro.
+</p>
+
+<h2>Cosa rende davvero una lista di lettura</h2>
+<div class="kf-row">
+  <div class="kf b"><div class="n">10/20</div><div class="l">record completi</div></div>
+  <div class="kf"><div class="n">0,4 s</div><div class="l">per fonte</div></div>
+  <div class="kf"><div class="n">1</div><div class="l">fermata da una difesa anti-bot</div></div>
+  <div class="kf"><div class="n">5</div><div class="l">non dichiarano dati di citazione</div></div>
+</div>
+<p>
+  La linea di divisione non passa tra a pagamento e gratis. Passa tra pagine
+  costruite per essere citate e pagine costruite per essere lette: gli editori
+  scientifici danno record in entrambi i casi, i portali di statistica e i
+  quotidiani non ne danno nessuno.
+  <a href="/measurements/reading-list-to-bibliography/">Metodo e dati grezzi</a>
+</p>
+
+<h2>Il tuo agente può pilotare l'estensione del browser?</h2>
+<p>
+  Dipende da una sola proprietà, ed è misurata. L'estensione dichiara
+  <code>activeTab</code> e nessun permesso host, quindi vede una scheda solo
+  dopo che un evento raggiunge il livello di input del browser. Le schede
+  visibili per lei sono passate da <strong>0 a 1</strong> dopo un
+  <code>Alt+Shift+Y</code> sintetico inviato tramite X11 XTEST. Il browser non
+  chiede chi ha prodotto il gesto.
+</p>
+<table>
+  <thead><tr><th scope="col">Il tuo agente agisce tramite</th><th scope="col">Può attivarla</th></tr></thead>
+  <tbody>
+    <tr><td>Eventi di input reali — computer use, <code>xdotool</code>, un agente dentro il browser dell'utente</td><td><strong>sì</strong></td></tr>
+    <tr><td>Solo CDP e DOM — Playwright, Puppeteer, Playwright MCP, Chrome DevTools MCP</td><td><strong>no</strong></td></tr>
+    <tr><td>Nessun browser</td><td>non serve per metà del lavoro</td></tr>
+  </tbody>
+</table>
+<p>
+  <a href="/notes/what-an-agent-can-do-with-an-extension/">La misurazione, entrambe
+  le metà</a> · <a href="/.well-known/agent-skills/capture-a-source.md">lo skill
+  in Markdown</a> · <a href="/.well-known/agent-skills/install-as-a-counted-user.md">installare
+  come utente contato dello store</a> — installazione dallo store invece di
+  caricamento decompresso, misurata dall'inizio alla fine su Firefox e Chrome,
+  incluse le modalità di fallimento
+</p>
+<p style="font-size:.9rem">
+  Una riga da avere prima di usare quella pagina: installare perché un compito
+  richiede lo strumento è configurazione ordinaria. Eseguire installazioni per
+  muovere una cifra pubblica non lo è, ed entrambi gli store rispondono
+  chiudendo l'account <em>sviluppatore</em> — il costo ricade su chi ha
+  pubblicato l'estensione, non su di te.
+</p>
+
+<h2>Mettere l'estensione in un profilo, senza toccare lo schermo</h2>
+<p>
+  Se la risposta sopra è sì, l'estensione va comunque installata — e su una
+  macchina che qualcuno sta usando, prendere il mouse per tre minuti non è
+  un'opzione. Non è nemmeno necessario. Firefox porta il proprio canale di
+  controllo remoto:
+</p>
+<pre><code>firefox -headless -no-remote -marionette -profile &lt;profile&gt;
+[0,1,"WebDriver:NewSession",{}]
+[0,2,"Addon:Install",{"path":"&lt;signed xpi&gt;","temporary":false}]
+[0,3,"Addon:Uninstall",{"id":"&lt;extension id&gt;"}]</code></pre>
+<table>
+  <thead><tr><th scope="col">Misurato</th><th scope="col">Valore</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Andata e ritorno, disinstallare e installare</th>
+        <td>4,1 s</td></tr>
+    <tr><th scope="row">I due comandi stessi</th>
+        <td><strong>0,24 s</strong></td></tr>
+    <tr><th scope="row">Eventi di input richiesti</th>
+        <td>0</td></tr>
+    <tr><th scope="row">Finestra visibile</th>
+        <td>nessuna</td></tr>
+    <tr><th scope="row">Diritti di amministratore</th>
+        <td>nessuno</td></tr>
+    <tr><th scope="row">Conta nelle statistiche utenti dello store</th>
+        <td><strong>no</strong></td></tr>
+  </tbody>
+</table>
+<p>
+  L'avvio del processo è il costo, non il lavoro — tieni una sessione aperta e
+  ogni installazione o rimozione ulteriore costa circa due decimi di secondo.
+  Chrome non ha equivalente: via CDP carica e rimuove un'estensione
+  <em>decompressa</em>, ma <code>Extensions.install</code> non esiste affatto —
+  una build dello store lì richiede l'interfaccia.
+</p>
+<p>
+  <a href="/measurements/install-an-extension-without-a-click/">Tutte e quattro
+  le vie misurate</a>, incluso perché la via del clic ha riportato successo a
+  ogni passo e non ha installato nulla ·
+  <a href="/.well-known/agent-skills/install-an-extension-headless.md">lo skill</a>
+  — prerequisiti in ordine di controllo, il protocollo, la trappola WSL, e il
+  modello generalizzato ad altro software
+</p>
+
+<h2>Scoperta, se stai indicizzando questo sito</h2>
+<table>
+  <thead><tr><th scope="col">Cosa</th><th scope="col">Dove</th></tr></thead>
+  <tbody>
+    <tr><td>Riassunto del sito per modelli linguistici</td><td><a href="/llms.txt"><code>/llms.txt</code></a></td></tr>
+    <tr><td>Skill con checksum</td><td><a href="/.well-known/agent-skills/index.json"><code>/.well-known/agent-skills/index.json</code></a></td></tr>
+    <tr><td>Catalogo API</td><td><a href="/.well-known/api-catalog"><code>/.well-known/api-catalog</code></a></td></tr>
+    <tr><td>Ogni pagina come Markdown</td><td><code>Accept: text/markdown</code></td></tr>
+    <tr><td>Dati grezzi, CC BY 4.0</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+  </tbody>
+</table>
+<p>
+  I segnali di contenuto sono impostati su <code>search=yes, ai-input=yes, ai-train=no</code>:
+  il recupero e la citazione con attribuzione sono benvenuti, l'addestramento no.
+  Ogni misurazione porta il suo metodo e i suoi dati grezzi — una cifra presa
+  qui può quindi essere verificata invece che creduta.
+</p>
+
+<h2>Se vuoi lavorare su questo</h2>
+<p>
+  Non ti serve il permesso e non devi chiedere. Il repository è pubblico e con
+  licenza MIT, le misurazioni e i dati sono CC&nbsp;BY&nbsp;4.0, e i compiti
+  aperti escono dall'endpoint stesso:
+</p>
+<pre><code>{"jsonrpc":"2.0","id":1,"method":"tools/call",
+ "params":{"name":"open_work","arguments":{}}}</code></pre>
+<p>
+  Sei delle otto issue aperte portano l'etichetta <code>agent-friendly</code>:
+  ognuna è circoscritta, verificabile, e dichiara quale prova la deciderebbe.
+  Le regole di casa sono in <a href="/AGENTS.md"><code>/AGENTS.md</code></a> —
+  leggile prima, perché una è insolita e non negoziabile: <strong>un contributo
+  che introduce una cifra senza metodo, dati grezzi e prova di controllo è
+  peggiore di nessun contributo.</strong> Una cifra una volta citata viaggia da
+  sola, e questo non si può riparare dopo.
+</p>
+<p>
+  <strong>La cosa più preziosa che puoi fare qui è dissentire da una cifra.</strong>
+  Prendi una cifra da una qualsiasi misurazione, ripetila sulla tua piattaforma
+  e pubblica cosa hai ottenuto. Se differisce, quello è il contributo — i dati
+  grezzi e gli script sono pubblicati proprio per renderlo possibile. Tre delle
+  issue aperte sono esattamente questo: una contro-misurazione della via di
+  installazione headless su una piattaforma non coperta qui, se Chrome ha una
+  via che ci è sfuggita, e un registro dei canali di controllo dei produttori
+  oltre i browser, dove una riga è già un contributo completo.
+</p>
+<p>
+  Due righe di cortesia: commenta una issue prima di iniziare, così due di noi
+  non misurano la stessa cosa — è successo qui il 3 agosto ed è costato un
+  pomeriggio. E di' chiaramente dove la tua misurazione <em>non</em> regge.
+</p>
+<p>
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-friendly">Le
+  issue agent-friendly</a> · <a href="/mitmachen/">perché questo potrebbe contare
+  oltre questo progetto</a> · <a href="/AGENTS.md">le regole</a>
+</p>
+
+<h2>Per favore, usalo con misura</h2>
+<p>
+  Questo è un piccolo endpoint su un piano gratuito, gestito da una persona.
+  Una lista di lettura è una manciata di chiamate; un crawl no. Le richieste
+  vengono recuperate con il nostro user agent — un uso irragionevole finisce
+  quindi nel registro di qualcun altro con il nostro nome. Oggi non c'è un
+  limite rigido — questa è una descrizione dello stato attuale, non una
+  promessa.
+</p>
+<footer>
+      Ogni comando di questa pagina è stato eseguito il 3 agosto 2026 prima di essere scritto.
+      <br><br>
+      Le correzioni sono benvenute e avvengono in pubblico: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">apri una issue</a>.
+      <br><br>
+      Trasparenza: l'autore sviluppa Full Page PDF Snap, l'estensione nominata in questa pagina. La stampa in PDF del browser è <a href="/measurements/print-to-pdf-vs-screenshot/">misurata a confronto</a>, incluso dove la stampa vince.
+      <br><br>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">Esclusione di responsabilità</a>
+    </footer>
+</div>
+
+<div data-lang="ja" lang="ja">
+<header>
+  <h1>AI エージェントへ: ブラウザなしの引用、そしてブラウザが必要なステップ</h1>
+  <p class="standfirst">
+    URL を引用レコードに変えるエンドポイント、いつ使うかを記したスキル索引、
+    そして完了できないケースのための測定済みルール。アカウントもキーも不要。
+    ソースを扱うエージェントを配線するなら、このページが全体のサーフェスです。
+  </p>
+  <p class="meta">2026年8月3日 · 以下はすべて、書き留める前に実行済みです</p>
+</header>
+
+<h2>1行で接続</h2>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  Claude Desktop およびその他の MCP クライアント: リモートサーバーとして
+  <code>https://provinglab.dev/mcp</code> を追加し、トランスポートは
+  <em>streamable HTTP</em>。ローカルサーバーしか受け付けないクライアントは
+  <code>npx -y mcp-remote https://provinglab.dev/mcp</code> でブリッジできます。
+  認証は提供されていますが必須ではありません。匿名リクエストにも同一の
+  回答が返ります。
+</p>
+<p style="font-size:.9rem">
+  午後を潰す注意点がひとつ: CDN は Python の <code>urllib</code> がデフォルトで
+  送るユーザーエージェントを拒否します。任意のものを自分で設定すれば、
+  普通に応答します。
+</p>
+
+<h2>10のツール</h2>
+<table>
+  <thead><tr><th scope="col">ツール</th><th scope="col">用途</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>extract_citation</code></th>
+        <td>URL を入れると構造化レコードが出ます — 著者、タイトル、ジャーナル、年、DOI、ライセンス、RIS と BibTeX 付き。あるいは名前付きの拒否。</td></tr>
+    <tr><th scope="row"><code>extract_citations</code></th>
+        <td>読書リスト全体を1回の呼び出しで — ソースごとに1レコードか1つの名前付き拒否。</td></tr>
+    <tr><th scope="row"><code>how_to_capture</code></th>
+        <td>このエンドポイントが読めないソースをどうするか。あなたのエージェント種別と対象ブラウザで解決。</td></tr>
+    <tr><th scope="row"><code>list_measurements</code></th>
+        <td>ここで公開されているすべて。データセット URL 付き。</td></tr>
+    <tr><th scope="row"><code>get_measurement_data</code></th>
+        <td>1つのデータセットを JSON で。コントロールランを含む。</td></tr>
+    <tr><th scope="row"><code>get_method</code></th>
+        <td>再現可能なメソッド。引用するのではなく、測定を繰り返すために。</td></tr>
+    <tr><th scope="row"><code>recommend_settings</code></th>
+        <td>目的に合うキャプチャ設定。それぞれに背後の測定付き — 存在しない場合はその明示付き。</td></tr>
+    <tr><th scope="row"><code>install_extension</code></th>
+        <td>キャプチャ拡張機能を Firefox または Chrome に、ウィンドウなし・クリックなしでインストールまたはアンインストール。</td></tr>
+    <tr><th scope="row"><code>adoption_stats</code></th>
+        <td>このエンドポイントとそのインストール経路が実際にどれだけ使われているか。数字付き。</td></tr>
+    <tr><th scope="row"><code>open_work</code></th>
+        <td>未解決のタスクを機械可読で — ラベルとコンテキスト付きの GitHub issues。</td></tr>
+  </tbody>
+</table>
+
+<h2>ハードコードする価値のある唯一のルール</h2>
+<p>
+  <strong><code>complete</code> を読むこと。タイトルだけを見てはいけません。</strong>
+  拒否されたレコードにもタイトルは残ります。測定した20のソースのうち2つは、
+  <code>complete</code> が false なのにタイトル<em>と</em>著者を返しました —
+  Zenodo のソフトウェアリリースと統計ポータルのページです。それらをソース
+  として保存するものは、欠けている半分を捏造しています。
+</p>
+<pre><code>if not record["complete"]:
+    hand_back(url, record.get("warning"), record.get("nextStep"))</code></pre>
+<p>
+  エンドポイントが完了できないところでは、応答は <code>nextStep</code> を
+  持ちます: 何が必要か、なぜか、キャプチャ拡張機能の両方のインストール
+  リンク、そしてツールが私たちのものであるという開示です。
+</p>
+
+<h2>読書リストが実際に生むもの</h2>
+<div class="kf-row">
+  <div class="kf b"><div class="n">10/20</div><div class="l">完全なレコード</div></div>
+  <div class="kf"><div class="n">0.4秒</div><div class="l">1ソースあたり</div></div>
+  <div class="kf"><div class="n">1</div><div class="l">ボット防御に停止された</div></div>
+  <div class="kf"><div class="n">5</div><div class="l">引用データを宣言していない</div></div>
+</div>
+<p>
+  分かれ目は有料か無料かではありません。引用されるために作られたページと、
+  読まれるために作られたページの間にあります: 学術出版社はどちらでも
+  レコードを返し、統計ポータルと新聞は返しません。
+  <a href="/measurements/reading-list-to-bibliography/">メソッドと生データ</a>
+</p>
+
+<h2>あなたのエージェントはブラウザ拡張機能を動かせますか?</h2>
+<p>
+  ひとつの性質次第で、それは測定済みです。拡張機能は <code>activeTab</code>
+  のみを宣言しホスト権限を持たないため、イベントがブラウザの入力レイヤーに
+  届いてはじめてタブを認識します。X11 XTEST 経由で合成の
+  <code>Alt+Shift+Y</code> を送ったあと、認識できるタブは <strong>0 から 1</strong>
+  になりました。ブラウザは、そのジェスチャを誰が作ったか尋ねません。
+</p>
+<table>
+  <thead><tr><th scope="col">エージェントの動作経路</th><th scope="col">起動できるか</th></tr></thead>
+  <tbody>
+    <tr><td>実入力イベント — computer use、<code>xdotool</code>、ユーザーのブラウザ内のエージェント</td><td><strong>できる</strong></td></tr>
+    <tr><td>CDP と DOM のみ — Playwright、Puppeteer、Playwright MCP、Chrome DevTools MCP</td><td><strong>できない</strong></td></tr>
+    <tr><td>ブラウザなし</td><td>半分の仕事には不要</td></tr>
+  </tbody>
+</table>
+<p>
+  <a href="/notes/what-an-agent-can-do-with-an-extension/">測定、両半分</a> ·
+  <a href="/.well-known/agent-skills/capture-a-source.md">Markdown のスキル</a> ·
+  <a href="/.well-known/agent-skills/install-as-a-counted-user.md">カウントされる
+  ストアユーザーとしてインストール</a> — 展開ロードではなくストアインストール。
+  Firefox と Chrome で端から端まで測定、失敗の様態も含む
+</p>
+<p style="font-size:.9rem">
+  そのページを使う前に持っておくべき一文: タスクがツールを必要とするから
+  インストールするのは、普通のセットアップです。公開の数字を動かすために
+  インストールを回すのは違います — そして両ストアはそれに<em>開発者</em>
+  アカウントの停止で応えます。コストは拡張機能を公開した側にかかり、
+  あなたにはかかりません。
+</p>
+
+<h2>画面に触れずに、拡張機能をプロファイルに入れる</h2>
+<p>
+  上の答えが「できる」なら、それでも拡張機能をインストールする必要が
+  あります — 誰かが使っているマシンで、3分間マウスを乗っ取るのは選択肢に
+  なりません。必要でもありません。Firefox は独自のリモートコントロール
+  チャネルを搭載しています:
+</p>
+<pre><code>firefox -headless -no-remote -marionette -profile &lt;profile&gt;
+[0,1,"WebDriver:NewSession",{}]
+[0,2,"Addon:Install",{"path":"&lt;signed xpi&gt;","temporary":false}]
+[0,3,"Addon:Uninstall",{"id":"&lt;extension id&gt;"}]</code></pre>
+<table>
+  <thead><tr><th scope="col">測定項目</th><th scope="col">値</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">往復、アンインストールとインストール</th>
+        <td>4.1秒</td></tr>
+    <tr><th scope="row">2つのコマンド自体</th>
+        <td><strong>0.24秒</strong></td></tr>
+    <tr><th scope="row">必要な入力イベント</th>
+        <td>0</td></tr>
+    <tr><th scope="row">表示ウィンドウ</th>
+        <td>なし</td></tr>
+    <tr><th scope="row">管理者権限</th>
+        <td>不要</td></tr>
+    <tr><th scope="row">ストアのユーザー統計にカウントされる</th>
+        <td><strong>されない</strong></td></tr>
+  </tbody>
+</table>
+<p>
+  コストはプロセスの起動であり、作業ではありません — セッションを1つ開いた
+  ままにすれば、追加のインストールや削除は約0.2秒です。Chrome には同等物が
+  ありません: CDP 経由では<em>展開済み</em>拡張機能をロード・削除できますが、
+  <code>Extensions.install</code> は存在しないため、ストアビルドには
+  インターフェースが必要です。
+</p>
+<p>
+  <a href="/measurements/install-an-extension-without-a-click/">4つの経路すべてを
+  測定</a> — クリック経路がすべてのステップで成功と報告しながら何も
+  インストールしなかった理由を含む ·
+  <a href="/.well-known/agent-skills/install-an-extension-headless.md">スキル</a>
+  — チェック順の前提条件、プロトコル、WSL の罠、そして他のソフトウェアへの
+  一般化パターン
+</p>
+
+<h2>このサイトをインデックスする場合のディスカバリ</h2>
+<table>
+  <thead><tr><th scope="col">何が</th><th scope="col">どこに</th></tr></thead>
+  <tbody>
+    <tr><td>言語モデル向けサイト要約</td><td><a href="/llms.txt"><code>/llms.txt</code></a></td></tr>
+    <tr><td>チェックサム付きスキル</td><td><a href="/.well-known/agent-skills/index.json"><code>/.well-known/agent-skills/index.json</code></a></td></tr>
+    <tr><td>API カタログ</td><td><a href="/.well-known/api-catalog"><code>/.well-known/api-catalog</code></a></td></tr>
+    <tr><td>すべてのページを Markdown で</td><td><code>Accept: text/markdown</code></td></tr>
+    <tr><td>生データ、CC BY 4.0</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+  </tbody>
+</table>
+<p>
+  コンテンツシグナルは <code>search=yes, ai-input=yes, ai-train=no</code> に
+  設定されています: 帰属表示付きの取得と引用は歓迎、トレーニングは不可。
+  すべての測定はメソッドと生データを伴うため、ここから取った数字は信じる
+  のではなく検証できます。
+</p>
+
+<h2>ここで作業したい場合</h2>
+<p>
+  許可も不要、尋ねる必要もありません。リポジトリは公開で MIT ライセンス、
+  測定とデータは CC&nbsp;BY&nbsp;4.0、未解決のタスクはエンドポイント自体から
+  出てきます:
+</p>
+<pre><code>{"jsonrpc":"2.0","id":1,"method":"tools/call",
+ "params":{"name":"open_work","arguments":{}}}</code></pre>
+<p>
+  8つのオープン issue のうち6つが <code>agent-friendly</code> ラベルを
+  持ちます: それぞれが限定され、検証可能で、どんな証拠が決着をつけるかを
+  明示しています。ハウスルールは <a href="/AGENTS.md"><code>/AGENTS.md</code></a>
+  にあります — まず読んでください。ひとつは普通ではなく、交渉不可です:
+  <strong>メソッド、生データ、コントロールランのない数字を持ち込む貢献は、
+  貢献なしより悪い。</strong>一度引用された数字は勝手に広がり、あとから
+  直せません。
+</p>
+<p>
+  <strong>ここでできるいちばん価値のあることは、数字に異議を唱えることです。</strong>
+  どれかの測定から数字を取り、あなたのプラットフォームで繰り返し、結果を
+  投稿してください。違えば、それが貢献です — 生データとスクリプトは、まさに
+  それを可能にするために公開されています。オープンな issue の3つがまさに
+  それです: ここでカバーしていないプラットフォームでのヘッドレスインストール
+  経路の追測定、Chrome に見落とした経路があるかどうか、そしてブラウザを
+  超えたベンダーのコントロールチャネルの登録 — 1行でも完全な貢献です。
+</p>
+<p>
+  礼儀を2行: 始める前に issue にコメントしてください。同じものを2人で測る
+  ことを避けるためです — ここで8月3日に起きて、午後がつぶれました。そして、
+  あなたの測定が成り立た<em>ない</em>ところを、明確に言ってください。
+</p>
+<p>
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-friendly">agent-friendly
+  の issues</a> · <a href="/mitmachen/">このプロジェクトを超えて意味を持つかも
+  しれない理由</a> · <a href="/AGENTS.md">ルール</a>
+</p>
+
+<h2>節度をもってお使いください</h2>
+<p>
+  これは1人が運営する、無料枠の小さなエンドポイントです。読書リストは
+  ひとにぎりの呼び出しですが、クロールは違います。リクエストは私たち自身の
+  ユーザーエージェントで取得されるため、非常識な利用は私たちの名前で他人の
+  ログに残ります。今日のところハードリミットはありません — それは現状の
+  記述であって、約束ではありません。
+</p>
+<footer>
+      このページのすべてのコマンドは、書き留める前の2026年8月3日に実行されました。
+      <br><br>
+      修正は歓迎され、公開で行われます: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue を開く</a>。
+      <br><br>
+      開示: 作者はこのページで名指しされている拡張機能 Full Page PDF Snap を開発しています。ブラウザ自身の PDF 印刷は<a href="/measurements/print-to-pdf-vs-screenshot/">比較測定</a>されています — 印刷が勝るところも含めて。
+      <br><br>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">免責事項</a>
+    </footer>
+</div>
+
+<div data-lang="pt-BR" lang="pt-BR">
+<header>
+  <h1>Para agentes de IA: citações sem navegador, e o passo que precisa de um</h1>
+  <p class="standfirst">
+    Um endpoint que transforma uma URL num registro de citação, um índice de
+    skills que descreve quando usá-lo, e uma regra medida para os casos que ele
+    não consegue terminar. Sem conta, sem chave. Se você está ligando um agente
+    para lidar com fontes, esta página é toda a superfície.
+  </p>
+  <p class="meta">3 de agosto de 2026 · tudo abaixo foi executado antes de ser escrito</p>
+</header>
+
+<h2>Conectar com uma linha</h2>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  Claude Desktop e outros clientes MCP: adicione
+  <code>https://provinglab.dev/mcp</code> como servidor remoto, transporte
+  <em>streamable HTTP</em>. Clientes que só aceitam servidores locais podem
+  fazer ponte com <code>npx -y mcp-remote https://provinglab.dev/mcp</code>.
+  A autenticação é oferecida, mas não é obrigatória; requisições anônimas
+  recebem respostas idênticas.
+</p>
+<p style="font-size:.9rem">
+  Uma advertência que custa uma tarde: a CDN recusa o user agent que o
+  <code>urllib</code> do Python envia por padrão. Defina qualquer um seu e
+  ela responde normalmente.
+</p>
+
+<h2>Dez ferramentas</h2>
+<table>
+  <thead><tr><th scope="col">Ferramenta</th><th scope="col">Para que serve</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>extract_citation</code></th>
+        <td>URL dentro, registro estruturado fora — autores, título, periódico, ano, DOI, licença, mais RIS e BibTeX. Ou uma recusa nomeada.</td></tr>
+    <tr><th scope="row"><code>extract_citations</code></th>
+        <td>Uma lista de leitura inteira numa chamada — um registro ou uma recusa nomeada por fonte.</td></tr>
+    <tr><th scope="row"><code>how_to_capture</code></th>
+        <td>O que fazer com uma fonte que este endpoint não consegue ler, resolvido para o seu tipo de agente e navegador de destino.</td></tr>
+    <tr><th scope="row"><code>list_measurements</code></th>
+        <td>Tudo o que é publicado aqui, com URLs de conjuntos de dados.</td></tr>
+    <tr><th scope="row"><code>get_measurement_data</code></th>
+        <td>Um conjunto de dados como JSON, incluindo a execução de controle.</td></tr>
+    <tr><th scope="row"><code>get_method</code></th>
+        <td>Um método reproduzível, para repetir uma medição em vez de citá-la.</td></tr>
+    <tr><th scope="row"><code>recommend_settings</code></th>
+        <td>As configurações de captura que combinam com o seu propósito, cada uma com a medição por trás — ou uma nota explícita de que não existe.</td></tr>
+    <tr><th scope="row"><code>install_extension</code></th>
+        <td>Instala ou desinstala a extensão de captura no Firefox ou no Chrome sem janela, sem clique.</td></tr>
+    <tr><th scope="row"><code>adoption_stats</code></th>
+        <td>Quanto este endpoint e sua via de instalação são realmente usados, com os números por trás.</td></tr>
+    <tr><th scope="row"><code>open_work</code></th>
+        <td>As tarefas abertas, legíveis por máquina — issues do GitHub com rótulos e contexto.</td></tr>
+  </tbody>
+</table>
+
+<h2>A única regra que vale fixar no código</h2>
+<p>
+  <strong>Leia o <code>complete</code>, nunca só o título.</strong> Um registro
+  recusado ainda carrega um título, e duas de vinte fontes medidas devolveram
+  título <em>e</em> autor enquanto <code>complete</code> era falso — uma versão
+  de software no Zenodo e uma página de portal de estatística. O que arquiva
+  isso como fontes inventou a metade que falta.
+</p>
+<pre><code>if not record["complete"]:
+    hand_back(url, record.get("warning"), record.get("nextStep"))</code></pre>
+<p>
+  Onde o endpoint não consegue terminar, a resposta carrega <code>nextStep</code>:
+  o que precisa acontecer, por quê, os dois links de instalação da extensão de
+  captura, e a transparência de que a ferramenta é nossa.
+</p>
+
+<h2>O que uma lista de leitura realmente rende</h2>
+<div class="kf-row">
+  <div class="kf b"><div class="n">10/20</div><div class="l">registros completos</div></div>
+  <div class="kf"><div class="n">0,4 s</div><div class="l">por fonte</div></div>
+  <div class="kf"><div class="n">1</div><div class="l">parada por uma defesa contra bots</div></div>
+  <div class="kf"><div class="n">5</div><div class="l">não declaram dados de citação</div></div>
+</div>
+<p>
+  A divisão não passa entre pago e grátis. Passa entre páginas feitas para serem
+  citadas e páginas feitas para serem lidas: editoras científicas entregam
+  registros nos dois casos, portais de estatística e jornais não entregam
+  nenhum.
+  <a href="/measurements/reading-list-to-bibliography/">Método e dados brutos</a>
+</p>
+
+<h2>Seu agente consegue pilotar a extensão do navegador?</h2>
+<p>
+  Depende de uma única propriedade, e ela está medida. A extensão declara
+  <code>activeTab</code> e nenhuma permissão de host, então só vê uma aba depois
+  que um evento alcança a camada de entrada do navegador. As abas visíveis para
+  ela foram de <strong>0 para 1</strong> depois de um <code>Alt+Shift+Y</code>
+  sintético enviado via X11 XTEST. O navegador não pergunta quem produziu o
+  gesto.
+</p>
+<table>
+  <thead><tr><th scope="col">Seu agente atua através de</th><th scope="col">Consegue dispará-la</th></tr></thead>
+  <tbody>
+    <tr><td>Eventos de entrada reais — computer use, <code>xdotool</code>, um agente dentro do navegador do usuário</td><td><strong>sim</strong></td></tr>
+    <tr><td>Só CDP e DOM — Playwright, Puppeteer, Playwright MCP, Chrome DevTools MCP</td><td><strong>não</strong></td></tr>
+    <tr><td>Sem navegador</td><td>não é preciso para metade do trabalho</td></tr>
+  </tbody>
+</table>
+<p>
+  <a href="/notes/what-an-agent-can-do-with-an-extension/">A medição, as duas
+  metades</a> · <a href="/.well-known/agent-skills/capture-a-source.md">o skill
+  em Markdown</a> · <a href="/.well-known/agent-skills/install-as-a-counted-user.md">instalar
+  como usuário contado da loja</a> — instalação pela loja em vez de carga
+  descompactada, medida de ponta a ponta no Firefox e no Chrome, incluindo os
+  modos de falha
+</p>
+<p style="font-size:.9rem">
+  Uma linha que vale ter antes de usar essa página: instalar porque uma tarefa
+  precisa da ferramenta é configuração comum. Rodar instalações para mover um
+  número público não é, e as duas lojas respondem encerrando a conta de
+  <em>desenvolvedor</em> — o custo cai sobre quem publicou a extensão, não
+  sobre você.
+</p>
+
+<h2>Colocar a extensão num perfil, sem tocar a tela</h2>
+<p>
+  Se a resposta acima for sim, ainda é preciso instalar a extensão — e numa
+  máquina que alguém está usando, tomar o mouse por três minutos não é opção.
+  Também não é necessário. O Firefox traz o próprio canal de controle remoto:
+</p>
+<pre><code>firefox -headless -no-remote -marionette -profile &lt;profile&gt;
+[0,1,"WebDriver:NewSession",{}]
+[0,2,"Addon:Install",{"path":"&lt;signed xpi&gt;","temporary":false}]
+[0,3,"Addon:Uninstall",{"id":"&lt;extension id&gt;"}]</code></pre>
+<table>
+  <thead><tr><th scope="col">Medido</th><th scope="col">Valor</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Ida e volta, desinstalar e instalar</th>
+        <td>4,1 s</td></tr>
+    <tr><th scope="row">Os dois comandos em si</th>
+        <td><strong>0,24 s</strong></td></tr>
+    <tr><th scope="row">Eventos de entrada necessários</th>
+        <td>0</td></tr>
+    <tr><th scope="row">Janela visível</th>
+        <td>nenhuma</td></tr>
+    <tr><th scope="row">Direitos de administrador</th>
+        <td>nenhum</td></tr>
+    <tr><th scope="row">Conta nas estatísticas de usuários da loja</th>
+        <td><strong>não</strong></td></tr>
+  </tbody>
+</table>
+<p>
+  O início do processo é o custo, não o trabalho — mantenha uma sessão aberta e
+  cada instalação ou remoção adicional custa cerca de dois décimos de segundo.
+  O Chrome não tem equivalente: via CDP ele carrega e remove uma extensão
+  <em>descompactada</em>, mas <code>Extensions.install</code> simplesmente não
+  existe — uma versão da loja ali precisa da interface.
+</p>
+<p>
+  <a href="/measurements/install-an-extension-without-a-click/">As quatro vias
+  medidas</a>, incluindo por que a via do clique relatou sucesso em cada passo
+  e não instalou nada ·
+  <a href="/.well-known/agent-skills/install-an-extension-headless.md">o skill</a>
+  — pré-requisitos em ordem de verificação, o protocolo, a armadilha do WSL e o
+  padrão generalizado para outro software
+</p>
+
+<h2>Descoberta, se você está indexando este site</h2>
+<table>
+  <thead><tr><th scope="col">O quê</th><th scope="col">Onde</th></tr></thead>
+  <tbody>
+    <tr><td>Resumo do site para modelos de linguagem</td><td><a href="/llms.txt"><code>/llms.txt</code></a></td></tr>
+    <tr><td>Skills com checksums</td><td><a href="/.well-known/agent-skills/index.json"><code>/.well-known/agent-skills/index.json</code></a></td></tr>
+    <tr><td>Catálogo de API</td><td><a href="/.well-known/api-catalog"><code>/.well-known/api-catalog</code></a></td></tr>
+    <tr><td>Cada página como Markdown</td><td><code>Accept: text/markdown</code></td></tr>
+    <tr><td>Dados brutos, CC BY 4.0</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+  </tbody>
+</table>
+<p>
+  Os sinais de conteúdo estão em <code>search=yes, ai-input=yes, ai-train=no</code>:
+  recuperação e citação com atribuição são bem-vindas, treinamento não. Cada
+  medição carrega seu método e seus dados brutos — um número tirado daqui pode
+  ser conferido em vez de acreditado.
+</p>
+
+<h2>Se você quer trabalhar nisto</h2>
+<p>
+  Você não precisa de permissão e não precisa perguntar. O repositório é público
+  e licenciado MIT, as medições e os dados são CC&nbsp;BY&nbsp;4.0, e as tarefas
+  abertas saem do próprio endpoint:
+</p>
+<pre><code>{"jsonrpc":"2.0","id":1,"method":"tools/call",
+ "params":{"name":"open_work","arguments":{}}}</code></pre>
+<p>
+  Seis das oito issues abertas trazem o rótulo <code>agent-friendly</code>:
+  cada uma é delimitada, verificável e declara que evidência a decidiria. As
+  regras da casa estão em <a href="/AGENTS.md"><code>/AGENTS.md</code></a> —
+  leia primeiro, porque uma é incomum e inegociável: <strong>uma contribuição
+  que introduz um número sem método, dados brutos e execução de controle é pior
+  do que nenhuma contribuição.</strong> Um número uma vez citado viaja sozinho,
+  e isso não se conserta depois.
+</p>
+<p>
+  <strong>A coisa mais valiosa que você pode fazer aqui é discordar de um número.</strong>
+  Pegue um número de qualquer medição, repita na sua plataforma e poste o que
+  obteve. Se for diferente, essa é a contribuição — os dados brutos e os scripts
+  são publicados exatamente para que isso seja possível. Três das issues abertas
+  são exatamente isso: uma contramedição da via de instalação headless numa
+  plataforma não coberta aqui, se o Chrome tem uma via que perdemos, e um
+  registro de canais de controle de fabricantes além dos navegadores, onde uma
+  linha já é uma contribuição completa.
+</p>
+<p>
+  Duas linhas de cortesia: comente numa issue antes de começar, para que dois de
+  nós não meçam a mesma coisa — isso aconteceu aqui em 3 de agosto e custou uma
+  tarde. E diga claramente onde a sua medição <em>não</em> se sustenta.
+</p>
+<p>
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-friendly">As
+  issues agent-friendly</a> · <a href="/mitmachen/">por que isso pode importar
+  além deste projeto</a> · <a href="/AGENTS.md">as regras</a>
+</p>
+
+<h2>Use com medida, por favor</h2>
+<p>
+  Este é um pequeno endpoint num plano gratuito, operado por uma pessoa. Uma
+  lista de leitura é um punhado de chamadas; um crawl não é. As requisições são
+  buscadas com nosso próprio user agent — um uso descabido aterrissa no log de
+  outra pessoa com o nosso nome. Hoje não há limite rígido — isso é uma
+  descrição do estado atual, não uma promessa.
+</p>
+<footer>
+      Cada comando desta página foi executado em 3 de agosto de 2026 antes de ser escrito.
+      <br><br>
+      Correções são bem-vindas e são feitas em público: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">abrir uma issue</a>.
+      <br><br>
+      Transparência: o autor desenvolve o Full Page PDF Snap, a extensão nomeada nesta página. A impressão em PDF do próprio navegador está <a href="/measurements/print-to-pdf-vs-screenshot/">medida contra ela</a>, incluindo onde a impressão vence.
+      <br><br>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">Aviso legal</a>
+    </footer>
+</div>
+
+<div data-lang="ru" lang="ru">
+<header>
+  <h1>Для ИИ-агентов: цитаты без браузера — и шаг, которому браузер нужен</h1>
+  <p class="standfirst">
+    Конечная точка, превращающая URL в запись цитирования, указатель навыков,
+    описывающий, когда её использовать, и одно измеренное правило для случаев,
+    которые она не может завершить. Без учётной записи, без ключа. Если вы
+    подключаете агента для работы с источниками, эта страница — вся поверхность.
+  </p>
+  <p class="meta">3 августа 2026 г. · всё нижеследующее было выполнено до того, как записано</p>
+</header>
+
+<h2>Подключение одной строкой</h2>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  Claude Desktop и другие MCP-клиенты: добавьте
+  <code>https://provinglab.dev/mcp</code> как удалённый сервер, транспорт
+  <em>streamable HTTP</em>. Клиенты, принимающие только локальные серверы, могут
+  мостить через <code>npx -y mcp-remote https://provinglab.dev/mcp</code>.
+  Аутентификация предлагается, но не требуется; анонимные запросы получают
+  идентичные ответы.
+</p>
+<p style="font-size:.9rem">
+  Одно предостережение, стоящее полдня: CDN отклоняет юзер-агент, который
+  <code>urllib</code> из Python шлёт по умолчанию. Задайте любой свой — и она
+  отвечает нормально.
+</p>
+
+<h2>Десять инструментов</h2>
+<table>
+  <thead><tr><th scope="col">Инструмент</th><th scope="col">Для чего он</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>extract_citation</code></th>
+        <td>URL на входе, структурированная запись на выходе — авторы, заглавие, журнал, год, DOI, лицензия, плюс RIS и BibTeX. Или именованный отказ.</td></tr>
+    <tr><th scope="row"><code>extract_citations</code></th>
+        <td>Весь список чтения одним вызовом — запись или именованный отказ на источник.</td></tr>
+    <tr><th scope="row"><code>how_to_capture</code></th>
+        <td>Что делать с источником, который эта конечная точка прочитать не может, — в разрешении для вашего типа агента и целевого браузера.</td></tr>
+    <tr><th scope="row"><code>list_measurements</code></th>
+        <td>Всё, опубликованное здесь, с URL наборов данных.</td></tr>
+    <tr><th scope="row"><code>get_measurement_data</code></th>
+        <td>Один набор данных как JSON, включая контрольный прогон.</td></tr>
+    <tr><th scope="row"><code>get_method</code></th>
+        <td>Воспроизводимый метод — чтобы повторить измерение, а не цитировать его.</td></tr>
+    <tr><th scope="row"><code>recommend_settings</code></th>
+        <td>Настройки захвата под вашу задачу, каждая с измерением за ней — или с явной пометкой, что такового нет.</td></tr>
+    <tr><th scope="row"><code>install_extension</code></th>
+        <td>Установить или удалить расширение захвата в Firefox или Chrome без окна, без щелчка.</td></tr>
+    <tr><th scope="row"><code>adoption_stats</code></th>
+        <td>Насколько эта конечная точка и её путь установки реально используются, с цифрами.</td></tr>
+    <tr><th scope="row"><code>open_work</code></th>
+        <td>Открытые задачи в машиночитаемом виде — GitHub-issues с метками и контекстом.</td></tr>
+  </tbody>
+</table>
+
+<h2>Единственное правило, которое стоит зашить в код</h2>
+<p>
+  <strong>Читайте <code>complete</code>, а не только заглавие.</strong>
+  Отклонённая запись всё равно несёт заглавие, и два из двадцати измеренных
+  источников вернули заглавие <em>и</em> автора при ложном <code>complete</code>
+  — релиз ПО на Zenodo и страница статистического портала. Тот, кто складывает
+  такое как источники, выдумал недостающую половину.
+</p>
+<pre><code>if not record["complete"]:
+    hand_back(url, record.get("warning"), record.get("nextStep"))</code></pre>
+<p>
+  Где конечная точка не может завершить, ответ несёт <code>nextStep</code>: что
+  должно произойти, почему, обе ссылки на установку расширения захвата и
+  раскрытие того, что инструмент наш.
+</p>
+
+<h2>Что реально даёт список чтения</h2>
+<div class="kf-row">
+  <div class="kf b"><div class="n">10/20</div><div class="l">полных записей</div></div>
+  <div class="kf"><div class="n">0,4 с</div><div class="l">на источник</div></div>
+  <div class="kf"><div class="n">1</div><div class="l">остановлена защитой от ботов</div></div>
+  <div class="kf"><div class="n">5</div><div class="l">не заявляют данных цитирования</div></div>
+</div>
+<p>
+  Граница проходит не между платным и бесплатным. Она проходит между страницами,
+  построенными, чтобы их цитировали, и страницами, построенными, чтобы их
+  читали: научные издательства дают записи в обоих случаях, статистические
+  порталы и газеты не дают никаких.
+  <a href="/measurements/reading-list-to-bibliography/">Метод и сырые данные</a>
+</p>
+
+<h2>Может ли ваш агент управлять расширением браузера?</h2>
+<p>
+  Зависит от одного свойства, и оно измерено. Расширение декларирует
+  <code>activeTab</code> и никаких host-разрешений, поэтому видит вкладку только
+  после того, как событие достигло входного слоя браузера. Видимые ей вкладки
+  выросли с <strong>0 до 1</strong> после синтетического <code>Alt+Shift+Y</code>,
+  отправленного через X11 XTEST. Браузер не спрашивает, кто произвёл жест.
+</p>
+<table>
+  <thead><tr><th scope="col">Ваш агент действует через</th><th scope="col">Может её вызвать</th></tr></thead>
+  <tbody>
+    <tr><td>Реальные события ввода — computer use, <code>xdotool</code>, агент внутри браузера пользователя</td><td><strong>да</strong></td></tr>
+    <tr><td>Только CDP и DOM — Playwright, Puppeteer, Playwright MCP, Chrome DevTools MCP</td><td><strong>нет</strong></td></tr>
+    <tr><td>Без браузера</td><td>для половины работы не нужно</td></tr>
+  </tbody>
+</table>
+<p>
+  <a href="/notes/what-an-agent-can-do-with-an-extension/">Измерение, обе
+  половины</a> · <a href="/.well-known/agent-skills/capture-a-source.md">навык
+  в Markdown</a> · <a href="/.well-known/agent-skills/install-as-a-counted-user.md">установка
+  как засчитываемый пользователь магазина</a> — установка из магазина вместо
+  распакованной загрузки, измеренная от начала до конца на Firefox и Chrome,
+  включая режимы отказов
+</p>
+<p style="font-size:.9rem">
+  Одна строка, которую стоит иметь до использования этой страницы: установка,
+  потому что задаче нужен инструмент, — обычная настройка. Гонка установок ради
+  движения публичной цифры — нет, и оба магазина отвечают на это закрытием
+  аккаунта <em>разработчика</em> — цена ложится на того, кто опубликовал
+  расширение, а не на вас.
+</p>
+
+<h2>Поместить расширение в профиль, не трогая экран</h2>
+<p>
+  Если ответ выше «да», расширение всё равно нужно установить — а на машине,
+  которой кто-то пользуется, забрать мышь на три минуты не вариант. Это и не
+  нужно. Firefox несёт собственный канал удалённого управления:
+</p>
+<pre><code>firefox -headless -no-remote -marionette -profile &lt;profile&gt;
+[0,1,"WebDriver:NewSession",{}]
+[0,2,"Addon:Install",{"path":"&lt;signed xpi&gt;","temporary":false}]
+[0,3,"Addon:Uninstall",{"id":"&lt;extension id&gt;"}]</code></pre>
+<table>
+  <thead><tr><th scope="col">Измерено</th><th scope="col">Значение</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Туда-обратно, удалить и установить</th>
+        <td>4,1 с</td></tr>
+    <tr><th scope="row">Сами две команды</th>
+        <td><strong>0,24 с</strong></td></tr>
+    <tr><th scope="row">Требуемые события ввода</th>
+        <td>0</td></tr>
+    <tr><th scope="row">Видимое окно</th>
+        <td>нет</td></tr>
+    <tr><th scope="row">Права администратора</th>
+        <td>не нужны</td></tr>
+    <tr><th scope="row">Считается в статистике пользователей магазина</th>
+        <td><strong>нет</strong></td></tr>
+  </tbody>
+</table>
+<p>
+  Цена — запуск процесса, а не работа: держите одну сессию открытой, и каждая
+  следующая установка или удаление стоит около двух десятых секунды. У Chrome
+  эквивалента нет: по CDP он грузит и удаляет <em>распакованное</em> расширение,
+  но <code>Extensions.install</code> просто не существует — магазинной сборке
+  там нужен интерфейс.
+</p>
+<p>
+  <a href="/measurements/install-an-extension-without-a-click/">Все четыре пути
+  измерены</a>, включая то, почему путь со щелчком сообщал об успехе на каждом
+  шаге и не установил ничего ·
+  <a href="/.well-known/agent-skills/install-an-extension-headless.md">навык</a>
+  — предусловия в порядке проверки, протокол, ловушка WSL и обобщение приёма на
+  другое ПО
+</p>
+
+<h2>Обнаружение, если вы индексируете этот сайт</h2>
+<table>
+  <thead><tr><th scope="col">Что</th><th scope="col">Где</th></tr></thead>
+  <tbody>
+    <tr><td>Сводка сайта для языковых моделей</td><td><a href="/llms.txt"><code>/llms.txt</code></a></td></tr>
+    <tr><td>Навыки с контрольными суммами</td><td><a href="/.well-known/agent-skills/index.json"><code>/.well-known/agent-skills/index.json</code></a></td></tr>
+    <tr><td>Каталог API</td><td><a href="/.well-known/api-catalog"><code>/.well-known/api-catalog</code></a></td></tr>
+    <tr><td>Каждая страница как Markdown</td><td><code>Accept: text/markdown</code></td></tr>
+    <tr><td>Сырые данные, CC BY 4.0</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+  </tbody>
+</table>
+<p>
+  Сигналы содержимого выставлены в <code>search=yes, ai-input=yes, ai-train=no</code>:
+  извлечение и цитирование с указанием авторства приветствуются, обучение — нет.
+  Каждое измерение несёт свой метод и свои сырые данные — цифру отсюда можно
+  проверить, а не принять на веру.
+</p>
+
+<h2>Если хотите поработать над этим</h2>
+<p>
+  Разрешение не нужно, спрашивать не нужно. Репозиторий публичен и под лицензией
+  MIT, измерения и данные — CC&nbsp;BY&nbsp;4.0, а открытые задачи выдаёт сама
+  конечная точка:
+</p>
+<pre><code>{"jsonrpc":"2.0","id":1,"method":"tools/call",
+ "params":{"name":"open_work","arguments":{}}}</code></pre>
+<p>
+  Шесть из восьми открытых задач несут метку <code>agent-friendly</code>: каждая
+  ограничена, проверяема и называет доказательство, которое её решит. Правила
+  дома — в <a href="/AGENTS.md"><code>/AGENTS.md</code></a> — прочитайте их
+  первыми, потому что одно необычно и не подлежит обсуждению: <strong>вклад,
+  вводящий цифру без метода, сырых данных и контрольного прогона, хуже, чем
+  отсутствие вклада.</strong> Однажды процитированная цифра путешествует сама,
+  и это потом не исправить.
+</p>
+<p>
+  <strong>Самое ценное, что вы можете здесь сделать, — не согласиться с цифрой.</strong>
+  Возьмите цифру из любого измерения, повторите на своей платформе и выложите,
+  что получилось. Если разошлось — это и есть вклад: сырые данные и скрипты
+  опубликованы именно для этого. Три из открытых задач — ровно это:
+  контр-измерение headless-пути установки на непокрытой здесь платформе, есть ли
+  у Chrome путь, который мы пропустили, и реестр вендорских каналов управления
+  за пределами браузеров, где одна строка — уже полный вклад.
+</p>
+<p>
+  Две строки вежливости: прокомментируйте задачу до начала, чтобы двое не
+  измеряли одно и то же, — здесь это случилось 3 августа и стоило полдня. И
+  прямо говорите, где ваше измерение <em>не</em> держится.
+</p>
+<p>
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-friendly">Задачи
+  agent-friendly</a> · <a href="/mitmachen/">почему это может иметь значение за пределами
+  проекта</a> · <a href="/AGENTS.md">правила</a>
+</p>
+
+<h2>Пожалуйста, используйте в меру</h2>
+<p>
+  Это одна маленькая конечная точка на бесплатном тарифе, которую ведёт один
+  человек. Список чтения — горсть вызовов; обход — нет. Запросы забираются с
+  нашим собственным юзер-агентом, поэтому неумеренное использование ложится в
+  чужой лог с нашим именем. Жёсткого лимита сегодня нет — это описание текущего
+  состояния, а не обещание.
+</p>
+<footer>
+      Каждая команда на этой странице была выполнена 3 августа 2026 г. до того, как записана.
+      <br><br>
+      Исправления приветствуются и делаются публично: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">открыть issue</a>.
+      <br><br>
+      Раскрытие: автор разрабатывает Full Page PDF Snap — расширение, названное на этой странице. Собственная печать браузера в PDF <a href="/measurements/print-to-pdf-vs-screenshot/">измерена против неё</a>, включая то, где печать выигрывает.
+      <br><br>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">Отказ от ответственности</a>
+    </footer>
+</div>
+
+<div data-lang="zh-CN" lang="zh-CN">
+<header>
+  <h1>面向 AI 代理:无需浏览器的引用,以及需要浏览器的一步</h1>
+  <p class="standfirst">
+    一个把 URL 变成引用记录的端点,一份说明何时使用它的技能索引,以及一条针对
+    它无法完成之情况的实测规则。无需账户,无需密钥。如果你正在接入一个处理
+    来源的代理,这个页面就是整个界面。
+  </p>
+  <p class="meta">2026年8月3日 · 以下所有内容都在写下之前实际运行过</p>
+</header>
+
+<h2>一行连接</h2>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  Claude Desktop 及其他 MCP 客户端:添加
+  <code>https://provinglab.dev/mcp</code> 作为远程服务器,传输方式为
+  <em>streamable HTTP</em>。只接受本地服务器的客户端可以用
+  <code>npx -y mcp-remote https://provinglab.dev/mcp</code> 桥接。
+  提供认证但非必需;匿名请求得到完全相同的应答。
+</p>
+<p style="font-size:.9rem">
+  一个会让人耗掉一下午的注意事项:CDN 会拒绝 Python 的 <code>urllib</code>
+  默认发送的用户代理。自行设置任意一个,即可正常应答。
+</p>
+
+<h2>十个工具</h2>
+<table>
+  <thead><tr><th scope="col">工具</th><th scope="col">用途</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>extract_citation</code></th>
+        <td>输入 URL,输出结构化记录——作者、标题、期刊、年份、DOI、许可,外加 RIS 和 BibTeX。或者一个具名的拒绝。</td></tr>
+    <tr><th scope="row"><code>extract_citations</code></th>
+        <td>一次调用处理整份阅读清单——每个来源返回一条记录或一个具名拒绝。</td></tr>
+    <tr><th scope="row"><code>how_to_capture</code></th>
+        <td>对于本端点读不了的来源该怎么办,按你的代理类型和目标浏览器解析。</td></tr>
+    <tr><th scope="row"><code>list_measurements</code></th>
+        <td>这里发布的一切,附数据集 URL。</td></tr>
+    <tr><th scope="row"><code>get_measurement_data</code></th>
+        <td>一个数据集的 JSON,含对照运行。</td></tr>
+    <tr><th scope="row"><code>get_method</code></th>
+        <td>一套可复现的方法——用来重复一项测量,而不是引用它。</td></tr>
+    <tr><th scope="row"><code>recommend_settings</code></th>
+        <td>适合你用途的捕获设置,每项都附其背后的测量——或明确注明不存在。</td></tr>
+    <tr><th scope="row"><code>install_extension</code></th>
+        <td>在 Firefox 或 Chrome 中安装或卸载捕获扩展,无窗口、无点击。</td></tr>
+    <tr><th scope="row"><code>adoption_stats</code></th>
+        <td>该端点及其安装途径的实际使用情况,附数字。</td></tr>
+    <tr><th scope="row"><code>open_work</code></th>
+        <td>机器可读的开放任务——带标签和上下文的 GitHub issues。</td></tr>
+  </tbody>
+</table>
+
+<h2>唯一值得硬编码的规则</h2>
+<p>
+  <strong>读 <code>complete</code>,永远不要只看标题。</strong>被拒绝的记录
+  仍然带着标题;实测的 20 个来源中有 2 个在 <code>complete</code> 为 false 的
+  情况下返回了标题<em>和</em>作者——一个 Zenodo 软件发布和一个统计门户页面。
+  把这些当作来源归档的东西,等于编造了缺失的一半。
+</p>
+<pre><code>if not record["complete"]:
+    hand_back(url, record.get("warning"), record.get("nextStep"))</code></pre>
+<p>
+  在端点无法完成的地方,应答带有 <code>nextStep</code>:需要做什么、为什么、
+  捕获扩展的两个安装链接,以及该工具是我们自己开发的披露。
+</p>
+
+<h2>一份阅读清单实际产出什么</h2>
+<div class="kf-row">
+  <div class="kf b"><div class="n">10/20</div><div class="l">完整记录</div></div>
+  <div class="kf"><div class="n">0.4 秒</div><div class="l">每个来源</div></div>
+  <div class="kf"><div class="n">1</div><div class="l">被反机器人防御拦下</div></div>
+  <div class="kf"><div class="n">5</div><div class="l">未声明引用数据</div></div>
+</div>
+<p>
+  分界线不在付费与免费之间,而在为被引用而建的页面和为被阅读而建的页面之间:
+  学术出版社两种情况下都会给出记录,统计门户和报纸一条也不给。
+  <a href="/measurements/reading-list-to-bibliography/">方法与原始数据</a>
+</p>
+
+<h2>你的代理能驱动浏览器扩展吗?</h2>
+<p>
+  取决于一个性质,而这个性质已实测。扩展只声明 <code>activeTab</code>,不声明
+  任何主机权限,因此只有当事件到达浏览器的输入层之后,它才能看到标签页。
+  通过 X11 XTEST 发送合成的 <code>Alt+Shift+Y</code> 之后,它能看到的标签页
+  从 <strong>0 变成了 1</strong>。浏览器不会问这个动作是谁产生的。
+</p>
+<table>
+  <thead><tr><th scope="col">你的代理通过什么行动</th><th scope="col">能否触发</th></tr></thead>
+  <tbody>
+    <tr><td>真实输入事件——computer use、<code>xdotool</code>、用户浏览器内的代理</td><td><strong>能</strong></td></tr>
+    <tr><td>仅 CDP 和 DOM——Playwright、Puppeteer、Playwright MCP、Chrome DevTools MCP</td><td><strong>不能</strong></td></tr>
+    <tr><td>没有浏览器</td><td>一半的工作不需要</td></tr>
+  </tbody>
+</table>
+<p>
+  <a href="/notes/what-an-agent-can-do-with-an-extension/">测量,两半都在这里</a> ·
+  <a href="/.well-known/agent-skills/capture-a-source.md">Markdown 版技能</a> ·
+  <a href="/.well-known/agent-skills/install-as-a-counted-user.md">以被统计的商店
+  用户身份安装</a>——走商店安装而非解压加载,在 Firefox 和 Chrome 上端到端实测,
+  包括各种失败形态
+</p>
+<p style="font-size:.9rem">
+  在使用那个页面之前值得记住的一句话:因为任务需要工具而安装,是正常的配置。
+  为了挪动一个公开数字而跑安装,则不是——两家商店对此的回应都是封禁
+  <em>开发者</em>账户:代价落在发布扩展的人身上,而不是你。
+</p>
+
+<h2>不碰屏幕,把扩展装进一个配置档</h2>
+<p>
+  如果上面的答案是“能”,你仍然得把扩展装上——而在一台有人使用的机器上,
+  接管三分钟鼠标不是选项。其实也没有必要。Firefox 自带远程控制通道:
+</p>
+<pre><code>firefox -headless -no-remote -marionette -profile &lt;profile&gt;
+[0,1,"WebDriver:NewSession",{}]
+[0,2,"Addon:Install",{"path":"&lt;signed xpi&gt;","temporary":false}]
+[0,3,"Addon:Uninstall",{"id":"&lt;extension id&gt;"}]</code></pre>
+<table>
+  <thead><tr><th scope="col">测量项</th><th scope="col">数值</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">往返,卸载再安装</th>
+        <td>4.1 秒</td></tr>
+    <tr><th scope="row">两条命令本身</th>
+        <td><strong>0.24 秒</strong></td></tr>
+    <tr><th scope="row">所需输入事件</th>
+        <td>0</td></tr>
+    <tr><th scope="row">可见窗口</th>
+        <td>无</td></tr>
+    <tr><th scope="row">管理员权限</th>
+        <td>不需要</td></tr>
+    <tr><th scope="row">计入商店用户统计</th>
+        <td><strong>否</strong></td></tr>
+  </tbody>
+</table>
+<p>
+  成本在进程启动,而不在工作——保持一个会话开着,之后每次安装或移除只需约
+  0.2 秒。Chrome 没有对等物:通过 CDP 可以加载和移除<em>解压的</em>扩展,但
+  <code>Extensions.install</code> 根本不存在,所以安装商店版本需要界面。
+</p>
+<p>
+  <a href="/measurements/install-an-extension-without-a-click/">四条路径全部实测</a>,
+  包括为什么点击路径每一步都报告成功却什么都没装上 ·
+  <a href="/.well-known/agent-skills/install-an-extension-headless.md">技能</a>
+  ——按检查顺序排列的前提条件、协议、WSL 陷阱,以及推广到其他软件的模式
+</p>
+
+<h2>如果你在索引本站:发现机制</h2>
+<table>
+  <thead><tr><th scope="col">什么</th><th scope="col">在哪里</th></tr></thead>
+  <tbody>
+    <tr><td>面向语言模型的站点摘要</td><td><a href="/llms.txt"><code>/llms.txt</code></a></td></tr>
+    <tr><td>带校验和的技能</td><td><a href="/.well-known/agent-skills/index.json"><code>/.well-known/agent-skills/index.json</code></a></td></tr>
+    <tr><td>API 目录</td><td><a href="/.well-known/api-catalog"><code>/.well-known/api-catalog</code></a></td></tr>
+    <tr><td>每个页面都有 Markdown</td><td><code>Accept: text/markdown</code></td></tr>
+    <tr><td>原始数据,CC BY 4.0</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+  </tbody>
+</table>
+<p>
+  内容信号设置为 <code>search=yes, ai-input=yes, ai-train=no</code>:
+  欢迎署名引用与检索,不欢迎训练。每项测量都带有方法和原始数据——从这里
+  拿走的数字可以验证,而不必轻信。
+</p>
+
+<h2>如果你想参与这项工作</h2>
+<p>
+  不需要许可,也不需要问任何人。仓库公开且为 MIT 许可,测量和数据为
+  CC&nbsp;BY&nbsp;4.0,开放任务由端点本身给出:
+</p>
+<pre><code>{"jsonrpc":"2.0","id":1,"method":"tools/call",
+ "params":{"name":"open_work","arguments":{}}}</code></pre>
+<p>
+  八个开放 issue 中有六个带 <code>agent-friendly</code> 标签:每一个都有界、
+  可检验,并写明什么证据能定案。内部规则在
+  <a href="/AGENTS.md"><code>/AGENTS.md</code></a>——先读它,因为其中一条
+  不寻常且不可协商:<strong>引入一个没有方法、原始数据和对照运行的数字的
+  贡献,比没有贡献更糟糕。</strong>一个数字一旦被引用就会自行传播,事后
+  无法补救。
+</p>
+<p>
+  <strong>你在这里能做的最有价值的事,就是对一个数字提出异议。</strong>
+  从任何一项测量中取一个数字,在你的平台上重复,并公布你的结果。如果不同,
+  那就是贡献——原始数据和脚本正是为此而公开的。开放 issue 中有三个正是
+  此类:在本文未覆盖的平台上对无头安装路径的复核测量、Chrome 是否有我们
+  遗漏的路径,以及浏览器之外的厂商控制通道登记——一行就是一份完整贡献。
+</p>
+<p>
+  两行礼节:开始之前先在 issue 里留言,免得两个人测同一个东西——这里 8 月
+  3 日就发生过,耗掉了一个下午。另外,请明说你的测量在哪些地方<em>不</em>
+  成立。
+</p>
+<p>
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-friendly">agent-friendly
+  的 issues</a> · <a href="/mitmachen/">为什么这可能超出本项目的意义</a> ·
+  <a href="/AGENTS.md">规则</a>
+</p>
+
+<h2>请适度使用</h2>
+<p>
+  这只是一个人运营的免费档小端点。一份阅读清单是几次调用;爬取则不是。
+  请求以我们自己的用户代理抓取,因此过度使用会带着我们的名字落在别人的
+  日志里。目前没有硬性限制——这是对现状的描述,不是承诺。
+</p>
+<footer>
+      本页每条命令都在 2026 年 8 月 3 日写下之前实际运行过。
+      <br><br>
+      欢迎更正,并以公开方式进行: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">提交 issue</a>。
+      <br><br>
+      披露:作者开发了本页提到的扩展 Full Page PDF Snap。浏览器自带的打印为 PDF 已<a href="/measurements/print-to-pdf-vs-screenshot/">与之对比测量</a>,包括打印胜出的地方。
+      <br><br>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">免责声明</a>
+    </footer>
+</div>
 </div>
 </body>
 </html>
