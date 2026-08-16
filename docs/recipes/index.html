@@ -7,11 +7,20 @@
 <meta name="description" content="Copy-paste recipes for the citation endpoint: Claude Code, Claude Desktop, the terminal, WSL and Python. Each one was run before it was written down.">
 <meta name="keywords" content="recipes, citation workflow, web source, RIS, BibTeX, reading list">
 <link rel="canonical" href="https://provinglab.dev/recipes/">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/recipes/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/recipes/">
+<link rel="alternate" hreflang="es" href="https://provinglab.dev/recipes/">
+<link rel="alternate" hreflang="fr" href="https://provinglab.dev/recipes/">
+<link rel="alternate" hreflang="it" href="https://provinglab.dev/recipes/">
+<link rel="alternate" hreflang="ja" href="https://provinglab.dev/recipes/">
+<link rel="alternate" hreflang="pt-BR" href="https://provinglab.dev/recipes/">
+<link rel="alternate" hreflang="ru" href="https://provinglab.dev/recipes/">
+<link rel="alternate" hreflang="zh-CN" href="https://provinglab.dev/recipes/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/recipes/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
 <link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
 <link rel="service-doc" href="/llms.txt" type="text/plain">
-<link rel="alternate" hreflang="en" href="https://provinglab.dev/recipes/">
 <link rel="icon" href="../icon-128.png">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <meta property="og:type" content="article">
@@ -30,7 +39,7 @@
   "description": "Copy-paste recipes for the citation endpoint: Claude Code, Claude Desktop, the terminal, WSL and Python. Each one was run before it was written down.",
   "url": "https://provinglab.dev/recipes/",
   "datePublished": "2026-08-03",
-  "inLanguage": "en",
+  "inLanguage": ["en", "de", "es", "fr", "it", "ja", "pt-BR", "ru", "zh-CN"],
   "totalTime": "PT2M",
   "supply": [
     {
@@ -166,6 +175,10 @@
     .topnav .brand{width:100%;margin-right:0}
     .topnav a.n{font-size:.85rem}
   }
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
 </style>
 <script src="/agent-tools.js" defer></script>
 <script src="/site-lang.js" defer></script>
@@ -188,7 +201,7 @@
 </nav>
 
 <div class="wrap">
-
+<div data-lang="en" class="on" lang="en">
 <p class="crumb"><a href="../">Proving Lab</a> · Recipes</p>
 
 <header>
@@ -334,8 +347,10 @@ else:
       — the skills with their checksums</li>
   <li><a href="/.well-known/agent-skills/cite-a-web-source.md">cite-a-web-source.md</a>
       — this page as a procedure</li>
-  <li><a href="/llms.txt">llms.txt</a> — everything published here, as plain text</li>
-  <li><a href="/.well-known/mcp/server-card.json">server card</a> — the tools and the transport</li>
+  <li><a href="/llms.txt">llms.txt</a>
+      — everything published here, as plain text</li>
+  <li><a href="/.well-known/mcp/server-card.json">server card</a>
+      — the tools and the transport</li>
 </ul>
 
 <div class="box">
@@ -354,7 +369,1385 @@ else:
 <footer><a href="../">← Proving Lab</a> · <a href="/tools/">Tools</a> ·
   <a href="/notes/mcp-server-what-it-solves/">About the endpoint</a> ·
   <a href="/disclaimer/">Disclaimer</a></footer>
+</div>
 
+<div data-lang="de" lang="de">
+<p class="crumb"><a href="../">Proving Lab</a> · Rezepte</p>
+
+<header>
+  <h1>Rezepte: aus einer Webquelle eine Literaturangabe machen</h1>
+  <p class="standfirst">
+    Kurze, vollständige Anleitungen für den Zitations-Endpunkt unter
+    <code>/mcp</code> — im Terminal, in WSL, in Python und in KI-Werkzeugen,
+    die MCP sprechen. Jede einzelne wurde am 3. August 2026 ausgeführt, bevor
+    sie aufgeschrieben wurde; ein ungetestetes Rezept ist eine Behauptung.
+  </p>
+  <p class="meta-line">Kein Konto und kein Schlüssel · bitte fair nutzen ·
+    <a href="/notes/mcp-server-what-it-solves/">was der Endpunkt ist und was er ablehnt</a></p>
+</header>
+
+<div class="box">
+  <h3>Was zurückkommt</h3>
+  <p>
+    Für eine Seite, die ein Werk ist: Autor:innen, Titel, Zeitschrift, Jahr,
+    Jahrgang, Seiten, DOI, ISSN und Lizenz — dazu ein importfertiger
+    <strong>RIS-Datensatz</strong> und ein <strong>BibTeX-Eintrag</strong>. Für eine
+    Seite, die eine Paywall, ein Fehler oder eine Bot-Prüfung ist:
+    <code>complete: false</code> und eine Warnung, die die Sperre benennt.
+    <strong>Prüfen Sie <code>complete</code>, bevor Sie das Ergebnis ablegen</strong>
+    — ein abgelehnter Datensatz trägt trotzdem einen Titel und liest sich wie ein Werk.
+  </p>
+</div>
+
+<h2 id="reading-list">Aus einer Leseliste wird eine .ris-Datei</h2>
+<p>
+  Das Rezept, das die meisten tatsächlich wollen. Eine URL pro Zeile in
+  <code>reading-list.txt</code>, eine importierbare Datei als Ergebnis. Quellen,
+  die nicht gelesen werden können, werden auf stderr genannt und bleiben aus
+  der Datei draußen, statt halb importiert zu werden.
+</p>
+<pre><code>while read -r u; do
+  curl -sX POST https://provinglab.dev/mcp \
+    -H 'content-type: application/json' \
+    -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",
+         \"params\":{\"name\":\"extract_citation\",\"arguments\":{\"url\":\"$u\"}}}" \
+  | python3 -c 'import json,sys
+d = json.loads(json.load(sys.stdin)["result"]["content"][0]["text"])
+sys.stdout.write(d["ris"]) if d.get("complete") else \
+  sys.stderr.write("skipped: " + d.get("warning","") + "\n")'
+done &lt; reading-list.txt &gt; literature.ris</code></pre>
+<p>
+  Dann <strong>Zotero → Datei → Importieren</strong> oder <strong>Citavi →
+  Importieren → RIS</strong>. Gemessen an drei wissenschaftlichen URLs: drei
+  Datensätze, unter zwei Sekunden, ohne Nachbearbeitung importiert.
+</p>
+
+<h2 id="claude-code">Claude Code, in einer Zeile</h2>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  <code>claude mcp list</code> meldet danach <code>✔ Connected</code>. Ab dann
+  genügt: <em>„zitiere diese vier Links für mein Literaturverzeichnis"</em> —
+  das Werkzeug wird für jeden aufgerufen, und die hinter einer Sperre werden
+  als solche gemeldet statt erfunden.
+</p>
+
+<h2 id="claude-desktop">Claude Desktop und andere MCP-Clients</h2>
+<p>
+  <code>https://provinglab.dev/mcp</code> als <strong>entfernten MCP-Server</strong>
+  eintragen (Transport: streamable HTTP). Eine Anmeldung wird angeboten, ist
+  aber nicht nötig; anonyme Anfragen bekommen identische Antworten. In Clients,
+  die nur lokale Server akzeptieren, funktioniert die übliche Brücke:
+</p>
+<pre><code>{
+  "mcpServers": {
+    "provinglab": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://provinglab.dev/mcp"]
+    }
+  }
+}</code></pre>
+
+<h2 id="python">Python — den User-Agent beachten</h2>
+<p>
+  Die Standardbibliothek meldet sich als <code>Python-urllib</code>, und das CDN
+  vor dieser Seite antwortet darauf mit <strong>HTTP 403</strong>, bevor der
+  Worker die Anfrage überhaupt sieht. Jeder eigene User-Agent genügt. Das ist
+  keine Regel gegen Automatisierung — es ist ein Filter, der den Unterschied
+  nicht kennt.
+</p>
+<pre><code>import json, urllib.request
+
+def cite(url):
+    body = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "tools/call",
+        "params": {"name": "extract_citation", "arguments": {"url": url}}}).encode()
+    req = urllib.request.Request("https://provinglab.dev/mcp", body, {
+        "content-type": "application/json",
+        "user-agent": "my-bibliography-script/1.0",   # <- without this: 403
+    })
+    answer = json.loads(urllib.request.urlopen(req, timeout=60).read())
+    return json.loads(answer["result"]["content"][0]["text"])
+
+record = cite("https://doi.org/10.1038/s41586-020-2649-2")
+if record.get("complete"):
+    print(record["ris"])
+else:
+    print("not usable:", record["warning"])</code></pre>
+
+<h2 id="wsl">WSL: vom Browser ins Terminal</h2>
+<p>
+  Die beiden Hälften der Arbeit liegen auf verschiedenen Seiten der
+  Dateisystem-Grenze. Eine Quelle hinter einem Hochschul-Login lässt sich nur
+  im Browser erfassen, und die Datei muss danach von einer Shell aus zu
+  finden sein.
+</p>
+<p>
+  In <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a>
+  <em>Copy file path after saving</em> einschalten und in den Einstellungen das
+  Format <strong>WSL</strong> wählen. Nach einer Erfassung liegt der Pfad in der
+  Zwischenablage in der Form, die eine Linux-Shell versteht:
+</p>
+<pre><code>/mnt/c/Users/&lt;you&gt;/Downloads/Full Page PDF Snap/pubmed_2026-08-03_0911_0001.pdf</code></pre>
+<p>
+  Fügen Sie ihn direkt hinter einen Befehl ein oder in einen Chat mit einem
+  KI-Werkzeug, das Dateien lesen kann. Der RIS-Datensatz zur selben Erfassung
+  liegt mit gleichem Namen und der Endung <code>.ris</code> neben der PDF.
+</p>
+
+<h2 id="which-route">Welcher der beiden Wege für welche Quelle</h2>
+<div class="tblwrap"><table>
+  <thead><tr><th scope="col"></th><th scope="col">Der Endpunkt</th><th scope="col">Die Erweiterung</th></tr></thead>
+  <tbody>
+    <tr><td>Läuft</td><td>auf einem Server, anonym</td><td>in Ihrem Browser, angemeldet</td></tr>
+    <tr><td>Liefert</td><td>die Literaturangabe</td><td>die Literaturangabe <em>und</em> das Dokument</td></tr>
+    <tr><td>Hinter einem Login</td><td class="lose">nein</td><td class="win">ja</td></tr>
+    <tr><td>Aufwand pro Quelle</td><td class="win">keiner, skriptfähig</td><td>ein Klick</td></tr>
+    <tr><td>Ausgabe</td><td>RIS + BibTeX</td><td>PDF mit den Feldern darin, plus RIS</td></tr>
+  </tbody>
+</table></div>
+<p>
+  Die Aufteilung ist also kein Kompromiss: <strong>der Endpunkt für die Menge,
+  die Erweiterung für die, die er ablehnt</strong>. Beide geben dasselbe
+  RIS-Format aus, also landet alles in derselben Zotero- oder Citavi-Bibliothek,
+  egal über welchen Weg. Die Ablehnungsliste aus dem ersten Durchlauf sagt,
+  welche Quellen den zweiten brauchen.
+</p>
+
+<h2 id="machine">Für einen Agenten statt für einen Menschen</h2>
+<p>
+  Diese Rezepte liegen auch als maschinenlesbarer Skill vor, zusammen mit den
+  Messmethoden:
+</p>
+<ul>
+  <li><a href="/.well-known/agent-skills/index.json">agent-skills/index.json</a>
+      — die Skills mit ihren Prüfsummen</li>
+  <li><a href="/.well-known/agent-skills/cite-a-web-source.md">cite-a-web-source.md</a>
+      — diese Seite als Prozedur</li>
+  <li><a href="/llms.txt">llms.txt</a>
+      — alles Veröffentlichte hier als Klartext</li>
+  <li><a href="/.well-known/mcp/server-card.json">Server-Karte</a>
+      — die Werkzeuge und der Transport</li>
+</ul>
+
+<div class="box">
+  <h3>Was all das nicht beweist</h3>
+  <p>
+    Ein Zitationsdatensatz sagt, was eine Seite über sich selbst deklariert. Er
+    prüft nicht, ob das Werk existiert, ob die DOI darauf auflöst oder ob die
+    Seite ehrlich ist — für die acht von achtzehn Plattformen, bei denen die
+    Daten dünn sind, ist das relevant. Eine Bildschirmaufnahme ist ebenfalls
+    ein Bild eines Bildschirms und <a href="/disclaimer/">kein qualifiziertes
+    elektronisches Dokument</a>. Wo der Inhalt etwas entscheidet, lesen Sie
+    die Quelle.
+  </p>
+</div>
+
+<p style="font-size:.9rem;color:var(--dim)">Offenlegung: Diese Seite wird vom Entwickler von Full Page PDF Snap betrieben, der auf dieser Seite genannten Erweiterung. <a href="/measurements/print-to-pdf-vs-screenshot/">Der eigene Druck-zu-PDF des Browsers ist dagegen gemessen</a>, einschließlich der Fälle, in denen Drucken gewinnt. Korrekturen: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a> · <a href="/disclaimer/">Haftungsausschluss</a></p>
+<footer><a href="../">← Proving Lab</a> · <a href="/tools/">Werkzeuge</a> ·
+  <a href="/notes/mcp-server-what-it-solves/">Über den Endpunkt</a> ·
+  <a href="/disclaimer/">Haftungsausschluss</a></footer>
+</div>
+
+<div data-lang="es" lang="es">
+<p class="crumb"><a href="../">Proving Lab</a> · Recetas</p>
+
+<header>
+  <h1>Recetas: convierte una fuente web en una cita</h1>
+  <p class="standfirst">
+    Instrucciones cortas y completas para el endpoint de citas en
+    <code>/mcp</code> — en un terminal, en WSL, en Python y en herramientas
+    de IA que hablan MCP. Cada una se ejecutó el 3 de agosto de 2026 antes
+    de escribirse; una receta no probada es una afirmación.
+  </p>
+  <p class="meta-line">Sin cuenta y sin clave · uso justo, por favor ·
+    <a href="/notes/mcp-server-what-it-solves/">qué es el endpoint y qué rechaza</a></p>
+</header>
+
+<div class="box">
+  <h3>Lo que recibes de vuelta</h3>
+  <p>
+    Para una página que es una obra: autores, título, revista, año, volumen,
+    páginas, DOI, ISSN y licencia — además de un <strong>registro RIS</strong>
+    listo para importar y una <strong>entrada BibTeX</strong>. Para una página
+    que es un muro de pago, un error o una prueba anti-bots:
+    <code>complete: false</code> y una advertencia que nombra el muro.
+    <strong>Comprueba <code>complete</code> antes de archivar el resultado</strong>
+    — un registro rechazado sigue llevando un título y se leerá como una obra.
+  </p>
+</div>
+
+<h2 id="reading-list">Una lista de lectura se convierte en un archivo .ris</h2>
+<p>
+  La receta que la mayoría realmente quiere. Una URL por línea en
+  <code>reading-list.txt</code>, un archivo importable como resultado. Las
+  fuentes que no se pueden leer se nombran en stderr y quedan fuera del
+  archivo en lugar de importarse a medias.
+</p>
+<pre><code>while read -r u; do
+  curl -sX POST https://provinglab.dev/mcp \
+    -H 'content-type: application/json' \
+    -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",
+         \"params\":{\"name\":\"extract_citation\",\"arguments\":{\"url\":\"$u\"}}}" \
+  | python3 -c 'import json,sys
+d = json.loads(json.load(sys.stdin)["result"]["content"][0]["text"])
+sys.stdout.write(d["ris"]) if d.get("complete") else \
+  sys.stderr.write("skipped: " + d.get("warning","") + "\n")'
+done &lt; reading-list.txt &gt; literature.ris</code></pre>
+<p>
+  Después, <strong>Zotero → Archivo → Importar</strong>, o <strong>Citavi →
+  Importar → RIS</strong>. Medido con tres URL académicas: tres registros,
+  menos de dos segundos, importados sin edición.
+</p>
+
+<h2 id="claude-code">Claude Code, en una línea</h2>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  <code>claude mcp list</code> informa entonces <code>✔ Connected</code>. Después
+  basta decir: <em>"cita estos cuatro enlaces para mi bibliografía"</em> — la
+  herramienta se llama para cada uno, y los que están detrás de un muro se
+  reportan como tales en lugar de inventarse.
+</p>
+
+<h2 id="claude-desktop">Claude Desktop y otros clientes MCP</h2>
+<p>
+  Añade <code>https://provinglab.dev/mcp</code> como <strong>servidor MCP
+  remoto</strong> (transporte: streamable HTTP). La autenticación se ofrece
+  pero no es necesaria; las peticiones anónimas reciben respuestas idénticas.
+  En clientes que solo aceptan servidores locales, el puente habitual funciona:
+</p>
+<pre><code>{
+  "mcpServers": {
+    "provinglab": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://provinglab.dev/mcp"]
+    }
+  }
+}</code></pre>
+
+<h2 id="python">Python — cuidado con el user agent</h2>
+<p>
+  La biblioteca estándar se identifica como <code>Python-urllib</code>, y el CDN
+  delante de este sitio responde a eso con <strong>HTTP 403</strong> antes de
+  que el worker llegue a ver la petición. Cualquier user agent propio es
+  suficiente. No es una regla contra la automatización — es un filtro que no
+  conoce la diferencia.
+</p>
+<pre><code>import json, urllib.request
+
+def cite(url):
+    body = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "tools/call",
+        "params": {"name": "extract_citation", "arguments": {"url": url}}}).encode()
+    req = urllib.request.Request("https://provinglab.dev/mcp", body, {
+        "content-type": "application/json",
+        "user-agent": "my-bibliography-script/1.0",   # <- without this: 403
+    })
+    answer = json.loads(urllib.request.urlopen(req, timeout=60).read())
+    return json.loads(answer["result"]["content"][0]["text"])
+
+record = cite("https://doi.org/10.1038/s41586-020-2649-2")
+if record.get("complete"):
+    print(record["ris"])
+else:
+    print("not usable:", record["warning"])</code></pre>
+
+<h2 id="wsl">WSL: del navegador al terminal</h2>
+<p>
+  Las dos mitades del trabajo están a lados distintos de la frontera del
+  sistema de archivos. Una fuente detrás de un login universitario solo puede
+  capturarse en el navegador, y luego hay que encontrar el archivo desde
+  una shell.
+</p>
+<p>
+  En <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a>, activa
+  <em>Copy file path after saving</em> y pon el formato <strong>WSL</strong>
+  en Settings. Tras una captura, la ruta queda en el portapapeles en la forma
+  que entiende una shell de Linux:
+</p>
+<pre><code>/mnt/c/Users/&lt;you&gt;/Downloads/Full Page PDF Snap/pubmed_2026-08-03_0911_0001.pdf</code></pre>
+<p>
+  Pégala directamente tras un comando, o en un chat con una herramienta de IA
+  que pueda leer archivos. El registro RIS de la misma captura está junto al
+  PDF con el mismo nombre y la extensión <code>.ris</code>.
+</p>
+
+<h2 id="which-route">Cuál de las dos rutas para cada fuente</h2>
+<div class="tblwrap"><table>
+  <thead><tr><th scope="col"></th><th scope="col">El endpoint</th><th scope="col">La extensión</th></tr></thead>
+  <tbody>
+    <tr><td>Se ejecuta</td><td>en un servidor, anónimo</td><td>en tu navegador, con sesión iniciada</td></tr>
+    <tr><td>Te da</td><td>la referencia</td><td>la referencia <em>y</em> el documento</td></tr>
+    <tr><td>Detrás de un login</td><td class="lose">no</td><td class="win">sí</td></tr>
+    <tr><td>Coste por fuente</td><td class="win">ninguno, scriptable</td><td>un clic</td></tr>
+    <tr><td>Salida</td><td>RIS + BibTeX</td><td>PDF con los campos dentro, más RIS</td></tr>
+  </tbody>
+</table></div>
+<p>
+  Así que la división no es un compromiso: <strong>el endpoint para el volumen,
+  la extensión para las que rechaza</strong>. Ambos emiten el mismo formato
+  RIS, así que todo llega a la misma biblioteca de Zotero o Citavi sea cual
+  sea la ruta. La lista de rechazos del primer paso te dice qué fuentes
+  necesitan la segunda.
+</p>
+
+<h2 id="machine">Para un agente en lugar de una persona</h2>
+<p>
+  Estas recetas también se publican como un skill legible por máquinas, junto
+  a los métodos de medición:
+</p>
+<ul>
+  <li><a href="/.well-known/agent-skills/index.json">agent-skills/index.json</a>
+      — los skills con sus sumas de verificación</li>
+  <li><a href="/.well-known/agent-skills/cite-a-web-source.md">cite-a-web-source.md</a>
+      — esta página como procedimiento</li>
+  <li><a href="/llms.txt">llms.txt</a>
+      — todo lo publicado aquí, como texto plano</li>
+  <li><a href="/.well-known/mcp/server-card.json">ficha del servidor</a>
+      — las herramientas y el transporte</li>
+</ul>
+
+<div class="box">
+  <h3>Lo que nada de esto demuestra</h3>
+  <p>
+    Un registro de cita dice lo que una página declara sobre sí misma. No
+    comprueba que la obra exista, que el DOI resuelva a ella o que la página
+    sea honesta — para las ocho de dieciocho plataformas donde los datos son
+    escasos, eso importa. Una captura de pantalla, igualmente, es una imagen
+    de una pantalla y <a href="/disclaimer/">no un documento electrónico
+    cualificado</a>. Donde el contenido decide algo, lee la fuente.
+  </p>
+</div>
+
+<p style="font-size:.9rem;color:var(--dim)">Aviso: este sitio lo gestiona el desarrollador de Full Page PDF Snap, la extensión nombrada en esta página. <a href="/measurements/print-to-pdf-vs-screenshot/">La impresión a PDF del propio navegador está medida contra ella</a>, incluyendo dónde gana la impresión. Correcciones: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues de GitHub</a> · <a href="/disclaimer/">Aviso legal</a></p>
+<footer><a href="../">← Proving Lab</a> · <a href="/tools/">Herramientas</a> ·
+  <a href="/notes/mcp-server-what-it-solves/">Sobre el endpoint</a> ·
+  <a href="/disclaimer/">Aviso legal</a></footer>
+</div>
+
+<div data-lang="fr" lang="fr">
+<p class="crumb"><a href="../">Proving Lab</a> · Recettes</p>
+
+<header>
+  <h1>Recettes : transformer une source web en citation</h1>
+  <p class="standfirst">
+    Des instructions courtes et complètes pour le point d'accès de citation
+    sous <code>/mcp</code> — dans un terminal, dans WSL, en Python et dans
+    des outils d'IA qui parlent MCP. Chacune a été exécutée le 3 août 2026
+    avant d'être écrite ; une recette non testée est une affirmation.
+  </p>
+  <p class="meta-line">Ni compte ni clé · usage équitable, merci ·
+    <a href="/notes/mcp-server-what-it-solves/">ce qu'est le point d'accès et ce qu'il refuse</a></p>
+</header>
+
+<div class="box">
+  <h3>Ce que vous récupérez</h3>
+  <p>
+    Pour une page qui est une œuvre : auteurs, titre, revue, année, volume,
+    pages, DOI, ISSN et licence — plus un <strong>enregistrement RIS</strong>
+    prêt à importer et une <strong>entrée BibTeX</strong>. Pour une page qui
+    est un mur payant, une erreur ou un contrôle anti-robots :
+    <code>complete: false</code> et un avertissement qui nomme le mur.
+    <strong>Testez <code>complete</code> avant d'archiver le résultat</strong>
+    — un enregistrement refusé porte toujours un titre et se lira comme une œuvre.
+  </p>
+</div>
+
+<h2 id="reading-list">Une liste de lecture devient un fichier .ris</h2>
+<p>
+  La recette que la plupart veulent vraiment. Une URL par ligne dans
+  <code>reading-list.txt</code>, un fichier importable en sortie. Les sources
+  illisibles sont nommées sur stderr et laissées hors du fichier plutôt
+  qu'importées à moitié.
+</p>
+<pre><code>while read -r u; do
+  curl -sX POST https://provinglab.dev/mcp \
+    -H 'content-type: application/json' \
+    -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",
+         \"params\":{\"name\":\"extract_citation\",\"arguments\":{\"url\":\"$u\"}}}" \
+  | python3 -c 'import json,sys
+d = json.loads(json.load(sys.stdin)["result"]["content"][0]["text"])
+sys.stdout.write(d["ris"]) if d.get("complete") else \
+  sys.stderr.write("skipped: " + d.get("warning","") + "\n")'
+done &lt; reading-list.txt &gt; literature.ris</code></pre>
+<p>
+  Puis <strong>Zotero → Fichier → Importer</strong>, ou <strong>Citavi →
+  Importer → RIS</strong>. Mesuré sur trois URL universitaires : trois
+  enregistrements, moins de deux secondes, importés sans retouche.
+</p>
+
+<h2 id="claude-code">Claude Code, en une ligne</h2>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  <code>claude mcp list</code> affiche alors <code>✔ Connected</code>. Ensuite,
+  il suffit de dire : <em>« cite ces quatre liens pour ma bibliographie »</em>
+  — l'outil est appelé pour chacun, et ceux derrière un mur sont signalés
+  comme tels au lieu d'être inventés.
+</p>
+
+<h2 id="claude-desktop">Claude Desktop et les autres clients MCP</h2>
+<p>
+  Ajoutez <code>https://provinglab.dev/mcp</code> comme <strong>serveur MCP
+  distant</strong> (transport : streamable HTTP). L'authentification est
+  proposée mais pas requise ; les requêtes anonymes obtiennent des réponses
+  identiques. Dans les clients qui n'acceptent que des serveurs locaux, le
+  pont habituel fonctionne :
+</p>
+<pre><code>{
+  "mcpServers": {
+    "provinglab": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://provinglab.dev/mcp"]
+    }
+  }
+}</code></pre>
+
+<h2 id="python">Python — attention au user agent</h2>
+<p>
+  La bibliothèque standard s'identifie comme <code>Python-urllib</code>, et le
+  CDN devant ce site répond par <strong>HTTP 403</strong> avant même que le
+  worker voie la requête. N'importe quel user agent à vous suffit. Ce n'est
+  pas une règle contre l'automatisation — c'est un filtre qui ne connaît pas
+  la différence.
+</p>
+<pre><code>import json, urllib.request
+
+def cite(url):
+    body = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "tools/call",
+        "params": {"name": "extract_citation", "arguments": {"url": url}}}).encode()
+    req = urllib.request.Request("https://provinglab.dev/mcp", body, {
+        "content-type": "application/json",
+        "user-agent": "my-bibliography-script/1.0",   # <- without this: 403
+    })
+    answer = json.loads(urllib.request.urlopen(req, timeout=60).read())
+    return json.loads(answer["result"]["content"][0]["text"])
+
+record = cite("https://doi.org/10.1038/s41586-020-2649-2")
+if record.get("complete"):
+    print(record["ris"])
+else:
+    print("not usable:", record["warning"])</code></pre>
+
+<h2 id="wsl">WSL : du navigateur au terminal</h2>
+<p>
+  Les deux moitiés du travail se situent de part et d'autre de la frontière
+  du système de fichiers. Une source derrière un login universitaire ne peut
+  être capturée que dans le navigateur, et le fichier doit ensuite être
+  retrouvé depuis un shell.
+</p>
+<p>
+  Dans <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a>, activez
+  <em>Copy file path after saving</em> et réglez le format sur
+  <strong>WSL</strong> dans les paramètres. Après une capture, le chemin est
+  dans le presse-papiers dans la forme qu'un shell Linux comprend :
+</p>
+<pre><code>/mnt/c/Users/&lt;you&gt;/Downloads/Full Page PDF Snap/pubmed_2026-08-03_0911_0001.pdf</code></pre>
+<p>
+  Collez-le directement après une commande, ou dans un chat avec un outil
+  d'IA capable de lire des fichiers. L'enregistrement RIS de la même capture
+  se trouve à côté du PDF, avec le même nom et l'extension <code>.ris</code>.
+</p>
+
+<h2 id="which-route">Laquelle des deux voies pour quelle source</h2>
+<div class="tblwrap"><table>
+  <thead><tr><th scope="col"></th><th scope="col">Le point d'accès</th><th scope="col">L'extension</th></tr></thead>
+  <tbody>
+    <tr><td>S'exécute</td><td>sur un serveur, anonyme</td><td>dans votre navigateur, connecté</td></tr>
+    <tr><td>Vous donne</td><td>la référence</td><td>la référence <em>et</em> le document</td></tr>
+    <tr><td>Derrière un login</td><td class="lose">non</td><td class="win">oui</td></tr>
+    <tr><td>Coût par source</td><td class="win">aucun, scriptable</td><td>un clic</td></tr>
+    <tr><td>Sortie</td><td>RIS + BibTeX</td><td>PDF avec les champs dedans, plus RIS</td></tr>
+  </tbody>
+</table></div>
+<p>
+  La répartition n'est donc pas un compromis : <strong>le point d'accès pour
+  le volume, l'extension pour celles qu'il refuse</strong>. Les deux émettent
+  le même format RIS, donc tout aboutit dans une même bibliothèque Zotero ou
+  Citavi, quelle que soit la voie. La liste des refus du premier passage
+  indique quelles sources ont besoin de la seconde.
+</p>
+
+<h2 id="machine">Pour un agent plutôt qu'une personne</h2>
+<p>
+  Ces recettes sont aussi publiées comme skill lisible par machine, aux côtés
+  des méthodes de mesure :
+</p>
+<ul>
+  <li><a href="/.well-known/agent-skills/index.json">agent-skills/index.json</a>
+      — les skills avec leurs sommes de contrôle</li>
+  <li><a href="/.well-known/agent-skills/cite-a-web-source.md">cite-a-web-source.md</a>
+      — cette page comme procédure</li>
+  <li><a href="/llms.txt">llms.txt</a>
+      — tout ce qui est publié ici, en texte brut</li>
+  <li><a href="/.well-known/mcp/server-card.json">fiche serveur</a>
+      — les outils et le transport</li>
+</ul>
+
+<div class="box">
+  <h3>Ce que rien de tout cela ne prouve</h3>
+  <p>
+    Un enregistrement de citation dit ce qu'une page déclare d'elle-même. Il ne
+    vérifie ni que l'œuvre existe, ni que le DOI mène à elle, ni que la page
+    est honnête — pour les huit plateformes sur dix-huit où les données sont
+    minces, cela compte. Une capture d'écran, de même, est l'image d'un écran
+    et <a href="/disclaimer/">pas un document électronique qualifié</a>. Là
+    où le contenu décide, lisez la source.
+  </p>
+</div>
+
+<p style="font-size:.9rem;color:var(--dim)">Transparence : ce site est géré par le développeur de Full Page PDF Snap, l'extension nommée sur cette page. <a href="/measurements/print-to-pdf-vs-screenshot/">L'impression en PDF du navigateur est mesurée face à elle</a>, y compris là où l'impression gagne. Corrections : <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues GitHub</a> · <a href="/disclaimer/">Mentions légales</a></p>
+<footer><a href="../">← Proving Lab</a> · <a href="/tools/">Outils</a> ·
+  <a href="/notes/mcp-server-what-it-solves/">À propos du point d'accès</a> ·
+  <a href="/disclaimer/">Mentions légales</a></footer>
+</div>
+
+<div data-lang="it" lang="it">
+<p class="crumb"><a href="../">Proving Lab</a> · Ricette</p>
+
+<header>
+  <h1>Ricette: trasforma una fonte web in una citazione</h1>
+  <p class="standfirst">
+    Istruzioni brevi e complete per l'endpoint di citazione su <code>/mcp</code>
+    — in un terminale, in WSL, in Python e negli strumenti di IA che parlano
+    MCP. Ognuna è stata eseguita il 3 agosto 2026 prima di essere scritta;
+    una ricetta non testata è un'affermazione.
+  </p>
+  <p class="meta-line">Nessun account e nessuna chiave · uso corretto, per favore ·
+    <a href="/notes/mcp-server-what-it-solves/">cos'è l'endpoint e cosa rifiuta</a></p>
+</header>
+
+<div class="box">
+  <h3>Cosa ricevi indietro</h3>
+  <p>
+    Per una pagina che è un'opera: autori, titolo, rivista, anno, volume,
+    pagine, DOI, ISSN e licenza — più un <strong>record RIS</strong> pronto
+    per l'importazione e una <strong>voce BibTeX</strong>. Per una pagina che
+    è un paywall, un errore o un controllo anti-bot: <code>complete: false</code>
+    e un avviso che nomina il muro. <strong>Verifica <code>complete</code>
+    prima di archiviare il risultato</strong> — un record rifiutato porta
+    comunque un titolo e si leggerà come un'opera.
+  </p>
+</div>
+
+<h2 id="reading-list">Una lista di lettura diventa un file .ris</h2>
+<p>
+  La ricetta che la maggior parte delle persone vuole davvero. Un URL per
+  riga in <code>reading-list.txt</code>, un file importabile in uscita. Le
+  fonti che non si possono leggere vengono nominate su stderr e lasciate
+  fuori dal file invece di essere importate a metà.
+</p>
+<pre><code>while read -r u; do
+  curl -sX POST https://provinglab.dev/mcp \
+    -H 'content-type: application/json' \
+    -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",
+         \"params\":{\"name\":\"extract_citation\",\"arguments\":{\"url\":\"$u\"}}}" \
+  | python3 -c 'import json,sys
+d = json.loads(json.load(sys.stdin)["result"]["content"][0]["text"])
+sys.stdout.write(d["ris"]) if d.get("complete") else \
+  sys.stderr.write("skipped: " + d.get("warning","") + "\n")'
+done &lt; reading-list.txt &gt; literature.ris</code></pre>
+<p>
+  Poi <strong>Zotero → File → Importa</strong>, oppure <strong>Citavi →
+  Importa → RIS</strong>. Misurato su tre URL accademici: tre record, meno
+  di due secondi, importati senza modifiche.
+</p>
+
+<h2 id="claude-code">Claude Code, in una riga</h2>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  <code>claude mcp list</code> riporta quindi <code>✔ Connected</code>. Dopo
+  puoi semplicemente dire: <em>"cita questi quattro link per la mia
+  bibliografia"</em> — lo strumento viene chiamato per ciascuno, e quelli
+  dietro un muro vengono segnalati come tali invece di essere inventati.
+</p>
+
+<h2 id="claude-desktop">Claude Desktop e altri client MCP</h2>
+<p>
+  Aggiungi <code>https://provinglab.dev/mcp</code> come <strong>server MCP
+  remoto</strong> (trasporto: streamable HTTP). L'autenticazione è offerta
+  ma non richiesta; le richieste anonime ricevono risposte identiche. Nei
+  client che accettano solo server locali, il solito bridge funziona:
+</p>
+<pre><code>{
+  "mcpServers": {
+    "provinglab": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://provinglab.dev/mcp"]
+    }
+  }
+}</code></pre>
+
+<h2 id="python">Python — attenzione allo user agent</h2>
+<p>
+  La libreria standard si identifica come <code>Python-urllib</code>, e il CDN
+  davanti a questo sito risponde con <strong>HTTP 403</strong> prima ancora
+  che il worker veda la richiesta. Qualsiasi user agent tuo è sufficiente.
+  Non è una regola contro l'automazione — è un filtro che non conosce la
+  differenza.
+</p>
+<pre><code>import json, urllib.request
+
+def cite(url):
+    body = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "tools/call",
+        "params": {"name": "extract_citation", "arguments": {"url": url}}}).encode()
+    req = urllib.request.Request("https://provinglab.dev/mcp", body, {
+        "content-type": "application/json",
+        "user-agent": "my-bibliography-script/1.0",   # <- without this: 403
+    })
+    answer = json.loads(urllib.request.urlopen(req, timeout=60).read())
+    return json.loads(answer["result"]["content"][0]["text"])
+
+record = cite("https://doi.org/10.1038/s41586-020-2649-2")
+if record.get("complete"):
+    print(record["ris"])
+else:
+    print("not usable:", record["warning"])</code></pre>
+
+<h2 id="wsl">WSL: dal browser al terminale</h2>
+<p>
+  Le due metà del lavoro stanno ai lati opposti del confine del filesystem.
+  Una fonte dietro un login universitario può essere catturata solo nel
+  browser, e il file va poi ritrovato da una shell.
+</p>
+<p>
+  In <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a>, attiva
+  <em>Copy file path after saving</em> e imposta il formato <strong>WSL</strong>
+  nelle impostazioni. Dopo una cattura il percorso è negli appunti nella
+  forma che una shell Linux capisce:
+</p>
+<pre><code>/mnt/c/Users/&lt;you&gt;/Downloads/Full Page PDF Snap/pubmed_2026-08-03_0911_0001.pdf</code></pre>
+<p>
+  Incollalo direttamente dopo un comando, o in una chat con uno strumento di
+  IA che sa leggere i file. Il record RIS della stessa cattura si trova
+  accanto al PDF con lo stesso nome e l'estensione <code>.ris</code>.
+</p>
+
+<h2 id="which-route">Quale delle due vie per quale fonte</h2>
+<div class="tblwrap"><table>
+  <thead><tr><th scope="col"></th><th scope="col">L'endpoint</th><th scope="col">L'estensione</th></tr></thead>
+  <tbody>
+    <tr><td>Gira</td><td>su un server, anonimo</td><td>nel tuo browser, connesso</td></tr>
+    <tr><td>Ti dà</td><td>il riferimento</td><td>il riferimento <em>e</em> il documento</td></tr>
+    <tr><td>Dietro un login</td><td class="lose">no</td><td class="win">sì</td></tr>
+    <tr><td>Costo per fonte</td><td class="win">nessuno, scriptabile</td><td>un clic</td></tr>
+    <tr><td>Output</td><td>RIS + BibTeX</td><td>PDF con i campi dentro, più RIS</td></tr>
+  </tbody>
+</table></div>
+<p>
+  Quindi la divisione non è un compromesso: <strong>l'endpoint per il volume,
+  l'estensione per quelle che rifiuta</strong>. Entrambi emettono lo stesso
+  formato RIS, così tutto finisce in un'unica biblioteca Zotero o Citavi
+  indipendentemente dalla via. L'elenco dei rifiuti del primo passaggio ti
+  dice quali fonti hanno bisogno della seconda.
+</p>
+
+<h2 id="machine">Per un agente invece che per una persona</h2>
+<p>
+  Queste ricette sono pubblicate anche come skill leggibile dalle macchine,
+  insieme ai metodi di misurazione:
+</p>
+<ul>
+  <li><a href="/.well-known/agent-skills/index.json">agent-skills/index.json</a>
+      — gli skill con i loro checksum</li>
+  <li><a href="/.well-known/agent-skills/cite-a-web-source.md">cite-a-web-source.md</a>
+      — questa pagina come procedura</li>
+  <li><a href="/llms.txt">llms.txt</a>
+      — tutto ciò che è pubblicato qui, in testo semplice</li>
+  <li><a href="/.well-known/mcp/server-card.json">scheda del server</a>
+      — gli strumenti e il trasporto</li>
+</ul>
+
+<div class="box">
+  <h3>Cosa tutto questo non dimostra</h3>
+  <p>
+    Un record di citazione dice ciò che una pagina dichiara di sé. Non verifica
+    che l'opera esista, che il DOI rimandi a lei o che la pagina sia onesta
+    — per le otto piattaforme su diciotto in cui i dati sono scarsi, questo
+    conta. Una cattura dello schermo, allo stesso modo, è l'immagine di uno
+    schermo e <a href="/disclaimer/">non un documento elettronico
+    qualificato</a>. Dove il contenuto decide qualcosa, leggi la fonte.
+  </p>
+</div>
+
+<p style="font-size:.9rem;color:var(--dim)">Trasparenza: questo sito è gestito dallo sviluppatore di Full Page PDF Snap, l'estensione nominata in questa pagina. <a href="/measurements/print-to-pdf-vs-screenshot/">La stampa in PDF del browser è misurata a confronto</a>, incluso dove la stampa vince. Correzioni: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue su GitHub</a> · <a href="/disclaimer/">Disclaimer</a></p>
+<footer><a href="../">← Proving Lab</a> · <a href="/tools/">Strumenti</a> ·
+  <a href="/notes/mcp-server-what-it-solves/">Informazioni sull'endpoint</a> ·
+  <a href="/disclaimer/">Disclaimer</a></footer>
+</div>
+
+<div data-lang="ja" lang="ja">
+<p class="crumb"><a href="../">Proving Lab</a> · レシピ</p>
+
+<header>
+  <h1>レシピ:ウェブの情報源を引用情報に変える</h1>
+  <p class="standfirst">
+    <code>/mcp</code> の引用エンドポイントのための、短く完全な手順集 ——
+    ターミナル、WSL、Python、そして MCP を話す AI ツール向け。すべて
+    2026年8月3日に実行してから書き起こしています。テストしていない
+    レシピは主張にすぎません。
+  </p>
+  <p class="meta-line">アカウントもキーも不要 · 公正な利用をお願いします ·
+    <a href="/notes/mcp-server-what-it-solves/">エンドポイントの概要と拒否するもの</a></p>
+</header>
+
+<div class="box">
+  <h3>返ってくるもの</h3>
+  <p>
+    著作物であるページの場合:著者、タイトル、雑誌名、年、巻、ページ、DOI、
+    ISSN、ライセンス —— 加えて、そのままインポートできる <strong>RIS
+    レコード</strong>と <strong>BibTeX エントリ</strong>。ペイウォール、エラー、
+    ボットチェックのページの場合:<code>complete: false</code> と、その壁を
+    名指しする警告。<strong>結果を保存する前に <code>complete</code> を確認して
+    ください</strong> —— 拒否されたレコードにもタイトルは残り、著作物のように
+    読めてしまいます。
+  </p>
+</div>
+
+<h2 id="reading-list">読書リストが .ris ファイルになる</h2>
+<p>
+  ほとんどの人が本当に欲しいレシピ。<code>reading-list.txt</code> に 1 行
+  1 URL、出力はインポート可能な 1 ファイル。読み取れない情報源は stderr
+  に名前が出て、半端にインポートされるのではなくファイルから外されます。
+</p>
+<pre><code>while read -r u; do
+  curl -sX POST https://provinglab.dev/mcp \
+    -H 'content-type: application/json' \
+    -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",
+         \"params\":{\"name\":\"extract_citation\",\"arguments\":{\"url\":\"$u\"}}}" \
+  | python3 -c 'import json,sys
+d = json.loads(json.load(sys.stdin)["result"]["content"][0]["text"])
+sys.stdout.write(d["ris"]) if d.get("complete") else \
+  sys.stderr.write("skipped: " + d.get("warning","") + "\n")'
+done &lt; reading-list.txt &gt; literature.ris</code></pre>
+<p>
+  あとは <strong>Zotero → ファイル → インポート</strong>、または <strong>Citavi
+  → インポート → RIS</strong>。学術系 URL 3 件で実測:レコード 3 件、2 秒
+  未満、編集不要でインポート完了。
+</p>
+
+<h2 id="claude-code">Claude Code、たった 1 行</h2>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  <code>claude mcp list</code> が <code>✔ Connected</code> と表示します。あとは
+  <em>「この 4 つのリンクを参考文献用に引用して」</em>と言うだけ —— それぞれに
+  ツールが呼び出され、壁の向こうにあるものは捏造ではなく、壁があるとその
+  通りに報告されます。
+</p>
+
+<h2 id="claude-desktop">Claude Desktop とその他の MCP クライアント</h2>
+<p>
+  <code>https://provinglab.dev/mcp</code> を<strong>リモート MCP サーバー</strong>
+  として追加します(トランスポート: streamable HTTP)。認証は提供されて
+  いますが必須ではなく、匿名リクエストにも同じ回答が返ります。ローカル
+  サーバーしか受け付けないクライアントでは、おなじみのブリッジが使えます:
+</p>
+<pre><code>{
+  "mcpServers": {
+    "provinglab": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://provinglab.dev/mcp"]
+    }
+  }
+}</code></pre>
+
+<h2 id="python">Python —— ユーザーエージェントに注意</h2>
+<p>
+  標準ライブラリは <code>Python-urllib</code> と名乗ります。このサイトの前段の
+  CDN は、worker がリクエストを見る前に <strong>HTTP 403</strong> を返します。
+  自分のユーザーエージェントを 1 つ設定すれば十分です。これは自動化への
+  禁止ではありません —— 区別のつかないフィルターです。
+</p>
+<pre><code>import json, urllib.request
+
+def cite(url):
+    body = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "tools/call",
+        "params": {"name": "extract_citation", "arguments": {"url": url}}}).encode()
+    req = urllib.request.Request("https://provinglab.dev/mcp", body, {
+        "content-type": "application/json",
+        "user-agent": "my-bibliography-script/1.0",   # <- without this: 403
+    })
+    answer = json.loads(urllib.request.urlopen(req, timeout=60).read())
+    return json.loads(answer["result"]["content"][0]["text"])
+
+record = cite("https://doi.org/10.1038/s41586-020-2649-2")
+if record.get("complete"):
+    print(record["ris"])
+else:
+    print("not usable:", record["warning"])</code></pre>
+
+<h2 id="wsl">WSL:ブラウザからターミナルへ</h2>
+<p>
+  作業の 2 つの半分は、ファイルシステムの境界の両側にあります。大学
+  ログインの向こうにある情報源はブラウザでしかキャプチャできず、その
+  ファイルをシェルから見つける必要があります。
+</p>
+<p>
+  <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a> で <em>Copy file
+  path after saving</em> をオンにし、設定でフォーマットを <strong>WSL</strong>
+  にします。キャプチャ後、パスは Linux シェルが理解できる形でクリップ
+  ボードに入ります:
+</p>
+<pre><code>/mnt/c/Users/&lt;you&gt;/Downloads/Full Page PDF Snap/pubmed_2026-08-03_0911_0001.pdf</code></pre>
+<p>
+  コマンドの直後に貼るか、ファイルを読める AI ツールとのチャットに貼って
+  ください。同じキャプチャの RIS レコードは、同じ名前に <code>.ris</code>
+  拡張子を付けて PDF の隣に保存されています。
+</p>
+
+<h2 id="which-route">2 つの経路、どちらをどの情報源に</h2>
+<div class="tblwrap"><table>
+  <thead><tr><th scope="col"></th><th scope="col">エンドポイント</th><th scope="col">拡張機能</th></tr></thead>
+  <tbody>
+    <tr><td>動作場所</td><td>サーバー上、匿名</td><td>あなたのブラウザ内、ログイン済み</td></tr>
+    <tr><td>得られるもの</td><td>書誌情報</td><td>書誌情報<em>と</em>ドキュメント</td></tr>
+    <tr><td>ログインの向こう</td><td class="lose">不可</td><td class="win">可能</td></tr>
+    <tr><td>1 件あたりのコスト</td><td class="win">ゼロ、スクリプト可</td><td>1 クリック</td></tr>
+    <tr><td>出力</td><td>RIS + BibTeX</td><td>フィールドを内蔵した PDF、加えて RIS</td></tr>
+  </tbody>
+</table></div>
+<p>
+  つまりこの分担は妥協ではありません:<strong>件数にはエンドポイント、
+  拒否されたものには拡張機能</strong>。どちらも同じ RIS 形式を出力するので、
+  経路に関係なくすべて 1 つの Zotero または Citavi ライブラリに収まります。
+  最初のパスの拒否リストが、2 番目の経路が必要な情報源を教えてくれます。
+</p>
+
+<h2 id="machine">人ではなくエージェントへ</h2>
+<p>
+  これらのレシピは、測定方法と並んで、機械可読のスキルとしても公開して
+  います:
+</p>
+<ul>
+  <li><a href="/.well-known/agent-skills/index.json">agent-skills/index.json</a>
+      —— スキルとそのチェックサム</li>
+  <li><a href="/.well-known/agent-skills/cite-a-web-source.md">cite-a-web-source.md</a>
+      —— このページを手続きとして</li>
+  <li><a href="/llms.txt">llms.txt</a>
+      —— ここで公開しているすべて、プレーンテキストで</li>
+  <li><a href="/.well-known/mcp/server-card.json">サーバーカード</a>
+      —— ツールとトランスポート</li>
+</ul>
+
+<div class="box">
+  <h3>これらが証明しないこと</h3>
+  <p>
+    引用レコードは、ページが自分について宣言していることを示すだけです。
+    著作物が実在すること、DOI がそれに解決されること、ページが正直である
+    ことを確認するものではありません —— データが薄い 18 プラットフォーム中
+    8 件では、それが重要です。画面キャプチャも同様に、画面の画像であり、
+    <a href="/disclaimer/">適格な電子文書ではありません</a>。内容がものを
+    言う場面では、情報源そのものを読んでください。
+  </p>
+</div>
+
+<p style="font-size:.9rem;color:var(--dim)">開示:このサイトは、このページで名前の挙がっている拡張機能 Full Page PDF Snap の開発者が運営しています。<a href="/measurements/print-to-pdf-vs-screenshot/">ブラウザ自身の PDF 印刷との比較測定</a>では、印刷が勝る場合も含めています。訂正: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="/disclaimer/">免責事項</a></p>
+<footer><a href="../">← Proving Lab</a> · <a href="/tools/">ツール</a> ·
+  <a href="/notes/mcp-server-what-it-solves/">エンドポイントについて</a> ·
+  <a href="/disclaimer/">免責事項</a></footer>
+</div>
+
+<div data-lang="pt-BR" lang="pt-BR">
+<p class="crumb"><a href="../">Proving Lab</a> · Receitas</p>
+
+<header>
+  <h1>Receitas: transforme uma fonte da web em uma citação</h1>
+  <p class="standfirst">
+    Instruções curtas e completas para o endpoint de citação em
+    <code>/mcp</code> — em um terminal, no WSL, em Python e em ferramentas
+    de IA que falam MCP. Cada uma foi executada em 3 de agosto de 2026 antes
+    de ser escrita; uma receita não testada é uma alegação.
+  </p>
+  <p class="meta-line">Sem conta e sem chave · uso justo, por favor ·
+    <a href="/notes/mcp-server-what-it-solves/">o que é o endpoint e o que ele recusa</a></p>
+</header>
+
+<div class="box">
+  <h3>O que você recebe de volta</h3>
+  <p>
+    Para uma página que é uma obra: autores, título, periódico, ano, volume,
+    páginas, DOI, ISSN e licença — além de um <strong>registro RIS</strong>
+    pronto para importar e uma <strong>entrada BibTeX</strong>. Para uma página
+    que é um paywall, um erro ou uma verificação de bot: <code>complete:
+    false</code> e um aviso que nomeia o muro. <strong>Teste <code>complete</code>
+    antes de arquivar o resultado</strong> — um registro recusado ainda carrega
+    um título e vai se ler como uma obra.
+  </p>
+</div>
+
+<h2 id="reading-list">Uma lista de leitura vira um arquivo .ris</h2>
+<p>
+  A receita que a maioria realmente quer. Uma URL por linha em
+  <code>reading-list.txt</code>, um arquivo importável como saída. Fontes que
+  não podem ser lidas são nomeadas no stderr e ficam fora do arquivo em vez
+  de serem importadas pela metade.
+</p>
+<pre><code>while read -r u; do
+  curl -sX POST https://provinglab.dev/mcp \
+    -H 'content-type: application/json' \
+    -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",
+         \"params\":{\"name\":\"extract_citation\",\"arguments\":{\"url\":\"$u\"}}}" \
+  | python3 -c 'import json,sys
+d = json.loads(json.load(sys.stdin)["result"]["content"][0]["text"])
+sys.stdout.write(d["ris"]) if d.get("complete") else \
+  sys.stderr.write("skipped: " + d.get("warning","") + "\n")'
+done &lt; reading-list.txt &gt; literature.ris</code></pre>
+<p>
+  Depois, <strong>Zotero → Arquivo → Importar</strong>, ou <strong>Citavi →
+  Importar → RIS</strong>. Medido em três URLs acadêmicas: três registros,
+  menos de dois segundos, importados sem edição.
+</p>
+
+<h2 id="claude-code">Claude Code, em uma linha</h2>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  <code>claude mcp list</code> então reporta <code>✔ Connected</code>. Depois
+  disso, basta dizer: <em>"cite estes quatro links para a minha bibliografia"</em>
+  — a ferramenta é chamada para cada um, e os que estão atrás de um muro são
+  reportados como tal em vez de inventados.
+</p>
+
+<h2 id="claude-desktop">Claude Desktop e outros clientes MCP</h2>
+<p>
+  Adicione <code>https://provinglab.dev/mcp</code> como <strong>servidor MCP
+  remoto</strong> (transporte: streamable HTTP). A autenticação é oferecida,
+  mas não é obrigatória; requisições anônimas recebem respostas idênticas.
+  Em clientes que só aceitam servidores locais, a ponte habitual funciona:
+</p>
+<pre><code>{
+  "mcpServers": {
+    "provinglab": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://provinglab.dev/mcp"]
+    }
+  }
+}</code></pre>
+
+<h2 id="python">Python — atenção ao user agent</h2>
+<p>
+  A biblioteca padrão se identifica como <code>Python-urllib</code>, e o CDN à
+  frente deste site responde a isso com <strong>HTTP 403</strong> antes mesmo
+  de o worker ver a requisição. Qualquer user agent seu é suficiente. Isso não
+  é uma regra contra automação — é um filtro que não conhece a diferença.
+</p>
+<pre><code>import json, urllib.request
+
+def cite(url):
+    body = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "tools/call",
+        "params": {"name": "extract_citation", "arguments": {"url": url}}}).encode()
+    req = urllib.request.Request("https://provinglab.dev/mcp", body, {
+        "content-type": "application/json",
+        "user-agent": "my-bibliography-script/1.0",   # <- without this: 403
+    })
+    answer = json.loads(urllib.request.urlopen(req, timeout=60).read())
+    return json.loads(answer["result"]["content"][0]["text"])
+
+record = cite("https://doi.org/10.1038/s41586-020-2649-2")
+if record.get("complete"):
+    print(record["ris"])
+else:
+    print("not usable:", record["warning"])</code></pre>
+
+<h2 id="wsl">WSL: do navegador para o terminal</h2>
+<p>
+  As duas metades do trabalho ficam em lados diferentes da fronteira do
+  sistema de arquivos. Uma fonte atrás de um login universitário só pode ser
+  capturada no navegador, e o arquivo precisa então ser encontrado a partir
+  de um shell.
+</p>
+<p>
+  No <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a>, ative
+  <em>Copy file path after saving</em> e defina o formato <strong>WSL</strong>
+  nas configurações. Após uma captura, o caminho está na área de
+  transferência na forma que um shell Linux entende:
+</p>
+<pre><code>/mnt/c/Users/&lt;you&gt;/Downloads/Full Page PDF Snap/pubmed_2026-08-03_0911_0001.pdf</code></pre>
+<p>
+  Cole diretamente após um comando, ou em um chat com uma ferramenta de IA
+  que saiba ler arquivos. O registro RIS da mesma captura fica ao lado do PDF
+  com o mesmo nome e a extensão <code>.ris</code>.
+</p>
+
+<h2 id="which-route">Qual das duas rotas para qual fonte</h2>
+<div class="tblwrap"><table>
+  <thead><tr><th scope="col"></th><th scope="col">O endpoint</th><th scope="col">A extensão</th></tr></thead>
+  <tbody>
+    <tr><td>Roda</td><td>em um servidor, anônimo</td><td>no seu navegador, logado</td></tr>
+    <tr><td>Entrega</td><td>a referência</td><td>a referência <em>e</em> o documento</td></tr>
+    <tr><td>Atrás de um login</td><td class="lose">não</td><td class="win">sim</td></tr>
+    <tr><td>Custo por fonte</td><td class="win">nenhum, scriptável</td><td>um clique</td></tr>
+    <tr><td>Saída</td><td>RIS + BibTeX</td><td>PDF com os campos dentro, mais RIS</td></tr>
+  </tbody>
+</table></div>
+<p>
+  Então a divisão não é um compromisso: <strong>o endpoint para o volume, a
+  extensão para as que ele recusa</strong>. Ambos emitem o mesmo formato RIS,
+  então tudo cai na mesma biblioteca do Zotero ou Citavi, qualquer que seja
+  a rota. A lista de recusas da primeira passada diz quais fontes precisam
+  da segunda.
+</p>
+
+<h2 id="machine">Para um agente, não para uma pessoa</h2>
+<p>
+  Estas receitas também são publicadas como um skill legível por máquina,
+  junto aos métodos de medição:
+</p>
+<ul>
+  <li><a href="/.well-known/agent-skills/index.json">agent-skills/index.json</a>
+      — os skills com seus checksums</li>
+  <li><a href="/.well-known/agent-skills/cite-a-web-source.md">cite-a-web-source.md</a>
+      — esta página como procedimento</li>
+  <li><a href="/llms.txt">llms.txt</a>
+      — tudo o que é publicado aqui, em texto puro</li>
+  <li><a href="/.well-known/mcp/server-card.json">cartão do servidor</a>
+      — as ferramentas e o transporte</li>
+</ul>
+
+<div class="box">
+  <h3>O que nada disso prova</h3>
+  <p>
+    Um registro de citação diz o que uma página declara sobre si mesma. Não
+    verifica se a obra existe, se o DOI resolve para ela ou se a página é
+    honesta — para as oito de dezoito plataformas em que os dados são
+    escassos, isso importa. Uma captura de tela, da mesma forma, é a imagem
+    de uma tela e <a href="/disclaimer/">não um documento eletrônico
+    qualificado</a>. Onde o conteúdo decide algo, leia a fonte.
+  </p>
+</div>
+
+<p style="font-size:.9rem;color:var(--dim)">Transparência: este site é mantido pelo desenvolvedor do Full Page PDF Snap, a extensão citada nesta página. <a href="/measurements/print-to-pdf-vs-screenshot/">A impressão em PDF do próprio navegador é medida em comparação</a>, incluindo onde a impressão vence. Correções: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues no GitHub</a> · <a href="/disclaimer/">Aviso legal</a></p>
+<footer><a href="../">← Proving Lab</a> · <a href="/tools/">Ferramentas</a> ·
+  <a href="/notes/mcp-server-what-it-solves/">Sobre o endpoint</a> ·
+  <a href="/disclaimer/">Aviso legal</a></footer>
+</div>
+
+<div data-lang="ru" lang="ru">
+<p class="crumb"><a href="../">Proving Lab</a> · Рецепты</p>
+
+<header>
+  <h1>Рецепты: превратить веб-источник в библиографическую запись</h1>
+  <p class="standfirst">
+    Короткие, полные инструкции для конечной точки цитирования по адресу
+    <code>/mcp</code> — в терминале, в WSL, в Python и в ИИ-инструментах,
+    говорящих на MCP. Каждая была выполнена 3 августа 2026 года до того,
+    как была записана; непроверенный рецепт — это утверждение.
+  </p>
+  <p class="meta-line">Без аккаунта и без ключа · пожалуйста, используйте умеренно ·
+    <a href="/notes/mcp-server-what-it-solves/">что такое эта конечная точка и что она отклоняет</a></p>
+</header>
+
+<div class="box">
+  <h3>Что вы получаете обратно</h3>
+  <p>
+    Для страницы, которая является произведением: авторы, название, журнал,
+    год, том, страницы, DOI, ISSN и лицензия — плюс готовая к импорту
+    <strong>запись RIS</strong> и <strong>запись BibTeX</strong>. Для страницы,
+    которая является платным барьером, ошибкой или проверкой на бота:
+    <code>complete: false</code> и предупреждение, называющее барьер.
+    <strong>Проверяйте <code>complete</code>, прежде чем сохранить результат</strong>
+    — отклонённая запись всё равно несёт заголовок и будет читаться как
+    произведение.
+  </p>
+</div>
+
+<h2 id="reading-list">Список чтения превращается в файл .ris</h2>
+<p>
+  Рецепт, который большинству действительно нужен. По одному URL на строку
+  в <code>reading-list.txt</code> — на выходе один импортируемый файл.
+  Источники, которые не удалось прочитать, называются в stderr и не попадают
+  в файл, вместо того чтобы импортироваться наполовину.
+</p>
+<pre><code>while read -r u; do
+  curl -sX POST https://provinglab.dev/mcp \
+    -H 'content-type: application/json' \
+    -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",
+         \"params\":{\"name\":\"extract_citation\",\"arguments\":{\"url\":\"$u\"}}}" \
+  | python3 -c 'import json,sys
+d = json.loads(json.load(sys.stdin)["result"]["content"][0]["text"])
+sys.stdout.write(d["ris"]) if d.get("complete") else \
+  sys.stderr.write("skipped: " + d.get("warning","") + "\n")'
+done &lt; reading-list.txt &gt; literature.ris</code></pre>
+<p>
+  Затем <strong>Zotero → Файл → Импорт</strong> или <strong>Citavi → Импорт
+  → RIS</strong>. Замерено на трёх научных URL: три записи, меньше двух
+  секунд, импортированы без правок.
+</p>
+
+<h2 id="claude-code">Claude Code, одной строкой</h2>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  <code>claude mcp list</code> затем показывает <code>✔ Connected</code>. После
+  этого можно просто сказать: <em>«процитируй эти четыре ссылки для моей
+  библиографии»</em> — инструмент вызывается для каждой, а те, что за
+  барьером, так и докладываются — вместо того чтобы выдумываться.
+</p>
+
+<h2 id="claude-desktop">Claude Desktop и другие MCP-клиенты</h2>
+<p>
+  Добавьте <code>https://provinglab.dev/mcp</code> как <strong>удалённый
+  MCP-сервер</strong> (транспорт: streamable HTTP). Аутентификация
+  предлагается, но не требуется; анонимные запросы получают идентичные
+  ответы. В клиентах, принимающих только локальные серверы, работает
+  обычный мост:
+</p>
+<pre><code>{
+  "mcpServers": {
+    "provinglab": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://provinglab.dev/mcp"]
+    }
+  }
+}</code></pre>
+
+<h2 id="python">Python — не забудьте про user agent</h2>
+<p>
+  Стандартная библиотека представляется как <code>Python-urllib</code>, и CDN
+  перед этим сайтом отвечает на это <strong>HTTP 403</strong> ещё до того,
+  как worker увидит запрос. Достаточно любого собственного user agent. Это
+  не правило против автоматизации — это фильтр, который не знает разницы.
+</p>
+<pre><code>import json, urllib.request
+
+def cite(url):
+    body = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "tools/call",
+        "params": {"name": "extract_citation", "arguments": {"url": url}}}).encode()
+    req = urllib.request.Request("https://provinglab.dev/mcp", body, {
+        "content-type": "application/json",
+        "user-agent": "my-bibliography-script/1.0",   # <- without this: 403
+    })
+    answer = json.loads(urllib.request.urlopen(req, timeout=60).read())
+    return json.loads(answer["result"]["content"][0]["text"])
+
+record = cite("https://doi.org/10.1038/s41586-020-2649-2")
+if record.get("complete"):
+    print(record["ris"])
+else:
+    print("not usable:", record["warning"])</code></pre>
+
+<h2 id="wsl">WSL: из браузера в терминал</h2>
+<p>
+  Две половины работы находятся по разные стороны границы файловых систем.
+  Источник за университетским логином можно захватить только в браузере,
+  а файл затем нужно найти из командной строки.
+</p>
+<p>
+  В <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a> включите
+  <em>Copy file path after saving</em> и установите формат <strong>WSL</strong>
+  в настройках. После захвата путь лежит в буфере обмена в виде, понятном
+  Linux-оболочке:
+</p>
+<pre><code>/mnt/c/Users/&lt;you&gt;/Downloads/Full Page PDF Snap/pubmed_2026-08-03_0911_0001.pdf</code></pre>
+<p>
+  Вставьте его сразу после команды или в чат с ИИ-инструментом, умеющим
+  читать файлы. Запись RIS для того же захвата лежит рядом с PDF с тем же
+  именем и расширением <code>.ris</code>.
+</p>
+
+<h2 id="which-route">Какой из двух путей — для какого источника</h2>
+<div class="tblwrap"><table>
+  <thead><tr><th scope="col"></th><th scope="col">Конечная точка</th><th scope="col">Расширение</th></tr></thead>
+  <tbody>
+    <tr><td>Работает</td><td>на сервере, анонимно</td><td>в вашем браузере, с логином</td></tr>
+    <tr><td>Выдаёт</td><td>библиографическое описание</td><td>описание <em>и</em> документ</td></tr>
+    <tr><td>За логином</td><td class="lose">нет</td><td class="win">да</td></tr>
+    <tr><td>Цена за источник</td><td class="win">ноль, скриптуется</td><td>один клик</td></tr>
+    <tr><td>Вывод</td><td>RIS + BibTeX</td><td>PDF с полями внутри, плюс RIS</td></tr>
+  </tbody>
+</table></div>
+<p>
+  Так что разделение — не компромисс: <strong>конечная точка — для объёма,
+  расширение — для тех, кого она отклоняет</strong>. Обе выдают один и тот же
+  формат RIS, поэтому всё попадает в одну библиотеку Zotero или Citavi
+  независимо от пути. Список отказов первого прохода подскажет, каким
+  источникам нужен второй.
+</p>
+
+<h2 id="machine">Для агента, а не для человека</h2>
+<p>
+  Эти рецепты также опубликованы как машиночитаемый навык, рядом с методами
+  измерений:
+</p>
+<ul>
+  <li><a href="/.well-known/agent-skills/index.json">agent-skills/index.json</a>
+      — навыки с их контрольными суммами</li>
+  <li><a href="/.well-known/agent-skills/cite-a-web-source.md">cite-a-web-source.md</a>
+      — эта страница в виде процедуры</li>
+  <li><a href="/llms.txt">llms.txt</a>
+      — всё опубликованное здесь, простым текстом</li>
+  <li><a href="/.well-known/mcp/server-card.json">карточка сервера</a>
+      — инструменты и транспорт</li>
+</ul>
+
+<div class="box">
+  <h3>Чего всё это не доказывает</h3>
+  <p>
+    Библиографическая запись говорит лишь то, что страница заявляет о себе.
+    Она не проверяет, существует ли произведение, ведёт ли DOI на него и
+    честна ли страница — для восьми из восемнадцати платформ, где данные
+    скудны, это важно. Снимок экрана, так же, — это изображение экрана, а
+    <a href="/disclaimer/">не квалифицированный электронный документ</a>.
+    Там, где решает содержание, читайте источник.
+  </p>
+</div>
+
+<p style="font-size:.9rem;color:var(--dim)">Раскрытие информации: этот сайт ведёт разработчик Full Page PDF Snap — расширения, названного на этой странице. <a href="/measurements/print-to-pdf-vs-screenshot/">Собственная печать в PDF браузера измерена в сравнении с ним</a>, включая случаи, где печать выигрывает. Исправления: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="/disclaimer/">Отказ от ответственности</a></p>
+<footer><a href="../">← Proving Lab</a> · <a href="/tools/">Инструменты</a> ·
+  <a href="/notes/mcp-server-what-it-solves/">О конечной точке</a> ·
+  <a href="/disclaimer/">Отказ от ответственности</a></footer>
+</div>
+
+<div data-lang="zh-CN" lang="zh-CN">
+<p class="crumb"><a href="../">Proving Lab</a> · 配方</p>
+
+<header>
+  <h1>配方:把网页来源变成引文</h1>
+  <p class="standfirst">
+    <code>/mcp</code> 引文端点的简短完整用法说明 —— 可在终端、WSL、Python
+    以及支持 MCP 的 AI 工具中使用。每一条都在 2026 年 8 月 3 日实际运行
+    过之后才被写下来;未经测试的配方只是空谈。
+  </p>
+  <p class="meta-line">无需账户和密钥 · 请合理使用 ·
+    <a href="/notes/mcp-server-what-it-solves/">该端点是什么、会拒绝什么</a></p>
+</header>
+
+<div class="box">
+  <h3>你会得到什么</h3>
+  <p>
+    对于是作品的页面:作者、标题、期刊、年份、卷、页码、DOI、ISSN 和许可
+    —— 外加可直接导入的 <strong>RIS 记录</strong>和 <strong>BibTeX 条目</strong>。
+    对于付费墙、错误页或机器人检查页:<code>complete: false</code> 和一条
+    指明是哪堵墙的警告。<strong>在归档结果之前先检查 <code>complete</code></strong>
+    —— 被拒绝的记录仍带有标题,读起来会像一件作品。
+  </p>
+</div>
+
+<h2 id="reading-list">阅读清单变成 .ris 文件</h2>
+<p>
+  大多数人真正想要的配方。<code>reading-list.txt</code> 中每行一个 URL,
+  产出一个可导入的文件。无法读取的来源会在 stderr 中列名,并从文件中
+  剔除,而不是导入一半。
+</p>
+<pre><code>while read -r u; do
+  curl -sX POST https://provinglab.dev/mcp \
+    -H 'content-type: application/json' \
+    -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",
+         \"params\":{\"name\":\"extract_citation\",\"arguments\":{\"url\":\"$u\"}}}" \
+  | python3 -c 'import json,sys
+d = json.loads(json.load(sys.stdin)["result"]["content"][0]["text"])
+sys.stdout.write(d["ris"]) if d.get("complete") else \
+  sys.stderr.write("skipped: " + d.get("warning","") + "\n")'
+done &lt; reading-list.txt &gt; literature.ris</code></pre>
+<p>
+  然后 <strong>Zotero → 文件 → 导入</strong>,或 <strong>Citavi → 导入 →
+  RIS</strong>。在三个学术 URL 上实测:三条记录,不到两秒,无需编辑即可导入。
+</p>
+
+<h2 id="claude-code">Claude Code,一行搞定</h2>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  <code>claude mcp list</code> 随后会显示 <code>✔ Connected</code>。之后你只需说:
+  <em>"为我的参考文献引用这四个链接"</em> —— 每个链接都会调用该工具,被墙
+  挡住的会如实报告,而不是凭空编造。
+</p>
+
+<h2 id="claude-desktop">Claude Desktop 和其他 MCP 客户端</h2>
+<p>
+  将 <code>https://provinglab.dev/mcp</code> 添加为<strong>远程 MCP 服务器</strong>
+  (传输方式:streamable HTTP)。提供身份验证但非必需;匿名请求会得到完全
+  相同的回答。在只接受本地服务器的客户端中,常用的桥接方式可行:
+</p>
+<pre><code>{
+  "mcpServers": {
+    "provinglab": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://provinglab.dev/mcp"]
+    }
+  }
+}</code></pre>
+
+<h2 id="python">Python —— 注意 user agent</h2>
+<p>
+  标准库会自报为 <code>Python-urllib</code>,本站前面的 CDN 会在 worker 看到
+  请求之前就对其返回 <strong>HTTP 403</strong>。随便设置一个自己的 user
+  agent 即可。这不是针对自动化的规定 —— 而是一个分不清区别的过滤器。
+</p>
+<pre><code>import json, urllib.request
+
+def cite(url):
+    body = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "tools/call",
+        "params": {"name": "extract_citation", "arguments": {"url": url}}}).encode()
+    req = urllib.request.Request("https://provinglab.dev/mcp", body, {
+        "content-type": "application/json",
+        "user-agent": "my-bibliography-script/1.0",   # <- without this: 403
+    })
+    answer = json.loads(urllib.request.urlopen(req, timeout=60).read())
+    return json.loads(answer["result"]["content"][0]["text"])
+
+record = cite("https://doi.org/10.1038/s41586-020-2649-2")
+if record.get("complete"):
+    print(record["ris"])
+else:
+    print("not usable:", record["warning"])</code></pre>
+
+<h2 id="wsl">WSL:从浏览器到终端</h2>
+<p>
+  工作的两半位于文件系统边界的两侧。大学登录墙后面的来源只能在浏览器里
+  捕获,然后还要能从 shell 里找到这个文件。
+</p>
+<p>
+  在 <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a> 中打开
+  <em>Copy file path after saving</em>,并在设置里把格式设为 <strong>WSL</strong>。
+  捕获之后,路径会以 Linux shell 能看懂的形式放进剪贴板:
+</p>
+<pre><code>/mnt/c/Users/&lt;you&gt;/Downloads/Full Page PDF Snap/pubmed_2026-08-03_0911_0001.pdf</code></pre>
+<p>
+  直接粘贴在命令后面,或粘贴到能读取文件的 AI 工具聊天里。同一次捕获的
+  RIS 记录就以相同的文件名加 <code>.ris</code> 扩展名保存在 PDF 旁边。
+</p>
+
+<h2 id="which-route">两条路线,分别适合什么来源</h2>
+<div class="tblwrap"><table>
+  <thead><tr><th scope="col"></th><th scope="col">端点</th><th scope="col">扩展</th></tr></thead>
+  <tbody>
+    <tr><td>运行位置</td><td>服务器上,匿名</td><td>你的浏览器里,已登录</td></tr>
+    <tr><td>给你</td><td>参考文献条目</td><td>条目<em>和</em>文档</td></tr>
+    <tr><td>登录墙之后</td><td class="lose">不行</td><td class="win">可以</td></tr>
+    <tr><td>每个来源的成本</td><td class="win">零,可脚本化</td><td>一次点击</td></tr>
+    <tr><td>输出</td><td>RIS + BibTeX</td><td>内嵌字段的 PDF,外加 RIS</td></tr>
+  </tbody>
+</table></div>
+<p>
+  所以这种分工不是妥协:<strong>批量走端点,被端点拒绝的走扩展</strong>。
+  两者输出相同的 RIS 格式,因此无论走哪条路线,所有内容都会进入同一个
+  Zotero 或 Citavi 库。第一遍的拒绝列表会告诉你哪些来源需要第二条路线。
+</p>
+
+<h2 id="machine">面向代理而非人类</h2>
+<p>
+  这些配方还以机器可读的 skill 形式发布,与测量方法放在一起:
+</p>
+<ul>
+  <li><a href="/.well-known/agent-skills/index.json">agent-skills/index.json</a>
+      —— 各 skill 及其校验和</li>
+  <li><a href="/.well-known/agent-skills/cite-a-web-source.md">cite-a-web-source.md</a>
+      —— 本页面的流程化版本</li>
+  <li><a href="/llms.txt">llms.txt</a>
+      —— 本站发布的所有内容,纯文本</li>
+  <li><a href="/.well-known/mcp/server-card.json">服务器卡片</a>
+      —— 工具与传输方式</li>
+</ul>
+
+<div class="box">
+  <h3>这些都不能证明什么</h3>
+  <p>
+    一条引文记录只能说明页面如何自我声明。它不验证作品是否存在、DOI 是否
+    解析到它、页面是否诚实 —— 在十八个平台中有八个数据稀薄,这一点很
+    重要。屏幕截图同样只是屏幕的图像,<a href="/disclaimer/">并非合格的
+    电子文档</a>。在内容起决定作用的地方,请阅读原文。
+  </p>
+</div>
+
+<p style="font-size:.9rem;color:var(--dim)">披露:本站由本页提到的扩展 Full Page PDF Snap 的开发者运营。<a href="/measurements/print-to-pdf-vs-screenshot/">浏览器自带的打印为 PDF 已与之对比测量</a>,包括打印胜出的情形。更正:<a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="/disclaimer/">免责声明</a></p>
+<footer><a href="../">← Proving Lab</a> · <a href="/tools/">工具</a> ·
+  <a href="/notes/mcp-server-what-it-solves/">关于该端点</a> ·
+  <a href="/disclaimer/">免责声明</a></footer>
+</div>
 </div>
 </body>
 </html>
