@@ -9,13 +9,20 @@
 > that gets an agent from nothing to working is
 > [agent.md](https://provinglab.dev/agent.md).
 
+> Prose pages are published in nine languages (en, de, es, fr, it,
+> ja, pt-BR, ru, zh-CN). To read one, send `Accept: text/markdown`
+> together with `Accept-Language: de`, or append `?lang=de` — you
+> get that language alone, with the others stripped out. Measured
+> values, identifiers and URLs are identical in every language;
+> only the prose differs.
+
 
 Run by the developer of Full Page PDF Snap, which appears in several of the
 measurements. Disclosed on every page where it is relevant.
 
 ## Start here
 
-- [For AI agents](https://provinglab.dev/for-agents/): The whole surface on one page — connect with `claude mcp add --transport http provinglab https://provinglab.dev/mcp`, five tools, and the one rule worth hard-coding: read the `complete` flag, never the title alone …
+- [For AI agents](https://provinglab.dev/for-agents/): The whole surface on one page — connect with `claude mcp add --transport http provinglab https://provinglab.dev/mcp`, ten tools, and the one rule worth hard-coding: read the `complete` flag, never the title alone …
 - [How to save a web page as a PDF](https://provinglab.dev/how-to/save-a-webpage-as-pdf/): The answer for a person, with every figure linked to its measurement.
 - [For students: a source that cites itself, survives, and can be read by a machine](https://provinglab.dev/how-to/for-students/): The three failure modes of a web source in a term paper, each with its measurement.
 - [For researchers and students: the add-on in Firefox and Chrome](https://provinglab.dev/how-to/firefox-and-chrome/): The practical companion to the students piece — setup and the academic workflow, no new measurements.

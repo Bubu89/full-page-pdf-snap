@@ -93,7 +93,16 @@ def index_bauen(voll):
     kopf = ("\n> This file is an index. The same entries with their full text are in\n"
             "> [llms-full.txt](https://provinglab.dev/llms-full.txt); a single sheet\n"
             "> that gets an agent from nothing to working is\n"
-            "> [agent.md](https://provinglab.dev/agent.md).\n")
+            "> [agent.md](https://provinglab.dev/agent.md).\n"
+            "\n"
+            # Ohne diesen Hinweis holt ein Agent die Seite in der falschen
+            # Sprache — oder, bis zum 16.08.2026, in allen neun zugleich:
+            "> Prose pages are published in nine languages (en, de, es, fr, it,\n"
+            "> ja, pt-BR, ru, zh-CN). To read one, send `Accept: text/markdown`\n"
+            "> together with `Accept-Language: de`, or append `?lang=de` — you\n"
+            "> get that language alone, with the others stripped out. Measured\n"
+            "> values, identifiers and URLs are identical in every language;\n"
+            "> only the prose differs.\n")
     # Nach dem einleitenden Zitatblock einsetzen, nicht davor: der erste Absatz
     # sagt, worum es geht, und das gehoert vor jeden Hinweis auf andere Dateien.
     text = "\n".join(aus)

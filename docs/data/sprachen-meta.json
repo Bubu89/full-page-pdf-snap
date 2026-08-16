@@ -1,0 +1,822 @@
+{
+  "/about/": {
+    "en": {
+      "title": "About &amp; disclosure",
+      "description": "A private, non-commercial publication. Who runs it, how the figures are produced, and what it deliberately does not offer."
+    },
+    "de": {
+      "title": "Über &amp; Offenlegung",
+      "description": "Eine private, nicht-kommerzielle Veröffentlichung. Wer sie betreibt, wie die Zahlen entstehen und was sie bewusst nicht anbietet."
+    },
+    "es": {
+      "title": "Acerca de y divulgación",
+      "description": "Una publicación privada y no comercial. Quién la opera, cómo se producen las cifras y qué no ofrece deliberadamente."
+    },
+    "fr": {
+      "title": "À propos et transparence",
+      "description": "Une publication privée et non commerciale. Qui l'exploite, comment les chiffres sont produits et ce qu'elle ne propose délibérément pas."
+    },
+    "it": {
+      "title": "Informazioni e trasparenza",
+      "description": "Una pubblicazione privata e non commerciale. Chi la gestisce, come vengono prodotte le cifre e cosa deliberatamente non offre."
+    },
+    "ja": {
+      "title": "このサイトについて・開示事項",
+      "description": "個人の非営利の出版物です。運営者は誰か、数値がどのように生成されるか、そして何を意図的に提供していないかを記しています。"
+    },
+    "pt-BR": {
+      "title": "Sobre e divulgação",
+      "description": "Uma publicação privada e sem fins comerciais. Quem a opera, como os números são produzidos e o que ela deliberadamente não oferece."
+    },
+    "ru": {
+      "title": "О сайте и раскрытие информации",
+      "description": "Частная некоммерческая публикация. Кто её ведёт, как получаются цифры и что она сознательно не предлагает."
+    },
+    "zh-CN": {
+      "title": "关于与披露",
+      "description": "一本公开的个人笔记。内容包含浏览器工具的测量结果和软件开发的工作报告。它之所以存在，是因为结果公开比私有更有用——而不是作为一门生意。"
+    }
+  },
+  "/anleitung/webseite-als-pdf-speichern/": {
+    "en": {
+      "title": "Save a web page as PDF — one sheet, with its source and retrieval date on it",
+      "description": "In short: a capture extension instead of the print dialog. The print export paginates — the same article came out as 26 pages, and 9 breaks cut through the …"
+    },
+    "de": {
+      "title": "Webseite als PDF speichern — ein Blatt, mit Quelle und Abrufdatum darauf",
+      "description": "Kurz: eine Aufnahme-Erweiterung statt des Druckdialogs. Der Druckexport teilt in Seiten auf — derselbe Artikel kam als 26 Seiten heraus, 9 Umbrueche schnitten …"
+    },
+    "es": {
+      "title": "Guardar una página web como PDF — una hoja, con la fuente y la fecha de consulta encima",
+      "description": "En corto: una extensión de captura en lugar del diálogo de impresión. La exportación de impresión reparte en páginas — el mismo artículo salió como 26 páginas …"
+    },
+    "fr": {
+      "title": "Enregistrer une page web en PDF — une feuille, avec la source et la date de consultation dessus",
+      "description": "En bref : une extension de capture au lieu de la boîte de dialogue d’impression. L’export d’impression découpe en pages — le même article est sorti en 26 …"
+    },
+    "it": {
+      "title": "Salvare una pagina web in PDF — un foglio, con la fonte e la data di consultazione sopra",
+      "description": "In breve: un’estensione di cattura al posto della finestra di stampa. L’esportazione di stampa divide in pagine — lo stesso articolo è uscito come 26 pagine, e …"
+    },
+    "ja": {
+      "title": "ウェブページを PDF として保存する — 1 枚の紙に、出典と取得日を載せて",
+      "description": "手短に言えば、印刷ダイアログではなくキャプチャ拡張機能を使う。印刷の書き出しはページに分ける — 同じ記事が 26 ページになり、9 か所の改ページが文の途中を切った 。キャプチャは 1 枚の連続した紙に書き出し、出どころと取得時刻をその中に書き込める。"
+    },
+    "pt-BR": {
+      "title": "Salvar uma página web em PDF — uma folha, com a fonte e a data de consulta nela",
+      "description": "Em resumo: uma extensão de captura em vez da caixa de impressão. A exportação de impressão reparte em páginas — o mesmo artigo saiu como 26 páginas, e 9 …"
+    },
+    "ru": {
+      "title": "Сохранить веб-страницу в PDF — одним листом, с источником и датой обращения на нём",
+      "description": "Коротко: расширение для съёмки вместо диалога печати. Экспорт на печать разбивает на страницы — та же статья вышла как 26 страниц, и 9 разрывов прошли посреди …"
+    },
+    "zh-CN": {
+      "title": "把网页保存为 PDF —— 一整张，并带上出处与访问日期",
+      "description": "简单说：用抓取扩展，而不是打印对话框。打印导出会把内容分成许多页——同一篇文章印出来是 26 页，9 处分页从句子中间切开 。抓取写出的是一张连续的长纸，还能把来源和访问时间写进去。"
+    }
+  },
+  "/data/": {
+    "en": {
+      "title": "Data",
+      "description": "The raw numbers behind the measurements, as JSON — including the control runs. Licensed CC BY 4.0, so they can be reused with attribution."
+    },
+    "de": {
+      "title": "Daten",
+      "description": "Die rohen Zahlen hinter den Messungen, als JSON — einschließlich der Kontrollläufe. Lizenziert unter CC BY 4.0, also mit Namensnennung wiederverwendbar."
+    },
+    "es": {
+      "title": "Datos",
+      "description": "Las cifras en bruto detrás de las mediciones, en JSON — incluidas las ejecuciones de control. Con licencia CC BY 4.0, para reutilizarlas con atribución."
+    },
+    "fr": {
+      "title": "Données",
+      "description": "Les chiffres bruts derrière les mesures, en JSON — y compris les passages de contrôle. Sous licence CC BY 4.0, réutilisables avec attribution."
+    },
+    "it": {
+      "title": "Dati",
+      "description": "I numeri grezzi dietro le misurazioni, in JSON — comprese le corse di controllo. Con licenza CC BY 4.0, riutilizzabili con attribuzione."
+    },
+    "ja": {
+      "title": "データ",
+      "description": "測定の裏にある生の数値を JSON で — コントロールランを含みます。CC BY 4.0 ライセンスのため、帰属表示付きで再利用できます。"
+    },
+    "pt-BR": {
+      "title": "Dados",
+      "description": "Os números brutos por trás das medições, em JSON — incluindo as rodadas de controle. Licenciados sob CC BY 4.0, para reutilização com atribuição."
+    },
+    "ru": {
+      "title": "Данные",
+      "description": "Сырые числа, стоящие за измерениями, в JSON — включая контрольные прогоны. Лицензия CC BY 4.0: можно использовать повторно с указанием авторства."
+    },
+    "zh-CN": {
+      "title": "数据",
+      "description": "测量背后的原始数字,以 JSON 提供——包括对照运行。采用 CC BY 4.0 许可,署名即可复用。"
+    }
+  },
+  "/deutsch/": {
+    "en": {
+      "title": "German-language versions",
+      "description": "This site is written in English. 12 posts additionally carry a full German version on the same page. They are not translations but versions of the same …"
+    },
+    "de": {
+      "title": "Deutschsprachige Fassungen",
+      "description": "Diese Seite ist auf Englisch geschrieben. 12 Beiträge tragen zusätzlich eine vollständige deutsche Fassung auf derselben Seite. Es sind keine Übersetzungen …"
+    },
+    "es": {
+      "title": "Versiones en alemán",
+      "description": "Este sitio está escrito en inglés. 12 publicaciones llevan además una versión alemana completa en la misma página. No son traducciones, sino versiones …"
+    },
+    "fr": {
+      "title": "Versions en allemand",
+      "description": "Ce site est rédigé en anglais. 12 articles portent en outre une version allemande complète sur la même page. Ce ne sont pas des traductions, mais des versions …"
+    },
+    "it": {
+      "title": "Versioni in tedesco",
+      "description": "Questo sito è scritto in inglese. 12 contributi portano inoltre una versione tedesca completa nella stessa pagina. Non sono traduzioni, ma versioni autonome …"
+    },
+    "ja": {
+      "title": "ドイツ語版",
+      "description": "このサイトは英語で書かれています。12 本の記事は、同じページ上に完全なドイツ語版を併せて備えています。翻訳ではなく、同じ論旨を自立した形で書き直したもので、オーストリアとドイツの読者に向けて書かれています。"
+    },
+    "pt-BR": {
+      "title": "Versões em alemão",
+      "description": "Este site é escrito em inglês. 12 publicações trazem além disso uma versão alemã completa na mesma página. Não são traduções, mas versões autônomas do mesmo …"
+    },
+    "ru": {
+      "title": "Версии на немецком языке",
+      "description": "Этот сайт написан на английском. 12 материалов дополнительно несут полную немецкую версию на той же странице. Это не переводы, а самостоятельные версии того же …"
+    },
+    "zh-CN": {
+      "title": "德语版本",
+      "description": "本站以英文撰写。有 12 篇文章在同一页面上另附完整的德语版本。它们不是译文，而是同一论点的独立写法，写给奥地利和德国的读者。"
+    }
+  },
+  "/disclaimer/": {
+    "en": {
+      "title": "Disclaimer and limitation of liability",
+      "description": "This page states what is warranted and what is not — for the software published here and for the articles and measurement data on this site. It applies to …"
+    },
+    "de": {
+      "title": "Haftungsausschluss und Hinweise",
+      "description": "Diese Seite legt fest, wofür eingestanden wird und wofür nicht — für die hier veröffentlichte Software ebenso wie für die Artikel und Messdaten dieser Seite. …"
+    },
+    "es": {
+      "title": "Aviso legal y limitación de responsabilidad",
+      "description": "Esta página establece por qué se responde y por qué no — tanto por el software publicado aquí como por los artículos y datos de medición de este sitio. Se …"
+    },
+    "fr": {
+      "title": "Clause de non-responsabilité et limitation de responsabilité",
+      "description": "Cette page précise ce qui est garanti et ce qui ne l'est pas — pour le logiciel publié ici comme pour les articles et les données de mesure de ce site. Elle …"
+    },
+    "it": {
+      "title": "Esclusione e limitazione di responsabilità",
+      "description": "Questa pagina stabilisce per cosa si risponde e per cosa no — per il software qui pubblicato come per gli articoli e i dati di misurazione di questo sito. Vale …"
+    },
+    "ja": {
+      "title": "免責事項および責任の制限",
+      "description": "このページでは、ここで公開されているソフトウェアならびに本サイトの記事や測定データについて、何を保証し、何を保証しないかを定めています。provinglab.dev 配下のすべてと、そこから配布される拡張機能に適用されます。"
+    },
+    "pt-BR": {
+      "title": "Aviso legal e limitação de responsabilidade",
+      "description": "Esta página define pelo que se responde e pelo que não — tanto pelo software publicado aqui quanto pelos artigos e dados de medição deste site. Aplica-se a …"
+    },
+    "ru": {
+      "title": "Отказ от ответственности и ограничение ответственности",
+      "description": "Эта страница определяет, за что здесь отвечают, а за что нет — как за публикуемое здесь программное обеспечение, так и за статьи и данные измерений этого …"
+    },
+    "zh-CN": {
+      "title": "免责声明与责任限制",
+      "description": "本页说明对哪些事项承担责任、对哪些事项不承担责任——既包括在此发布的软件，也包括本网站的文章和测量数据。适用于 provinglab.dev 之下的全部内容以及由此分发的扩展。"
+    }
+  },
+  "/for-agents/": {
+    "en": {
+      "title": "For AI agents: citations without a browser, and the step that needs one",
+      "description": "An endpoint that turns a URL into a citation record, a skill index that describes when to use it, and one measured rule for the cases it cannot finish. No …"
+    },
+    "de": {
+      "title": "Für KI-Agenten: Zitationen ohne Browser — und der Schritt, der einen braucht",
+      "description": "Ein Endpunkt, der eine URL in einen Zitationsdatensatz verwandelt, ein Skill-Index, der beschreibt, wann man ihn nutzt, und eine gemessene Regel für die Fälle …"
+    },
+    "es": {
+      "title": "Para agentes de IA: citas sin navegador, y el paso que necesita uno",
+      "description": "Un endpoint que convierte una URL en un registro de cita, un índice de skills que describe cuándo usarlo, y una regla medida para los casos que no puede …"
+    },
+    "fr": {
+      "title": "Pour les agents IA : des citations sans navigateur, et l'étape qui en exige un",
+      "description": "Un point d'accès qui transforme une URL en notice de citation, un index de skills qui décrit quand l'utiliser, et une règle mesurée pour les cas qu'il ne peut …"
+    },
+    "it": {
+      "title": "Per agenti IA: citazioni senza browser, e il passo che ne richiede uno",
+      "description": "Un endpoint che trasforma un URL in un record di citazione, un indice di skill che descrive quando usarlo, e una regola misurata per i casi che non può …"
+    },
+    "ja": {
+      "title": "AI エージェントへ: ブラウザなしの引用、そしてブラウザが必要なステップ",
+      "description": "URL を引用レコードに変えるエンドポイント、いつ使うかを記したスキル索引、 そして完了できないケースのための測定済みルール。アカウントもキーも不要。 ソースを扱うエージェントを配線するなら、このページが全体のサーフェスです。"
+    },
+    "pt-BR": {
+      "title": "Para agentes de IA: citações sem navegador, e o passo que precisa de um",
+      "description": "Um endpoint que transforma uma URL num registro de citação, um índice de skills que descreve quando usá-lo, e uma regra medida para os casos que ele não …"
+    },
+    "ru": {
+      "title": "Для ИИ-агентов: цитаты без браузера — и шаг, которому браузер нужен",
+      "description": "Конечная точка, превращающая URL в запись цитирования, указатель навыков, описывающий, когда её использовать, и одно измеренное правило для случаев, которые …"
+    },
+    "zh-CN": {
+      "title": "面向 AI 代理:无需浏览器的引用,以及需要浏览器的一步",
+      "description": "一个把 URL 变成引用记录的端点,一份说明何时使用它的技能索引,以及一条针对 它无法完成之情况的实测规则。无需账户,无需密钥。如果你正在接入一个处理 来源的代理,这个页面就是整个界面。"
+    }
+  },
+  "/how-to/firefox-and-chrome/": {
+    "en": {
+      "title": "For researchers and students: the add-on in Firefox and Chrome",
+      "description": "One click on addons.mozilla.org opens the install dialog. The file is served and signed by Mozilla, which is what keeps automatic updates working. No account …"
+    },
+    "de": {
+      "title": "Für Wissenschaftler:innen und Studierende: die Erweiterung in Firefox und Chrome",
+      "description": "Ein Klick auf addons.mozilla.org öffnet den Installationsdialog. Die Datei liegt bei Mozilla und ist von dort signiert — dadurch funktionieren die …"
+    },
+    "es": {
+      "title": "Para investigadores y estudiantes: la extensión en Firefox y Chrome",
+      "description": "Un clic en addons.mozilla.org abre el diálogo de instalación. El archivo lo sirve y lo firma Mozilla, que es lo que mantiene las actualizaciones automáticas. …"
+    },
+    "fr": {
+      "title": "Pour les chercheuses, chercheurs et étudiant·e·s : l'extension dans Firefox et Chrome",
+      "description": "Un clic sur addons.mozilla.org ouvre la boîte de dialogue d'installation. Le fichier est servi et signé par Mozilla, ce qui maintient les mises à jour …"
+    },
+    "it": {
+      "title": "Per ricercatori, ricercatrici e studenti: l'estensione in Firefox e Chrome",
+      "description": "Un clic su addons.mozilla.org apre la finestra di installazione. Il file è servito e firmato da Mozilla, ed è questo che mantiene gli aggiornamenti automatici. …"
+    },
+    "ja": {
+      "title": "研究者・学生の方へ: Firefox と Chrome での拡張機能",
+      "description": "addons.mozilla.org でワンクリックするとインストールダイアログが開きます。ファイルは Mozilla が提供・署名しており、 それによって自動更新が機能し続けます。アカウントは不要です — Firefox にもストアにも。"
+    },
+    "pt-BR": {
+      "title": "Para pesquisadores e estudantes: a extensão no Firefox e no Chrome",
+      "description": "Um clique em addons.mozilla.org abre o diálogo de instalação. O arquivo é servido e assinado pela Mozilla, o que mantém as atualizações automáticas …"
+    },
+    "ru": {
+      "title": "Исследователям и студентам: расширение в Firefox и Chrome",
+      "description": "Один щелчок на addons.mozilla.org открывает диалог установки. Файл раздаёт и подписывает Mozilla — благодаря этому продолжают работать автоматические …"
+    },
+    "zh-CN": {
+      "title": "致研究人员和学生:Firefox 与 Chrome 中的扩展",
+      "description": "在 addons.mozilla.org 上点击一下即可打开安装对话框。文件由 Mozilla 提供并签名,自动更新因此得以持续工作。无需任何 账户——Firefox 不需要,商店也不需要。"
+    }
+  },
+  "/how-to/for-students/": {
+    "en": {
+      "title": "For students: a source that cites itself, survives, and can be read by a machine",
+      "description": "The tedious part is not the citing. It is reconstructing, weeks later, what you read, when you read it, and who wrote it. A capture carries authors, journal …"
+    },
+    "de": {
+      "title": "Für Studierende: eine Quelle, die sich selbst zitiert, überlebt und maschinenlesbar ist",
+      "description": "Das Mühsame ist nicht das Zitieren. Es ist, Wochen später zu rekonstruieren, was man gelesen hat, wann man es gelesen hat und wer es geschrieben hat. Eine …"
+    },
+    "es": {
+      "title": "Para estudiantes: una fuente que se cita sola, sobrevive y es legible por una máquina",
+      "description": "Lo tedioso no es citar. Es reconstruir, semanas después, qué leyó, cuándo lo leyó y quién lo escribió. Una captura lleva autores, revista, DOI, licencia y la …"
+    },
+    "fr": {
+      "title": "Pour les étudiants : une source qui se cite elle-même, survit et se laisse lire par une machine",
+      "description": "Le fastidieux n'est pas de citer. C'est de reconstituer, des semaines plus tard, ce qu'on a lu, quand on l'a lu et qui l'a écrit. Une capture porte auteurs …"
+    },
+    "it": {
+      "title": "Per studenti: una fonte che si cita da sola, sopravvive ed è leggibile da una macchina",
+      "description": "La parte noiosa non è citare. È ricostruire, settimane dopo, che cosa si è letto, quando e chi l'ha scritto. Una cattura porta autori, rivista, DOI, licenza e …"
+    },
+    "ja": {
+      "title": "学生のために：自分で出典を名乗り、消えず、機械が読めるソース",
+      "description": "面倒なのは引用そのものではありません。数週間後に、何を、いつ読み、誰が書いたのかを たどり直すことです。キャプチャは著者・掲載誌・DOI・ライセンス・取得時刻を紙面自体に 載せ、添付されたRISレコードはCitavi、Zotero、EndNoteへそのまま取り込めます。"
+    },
+    "pt-BR": {
+      "title": "Para estudantes: uma fonte que se cita sozinha, sobrevive e é legível por uma máquina",
+      "description": "O trabalhoso não é citar. É reconstruir, semanas depois, o que você leu, quando leu e quem escreveu. Uma captura leva autores, periódico, DOI, licença e a hora …"
+    },
+    "ru": {
+      "title": "Студентам: источник, который сам себя цитирует, не исчезает и читается машиной",
+      "description": "Утомительно не цитировать. Утомительно спустя недели восстанавливать, что вы читали, когда читали и кто это написал. Снимок несёт авторов, журнал, DOI …"
+    },
+    "zh-CN": {
+      "title": "写给学生：一份自带出处、不会消失、机器能读的来源",
+      "description": "麻烦的不是引用本身，而是几周之后再去还原：你读了什么、什么时候读的、谁写的。 捕获会把作者、期刊、DOI、许可与获取时间写在页面本身上，随附的 RIS 记录可直接 导入 Citavi、Zotero 或 EndNote。"
+    }
+  },
+  "/how-to/save-a-webpage-as-pdf/": {
+    "en": {
+      "title": "How to save a web page as a PDF — one sheet, with its source on it",
+      "description": "The short answer: use a capture extension, not the print dialog. Print paginates — the same article came out as 26 pages with 9 breaks cutting through a …"
+    },
+    "de": {
+      "title": "Wie man eine Webseite als PDF speichert — ein Blatt, mit der Quelle darauf",
+      "description": "Die kurze Antwort: eine Aufnahme-Erweiterung, nicht der Druckdialog. Der Druck teilt in Seiten auf — derselbe Artikel kam als 26 Seiten heraus, mit 9 Umbrüchen …"
+    },
+    "es": {
+      "title": "Cómo guardar una página web como PDF — una sola hoja, con su fuente encima",
+      "description": "La respuesta corta: una extensión de captura, no el diálogo de impresión. La impresión pagina — el mismo artículo salió como 26 páginas con 9 saltos que …"
+    },
+    "fr": {
+      "title": "Comment enregistrer une page web en PDF — une seule feuille, avec sa source dessus",
+      "description": "La réponse courte : une extension de capture, pas la boîte de dialogue d’impression. L’impression pagine — le même article est sorti en 26 pages, avec 9 sauts …"
+    },
+    "it": {
+      "title": "Come salvare una pagina web in PDF — un solo foglio, con la sua fonte sopra",
+      "description": "La risposta breve: un’estensione di cattura, non la finestra di stampa. La stampa impagina — lo stesso articolo è uscito come 26 pagine con 9 interruzioni che …"
+    },
+    "ja": {
+      "title": "ウェブページを PDF として保存する方法 — 1 枚の紙に、出典を載せて",
+      "description": "短い答え: 印刷ダイアログではなく、キャプチャ拡張機能を使う。印刷はページに分割する — 同じ記事が 26 ページになり、9 か所の改ページが文の途中を切った 。キャプチャは 1 枚の連続した紙に書き出し、どこから取得したか、そしていつ取得したかをページに刻める。"
+    },
+    "pt-BR": {
+      "title": "Como salvar uma página web em PDF — uma única folha, com a fonte nela",
+      "description": "A resposta curta: uma extensão de captura, não a caixa de impressão. A impressão pagina — o mesmo artigo saiu como 26 páginas com 9 quebras cortando uma frase …"
+    },
+    "ru": {
+      "title": "Как сохранить веб-страницу в PDF — одним листом, с указанием источника",
+      "description": "Короткий ответ: расширение для съёмки страницы, а не диалог печати. Печать разбивает на страницы — та же статья вышла как 26 страниц, и 9 разрывов прошли …"
+    },
+    "zh-CN": {
+      "title": "如何把网页保存为 PDF —— 一整张，并带上出处",
+      "description": "简短的答案：用抓取扩展，而不是打印对话框。打印会分页——同一篇文章印出来是 26 页，其中 9 处分页把句子拦腰截断 。抓取写出的是一张连续的长纸，还能把来源和时间盖在页面上。"
+    }
+  },
+  "/": {
+    "en": {
+      "title": "Keep the web page you will need later.",
+      "description": "Save a whole page as one PDF that carries where it came from and when — and turn a list of links into a reference list. 19.3 % of sources in real …"
+    },
+    "de": {
+      "title": "Behalten Sie die Webseite, die Sie später brauchen.",
+      "description": "Speichern Sie eine ganze Seite als ein PDF, das Herkunft und Abrufzeitpunkt trägt — und verwandeln Sie eine Linkliste in ein Literaturverzeichnis. 19,3 % der …"
+    },
+    "es": {
+      "title": "Guarda la página web que necesitarás más tarde.",
+      "description": "Guarda una página entera como un solo PDF que lleva su origen y su fecha — y convierte una lista de enlaces en una bibliografía. El 19,3 % de las fuentes en …"
+    },
+    "fr": {
+      "title": "Gardez la page web dont vous aurez besoin plus tard.",
+      "description": "Enregistrez une page entière en un seul PDF qui porte son origine et sa date — et transformez une liste de liens en bibliographie. 19,3 % des sources des …"
+    },
+    "it": {
+      "title": "Conserva la pagina web che ti servirà più avanti.",
+      "description": "Salva una pagina intera come un unico PDF che porta con sé la sua origine e la sua data — e trasforma un elenco di link in una bibliografia. Il 19,3 % delle …"
+    },
+    "ja": {
+      "title": "あとで必要になるウェブページを、残しておこう。",
+      "description": "ページ全体を、出所と日付を記した1つの PDF として保存し、リンクのリストを参考文献 リストに変えます。 実際の参考文献の19.3%の出典はすでに消えています 。 さらに8.7%には、どこにもアーカイブされたコピーがありません。 ここから始める · AI エージェント向け"
+    },
+    "pt-BR": {
+      "title": "Guarde a página da web de que você vai precisar depois.",
+      "description": "Salve uma página inteira como um único PDF que carrega sua origem e sua data — e transforme uma lista de links numa bibliografia. 19,3 % das fontes em …"
+    },
+    "ru": {
+      "title": "Сохраните веб-страницу, которая понадобится вам позже.",
+      "description": "Сохраните страницу целиком одним PDF, который несёт её источник и дату — и превратите список ссылок в библиографию. 19,3 % источников в реальных библиографиях …"
+    },
+    "zh-CN": {
+      "title": "留住你以后会用到的网页。",
+      "description": "把整个页面保存为一份带来源和日期的 PDF——并把一串链接变成参考文献列表。 真实参考文献中 19.3% 的来源已经消失 ,8.7% 的来源在任何地方都没有存档副本。 从这里开始 · 面向 AI 代理"
+    }
+  },
+  "/measurements/android-capture-extensions/": {
+    "en": {
+      "title": "Which page-saving extensions actually run on Firefox for Android?",
+      "description": "Firefox for Android has supported extensions since 2023, and that is the one thing Chrome for Android still cannot do at all. So the interesting question is …"
+    },
+    "de": {
+      "title": "Welche Seiten-Speicher-Erweiterungen laufen wirklich auf Firefox für Android?",
+      "description": "Firefox für Android unterstützt Erweiterungen seit 2023 — und genau das kann Chrome für Android bis heute überhaupt nicht. Die interessante Frage ist deshalb …"
+    },
+    "es": {
+      "title": "¿Qué extensiones para guardar páginas funcionan realmente en Firefox para Android?",
+      "description": "Firefox para Android admite extensiones desde 2023, y eso es justo lo que Chrome para Android sigue sin poder hacer. La pregunta interesante no es, por tanto …"
+    },
+    "fr": {
+      "title": "Quelles extensions d’enregistrement de pages fonctionnent vraiment sur Firefox pour Android ?",
+      "description": "Firefox pour Android prend en charge les extensions depuis 2023, et c’est précisément ce que Chrome pour Android ne sait toujours pas faire. La question …"
+    },
+    "it": {
+      "title": "Quali estensioni per salvare pagine funzionano davvero su Firefox per Android?",
+      "description": "Firefox per Android supporta le estensioni dal 2023, ed è proprio ciò che Chrome per Android tuttora non sa fare affatto. La domanda interessante non è dunque …"
+    },
+    "ja": {
+      "title": "Firefox for Android で実際に動くページ保存拡張機能はどれか",
+      "description": "Firefox for Android は 2023 年から拡張機能に対応しており、それは Chrome for Android が今なおまったくできないことである。したがって興味深い問いは、そこで拡張機能が動くかどうかではなく、実際に手を伸ばすであろうもののうち何割が動くのか、である。248 件を調べた。"
+    },
+    "pt-BR": {
+      "title": "Quais extensões de salvar páginas realmente funcionam no Firefox para Android?",
+      "description": "O Firefox para Android suporta extensões desde 2023, e é justamente isso que o Chrome para Android ainda não consegue fazer de jeito nenhum. A pergunta …"
+    },
+    "ru": {
+      "title": "Какие расширения для сохранения страниц действительно работают в Firefox для Android?",
+      "description": "Firefox для Android поддерживает расширения с 2023 года — и именно этого Chrome для Android до сих пор не умеет вовсе. Поэтому интересен не вопрос, работают ли …"
+    },
+    "zh-CN": {
+      "title": "哪些保存网页的扩展在 Firefox for Android 上真的能用？",
+      "description": "Firefox for Android 自 2023 年起支持扩展，而这恰恰是 Chrome for Android 至今完全做不到的事。因此有意思的问题不是那里能否运行扩展，而是人们真正会去用的那些里有多少能运行。我们查了 248 个。"
+    }
+  },
+  "/measurements/citation-by-platform/": {
+    "en": {
+      "title": "Where citation data actually lives: 18 scholarly platforms measured",
+      "description": "Resolving the DOI beat visiting the article page. The same work that Wiley's own page serves without page numbers came back complete through doi.org — authors …"
+    },
+    "de": {
+      "title": "Wo Zitationsdaten tatsächlich stehen: 18 wissenschaftliche Plattformen gemessen",
+      "description": "Den DOI aufzulösen schlug den Besuch der Artikelseite. Derselbe Beitrag, den die eigene Seite von Wiley ohne Seitenzahlen ausliefert, kam über doi.org …"
+    }
+  },
+  "/measurements/citation-triage/": {
+    "en": {
+      "title": "An agent can cite eight of twelve sources. The useful part is knowing which four it cannot",
+      "description": "An agent is handed a list of addresses and asked to prepare them for a bibliography. For each one it calls extract_citation on this site's MCP endpoint , which …"
+    },
+    "de": {
+      "title": "Ein Agent kann acht von zwölf Quellen zitieren. Wertvoll ist, dass er die vier benennt, die er nicht kann",
+      "description": "Ein Agent bekommt eine Liste von Adressen und soll sie für ein Literaturverzeichnis vorbereiten. Für jede ruft er extract_citation am MCP-Endpunkt dieser Seite …"
+    }
+  },
+  "/measurements/de-plattformen/": {
+    "en": {
+      "title": "German-language scholarly platforms measured: four read, seven handed back",
+      "description": "The failures come first, because they are the usable answer. Each handed-back address was fetched twice, once with the reader's own user agent, once with a …"
+    },
+    "de": {
+      "title": "Deutschsprachige Wissenschaftsplattformen gemessen: vier gelesen, sieben zurückgegeben",
+      "description": "Die Fehlschläge stehen zuerst, weil sie die verwertbare Auskunft sind. Jede zurückgegebene Adresse wurde zweimal abgerufen — einmal mit der Kennung des Lesers …"
+    }
+  },
+  "/measurements/": {
+    "en": {
+      "title": "Measurements",
+      "description": "Each one with the commands to repeat it, the raw data behind it, and a control run — because a method that does not fail where it should is not measuring …"
+    },
+    "de": {
+      "title": "Messungen",
+      "description": "Jede mit den Befehlen zu ihrer Wiederholung, den Rohdaten dahinter und einem Kontrolllauf — denn eine Methode, die dort nicht scheitert, wo sie sollte, misst …"
+    },
+    "es": {
+      "title": "Mediciones",
+      "description": "Cada una con los comandos para repetirla, los datos brutos detrás y una ejecución de control — porque un método que no falla donde debería no está midiendo …"
+    },
+    "fr": {
+      "title": "Mesures",
+      "description": "Chacune avec les commandes pour la refaire, les données brutes derrière, et un essai de contrôle — car une méthode qui n'échoue pas là où elle le devrait ne …"
+    },
+    "it": {
+      "title": "Misurazioni",
+      "description": "Ognuna con i comandi per ripeterla, i dati grezzi alle spalle e una prova di controllo — perché un metodo che non fallisce dove dovrebbe non sta misurando …"
+    },
+    "ja": {
+      "title": "測定",
+      "description": "それぞれに、再現するためのコマンド、背後の生データ、そしてコントロールランがあります — 失敗すべきところで失敗しない方法は、何も測っていないからです。"
+    },
+    "pt-BR": {
+      "title": "Medições",
+      "description": "Cada uma com os comandos para repeti-la, os dados brutos por trás e uma execução de controle — porque um método que não falha onde deveria não está medindo …"
+    },
+    "ru": {
+      "title": "Измерения",
+      "description": "Каждое — с командами для его повторения, сырыми данными за ним и контрольным прогоном — потому что метод, который не отказывает там, где должен, не измеряет …"
+    },
+    "zh-CN": {
+      "title": "测量",
+      "description": "每一项都附有复现它的命令、背后的原始数据和对照运行——因为不会在应当失败之处失败的方法,什么也测不到。"
+    }
+  },
+  "/measurements/reading-list-to-bibliography/": {
+    "en": {
+      "title": "Twenty links, ten citations: what a machine finishes and what it hands back",
+      "description": "A bibliography is the part of a piece of work where a machine looks most useful and is hardest to check. Hand an assistant twenty addresses, ask for a …"
+    },
+    "de": {
+      "title": "Zwanzig Links, zehn Nachweise: was eine Maschine erledigt und was sie zurückgibt",
+      "description": "Ein Literaturverzeichnis ist die Stelle einer Arbeit, an der eine Maschine am nützlichsten wirkt und am schwersten zu kontrollieren ist. Gibt man einem …"
+    }
+  },
+  "/measurements/web-citations-that-vanish/": {
+    "en": {
+      "title": "Web citations that vanish",
+      "description": "This is not a new problem, and it is well measured. Three findings are worth knowing before your own reference list gets long."
+    },
+    "de": {
+      "title": "Quellen, die verschwinden",
+      "description": "Das Problem ist nicht neu und gut vermessen. Drei Befunde sollte man kennen, bevor das eigene Literaturverzeichnis lang wird."
+    }
+  },
+  "/mitmachen/": {
+    "en": {
+      "title": "Recalculate one number. Preferably the one that is wrong.",
+      "description": "Every figure here has a method, raw data and a control run — so that it can be recalculated, not so that it can be believed. The most useful contribution to …"
+    },
+    "de": {
+      "title": "Rechnen Sie eine Zahl nach. Am liebsten die, die falsch ist.",
+      "description": "Jede Angabe hier hat eine Methode, Rohdaten und einen Kontrolllauf — damit sie nachgerechnet werden kann, nicht damit sie geglaubt wird. Der nützlichste …"
+    },
+    "es": {
+      "title": "Rehaga usted una cifra. Preferiblemente la que está mal.",
+      "description": "Cada dato de aquí tiene un método, datos brutos y una ejecución de control — para que se pueda recalcular, no para que se lo crea. Por eso la aportación más …"
+    },
+    "fr": {
+      "title": "Refaites le calcul d’un chiffre. De préférence celui qui est faux.",
+      "description": "Chaque indication ici a une méthode, des données brutes et une exécution de contrôle — pour qu’on puisse la recalculer, non pour qu’on la croie. La …"
+    },
+    "it": {
+      "title": "Rifaccia il conto di un numero. Preferibilmente di quello sbagliato.",
+      "description": "Ogni dato qui ha un metodo, dati grezzi e un’esecuzione di controllo — perché lo si possa ricalcolare, non perché ci si creda. Il contributo più utile a questo …"
+    },
+    "ja": {
+      "title": "数字をひとつ検算してください。できれば、間違っているものを。",
+      "description": "ここに載る数値にはすべて、方法と生データと対照実行がある — 信じてもらうためではなく、検算できるようにするためである。だからこの企画にとってもっとも有益な寄与は、新しい計測ではなく、 違う結果が出る対抗計測 である。"
+    },
+    "pt-BR": {
+      "title": "Refaça a conta de um número. De preferência o que está errado.",
+      "description": "Cada dado aqui tem um método, dados brutos e uma execução de controle — para que possa ser recalculado, não para que seja acreditado. A contribuição mais útil …"
+    },
+    "ru": {
+      "title": "Пересчитайте одно число. Лучше то, которое неверно.",
+      "description": "У каждой величины здесь есть метод, исходные данные и контрольный прогон — чтобы её можно было пересчитать, а не чтобы в неё верили. Поэтому самый полезный …"
+    },
+    "zh-CN": {
+      "title": "请核算其中一个数字。最好是错的那一个。",
+      "description": "这里的每一项数据都有方法、原始数据和一次对照运行——是为了让人重新算一遍，而不是为了让人相信。因此，对本项目最有用的贡献不是一次新的测量，而是一次 算出不同结果的反向测量 。"
+    }
+  },
+  "/notes/": {
+    "en": {
+      "title": "Notes",
+      "description": "Build reports from real work — including the parts that went wrong, and which check caught them. A log that only lists solved problems is marketing."
+    },
+    "de": {
+      "title": "Notizen",
+      "description": "Bauberichte aus echter Arbeit — einschließlich der Teile, die schiefgingen, und welche Prüfung sie erwischt hat. Ein Log, das nur gelöste Probleme auflistet …"
+    },
+    "es": {
+      "title": "Notas",
+      "description": "Crónicas de trabajo real — incluidas las partes que salieron mal y qué comprobación las detectó. Un registro que solo lista problemas resueltos es marketing."
+    },
+    "fr": {
+      "title": "Notes",
+      "description": "Comptes rendus de travail réel — y compris les parties qui ont mal tourné, et quel contrôle les a repérées. Un journal qui ne liste que les problèmes résolus …"
+    },
+    "it": {
+      "title": "Note",
+      "description": "Resoconti di lavoro reale — comprese le parti andate storte e quale controllo le ha intercettate. Un registro che elenca solo problemi risolti è marketing."
+    },
+    "ja": {
+      "title": "ノート",
+      "description": "実際の作業からのビルドレポート — うまくいかなかった部分と、どのチェックがそれを見つけたかも含めて。解決した問題だけを並べるログは、マーケティングです。"
+    },
+    "pt-BR": {
+      "title": "Notas",
+      "description": "Relatos de trabalho real — incluindo as partes que deram errado e qual verificação as detectou. Um registro que só lista problemas resolvidos é marketing."
+    },
+    "ru": {
+      "title": "Заметки",
+      "description": "Отчёты из реальной работы — включая части, которые пошли не так, и какая проверка их поймала. Журнал, перечисляющий только решённые проблемы, — это маркетинг."
+    },
+    "zh-CN": {
+      "title": "笔记",
+      "description": "来自真实工作的构建记录——包括出错的部分,以及是哪项检查抓住了它们。只列出已解决问题的日志,是营销。"
+    }
+  },
+  "/notes/nineteen-issues/": {
+    "en": {
+      "title": "Nineteen issues, and the two that mattered were about our own mistakes",
+      "description": "Twelve closed, seven open. Almost none of them were features. The ones worth writing down are the ones where a check found something nobody had noticed …"
+    },
+    "de": {
+      "title": "Neunzehn Issues, und die zwei, auf die es ankam, handelten von unseren eigenen Fehlern",
+      "description": "Zwölf geschlossen, sieben offen. Fast keines davon war ein Feature. Aufschreibenswert sind die, bei denen eine Prüfung etwas fand, das niemand bemerkt hatte …"
+    },
+    "es": {
+      "title": "Diecinueve issues, y los dos que importaban trataban de nuestros propios errores",
+      "description": "Doce cerrados, siete abiertos. Casi ninguno era una función nueva. Los que merecen escribirse son aquellos en los que una comprobación encontró algo que nadie …"
+    },
+    "fr": {
+      "title": "Dix-neuf issues, et les deux qui comptaient portaient sur nos propres erreurs",
+      "description": "Douze fermées, sept ouvertes. Presque aucune n'était une fonctionnalité. Celles qui méritent d'être notées sont celles où une vérification a trouvé quelque …"
+    },
+    "it": {
+      "title": "Diciannove issue, e le due che contavano riguardavano nostri errori",
+      "description": "Dodici chiuse, sette aperte. Quasi nessuna riguardava una funzionalità. Quelle che vale la pena annotare sono quelle in cui un controllo ha trovato qualcosa …"
+    },
+    "ja": {
+      "title": "19件のissue、そして本当に重要だった2件は私たち自身の誤りについてだった",
+      "description": "クローズ12件、オープン7件。そのほとんどは機能ではない。書き留める価値があるのは、点検によって誰も気づいていなかったものが見つかった件だ——自分たちの道具を実際より悪く見せていた公開済みの数値、そして、あと1コミットで何も証明しなくなるところだったチェックサムが含まれる。"
+    },
+    "pt-BR": {
+      "title": "Dezenove issues, e as duas que importavam eram sobre erros nossos",
+      "description": "Doze fechadas, sete abertas. Quase nenhuma era funcionalidade. As que valem registro são aquelas em que uma verificação achou algo que ninguém tinha notado …"
+    },
+    "ru": {
+      "title": "Девятнадцать заявок, и две по-настоящему важные были о наших собственных ошибках",
+      "description": "Двенадцать закрыто, семь открыто. Почти ни одна не касалась новых возможностей. Записать стоит те, где проверка нашла то, чего никто не заметил, — среди них …"
+    },
+    "zh-CN": {
+      "title": "十九个 issue，而真正要紧的两个说的是我们自己的错",
+      "description": "十二个已关闭，七个仍开着。几乎没有一个是功能。值得写下来的，是那些经由一次检查发现了无人察觉之事的——其中包括一个已发布的数字，它让我们自己的工具显得比实际更差；还有一个校验和，只差一次提交就什么都证明不了了。"
+    }
+  },
+  "/notes/pages-gone-before-you-need-them/": {
+    "en": {
+      "title": "Pages that are gone before you need them",
+      "description": "None of these is exotic. They are the ones that come up again and again, and the pattern is always the same: the screen exists once, matters later, and by then …"
+    },
+    "de": {
+      "title": "Seiten, die weg sind, bevor man sie braucht",
+      "description": "Keine davon ist ausgefallen. Es sind die, die immer wieder vorkommen, und das Muster ist jedes Mal dasselbe: Der Bildschirminhalt existiert einmal, zählt …"
+    }
+  },
+  "/notes/smaller-files-better-ocr/": {
+    "en": {
+      "title": "A capture at 8.5 % of the size, and OCR reads it slightly better",
+      "description": "Our own measurement had the capture at 6.7 MB against 1.1 MB for the browser's print export — noted on the comparison page and left there without comment. …"
+    },
+    "de": {
+      "title": "Eine Aufnahme mit 8,5 % der Größe — und die Texterkennung liest sie etwas besser",
+      "description": "Die eigene Messung hatte die Aufnahme bei 6,7 MB gegen 1,1 MB für den Druckexport des Browsers — auf der Vergleichsseite vermerkt und dort unkommentiert stehen …"
+    },
+    "es": {
+      "title": "Una captura al 8,5 % del tamaño, y el OCR la lee algo mejor",
+      "description": "Nuestra propia medición situaba la captura en 6,7 MB frente a 1,1 MB de la exportación de impresión del navegador — anotado en la página de comparación y …"
+    },
+    "fr": {
+      "title": "Une capture à 8,5 % de la taille, et l’OCR la lit un peu mieux",
+      "description": "Notre propre mesure donnait la capture à 6,7 Mo contre 1,1 Mo pour l’export d’impression du navigateur — noté sur la page de comparaison et laissé là sans …"
+    },
+    "it": {
+      "title": "Una cattura all’8,5 % della dimensione, e l’OCR la legge un po’ meglio",
+      "description": "La nostra misurazione dava la cattura a 6,7 MB contro 1,1 MB dell’esportazione di stampa del browser — annotato nella pagina di confronto e lasciato lì senza …"
+    },
+    "ja": {
+      "title": "サイズは 8.5 %、しかも OCR はわずかに読みやすくなる",
+      "description": "自分たちの計測では、キャプチャが 6.7 MB、ブラウザーの印刷書き出しが 1.1 MB だった。比較ページに記したまま、注釈もつけずに置いてあった。調べてみると、圧縮設定より良いものが出てきた。テキストのページなら、色を捨てても大事なものは何も失われず、ほとんどすべてが節約できる。"
+    },
+    "pt-BR": {
+      "title": "Uma captura com 8,5 % do tamanho, e o OCR a lê um pouco melhor",
+      "description": "Nossa própria medição colocava a captura em 6,7 MB contra 1,1 MB da exportação de impressão do navegador — anotado na página de comparação e deixado ali sem …"
+    },
+    "ru": {
+      "title": "Снимок в 8,5 % от размера — и OCR читает его чуть лучше",
+      "description": "Наше собственное измерение давало снимок в 6,7 МБ против 1,1 МБ у экспорта на печать из браузера — отмечено на странице сравнения и оставлено там без …"
+    },
+    "zh-CN": {
+      "title": "体积只有 8.5 % 的抓取，OCR 反而读得略好",
+      "description": "我们自己的测量结果是：抓取 6.7 MB，浏览器的打印导出 1.1 MB。这条记录写在对比页上，一直没有加注。深究之后，找到了比压缩设置更好的东西：对一页文字而言，放弃颜色不会损失任何要紧的内容，却几乎省下了全部体积。"
+    }
+  },
+  "/notes/sources-a-machine-cannot-cite/": {
+    "en": {
+      "title": "The sources a machine cannot cite for you — and how to cite them anyway",
+      "description": "Of twenty sources in a reading list, ten came back as finished citations and ten were handed back. Handing them back is the right behaviour. This is what to do …"
+    },
+    "de": {
+      "title": "Die Quellen, die eine Maschine nicht für Sie zitieren kann — und wie man sie trotzdem zitiert",
+      "description": "Von zwanzig Quellen einer Leseliste kamen zehn als fertige Zitationen zurück und zehn wurden zurückgegeben. Sie zurückzugeben ist das richtige Verhalten. Hier …"
+    },
+    "es": {
+      "title": "Las fuentes que una máquina no puede citar por usted — y cómo citarlas igualmente",
+      "description": "De veinte fuentes de una lista de lectura, diez volvieron como citas terminadas y diez fueron devueltas. Devolverlas es el comportamiento correcto. Esto es lo …"
+    },
+    "fr": {
+      "title": "Les sources qu'une machine ne peut pas citer à votre place — et comment les citer quand même",
+      "description": "Sur vingt sources d'une liste de lecture, dix sont revenues sous forme de citations achevées et dix ont été rendues. Les rendre est le bon comportement. Voici …"
+    },
+    "it": {
+      "title": "Le fonti che una macchina non può citare al posto vostro — e come citarle lo stesso",
+      "description": "Di venti fonti di una lista di letture, dieci sono tornate come citazioni complete e dieci sono state restituite. Restituirle è il comportamento corretto. Ecco …"
+    },
+    "ja": {
+      "title": "機械があなたに代わって引用できない情報源 — それでも引用する方法",
+      "description": "文献リストの20件の情報源のうち、10件は完成した引用として返り、10件は差し戻された。差し戻すことは正しい振る舞いである。ここでは、それらをどう扱うかを述べる。扱いは原因によって異なり、ブラウザでページを開けば片づくのは三つのうち一つだけである。"
+    },
+    "pt-BR": {
+      "title": "As fontes que uma máquina não consegue citar por você — e como citá-las mesmo assim",
+      "description": "De vinte fontes de uma lista de leitura, dez voltaram como citações prontas e dez foram devolvidas. Devolvê-las é o comportamento certo. Aqui está o que fazer …"
+    },
+    "ru": {
+      "title": "Источники, которые машина не может процитировать за вас, — и как процитировать их всё равно",
+      "description": "Из двадцати источников списка литературы десять вернулись готовыми ссылками, а десять были возвращены обратно. Возвращать их — правильное поведение. Здесь о …"
+    },
+    "zh-CN": {
+      "title": "机器无法替你引用的来源 — 以及如何仍旧把它们引用出来",
+      "description": "一份阅读清单中的二十个来源，十个以完成的引文返回，十个被退回。退回是正确的行为。本文讲的是如何处理这些被退回的来源：处理方式因原因而异，而三种情况中只有一种能靠在浏览器里打开页面来解决。"
+    }
+  },
+  "/notes/who-actually-reads-this/": {
+    "en": {
+      "title": "Who actually reads this site: 24 hours of crawler logs, published",
+      "description": "Plenty is claimed about AI crawlers and very little is shown. Anyone running a site can see in their own logs which systems actually arrive, what they take and …"
+    },
+    "de": {
+      "title": "Wer diese Seite wirklich liest: 24 Stunden Crawler-Protokoll, veröffentlicht",
+      "description": "Über KI-Crawler wird viel behauptet und wenig gezeigt. Wer eine Seite betreibt, kann im eigenen Protokoll sehen, welche Systeme tatsächlich kommen, was sie …"
+    },
+    "es": {
+      "title": "Quién lee realmente este sitio: 24 horas de registros de rastreadores, publicadas",
+      "description": "Sobre los rastreadores de IA se afirma mucho y se muestra muy poco. Quien gestiona un sitio puede ver en sus propios registros qué sistemas llegan de verdad …"
+    },
+    "fr": {
+      "title": "Qui lit vraiment ce site : 24 heures de journaux de robots, publiées",
+      "description": "On affirme beaucoup de choses sur les robots d’IA et on en montre très peu. Qui exploite un site peut voir dans ses propres journaux quels systèmes arrivent …"
+    },
+    "it": {
+      "title": "Chi legge davvero questo sito: 24 ore di registri dei crawler, pubblicate",
+      "description": "Sui crawler di IA si afferma molto e si mostra pochissimo. Chi gestisce un sito può vedere nei propri registri quali sistemi arrivano davvero, che cosa …"
+    },
+    "ja": {
+      "title": "このサイトを実際に読んでいるのは誰か——クローラー記録 24 時間分の公開",
+      "description": "AI クローラーについては多くが語られ、ほとんど示されていない。サイトを運用していれば、どのシステムが実際に来て、何を持ち去り、どれくらいの頻度で来るのかを、自分の記録で見ることができる。それを公開する者はほとんどいない。ここにその一日分を、生成に使ったクエリとともに置く。"
+    },
+    "pt-BR": {
+      "title": "Quem realmente lê este site: 24 horas de registros de rastreadores, publicadas",
+      "description": "Sobre rastreadores de IA afirma-se muito e mostra-se muito pouco. Quem mantém um site pode ver nos próprios registros quais sistemas de fato chegam, o que …"
+    },
+    "ru": {
+      "title": "Кто на самом деле читает этот сайт: 24 часа журналов краулеров, опубликованные",
+      "description": "Об ИИ-краулерах утверждают много, а показывают крайне мало. Тот, кто держит сайт, может увидеть в собственных журналах, какие системы приходят на самом деле …"
+    },
+    "zh-CN": {
+      "title": "究竟谁在读这个站点：24 小时爬虫日志，公开",
+      "description": "关于 AI 爬虫，说的多，拿出来看的极少。任何运营站点的人都能在自己的日志里看到哪些系统真的来过、取走了什么、来得多频繁——却几乎没有人把它公开。这里是其中一天，连同产生它的那条查询。"
+    }
+  },
+  "/recipes/": {
+    "en": {
+      "title": "Recipes: turn a web source into a citation",
+      "description": "Short, complete instructions for the citation endpoint at /mcp — in a terminal, in WSL, in Python, and in AI tools that speak MCP. Every one of them was run on …"
+    },
+    "de": {
+      "title": "Rezepte: aus einer Webquelle eine Literaturangabe machen",
+      "description": "Kurze, vollständige Anleitungen für den Zitations-Endpunkt unter /mcp — im Terminal, in WSL, in Python und in KI-Werkzeugen, die MCP sprechen. Jede einzelne …"
+    },
+    "es": {
+      "title": "Recetas: convierte una fuente web en una cita",
+      "description": "Instrucciones cortas y completas para el endpoint de citas en /mcp — en un terminal, en WSL, en Python y en herramientas de IA que hablan MCP. Cada una se …"
+    },
+    "fr": {
+      "title": "Recettes : transformer une source web en citation",
+      "description": "Des instructions courtes et complètes pour le point d'accès de citation sous /mcp — dans un terminal, dans WSL, en Python et dans des outils d'IA qui parlent …"
+    },
+    "it": {
+      "title": "Ricette: trasforma una fonte web in una citazione",
+      "description": "Istruzioni brevi e complete per l'endpoint di citazione su /mcp — in un terminale, in WSL, in Python e negli strumenti di IA che parlano MCP. Ognuna è stata …"
+    },
+    "ja": {
+      "title": "レシピ:ウェブの情報源を引用情報に変える",
+      "description": "/mcp の引用エンドポイントのための、短く完全な手順集 —— ターミナル、WSL、Python、そして MCP を話す AI ツール向け。すべて 2026年8月3日に実行してから書き起こしています。テストしていない レシピは主張にすぎません。"
+    },
+    "pt-BR": {
+      "title": "Receitas: transforme uma fonte da web em uma citação",
+      "description": "Instruções curtas e completas para o endpoint de citação em /mcp — em um terminal, no WSL, em Python e em ferramentas de IA que falam MCP. Cada uma foi …"
+    },
+    "ru": {
+      "title": "Рецепты: превратить веб-источник в библиографическую запись",
+      "description": "Короткие, полные инструкции для конечной точки цитирования по адресу /mcp — в терминале, в WSL, в Python и в ИИ-инструментах, говорящих на MCP. Каждая была …"
+    },
+    "zh-CN": {
+      "title": "配方:把网页来源变成引文",
+      "description": "/mcp 引文端点的简短完整用法说明 —— 可在终端、WSL、Python 以及支持 MCP 的 AI 工具中使用。每一条都在 2026 年 8 月 3 日实际运行 过之后才被写下来;未经测试的配方只是空谈。"
+    }
+  },
+  "/tools/": {
+    "en": {
+      "title": "Tools",
+      "description": "Built here, and measured here under the same rules as everything else — including where they lose against an alternative."
+    },
+    "de": {
+      "title": "Werkzeuge",
+      "description": "Hier gebaut und hier nach denselben Regeln gemessen wie alles andere — einschließlich der Stellen, an denen sie gegen eine Alternative verlieren."
+    },
+    "es": {
+      "title": "Herramientas",
+      "description": "Construidas aquí, y medidas aquí bajo las mismas reglas que todo lo demás — incluido dónde pierden contra una alternativa."
+    },
+    "fr": {
+      "title": "Outils",
+      "description": "Construits ici, et mesurés ici selon les mêmes règles que tout le reste — y compris là où ils perdent face à une alternative."
+    },
+    "it": {
+      "title": "Strumenti",
+      "description": "Costruiti qui, e misurati qui con le stesse regole di tutto il resto — incluso dove perdono contro un'alternativa."
+    },
+    "ja": {
+      "title": "ツール",
+      "description": "ここで作られ、ここで他のすべてと同じルールで測定されています — 代替案に劣るところも含めて。"
+    },
+    "pt-BR": {
+      "title": "Ferramentas",
+      "description": "Construídas aqui, e medidas aqui sob as mesmas regras de todo o resto — incluindo onde perdem para uma alternativa."
+    },
+    "ru": {
+      "title": "Инструменты",
+      "description": "Построены здесь и измерены здесь по тем же правилам, что и всё остальное, — включая то, где они проигрывают альтернативе."
+    },
+    "zh-CN": {
+      "title": "工具",
+      "description": "把整个网页下载为一份无缝 PDF——整个可滚动页面在一张连续的纸上,无分页符、无裁切。完全在设备上运行:无上传、无账户、无数据收集,只请求 activeTab 而非访问你浏览的每个网站。支持桌面端和 Android 的 Firefox,以及 Chrome。"
+    }
+  }
+}

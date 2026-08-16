@@ -1380,7 +1380,73 @@ async function zitatFuerUrl(roh) {
   });
 }
 
-async function runTool(origin, name, args) {
+/* --------------------------------------------------------------- Zaehler
+ *
+ * Bis hierher war unmessbar, WELCHES Werkzeug ein Agent aufruft: Cloudflare
+ * sieht den Pfad /mcp, nicht die JSON-RPC-Nutzlast. Die Frage "wie oft wird
+ * die Installation ueber den Server angestossen" liess sich deshalb nicht
+ * beantworten.
+ *
+ * Gezaehlt wird ausschliesslich der Werkzeugname und der Tag. Kein Aufrufer,
+ * keine Adresse, keine Argumente — nichts, was ueber "dieses Werkzeug wurde
+ * benutzt" hinausgeht. Damit bleibt es bei dem Grundsatz der Seite: was
+ * gezaehlt wird, liefert man selbst aus.
+ *
+ * Ehrlich zur Genauigkeit: Lesen-Erhoehen-Schreiben ist nicht atomar. Zwei
+ * Aufrufe in derselben Sekunde koennen als einer gezaehlt werden. Bei dieser
+ * Groessenordnung faellt das nicht ins Gewicht, und die Alternative waere ein
+ * Durable Object fuer eine Zahl, die niemand auf die Eins genau braucht.
+ * Die Ausgabe sagt das dazu.
+ */
+const ZAEHLER_TAGE = 90;
+
+function zaehlerSchluessel(werkzeug, datum) {
+  return `w:${werkzeug}:${datum}`;
+}
+
+async function werkzeugZaehlen(env, werkzeug) {
+  if (!env || !env.ZAEHLER || !WERKZEUGNAMEN.has(werkzeug)) return;
+  const heute = new Date().toISOString().slice(0, 10);
+  const k = zaehlerSchluessel(werkzeug, heute);
+  try {
+    const alt = parseInt(await env.ZAEHLER.get(k), 10) || 0;
+    await env.ZAEHLER.put(k, String(alt + 1), {
+      expirationTtl: ZAEHLER_TAGE * 86400,
+    });
+  } catch (e) {
+    // Ein Zaehler darf einen Werkzeugaufruf niemals scheitern lassen.
+  }
+}
+
+async function zaehlerLesen(env, tage = 30) {
+  if (!env || !env.ZAEHLER) return null;
+  try {
+    const grenze = new Date(Date.now() - tage * 86400000)
+      .toISOString().slice(0, 10);
+    const summe = {};
+    let cursor, gesamt = 0, seit = null;
+    do {
+      const l = await env.ZAEHLER.list({ prefix: "w:", cursor });
+      for (const s of l.keys) {
+        const teile = s.name.split(":");
+        const werkzeug = teile[1], tag = teile[2];
+        if (!tag || tag < grenze) continue;
+        const n = parseInt(await env.ZAEHLER.get(s.name), 10) || 0;
+        summe[werkzeug] = (summe[werkzeug] || 0) + n;
+        gesamt += n;
+        if (!seit || tag < seit) seit = tag;
+      }
+      cursor = l.list_complete ? null : l.cursor;
+    } while (cursor);
+    const sortiert = Object.fromEntries(
+      Object.entries(summe).sort((a, b) => b[1] - a[1]));
+    return { seit, gesamt, jeWerkzeug: sortiert };
+  } catch (e) {
+    return null;
+  }
+}
+
+async function runTool(origin, name, args, env) {
   if (name === "list_measurements") {
     const cat = await fetchJson(origin, "/.well-known/api-catalog");
     const rows = cat.linkset
@@ -1462,8 +1528,15 @@ async function runTool(origin, name, args) {
    */
   if (name === "adoption_stats") {
     const stand = await storeStand();
+    const zaehler = await zaehlerLesen(env, 30);
     return textResult(JSON.stringify({
-      measuredOver: "23.5 hours, 2026-08-04 08:00 to 2026-08-05 07:30 UTC",
+      // Diese Verkehrszahlen sind eine FESTE Momentaufnahme und altern.
+      // Sie stehen weiter hier, weil sie das Verhaeltnis der Pfade zeigen,
+      // das ein Zaehler im Worker nicht liefern kann — aber sie sind als
+      // Snapshot gekennzeichnet, damit niemand sie fuer heutige Zahlen haelt.
+      measuredOver: "SNAPSHOT, not live: 23.5 hours, 2026-08-04 08:00 to "
+                  + "2026-08-05 07:30 UTC. The tool counter below is live; "
+                  + "these path figures are frozen at that window.",
       howMeasured: "Cloudflare zone analytics for provinglab.dev, grouped by "
                  + "path and status. Not a counter inside the worker: nothing "
                  + "is recorded that a caller does not already send.",
@@ -1496,8 +1569,14 @@ async function runTool(origin, name, args) {
         dailyUsers: stand.nutzer,
         ratings: stand.bewertungen,
         readAt: "live from the AMO API when you called this",
-        honestly: "five daily users. The infrastructure is further along than "
-                + "the adoption, and saying so is more useful than a chart.",
+        // Hier stand "five daily users" als fester Text neben der live
+        // gelesenen Zahl daneben — und widersprach ihr, seit die Zahl
+        // gewachsen war. Auf einer Seite, deren Anspruch nachpruefbare
+        // Angaben sind, ist ein veralteter Satz schlimmer als kein Satz.
+        // Der Satz wird jetzt aus der Zahl gebildet. (15.08.2026)
+        honestly: `${stand.nutzer} daily users. The infrastructure is further `
+                + "along than the adoption, and saying so is more useful than "
+                + "a chart.",
       },
       registry: {
         name: "dev.provinglab/browser-citation-capture",
@@ -1507,16 +1586,23 @@ async function runTool(origin, name, args) {
             + "copy from the registry rather than being submitted to.",
       },
       notCounted: {
-        whichTool: "Cloudflare sees the path /mcp, not the JSON-RPC payload. "
-                 + "Which tool an agent calls is unmeasured — counting it "
-                 + "would mean adding telemetry that does not exist today.",
+        whichTool: "now counted, see toolCalls above. Cloudflare still sees "
+                 + "only the path /mcp; the breakdown comes from a counter in "
+                 + "the worker that records the tool name and the day, nothing "
+                 + "else — no caller, no address, no arguments.",
         installsTriggered: "whether a headless install actually completed is "
                          + "not observable from here, and whether it counts in "
                          + "store statistics is unmeasured.",
         humansVsAgents: "not separated. User agents can be set to anything.",
-        chromeStore: "the Chrome Web Store publishes no user count that can be "
-                   + "read reliably; the served version is "
-                   + "2.17.0, read from the update service.",
+        chromeStore: "the Chrome Web Store publishes no user count that can "
+                   + "be read reliably. The version served there is not "
+                   + "restated here: the number was hard-coded, went stale by "
+                   + "sixteen releases, and a wrong figure is worse than a "
+                   + "missing one. See the Firefox figure above, which is read "
+                   + "live.",
+      },
+      toolCalls: zaehler || {
+        note: "counter not reachable — no figures rather than made-up ones",
       },
       rawContext: SITE + "/notes/who-actually-reads-this/",
     }, null, 2));
@@ -2205,7 +2291,7 @@ async function runTool(origin, name, args) {
   throw new Error(`unknown tool: ${name}`);
 }
 
-async function handleMcp(request, origin) {
+async function handleMcp(request, origin, env, ctx) {
   if (request.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: CORS });
   }
@@ -2243,7 +2329,16 @@ async function handleMcp(request, origin) {
               instructions:
                 "Measurements on browser tools, OCR pipelines and AI-assisted " +
                 "development. Every dataset here has a documented method and a " +
-                "control run. Start with list_measurements.",
+                "control run. Start with list_measurements. " +
+                // Ohne diesen Satz weiss ein Agent nicht, dass es die Seiten in
+                // neun Sprachen gibt — und holt sie in der falschen. Der Weg
+                // dorthin ist eine Kopfzeile, keine andere Adresse.
+                "Prose pages are published in nine languages (" +
+                AGENT_SPRACHEN.join(", ") + "). Request one with " +
+                "'Accept: text/markdown' plus 'Accept-Language: de', or append " +
+                "'?lang=de'; without it you get the page default and every " +
+                "other language stripped out. Measured values, identifiers and " +
+                "URLs are identical in all of them.",
             },
           });
           break;
@@ -2257,7 +2352,10 @@ async function handleMcp(request, origin) {
           break;
         case "tools/call": {
           const p = m.params || {};
-          const res = await runTool(origin, p.name, p.arguments || {});
+          // Nach dem Antworten zaehlen, nicht davor: der Aufruf darf durch die
+          // Buchhaltung weder langsamer werden noch scheitern.
+          if (ctx && p.name) ctx.waitUntil(werkzeugZaehlen(env, p.name));
+          const res = await runTool(origin, p.name, p.arguments || {}, env);
           out.push({ jsonrpc: "2.0", id, result: res });
           break;
         }
@@ -2280,6 +2378,84 @@ async function handleMcp(request, origin) {
 
 /** Kompakter HTML→Markdown-Wandler. Bewusst klein: die Seiten hier sind
  *  handgeschriebenes, flaches HTML ohne Frameworks. */
+/* --------------------------------------------------- Sprache fuer Agenten
+ *
+ * Seit die Seiten neunsprachig sind, stehen alle neun Fassungen im HTML —
+ * sichtbar wird eine davon per CSS. Fuer einen Browser ist das richtig.
+ * Fuer einen Agenten, der `Accept: text/markdown` schickt, war es ein
+ * Rueckschritt: er bekam ALLE NEUN hintereinander. Gemessen am 16.08.2026:
+ * /mitmachen/ lieferte 48144 Zeichen, rund 12000 Token, fuer einen Text von
+ * etwa 1300. Achtmal Ballast, in Sprachen, die niemand angefragt hat.
+ *
+ * Darum wird vor der Wandlung genau ein Sprachblock behalten. Die Wahl
+ * kommt, in dieser Reihenfolge, aus `?lang=`, aus `Accept-Language` und
+ * zuletzt aus dem Block, den die Seite selbst als Standard markiert.
+ */
+const AGENT_SPRACHEN = ["en", "de", "es", "fr", "it", "ja", "pt-BR", "ru", "zh-CN"];
+
+function sprachWunsch(request) {
+  const url = new URL(request.url);
+  const ausAbfrage = (url.searchParams.get("lang") || "").trim();
+  if (ausAbfrage) {
+    const t = passendeSprache(ausAbfrage);
+    if (t) return t;
+  }
+  const kopf = request.headers.get("accept-language") || "";
+  // q-Werte beachten: "de;q=0.9, en;q=0.8" heisst Deutsch zuerst.
+  const wuensche = kopf.split(",").map(function (teil) {
+    const s = teil.split(";");
+    const q = /q=([\d.]+)/.exec(teil);
+    return { code: s[0].trim(), q: q ? parseFloat(q[1]) : 1 };
+  }).filter(function (x) { return x.code && x.code !== "*"; })
+    .sort(function (a, b) { return b.q - a.q; });
+  for (const w of wuensche) {
+    const t = passendeSprache(w.code);
+    if (t) return t;
+  }
+  return null;
+}
+
+function passendeSprache(code) {
+  const c = String(code).trim();
+  if (!c) return null;
+  for (const s of AGENT_SPRACHEN) {
+    if (s.toLowerCase() === c.toLowerCase()) return s;
+  }
+  // "de-AT" -> "de", "pt-PT" -> "pt-BR", "zh-TW" -> "zh-CN"
+  const kurz = c.split("-")[0].toLowerCase();
+  for (const s of AGENT_SPRACHEN) {
+    if (s.split("-")[0].toLowerCase() === kurz) return s;
+  }
+  return null;
+}
+
+/** Behaelt genau einen Sprachblock. Gibt {html, sprache} zurueck; ohne
+ *  Bloecke bleibt das HTML unveraendert. */
+function aufEineSprache(html, wunsch) {
+  if (html.indexOf("data-lang=") < 0) return { html: html, sprache: null };
+  const vorhanden = new Set();
+  const re = /data-lang="([^"]+)"/g;
+  let m;
+  while ((m = re.exec(html))) vorhanden.add(m[1]);
+  if (vorhanden.size < 2) return { html: html, sprache: null };
+
+  let ziel = wunsch && vorhanden.has(wunsch) ? wunsch : null;
+  if (!ziel) {
+    // Der Block, den die Seite selbst zeigt, wenn niemand waehlt.
+    const std = /data-lang="([^"]+)"[^>]*class="[^"]*\bon\b/.exec(html);
+    ziel = std && vorhanden.has(std[1]) ? std[1]
+         : (vorhanden.has("en") ? "en" : Array.from(vorhanden)[0]);
+  }
+  // Elemente anderer Sprachen entfernen — auch die, die data-lang direkt
+  // am <h1> tragen statt an einem umschliessenden <div>.
+  const gefiltert = html.replace(
+    /<(div|header|section|article|h1|h2|p|li|span|a)\b([^>]*\bdata-lang="([^"]+)"[^>]*)>([\s\S]*?)<\/\1>/g,
+    function (ganz, tag, attr, spr) {
+      return spr === ziel ? ganz : "";
+    });
+  return { html: gefiltert, sprache: ziel };
+}
+
 function toMarkdown(html) {
   const titel = (html.match(/<title>([\s\S]*?)<\/title>/i) || [, ""])[1].trim();
   let s = html;
@@ -2497,8 +2673,12 @@ export default {
         return Response.redirect(SITE + ziel, 301);
       }
 
-      if (url.pathname === "/mcp" || url.pathname === "/mcp/") {
-        return handleMcp(request, SITE);
+      // /api/mcp wird geraten, weil REST-Gewohnheit. Gemessen am 16.08.2026:
+      // sechs Anfragen in 23,5 Stunden, alle mit 404 beantwortet. Ein Alias
+      // kostet eine Zeile; ein 404 kostet den Agenten den Anschluss.
+      if (url.pathname === "/mcp" || url.pathname === "/mcp/"
+          || url.pathname === "/api/mcp" || url.pathname === "/api/mcp/") {
+        return handleMcp(request, SITE, env, ctx);
       }
 
       // Werkzeugname als Adresse aufgerufen. Gemessen am 3. August 2026:
@@ -2664,10 +2844,17 @@ export default {
         return upstream;
       }
 
-      const md = toMarkdown(await upstream.text());
+      const roh = await upstream.text();
+      const eine = aufEineSprache(roh, sprachWunsch(request));
+      const md = toMarkdown(eine.html);
       const h = new Headers(upstream.headers);
       h.set("content-type", "text/markdown; charset=utf-8");
       h.set("x-markdown-tokens", String(Math.ceil(md.length / 4)));
+      if (eine.sprache) {
+        h.set("content-language", eine.sprache);
+        // Damit ein Zwischenspeicher die Fassungen nicht vermischt.
+        h.append("vary", "accept-language");
+      }
       h.append("vary", "accept");
       h.delete("content-length");
       return new Response(md, { status: upstream.status, headers: h });
