@@ -5,7 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How to save a web page as a PDF — one sheet, with its source on it — Proving Lab</title>
 <meta name="description" content="Save a whole web page as one PDF without page breaks, including pages behind a login and on Android. With the honest comparison against the browser's own print export — which wins on selectable text — and why the file should carry its retrieval date.">
+<meta name="keywords" content="save webpage as PDF, full page PDF, web archiving, citation, retrieval date, print to PDF, screenshot, OCR">
 <link rel="canonical" href="https://provinglab.dev/how-to/save-a-webpage-as-pdf/">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/how-to/save-a-webpage-as-pdf/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/how-to/save-a-webpage-as-pdf/">
+<link rel="alternate" hreflang="es" href="https://provinglab.dev/how-to/save-a-webpage-as-pdf/">
+<link rel="alternate" hreflang="fr" href="https://provinglab.dev/how-to/save-a-webpage-as-pdf/">
+<link rel="alternate" hreflang="it" href="https://provinglab.dev/how-to/save-a-webpage-as-pdf/">
+<link rel="alternate" hreflang="ja" href="https://provinglab.dev/how-to/save-a-webpage-as-pdf/">
+<link rel="alternate" hreflang="pt-BR" href="https://provinglab.dev/how-to/save-a-webpage-as-pdf/">
+<link rel="alternate" hreflang="ru" href="https://provinglab.dev/how-to/save-a-webpage-as-pdf/">
+<link rel="alternate" hreflang="zh-CN" href="https://provinglab.dev/how-to/save-a-webpage-as-pdf/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/how-to/save-a-webpage-as-pdf/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
 <link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
@@ -30,7 +41,7 @@
   "description": "Save a whole web page as one PDF without page breaks, including pages behind a login and on Android. With the honest comparison against the browser's own print export — which wins on selectable text — and why the file should carry its retrieval date.",
   "datePublished": "2026-08-03",
   "dateModified": "2026-08-03",
-  "inLanguage": "en",
+  "inLanguage": ["en", "de", "es", "fr", "it", "ja", "pt-BR", "ru", "zh-CN"],
   "url": "https://provinglab.dev/how-to/save-a-webpage-as-pdf/",
   "author": {
     "@type": "Organization",
@@ -43,7 +54,8 @@
     "url": "https://provinglab.dev/"
   },
   "isAccessibleForFree": true,
-  "license": "https://creativecommons.org/licenses/by/4.0/"
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "keywords": "save webpage as PDF, full page PDF, web archiving, citation, retrieval date, print to PDF, screenshot, OCR"
 }
 </script>
 <script type="application/ld+json">
@@ -202,6 +214,10 @@
     .topnav .brand{width:100%;margin-right:0}
     .topnav a.n{font-size:.85rem}
   }
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
 </style>
 <script src="/agent-tools.js" defer></script>
 <script src="/site-lang.js" defer></script>
@@ -224,16 +240,13 @@
 </nav>
 
 <div class="wrap">
+<div data-lang="en" class="on" lang="en">
 <header>
   <h1>How to save a web page as a PDF — one sheet, with its source on it</h1>
   <p class="standfirst">
-    The short answer: use a capture extension, not the print dialog. Print
-    paginates — the same article came out as <strong>26 pages with 9 breaks
-    cutting through a sentence</strong>. A capture writes one continuous sheet
-    and can stamp the page with where it came from and when.
+    The short answer: use a capture extension, not the print dialog. Print paginates — the same article came out as <strong>26 pages with 9 breaks cutting through a sentence</strong>. A capture writes one continuous sheet and can stamp the page with where it came from and when.
   </p>
-  <p class="meta">3 August 2026 · every figure on this page links to the
-    measurement it comes from</p>
+  <p class="meta">3 August 2026 · every figure on this page links to the measurement it comes from</p>
 </header>
 
 <p>
@@ -241,9 +254,7 @@
   &nbsp;<a class="btn" href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome 116+, Edge, Brave, Vivaldi</a>
 </p>
 <p style="font-size:.9rem">
-  Free, MIT licensed, runs on the device. Edge asks once to allow extensions
-  from other stores; Opera needs its <em>Install Chrome Extensions</em> add-on
-  first. Then: open the page, press <code>Alt+Shift+Y</code> or click the icon.
+  Free, MIT licensed, runs on the device. Edge asks once to allow extensions from other stores; Opera needs its <em>Install Chrome Extensions</em> add-on first. Then: open the page, press <code>Alt+Shift+Y</code> or click the icon.
 </p>
 
 <h2>Print to PDF or capture? The honest comparison</h2>
@@ -257,56 +268,33 @@
   </tbody>
 </table>
 <p>
-  <strong>The capture leads on text since it carries a text layer — 91.5 % against 87.6 %, measured 5 August.</strong> If all you need is a readable, searchable
-  copy and the pagination does not bother you, the function already in your
-  browser is enough — and this page says so rather than pretending otherwise.
-  A capture is worth it when the layout matters, when a break would fall through
-  a table, or when the source details have to travel with the file.
+  <strong>The capture leads on text since it carries a text layer — 91.5 % against 87.6 %, measured 5 August.</strong> If all you need is a readable, searchable copy and the pagination does not bother you, the function already in your browser is enough — and this page says so rather than pretending otherwise. A capture is worth it when the layout matters, when a break would fall through a table, or when the source details have to travel with the file.
   <a href="/measurements/print-to-pdf-vs-screenshot/">Method and raw data</a>
 </p>
 
 <h2>Behind a login or a paywall you have access to</h2>
 <p>
-  A capture extension reads what your own session already shows. A licensed
-  journal article, a course page, an order confirmation — saved as you see it.
-  No server-side converter can do this, because it does not have your session:
-  measured across 20 mixed sources, a server-side reader was refused by 5 of
-  them outright. Capturing a page you may read is a copy for your own use; it is
-  not a route to content you do not have access to.
+  A capture extension reads what your own session already shows. A licensed journal article, a course page, an order confirmation — saved as you see it. No server-side converter can do this, because it does not have your session: measured across 20 mixed sources, a server-side reader was refused by 5 of them outright. Capturing a page you may read is a copy for your own use; it is not a route to content you do not have access to.
 </p>
 
 <h2>On a phone</h2>
 <p>
-  Only Firefox. <strong>Chrome for Android installs no extensions at all</strong>,
-  so the question only arises there. Of 248 page-saving extensions checked
-  against the add-ons API, 60 declare Android support and none had been tested on
-  a device before we did.
+  Only Firefox. <strong>Chrome for Android installs no extensions at all</strong>, so the question only arises there. Of 248 page-saving extensions checked against the add-ons API, 60 declare Android support and none had been tested on a device before we did.
   <a href="/measurements/android-capture-extensions/">The Android measurement</a>
 </p>
 
 <h2>Why the file should carry its source</h2>
 <p>
-  A URL in a bibliography is a promise about a page you do not control. Checked
-  against 150 sources taken from real reference lists: <strong>19.3 % were
-  gone</strong>, 8.7 % had no archived copy anywhere, and where a snapshot
-  existed it was a median of 603 days old. For a page that declares no
-  publication date, the time of retrieval is the only date a reference can carry
-  — and it exists only at the moment you look.
-  <a href="/measurements/web-citations-that-vanish/">What happens to a source
-  after you cite it</a>
+  A URL in a bibliography is a promise about a page you do not control. Checked against 150 sources taken from real reference lists: <strong>19.3 % were gone</strong>, 8.7 % had no archived copy anywhere, and where a snapshot existed it was a median of 603 days old. For a page that declares no publication date, the time of retrieval is the only date a reference can carry — and it exists only at the moment you look.
+  <a href="/measurements/web-citations-that-vanish/">What happens to a source after you cite it</a>
 </p>
 <p>
-  A capture can write that in: authors, title, DOI, licence and the exact time,
-  inside the PDF and in an RIS record beside it — a format that imports into
-  Zotero, Citavi, EndNote or Mendeley.
+  A capture can write that in: authors, title, DOI, licence and the exact time, inside the PDF and in an RIS record beside it — a format that imports into Zotero, Citavi, EndNote or Mendeley.
 </p>
 
 <h2>A whole reading list at once</h2>
 <p>
-  For a bibliography rather than a single page, most of the work needs no
-  browser. Of 20 mixed sources, <strong>10 became complete records with RIS and
-  BibTeX in 8.1 seconds</strong> over plain HTTP — no account, no key. The other
-  ten are handed back with the reason, so you know which addresses need you.
+  For a bibliography rather than a single page, most of the work needs no browser. Of 20 mixed sources, <strong>10 became complete records with RIS and BibTeX in 8.1 seconds</strong> over plain HTTP — no account, no key. The other ten are handed back with the reason, so you know which addresses need you.
   <a href="/recipes/">The recipes</a> ·
   <a href="/measurements/reading-list-to-bibliography/">the measurement</a>
 </p>
@@ -314,10 +302,8 @@
 <h2>What this does not do</h2>
 <ul>
   <li>It does not reach content you have no access to.</li>
-  <li>A screen capture is not a qualified electronic document. It records what a
-    page looked like at a time, which is a different thing from proving it.</li>
-  <li>Where a publisher offers its own <em>Cite → RIS</em> export, that file is
-    authoritative and better than anything reconstructed from the page.</li>
+  <li>A screen capture is not a qualified electronic document. It records what a page looked like at a time, which is a different thing from proving it.</li>
+  <li>Where a publisher offers its own <em>Cite → RIS</em> export, that file is authoritative and better than anything reconstructed from the page.</li>
 </ul>
 <footer>
       Figures measured between 1 and 3 August 2026, each linked to its method and raw data.
@@ -328,7 +314,615 @@
       <br><br>
       <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
     </footer>
+</div>
 
+<div data-lang="de" lang="de">
+<header>
+  <h1>Wie man eine Webseite als PDF speichert — ein Blatt, mit der Quelle darauf</h1>
+  <p class="standfirst">
+    Die kurze Antwort: eine Aufnahme-Erweiterung, nicht der Druckdialog. Der Druck teilt in Seiten auf — derselbe Artikel kam als <strong>26 Seiten heraus, mit 9 Umbrüchen mitten durch einen Satz</strong>. Eine Aufnahme schreibt ein durchgehendes Blatt und kann der Seite aufprägen, woher sie stammt und wann.
+  </p>
+  <p class="meta">3. August 2026 · jede Zahl auf dieser Seite verweist auf die Messung, aus der sie stammt</p>
+</header>
+
+<p>
+  <a class="btn" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Firefox, Rechner und Android</a>
+  &nbsp;<a class="btn" href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome 116+, Edge, Brave, Vivaldi</a>
+</p>
+<p style="font-size:.9rem">
+  Kostenlos, MIT-Lizenz, läuft auf dem Gerät. Edge fragt einmal, ob Erweiterungen aus anderen Stores zugelassen werden; Opera braucht zuerst seine Erweiterung <em>Install Chrome Extensions</em>. Dann: Seite öffnen, <code>Alt+Shift+Y</code> drücken oder auf das Symbol klicken.
+</p>
+
+<h2>Drucken oder aufnehmen? Der ehrliche Vergleich</h2>
+<table>
+  <thead><tr><th scope="col"></th><th scope="col">Druckexport des Browsers</th><th scope="col">Vollseiten-Aufnahme</th></tr></thead>
+  <tbody>
+    <tr><td>Derselbe Artikel ergibt</td><td>26 Seiten</td><td><strong>1 Blatt</strong></td></tr>
+    <tr><td>Umbrüche mitten im Satz</td><td>9</td><td>0</td></tr>
+    <tr><td>Markier- und durchsuchbarer Text</td><td><strong>87,6 % Trefferquote</strong></td><td><strong>91,5 % Trefferquote</strong></td></tr>
+    <tr><td>Kostet etwas</td><td>nein, eingebaut</td><td>nein</td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>Beim Text liegt die Aufnahme vorn, seit sie eine Textebene trägt — 91,5 % gegen 87,6 %, gemessen am 5. August.</strong> Wer nur eine lesbare, durchsuchbare Kopie braucht und sich an der Seitenaufteilung nicht stört, kommt mit der Funktion aus, die im Browser schon steckt — und diese Seite sagt das, statt etwas anderes vorzugeben. Eine Aufnahme lohnt sich, wenn das Layout zählt, wenn ein Umbruch durch eine Tabelle fiele, oder wenn die Quellenangaben mit der Datei mitreisen sollen.
+  <a href="/measurements/print-to-pdf-vs-screenshot/">Methode und Rohdaten</a>
+</p>
+
+<h2>Hinter einem Login oder einer Schranke, zu der Sie Zugang haben</h2>
+<p>
+  Eine Aufnahme-Erweiterung liest, was Ihre eigene Sitzung ohnehin zeigt. Ein lizenzierter Zeitschriftenartikel, ein Kursraum, eine Bestellbestätigung — gesichert, wie Sie es sehen. Kein serverseitiger Umwandler kann das, weil er Ihre Sitzung nicht hat: gemessen an 20 gemischten Quellen wurde ein serverseitiger Leser von 5 davon rundweg abgewiesen. Eine Seite zu sichern, die Sie lesen dürfen, ist eine Kopie zum eigenen Gebrauch; es ist kein Weg zu Inhalten, zu denen Sie keinen Zugang haben.
+</p>
+
+<h2>Am Handy</h2>
+<p>
+  Nur Firefox. <strong>Chrome für Android installiert überhaupt keine Erweiterungen</strong>, die Frage stellt sich also nur dort. Von 248 Seiten-Speicher-Erweiterungen, die gegen die Add-ons-API geprüft wurden, geben 60 Android-Unterstützung an, und keine davon war vor uns auf einem Gerät getestet worden.
+  <a href="/measurements/android-capture-extensions/">Die Android-Messung</a>
+</p>
+
+<h2>Warum die Datei ihre Quelle tragen sollte</h2>
+<p>
+  Eine Adresse im Literaturverzeichnis ist ein Versprechen über eine Seite, die Sie nicht in der Hand haben. Geprüft an 150 Quellen aus echten Verzeichnissen: <strong>19,3 % waren verschwunden</strong>, 8,7 % waren nirgends archiviert, und wo eine Sicherung bestand, war sie im Mittel 603 Tage alt. Bei einer Seite ohne Veröffentlichungsdatum ist der Zeitpunkt des Abrufs das einzige Datum, das eine Quellenangabe tragen kann — und es existiert nur in dem Moment, in dem Sie hinsehen.
+  <a href="/measurements/web-citations-that-vanish/">Was mit einer Quelle geschieht, nachdem man sie zitiert hat</a>
+</p>
+<p>
+  Eine Aufnahme kann das hineinschreiben: Verfasser, Titel, DOI, Lizenz und die genaue Zeit, im PDF und in einem RIS-Satz daneben — ein Format, das sich in Zotero, Citavi, EndNote oder Mendeley einlesen lässt.
+</p>
+
+<h2>Eine ganze Leseliste auf einmal</h2>
+<p>
+  Für ein Literaturverzeichnis statt einer einzelnen Seite braucht der größere Teil der Arbeit gar keinen Browser. Von 20 gemischten Quellen wurden <strong>10 in 8,1 Sekunden zu vollständigen Datensätzen mit RIS und BibTeX</strong>, über einfaches HTTP — ohne Konto, ohne Schlüssel. Die anderen zehn kommen mit Begründung zurück, damit Sie wissen, welche Adressen Sie selbst brauchen.
+  <a href="/recipes/">Die Rezepte</a> ·
+  <a href="/measurements/reading-list-to-bibliography/">die Messung</a>
+</p>
+
+<h2>Was es nicht leistet</h2>
+<ul>
+  <li>Es erreicht keine Inhalte, zu denen Sie keinen Zugang haben.</li>
+  <li>Eine Bildschirmaufnahme ist kein qualifiziertes elektronisches Dokument. Sie hält fest, wie eine Seite zu einem Zeitpunkt aussah — das ist etwas anderes, als es zu beweisen.</li>
+  <li>Wo ein Verlag einen eigenen <em>Zitieren → RIS</em>-Export anbietet, ist diese Datei maßgeblich und besser als alles aus der Seite Rekonstruierte.</li>
+</ul>
+<footer>
+      Zahlen gemessen zwischen dem 1. und 3. August 2026, jede mit ihrer Methode und ihren Rohdaten verlinkt.
+      <br><br>
+      Korrekturen sind willkommen und werden öffentlich vorgenommen: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">ein Issue eröffnen</a>.
+      <br><br>
+      Offenlegung: Der Autor entwickelt Full Page PDF Snap, die auf dieser Seite genannte Erweiterung. Der eingebaute Druckexport des Browsers wird <a href="/measurements/print-to-pdf-vs-screenshot/">dagegen gemessen</a>, einschließlich der Fälle, in denen der Druck gewinnt.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Haftungsausschluss</a>
+    </footer>
+</div>
+
+<div data-lang="es" lang="es">
+<header>
+  <h1>Cómo guardar una página web como PDF — una sola hoja, con su fuente encima</h1>
+  <p class="standfirst">
+    La respuesta corta: una extensión de captura, no el diálogo de impresión. La impresión pagina — el mismo artículo salió como <strong>26 páginas con 9 saltos que cortaban una frase</strong>. Una captura escribe una hoja continua y puede estampar en la página de dónde vino y cuándo.
+  </p>
+  <p class="meta">3 de agosto de 2026 · cada cifra de esta página enlaza con la medición de la que procede</p>
+</header>
+
+<p>
+  <a class="btn" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Firefox, escritorio y Android</a>
+  &nbsp;<a class="btn" href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome 116+, Edge, Brave, Vivaldi</a>
+</p>
+<p style="font-size:.9rem">
+  Gratis, con licencia MIT, se ejecuta en el dispositivo. Edge pregunta una vez si permite extensiones de otras tiendas; Opera necesita antes su complemento <em>Install Chrome Extensions</em>. Después: abra la página, pulse <code>Alt+Shift+Y</code> o haga clic en el icono.
+</p>
+
+<h2>¿Imprimir a PDF o capturar? La comparación honesta</h2>
+<table>
+  <thead><tr><th scope="col"></th><th scope="col">Impresión del navegador</th><th scope="col">Captura de página completa</th></tr></thead>
+  <tbody>
+    <tr><td>El mismo artículo sale como</td><td>26 páginas</td><td><strong>1 hoja</strong></td></tr>
+    <tr><td>Saltos de página que cortan una frase</td><td>9</td><td>0</td></tr>
+    <tr><td>Texto que se puede seleccionar y buscar</td><td><strong>87,6 % de exhaustividad</strong></td><td><strong>91,5 % de exhaustividad</strong></td></tr>
+    <tr><td>Cuesta algo</td><td>no, va incluido</td><td>no</td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>En el texto va por delante la captura desde que lleva una capa de texto — 91,5 % frente a 87,6 %, medido el 5 de agosto.</strong> Si solo necesita una copia legible y con búsqueda y la paginación no le molesta, la función que ya trae su navegador basta — y esta página lo dice en lugar de fingir lo contrario. Una captura merece la pena cuando importa la maquetación, cuando un salto caería en medio de una tabla, o cuando los datos de la fuente tienen que viajar con el archivo.
+  <a href="/measurements/print-to-pdf-vs-screenshot/">Método y datos brutos</a>
+</p>
+
+<h2>Detrás de un inicio de sesión o de un muro de pago al que tiene acceso</h2>
+<p>
+  Una extensión de captura lee lo que su propia sesión ya muestra. Un artículo de revista con licencia, una página de curso, una confirmación de pedido — guardados tal como usted los ve. Ningún convertidor del lado del servidor puede hacerlo, porque no tiene su sesión: medido en 20 fuentes mixtas, un lector del lado del servidor fue rechazado de plano por 5 de ellas. Capturar una página que usted puede leer es una copia para uso propio; no es una vía hacia contenidos a los que no tiene acceso.
+</p>
+
+<h2>En el teléfono</h2>
+<p>
+  Solo Firefox. <strong>Chrome para Android no instala ninguna extensión</strong>, así que la pregunta solo se plantea allí. De 248 extensiones para guardar páginas comprobadas contra la API de complementos, 60 declaran compatibilidad con Android y ninguna había sido probada en un dispositivo antes de que lo hiciéramos nosotros.
+  <a href="/measurements/android-capture-extensions/">La medición en Android</a>
+</p>
+
+<h2>Por qué el archivo debe llevar su fuente</h2>
+<p>
+  Una dirección en una bibliografía es una promesa sobre una página que usted no controla. Comprobado con 150 fuentes tomadas de listas de referencias reales: <strong>el 19,3 % había desaparecido</strong>, el 8,7 % no tenía copia archivada en ningún sitio, y donde existía una instantánea, tenía una mediana de 603 días. Para una página que no declara fecha de publicación, el momento de la consulta es la única fecha que puede llevar una referencia — y solo existe en el instante en que usted mira.
+  <a href="/measurements/web-citations-that-vanish/">Qué le pasa a una fuente después de citarla</a>
+</p>
+<p>
+  Una captura puede escribirlo dentro: autores, título, DOI, licencia y la hora exacta, en el PDF y en un registro RIS al lado — un formato que se importa en Zotero, Citavi, EndNote o Mendeley.
+</p>
+
+<h2>Toda una lista de lecturas de una vez</h2>
+<p>
+  Para una bibliografía en lugar de una sola página, la mayor parte del trabajo no necesita navegador. De 20 fuentes mixtas, <strong>10 se convirtieron en registros completos con RIS y BibTeX en 8,1 segundos</strong> por HTTP simple — sin cuenta, sin clave. Las otras diez se devuelven con el motivo, para que sepa qué direcciones le necesitan a usted.
+  <a href="/recipes/">Las recetas</a> ·
+  <a href="/measurements/reading-list-to-bibliography/">la medición</a>
+</p>
+
+<h2>Lo que esto no hace</h2>
+<ul>
+  <li>No alcanza contenidos a los que usted no tiene acceso.</li>
+  <li>Una captura de pantalla no es un documento electrónico cualificado. Registra cómo se veía una página en un momento dado, que es algo distinto de probarlo.</li>
+  <li>Donde una editorial ofrece su propia exportación <em>Citar → RIS</em>, ese archivo es el que manda y es mejor que cualquier cosa reconstruida a partir de la página.</li>
+</ul>
+<footer>
+      Cifras medidas entre el 1 y el 3 de agosto de 2026, cada una enlazada con su método y sus datos brutos.
+      <br><br>
+      Las correcciones son bienvenidas y se hacen en público: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">abrir una incidencia</a>.
+      <br><br>
+      Divulgación: el autor desarrolla Full Page PDF Snap, la extensión nombrada en esta página. La impresión a PDF propia del navegador está <a href="/measurements/print-to-pdf-vs-screenshot/">medida frente a ella</a>, incluidos los casos en los que gana la impresión.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Aviso legal</a>
+    </footer>
+</div>
+
+<div data-lang="fr" lang="fr">
+<header>
+  <h1>Comment enregistrer une page web en PDF — une seule feuille, avec sa source dessus</h1>
+  <p class="standfirst">
+    La réponse courte : une extension de capture, pas la boîte de dialogue d’impression. L’impression pagine — le même article est sorti en <strong>26 pages, avec 9 sauts coupant une phrase</strong>. Une capture écrit une feuille continue et peut inscrire sur la page d’où elle vient et quand.
+  </p>
+  <p class="meta">3 août 2026 · chaque chiffre de cette page renvoie à la mesure dont il provient</p>
+</header>
+
+<p>
+  <a class="btn" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Firefox, ordinateur et Android</a>
+  &nbsp;<a class="btn" href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome 116+, Edge, Brave, Vivaldi</a>
+</p>
+<p style="font-size:.9rem">
+  Gratuit, sous licence MIT, s’exécute sur l’appareil. Edge demande une fois d’autoriser les extensions d’autres boutiques ; Opera a d’abord besoin de son module <em>Install Chrome Extensions</em>. Ensuite : ouvrez la page, appuyez sur <code>Alt+Shift+Y</code> ou cliquez sur l’icône.
+</p>
+
+<h2>Imprimer en PDF ou capturer ? La comparaison honnête</h2>
+<table>
+  <thead><tr><th scope="col"></th><th scope="col">Impression du navigateur</th><th scope="col">Capture pleine page</th></tr></thead>
+  <tbody>
+    <tr><td>Le même article sort en</td><td>26 pages</td><td><strong>1 feuille</strong></td></tr>
+    <tr><td>Sauts de page coupant une phrase</td><td>9</td><td>0</td></tr>
+    <tr><td>Texte sélectionnable et cherchable</td><td><strong>87,6 % de rappel</strong></td><td><strong>91,5 % de rappel</strong></td></tr>
+    <tr><td>Coûte quelque chose</td><td>non, intégré</td><td>non</td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>Sur le texte, la capture mène depuis qu’elle porte une couche de texte — 91,5 % contre 87,6 %, mesuré le 5 août.</strong> S’il vous faut seulement une copie lisible et cherchable et que la pagination ne vous gêne pas, la fonction déjà présente dans votre navigateur suffit — et cette page le dit plutôt que de prétendre le contraire. Une capture vaut la peine quand la mise en page compte, quand un saut tomberait au milieu d’un tableau, ou quand les indications de source doivent voyager avec le fichier.
+  <a href="/measurements/print-to-pdf-vs-screenshot/">Méthode et données brutes</a>
+</p>
+
+<h2>Derrière une connexion ou un accès payant dont vous disposez</h2>
+<p>
+  Une extension de capture lit ce que votre propre session affiche déjà. Un article de revue sous licence, une page de cours, une confirmation de commande — enregistrés tels que vous les voyez. Aucun convertisseur côté serveur ne peut le faire, car il n’a pas votre session : mesuré sur 20 sources variées, un lecteur côté serveur a été refusé net par 5 d’entre elles. Capturer une page que vous avez le droit de lire est une copie pour votre usage ; ce n’est pas un chemin vers des contenus auxquels vous n’avez pas accès.
+</p>
+
+<h2>Sur un téléphone</h2>
+<p>
+  Seulement Firefox. <strong>Chrome pour Android n’installe aucune extension</strong>, la question ne se pose donc que là. Sur 248 extensions d’enregistrement de pages vérifiées auprès de l’API des modules, 60 déclarent la prise en charge d’Android et aucune n’avait été testée sur un appareil avant nous.
+  <a href="/measurements/android-capture-extensions/">La mesure Android</a>
+</p>
+
+<h2>Pourquoi le fichier doit porter sa source</h2>
+<p>
+  Une adresse dans une bibliographie est une promesse au sujet d’une page que vous ne maîtrisez pas. Vérifié sur 150 sources tirées de vraies listes de références : <strong>19,3 % avaient disparu</strong>, 8,7 % n’avaient de copie archivée nulle part, et là où un instantané existait, il avait une médiane de 603 jours. Pour une page qui ne déclare aucune date de publication, le moment de la consultation est la seule date qu’une référence puisse porter — et il n’existe qu’à l’instant où vous regardez.
+  <a href="/measurements/web-citations-that-vanish/">Ce qu’il advient d’une source après qu’on l’a citée</a>
+</p>
+<p>
+  Une capture peut l’inscrire : auteurs, titre, DOI, licence et l’heure exacte, dans le PDF et dans une notice RIS à côté — un format qui s’importe dans Zotero, Citavi, EndNote ou Mendeley.
+</p>
+
+<h2>Toute une liste de lectures d’un coup</h2>
+<p>
+  Pour une bibliographie plutôt que pour une seule page, l’essentiel du travail n’a pas besoin de navigateur. Sur 20 sources variées, <strong>10 sont devenues des notices complètes avec RIS et BibTeX en 8,1 secondes</strong> en HTTP simple — sans compte, sans clé. Les dix autres sont rendues avec le motif, pour que vous sachiez quelles adresses ont besoin de vous.
+  <a href="/recipes/">Les recettes</a> ·
+  <a href="/measurements/reading-list-to-bibliography/">la mesure</a>
+</p>
+
+<h2>Ce que cela ne fait pas</h2>
+<ul>
+  <li>Cela n’atteint pas des contenus auxquels vous n’avez pas accès.</li>
+  <li>Une capture d’écran n’est pas un document électronique qualifié. Elle consigne l’aspect d’une page à un instant, ce qui n’est pas la même chose que de le prouver.</li>
+  <li>Là où un éditeur propose son propre export <em>Citer → RIS</em>, ce fichier fait autorité et vaut mieux que tout ce qui est reconstruit à partir de la page.</li>
+</ul>
+<footer>
+      Chiffres mesurés entre le 1er et le 3 août 2026, chacun relié à sa méthode et à ses données brutes.
+      <br><br>
+      Les corrections sont bienvenues et faites en public : <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">ouvrir un ticket</a>.
+      <br><br>
+      Divulgation : l’auteur développe Full Page PDF Snap, l’extension nommée sur cette page. L’impression PDF propre au navigateur est <a href="/measurements/print-to-pdf-vs-screenshot/">mesurée face à elle</a>, y compris là où l’impression l’emporte.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Avertissement</a>
+    </footer>
+</div>
+
+<div data-lang="it" lang="it">
+<header>
+  <h1>Come salvare una pagina web in PDF — un solo foglio, con la sua fonte sopra</h1>
+  <p class="standfirst">
+    La risposta breve: un’estensione di cattura, non la finestra di stampa. La stampa impagina — lo stesso articolo è uscito come <strong>26 pagine con 9 interruzioni che tagliavano una frase</strong>. Una cattura scrive un foglio continuo e può imprimere sulla pagina da dove viene e quando.
+  </p>
+  <p class="meta">3 agosto 2026 · ogni cifra di questa pagina rimanda alla misurazione da cui proviene</p>
+</header>
+
+<p>
+  <a class="btn" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Firefox, computer e Android</a>
+  &nbsp;<a class="btn" href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome 116+, Edge, Brave, Vivaldi</a>
+</p>
+<p style="font-size:.9rem">
+  Gratuito, licenza MIT, gira sul dispositivo. Edge chiede una volta se consentire estensioni da altri store; Opera ha prima bisogno del suo componente <em>Install Chrome Extensions</em>. Poi: apri la pagina, premi <code>Alt+Shift+Y</code> oppure fai clic sull’icona.
+</p>
+
+<h2>Stampare in PDF o catturare? Il confronto onesto</h2>
+<table>
+  <thead><tr><th scope="col"></th><th scope="col">Stampa del browser</th><th scope="col">Cattura a pagina intera</th></tr></thead>
+  <tbody>
+    <tr><td>Lo stesso articolo esce come</td><td>26 pagine</td><td><strong>1 foglio</strong></td></tr>
+    <tr><td>Interruzioni di pagina che tagliano una frase</td><td>9</td><td>0</td></tr>
+    <tr><td>Testo selezionabile e ricercabile</td><td><strong>87,6 % di richiamo</strong></td><td><strong>91,5 % di richiamo</strong></td></tr>
+    <tr><td>Costa qualcosa</td><td>no, è integrata</td><td>no</td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>Sul testo la cattura è in vantaggio da quando porta uno strato di testo — 91,5 % contro 87,6 %, misurato il 5 agosto.</strong> Se serve solo una copia leggibile e ricercabile e l’impaginazione non disturba, basta la funzione già presente nel browser — e questa pagina lo dice invece di far finta di niente. Una cattura conviene quando conta l’impaginazione, quando un’interruzione cadrebbe dentro una tabella, o quando i dati della fonte devono viaggiare con il file.
+  <a href="/measurements/print-to-pdf-vs-screenshot/">Metodo e dati grezzi</a>
+</p>
+
+<h2>Dietro un accesso o un paywall a cui hai diritto</h2>
+<p>
+  Un’estensione di cattura legge ciò che la tua sessione già mostra. Un articolo di rivista in licenza, una pagina di corso, una conferma d’ordine — salvati come li vedi. Nessun convertitore lato server può farlo, perché non ha la tua sessione: misurato su 20 fonti miste, un lettore lato server è stato respinto in pieno da 5 di esse. Catturare una pagina che puoi leggere è una copia per uso personale; non è una via verso contenuti a cui non hai accesso.
+</p>
+
+<h2>Sul telefono</h2>
+<p>
+  Solo Firefox. <strong>Chrome per Android non installa alcuna estensione</strong>, quindi la domanda si pone soltanto lì. Di 248 estensioni per salvare pagine verificate tramite l’API dei componenti aggiuntivi, 60 dichiarano il supporto ad Android e nessuna era stata provata su un dispositivo prima di noi.
+  <a href="/measurements/android-capture-extensions/">La misurazione su Android</a>
+</p>
+
+<h2>Perché il file deve portare con sé la fonte</h2>
+<p>
+  Un indirizzo in bibliografia è una promessa su una pagina che non controlli. Verificato su 150 fonti prese da bibliografie reali: <strong>il 19,3 % era sparito</strong>, l’8,7 % non aveva copia archiviata da nessuna parte, e dove esisteva un’istantanea era vecchia in mediana di 603 giorni. Per una pagina che non dichiara una data di pubblicazione, il momento della consultazione è l’unica data che un riferimento possa portare — ed esiste solo nell’istante in cui guardi.
+  <a href="/measurements/web-citations-that-vanish/">Che cosa succede a una fonte dopo che l’hai citata</a>
+</p>
+<p>
+  Una cattura può scriverlo dentro: autori, titolo, DOI, licenza e l’ora esatta, nel PDF e in un record RIS accanto — un formato che si importa in Zotero, Citavi, EndNote o Mendeley.
+</p>
+
+<h2>Un’intera lista di letture in una volta</h2>
+<p>
+  Per una bibliografia invece che per una singola pagina, la maggior parte del lavoro non ha bisogno del browser. Di 20 fonti miste, <strong>10 sono diventate record completi con RIS e BibTeX in 8,1 secondi</strong> via semplice HTTP — senza account, senza chiave. Le altre dieci tornano indietro con la motivazione, così sai quali indirizzi hanno bisogno di te.
+  <a href="/recipes/">Le ricette</a> ·
+  <a href="/measurements/reading-list-to-bibliography/">la misurazione</a>
+</p>
+
+<h2>Che cosa non fa</h2>
+<ul>
+  <li>Non raggiunge contenuti a cui non hai accesso.</li>
+  <li>Una cattura dello schermo non è un documento elettronico qualificato. Registra come appariva una pagina in un dato momento, che è cosa diversa dal provarlo.</li>
+  <li>Dove un editore offre il proprio export <em>Cita → RIS</em>, quel file fa fede ed è migliore di qualunque ricostruzione dalla pagina.</li>
+</ul>
+<footer>
+      Cifre misurate tra il 1º e il 3 agosto 2026, ciascuna collegata al proprio metodo e ai dati grezzi.
+      <br><br>
+      Le correzioni sono benvenute e vengono fatte in pubblico: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">apri una segnalazione</a>.
+      <br><br>
+      Trasparenza: l’autore sviluppa Full Page PDF Snap, l’estensione citata in questa pagina. La stampa in PDF integrata nel browser è <a href="/measurements/print-to-pdf-vs-screenshot/">misurata a confronto</a>, compresi i casi in cui vince la stampa.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Avvertenze</a>
+    </footer>
+</div>
+
+<div data-lang="ja" lang="ja">
+<header>
+  <h1>ウェブページを PDF として保存する方法 — 1 枚の紙に、出典を載せて</h1>
+  <p class="standfirst">
+    短い答え: 印刷ダイアログではなく、キャプチャ拡張機能を使う。印刷はページに分割する — 同じ記事が <strong>26 ページになり、9 か所の改ページが文の途中を切った</strong>。キャプチャは 1 枚の連続した紙に書き出し、どこから取得したか、そしていつ取得したかをページに刻める。
+  </p>
+  <p class="meta">2026年8月3日 · このページの数値はすべて、その出どころとなった計測にリンクしている</p>
+</header>
+
+<p>
+  <a class="btn" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Firefox（パソコンと Android）</a>
+  &nbsp;<a class="btn" href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome 116+, Edge, Brave, Vivaldi</a>
+</p>
+<p style="font-size:.9rem">
+  無料、MIT ライセンス、処理は端末上で完結する。Edge は他のストアの拡張機能を許可するか一度だけ尋ねる。Opera は先に <em>Install Chrome Extensions</em> が必要になる。あとは、ページを開いて <code>Alt+Shift+Y</code> を押すか、アイコンをクリックするだけ。
+</p>
+
+<h2>PDF に印刷するか、キャプチャするか — 正直な比較</h2>
+<table>
+  <thead><tr><th scope="col"></th><th scope="col">ブラウザーの印刷</th><th scope="col">全ページキャプチャ</th></tr></thead>
+  <tbody>
+    <tr><td>同じ記事の出力</td><td>26 ページ</td><td><strong>1 枚</strong></td></tr>
+    <tr><td>文を分断する改ページ</td><td>9</td><td>0</td></tr>
+    <tr><td>選択・検索できる文字</td><td><strong>再現率 87.6 %</strong></td><td><strong>再現率 91.5 %</strong></td></tr>
+    <tr><td>費用</td><td>なし（標準機能）</td><td>なし</td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>文字については、テキスト層を備えて以来キャプチャが上回っている — 91.5 % 対 87.6 %、8月5日の計測。</strong>読めて検索できる複製さえあればよく、ページ分割が気にならないなら、ブラウザーに最初から入っている機能で足りる — このページはそれを隠さずに書く。キャプチャが効くのは、レイアウトが意味を持つとき、改ページが表を割ってしまうとき、あるいは出典の情報をファイルと一緒に運びたいときだ。
+  <a href="/measurements/print-to-pdf-vs-screenshot/">方法と生データ</a>
+</p>
+
+<h2>ログインの向こう側、あるいは自分に権利のある有料領域</h2>
+<p>
+  キャプチャ拡張機能は、自分のセッションがすでに表示しているものを読み取る。ライセンス契約のある学術論文、講義ページ、注文確認 — 見えているとおりに保存される。サーバー側の変換サービスにはできない。あなたのセッションを持っていないからだ。20 件の多様な出典で計測したところ、サーバー側のリーダーはそのうち 5 件から明確に拒否された。読む権利のあるページを保存するのは私的な複製であって、権利のない内容に手を伸ばす方法ではない。
+</p>
+
+<h2>スマートフォンでは</h2>
+<p>
+  Firefox だけである。<strong>Chrome for Android は拡張機能をいっさい入れられない</strong>ので、この問いが立つのはそこだけだ。アドオン API に照らして調べた 248 件のページ保存拡張機能のうち、60 件が Android 対応を宣言しているが、私たちが試すまで、実機で確かめられたものは一つもなかった。
+  <a href="/measurements/android-capture-extensions/">Android の計測</a>
+</p>
+
+<h2>なぜファイルが出典を持つべきなのか</h2>
+<p>
+  参考文献のアドレスは、自分の手の届かないページについての約束である。実際の参考文献表から取った 150 件の出典を調べたところ、<strong>19.3 % はすでに消えており</strong>、8.7 % はどこにも保存されていなかった。控えが存在した場合でも、その古さは中央値で 603 日だった。公開日を示さないページでは、取得した時点だけが参考文献に載せられる唯一の日付になる — そしてそれは、見たその瞬間にしか存在しない。
+  <a href="/measurements/web-citations-that-vanish/">引用したあと、その出典に何が起きるか</a>
+</p>
+<p>
+  キャプチャはそれを書き込める。著者、タイトル、DOI、ライセンス、正確な時刻を PDF の中に、そして隣に置く RIS レコードに — Zotero、Citavi、EndNote、Mendeley が読み込める形式で。
+</p>
+
+<h2>文献リストをまとめて</h2>
+<p>
+  1 ページではなく参考文献表が相手なら、作業の大半にブラウザーは要らない。20 件の多様な出典のうち、<strong>10 件が 8.1 秒で RIS と BibTeX を備えた完全なレコードになった</strong> — 素の HTTP で、アカウントも鍵もなしに。残る 10 件は理由を添えて返るので、どのアドレスに人手が要るかが分かる。
+  <a href="/recipes/">レシピ</a> ·
+  <a href="/measurements/reading-list-to-bibliography/">その計測</a>
+</p>
+
+<h2>これができないこと</h2>
+<ul>
+  <li>権利のない内容に到達することはできない。</li>
+  <li>画面のキャプチャは適格電子文書ではない。ある時点でページがどう見えたかを記録するだけであり、それを証明することとは別である。</li>
+  <li>出版社が独自の <em>引用 → RIS</em> 書き出しを提供している場合は、そのファイルが正であり、ページから再構成したものより優れている。</li>
+</ul>
+<footer>
+      数値は 2026年8月1日から3日のあいだに計測し、それぞれ方法と生データにリンクしている。
+      <br><br>
+      訂正は歓迎され、公開の場で行われる: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue を開く</a>.
+      <br><br>
+      開示: 著者は、このページで挙げた拡張機能 Full Page PDF Snap の開発者である。ブラウザー自身の PDF 印刷は <a href="/measurements/print-to-pdf-vs-screenshot/">それと突き合わせて計測しており</a>、印刷が勝つ場面も含めて示している。
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">免責事項</a>
+    </footer>
+</div>
+
+<div data-lang="pt-BR" lang="pt-BR">
+<header>
+  <h1>Como salvar uma página web em PDF — uma única folha, com a fonte nela</h1>
+  <p class="standfirst">
+    A resposta curta: uma extensão de captura, não a caixa de impressão. A impressão pagina — o mesmo artigo saiu como <strong>26 páginas com 9 quebras cortando uma frase</strong>. Uma captura escreve uma folha contínua e pode carimbar na página de onde ela veio e quando.
+  </p>
+  <p class="meta">3 de agosto de 2026 · cada número desta página leva à medição de onde ele vem</p>
+</header>
+
+<p>
+  <a class="btn" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Firefox, computador e Android</a>
+  &nbsp;<a class="btn" href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome 116+, Edge, Brave, Vivaldi</a>
+</p>
+<p style="font-size:.9rem">
+  Gratuito, licença MIT, roda no aparelho. O Edge pergunta uma vez se permite extensões de outras lojas; o Opera precisa antes da extensão <em>Install Chrome Extensions</em>. Depois: abra a página, pressione <code>Alt+Shift+Y</code> ou clique no ícone.
+</p>
+
+<h2>Imprimir em PDF ou capturar? A comparação honesta</h2>
+<table>
+  <thead><tr><th scope="col"></th><th scope="col">Impressão do navegador</th><th scope="col">Captura de página inteira</th></tr></thead>
+  <tbody>
+    <tr><td>O mesmo artigo sai como</td><td>26 páginas</td><td><strong>1 folha</strong></td></tr>
+    <tr><td>Quebras de página cortando uma frase</td><td>9</td><td>0</td></tr>
+    <tr><td>Texto que dá para selecionar e buscar</td><td><strong>87,6 % de revocação</strong></td><td><strong>91,5 % de revocação</strong></td></tr>
+    <tr><td>Custa algo</td><td>não, já vem embutido</td><td>não</td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>No texto, a captura está à frente desde que carrega uma camada de texto — 91,5 % contra 87,6 %, medido em 5 de agosto.</strong> Se você só precisa de uma cópia legível e pesquisável e a paginação não incomoda, a função que já existe no navegador basta — e esta página diz isso em vez de fingir o contrário. Uma captura compensa quando o layout importa, quando uma quebra cairia no meio de uma tabela, ou quando os dados da fonte precisam viajar junto com o arquivo.
+  <a href="/measurements/print-to-pdf-vs-screenshot/">Método e dados brutos</a>
+</p>
+
+<h2>Atrás de um login ou de um paywall ao qual você tem acesso</h2>
+<p>
+  Uma extensão de captura lê o que a sua própria sessão já mostra. Um artigo de periódico licenciado, uma página de curso, uma confirmação de pedido — salvos como você os vê. Nenhum conversor do lado do servidor consegue isso, porque não tem a sua sessão: medido em 20 fontes variadas, um leitor do lado do servidor foi recusado de saída por 5 delas. Capturar uma página que você pode ler é uma cópia para uso próprio; não é um caminho para conteúdos aos quais você não tem acesso.
+</p>
+
+<h2>No celular</h2>
+<p>
+  Só o Firefox. <strong>O Chrome para Android não instala extensão nenhuma</strong>, então a pergunta só se coloca ali. De 248 extensões de salvar páginas verificadas contra a API de complementos, 60 declaram suporte a Android e nenhuma tinha sido testada num aparelho antes de nós.
+  <a href="/measurements/android-capture-extensions/">A medição no Android</a>
+</p>
+
+<h2>Por que o arquivo deve carregar a sua fonte</h2>
+<p>
+  Um endereço numa bibliografia é uma promessa sobre uma página que não é sua. Verificado em 150 fontes tiradas de listas de referências reais: <strong>19,3 % tinham sumido</strong>, 8,7 % não tinham cópia arquivada em lugar nenhum, e onde havia um instantâneo ele tinha mediana de 603 dias. Para uma página que não declara data de publicação, o momento da consulta é a única data que uma referência pode carregar — e ela só existe no instante em que você olha.
+  <a href="/measurements/web-citations-that-vanish/">O que acontece com uma fonte depois de você citá-la</a>
+</p>
+<p>
+  Uma captura pode escrever isso dentro: autores, título, DOI, licença e a hora exata, no PDF e num registro RIS ao lado — um formato que entra no Zotero, no Citavi, no EndNote ou no Mendeley.
+</p>
+
+<h2>Uma lista de leitura inteira de uma vez</h2>
+<p>
+  Para uma bibliografia em vez de uma única página, a maior parte do trabalho não precisa de navegador. De 20 fontes variadas, <strong>10 viraram registros completos com RIS e BibTeX em 8,1 segundos</strong> por HTTP simples — sem conta, sem chave. As outras dez voltam com o motivo, para você saber quais endereços precisam de você.
+  <a href="/recipes/">As receitas</a> ·
+  <a href="/measurements/reading-list-to-bibliography/">a medição</a>
+</p>
+
+<h2>O que isto não faz</h2>
+<ul>
+  <li>Não alcança conteúdos aos quais você não tem acesso.</li>
+  <li>Uma captura de tela não é um documento eletrônico qualificado. Ela registra como uma página estava num momento, o que é diferente de prová-lo.</li>
+  <li>Onde uma editora oferece a própria exportação <em>Citar → RIS</em>, esse arquivo é o que vale e é melhor do que qualquer coisa reconstruída a partir da página.</li>
+</ul>
+<footer>
+      Números medidos entre 1 e 3 de agosto de 2026, cada um ligado ao seu método e aos dados brutos.
+      <br><br>
+      Correções são bem-vindas e feitas em público: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">abrir uma issue</a>.
+      <br><br>
+      Divulgação: o autor desenvolve o Full Page PDF Snap, a extensão citada nesta página. A impressão em PDF do próprio navegador é <a href="/measurements/print-to-pdf-vs-screenshot/">medida contra ela</a>, inclusive onde a impressão ganha.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Aviso legal</a>
+    </footer>
+</div>
+
+<div data-lang="ru" lang="ru">
+<header>
+  <h1>Как сохранить веб-страницу в PDF — одним листом, с указанием источника</h1>
+  <p class="standfirst">
+    Короткий ответ: расширение для съёмки страницы, а не диалог печати. Печать разбивает на страницы — та же статья вышла как <strong>26 страниц, и 9 разрывов прошли посреди предложения</strong>. Съёмка пишет один непрерывный лист и может проставить на странице, откуда она взята и когда.
+  </p>
+  <p class="meta">3 августа 2026 · каждое число на этой странице ведёт к измерению, из которого оно взято</p>
+</header>
+
+<p>
+  <a class="btn" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Firefox, компьютер и Android</a>
+  &nbsp;<a class="btn" href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome 116+, Edge, Brave, Vivaldi</a>
+</p>
+<p style="font-size:.9rem">
+  Бесплатно, лицензия MIT, работает на устройстве. Edge один раз спросит, разрешить ли расширения из других магазинов; Opera сначала требует своё дополнение <em>Install Chrome Extensions</em>. Дальше: откройте страницу и нажмите <code>Alt+Shift+Y</code> или щёлкните по значку.
+</p>
+
+<h2>Печать в PDF или съёмка? Честное сравнение</h2>
+<table>
+  <thead><tr><th scope="col"></th><th scope="col">Печать браузера</th><th scope="col">Съёмка всей страницы</th></tr></thead>
+  <tbody>
+    <tr><td>Та же статья выходит как</td><td>26 страниц</td><td><strong>1 лист</strong></td></tr>
+    <tr><td>Разрывы страниц посреди предложения</td><td>9</td><td>0</td></tr>
+    <tr><td>Текст, который можно выделить и найти</td><td><strong>полнота 87,6 %</strong></td><td><strong>полнота 91,5 %</strong></td></tr>
+    <tr><td>Стоит ли денег</td><td>нет, встроено</td><td>нет</td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>По тексту съёмка впереди с тех пор, как она несёт текстовый слой — 91,5 % против 87,6 %, измерено 5 августа.</strong> Если нужна только читаемая и доступная поиску копия, а разбиение на страницы не мешает, хватит той функции, что уже есть в браузере, — и эта страница говорит об этом прямо, а не делает вид, будто иначе. Съёмка стоит того, когда важна вёрстка, когда разрыв пришёлся бы на таблицу или когда сведения об источнике должны путешествовать вместе с файлом.
+  <a href="/measurements/print-to-pdf-vs-screenshot/">Метод и исходные данные</a>
+</p>
+
+<h2>За логином или за платной стеной, к которой у вас есть доступ</h2>
+<p>
+  Расширение снимает то, что уже показывает ваша собственная сессия. Лицензированная журнальная статья, страница курса, подтверждение заказа — сохраняются такими, какими вы их видите. Серверная служба так не может, потому что у неё нет вашей сессии: на 20 разнородных источниках серверному читателю отказали 5 из них наотрез. Сохранить страницу, которую вам позволено читать, — это копия для личного пользования; это не путь к содержимому, к которому у вас нет доступа.
+</p>
+
+<h2>На телефоне</h2>
+<p>
+  Только Firefox. <strong>Chrome для Android не устанавливает расширений вовсе</strong>, так что вопрос возникает лишь здесь. Из 248 расширений для сохранения страниц, проверенных через API дополнений, 60 заявляют поддержку Android, и ни одно из них не проверялось на устройстве до нас.
+  <a href="/measurements/android-capture-extensions/">Измерение на Android</a>
+</p>
+
+<h2>Почему файл должен нести свой источник</h2>
+<p>
+  Адрес в списке литературы — это обещание о странице, которая вам не подчиняется. Проверено на 150 источниках из реальных списков литературы: <strong>19,3 % исчезли</strong>, у 8,7 % нигде не нашлось архивной копии, а там, где снимок был, его возраст составил в медиане 603 дня. Для страницы без даты публикации время обращения — единственная дата, которую может нести ссылка, и она существует только в тот момент, когда вы смотрите.
+  <a href="/measurements/web-citations-that-vanish/">Что происходит с источником после того, как вы его процитировали</a>
+</p>
+<p>
+  Съёмка может записать это внутрь: авторов, заглавие, DOI, лицензию и точное время — в самом PDF и в записи RIS рядом, в формате, который читают Zotero, Citavi, EndNote и Mendeley.
+</p>
+
+<h2>Весь список литературы разом</h2>
+<p>
+  Если речь о списке литературы, а не об одной странице, большая часть работы обходится без браузера. Из 20 разнородных источников <strong>10 стали полными записями с RIS и BibTeX за 8,1 секунды</strong> по обычному HTTP — без учётной записи и без ключа. Остальные десять возвращаются с указанием причины, чтобы вы знали, какие адреса требуют вас.
+  <a href="/recipes/">Рецепты</a> ·
+  <a href="/measurements/reading-list-to-bibliography/">измерение</a>
+</p>
+
+<h2>Чего это не делает</h2>
+<ul>
+  <li>Оно не даёт доступа к содержимому, которого у вас нет.</li>
+  <li>Снимок экрана — не квалифицированный электронный документ. Он фиксирует, как страница выглядела в определённый момент, а это не то же самое, что доказать это.</li>
+  <li>Там, где издатель предлагает собственный экспорт <em>Цитировать → RIS</em>, именно этот файл имеет силу и лучше всего, что восстановлено из страницы.</li>
+</ul>
+<footer>
+      Числа измерены с 1 по 3 августа 2026 года, каждое связано со своим методом и исходными данными.
+      <br><br>
+      Исправления приветствуются и вносятся публично: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">открыть issue</a>.
+      <br><br>
+      Раскрытие: автор разрабатывает Full Page PDF Snap — расширение, названное на этой странице. Встроенная в браузер печать в PDF <a href="/measurements/print-to-pdf-vs-screenshot/">измерена в сравнении с ним</a>, включая случаи, где печать выигрывает.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Отказ от ответственности</a>
+    </footer>
+</div>
+
+<div data-lang="zh-CN" lang="zh-CN">
+<header>
+  <h1>如何把网页保存为 PDF —— 一整张，并带上出处</h1>
+  <p class="standfirst">
+    简短的答案：用抓取扩展，而不是打印对话框。打印会分页——同一篇文章印出来是 <strong>26 页，其中 9 处分页把句子拦腰截断</strong>。抓取写出的是一张连续的长纸，还能把来源和时间盖在页面上。
+  </p>
+  <p class="meta">2026年8月3日 · 本页每一个数字都链接到它出自的那次测量</p>
+</header>
+
+<p>
+  <a class="btn" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Firefox（桌面与 Android）</a>
+  &nbsp;<a class="btn" href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome 116+, Edge, Brave, Vivaldi</a>
+</p>
+<p style="font-size:.9rem">
+  免费，MIT 许可，全部在本机运行。Edge 会问一次是否允许来自其他商店的扩展；Opera 需要先装上它的 <em>Install Chrome Extensions</em>。然后：打开网页，按 <code>Alt+Shift+Y</code> 或点击图标。
+</p>
+
+<h2>打印成 PDF 还是抓取？一个诚实的对比</h2>
+<table>
+  <thead><tr><th scope="col"></th><th scope="col">浏览器打印</th><th scope="col">整页抓取</th></tr></thead>
+  <tbody>
+    <tr><td>同一篇文章的结果</td><td>26 页</td><td><strong>1 张</strong></td></tr>
+    <tr><td>把句子截断的分页</td><td>9</td><td>0</td></tr>
+    <tr><td>可选中、可检索的文字</td><td><strong>召回率 87.6 %</strong></td><td><strong>召回率 91.5 %</strong></td></tr>
+    <tr><td>是否花钱</td><td>不花钱，系统自带</td><td>不花钱</td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>论文字，自从抓取带上了文本层，它就领先了——91.5 % 对 87.6 %，测量于 8月5日。</strong>如果你只需要一份能读、能搜的副本，也不在意分页，浏览器里现成的功能就够了——本页把这一点说出来，而不是装作没有。值得抓取的情形是：版面本身要紧、某个分页会正好切在表格中间，或者出处信息必须跟着文件一起走。
+  <a href="/measurements/print-to-pdf-vs-screenshot/">方法与原始数据</a>
+</p>
+
+<h2>在登录墙或你有权访问的付费墙之后</h2>
+<p>
+  抓取扩展读取的是你自己的会话已经显示出来的内容。有订阅的期刊论文、课程页面、订单确认——你看到什么样，就保存成什么样。服务器端的转换服务做不到这一点，因为它没有你的会话：在 20 个混合来源上测量，服务器端阅读器被其中 5 个直接拒绝。保存一个你有权阅读的页面，是供自己使用的复制件；它不是通往你无权访问内容的路径。
+</p>
+
+<h2>在手机上</h2>
+<p>
+  只有 Firefox。<strong>Chrome for Android 根本不安装任何扩展</strong>，所以这个问题只在那里出现。对照附加组件 API 核查了 248 个保存网页的扩展，其中 60 个声明支持 Android，而在我们之前，没有一个真正在设备上试过。
+  <a href="/measurements/android-capture-extensions/">Android 测量</a>
+</p>
+
+<h2>为什么文件应当带着自己的出处</h2>
+<p>
+  参考文献里的一个网址，是对一个你无法掌控的页面所作的承诺。以真实参考文献表中的 150 个来源核查：<strong>19.3 % 已经消失</strong>，8.7 % 在任何地方都没有存档副本；即便存在快照，其年龄中位数也有 603 天。对于不声明出版日期的页面来说，访问时间是参考文献唯一能承载的日期——而它只存在于你查看的那一刻。
+  <a href="/measurements/web-citations-that-vanish/">一个来源在被引用之后会怎样</a>
+</p>
+<p>
+  抓取可以把这些写进去：作者、标题、DOI、许可与准确时间，写在 PDF 内部，并在旁边附一份 RIS 记录——这种格式可以导入 Zotero、Citavi、EndNote 或 Mendeley。
+</p>
+
+<h2>一次处理整份阅读清单</h2>
+<p>
+  如果面对的是一份参考文献表而不是单个页面，大部分工作根本不需要浏览器。20 个混合来源中，<strong>10 个在 8.1 秒内变成了带 RIS 与 BibTeX 的完整记录</strong>，走的是普通 HTTP——不要账号，不要密钥。另外十个会连同原因一起退回来，好让你知道哪些网址需要你亲自去处理。
+  <a href="/recipes/">配方</a> ·
+  <a href="/measurements/reading-list-to-bibliography/">那次测量</a>
+</p>
+
+<h2>它做不到的事</h2>
+<ul>
+  <li>它无法取得你没有权限的内容。</li>
+  <li>屏幕抓取不是合格的电子文书。它记录的是一个页面在某一时刻的样子，这与证明它是另一回事。</li>
+  <li>凡是出版方提供了自己的 <em>引用 → RIS</em> 导出，那份文件才是权威的，胜过任何从页面重建出来的东西。</li>
+</ul>
+<footer>
+      数据测量于 2026年8月1日至3日之间，每一项都链接到其方法与原始数据。
+      <br><br>
+      欢迎指正，更正将公开进行： <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">提交 issue</a>.
+      <br><br>
+      披露：作者是本页所提到的扩展 Full Page PDF Snap 的开发者。浏览器自带的打印成 PDF 已经 <a href="/measurements/print-to-pdf-vs-screenshot/">与之做过对比测量</a>，包括打印占优的情形。
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">免责声明</a>
+    </footer>
+</div>
 </div>
 </body>
 </html>

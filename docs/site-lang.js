@@ -32,18 +32,55 @@
 
   // Rueckfall-Hinweis in der jeweils gewaehlten Sprache. Kurz halten: er steht
   // ueber dem Artikel und soll ihn nicht verdraengen.
+  // Rueckfall-Hinweis in der jeweils gewaehlten Sprache. Kurz halten: er steht
+  // ueber dem Artikel und soll ihn nicht verdraengen.
+  //
+  // {s} wird durch die Eigenbezeichnung der Sprache ersetzt, die TATSAECHLICH
+  // angezeigt wird. Vorher stand hier fest "Englisch" — auf den einsprachig
+  // deutschen Seiten (/mitmachen/, /anleitung/…, /deutsch/) meldete das Skript
+  // damit "affichage en anglais", waehrend deutscher Text zu sehen war.
+  // (16.08.2026, vom Nutzer gemeldet)
   var FALLBACK = {
-    "en": "This page is not available in your language yet — showing English.",
-    "de": "Diese Seite gibt es noch nicht in Ihrer Sprache — angezeigt wird Englisch.",
-    "es": "Esta página aún no está en su idioma — se muestra en inglés.",
-    "fr": "Cette page n'existe pas encore dans votre langue — affichage en anglais.",
-    "it": "Questa pagina non è ancora disponibile nella tua lingua — mostrata in inglese.",
-    "ja": "このページはまだお使いの言語では提供されていません。英語で表示します。",
-    "pt-BR": "Esta página ainda não está no seu idioma — exibindo em inglês.",
-    "ru": "Эта страница пока недоступна на вашем языке — показан английский.",
-    "zh-CN": "本页面暂无您所选语言的版本，将显示英文。"
+    "en": "This page is not available in your language yet — showing {s}.",
+    "de": "Diese Seite gibt es noch nicht in Ihrer Sprache — angezeigt wird {s}.",
+    "es": "Esta página aún no está en su idioma — se muestra en {s}.",
+    "fr": "Cette page n'existe pas encore dans votre langue — affichage en {s}.",
+    "it": "Questa pagina non è ancora disponibile nella tua lingua — mostrata in {s}.",
+    "ja": "このページはまだお使いの言語では提供されていません。{s}で表示します。",
+    "pt-BR": "Esta página ainda não está no seu idioma — exibindo em {s}.",
+    "ru": "Эта страница пока недоступна на вашем языке — показан {s}.",
+    "zh-CN": "本页面暂无您所选语言的版本，将显示{s}。"
   };
 
+  // Wie die angezeigte Sprache im Hinweis benannt wird.
+  //
+  // Rueckfall ist in der Praxis immer "en" oder "de" — nur diese beiden sind
+  // Basis einer Seite. Fuer sie steht die im Satz gebeugte Form da; die
+  // Eigenbezeichnung ("affichage en English") las sich falsch. Alles andere
+  // faellt auf die Eigenbezeichnung aus LANGS zurueck: eindeutig, wenn auch
+  // ungelenk — und es tritt nicht auf, solange keine dritte Basissprache
+  // hinzukommt.
+  var IM_SATZ = {
+    "en": { "en": "English", "de": "Englisch", "es": "inglés", "fr": "anglais",
+            "it": "inglese", "ja": "英語", "pt-BR": "inglês",
+            "ru": "английский", "zh-CN": "英文" },
+    "de": { "en": "German", "de": "Deutsch", "es": "alemán", "fr": "allemand",
+            "it": "tedesco", "ja": "ドイツ語", "pt-BR": "alemão",
+            "ru": "немецкий", "zh-CN": "德文" }
+  };
+
+  function sprachName(code, anzeige) {
+    var g = IM_SATZ[code];
+    if (g && g[anzeige]) return g[anzeige];
+    for (var i = 0; i < LANGS.length; i++) {
+      if (LANGS[i].code === code) return LANGS[i].name;
+    }
+    return code;
+  }
+
+  // Die Sprache, in der die Seite AUSGELIEFERT wurde. Einmal beim Laden
+  // festhalten, bevor setLang() das Attribut ueberschreibt.
+  var SEITENSPRACHE = (document.documentElement.getAttribute("lang") || "en");
   var LABEL = {
     "en": "Language", "de": "Sprache", "es": "Idioma", "fr": "Langue",
     "it": "Lingua", "ja": "言語", "pt-BR": "Idioma", "ru": "Язык", "zh-CN": "语言"
@@ -167,11 +204,25 @@
       el.style.cssText =
         "margin:0 0 1.2rem;padding:.55rem .8rem;border-left:3px solid #b9b9b9;" +
         "background:rgba(128,128,128,.10);font-size:.92rem;line-height:1.45;";
+      // Einfuegestelle, absteigend nach Genauigkeit. Der letzte Zweig kehrte
+      // frueher einfach zurueck: fehlte .wrap, erschien GAR KEIN Hinweis, und
+      // zwar lautlos. Auf privacy.html bekam ein franzoesischer Leser dadurch
+      // englischen Text ohne jede Erklaerung. Ein Hinweis, der sich selbst
+      // verschluckt, ist schlechter als ein haesslich platzierter.
+      // (16.08.2026)
       var wrap = document.querySelector(".wrap");
       var header = wrap && wrap.querySelector("header");
-      if (header && header.parentNode) header.parentNode.insertBefore(el, header.nextSibling);
-      else if (wrap) wrap.insertBefore(el, wrap.firstChild);
-      else return;
+      var ziel = null, vor = null;
+      if (header && header.parentNode) { ziel = header.parentNode; vor = header.nextSibling; }
+      else if (wrap) { ziel = wrap; vor = wrap.firstChild; }
+      else {
+        var haupt = document.querySelector("main") || document.body;
+        var h1 = haupt && haupt.querySelector("h1");
+        if (h1 && h1.parentNode) { ziel = h1.parentNode; vor = h1.nextSibling; }
+        else if (haupt) { ziel = haupt; vor = haupt.firstChild; }
+      }
+      if (!ziel) return;
+      ziel.insertBefore(el, vor);
     }
     el.textContent = text;
     el.hidden = false;
@@ -188,10 +239,18 @@
   function setLang(wahl, stumm) {
     var da = vorhanden();
     var hatBloecke = Object.keys(da).length > 0;
-    // Eine Seite ohne Sprachbloecke ist einsprachig englisch. Sie ist damit
-    // genauso ein Rueckfall wie eine, der die gewaehlte Sprache fehlt — und
-    // muss es genauso sagen.
-    var zeigen = (hatBloecke && da[wahl]) ? wahl : "en";
+    // Eine Seite ohne Sprachbloecke ist NICHT automatisch englisch — sie ist in
+    // der Sprache, in der sie ausgeliefert wurde. Die alte Annahme setzte
+    // lang="en" auf deutschen Text und meldete "zeigt Englisch", waehrend
+    // Deutsch zu sehen war. Sie ist trotzdem ein Rueckfall und muss es sagen.
+    var zeigen;
+    if (!hatBloecke) {
+      zeigen = SEITENSPRACHE;
+    } else if (da[wahl]) {
+      zeigen = wahl;
+    } else {
+      zeigen = da["en"] ? "en" : Object.keys(da)[0];
+    }
 
     if (hatBloecke) {
       document.querySelectorAll("[data-lang]").forEach(function (e) {
@@ -203,7 +262,10 @@
     if (!stumm) merken(wahl);
     navUebersetzen(wahl);
 
-    if (zeigen !== wahl) hinweisZeigen(FALLBACK[wahl] || FALLBACK.en);
+    if (zeigen !== wahl) {
+      hinweisZeigen((FALLBACK[wahl] || FALLBACK.en)
+                    .replace("{s}", sprachName(zeigen, wahl)));
+    }
     else hinweisVerbergen();
 
     var sel = document.getElementById("pl-langpick");

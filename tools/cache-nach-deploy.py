@@ -32,6 +32,8 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 ZONE = "0d7110c80d576750944785d0ae759209"
 ITEM = "0fd9f886-bdb1-40a2-b364-24961e4d2253"     # Cloudflare API Token — provinglab.dev
 API = "https://api.cloudflare.com/client/v4"
@@ -63,12 +65,20 @@ FEHLER_TTL = [
 
 
 def token():
-    sitzung = open("/dev/shm/bw-session").read().strip()
-    r = subprocess.run(["bw", "get", "item", ITEM, "--session", sitzung],
-                       capture_output=True, text=True)
-    if r.returncode:
-        sys.exit("Vaultwarden nicht erreichbar — vault-popup-unlock ausfuehren.")
-    return (json.loads(r.stdout).get("login") or {}).get("password", "").strip()
+    """Das Token, das den Cache WIRKLICH leeren darf.
+
+    Vorher stand hier ein fester Vault-Eintrag. Der darf es nicht, und der
+    Purge scheiterte mit "Authentication error" — sichtbar erst, wenn man
+    hinsieht. Welches Token welches Recht traegt, steht in keinem Feld; also
+    werden alle durchprobiert, geprueft mit einer echten Purge-Anfrage.
+    (16.08.2026, siehe tools/cf_token.py)
+    """
+    import cf_token
+    tok, quelle = cf_token.fuer_purge()
+    if not tok:
+        sys.exit(quelle)
+    print(f"  Zugang: {quelle}")
+    return tok
 
 
 def ruf(pfad, methode="GET", koerper=None, tok=None):

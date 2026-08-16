@@ -755,10 +755,37 @@ def schreiben(ziel, inhalt, url, titel, besch, og, tiefe, art, fusssatz, faq=Non
         raise SystemExit(f"Unaufgeloeste Platzhalter in {ziel.name}: {sorted(set(uebrig))}")
     kopf, fuss = kopf_und_fuss()
     ziel.mkdir(parents=True, exist_ok=True)
-    (ziel / "index.html").write_text(
+    # ZWEI Gruende, hier abzubrechen statt zu schreiben (16.08.2026):
+    #
+    # 1. Dieser Builder traegt noch 94.8 % / 92.6 % und "Print wins on text".
+    #    Genau diese Zahlen und diese Schlussfolgerung hat Commit 3c57e3b am
+    #    5. August ZURUECKGEZOGEN und umgedreht (87.6 % gegen 91.5 %, Aufnahme
+    #    vorn). Ein Lauf wuerde eine widerrufene Messung wieder veroeffentlichen
+    #    — der schlimmstmoegliche Fehler auf einer Seite, die von Nachpruefbarkeit
+    #    lebt. Es ist nachweislich schon passiert: die Arbeitskopie trug die
+    #    alten Zahlen wieder, als die Uebersetzung begann.
+    #
+    # 2. Die Zielseiten sind inzwischen neunsprachig. Ein Lauf loescht acht
+    #    Sprachfassungen und meldet Erfolg.
+    #
+    # Solange beides nicht behoben ist, schreibt dieser Builder nicht.
+    datei = ziel / "index.html"
+    if datei.exists():
+        vorhanden = datei.read_text(encoding="utf-8")
+        gruende = []
+        if 'data-lang="es"' in vorhanden:
+            gruende.append("Zielseite ist neunsprachig — texte_*.py ist die Quelle")
+        if "94.8" in inhalt or "92.6" in inhalt or "Print wins" in inhalt:
+            gruende.append("Builder traegt die am 05.08. zurueckgezogenen Zahlen")
+        if gruende:
+            print(f"  UEBERSPRUNGEN: {datei.relative_to(DOCS)}")
+            for g in gruende:
+                print(f"    - {g}")
+            return
+    (datei).write_text(
         anpassen(kopf, url, titel, besch, og, tiefe, art, faq) + inhalt
         + fuss_setzen(fuss, fusssatz, tiefe), encoding="utf-8")
-    print(f"  geschrieben: {(ziel / 'index.html').relative_to(DOCS)}")
+    print(f"  geschrieben: {datei.relative_to(DOCS)}")
 
 
 def main():
