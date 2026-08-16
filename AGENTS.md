@@ -114,12 +114,23 @@ nicht auseinanderlaufen.
 | Datei | Erzeugt |
 |---|---|
 | `build-*-post.py` | je einen Beitrag |
+| `build-startseite.py` | `docs/index.html` aus `texte_startseite.py` (9 Sprachen) |
+| `build-indexseiten.py` | `measurements/`, `notes/`, `tools/` aus `texte_indexseiten.py` |
 | `build-einstiegsseiten.py` | `/how-to/`, `/anleitung/`, `/for-agents/` |
 | `build-sitemap.py` | `docs/sitemap.xml` — **nie von Hand** |
 | `build-feed.py` | `docs/feed.xml` |
 | `build-versionen.py` | `/.well-known/extension-versions.json` |
 | `chrome-mv3/port.py` | den Chrome-Zweig aus den Firefox-Quellen |
 | `build-llms-index.py` | `llms.txt` (Index), `llms-full.txt`, `agent.md` |
+
+**Startseite und Index-Seiten nicht mehr von Hand editieren.** Seit dem
+15.08.2026 sind `docs/index.html` und die Index-Seiten gebaute Artefakte:
+Eintraege und Textaenderungen gehoeren in `texte_startseite.py` bzw.
+`texte_indexseiten.py`, danach der jeweilige Bau-Lauf. Ein neuer Eintrag
+braucht alle neun Sprachen im selben Schritt — fehlt eine, meldet der Bauer
+sie als Warnung, und die Fassung faellt fuer Leser dieser Sprache auf
+Englisch zurueck. Wer die Datei direkt editiert, verliert die Aenderung beim
+naechsten Lauf.
 
 **Falle, die zweimal zugeschlagen hat:** Diese Skripte nutzen f-Strings. Ein
 eingebetteter Textblock mit `{NAME}` wird zu `{{NAME}}` maskiert — und landet

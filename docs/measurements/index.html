@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Measurements — Proving Lab</title>
 <meta name="description" content="Measurements on browser tools and document capture: OCR recall, print versus screenshot, declared extension permissions. Each with method, raw data and a control run.">
+<meta name="keywords" content="measurements, browser tools, OCR recall, extension permissions, method, raw data, control run">
 <link rel="canonical" href="https://provinglab.dev/measurements/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
@@ -12,6 +13,11 @@
 <link rel="service-doc" href="/llms.txt" type="text/plain">
 <link rel="icon" href="../icon-128.png">
 <meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Measurements — Proving Lab">
+<meta property="og:description" content="Measurements on browser tools and document capture: OCR recall, print versus screenshot, declared extension permissions. Each with method, raw data and a control run.">
+<meta property="og:url" content="https://provinglab.dev/measurements/">
+<meta name="twitter:card" content="summary">
 <style>
   :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
     --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; }
@@ -51,9 +57,29 @@
   .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
   .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
   @media (max-width:640px){ .topnav .brand{width:100%;margin-right:0} }
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
 </style>
 <script src="/agent-tools.js" defer></script>
 <script src="/site-lang.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Measurements — Proving Lab",
+  "description": "Measurements on browser tools and document capture: OCR recall, print versus screenshot, declared extension permissions. Each with method, raw data and a control run.",
+  "url": "https://provinglab.dev/measurements/",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "keywords": "measurements, browser tools, OCR recall, extension permissions, method, raw data, control run"
+}
+</script>
 </head>
 <body>
 <nav class="topnav">
@@ -73,6 +99,7 @@
 </nav>
 
 <div class="wrap">
+<div data-lang="en" class="on" lang="en">
 <header>
   <h1>Measurements</h1>
   <p class="lead">Each one with the commands to repeat it, the raw data behind it, and a control run — because a method that does not fail where it should is not measuring anything.</p>
@@ -151,6 +178,655 @@
 </div>
 
 <footer><a href="../">← Proving Lab</a> · <a href="../about/">About &amp; disclosure</a> · Corrections: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">Disclaimer</a></footer>
+</div>
+
+<div data-lang="de" lang="de">
+<header>
+  <h1>Messungen</h1>
+  <p class="lead">Jede mit den Befehlen zu ihrer Wiederholung, den Rohdaten dahinter und einem Kontrolllauf — denn eine Methode, die dort nicht scheitert, wo sie sollte, misst nichts.</p>
+</header>
+<div class="item">
+  <p class="date">3. August 2026</p>
+  <h2><a href="install-an-extension-without-a-click/">Eine Browser-Erweiterung ohne Klick installieren — und wieder entfernen</a></h2>
+  <p>Vier Wege, beide Richtungen, auf einem gewöhnlichen Benutzerkonto. Firefox' eigener Marionette-Kanal installiert und deinstalliert eine signierte Store-Version headless — und die zwei Befehle brauchen zusammen eine Viertelsekunde; die Kosten sind der Browser-Start, nicht die Arbeit. Der Klick-Weg meldete bei jedem Schritt Erfolg und installierte nichts.</p>
+  <div class="figures"><span><b>4,1 s</b> Hin- und Rückweg</span><span><b>0,24 s</b> die Befehle selbst</span><span><b>0</b> Eingabeereignisse</span><span><b>179 s</b> für den Klick-Weg, der scheiterte</span></div>
+</div>
+<div class="item">
+  <p class="date">3. August 2026</p>
+  <h2><a href="de-plattformen/">Deutschsprachige wissenschaftliche Plattformen gemessen: vier gelesen, sieben zurückgegeben</a></h2>
+  <p>SSOAR, PsychArchives, peDOCS, OPUS, die Nationalbibliothek, Springer, Nomos, beck-online, openJur, Statistik Austria und Destatis durch den Zitations-Endpunkt — mit den Fehlschlägen zuerst und jedem Grund gemessen, nicht vermutet.</p>
+  <div class="figures"><span><b>4/11</b> vollständige Datensätze</span><span><b>1</b> gemessene Mauer</span><span><b>0</b> für einen Browser unerreichbar</span><span><b>0,75 s</b> pro Quelle</span></div>
+</div>
+<div class="item">
+  <p class="date">3. August 2026</p>
+  <h2><a href="reading-list-to-bibliography/">Zwanzig Links, zehn Zitationen: was eine Maschine fertig macht und was sie zurückgibt</a></h2>
+  <p>Eine Leseliste in ein Literaturverzeichnis, von Anfang bis Ende. Fachverlage liefern Datensätze, ob Paywall oder offen; Statistikportale, Kammern und Zeitungen liefern keine — und nur eine Ablehnung von zwanzig war eine Bot-Abwehr.</p>
+  <div class="figures"><span><b>10/20</b> vollständige Datensätze</span><span><b>1</b> Bot-Abwehr</span><span><b>5</b> Seiten ohne etwas zu erklären</span><span><b>0,4 s</b> pro Quelle</span></div>
+</div>
+<div class="item">
+  <p class="date">3. August 2026</p>
+  <h2><a href="citation-triage/">Ein Agent kann acht von zwölf Quellen zitieren — der nützliche Teil ist zu wissen, welche vier er nicht kann</a></h2>
+  <p>Eine gemischte Leseliste durch einen Zitations-Endpunkt: vollständige Datensätze mit RIS für zwei Drittel, und das verbleibende Drittel präzise genug benannt, um es von Hand zu holen.</p>
+  <div class="figures"><span><b>8/12</b> vom Agenten erledigt</span><span><b>1,09 s</b> pro Quelle</span><span><b>4</b> benannt, nicht geraten</span></div>
+</div>
+<div class="item">
+  <p class="date">3. August 2026</p>
+  <h2><a href="citation-by-platform/">Wo Zitationsdaten tatsächlich liegen: 18 wissenschaftliche Plattformen gemessen</a></h2>
+  <p>PubMed, arXiv, Zenodo, SSRN, EUR-Lex und dreizehn weitere, jede geprüft darauf, was sie über ihre eigenen Werke erklärt — mit jedem zurückgegebenen Titel gegen Crossref verifiziert.</p>
+  <div class="figures"><span><b>11/18</b> lieferten Daten</span><span><b>10</b> mit Verfassern und Jahr</span><span><b>8</b> stimmten mit Crossref überein</span></div>
+</div>
+<div class="item">
+  <p class="date">2. August 2026</p>
+  <h2><a href="citation-extraction/">Gegen Citoid an Zufallsstichproben gemessen: gleiche Abdeckung, nichts erfunden</a></h2>
+  <p>Der Wikimedia-Dienst auf Basis der Zotero-Translatoren ist der Maßstab. Über 18 zufällig gezogene Werke: gleiche Abdeckung, und keine Sperre als Erfolg gemeldet.</p>
+  <div class="figures"><span><b>13/13</b> Felder vollständig</span><span><b>0</b> falsche Sperr-Meldungen</span><span><b>0,35 s</b> Median</span></div>
+</div>
+<div class="item">
+  <p class="date">2. August 2026</p>
+  <h2><a href="android-capture-extensions/">Welche Seiten-Speicher-Erweiterungen laufen tatsächlich auf Firefox für Android?</a></h2>
+  <p>248 Erweiterungen gegen die Add-ons-API geprüft. Chrome für Android kann überhaupt keine installieren — die Frage stellt sich also nur bei Firefox. Einschließlich der Korrektur unseres eigenen Store-Eintrags.</p>
+  <div class="figures"><span><b>60</b> deklarieren Android</span><span><b>85.724</b> Nutzer bei der größten</span><span><b>0</b> auf einem Gerät getestet</span></div>
+</div>
+<div class="item">
+  <p class="date">2. August 2026</p>
+  <h2><a href="web-citations-that-vanish/">Web-Zitate, die verschwinden: was mit einer Quelle nach dem Zitieren passiert</a></h2>
+  <p>Warum das Abrufdatum in jedes Literaturverzeichnis gehört, was die Forschung zu Linkverfall und Inhaltsdrift zeigt, und 150 zitierte Quellen geprüft darauf, ob irgendwo eine Kopie existiert.</p>
+  <div class="figures"><span><b>19,3 %</b> verschwunden</span><span><b>603 Tage</b> medianes Archivalter</span><span><b>2,0 %</b> unwiederbringlich</span></div>
+</div>
+<div class="item">
+  <p class="date">1. August 2026</p>
+  <h2><a href="print-to-pdf-vs-screenshot/">Als PDF drucken oder den Bildschirm aufnehmen? Dieselbe Seite, beide Wege gemessen</a></h2>
+  <p>Firefox exportiert bereits kostenlos PDFs. Derselbe Artikel durch beide Wege — einschließlich der Stelle, an der der Druck gewinnt.</p>
+  <div class="figures"><span><b>1 : 26</b> Seiten</span><span><b>9</b> Umbrüche durchtrennen einen Satz</span><span>Aufnahme: <b>91,5 %</b> Treffer</span></div>
+</div>
+<div class="item">
+  <p class="date">1. August 2026</p>
+  <h2><a href="webpage-to-pdf-for-ocr/">Webseite als PDF für OCR: Wie viel Text überlebt tatsächlich?</a></h2>
+  <p>Ein Screenshot-PDF durch Tesseract, verglichen mit dem Ursprungstext, dazu die Auflösungsschwelle, an der die Erkennung einbricht.</p>
+  <div class="figures"><span><b>92,6 %</b> zurückgewonnen</span><span><b>8/8</b> kritische Werte</span><span><b>72 dpi</b> Einbruch</span></div>
+</div>
+<div class="item">
+  <p class="date">1. August 2026</p>
+  <h2><a href="pdf-extension-permissions/">Lädt Ihre PDF-Erweiterung die Seite hoch?</a></h2>
+  <p>Was acht Aufnahme-Erweiterungen in ihren Manifesten deklarieren, wie man es in 30 Sekunden prüft, und warum server-seitige Konverter kein Login erreichen.</p>
+  <div class="figures"><span><b>8</b> Erweiterungen</span><span>Rohdaten veröffentlicht</span></div>
+</div>
+<div class="item">
+  <p class="date">1. August 2026</p>
+  <h2><a href="extension-permissions-risk/">Eine Erweiterung ist nur so gefährlich, wie ihre Berechtigungen es erlauben</a></h2>
+  <p>Ein Jahr nach Mozillas Warnung vor erbeuteten Entwicklerkonten: Berechtigungsumfang als Wirkungsradius, nicht als Vertrauenssignal.</p>
+  <div class="figures"><span>Worst-Case-Tabelle</span><span>Bewertungs-Checkliste</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Über &amp; Offenlegung</a> · Korrekturen: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a> · <a href="../disclaimer/">Haftungsausschluss</a></footer>
+</div>
+
+<div data-lang="es" lang="es">
+<header>
+  <h1>Mediciones</h1>
+  <p class="lead">Cada una con los comandos para repetirla, los datos brutos detrás y una ejecución de control — porque un método que no falla donde debería no está midiendo nada.</p>
+</header>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="install-an-extension-without-a-click/">Instalar una extensión de navegador sin un clic, y quitarla de nuevo</a></h2>
+  <p>Cuatro vías, en ambas direcciones, en una cuenta de usuario normal. El canal Marionette del propio Firefox instala y desinstala una compilación firmada de la tienda sin ventana — y los dos comandos tardan un cuarto de segundo entre ambos; el coste es arrancar el navegador, no el trabajo. La vía del clic informó éxito en cada paso y no instaló nada.</p>
+  <div class="figures"><span><b>4,1 s</b> ida y vuelta</span><span><b>0,24 s</b> los comandos en sí</span><span><b>0</b> eventos de entrada</span><span><b>179 s</b> para la vía del clic, que falló</span></div>
+</div>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="de-plattformen/">Plataformas académicas en alemán medidas: cuatro leídas, siete devueltas</a></h2>
+  <p>SSOAR, PsychArchives, peDOCS, OPUS, la Biblioteca Nacional, Springer, Nomos, beck-online, openJur, Statistik Austria y Destatis por el endpoint de citación — con los fallos nombrados primero y cada razón medida, no supuesta. Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span><b>4/11</b> registros completos</span><span><b>1</b> muro medido</span><span><b>0</b> inalcanzables para un navegador</span><span><b>0,75 s</b> por fuente</span></div>
+</div>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="reading-list-to-bibliography/">Veinte enlaces, diez citas: qué termina una máquina y qué devuelve</a></h2>
+  <p>Una lista de lectura convertida en bibliografía, de principio a fin. Las editoriales científicas dan registros, con muro de pago o abiertas; los portales de estadística, las cámaras de comercio y los periódicos no dan ninguno — y solo una negativa de veinte fue una defensa contra bots.</p>
+  <div class="figures"><span><b>10/20</b> registros completos</span><span><b>1</b> defensa contra bots</span><span><b>5</b> páginas sin nada que declarar</span><span><b>0,4 s</b> por fuente</span></div>
+</div>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="citation-triage/">Un agente puede citar ocho de doce fuentes — lo útil es saber cuáles cuatro no puede</a></h2>
+  <p>Una lista de lectura mixta por un endpoint de citación: registros completos con RIS para dos tercios, y el tercio restante nombrado con la precisión suficiente para buscarlo a mano.</p>
+  <div class="figures"><span><b>8/12</b> hechas por el agente</span><span><b>1,09 s</b> por fuente</span><span><b>4</b> nombradas, no adivinadas</span></div>
+</div>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="citation-by-platform/">Dónde viven realmente los datos de citación: 18 plataformas académicas medidas</a></h2>
+  <p>PubMed, arXiv, Zenodo, SSRN, EUR-Lex y trece más, cada una comprobada por lo que declara sobre sus propias obras — con cada título devuelto verificado contra Crossref.</p>
+  <div class="figures"><span><b>11/18</b> devolvieron datos</span><span><b>10</b> con autores y año</span><span><b>8</b> coincidieron con Crossref</span></div>
+</div>
+<div class="item">
+  <p class="date">2 de agosto de 2026</p>
+  <h2><a href="citation-extraction/">Medido contra Citoid en muestras aleatorias: misma cobertura, nada inventado</a></h2>
+  <p>El servicio de Wikimedia construido sobre los traductores de Zotero es el patrón. En 18 obras extraídas al azar: cobertura igual, y ningún bloqueo informado como éxito.</p>
+  <div class="figures"><span><b>13/13</b> campos completos</span><span><b>0</b> informes de bloqueo falsos</span><span><b>0,35 s</b> de mediana</span></div>
+</div>
+<div class="item">
+  <p class="date">2 de agosto de 2026</p>
+  <h2><a href="android-capture-extensions/">¿Qué extensiones de guardado de páginas funcionan realmente en Firefox para Android?</a></h2>
+  <p>248 extensiones comprobadas contra la API de complementos. Chrome para Android no puede instalar ninguna — así que la pregunta solo surge en Firefox. Incluye la corrección de nuestro propio listado de la tienda.</p>
+  <div class="figures"><span><b>60</b> declaran Android</span><span><b>85.724</b> usuarios en la mayor</span><span><b>0</b> probadas en un dispositivo</span></div>
+</div>
+<div class="item">
+  <p class="date">2 de agosto de 2026</p>
+  <h2><a href="web-citations-that-vanish/">Citas web que desaparecen: qué pasa con una fuente después de citarla</a></h2>
+  <p>Por qué la fecha de consulta está en toda bibliografía, qué muestra la investigación sobre podredumbre de enlaces y deriva de contenido, y 150 fuentes citadas comprobadas por si existe una copia en algún sitio. Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span><b>19,3 %</b> desaparecidas</span><span><b>603 días</b> de edad mediana del archivo</span><span><b>2,0 %</b> irrecuperables</span></div>
+</div>
+<div class="item">
+  <p class="date">1 de agosto de 2026</p>
+  <h2><a href="print-to-pdf-vs-screenshot/">¿Imprimir a PDF o capturar la pantalla? La misma página medida de ambas formas</a></h2>
+  <p>Firefox ya exporta PDF gratis. El mismo artículo por ambas vías — incluido dónde gana la impresión.</p>
+  <div class="figures"><span><b>1 : 26</b> páginas</span><span><b>9</b> saltos cortan una frase</span><span>captura: <b>91,5 %</b> de recuperación</span></div>
+</div>
+<div class="item">
+  <p class="date">1 de agosto de 2026</p>
+  <h2><a href="webpage-to-pdf-for-ocr/">Página web a PDF para OCR: ¿cuánto texto sobrevive realmente?</a></h2>
+  <p>Un PDF de captura por Tesseract, comparado con el texto fuente, más el umbral de resolución donde el reconocimiento colapsa.</p>
+  <div class="figures"><span><b>92,6 %</b> recuperado</span><span><b>8/8</b> valores críticos</span><span><b>72 dpi</b> colapso</span></div>
+</div>
+<div class="item">
+  <p class="date">1 de agosto de 2026</p>
+  <h2><a href="pdf-extension-permissions/">¿Sube tu extensión de PDF la página?</a></h2>
+  <p>Qué declaran ocho extensiones de captura en sus manifiestos, cómo comprobarlo en 30 segundos, y por qué los conversores del lado del servidor no alcanzan un inicio de sesión.</p>
+  <div class="figures"><span><b>8</b> extensiones</span><span>datos brutos publicados</span></div>
+</div>
+<div class="item">
+  <p class="date">1 de agosto de 2026</p>
+  <h2><a href="extension-permissions-risk/">Una extensión solo es tan peligrosa como sus permisos permiten</a></h2>
+  <p>Un año después de la advertencia de Mozilla sobre cuentas de desarrollador robadas: el alcance de los permisos como radio de daño, no como señal de confianza.</p>
+  <div class="figures"><span>tabla del peor caso</span><span>lista de verificación</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Acerca de &amp; divulgación</a> · Correcciones: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues de GitHub</a> · <a href="../disclaimer/">Aviso legal</a></footer>
+</div>
+
+<div data-lang="fr" lang="fr">
+<header>
+  <h1>Mesures</h1>
+  <p class="lead">Chacune avec les commandes pour la refaire, les données brutes derrière, et un essai de contrôle — car une méthode qui n'échoue pas là où elle le devrait ne mesure rien.</p>
+</header>
+<div class="item">
+  <p class="date">3 août 2026</p>
+  <h2><a href="install-an-extension-without-a-click/">Installer une extension de navigateur sans un clic, et la retirer ensuite</a></h2>
+  <p>Quatre voies, dans les deux sens, sur un compte utilisateur ordinaire. Le canal Marionette de Firefox installe et désinstalle une version signée de la boutique sans fenêtre — et les deux commandes prennent un quart de seconde à elles deux ; le coût est le démarrage du navigateur, pas le travail. La voie du clic a annoncé un succès à chaque étape et n'a rien installé.</p>
+  <div class="figures"><span><b>4,1 s</b> aller-retour</span><span><b>0,24 s</b> les commandes elles-mêmes</span><span><b>0</b> événement de saisie</span><span><b>179 s</b> pour la voie du clic, qui a échoué</span></div>
+</div>
+<div class="item">
+  <p class="date">3 août 2026</p>
+  <h2><a href="de-plattformen/">Plates-formes savantes germanophones mesurées : quatre lues, sept rendues</a></h2>
+  <p>SSOAR, PsychArchives, peDOCS, OPUS, la Bibliothèque nationale, Springer, Nomos, beck-online, openJur, Statistik Austria et Destatis par le point d'accès de citation — avec les échecs nommés d'abord et chaque raison mesurée, pas supposée. Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span><b>4/11</b> notices complètes</span><span><b>1</b> mur mesuré</span><span><b>0</b> inaccessible à un navigateur</span><span><b>0,75 s</b> par source</span></div>
+</div>
+<div class="item">
+  <p class="date">3 août 2026</p>
+  <h2><a href="reading-list-to-bibliography/">Vingt liens, dix citations : ce qu'une machine termine et ce qu'elle rend</a></h2>
+  <p>Une liste de lecture transformée en bibliographie, de bout en bout. Les éditeurs scientifiques fournissent des notices, avec ou sans mur payant ; les portails de statistique, les chambres de commerce et les journaux n'en fournissent aucune — et un seul refus sur vingt était une défense anti-robots.</p>
+  <div class="figures"><span><b>10/20</b> notices complètes</span><span><b>1</b> défense anti-robots</span><span><b>5</b> pages sans rien à déclarer</span><span><b>0,4 s</b> par source</span></div>
+</div>
+<div class="item">
+  <p class="date">3 août 2026</p>
+  <h2><a href="citation-triage/">Un agent peut citer huit sources sur douze — l'utile est de savoir quelles quatre il ne peut pas</a></h2>
+  <p>Une liste de lecture mixte par un point d'accès de citation : des notices complètes avec RIS pour les deux tiers, et le tiers restant nommé assez précisément pour aller le chercher à la main.</p>
+  <div class="figures"><span><b>8/12</b> faites par l'agent</span><span><b>1,09 s</b> par source</span><span><b>4</b> nommées, pas devinées</span></div>
+</div>
+<div class="item">
+  <p class="date">3 août 2026</p>
+  <h2><a href="citation-by-platform/">Où vivent vraiment les données de citation : 18 plates-formes savantes mesurées</a></h2>
+  <p>PubMed, arXiv, Zenodo, SSRN, EUR-Lex et treize autres, chacune vérifiée sur ce qu'elle déclare de ses propres œuvres — avec chaque titre rendu vérifié contre Crossref.</p>
+  <div class="figures"><span><b>11/18</b> ont rendu des données</span><span><b>10</b> avec auteurs et année</span><span><b>8</b> concordantes avec Crossref</span></div>
+</div>
+<div class="item">
+  <p class="date">2 août 2026</p>
+  <h2><a href="citation-extraction/">Mesuré contre Citoid sur échantillons aléatoires : même couverture, rien d'inventé</a></h2>
+  <p>Le service Wikimedia bâti sur les traducteurs Zotero fait office d'étalon. Sur 18 œuvres tirées au hasard : couverture égale, et aucun blocage rapporté comme un succès.</p>
+  <div class="figures"><span><b>13/13</b> champs complets</span><span><b>0</b> faux rapport de blocage</span><span><b>0,35 s</b> de médiane</span></div>
+</div>
+<div class="item">
+  <p class="date">2 août 2026</p>
+  <h2><a href="android-capture-extensions/">Quelles extensions de sauvegarde de page tournent vraiment sur Firefox pour Android ?</a></h2>
+  <p>248 extensions vérifiées contre l'API des modules. Chrome pour Android ne peut en installer aucune — la question ne se pose donc que sur Firefox. Y compris la correction de notre propre fiche de boutique.</p>
+  <div class="figures"><span><b>60</b> déclarent Android</span><span><b>85 724</b> utilisateurs sur la plus grosse</span><span><b>0</b> testée sur un appareil</span></div>
+</div>
+<div class="item">
+  <p class="date">2 août 2026</p>
+  <h2><a href="web-citations-that-vanish/">Citations web qui disparaissent : ce qu'il advient d'une source après l'avoir citée</a></h2>
+  <p>Pourquoi la date de consultation figure dans toute bibliographie, ce que montre la recherche sur la pourriture des liens et la dérive des contenus, et 150 sources citées vérifiées pour savoir si une copie existe quelque part. Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span><b>19,3 %</b> disparues</span><span><b>603 jours</b> d'âge médian d'archive</span><span><b>2,0 %</b> irrécupérables</span></div>
+</div>
+<div class="item">
+  <p class="date">1 août 2026</p>
+  <h2><a href="print-to-pdf-vs-screenshot/">Imprimer en PDF ou capturer l'écran ? La même page mesurée des deux façons</a></h2>
+  <p>Firefox exporte déjà des PDF gratuitement. Le même article par les deux voies — y compris là où l'impression gagne.</p>
+  <div class="figures"><span><b>1 : 26</b> pages</span><span><b>9</b> sauts coupent une phrase</span><span>capture : <b>91,5 %</b> de rappel</span></div>
+</div>
+<div class="item">
+  <p class="date">1 août 2026</p>
+  <h2><a href="webpage-to-pdf-for-ocr/">Page web en PDF pour l'OCR : combien de texte survit vraiment ?</a></h2>
+  <p>Un PDF de capture passé dans Tesseract, comparé au texte source, plus le seuil de résolution où la reconnaissance s'effondre.</p>
+  <div class="figures"><span><b>92,6 %</b> récupéré</span><span><b>8/8</b> valeurs critiques</span><span><b>72 dpi</b> effondrement</span></div>
+</div>
+<div class="item">
+  <p class="date">1 août 2026</p>
+  <h2><a href="pdf-extension-permissions/">Votre extension PDF téléverse-t-elle la page ?</a></h2>
+  <p>Ce que huit extensions de capture déclarent dans leurs manifestes, comment le vérifier en 30 secondes, et pourquoi les convertisseurs côté serveur n'atteignent pas un identifiant.</p>
+  <div class="figures"><span><b>8</b> extensions</span><span>données brutes publiées</span></div>
+</div>
+<div class="item">
+  <p class="date">1 août 2026</p>
+  <h2><a href="extension-permissions-risk/">Une extension n'est dangereuse que dans la mesure de ses permissions</a></h2>
+  <p>Un an après l'avertissement de Mozilla sur les comptes de développeur volés : la portée des permissions comme rayon de dommage, pas comme signal de confiance.</p>
+  <div class="figures"><span>tableau du pire cas</span><span>liste de contrôle</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">À propos &amp; transparence</a> · Corrections : <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">tickets GitHub</a> · <a href="../disclaimer/">Mentions légales</a></footer>
+</div>
+
+<div data-lang="it" lang="it">
+<header>
+  <h1>Misurazioni</h1>
+  <p class="lead">Ognuna con i comandi per ripeterla, i dati grezzi alle spalle e una prova di controllo — perché un metodo che non fallisce dove dovrebbe non sta misurando nulla.</p>
+</header>
+<div class="item">
+  <p class="date">3 agosto 2026</p>
+  <h2><a href="install-an-extension-without-a-click/">Installare un'estensione del browser senza un clic, e rimuoverla di nuovo</a></h2>
+  <p>Quattro vie, in entrambe le direzioni, su un normale account utente. Il canale Marionette di Firefox installa e disinstalla una build firmata dello store senza finestra — e i due comandi impiegano un quarto di secondo in due; il costo è avviare il browser, non il lavoro. La via del clic ha riportato successo a ogni passo e non ha installato nulla.</p>
+  <div class="figures"><span><b>4,1 s</b> andata e ritorno</span><span><b>0,24 s</b> i comandi stessi</span><span><b>0</b> eventi di input</span><span><b>179 s</b> per la via del clic, fallita</span></div>
+</div>
+<div class="item">
+  <p class="date">3 agosto 2026</p>
+  <h2><a href="de-plattformen/">Piattaforme accademiche di lingua tedesca misurate: quattro lette, sette restituite</a></h2>
+  <p>SSOAR, PsychArchives, peDOCS, OPUS, la Biblioteca Nazionale, Springer, Nomos, beck-online, openJur, Statistik Austria e Destatis attraverso l'endpoint di citazione — con i fallimenti nominati per primi e ogni ragione misurata, non supposta. Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span><b>4/11</b> record completi</span><span><b>1</b> muro misurato</span><span><b>0</b> irraggiungibili per un browser</span><span><b>0,75 s</b> per fonte</span></div>
+</div>
+<div class="item">
+  <p class="date">3 agosto 2026</p>
+  <h2><a href="reading-list-to-bibliography/">Venti link, dieci citazioni: cosa completa una macchina e cosa restituisce</a></h2>
+  <p>Una lista di lettura trasformata in bibliografia, dall'inizio alla fine. Gli editori scientifici danno record, con paywall o aperti; i portali di statistica, le camere di commercio e i quotidiani non ne danno nessuno — e solo un rifiuto su venti era una difesa anti-bot.</p>
+  <div class="figures"><span><b>10/20</b> record completi</span><span><b>1</b> difesa anti-bot</span><span><b>5</b> pagine senza nulla da dichiarare</span><span><b>0,4 s</b> per fonte</span></div>
+</div>
+<div class="item">
+  <p class="date">3 agosto 2026</p>
+  <h2><a href="citation-triage/">Un agente può citare otto fonti su dodici — la parte utile è sapere quali quattro non può</a></h2>
+  <p>Una lista di lettura mista attraverso un endpoint di citazione: record completi con RIS per due terzi, e il terzo rimanente nominato con precisione sufficiente per recuperarlo a mano.</p>
+  <div class="figures"><span><b>8/12</b> fatte dall'agente</span><span><b>1,09 s</b> per fonte</span><span><b>4</b> nominate, non indovinate</span></div>
+</div>
+<div class="item">
+  <p class="date">3 agosto 2026</p>
+  <h2><a href="citation-by-platform/">Dove vivono davvero i dati di citazione: 18 piattaforme accademiche misurate</a></h2>
+  <p>PubMed, arXiv, Zenodo, SSRN, EUR-Lex e altre tredici, ognuna controllata su ciò che dichiara delle proprie opere — con ogni titolo restituito verificato contro Crossref.</p>
+  <div class="figures"><span><b>11/18</b> hanno restituito dati</span><span><b>10</b> con autori e anno</span><span><b>8</b> corrispondenti a Crossref</span></div>
+</div>
+<div class="item">
+  <p class="date">2 agosto 2026</p>
+  <h2><a href="citation-extraction/">Misurato contro Citoid su campioni casuali: stessa copertura, nulla di inventato</a></h2>
+  <p>Il servizio Wikimedia costruito sui traduttori di Zotero è il riferimento. Su 18 opere estratte a caso: copertura uguale, e nessun blocco riportato come successo.</p>
+  <div class="figures"><span><b>13/13</b> campi completi</span><span><b>0</b> falsi rapporti di blocco</span><span><b>0,35 s</b> di mediana</span></div>
+</div>
+<div class="item">
+  <p class="date">2 agosto 2026</p>
+  <h2><a href="android-capture-extensions/">Quali estensioni di salvataggio pagine funzionano davvero su Firefox per Android?</a></h2>
+  <p>248 estensioni controllate contro l'API dei componenti aggiuntivi. Chrome per Android non ne può installare nessuna — quindi la domanda si pone solo su Firefox. Include la correzione della nostra stessa scheda dello store.</p>
+  <div class="figures"><span><b>60</b> dichiarano Android</span><span><b>85.724</b> utenti sulla più grande</span><span><b>0</b> testate su un dispositivo</span></div>
+</div>
+<div class="item">
+  <p class="date">2 agosto 2026</p>
+  <h2><a href="web-citations-that-vanish/">Citazioni web che spariscono: cosa succede a una fonte dopo averla citata</a></h2>
+  <p>Perché la data di consultazione è in ogni bibliografia, cosa mostra la ricerca su link rot e content drift, e 150 fonti citate controllate per vedere se esiste una copia da qualche parte. Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span><b>19,3 %</b> sparite</span><span><b>603 giorni</b> di età mediana dell'archivio</span><span><b>2,0 %</b> irrecuperabili</span></div>
+</div>
+<div class="item">
+  <p class="date">1 agosto 2026</p>
+  <h2><a href="print-to-pdf-vs-screenshot/">Stampare in PDF o catturare lo schermo? La stessa pagina misurata in entrambi i modi</a></h2>
+  <p>Firefox esporta già PDF gratis. Lo stesso articolo per entrambe le vie — incluso dove vince la stampa.</p>
+  <div class="figures"><span><b>1 : 26</b> pagine</span><span><b>9</b> interruzioni tagliano una frase</span><span>cattura: <b>91,5 %</b> di richiamo</span></div>
+</div>
+<div class="item">
+  <p class="date">1 agosto 2026</p>
+  <h2><a href="webpage-to-pdf-for-ocr/">Pagina web in PDF per OCR: quanto testo sopravvive davvero?</a></h2>
+  <p>Un PDF di cattura in Tesseract, confrontato con il testo sorgente, più la soglia di risoluzione in cui il riconoscimento crolla.</p>
+  <div class="figures"><span><b>92,6 %</b> recuperato</span><span><b>8/8</b> valori critici</span><span><b>72 dpi</b> collasso</span></div>
+</div>
+<div class="item">
+  <p class="date">1 agosto 2026</p>
+  <h2><a href="pdf-extension-permissions/">La tua estensione PDF carica la pagina?</a></h2>
+  <p>Cosa dichiarano otto estensioni di cattura nei loro manifest, come controllarlo in 30 secondi, e perché i convertitori lato server non raggiungono un login.</p>
+  <div class="figures"><span><b>8</b> estensioni</span><span>dati grezzi pubblicati</span></div>
+</div>
+<div class="item">
+  <p class="date">1 agosto 2026</p>
+  <h2><a href="extension-permissions-risk/">Un'estensione è pericolosa solo quanto i suoi permessi consentono</a></h2>
+  <p>Un anno dopo l'avvertimento di Mozilla sugli account sviluppatore rubati: la portata dei permessi come raggio di danno, non come segnale di fiducia.</p>
+  <div class="figures"><span>tabella del caso peggiore</span><span>checklist di valutazione</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Informazioni &amp; trasparenza</a> · Correzioni: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue su GitHub</a> · <a href="../disclaimer/">Esclusione di responsabilità</a></footer>
+</div>
+
+<div data-lang="ja" lang="ja">
+<header>
+  <h1>測定</h1>
+  <p class="lead">それぞれに、再現するためのコマンド、背後の生データ、そしてコントロールランがあります — 失敗すべきところで失敗しない方法は、何も測っていないからです。</p>
+</header>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="install-an-extension-without-a-click/">クリックなしでブラウザ拡張機能をインストールし、再び削除する</a></h2>
+  <p>4つの経路、双方向、一般ユーザーアカウントで。Firefox 自身の Marionette チャネルが署名済みストアビルドをヘッドレスでインストール・アンインストールし — 2つのコマンドは合わせて4分の1秒。コストはブラウザの起動であって作業ではありません。クリック経路はすべてのステップで成功と報告し、何もインストールしませんでした。</p>
+  <div class="figures"><span>往復 <b>4.1秒</b></span><span>コマンド自体は <b>0.24秒</b></span><span>入力イベント <b>0</b></span><span>失敗したクリック経路は <b>179秒</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="de-plattformen/">ドイツ語の学術プラットフォームを測定: 4件は読め、7件は返却</a></h2>
+  <p>SSOAR、PsychArchives、peDOCS、OPUS、国立図書館、Springer、Nomos、beck-online、openJur、Statistik Austria、Destatis を引用エンドポイントに通し — 失敗を先に挙げ、各理由を推測ではなく測定。Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span>完全なレコード <b>4/11</b></span><span>測定された壁 <b>1</b></span><span>ブラウザで届かないもの <b>0</b></span><span>1ソースあたり <b>0.75秒</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="reading-list-to-bibliography/">20のリンク、10の引用: 機械が終わらせるものと、返すもの</a></h2>
+  <p>読書リストを参考文献に、最初から最後まで。学術出版社はペイウォールでもオープンでもレコードを返します。統計ポータル、商工会議所、新聞は何も返しません — 20件中の拒否でボット防御だったのは1件だけでした。</p>
+  <div class="figures"><span>完全なレコード <b>10/20</b></span><span>ボット防御 <b>1</b></span><span>宣言するものがないページ <b>5</b></span><span>1ソースあたり <b>0.4秒</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="citation-triage/">エージェントは12件中8件を引用できる — 有用なのは、できない4件が分かること</a></h2>
+  <p>混合の読書リストを引用エンドポイントに通しました: 3分の2は RIS 付きの完全なレコード、残りの3分の1は手で取得できるだけ正確に名前が挙がっています。</p>
+  <div class="figures"><span>エージェントが処理 <b>8/12</b></span><span>1ソースあたり <b>1.09秒</b></span><span>推測でなく指名 <b>4</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="citation-by-platform/">引用データは実際どこにあるか: 18の学術プラットフォームを測定</a></h2>
+  <p>PubMed、arXiv、Zenodo、SSRN、EUR-Lex ほか13件。それぞれが自らの著作について何を宣言しているかを確認し — 返されたすべてのタイトルを Crossref と照合しました。</p>
+  <div class="figures"><span>データを返した <b>11/18</b></span><span>著者と年がある <b>10</b></span><span>Crossref と一致 <b>8</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月2日</p>
+  <h2><a href="citation-extraction/">ランダムサンプルで Citoid と比較測定: 同じカバレッジ、捏造なし</a></h2>
+  <p>Zotero トランスレーター上に構築された Wikimedia のサービスが物差しです。ランダムに抽出した18の著作で: カバレッジは同等、ブロックを成功と報告したことはありません。</p>
+  <div class="figures"><span>フィールド完全 <b>13/13</b></span><span>誤ったブロック報告 <b>0</b></span><span>中央値 <b>0.35秒</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月2日</p>
+  <h2><a href="android-capture-extensions/">ページ保存拡張機能で、実際に Android 版 Firefox で動くのはどれか?</a></h2>
+  <p>248の拡張機能をアドオン API と照合。Android 版 Chrome は一切インストールできません — だからこの問いは Firefox でのみ生じます。私たち自身のストア掲載の修正も含まれます。</p>
+  <div class="figures"><span>Android 対応を宣言 <b>60</b></span><span>最大のものでユーザー <b>85,724</b></span><span>実機でテスト済み <b>0</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月2日</p>
+  <h2><a href="web-citations-that-vanish/">消えるウェブ引用: 引用したあと、ソースに何が起こるか</a></h2>
+  <p>なぜ取得日がすべての参考文献に必要か、リンクロットと内容漂流の研究が示すこと、そして引用された150のソースについて、どこかにコピーがあるかを確認。Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span>消失 <b>19.3%</b></span><span>アーカイブ年齢の中央値 <b>603日</b></span><span>回復不能 <b>2.0%</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月1日</p>
+  <h2><a href="print-to-pdf-vs-screenshot/">PDF に印刷するか、画面をキャプチャするか? 同じページを両方の方法で測定</a></h2>
+  <p>Firefox はすでに無料で PDF をエクスポートできます。同じ記事を両方の経路で — 印刷が勝るところも含めて。</p>
+  <div class="figures"><span>ページ数 <b>1 : 26</b></span><span>文を断ち切る改ページ <b>9</b></span><span>キャプチャ: 再現率 <b>91.5%</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月1日</p>
+  <h2><a href="webpage-to-pdf-for-ocr/">OCR のためのウェブページ PDF 化: 実際にどれだけのテキストが残るか?</a></h2>
+  <p>スクリーンショット PDF を Tesseract にかけ、ソーステキストと比較。認識が崩壊する解像度の閾値も。</p>
+  <div class="figures"><span>回復 <b>92.6%</b></span><span>重要な値 <b>8/8</b></span><span>崩壊 <b>72 dpi</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月1日</p>
+  <h2><a href="pdf-extension-permissions/">あなたの PDF 拡張機能はページをアップロードしていますか?</a></h2>
+  <p>8つのキャプチャ拡張機能がマニフェストで宣言していること、30秒で確認する方法、そしてサーバーサイドのコンバーターがログインに届かない理由。</p>
+  <div class="figures"><span>拡張機能 <b>8</b> 件</span><span>生データ公開済み</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月1日</p>
+  <h2><a href="extension-permissions-risk/">拡張機能は、その権限が許す範囲でしか危険にならない</a></h2>
+  <p>Mozilla が開発者アカウントのフィッシングを警告してから1年: 権限の範囲は信頼のシグナルではなく、被害半径として。</p>
+  <div class="figures"><span>最悪ケース表</span><span>評価チェックリスト</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">概要と開示</a> · 修正: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">免責事項</a></footer>
+</div>
+
+<div data-lang="pt-BR" lang="pt-BR">
+<header>
+  <h1>Medições</h1>
+  <p class="lead">Cada uma com os comandos para repeti-la, os dados brutos por trás e uma execução de controle — porque um método que não falha onde deveria não está medindo nada.</p>
+</header>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="install-an-extension-without-a-click/">Instalar uma extensão de navegador sem um clique, e removê-la de novo</a></h2>
+  <p>Quatro vias, nas duas direções, numa conta de usuário comum. O canal Marionette do próprio Firefox instala e desinstala uma versão assinada da loja sem janela — e os dois comandos levam um quarto de segundo juntos; o custo é iniciar o navegador, não o trabalho. A via do clique relatou sucesso em cada passo e não instalou nada.</p>
+  <div class="figures"><span><b>4,1 s</b> ida e volta</span><span><b>0,24 s</b> os comandos em si</span><span><b>0</b> eventos de entrada</span><span><b>179 s</b> para a via do clique, que falhou</span></div>
+</div>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="de-plattformen/">Plataformas acadêmicas em alemão medidas: quatro lidas, sete devolvidas</a></h2>
+  <p>SSOAR, PsychArchives, peDOCS, OPUS, a Biblioteca Nacional, Springer, Nomos, beck-online, openJur, Statistik Austria e Destatis pelo endpoint de citação — com as falhas nomeadas primeiro e cada razão medida, não suposta. Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span><b>4/11</b> registros completos</span><span><b>1</b> muro medido</span><span><b>0</b> inalcançável para um navegador</span><span><b>0,75 s</b> por fonte</span></div>
+</div>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="reading-list-to-bibliography/">Vinte links, dez citações: o que uma máquina termina e o que devolve</a></h2>
+  <p>Uma lista de leitura transformada em bibliografia, de ponta a ponta. Editoras científicas entregam registros, com paywall ou abertas; portais de estatística, câmaras de comércio e jornais não entregam nenhum — e só uma recusa em vinte foi defesa contra bots.</p>
+  <div class="figures"><span><b>10/20</b> registros completos</span><span><b>1</b> defesa contra bots</span><span><b>5</b> páginas sem nada a declarar</span><span><b>0,4 s</b> por fonte</span></div>
+</div>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="citation-triage/">Um agente consegue citar oito de doze fontes — a parte útil é saber quais quatro não consegue</a></h2>
+  <p>Uma lista de leitura mista por um endpoint de citação: registros completos com RIS para dois terços, e o terço restante nomeado com precisão suficiente para buscar à mão.</p>
+  <div class="figures"><span><b>8/12</b> feitas pelo agente</span><span><b>1,09 s</b> por fonte</span><span><b>4</b> nomeadas, não adivinhadas</span></div>
+</div>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="citation-by-platform/">Onde os dados de citação realmente vivem: 18 plataformas acadêmicas medidas</a></h2>
+  <p>PubMed, arXiv, Zenodo, SSRN, EUR-Lex e mais treze, cada uma verificada pelo que declara sobre as próprias obras — com cada título devolvido conferido contra a Crossref.</p>
+  <div class="figures"><span><b>11/18</b> devolveram dados</span><span><b>10</b> com autores e ano</span><span><b>8</b> bateram com a Crossref</span></div>
+</div>
+<div class="item">
+  <p class="date">2 de agosto de 2026</p>
+  <h2><a href="citation-extraction/">Medido contra o Citoid em amostras aleatórias: mesma cobertura, nada inventado</a></h2>
+  <p>O serviço da Wikimedia construído sobre os tradutores do Zotero é o parâmetro. Em 18 obras sorteadas ao acaso: cobertura igual, e nenhum bloqueio relatado como sucesso.</p>
+  <div class="figures"><span><b>13/13</b> campos completos</span><span><b>0</b> falsos relatórios de bloqueio</span><span><b>0,35 s</b> de mediana</span></div>
+</div>
+<div class="item">
+  <p class="date">2 de agosto de 2026</p>
+  <h2><a href="android-capture-extensions/">Quais extensões de salvar página realmente rodam no Firefox para Android?</a></h2>
+  <p>248 extensões verificadas contra a API de complementos. O Chrome para Android não consegue instalar nenhuma — então a pergunta só surge no Firefox. Inclui a correção da nossa própria página na loja.</p>
+  <div class="figures"><span><b>60</b> declaram Android</span><span><b>85.724</b> usuários na maior</span><span><b>0</b> testadas num aparelho</span></div>
+</div>
+<div class="item">
+  <p class="date">2 de agosto de 2026</p>
+  <h2><a href="web-citations-that-vanish/">Citações da web que desaparecem: o que acontece com uma fonte depois de citada</a></h2>
+  <p>Por que a data de consulta está em toda bibliografia, o que a pesquisa sobre link rot e content drift mostra, e 150 fontes citadas verificadas quanto à existência de uma cópia em algum lugar. Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span><b>19,3 %</b> desaparecidas</span><span><b>603 dias</b> de idade mediana do arquivo</span><span><b>2,0 %</b> irrecuperáveis</span></div>
+</div>
+<div class="item">
+  <p class="date">1 de agosto de 2026</p>
+  <h2><a href="print-to-pdf-vs-screenshot/">Imprimir em PDF ou capturar a tela? A mesma página medida dos dois jeitos</a></h2>
+  <p>O Firefox já exporta PDFs de graça. O mesmo artigo pelas duas vias — incluindo onde a impressão vence.</p>
+  <div class="figures"><span><b>1 : 26</b> páginas</span><span><b>9</b> quebras cortam uma frase</span><span>captura: <b>91,5 %</b> de recall</span></div>
+</div>
+<div class="item">
+  <p class="date">1 de agosto de 2026</p>
+  <h2><a href="webpage-to-pdf-for-ocr/">Página da web em PDF para OCR: quanto texto realmente sobrevive?</a></h2>
+  <p>Um PDF de captura pelo Tesseract, comparado com o texto de origem, mais o limiar de resolução em que o reconhecimento colapsa.</p>
+  <div class="figures"><span><b>92,6 %</b> recuperado</span><span><b>8/8</b> valores críticos</span><span><b>72 dpi</b> colapso</span></div>
+</div>
+<div class="item">
+  <p class="date">1 de agosto de 2026</p>
+  <h2><a href="pdf-extension-permissions/">Sua extensão de PDF envia a página?</a></h2>
+  <p>O que oito extensões de captura declaram em seus manifestos, como verificar em 30 segundos, e por que conversores no lado do servidor não alcançam um login.</p>
+  <div class="figures"><span><b>8</b> extensões</span><span>dados brutos publicados</span></div>
+</div>
+<div class="item">
+  <p class="date">1 de agosto de 2026</p>
+  <h2><a href="extension-permissions-risk/">Uma extensão só é tão perigosa quanto suas permissões permitem</a></h2>
+  <p>Um ano depois do alerta da Mozilla sobre contas de desenvolvedor roubadas: o escopo das permissões como raio de dano, não como sinal de confiança.</p>
+  <div class="figures"><span>tabela do pior caso</span><span>checklist de avaliação</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Sobre &amp; transparência</a> · Correções: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues no GitHub</a> · <a href="../disclaimer/">Aviso legal</a></footer>
+</div>
+
+<div data-lang="ru" lang="ru">
+<header>
+  <h1>Измерения</h1>
+  <p class="lead">Каждое — с командами для его повторения, сырыми данными за ним и контрольным прогоном — потому что метод, который не отказывает там, где должен, не измеряет ничего.</p>
+</header>
+<div class="item">
+  <p class="date">3 августа 2026 г.</p>
+  <h2><a href="install-an-extension-without-a-click/">Установка расширения браузера без единого щелчка — и удаление обратно</a></h2>
+  <p>Четыре пути, в обе стороны, на обычной учётной записи. Собственный канал Marionette в Firefox устанавливает и удаляет подписанную магазинную сборку без окна — а две команды вместе занимают четверть секунды; цена — запуск браузера, а не работа. Путь со щелчком сообщил об успехе на каждом шаге и не установил ничего.</p>
+  <div class="figures"><span><b>4,1 с</b> туда-обратно</span><span><b>0,24 с</b> сами команды</span><span><b>0</b> событий ввода</span><span><b>179 с</b> на путь со щелчком, который не удался</span></div>
+</div>
+<div class="item">
+  <p class="date">3 августа 2026 г.</p>
+  <h2><a href="de-plattformen/">Немецкоязычные научные платформы измерены: четыре прочитаны, семь возвращены</a></h2>
+  <p>SSOAR, PsychArchives, peDOCS, OPUS, Национальная библиотека, Springer, Nomos, beck-online, openJur, Statistik Austria и Destatis через конечную точку цитирования — с неудачами названными первыми и каждой причиной измеренной, а не предположенной. Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span><b>4/11</b> полных записей</span><span><b>1</b> измеренная стена</span><span><b>0</b> недостижимых для браузера</span><span><b>0,75 с</b> на источник</span></div>
+</div>
+<div class="item">
+  <p class="date">3 августа 2026 г.</p>
+  <h2><a href="reading-list-to-bibliography/">Двадцать ссылок, десять цитат: что машина доводит до конца, а что возвращает</a></h2>
+  <p>Список чтения в библиографию, от начала до конца. Научные издательства дают записи, за пейволом или открыто; статистические порталы, торговые палаты и газеты не дают никаких — и лишь один отказ из двадцати был защитой от ботов.</p>
+  <div class="figures"><span><b>10/20</b> полных записей</span><span><b>1</b> защита от ботов</span><span><b>5</b> страниц без единого заявления</span><span><b>0,4 с</b> на источник</span></div>
+</div>
+<div class="item">
+  <p class="date">3 августа 2026 г.</p>
+  <h2><a href="citation-triage/">Агент может процитировать восемь из двенадцати источников — полезно знать, какие четыре он не может</a></h2>
+  <p>Смешанный список чтения через конечную точку цитирования: полные записи с RIS для двух третей, а оставшаяся треть названа достаточно точно, чтобы забрать её вручную.</p>
+  <div class="figures"><span><b>8/12</b> сделано агентом</span><span><b>1,09 с</b> на источник</span><span><b>4</b> названы, а не угаданы</span></div>
+</div>
+<div class="item">
+  <p class="date">3 августа 2026 г.</p>
+  <h2><a href="citation-by-platform/">Где на самом деле живут данные цитирования: измерено 18 научных платформ</a></h2>
+  <p>PubMed, arXiv, Zenodo, SSRN, EUR-Lex и ещё тринадцать, каждая проверена на то, что она заявляет о собственных произведениях, — с каждым возвращённым заглавием, сверенным с Crossref.</p>
+  <div class="figures"><span><b>11/18</b> вернули данные</span><span><b>10</b> с авторами и годом</span><span><b>8</b> совпали с Crossref</span></div>
+</div>
+<div class="item">
+  <p class="date">2 августа 2026 г.</p>
+  <h2><a href="citation-extraction/">Измерено против Citoid на случайных выборках: то же покрытие, ничего выдуманного</a></h2>
+  <p>Эталон — сервис Wikimedia, построенный на трансляторах Zotero. На 18 случайно извлечённых произведениях: одинаковое покрытие, и ни одной блокировки, доложенной как успех.</p>
+  <div class="figures"><span><b>13/13</b> полей заполнены</span><span><b>0</b> ложных сообщений о блокировке</span><span><b>0,35 с</b> медиана</span></div>
+</div>
+<div class="item">
+  <p class="date">2 августа 2026 г.</p>
+  <h2><a href="android-capture-extensions/">Какие расширения для сохранения страниц реально работают на Firefox для Android?</a></h2>
+  <p>248 расширений, проверенных через API дополнений. Chrome для Android не может установить ни одного — поэтому вопрос встаёт только на Firefox. Включая исправление нашей собственной карточки в магазине.</p>
+  <div class="figures"><span><b>60</b> заявляют Android</span><span><b>85 724</b> пользователей у крупнейшего</span><span><b>0</b> проверено на устройстве</span></div>
+</div>
+<div class="item">
+  <p class="date">2 августа 2026 г.</p>
+  <h2><a href="web-citations-that-vanish/">Веб-цитаты, которые исчезают: что происходит с источником после цитирования</a></h2>
+  <p>Почему дата обращения есть в каждой библиографии, что показывают исследования о гниении ссылок и дрейфе содержимого, и 150 процитированных источников, проверенных, существует ли где-нибудь копия. Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span><b>19,3 %</b> исчезли</span><span><b>603 дня</b> медианный возраст архива</span><span><b>2,0 %</b> невосстановимы</span></div>
+</div>
+<div class="item">
+  <p class="date">1 августа 2026 г.</p>
+  <h2><a href="print-to-pdf-vs-screenshot/">Печатать в PDF или захватывать экран? Одна и та же страница, измеренная двумя способами</a></h2>
+  <p>Firefox уже экспортирует PDF бесплатно. Одна и та же статья обоими путями — включая то, где печать выигрывает.</p>
+  <div class="figures"><span><b>1 : 26</b> страниц</span><span><b>9</b> разрывов режут предложение</span><span>захват: <b>91,5 %</b> полноты</span></div>
+</div>
+<div class="item">
+  <p class="date">1 августа 2026 г.</p>
+  <h2><a href="webpage-to-pdf-for-ocr/">Веб-страница в PDF для OCR: сколько текста реально выживает?</a></h2>
+  <p>PDF скриншота через Tesseract, сравнение с исходным текстом, плюс порог разрешения, на котором распознавание рушится.</p>
+  <div class="figures"><span><b>92,6 %</b> восстановлено</span><span><b>8/8</b> критических значений</span><span><b>72 dpi</b> обвал</span></div>
+</div>
+<div class="item">
+  <p class="date">1 августа 2026 г.</p>
+  <h2><a href="pdf-extension-permissions/">Выгружает ли ваше PDF-расширение страницу?</a></h2>
+  <p>Что декларируют восемь расширений для захвата в своих манифестах, как проверить это за 30 секунд, и почему серверные конвертеры не достают до логина.</p>
+  <div class="figures"><span><b>8</b> расширений</span><span>сырые данные опубликованы</span></div>
+</div>
+<div class="item">
+  <p class="date">1 августа 2026 г.</p>
+  <h2><a href="extension-permissions-risk/">Расширение опасно ровно настолько, насколько позволяют его разрешения</a></h2>
+  <p>Год спустя после предупреждения Mozilla об украденных учётках разработчиков: объём разрешений как радиус поражения, а не как сигнал доверия.</p>
+  <div class="figures"><span>таблица наихудшего случая</span><span>контрольный список оценки</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">О сайте и раскрытие</a> · Исправления: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues на GitHub</a> · <a href="../disclaimer/">Отказ от ответственности</a></footer>
+</div>
+
+<div data-lang="zh-CN" lang="zh-CN">
+<header>
+  <h1>测量</h1>
+  <p class="lead">每一项都附有复现它的命令、背后的原始数据和对照运行——因为不会在应当失败之处失败的方法,什么也测不到。</p>
+</header>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="install-an-extension-without-a-click/">无需点击即可安装浏览器扩展,并将其移除</a></h2>
+  <p>四条路径,双向,在普通用户账户上。Firefox 自带的 Marionette 通道可无窗口安装和卸载商店签名版本——而两条命令合计只需四分之一秒,成本在启动浏览器,而非工作。点击路径每一步都报告成功,却什么都没装上。</p>
+  <div class="figures"><span>往返 <b>4.1 秒</b></span><span>命令本身 <b>0.24 秒</b></span><span>输入事件 <b>0</b></span><span>失败的点击路径 <b>179 秒</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="de-plattformen/">德语学术平台实测:四家可读,七家被退回</a></h2>
+  <p>SSOAR、PsychArchives、peDOCS、OPUS、国家图书馆、Springer、Nomos、beck-online、openJur、Statistik Austria 和 Destatis 经由引用端点——失败先列,每个原因都经过测量而非猜测。Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span>完整记录 <b>4/11</b></span><span>测得的墙 <b>1</b></span><span>浏览器无法到达 <b>0</b></span><span>每个来源 <b>0.75 秒</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="reading-list-to-bibliography/">二十个链接,十条引用:机器完成了什么,交还了什么</a></h2>
+  <p>把一份阅读清单从头到尾变成参考文献。学术出版社无论付费墙还是开放都会给出记录;统计门户、商会和报纸一条也不给——而二十次拒绝中只有一个是反机器人防御。</p>
+  <div class="figures"><span>完整记录 <b>10/20</b></span><span>反机器人防御 <b>1</b></span><span>无任何可声明内容的页面 <b>5</b></span><span>每个来源 <b>0.4 秒</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="citation-triage/">代理能引用 12 个来源中的 8 个——有用的部分是知道哪 4 个不行</a></h2>
+  <p>把一份混合阅读清单送入引用端点:三分之二得到带 RIS 的完整记录,其余三分之一被足够精确地命名,可以手动获取。</p>
+  <div class="figures"><span>代理完成 <b>8/12</b></span><span>每个来源 <b>1.09 秒</b></span><span>被指名而非猜测 <b>4</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="citation-by-platform/">引用数据究竟在哪里:18 个学术平台实测</a></h2>
+  <p>PubMed、arXiv、Zenodo、SSRN、EUR-Lex 以及另外十三家,逐一检查它们对自身著作声明了什么——每个返回的标题都与 Crossref 核对。</p>
+  <div class="figures"><span>返回数据 <b>11/18</b></span><span>含作者和年份 <b>10</b></span><span>与 Crossref 相符 <b>8</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月2日</p>
+  <h2><a href="citation-extraction/">在随机样本上与 Citoid 对比测量:相同覆盖率,零编造</a></h2>
+  <p>基于 Zotero 翻译器构建的维基媒体服务是标尺。随机抽取 18 部著作:覆盖率相同,没有一次拦截被报为成功。</p>
+  <div class="figures"><span>字段完整 <b>13/13</b></span><span>错误的拦截报告 <b>0</b></span><span>中位数 <b>0.35 秒</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月2日</p>
+  <h2><a href="android-capture-extensions/">哪些页面保存扩展真正能在 Android 版 Firefox 上运行?</a></h2>
+  <p>对照扩展 API 检查了 248 款扩展。Android 版 Chrome 一款也装不了——所以这个问题只在 Firefox 上存在。包括对我们自己商店页面的更正。</p>
+  <div class="figures"><span>声明支持 Android <b>60</b></span><span>最大的一款用户 <b>85,724</b></span><span>在设备上实测 <b>0</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月2日</p>
+  <h2><a href="web-citations-that-vanish/">会消失的网络引用:引用之后,来源会发生什么</a></h2>
+  <p>为什么每个参考文献列表都需要获取日期,关于链接腐烂和内容漂移的研究显示了什么,以及检查 150 个被引来源是否在某处存在副本。Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span>已消失 <b>19.3%</b></span><span>存档年龄中位数 <b>603 天</b></span><span>无法恢复 <b>2.0%</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月1日</p>
+  <h2><a href="print-to-pdf-vs-screenshot/">打印为 PDF 还是截屏?同一页面两种方式实测</a></h2>
+  <p>Firefox 已经可以免费导出 PDF。同一篇文章走两条路径——包括打印胜出的地方。</p>
+  <div class="figures"><span>页数 <b>1 : 26</b></span><span><b>9</b> 处分页截断句子</span><span>捕获:召回率 <b>91.5%</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月1日</p>
+  <h2><a href="webpage-to-pdf-for-ocr/">网页转 PDF 用于 OCR:究竟有多少文本存活?</a></h2>
+  <p>把截图 PDF 送入 Tesseract,与源文本对比,外加识别崩溃的分辨率阈值。</p>
+  <div class="figures"><span>恢复 <b>92.6%</b></span><span>关键值 <b>8/8</b></span><span>崩溃 <b>72 dpi</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月1日</p>
+  <h2><a href="pdf-extension-permissions/">你的 PDF 扩展会上传页面吗?</a></h2>
+  <p>八款捕获扩展在清单中声明了什么、如何在 30 秒内验证,以及为什么服务器端转换器够不到登录。</p>
+  <div class="figures"><span>扩展 <b>8</b> 款</span><span>原始数据已公开</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月1日</p>
+  <h2><a href="extension-permissions-risk/">扩展的危险程度只取决于其权限允许的范围</a></h2>
+  <p>在 Mozilla 就开发者账户被钓鱼发出警告一年后:权限范围是伤害半径,而不是信任信号。</p>
+  <div class="figures"><span>最坏情况表</span><span>评估清单</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">关于与披露</a> · 更正: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">免责声明</a></footer>
+</div>
 </div>
 </body>
 </html>

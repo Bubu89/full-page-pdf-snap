@@ -1,3 +1,45 @@
+## 2026-08-15 (2) — Startseite und Messungs-Index sprechen neun Sprachen
+
+**Was.** `docs/index.html` und `docs/measurements/index.html` liegen jetzt wie
+die Beitraege in allen neun Sprachen vor (`en de es fr it ja pt-BR ru zh-CN`),
+unter derselben Adresse, gewaehlt ueber die domainweite Sprachwahl. Damit ist
+die Sprachwahl auf den beiden meistbesuchten Seiten erstmals vollstaendig —
+bisher fielen beide stumm auf Englisch zurueck (nur der Hinweis schaltete um).
+
+**Warum.** Aufwaermfrage aus echter Nutzung: Bei Wahl „FR" blieb die Seite
+englisch, weil es die Fassung schlicht nicht gab — der Umschalter ist kein
+Uebersetzer, er kann nur vorhandene Bloecke zeigen. Die Luecke betraf 33 von
+45 Seiten; die beiden groessten sind jetzt geschlossen.
+
+**Wie.** Beide Seiten werden jetzt gebaut statt von Hand gepflegt:
+`texte_startseite.py` + `build-startseite.py` und `texte_indexseiten.py` +
+`build-indexseiten.py` — Kopf und Navigation kommen aus der bestehenden Seite,
+Eintraege sind Daten mit Uebersetzung je Sprache. AGENTS.md sagt den neuen
+Arbeitsweg ausdruecklich zu (keine Hand-Edits an den gebauten Dateien).
+
+**Drei Defekte, beim Bauen gefunden und behoben.** (1) Die Startseite trug die
+`[data-lang]`-CSS-Regeln nie — ohne sie stapelten sich alle neun Fassungen
+sichtbar untereinander; der Bauer setzt sie jetzt selbst, wenn sie fehlen.
+(2) `s.index("</footer>")` traf den Fuss des ersten Sprachblocks statt des
+letzten — jeder Lauf haengte die Bloecke danach erneut an (fuenf EN-Fassungen
+nach drei Laeufen); der Bauer schneidet jetzt idempotent. (3) div-Fragmente
+aus der defekten Zwischenfassung ueberlebten im Kopf; der Kopfschnitt beginnt
+jetzt am fruehesten Blockzeichen.
+
+**Mit welchem Ergebnis.** `rechtscheck.py` 0 Fehler, 23/23 Node-Tests gruen,
+187 interne Links erreichbar. Browsertest (Playwright, echter DOM): alle neun
+Sprachen auf beiden Seiten durchgeschaltet, je Kennsatz sichtbar, genau eine
+Fassung sichtbar, `<html lang>` korrekt, Wahl ueberlebt den Seitenwechsel
+zwischen Messungs-Index und Startseite, Rueckfall-Hinweis erscheint auf
+einsprachigen Seiten in der gewaehlten Sprache. Beide Builder sind idempotent
+(diff-leer beim zweiten Lauf).
+
+**Noch offen.** Die Menueleiste schaltet live nicht mit — die fertige
+Uebersetzungstabelle (NAV in `site-lang.js`) liegt uncommittiert in einem
+parallelen Arbeitszweig und hat dort noch drei nav-fit-Fehler. Die uebrigen
+einsprachigen Seiten (notes/- und tools/-Index, about, disclaimer, for-agents,
+recipes, data, rund 30 Beitraege) folgen im selben Muster.
+
 ## 2026-08-15 — Neuer Beitrag: Einrichtung in Firefox und Chrome fuer die Wissenschaft
 
 **Was.** Neu ist `/how-to/firefox-and-chrome/`: die praktische Schwester zu

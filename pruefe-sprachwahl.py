@@ -49,6 +49,15 @@ PROBE = {
     "zh-CN": "自带出处的来源",
 }
 
+# Menueprobe: der "Measurements"-Eintrag in der Leiste, je Sprache. Die Leiste
+# ist die Bedienstelle der Sprachwahl — bliebe sie englisch, waere die Wahl
+# nur halb umgesetzt. Werte muessen zu NAV in docs/site-lang.js passen.
+NAV_PROBE = {
+    "en": "Measurements", "de": "Messungen", "es": "Mediciones",
+    "fr": "Mesures", "it": "Misure", "ja": "測定",
+    "pt-BR": "Medições", "ru": "Измерения", "zh-CN": "测量",
+}
+
 
 class Still(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *a, **kw):
@@ -103,6 +112,11 @@ def main():
                 fehler.append(f"{l}: zusaetzlich sichtbar {fremd}")
             if seite.evaluate("() => document.documentElement.lang") != l:
                 fehler.append(f"{l}: <html lang> nicht gesetzt")
+            # Das Menue muss mitschalten — es ist die Bedienstelle der Wahl.
+            nav = seite.eval_on_selector(
+                '.topnav a.n[href$="measurements/"]', "e => e.textContent")
+            if nav != NAV_PROBE[l]:
+                fehler.append(f"{l}: Menue zeigt '{nav}', erwartet '{NAV_PROBE[l]}'")
 
         # 3. Persistenz: Wahl ueberlebt den Seitenwechsel.
         seite.select_option("#pl-langpick", "ja")
@@ -139,6 +153,20 @@ def main():
             hoehe = mess.eval_on_selector(".topnav .inner", "e => e.getBoundingClientRect().height")
             if hoehe > 70:
                 fehler.append(f"Menueleiste bei {breite} px zweizeilig ({hoehe:.0f} px hoch)")
+            mess.close()
+
+        # 6b. Uebersetzte Menueeintraege sind laenger als das Englische —
+        #     de/es/ru/fr brachen bei 1180 px auf zwei Zeilen um (15.08.2026).
+        #     site-lang.js verkleinert dann Abstand und Schrift der Leiste.
+        for l in ("de", "es", "ru"):
+            mess = ctx.new_page()
+            mess.set_viewport_size({"width": 1180, "height": 400})
+            mess.goto(ARTIKEL, wait_until="networkidle")
+            mess.select_option("#pl-langpick", l)
+            mess.wait_for_timeout(150)
+            hoehe = mess.eval_on_selector(".topnav .inner", "e => e.getBoundingClientRect().height")
+            if hoehe > 70:
+                fehler.append(f"Menueleiste ({l}) bei 1180 px zweizeilig ({hoehe:.0f} px hoch)")
             mess.close()
 
         # 7. Ohne gespeicherte Wahl entscheidet die Browsersprache.

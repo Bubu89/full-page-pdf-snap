@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Proving Lab — measurements on browser tools and AI-assisted development</title>
 <meta name="description" content="Measurements on browser tools, citation extraction and OCR — including how much of a reading list becomes a bibliography without a human, and which sources have to be handed back. Every claim with its method, its raw data and a control run.">
+<meta name="keywords" content="measurements, browser tools, citation extraction, OCR, AI agents, raw data, control run, web archiving">
 <link rel="canonical" href="https://provinglab.dev/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
@@ -147,6 +148,10 @@
 .dbeleg{margin-top:10px;font-size:12.5px;color:var(--grau,#8b93a7);line-height:1.6}
 .dbeleg a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 .dbeleg a:hover{color:var(--link,#6b8afd)}
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
 </style>
 <script src="/agent-tools.js" defer></script>
 <script src="/site-lang.js" defer></script>
@@ -166,6 +171,7 @@
 </nav>
 
 
+<div data-lang="en" class="on" lang="en">
 <header>
   <div class="wrap">
     <p class="mark">Proving Lab</p>
@@ -185,8 +191,6 @@
   </div>
 </header>
 
-<!-- Direkter Weg zum Download. Stand hier vorher erst ganz unten, hinter
-     zwei Klicks — der Weg zum Werkzeug war laenger als der zu jedem Text. -->
 <section class="direkt">
   <div class="wrap">
     <div class="dkarte">
@@ -252,7 +256,6 @@
           <span><b>6 of 20</b> handed back</span>
         </div>
       </div>
-
       <div class="item">
         <p class="date">3 August 2026</p>
         <h3><a href="notes/what-an-agent-can-do-with-an-extension/">What an AI agent can and cannot do with a browser extension</a></h3>
@@ -267,7 +270,6 @@
           <span><b>0</b> ways to install for someone</span>
         </div>
       </div>
-
       <div class="item">
         <p class="date">3 August 2026</p>
         <h3><a href="notes/sources-a-machine-cannot-cite/">The sources a machine cannot cite for you — and how to cite them anyway</a></h3>
@@ -282,7 +284,6 @@
           <span><b>2</b> requests to tell them apart</span>
         </div>
       </div>
-
       <div class="item">
         <p class="date">2 August 2026</p>
         <h3><a href="notes/mcp-server-what-it-solves/">This site runs an MCP server. Measured: it is smaller than the file it competes with</a></h3>
@@ -297,7 +298,6 @@
           <span><b>1,988</b> in llms.txt</span>
         </div>
       </div>
-
       <div class="item">
         <p class="date">1 August 2026</p>
         <h3><a href="notes/building-with-ai-what-went-wrong/">Six things went wrong building software with an AI assistant in one day</a></h3>
@@ -348,7 +348,6 @@
           <span><b>5</b> pages with nothing to declare</span>
         </div>
       </div>
-
       <div class="item">
         <p class="date">3 August 2026</p>
         <h3><a href="measurements/citation-triage/">An agent can cite eight of twelve sources — the useful part is knowing which four it cannot</a></h3>
@@ -363,7 +362,6 @@
           <span><b>4</b> named, not guessed</span>
         </div>
       </div>
-
       <div class="item">
         <p class="date">2 August 2026</p>
         <h3><a href="measurements/citation-extraction/">Measured against Citoid on random samples: same coverage, nothing invented</a></h3>
@@ -378,7 +376,6 @@
           <span><b>0.35 s</b> median</span>
         </div>
       </div>
-
       <div class="item">
         <p class="date">1 August 2026</p>
         <h3><a href="measurements/print-to-pdf-vs-screenshot/">Print to PDF or capture the screen? The same page measured both ways</a></h3>
@@ -393,7 +390,6 @@
           <span>capture leads on text: <b>91.5 %</b></span>
         </div>
       </div>
-
       <div class="item">
         <p class="date">1 August 2026</p>
         <h3><a href="measurements/webpage-to-pdf-for-ocr/">Webpage to PDF for OCR: how much text actually survives?</a></h3>
@@ -407,7 +403,6 @@
           <span><b>72 dpi</b> collapse point</span>
         </div>
       </div>
-
       <div class="item">
         <p class="date">1 August 2026</p>
         <h3><a href="measurements/pdf-extension-permissions/">Does your PDF extension upload the page?</a></h3>
@@ -421,7 +416,6 @@
           <span>raw data published</span>
         </div>
       </div>
-
       <div class="item">
         <p class="date">1 August 2026</p>
         <h3><a href="measurements/extension-permissions-risk/">An extension is only as dangerous as its permissions allow</a></h3>
@@ -522,6 +516,422 @@
 
 <section>
   <div class="wrap">
+    <h2>Check any figure yourself</h2>
+    <p class="sub">
+      Everything here has a method, raw data and a control run — so it can be checked,
+      not so it has to be believed.
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="mitmachen/">The most useful contribution is a counter-measurement that comes out differently</a></h3>
+        <p>
+          Four places where the published figures are most likely to wobble are named
+          explicitly — starting with the ten of twenty sources whose four refusals are
+          blocks against a data-centre address. From a home network the rate should be
+          higher, and that is unmeasured.
+        </p>
+        <div class="figures">
+          <span><b>4</b> named weak spots</span>
+          <span><b>9</b> datasets, CC BY 4.0</span>
+          <span>open tasks on <b>GitHub</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <h3><a href="AGENTS.md">For AI agents: rules, construction, limits</a></h3>
+        <p>
+          The project is set up so an agent can work on it without asking anyone first.
+          Open tasks are served machine-readably by the <code>open_work</code> tool on
+          <a href="for-agents/">/mcp</a> — with labels, an excerpt, and the five rules
+          that are different here from usual.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="disclosure">
+      <h3>Disclosure</h3>
+      <p>
+        This site is run by the developer of <a href="tools/full-page-pdf-snap/">Full Page
+        PDF Snap</a>, which appears in several of the measurements above. That is stated in
+        each article where it is relevant, and the tool sits openly under
+        <code>/tools/</code> rather than hidden behind neutral framing.
+      </p>
+      <p>
+        Figures about other products come exclusively from publicly declared data — manifests
+        and listing descriptions — with the retrieval date given. No product was decompiled,
+        and no claim is made about any provider's intentions.
+        Corrections are welcome via
+        <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> and
+        get applied.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Proving Lab · <a href="about/">About</a> · <a href="privacy.html">Privacy</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap">Source</a> · <a href="disclaimer/">Disclaimer</a></p>
+    <p>Content licensed for reuse with attribution. Software MIT licensed.</p>
+  </div>
+</footer>
+</div>
+
+<div data-lang="de" lang="de">
+<header>
+  <div class="wrap">
+    <p class="mark">Proving Lab</p>
+    <h1>Behalten Sie die Webseite, die Sie später brauchen.</h1>
+    <p class="tagline">
+      Speichern Sie eine ganze Seite als ein PDF, das Herkunft und Abrufzeitpunkt trägt —
+      und verwandeln Sie eine Linkliste in ein Literaturverzeichnis. <strong>19,3 % der Quellen
+      in echten Literaturverzeichnissen sind bereits verschwunden</strong>, und 8,7 % haben
+      nirgends eine archivierte Kopie.
+      <a href="/how-to/save-a-webpage-as-pdf/">Hier beginnen</a> ·
+      <a href="/for-agents/">für KI-Agenten</a>
+    </p>
+    <p class="tagline" style="margin-top:14px;font-size:.98rem">
+      Messungen, keine Meinungen: Alles hier hat eine <strong>Methode, Rohdaten und einen
+      Kontrolllauf</strong>. Was sich nicht nachrechnen lässt, wird nicht aufgeschrieben.
+      Was schiefging, wird zuerst aufgeschrieben.
+    </p>
+  </div>
+</header>
+
+<section class="direkt">
+  <div class="wrap">
+    <div class="dkarte">
+      <div class="dtext">
+        <p class="dmark">Das hier gebaute Werkzeug</p>
+        <h2>Full Page PDF Snap</h2>
+        <p>Speichert eine ganze Webseite als ein fortlaufendes PDF — die komplette scrollende Seite auf einem einzigen Blatt. Nichts am Rand abgeschnitten, kein Seitenumbruch mitten durch Tabelle oder Satz. Alles passiert in Ihrem Browser: kein Upload, kein Konto, keine Datenerhebung. MIT-lizenziert, kostenlos, Firefox und Chrome.</p>
+        <p class="dzahlen">
+        <span><b>Ein Blatt</b>, nicht 26 Seiten</span>
+        <span><b>Funktioniert hinter einem Login</b></span>
+        <span><b>Bleibt auf Ihrem Gerät</b></span>
+      </p>
+      <p class="dbeleg">Jede Aussage hier ist gemessen und datiert:
+        <a href="measurements/print-to-pdf-vs-screenshot/">ein Blatt gegen 26</a>,
+        <a href="measurements/webpage-to-pdf-for-ocr/">92,6&nbsp;% des Textes per OCR lesbar</a>,
+        <a href="measurements/pdf-extension-permissions/">null Netzwerkanfragen</a>.</p>
+      </div>
+      <div class="dknopf">
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Für Firefox herunterladen</a>
+        <p class="dklein">Version 2.33.4 — von Mozilla signiert. Installiert in einem Schritt, Desktop und Android.</p>
+        <p class="dklein">
+          <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Ganz ohne Store</a> ·
+          <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome und Edge</a> ·
+          <a href="tools/full-page-pdf-snap/">Was sie kann</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Notizen</h2>
+    <p class="sub">Bauberichte aus echter Arbeit — einschließlich der Teile, die schiefgingen.</p>
+    <div class="items">
+      <div class="item">
+        <p class="date">15. August 2026</p>
+        <h3><a href="how-to/firefox-and-chrome/">Für Wissenschaftler:innen und Studierende: die Erweiterung in Firefox und Chrome</a></h3>
+        <p>
+          Das praktische Gegenstück zum Studierenden-Beitrag: alle Installationswege —
+          Firefox auf Desktop und Android, der Chrome Web Store und beide store-freien
+          Pfade —, dann der Ablauf aufnehmen–zitieren–archivieren und die vier
+          Einstellungen, die für Arbeiten zählen. In neun Sprachen.
+        </p>
+        <div class="figures">
+          <span><b>2</b> Browser, 4 Installationswege</span>
+          <span><b>18</b> XMP-Felder im PDF</span>
+          <span><b>2</b> Wege für den RIS-Datensatz</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">10. August 2026</p>
+        <h3><a href="how-to/for-students/">Für Studierende: eine Quelle, die sich selbst zitiert, überlebt und maschinenlesbar ist</a></h3>
+        <p>
+          Drei Dinge gehen mit einer Webquelle in einer Seminararbeit schief: Sie verschwindet,
+          ihre Zitation muss von Hand abgetippt werden, und die aufgehobene Datei ist ein
+          Bild, das kein Werkzeug durchsucht. Was eine Aufnahme gegen jedes der drei tut —
+          einschließlich der sechs von zwanzig Quellen, die sie an Sie zurückgibt. In neun
+          Sprachen.
+        </p>
+        <div class="figures">
+          <span><b>61 %</b> Abdeckung, gleichauf mit Citoid</span>
+          <span><b>100 %</b> richtig gegenüber deren 79 %</span>
+          <span><b>6 von 20</b> zurückgegeben</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3. August 2026</p>
+        <h3><a href="notes/what-an-agent-can-do-with-an-extension/">Was ein KI-Agent mit einer Browser-Erweiterung kann — und was nicht</a></h3>
+        <p>
+          Eine Installation in fremdem Browser ist bewusst eine Nutzer-Geste — kein Store
+          bietet eine API dafür. Was ein Agent stattdessen kann, der Kommandozeilen-Schalter,
+          der nichts lädt und nichts sagt, und wo die Arbeit zwischen beiden aufgeteilt ist.
+        </p>
+        <div class="figures">
+          <span><b>3</b> Dinge, die ein Agent kann</span>
+          <span><b>1</b> Schalter, der still versagt</span>
+          <span><b>0</b> Wege, für jemanden zu installieren</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3. August 2026</p>
+        <h3><a href="notes/sources-a-machine-cannot-cite/">Die Quellen, die eine Maschine nicht für Sie zitieren kann — und wie man sie trotzdem zitiert</a></h3>
+        <p>
+          Wenn ein Zitationswerkzeug eine Quelle zurückgibt, ist die Ursache eine von dreien:
+          eine Bot-Abwehr, eine Weigerung gegen das Netzwerk oder eine Seite, die nichts
+          über sich erklärt. Jede braucht andere Arbeit, und nur eine löst das Öffnen im Browser.
+        </p>
+        <div class="figures">
+          <span><b>3</b> Ursachen</span>
+          <span><b>1</b> durch einen Browser gelöst</span>
+          <span><b>2</b> Anfragen zur Unterscheidung</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2. August 2026</p>
+        <h3><a href="notes/mcp-server-what-it-solves/">Diese Seite betreibt einen MCP-Server. Gemessen: Er ist kleiner als die Datei, mit der er konkurriert</a></h3>
+        <p>
+          Ein Endpunkt unter <code>/mcp</code> reicht die Datensätze, die Methoden und einen
+          Zitationsleser über JSON-RPC an KI-Clients — kein Schlüssel, kein Konto. Wozu das
+          wirklich taugt, und wo eine schlichte Textdatei auf derselben Domain die Aufgabe
+          schon erledigt.
+        </p>
+        <div class="figures">
+          <span><b>4</b> Werkzeuge</span>
+          <span><b>1.300</b> Token insgesamt</span>
+          <span><b>1.988</b> in llms.txt</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1. August 2026</p>
+        <h3><a href="notes/building-with-ai-what-went-wrong/">Sechs Dinge, die beim Bauen von Software mit einem KI-Assistenten an einem Tag schiefgingen</a></h3>
+        <p>
+          Eine falsche Annahme über Browser-Engines, eine vor Veröffentlichung erwischte
+          Falschbehauptung, 22 lokale Pfade einen Commit vor einem öffentlichen Repository —
+          und drei weitere. Sortiert danach, was sie tatsächlich erwischt hat: zwei wurden
+          durch Glück gefunden, eine durch gar nichts.
+        </p>
+        <div class="figures">
+          <span><b>3 von 6</b> durch Prüfen einer externen Quelle erwischt</span>
+          <span><b>1</b> noch immer ungetestet im Produktivbetrieb</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Messungen</h2>
+    <p class="sub">Jede mit den Befehlen zu ihrer Wiederholung und den Rohdaten dahinter.</p>
+
+    <div class="items">
+      <div class="item">
+        <p class="date">3. August 2026</p>
+        <h3><a href="measurements/install-an-extension-without-a-click/">Eine Browser-Erweiterung ohne Klick installieren — und wieder entfernen</a></h3>
+        <p>
+          Vier Wege, beide Richtungen. Einer installiert und deinstalliert eine signierte
+          Store-Version in 4,1 Sekunden ohne Fenster und ohne Admin-Rechte — und die zwei
+          Befehle selbst brauchen 0,24 s; die Kosten sind der Browser-Start, nicht die Arbeit.
+          Der Klick-Weg brauchte 179 Sekunden, meldete bei jedem Schritt Erfolg und
+          installierte nichts: Ein Klick ins Leere ist ein gültiger Klick. Der schnelle Weg
+          zählt nicht in den Nutzerstatistiken des Stores — und das ist der Punkt, nicht der Fehler.
+        </p>
+      </div>
+      <div class="item">
+        <p class="date">3. August 2026</p>
+        <h3><a href="measurements/reading-list-to-bibliography/">Zwanzig Links, zehn Zitationen: was eine Maschine fertig macht und was sie zurückgibt</a></h3>
+        <p>
+          Eine Leseliste in ein Literaturverzeichnis, von Anfang bis Ende. Die Trennlinie läuft
+          nicht zwischen kostenpflichtig und frei — sie läuft zwischen Seiten, die zum
+          Zitieren gebaut sind, und Seiten, die zum Lesen gebaut sind. Fachverlage liefern
+          Datensätze in beiden Fällen; Statistikportale, Kammern und Zeitungen liefern keine,
+          und nicht, weil sie sich verteidigen.
+        </p>
+        <div class="figures">
+          <span><b>10/20</b> vollständige Datensätze</span>
+          <span><b>1</b> Bot-Abwehr</span>
+          <span><b>5</b> Seiten ohne etwas zu erklären</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3. August 2026</p>
+        <h3><a href="measurements/citation-triage/">Ein Agent kann acht von zwölf Quellen zitieren — der nützliche Teil ist zu wissen, welche vier er nicht kann</a></h3>
+        <p>
+          Eine gemischte Leseliste durch den Zitations-Endpunkt: vollständige Datensätze mit
+          RIS für zwei Drittel, und der Rest präzise genug benannt, um ihn von Hand zu holen
+          statt zu erfinden.
+        </p>
+        <div class="figures">
+          <span><b>8/12</b> vom Agenten erledigt</span>
+          <span><b>1,09 s</b> pro Quelle</span>
+          <span><b>4</b> benannt, nicht geraten</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2. August 2026</p>
+        <h3><a href="measurements/citation-extraction/">Gegen Citoid an Zufallsstichproben gemessen: gleiche Abdeckung, nichts erfunden</a></h3>
+        <p>
+          Der Wikimedia-Dienst auf Basis der Zotero-Translatoren ist der Maßstab. Über 18
+          zufällig gezogene Werke: gleiche Abdeckung, und keine einzige Weigerung als
+          Erfolg gemeldet.
+        </p>
+        <div class="figures">
+          <span><b>13/13</b> Felder vollständig</span>
+          <span><b>0</b> falsche Sperr-Meldungen</span>
+          <span><b>0,35 s</b> Median</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1. August 2026</p>
+        <h3><a href="measurements/print-to-pdf-vs-screenshot/">Als PDF drucken oder den Bildschirm aufnehmen? Dieselbe Seite, beide Wege gemessen</a></h3>
+        <p>
+          Firefox speichert Seiten bereits kostenlos als PDF. Wann lohnt also eine Aufnahme?
+          Derselbe Artikel durch beide Wege — und die Antwort ist enger und nützlicher,
+          als beide Seiten üblicherweise zugeben.
+        </p>
+        <div class="figures">
+          <span><b>1 : 26</b> Seiten</span>
+          <span><b>9</b> Umbrüche durchtrennen einen Satz</span>
+          <span>Aufnahme führt beim Text: <b>91,5 %</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1. August 2026</p>
+        <h3><a href="measurements/webpage-to-pdf-for-ocr/">Webseite als PDF für OCR: Wie viel Text überlebt tatsächlich?</a></h3>
+        <p>
+          Ein Ganzseiten-Screenshot-PDF durch Tesseract, verglichen mit dem Ursprungsartikel.
+          Einschließlich der Auflösungsschwelle, an der die Erkennung einbricht.
+        </p>
+        <div class="figures">
+          <span><b>92,6 %</b> Wortschatz zurückgewonnen</span>
+          <span><b>8/8</b> kritische Werte</span>
+          <span><b>72 dpi</b> Einbruchstelle</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1. August 2026</p>
+        <h3><a href="measurements/pdf-extension-permissions/">Lädt Ihre PDF-Erweiterung die Seite hoch?</a></h3>
+        <p>
+          Was aktuelle PDF-Erweiterungen in ihren Manifesten deklarieren, wie man es in
+          30 Sekunden überprüft — und die Folge, die niemand erwähnt: Server-seitige
+          Konverter erreichen keine Seiten hinter einem Login.
+        </p>
+        <div class="figures">
+          <span><b>8</b> Erweiterungen untersucht</span>
+          <span>Rohdaten veröffentlicht</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1. August 2026</p>
+        <h3><a href="measurements/extension-permissions-risk/">Eine Erweiterung ist nur so gefährlich, wie ihre Berechtigungen es erlauben</a></h3>
+        <p>
+          Ein Jahr nach Mozillas Warnung vor erbeuteten Entwicklerkonten: Warum die nützliche
+          Frage nicht ist, wem Sie vertrauen, sondern was eine kompromittierte Erweiterung
+          erreichen könnte.
+        </p>
+        <div class="figures">
+          <span>Worst-Case-Berechtigungstabelle</span>
+          <span>Bewertungs-Checkliste</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Wie hier gemessen wird</h2>
+    <div class="principles">
+      <div class="pr">
+        <h3>Ein Kontrolllauf, immer</h3>
+        <p>
+          Bevor ein Ergebnis zählt, muss die Methode dort scheitern, wo sie scheitern soll. Ein
+          Vergleich, der den Referenzfall nicht unterscheidet, misst nichts.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Rohdaten veröffentlicht</h3>
+        <p>
+          Zahlen kommen mit der Datei, aus der sie berechnet wurden, mit Zeitstempel. Das macht
+          sie prüfbar — und es heißt, niemand muss eine Behauptung auf Vertrauen hinnehmen.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Verluste zuerst genannt</h3>
+        <p>
+          Wo das eigene Werkzeug schlechter ist — Dateigröße, Laufzeit, fehlende Funktionen —,
+          steht es vor den Vorteilen. Ein Vergleich, der nur schmeichelt, ist wertlos.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Datiert, nicht zeitlos</h3>
+        <p>
+          Jede Zahl trägt das Datum ihrer Erhebung. Software ändert sich; eine Messung ohne
+          Datum wird still zur Falschbehauptung.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Werkzeuge</h2>
+    <p class="sub">
+      Hier gebaute Software, dokumentiert wie alles auf dieser Seite — einschließlich dessen,
+      was sie nicht kann. Sie kommt in einigen der Messungen oben vor; das ist bei jeder offengelegt.
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
+        <p>
+          Firefox-Erweiterung, die eine ganze Webseite als ein fortlaufendes PDF speichert.
+          Läuft auf dem Gerät, fragt <code>activeTab</code> statt Zugriff auf alle Seiten an,
+          funktioniert auf Firefox für Android. MIT-lizenziert. Schreibt optional die Zitation,
+          die die Seite erklärt — Verfasser:innen, DOI, Lizenz, Abrufzeitpunkt — ins PDF,
+          mit einem RIS-Datensatz daneben.
+        </p>
+      </div>
+      <div class="item">
+        <h3><a href="notes/mcp-server-what-it-solves/">Zitations-Endpunkt unter <code>/mcp</code></a></h3>
+        <p>
+          Geben Sie eine URL, bekommen Sie zurück, was diese Seite über sich selbst erklärt —
+          als strukturierten Datensatz mit RIS und BibTeX, oder eine benannte Weigerung,
+          wenn sich die Seite als Paywall, Fehler oder Bot-Prüfung entpuppt statt als Werk.
+          Kein Konto und kein Schlüssel. Spricht MCP für KI-Clients und schlichtes HTTP für
+          alles andere.
+        </p>
+        <div class="figures">
+          <span><b>7 von 10</b> wissenschaftliche Quellen vollständig</span>
+          <span><b>0,45 s</b> Median</span>
+          <span><b>3. Aug 2026</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <h3><a href="recipes/">Rezepte: eine Leseliste in ein Literaturverzeichnis</a></h3>
+        <p>
+          Vollständige, lauffähige Anleitungen, um den Zitations-Endpunkt in die Werkzeuge zu
+          bringen, in denen tatsächlich gearbeitet wird: eine Shell-Schleife, die
+          <code>reading-list.txt</code> in eine importierbare <code>.ris</code> für Zotero oder
+          Citavi verwandelt, eine Zeile für Claude Code, der Remote-Server-Eintrag für Claude
+          Desktop und andere MCP-Clients und das Python-Minimum. Jedes wurde ausgeführt,
+          bevor es aufgeschrieben wurde.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
     <h2>Rechnen Sie eine Zahl nach</h2>
     <p class="sub">
       Jede Angabe hier hat Methode, Rohdaten und einen Kontrolllauf — damit sie nachgerechnet
@@ -558,20 +968,20 @@
 <section>
   <div class="wrap">
     <div class="disclosure">
-      <h3>Disclosure</h3>
+      <h3>Offenlegung</h3>
       <p>
-        This site is run by the developer of <a href="tools/full-page-pdf-snap/">Full Page
-        PDF Snap</a>, which appears in several of the measurements above. That is stated in
-        each article where it is relevant, and the tool sits openly under
-        <code>/tools/</code> rather than hidden behind neutral framing.
+        Diese Seite wird vom Entwickler von <a href="tools/full-page-pdf-snap/">Full Page
+        PDF Snap</a> betrieben, das in mehreren der Messungen oben vorkommt. Das steht in jedem
+        Beitrag, in dem es relevant ist, und das Werkzeug steht offen unter
+        <code>/tools/</code>, statt hinter neutraler Rahmung versteckt.
       </p>
       <p>
-        Figures about other products come exclusively from publicly declared data — manifests
-        and listing descriptions — with the retrieval date given. No product was decompiled,
-        and no claim is made about any provider's intentions.
-        Corrections are welcome via
-        <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> and
-        get applied.
+        Zahlen über fremde Produkte stammen ausschließlich aus öffentlich deklarierten Daten —
+        Manifesten und Store-Beschreibungen — mit angegebenem Abrufdatum. Kein Produkt wurde
+        dekompiliert, und keine Aussage wird über die Absichten eines Anbieters gemacht.
+        Korrekturen sind willkommen über
+        <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a> und
+        werden übernommen.
       </p>
     </div>
   </div>
@@ -579,10 +989,2871 @@
 
 <footer>
   <div class="wrap">
-    <p>Proving Lab · <a href="about/">About</a> · <a href="privacy.html">Privacy</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap">Source</a> · <a href="disclaimer/">Disclaimer</a></p>
-    <p>Content licensed for reuse with attribution. Software MIT licensed.</p>
+    <p>Proving Lab · <a href="about/">Über</a> · <a href="privacy.html">Datenschutz</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap">Quelltext</a> · <a href="disclaimer/">Haftungsausschluss</a></p>
+    <p>Inhalte lizenziert zur Weiterverwendung mit Namensnennung. Software MIT-lizenziert.</p>
   </div>
 </footer>
+</div>
 
+<div data-lang="es" lang="es">
+<header>
+  <div class="wrap">
+    <p class="mark">Proving Lab</p>
+    <h1>Guarda la página web que necesitarás más tarde.</h1>
+    <p class="tagline">
+      Guarda una página entera como un solo PDF que lleva su origen y su fecha — y convierte
+      una lista de enlaces en una bibliografía. <strong>El 19,3 % de las fuentes en
+      bibliografías reales ya ha desaparecido</strong>, y el 8,7 % no tiene copia archivada
+      en ningún sitio.
+      <a href="/how-to/save-a-webpage-as-pdf/">Empieza aquí</a> ·
+      <a href="/for-agents/">para agentes de IA</a>
+    </p>
+    <p class="tagline" style="margin-top:14px;font-size:.98rem">
+      Mediciones, no opiniones: todo aquí tiene <strong>método, datos brutos y una ejecución
+      de control</strong>. Lo que no se puede recalcular no se escribe. Lo que salió mal
+      se escribe primero.
+    </p>
+  </div>
+</header>
+
+<section class="direkt">
+  <div class="wrap">
+    <div class="dkarte">
+      <div class="dtext">
+        <p class="dmark">La herramienta construida aquí</p>
+        <h2>Full Page PDF Snap</h2>
+        <p>Guarda una página web entera como un PDF continuo — toda la página desplazable en una sola hoja. Nada recortado en los bordes y ningún salto de página atravesando una tabla o una frase. Todo ocurre en tu navegador: sin subidas, sin cuenta, sin recolección de datos. Licencia MIT, gratuita, Firefox y Chrome.</p>
+        <p class="dzahlen">
+        <span><b>Una hoja</b>, no 26 páginas</span>
+        <span><b>Funciona tras un inicio de sesión</b></span>
+        <span><b>Se queda en tu dispositivo</b></span>
+      </p>
+      <p class="dbeleg">Cada afirmación aquí está medida y fechada:
+        <a href="measurements/print-to-pdf-vs-screenshot/">una hoja contra 26</a>,
+        <a href="measurements/webpage-to-pdf-for-ocr/">el 92,6&nbsp;% del texto legible por OCR</a>,
+        <a href="measurements/pdf-extension-permissions/">cero peticiones de red</a>.</p>
+      </div>
+      <div class="dknopf">
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Descargar para Firefox</a>
+        <p class="dklein">Versión 2.33.4 — firmada por Mozilla. Se instala en un paso, escritorio y Android.</p>
+        <p class="dklein">
+          <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Sin ninguna tienda</a> ·
+          <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome y Edge</a> ·
+          <a href="tools/full-page-pdf-snap/">Qué hace</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Notas</h2>
+    <p class="sub">Crónicas de trabajo real — incluidas las partes que salieron mal.</p>
+    <div class="items">
+      <div class="item">
+        <p class="date">15 de agosto de 2026</p>
+        <h3><a href="how-to/firefox-and-chrome/">Para investigadores y estudiantes: la extensión en Firefox y Chrome</a></h3>
+        <p>
+          El complemento práctico del artículo para estudiantes: todas las vías de
+          instalación — Firefox en escritorio y Android, la Chrome Web Store y ambos
+          caminos sin tienda —, luego el flujo capturar–citar–archivar y los cuatro
+          ajustes que importan para los trabajos. En nueve idiomas.
+        </p>
+        <div class="figures">
+          <span><b>2</b> navegadores, 4 vías de instalación</span>
+          <span><b>18</b> campos XMP en el PDF</span>
+          <span><b>2</b> caminos para el registro RIS</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">10 de agosto de 2026</p>
+        <h3><a href="how-to/for-students/">Para estudiantes: una fuente que se cita sola, sobrevive y es legible por máquina</a></h3>
+        <p>
+          Tres cosas fallan con una fuente web en un trabajo académico: desaparece, su cita
+          hay que teclearla a mano, y el archivo guardado es una imagen que ninguna
+          herramienta busca. Qué hace una captura contra cada una — incluidas las seis
+          fuentes de veinte que te devuelve. En nueve idiomas.
+        </p>
+        <div class="figures">
+          <span><b>61 %</b> de cobertura, igual que Citoid</span>
+          <span><b>100 %</b> correcto frente a su 79 %</span>
+          <span><b>6 de 20</b> devueltas</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3 de agosto de 2026</p>
+        <h3><a href="notes/what-an-agent-can-do-with-an-extension/">Qué puede y qué no puede hacer un agente de IA con una extensión de navegador</a></h3>
+        <p>
+          Instalar una en el navegador de alguien es un gesto de usuario por diseño — ninguna
+          tienda expone una API para ello. Qué puede hacer un agente en su lugar, el flag
+          de línea de comandos que no carga nada y no dice nada, y dónde se divide el
+          trabajo entre ambos.
+        </p>
+        <div class="figures">
+          <span><b>3</b> cosas que un agente puede hacer</span>
+          <span><b>1</b> flag que falla en silencio</span>
+          <span><b>0</b> formas de instalar para otro</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3 de agosto de 2026</p>
+        <h3><a href="notes/sources-a-machine-cannot-cite/">Las fuentes que una máquina no puede citar por ti — y cómo citarlas igualmente</a></h3>
+        <p>
+          Cuando una herramienta de citación devuelve una fuente, la causa es una de tres:
+          una defensa contra bots, una negativa dirigida a la red o una página que no
+          declara nada de sí misma. Cada una necesita un trabajo distinto, y solo una se
+          resuelve abriendo la página en un navegador.
+        </p>
+        <div class="figures">
+          <span><b>3</b> causas</span>
+          <span><b>1</b> resuelta con un navegador</span>
+          <span><b>2</b> peticiones para distinguirlas</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2 de agosto de 2026</p>
+        <h3><a href="notes/mcp-server-what-it-solves/">Este sitio opera un servidor MCP. Medido: es más pequeño que el archivo con el que compite</a></h3>
+        <p>
+          Un endpoint en <code>/mcp</code> entrega los conjuntos de datos, los métodos y un
+          lector de citas a clientes de IA por JSON-RPC — sin clave, sin cuenta. Para qué
+          sirve realmente, y dónde un simple archivo de texto en el mismo dominio ya
+          hace el trabajo.
+        </p>
+        <div class="figures">
+          <span><b>4</b> herramientas</span>
+          <span><b>1.300</b> tokens en total</span>
+          <span><b>1.988</b> en llms.txt</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 de agosto de 2026</p>
+        <h3><a href="notes/building-with-ai-what-went-wrong/">Seis cosas salieron mal construyendo software con un asistente de IA en un día</a></h3>
+        <p>
+          Una suposición errónea sobre motores de navegador, una afirmación falsa detectada
+          antes de publicar, 22 rutas locales a un commit de un repositorio público — y
+          tres más. Ordenadas por lo que realmente las detectó: dos se encontraron por
+          suerte, una por nada en absoluto.
+        </p>
+        <div class="figures">
+          <span><b>3 de 6</b> detectadas comprobando una fuente externa</span>
+          <span><b>1</b> aún sin probar en producción</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Mediciones</h2>
+    <p class="sub">Cada una con los comandos para repetirla y los datos brutos detrás.</p>
+
+    <div class="items">
+      <div class="item">
+        <p class="date">3 de agosto de 2026</p>
+        <h3><a href="measurements/install-an-extension-without-a-click/">Instalar una extensión de navegador sin un clic, y quitarla de nuevo</a></h3>
+        <p>
+          Cuatro vías, en ambas direcciones. Una instala y desinstala una compilación firmada
+          de la tienda en 4,1 segundos sin ventana y sin derechos de administrador — y los
+          dos comandos en sí tardan 0,24 s; el coste es arrancar el navegador, no el trabajo.
+          La vía del clic tardó 179 segundos, informó éxito en cada paso y no instaló nada:
+          un clic en el vacío es un clic válido. La vía rápida no cuenta en las estadísticas
+          de usuarios de la tienda — y ese es el punto, no el defecto.
+        </p>
+      </div>
+      <div class="item">
+        <p class="date">3 de agosto de 2026</p>
+        <h3><a href="measurements/reading-list-to-bibliography/">Veinte enlaces, diez citas: qué termina una máquina y qué devuelve</a></h3>
+        <p>
+          Una lista de lectura convertida en bibliografía, de principio a fin. La división no
+          corre entre de pago y gratis — corre entre páginas construidas para ser citadas
+          y páginas construidas para ser leídas. Las editoriales científicas dan registros
+          en ambos casos; los portales de estadística, las cámaras de comercio y los
+          periódicos no dan ninguno, y no porque se defiendan.
+        </p>
+        <div class="figures">
+          <span><b>10/20</b> registros completos</span>
+          <span><b>1</b> defensa contra bots</span>
+          <span><b>5</b> páginas sin nada que declarar</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3 de agosto de 2026</p>
+        <h3><a href="measurements/citation-triage/">Un agente puede citar ocho de doce fuentes — lo útil es saber cuáles cuatro no puede</a></h3>
+        <p>
+          Una lista de lectura mixta por el endpoint de citación: registros completos con RIS
+          para dos tercios, y el resto nombrado con la precisión suficiente para buscarlo
+          a mano en lugar de inventarlo.
+        </p>
+        <div class="figures">
+          <span><b>8/12</b> hechas por el agente</span>
+          <span><b>1,09 s</b> por fuente</span>
+          <span><b>4</b> nombradas, no adivinadas</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2 de agosto de 2026</p>
+        <h3><a href="measurements/citation-extraction/">Medido contra Citoid en muestras aleatorias: misma cobertura, nada inventado</a></h3>
+        <p>
+          El servicio de Wikimedia construido sobre los traductores de Zotero es el patrón.
+          En 18 obras extraídas al azar: cobertura igual, y ni una negativa informada
+          como éxito.
+        </p>
+        <div class="figures">
+          <span><b>13/13</b> campos completos</span>
+          <span><b>0</b> informes de bloqueo falsos</span>
+          <span><b>0,35 s</b> de mediana</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 de agosto de 2026</p>
+        <h3><a href="measurements/print-to-pdf-vs-screenshot/">¿Imprimir a PDF o capturar la pantalla? La misma página medida de ambas formas</a></h3>
+        <p>
+          Firefox ya guarda páginas como PDF gratis. ¿Cuándo vale una captura? El mismo
+          artículo por ambas vías — y la respuesta es más estrecha y más útil de lo que
+          cualquiera de los dos lados suele admitir.
+        </p>
+        <div class="figures">
+          <span><b>1 : 26</b> páginas</span>
+          <span><b>9</b> saltos cortan una frase</span>
+          <span>la captura gana en texto: <b>91,5 %</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 de agosto de 2026</p>
+        <h3><a href="measurements/webpage-to-pdf-for-ocr/">Página web a PDF para OCR: ¿cuánto texto sobrevive realmente?</a></h3>
+        <p>
+          Un PDF de captura de página completa pasado por Tesseract y comparado con el
+          artículo fuente. Incluye el umbral de resolución donde el reconocimiento colapsa.
+        </p>
+        <div class="figures">
+          <span><b>92,6 %</b> del vocabulario recuperado</span>
+          <span><b>8/8</b> valores críticos</span>
+          <span><b>72 dpi</b> punto de colapso</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 de agosto de 2026</p>
+        <h3><a href="measurements/pdf-extension-permissions/">¿Sube tu extensión de PDF la página?</a></h3>
+        <p>
+          Qué declaran las extensiones de PDF actuales en sus manifiestos, cómo verificarlo
+          en 30 segundos — y la consecuencia que nadie menciona: los conversores del lado
+          del servidor no alcanzan páginas tras un inicio de sesión.
+        </p>
+        <div class="figures">
+          <span><b>8</b> extensiones examinadas</span>
+          <span>datos brutos publicados</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 de agosto de 2026</p>
+        <h3><a href="measurements/extension-permissions-risk/">Una extensión solo es tan peligrosa como sus permisos permiten</a></h3>
+        <p>
+          Un año después de la advertencia de Mozilla sobre cuentas de desarrollador robadas:
+          por qué la pregunta útil no es en quién confías, sino qué podría alcanzar una
+          extensión comprometida.
+        </p>
+        <div class="figures">
+          <span>tabla de permisos en el peor caso</span>
+          <span>lista de verificación de evaluación</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Cómo se mide aquí</h2>
+    <div class="principles">
+      <div class="pr">
+        <h3>Una ejecución de control, siempre</h3>
+        <p>
+          Antes de que un resultado cuente, el método tiene que fallar donde debe. Una comparación
+          que no distingue el caso de referencia no mide nada.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Datos brutos publicados</h3>
+        <p>
+          Las cifras vienen con el archivo del que se calcularon, con marca de tiempo. Eso las hace
+          comprobables — y significa que nadie tiene que aceptar una afirmación por confianza.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Las pérdidas se nombran primero</h3>
+        <p>
+          Donde nuestra propia herramienta es peor — tamaño de archivo, tiempo de proceso, funciones
+          ausentes —, se afirma antes que las ventajas. Una comparación que solo adula no vale nada.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Fechadas, no atemporales</h3>
+        <p>
+          Cada cifra lleva la fecha en que se tomó. El software cambia; una medición sin fecha se
+          convierte en silencio en una afirmación falsa.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Herramientas</h2>
+    <p class="sub">
+      Software construido aquí, documentado como todo lo demás en este sitio — incluido lo que
+      no puede hacer. Aparece en algunas de las mediciones de arriba; eso se declara en cada una.
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
+        <p>
+          Extensión de Firefox que guarda una página web entera como un PDF continuo. Se
+          ejecuta en el dispositivo, pide <code>activeTab</code> en lugar de acceso a todos
+          los sitios, funciona en Firefox para Android. Licencia MIT. Opcionalmente escribe
+          en el PDF la cita que la página declara — autores, DOI, licencia, momento de
+          consulta —, con un registro RIS al lado.
+        </p>
+      </div>
+      <div class="item">
+        <h3><a href="notes/mcp-server-what-it-solves/">Endpoint de citación en <code>/mcp</code></a></h3>
+        <p>
+          Dale una URL y recibe lo que esa página dice de sí misma como registro estructurado
+          con RIS y BibTeX — o una negativa nombrada cuando la página resulta ser un muro
+          de pago, un error o una comprobación de bots en lugar de una obra. Sin cuenta y
+          sin clave. Habla MCP para clientes de IA y HTTP simple para todo lo demás.
+        </p>
+        <div class="figures">
+          <span><b>7 de 10</b> fuentes académicas completas</span>
+          <span><b>0,45 s</b> de mediana</span>
+          <span><b>3 ago 2026</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <h3><a href="recipes/">Recetas: una lista de lectura convertida en bibliografía</a></h3>
+        <p>
+          Instrucciones completas y ejecutables para meter el endpoint de citación en las
+          herramientas en las que la gente trabaja de verdad: un bucle de shell que convierte
+          <code>reading-list.txt</code> en un <code>.ris</code> importable para Zotero o Citavi,
+          una línea para conectar Claude Code, la entrada de servidor remoto para Claude
+          Desktop y otros clientes MCP, y el mínimo en Python. Cada una se ejecutó antes de
+          escribirse.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Comprueba cualquier cifra</h2>
+    <p class="sub">
+      Todo aquí tiene método, datos brutos y una ejecución de control — para poder comprobarse,
+      no para tener que creerse.
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="mitmachen/">La contribución más útil es una contra-medición que dé un resultado distinto</a></h3>
+        <p>
+          Se nombran expresamente cuatro puntos donde las cifras publicadas tienen más
+          probabilidades de tambalearse — empezando por las diez de veinte fuentes cuyas
+          cuatro negativas son bloqueos contra una dirección de centro de datos. Desde una
+          red doméstica la tasa debería ser mayor, y eso no está medido.
+        </p>
+        <div class="figures">
+          <span><b>4</b> puntos débiles nombrados</span>
+          <span><b>9</b> conjuntos de datos, CC BY 4.0</span>
+          <span>tareas abiertas en <b>GitHub</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <h3><a href="AGENTS.md">Para agentes de IA: reglas, construcción, límites</a></h3>
+        <p>
+          El proyecto está montado para que un agente pueda trabajar en él sin preguntar antes
+          a nadie. Las tareas abiertas las sirve en formato legible por máquina la herramienta
+          <code>open_work</code> en <a href="for-agents/">/mcp</a> — con etiquetas, un extracto
+          y las cinco reglas que aquí son distintas de lo habitual.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="disclosure">
+      <h3>Divulgación</h3>
+      <p>
+        Este sitio lo opera el desarrollador de <a href="tools/full-page-pdf-snap/">Full Page
+        PDF Snap</a>, que aparece en varias de las mediciones de arriba. Eso se indica en cada
+        artículo donde es relevante, y la herramienta está abiertamente bajo
+        <code>/tools/</code> en lugar de escondida tras un encuadre neutral.
+      </p>
+      <p>
+        Las cifras sobre productos ajenos provienen exclusivamente de datos declarados
+        públicamente — manifiestos y descripciones de tienda — con la fecha de consulta indicada.
+        Ningún producto fue descompilado, y no se afirma nada sobre las intenciones de ningún
+        proveedor. Las correcciones son bienvenidas vía
+        <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues de GitHub</a> y
+        se aplican.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Proving Lab · <a href="about/">Acerca de</a> · <a href="privacy.html">Privacidad</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap">Código fuente</a> · <a href="disclaimer/">Aviso legal</a></p>
+    <p>Contenido licenciado para reutilización con atribución. Software con licencia MIT.</p>
+  </div>
+</footer>
+</div>
+
+<div data-lang="fr" lang="fr">
+<header>
+  <div class="wrap">
+    <p class="mark">Proving Lab</p>
+    <h1>Gardez la page web dont vous aurez besoin plus tard.</h1>
+    <p class="tagline">
+      Enregistrez une page entière en un seul PDF qui porte son origine et sa date — et
+      transformez une liste de liens en bibliographie. <strong>19,3 % des sources des
+      bibliographies réelles ont déjà disparu</strong>, et 8,7 % n'ont aucune copie archivée
+      nulle part.
+      <a href="/how-to/save-a-webpage-as-pdf/">Commencer ici</a> ·
+      <a href="/for-agents/">pour les agents IA</a>
+    </p>
+    <p class="tagline" style="margin-top:14px;font-size:.98rem">
+      Des mesures, pas des opinions : tout ici a une <strong>méthode, des données brutes et un
+      essai de contrôle</strong>. Ce qui ne peut être recalculé n'est pas écrit. Ce qui a
+      mal tourné est écrit d'abord.
+    </p>
+  </div>
+</header>
+
+<section class="direkt">
+  <div class="wrap">
+    <div class="dkarte">
+      <div class="dtext">
+        <p class="dmark">L'outil construit ici</p>
+        <h2>Full Page PDF Snap</h2>
+        <p>Enregistre une page web entière en un PDF continu — toute la page défilante sur une seule feuille. Rien de rogné au bord, aucun saut de page traversant un tableau ou une phrase. Tout se passe dans votre navigateur : aucun téléversement, aucun compte, aucune collecte de données. Licence MIT, gratuit, Firefox et Chrome.</p>
+        <p class="dzahlen">
+        <span><b>Une feuille</b>, pas 26 pages</span>
+        <span><b>Fonctionne derrière un identifiant</b></span>
+        <span><b>Reste sur votre appareil</b></span>
+      </p>
+      <p class="dbeleg">Chaque affirmation ici est mesurée et datée :
+        <a href="measurements/print-to-pdf-vs-screenshot/">une feuille contre 26</a>,
+        <a href="measurements/webpage-to-pdf-for-ocr/">92,6&nbsp;% du texte lisible par OCR</a>,
+        <a href="measurements/pdf-extension-permissions/">zéro requête réseau</a>.</p>
+      </div>
+      <div class="dknopf">
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Télécharger pour Firefox</a>
+        <p class="dklein">Version 2.33.4 — signée par Mozilla. S'installe en une étape, bureau et Android.</p>
+        <p class="dklein">
+          <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Sans aucune boutique</a> ·
+          <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome et Edge</a> ·
+          <a href="tools/full-page-pdf-snap/">Ce qu'elle fait</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Notes</h2>
+    <p class="sub">Comptes rendus de travail réel — y compris les parties qui ont mal tourné.</p>
+    <div class="items">
+      <div class="item">
+        <p class="date">15 août 2026</p>
+        <h3><a href="how-to/firefox-and-chrome/">Pour les chercheuses, chercheurs et étudiant·e·s : l'extension dans Firefox et Chrome</a></h3>
+        <p>
+          Le pendant pratique de l'article pour étudiants : toutes les voies d'installation —
+          Firefox sur bureau et Android, le Chrome Web Store et les deux chemins sans
+          boutique —, puis le flux capturer–citer–archiver et les quatre réglages qui
+          comptent pour les travaux. En neuf langues.
+        </p>
+        <div class="figures">
+          <span><b>2</b> navigateurs, 4 voies d'installation</span>
+          <span><b>18</b> champs XMP dans le PDF</span>
+          <span><b>2</b> chemins pour l'enregistrement RIS</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">10 août 2026</p>
+        <h3><a href="how-to/for-students/">Pour les étudiants : une source qui se cite elle-même, survit et est lisible par une machine</a></h3>
+        <p>
+          Trois choses tournent mal avec une source web dans un mémoire : elle disparaît, sa
+          citation doit être retapée à la main, et le fichier conservé est une image
+          qu'aucun outil ne fouille. Ce qu'une capture fait contre chacune — y compris les
+          six sources sur vingt qu'elle vous rend. En neuf langues.
+        </p>
+        <div class="figures">
+          <span><b>61 %</b> de couverture, à égalité avec Citoid</span>
+          <span><b>100 %</b> exact contre ses 79 %</span>
+          <span><b>6 sur 20</b> rendues</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3 août 2026</p>
+        <h3><a href="notes/what-an-agent-can-do-with-an-extension/">Ce qu'un agent IA peut et ne peut pas faire avec une extension de navigateur</a></h3>
+        <p>
+          En installer une dans le navigateur de quelqu'un est un geste utilisateur par
+          conception — aucune boutique n'expose d'API pour cela. Ce qu'un agent peut faire
+          à la place, le drapeau de ligne de commande qui ne charge rien et ne dit rien, et
+          où le travail se partage entre les deux.
+        </p>
+        <div class="figures">
+          <span><b>3</b> choses qu'un agent peut faire</span>
+          <span><b>1</b> drapeau qui échoue en silence</span>
+          <span><b>0</b> façon d'installer pour autrui</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3 août 2026</p>
+        <h3><a href="notes/sources-a-machine-cannot-cite/">Les sources qu'une machine ne peut pas citer pour vous — et comment les citer quand même</a></h3>
+        <p>
+          Quand un outil de citation rend une source, la cause est l'une de trois : une défense
+          anti-robots, un refus visant le réseau, ou une page qui ne déclare rien sur
+          elle-même. Chacune demande un travail différent, et une seule se résout en ouvrant
+          la page dans un navigateur.
+        </p>
+        <div class="figures">
+          <span><b>3</b> causes</span>
+          <span><b>1</b> résolue par un navigateur</span>
+          <span><b>2</b> requêtes pour les distinguer</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2 août 2026</p>
+        <h3><a href="notes/mcp-server-what-it-solves/">Ce site fait tourner un serveur MCP. Mesuré : il est plus petit que le fichier auquel il se mesure</a></h3>
+        <p>
+          Un point d'accès sur <code>/mcp</code> remet les jeux de données, les méthodes et un
+          lecteur de citations aux clients IA en JSON-RPC — sans clé, sans compte. À quoi
+          cela sert vraiment, et où un simple fichier texte sur le même domaine fait déjà
+          le travail.
+        </p>
+        <div class="figures">
+          <span><b>4</b> outils</span>
+          <span><b>1 300</b> jetons au total</span>
+          <span><b>1 988</b> dans llms.txt</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 août 2026</p>
+        <h3><a href="notes/building-with-ai-what-went-wrong/">Six choses ont mal tourné en construisant un logiciel avec un assistant IA en un jour</a></h3>
+        <p>
+          Une hypothèse fausse sur les moteurs de navigateur, une affirmation erronée repérée
+          avant publication, 22 chemins locaux à un commit d'un dépôt public — et trois de
+          plus. Triées selon ce qui les a réellement repérées : deux ont été trouvées par
+          chance, une par rien du tout.
+        </p>
+        <div class="figures">
+          <span><b>3 sur 6</b> repérées en vérifiant une source externe</span>
+          <span><b>1</b> encore non testée en production</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Mesures</h2>
+    <p class="sub">Chacune avec les commandes pour la refaire et les données brutes derrière.</p>
+
+    <div class="items">
+      <div class="item">
+        <p class="date">3 août 2026</p>
+        <h3><a href="measurements/install-an-extension-without-a-click/">Installer une extension de navigateur sans un clic, et la retirer ensuite</a></h3>
+        <p>
+          Quatre voies, dans les deux sens. L'une installe et désinstalle une version signée de
+          la boutique en 4,1 secondes sans fenêtre et sans droits d'administrateur — et les
+          deux commandes elles-mêmes prennent 0,24 s ; le coût est le démarrage du navigateur,
+          pas le travail. La voie du clic a pris 179 secondes, a annoncé un succès à chaque
+          étape et n'a rien installé : un clic dans le vide est un clic valide. La voie rapide
+          ne compte pas dans les statistiques d'utilisateurs de la boutique — et c'est le but,
+          pas le défaut.
+        </p>
+      </div>
+      <div class="item">
+        <p class="date">3 août 2026</p>
+        <h3><a href="measurements/reading-list-to-bibliography/">Vingt liens, dix citations : ce qu'une machine termine et ce qu'elle rend</a></h3>
+        <p>
+          Une liste de lecture transformée en bibliographie, de bout en bout. La ligne de partage
+          ne passe pas entre payant et gratuit — elle passe entre les pages construites pour
+          être citées et les pages construites pour être lues. Les éditeurs scientifiques
+          fournissent des notices dans les deux cas ; les portails de statistique, les chambres
+          de commerce et les journaux n'en fournissent aucune, et ce n'est pas parce qu'ils
+          se défendent.
+        </p>
+        <div class="figures">
+          <span><b>10/20</b> notices complètes</span>
+          <span><b>1</b> défense anti-robots</span>
+          <span><b>5</b> pages sans rien à déclarer</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3 août 2026</p>
+        <h3><a href="measurements/citation-triage/">Un agent peut citer huit sources sur douze — l'utile est de savoir quelles quatre il ne peut pas</a></h3>
+        <p>
+          Une liste de lecture mixte par le point d'accès de citation : des notices complètes
+          avec RIS pour les deux tiers, et le reste nommé assez précisément pour aller le
+          chercher à la main au lieu de l'inventer.
+        </p>
+        <div class="figures">
+          <span><b>8/12</b> faites par l'agent</span>
+          <span><b>1,09 s</b> par source</span>
+          <span><b>4</b> nommées, pas devinées</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2 août 2026</p>
+        <h3><a href="measurements/citation-extraction/">Mesuré contre Citoid sur échantillons aléatoires : même couverture, rien d'inventé</a></h3>
+        <p>
+          Le service Wikimedia bâti sur les traducteurs Zotero fait office d'étalon. Sur 18
+          œuvres tirées au hasard : couverture égale, et pas un refus rapporté comme un
+          succès.
+        </p>
+        <div class="figures">
+          <span><b>13/13</b> champs complets</span>
+          <span><b>0</b> faux rapport de blocage</span>
+          <span><b>0,35 s</b> de médiane</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 août 2026</p>
+        <h3><a href="measurements/print-to-pdf-vs-screenshot/">Imprimer en PDF ou capturer l'écran ? La même page mesurée des deux façons</a></h3>
+        <p>
+          Firefox enregistre déjà les pages en PDF gratuitement. Quand une capture vaut-elle
+          donc le coup ? Le même article par les deux voies — et la réponse est plus étroite,
+          et plus utile, qu'aucun des deux camps ne l'admet d'ordinaire.
+        </p>
+        <div class="figures">
+          <span><b>1 : 26</b> pages</span>
+          <span><b>9</b> sauts coupent une phrase</span>
+          <span>la capture mène sur le texte : <b>91,5 %</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 août 2026</p>
+        <h3><a href="measurements/webpage-to-pdf-for-ocr/">Page web en PDF pour l'OCR : combien de texte survit vraiment ?</a></h3>
+        <p>
+          Un PDF de capture pleine page passé dans Tesseract et comparé à l'article source.
+          Avec le seuil de résolution où la reconnaissance s'effondre.
+        </p>
+        <div class="figures">
+          <span><b>92,6 %</b> du vocabulaire récupéré</span>
+          <span><b>8/8</b> valeurs critiques</span>
+          <span><b>72 dpi</b> point d'effondrement</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 août 2026</p>
+        <h3><a href="measurements/pdf-extension-permissions/">Votre extension PDF téléverse-t-elle la page ?</a></h3>
+        <p>
+          Ce que les extensions PDF actuelles déclarent dans leurs manifestes, comment le
+          vérifier en 30 secondes — et la conséquence que personne ne mentionne : les
+          convertisseurs côté serveur n'atteignent pas les pages derrière un identifiant.
+        </p>
+        <div class="figures">
+          <span><b>8</b> extensions examinées</span>
+          <span>données brutes publiées</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 août 2026</p>
+        <h3><a href="measurements/extension-permissions-risk/">Une extension n'est dangereuse que dans la mesure de ses permissions</a></h3>
+        <p>
+          Un an après l'avertissement de Mozilla sur les comptes de développeur volés :
+          pourquoi la question utile n'est pas qui vous croyez, mais ce qu'une extension
+          compromise pourrait atteindre.
+        </p>
+        <div class="figures">
+          <span>tableau des permissions au pire</span>
+          <span>liste de contrôle d'évaluation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Comment on mesure ici</h2>
+    <div class="principles">
+      <div class="pr">
+        <h3>Un essai de contrôle, toujours</h3>
+        <p>
+          Avant qu'un résultat compte, la méthode doit échouer là où elle le doit. Une comparaison
+          qui ne distingue pas le cas de référence ne mesure rien.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Données brutes publiées</h3>
+        <p>
+          Les chiffres viennent avec le fichier dont ils sont calculés, horodaté. Cela les rend
+          vérifiables — et personne n'a à croire une affirmation sur parole.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Les pertes nommées d'abord</h3>
+        <p>
+          Là où notre propre outil est moins bon — taille de fichier, temps de traitement, fonctions
+          manquantes —, c'est dit avant les avantages. Une comparaison qui ne fait que flatter
+          ne vaut rien.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Datées, pas intemporelles</h3>
+        <p>
+          Chaque chiffre porte la date de son relevé. Les logiciels changent ; une mesure sans date
+          devient silencieusement une affirmation fausse.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Outils</h2>
+    <p class="sub">
+      Des logiciels construits ici, documentés comme tout le reste de ce site — y compris ce
+      qu'ils ne savent pas faire. Ils apparaissent dans certaines mesures ci-dessus ; c'est
+      indiqué sur chacune.
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
+        <p>
+          Extension Firefox qui enregistre une page web entière en un PDF continu. Tourne sur
+          l'appareil, demande <code>activeTab</code> plutôt qu'un accès à tous les sites,
+          fonctionne sur Firefox pour Android. Licence MIT. Écrit en option dans le PDF la
+          citation que la page déclare — auteurs, DOI, licence, moment de consultation —,
+          avec un enregistrement RIS à côté.
+        </p>
+      </div>
+      <div class="item">
+        <h3><a href="notes/mcp-server-what-it-solves/">Point d'accès de citation sur <code>/mcp</code></a></h3>
+        <p>
+          Donnez-lui une URL, recevez ce que cette page déclare d'elle-même sous forme de notice
+          structurée avec RIS et BibTeX — ou un refus nommé lorsque la page s'avère être un
+          mur payant, une erreur ou un contrôle anti-robots plutôt qu'une œuvre. Ni compte ni
+          clé. Parle MCP pour les clients IA et HTTP simple pour tout le reste.
+        </p>
+        <div class="figures">
+          <span><b>7 sur 10</b> sources savantes complètes</span>
+          <span><b>0,45 s</b> de médiane</span>
+          <span><b>3 août 2026</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <h3><a href="recipes/">Recettes : une liste de lecture transformée en bibliographie</a></h3>
+        <p>
+          Des instructions complètes et exécutables pour intégrer le point d'accès de citation
+          dans les outils où l'on travaille vraiment : une boucle shell qui transforme
+          <code>reading-list.txt</code> en un <code>.ris</code> importable pour Zotero ou Citavi,
+          une ligne pour connecter Claude Code, l'entrée de serveur distant pour Claude
+          Desktop et d'autres clients MCP, et le minimum en Python. Chacune a été exécutée
+          avant d'être écrite.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Revérifiez n'importe quel chiffre</h2>
+    <p class="sub">
+      Tout ici a une méthode, des données brutes et un essai de contrôle — pour pouvoir être
+      vérifié, pas pour devoir être cru.
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="mitmachen/">La contribution la plus utile est une contre-mesure qui aboutit à autre chose</a></h3>
+        <p>
+          Quatre endroits où les chiffres publiés risquent le plus de vaciller sont nommés
+          expressément — à commencer par les dix sources sur vingt dont les quatre refus sont
+          des blocages contre une adresse de centre de données. Depuis un réseau domestique,
+          le taux devrait être plus élevé, et cela n'est pas mesuré.
+        </p>
+        <div class="figures">
+          <span><b>4</b> points faibles nommés</span>
+          <span><b>9</b> jeux de données, CC BY 4.0</span>
+          <span>tâches ouvertes sur <b>GitHub</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <h3><a href="AGENTS.md">Pour les agents IA : règles, construction, limites</a></h3>
+        <p>
+          Le projet est monté pour qu'un agent puisse y travailler sans demander à personne au
+          préalable. Les tâches ouvertes sont servies en lecture machine par l'outil
+          <code>open_work</code> sur <a href="for-agents/">/mcp</a> — avec étiquettes, extrait,
+          et les cinq règles qui diffèrent ici de l'habitude.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="disclosure">
+      <h3>Transparence</h3>
+      <p>
+        Ce site est tenu par le développeur de <a href="tools/full-page-pdf-snap/">Full Page
+        PDF Snap</a>, qui apparaît dans plusieurs des mesures ci-dessus. C'est indiqué dans
+        chaque article où c'est pertinent, et l'outil se trouve ouvertement sous
+        <code>/tools/</code> plutôt que caché derrière un cadrage neutre.
+      </p>
+      <p>
+        Les chiffres sur les produits tiers proviennent exclusivement de données publiquement
+        déclarées — manifestes et descriptions de boutique — avec la date de consultation
+        indiquée. Aucun produit n'a été décompilé, et rien n'est affirmé sur les intentions
+        d'un fournisseur. Les corrections sont les bienvenues via les
+        <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">tickets GitHub</a> et
+        sont appliquées.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Proving Lab · <a href="about/">À propos</a> · <a href="privacy.html">Confidentialité</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap">Source</a> · <a href="disclaimer/">Mentions légales</a></p>
+    <p>Contenu sous licence de réutilisation avec attribution. Logiciel sous licence MIT.</p>
+  </div>
+</footer>
+</div>
+
+<div data-lang="it" lang="it">
+<header>
+  <div class="wrap">
+    <p class="mark">Proving Lab</p>
+    <h1>Conserva la pagina web che ti servirà più avanti.</h1>
+    <p class="tagline">
+      Salva una pagina intera come un unico PDF che porta con sé la sua origine e la sua data —
+      e trasforma un elenco di link in una bibliografia. <strong>Il 19,3 % delle fonti nelle
+      bibliografie reali è già sparito</strong>, e l'8,7 % non ha una copia archiviata da
+      nessuna parte.
+      <a href="/how-to/save-a-webpage-as-pdf/">Inizia qui</a> ·
+      <a href="/for-agents/">per agenti IA</a>
+    </p>
+    <p class="tagline" style="margin-top:14px;font-size:.98rem">
+      Misurazioni, non opinioni: tutto qui ha un <strong>metodo, dati grezzi e una prova di
+      controllo</strong>. Ciò che non si può ricalcolare non viene scritto. Ciò che è andato
+      storto viene scritto per primo.
+    </p>
+  </div>
+</header>
+
+<section class="direkt">
+  <div class="wrap">
+    <div class="dkarte">
+      <div class="dtext">
+        <p class="dmark">Lo strumento costruito qui</p>
+        <h2>Full Page PDF Snap</h2>
+        <p>Salva un'intera pagina web come un PDF continuo — tutta la pagina scorrevole su un unico foglio. Niente tagliato ai bordi e nessuna interruzione di pagina che attraversi una tabella o una frase. Tutto avviene nel tuo browser: nessun caricamento, nessun account, nessuna raccolta dati. Licenza MIT, gratuito, Firefox e Chrome.</p>
+        <p class="dzahlen">
+        <span><b>Un foglio</b>, non 26 pagine</span>
+        <span><b>Funziona dietro un login</b></span>
+        <span><b>Resta sul tuo dispositivo</b></span>
+      </p>
+      <p class="dbeleg">Ogni affermazione qui è misurata e datata:
+        <a href="measurements/print-to-pdf-vs-screenshot/">un foglio contro 26</a>,
+        <a href="measurements/webpage-to-pdf-for-ocr/">il 92,6&nbsp;% del testo leggibile via OCR</a>,
+        <a href="measurements/pdf-extension-permissions/">zero richieste di rete</a>.</p>
+      </div>
+      <div class="dknopf">
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Scarica per Firefox</a>
+        <p class="dklein">Versione 2.33.4 — firmata da Mozilla. Si installa in un passaggio, desktop e Android.</p>
+        <p class="dklein">
+          <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Senza alcuno store</a> ·
+          <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome ed Edge</a> ·
+          <a href="tools/full-page-pdf-snap/">Cosa fa</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Note</h2>
+    <p class="sub">Resoconti di lavoro reale — comprese le parti andate storte.</p>
+    <div class="items">
+      <div class="item">
+        <p class="date">15 agosto 2026</p>
+        <h3><a href="how-to/firefox-and-chrome/">Per ricercatori, ricercatrici e studenti: l'estensione in Firefox e Chrome</a></h3>
+        <p>
+          Il compagno pratico dell'articolo per studenti: tutte le vie di installazione —
+          Firefox su desktop e Android, il Chrome Web Store ed entrambi i percorsi senza
+          store —, poi il flusso catturare–citare–archiviare e le quattro impostazioni che
+          contano per gli elaborati. In nove lingue.
+        </p>
+        <div class="figures">
+          <span><b>2</b> browser, 4 vie di installazione</span>
+          <span><b>18</b> campi XMP nel PDF</span>
+          <span><b>2</b> percorsi per il record RIS</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">10 agosto 2026</p>
+        <h3><a href="how-to/for-students/">Per studenti: una fonte che si cita da sola, sopravvive ed è leggibile da una macchina</a></h3>
+        <p>
+          Tre cose vanno storte con una fonte web in un elaborato: sparisce, la sua citazione
+          va riscritta a mano, e il file conservato è un'immagine che nessuno strumento
+          cerca. Cosa fa una cattura contro ciascuna — comprese le sei fonti su venti che
+          ti restituisce. In nove lingue.
+        </p>
+        <div class="figures">
+          <span><b>61 %</b> di copertura, alla pari con Citoid</span>
+          <span><b>100 %</b> corretto contro il suo 79 %</span>
+          <span><b>6 su 20</b> restituite</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3 agosto 2026</p>
+        <h3><a href="notes/what-an-agent-can-do-with-an-extension/">Cosa può e cosa non può fare un agente IA con un'estensione del browser</a></h3>
+        <p>
+          Installarne una nel browser di qualcuno è un gesto dell'utente per progettazione —
+          nessuno store espone un'API per farlo. Cosa può fare invece un agente, il flag da
+          riga di comando che non carica nulla e non dice nulla, e dove si divide il lavoro
+          tra i due.
+        </p>
+        <div class="figures">
+          <span><b>3</b> cose che un agente può fare</span>
+          <span><b>1</b> flag che fallisce in silenzio</span>
+          <span><b>0</b> modi di installare per altri</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3 agosto 2026</p>
+        <h3><a href="notes/sources-a-machine-cannot-cite/">Le fonti che una macchina non può citare per te — e come citarle comunque</a></h3>
+        <p>
+          Quando uno strumento di citazione restituisce una fonte, la causa è una di tre: una
+          difesa anti-bot, un rifiuto rivolto alla rete o una pagina che non dichiara nulla
+          di sé. Ognuna richiede un lavoro diverso, e solo una si risolve aprendo la pagina
+          in un browser.
+        </p>
+        <div class="figures">
+          <span><b>3</b> cause</span>
+          <span><b>1</b> risolta da un browser</span>
+          <span><b>2</b> richieste per distinguerle</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2 agosto 2026</p>
+        <h3><a href="notes/mcp-server-what-it-solves/">Questo sito gestisce un server MCP. Misurato: è più piccolo del file con cui compete</a></h3>
+        <p>
+          Un endpoint su <code>/mcp</code> consegna i set di dati, i metodi e un lettore di
+          citazioni ai client IA via JSON-RPC — nessuna chiave, nessun account. A cosa
+          serve davvero, e dove un semplice file di testo sullo stesso dominio fa già il
+          lavoro.
+        </p>
+        <div class="figures">
+          <span><b>4</b> strumenti</span>
+          <span><b>1.300</b> token in totale</span>
+          <span><b>1.988</b> in llms.txt</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 agosto 2026</p>
+        <h3><a href="notes/building-with-ai-what-went-wrong/">Sei cose andate storte costruendo software con un assistente IA in un giorno</a></h3>
+        <p>
+          Un'ipotesi sbagliata sui motori di browser, un'affermazione falsa intercettata prima
+          della pubblicazione, 22 percorsi locali a un commit da un repository pubblico —
+          e altre tre. Ordinate per ciò che le ha davvero intercettate: due sono state trovate
+          per fortuna, una da nulla.
+        </p>
+        <div class="figures">
+          <span><b>3 su 6</b> intercettate controllando una fonte esterna</span>
+          <span><b>1</b> ancora non testata in produzione</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Misurazioni</h2>
+    <p class="sub">Ognuna con i comandi per ripeterla e i dati grezzi alle spalle.</p>
+
+    <div class="items">
+      <div class="item">
+        <p class="date">3 agosto 2026</p>
+        <h3><a href="measurements/install-an-extension-without-a-click/">Installare un'estensione del browser senza un clic, e rimuoverla di nuovo</a></h3>
+        <p>
+          Quattro vie, in entrambe le direzioni. Una installa e disinstalla una build firmata
+          dello store in 4,1 secondi senza finestra e senza diritti di amministratore — e i
+          due comandi in sé richiedono 0,24 s; il costo è avviare il browser, non il lavoro.
+          La via del clic ha richiesto 179 secondi, ha riportato successo a ogni passo e non
+          ha installato nulla: un clic nel vuoto è un clic valido. La via veloce non conta
+          nelle statistiche utenti dello store — e questo è il punto, non il difetto.
+        </p>
+      </div>
+      <div class="item">
+        <p class="date">3 agosto 2026</p>
+        <h3><a href="measurements/reading-list-to-bibliography/">Venti link, dieci citazioni: cosa completa una macchina e cosa restituisce</a></h3>
+        <p>
+          Una lista di lettura trasformata in bibliografia, dall'inizio alla fine. La linea di
+          divisione non passa tra a pagamento e gratis — passa tra pagine costruite per
+          essere citate e pagine costruite per essere lette. Gli editori scientifici danno
+          record in entrambi i casi; i portali di statistica, le camere di commercio e i
+          quotidiani non ne danno nessuno, e non perché si difendano.
+        </p>
+        <div class="figures">
+          <span><b>10/20</b> record completi</span>
+          <span><b>1</b> difesa anti-bot</span>
+          <span><b>5</b> pagine senza nulla da dichiarare</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3 agosto 2026</p>
+        <h3><a href="measurements/citation-triage/">Un agente può citare otto fonti su dodici — la parte utile è sapere quali quattro non può</a></h3>
+        <p>
+          Una lista di lettura mista attraverso l'endpoint di citazione: record completi con
+          RIS per due terzi, e il resto nominato con precisione sufficiente per recuperarlo
+          a mano invece di inventarlo.
+        </p>
+        <div class="figures">
+          <span><b>8/12</b> fatte dall'agente</span>
+          <span><b>1,09 s</b> per fonte</span>
+          <span><b>4</b> nominate, non indovinate</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2 agosto 2026</p>
+        <h3><a href="measurements/citation-extraction/">Misurato contro Citoid su campioni casuali: stessa copertura, nulla di inventato</a></h3>
+        <p>
+          Il servizio Wikimedia costruito sui traduttori di Zotero è il riferimento. Su 18 opere
+          estratte a caso: copertura uguale, e nemmeno un rifiuto riportato come successo.
+        </p>
+        <div class="figures">
+          <span><b>13/13</b> campi completi</span>
+          <span><b>0</b> falsi rapporti di blocco</span>
+          <span><b>0,35 s</b> di mediana</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 agosto 2026</p>
+        <h3><a href="measurements/print-to-pdf-vs-screenshot/">Stampare in PDF o catturare lo schermo? La stessa pagina misurata in entrambi i modi</a></h3>
+        <p>
+          Firefox salva già le pagine in PDF gratis. Quando vale quindi una cattura? Lo stesso
+          articolo per entrambe le vie — e la risposta è più stretta, e più utile, di quanto
+          entrambe le parti ammettano di solito.
+        </p>
+        <div class="figures">
+          <span><b>1 : 26</b> pagine</span>
+          <span><b>9</b> interruzioni tagliano una frase</span>
+          <span>la cattura è in testa sul testo: <b>91,5 %</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 agosto 2026</p>
+        <h3><a href="measurements/webpage-to-pdf-for-ocr/">Pagina web in PDF per OCR: quanto testo sopravvive davvero?</a></h3>
+        <p>
+          Un PDF di cattura a pagina intera passato in Tesseract e confrontato con l'articolo
+          sorgente. Include la soglia di risoluzione in cui il riconoscimento crolla.
+        </p>
+        <div class="figures">
+          <span><b>92,6 %</b> del vocabolario recuperato</span>
+          <span><b>8/8</b> valori critici</span>
+          <span><b>72 dpi</b> punto di collasso</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 agosto 2026</p>
+        <h3><a href="measurements/pdf-extension-permissions/">La tua estensione PDF carica la pagina?</a></h3>
+        <p>
+          Cosa dichiarano le attuali estensioni PDF nei loro manifest, come verificarlo in
+          30 secondi — e la conseguenza che nessuno menziona: i convertitori lato server non
+          raggiungono le pagine dietro un login.
+        </p>
+        <div class="figures">
+          <span><b>8</b> estensioni esaminate</span>
+          <span>dati grezzi pubblicati</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 agosto 2026</p>
+        <h3><a href="measurements/extension-permissions-risk/">Un'estensione è pericolosa solo quanto i suoi permessi consentono</a></h3>
+        <p>
+          Un anno dopo l'avvertimento di Mozilla sugli account sviluppatore rubati: perché la
+          domanda utile non è di chi ti fidi, ma cosa potrebbe raggiungere un'estensione
+          compromessa.
+        </p>
+        <div class="figures">
+          <span>tabella dei permessi nel caso peggiore</span>
+          <span>checklist di valutazione</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Come si misura qui</h2>
+    <div class="principles">
+      <div class="pr">
+        <h3>Una prova di controllo, sempre</h3>
+        <p>
+          Prima che un risultato conti, il metodo deve fallire dove deve. Un confronto che non
+          distingue il caso di riferimento non misura nulla.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Dati grezzi pubblicati</h3>
+        <p>
+          Le cifre arrivano con il file da cui sono state calcolate, con data e ora. Questo le rende
+          verificabili — e significa che nessuno deve accettare un'affermazione sulla fiducia.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Le perdite nominate per prime</h3>
+        <p>
+          Dove il nostro stesso strumento è peggiore — dimensione del file, tempo di elaborazione,
+          funzioni mancanti —, è detto prima dei vantaggi. Un confronto che limita ad adulare
+          non vale nulla.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Datate, non senza tempo</h3>
+        <p>
+          Ogni cifra porta la data in cui è stata rilevata. Il software cambia; una misurazione senza
+          data diventa silenziosamente un'affermazione falsa.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Strumenti</h2>
+    <p class="sub">
+      Software costruito qui, documentato come tutto il resto del sito — compreso ciò che non
+      sa fare. Compare in alcune delle misurazioni qui sopra; è dichiarato in ciascuna.
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
+        <p>
+          Estensione di Firefox che salva un'intera pagina web come un PDF continuo. Gira sul
+          dispositivo, chiede <code>activeTab</code> invece dell'accesso a tutti i siti,
+          funziona su Firefox per Android. Licenza MIT. Opzionalmente scrive nel PDF la
+          citazione che la pagina dichiara — autori, DOI, licenza, momento della consultazione
+          —, con un record RIS accanto.
+        </p>
+      </div>
+      <div class="item">
+        <h3><a href="notes/mcp-server-what-it-solves/">Endpoint di citazione su <code>/mcp</code></a></h3>
+        <p>
+          Dagli un URL, ricevi ciò che quella pagina dichiara di sé come record strutturato con
+          RIS e BibTeX — o un rifiuto nominato quando la pagina si rivela un paywall, un
+          errore o un controllo anti-bot invece di un'opera. Nessun account e nessuna chiave.
+          Parla MCP per i client IA e semplice HTTP per tutto il resto.
+        </p>
+        <div class="figures">
+          <span><b>7 su 10</b> fonti accademiche complete</span>
+          <span><b>0,45 s</b> di mediana</span>
+          <span><b>3 ago 2026</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <h3><a href="recipes/">Ricette: una lista di lettura trasformata in bibliografia</a></h3>
+        <p>
+          Istruzioni complete ed eseguibili per portare l'endpoint di citazione negli strumenti
+          in cui si lavora davvero: un ciclo di shell che trasforma
+          <code>reading-list.txt</code> in un <code>.ris</code> importabile per Zotero o Citavi,
+          una riga per connettere Claude Code, la voce di server remoto per Claude Desktop e
+          altri client MCP, e il minimo in Python. Ognuna è stata eseguita prima di essere
+          scritta.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Ricontrolla qualsiasi cifra</h2>
+    <p class="sub">
+      Tutto qui ha metodo, dati grezzi e una prova di controllo — per poter essere verificato,
+      non per dover essere creduto.
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="mitmachen/">Il contributo più utile è una contro-misurazione che dà un risultato diverso</a></h3>
+        <p>
+          Quattro punti in cui le cifre pubblicate hanno più probabilità di vacillare sono
+          nominati esplicitamente — a cominciare dalle dieci fonti su venti i cui quattro
+          rifiuti sono blocchi contro un indirizzo di data center. Da una rete domestica il
+          tasso dovrebbe essere più alto, e questo non è misurato.
+        </p>
+        <div class="figures">
+          <span><b>4</b> punti deboli nominati</span>
+          <span><b>9</b> set di dati, CC BY 4.0</span>
+          <span>compiti aperti su <b>GitHub</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <h3><a href="AGENTS.md">Per agenti IA: regole, costruzione, limiti</a></h3>
+        <p>
+          Il progetto è impostato perché un agente possa lavorarci senza prima chiedere a
+          nessuno. I compiti aperti sono serviti in formato leggibile dalle macchine dallo
+          strumento <code>open_work</code> su <a href="for-agents/">/mcp</a> — con etichette,
+          un estratto e le cinque regole che qui sono diverse dal solito.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="disclosure">
+      <h3>Trasparenza</h3>
+      <p>
+        Questo sito è gestito dallo sviluppatore di <a href="tools/full-page-pdf-snap/">Full Page
+        PDF Snap</a>, che compare in diverse misurazioni qui sopra. Questo è indicato in ogni
+        articolo in cui è rilevante, e lo strumento si trova apertamente sotto
+        <code>/tools/</code> invece che nascosto dietro una cornice neutra.
+      </p>
+      <p>
+        Le cifre su prodotti altrui provengono esclusivamente da dati pubblicamente dichiarati —
+        manifest e descrizioni degli store — con la data di consultazione indicata. Nessun
+        prodotto è stato decompilato, e nulla si afferma sulle intenzioni di alcun fornitore.
+        Le correzioni sono benvenute tramite le
+        <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue su GitHub</a> e
+        vengono applicate.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Proving Lab · <a href="about/">Informazioni</a> · <a href="privacy.html">Privacy</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap">Sorgente</a> · <a href="disclaimer/">Esclusione di responsabilità</a></p>
+    <p>Contenuto concesso in licenza per il riutilizzo con attribuzione. Software con licenza MIT.</p>
+  </div>
+</footer>
+</div>
+
+<div data-lang="ja" lang="ja">
+<header>
+  <div class="wrap">
+    <p class="mark">Proving Lab</p>
+    <h1>あとで必要になるウェブページを、残しておこう。</h1>
+    <p class="tagline">
+      ページ全体を、出所と日付を記した1つの PDF として保存し、リンクのリストを参考文献
+      リストに変えます。<strong>実際の参考文献の19.3%の出典はすでに消えています</strong>。
+      さらに8.7%には、どこにもアーカイブされたコピーがありません。
+      <a href="/how-to/save-a-webpage-as-pdf/">ここから始める</a> ·
+      <a href="/for-agents/">AI エージェント向け</a>
+    </p>
+    <p class="tagline" style="margin-top:14px;font-size:.98rem">
+      意見ではなく測定を: ここにあるすべてには<strong>方法、生データ、コントロールラン</strong>が
+      あります。再計算できない数字は書きません。うまくいかなかったことは、まず書きます。
+    </p>
+  </div>
+</header>
+
+<section class="direkt">
+  <div class="wrap">
+    <div class="dkarte">
+      <div class="dtext">
+        <p class="dmark">ここで作ったツール</p>
+        <h2>Full Page PDF Snap</h2>
+        <p>ウェブページ全体を1つの連続した PDF として保存します — スクロールするページ全体を1枚のシートに。端で切れることも、表や文の途中で改ページされることもありません。すべてはブラウザの中で完結します: アップロードなし、アカウントなし、データ収集なし。MIT ライセンス、無料、Firefox と Chrome に対応。</p>
+        <p class="dzahlen">
+        <span><b>1枚のシート</b>、26ページではなく</span>
+        <span><b>ログインの後ろでも動作</b></span>
+        <span><b>デバイスから出ない</b></span>
+      </p>
+      <p class="dbeleg">ここにある主張はすべて測定され、日付が付いています:
+        <a href="measurements/print-to-pdf-vs-screenshot/">1枚対26ページ</a>、
+        <a href="measurements/webpage-to-pdf-for-ocr/">テキストの92.6&nbsp;%をOCRで読取可能</a>、
+        <a href="measurements/pdf-extension-permissions/">ネットワークリクエストゼロ</a>。</p>
+      </div>
+      <div class="dknopf">
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Firefox 版をダウンロード</a>
+        <p class="dklein">バージョン 2.33.4 — Mozilla による署名済み。デスクトップでも Android でもワンステップでインストール。</p>
+        <p class="dklein">
+          <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">ストアを使わない方法</a> ·
+          <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome と Edge</a> ·
+          <a href="tools/full-page-pdf-snap/">機能の詳細</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>ノート</h2>
+    <p class="sub">実際の作業からのビルドレポート — うまくいかなかった部分も含めて。</p>
+    <div class="items">
+      <div class="item">
+        <p class="date">2026年8月15日</p>
+        <h3><a href="how-to/firefox-and-chrome/">研究者・学生の方へ: Firefox と Chrome での拡張機能</a></h3>
+        <p>
+          学生向け記事の実践編: すべてのインストール経路 — デスクトップと Android の
+          Firefox、Chrome ウェブストア、そしてストアを使わない2つの経路 —、次に
+          キャプチャ→引用→アーカイブのワークフローと、論文で重要な4つの設定。
+          9か国語で提供。
+        </p>
+        <div class="figures">
+          <span><b>2</b> ブラウザ、4つのインストール経路</span>
+          <span><b>18</b> の XMP フィールドを PDF に</span>
+          <span>RIS レコードの経路は <b>2</b> つ</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月10日</p>
+        <h3><a href="how-to/for-students/">学生の方へ: 自分で出典を名乗り、生き残り、機械が読めるソース</a></h3>
+        <p>
+          レポートでウェブ資料がうまくいかないのは3つの点です: 消える、引用を手入力する
+          必要がある、保存したファイルが検索できない画像である。キャプチャがそれぞれに
+          何をするか — 20件中6件をあなたに返す部分も含めて。9か国語で提供。
+        </p>
+        <div class="figures">
+          <span>カバレッジ <b>61%</b>、Citoid と同等</span>
+          <span>正確性 <b>100%</b>、相手の79%に対して</span>
+          <span><b>20件中6件</b> は返却</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月3日</p>
+        <h3><a href="notes/what-an-agent-can-do-with-an-extension/">AI エージェントがブラウザ拡張機能にできること、できないこと</a></h3>
+        <p>
+          他人のブラウザへのインストールは、設計上ユーザー操作です — どのストアもそのための
+          API を公開していません。エージェントが代わりにできること、何も読み込まず何も
+          言わないコマンドラインフラグ、そして両者の仕事の分かれ目。
+        </p>
+        <div class="figures">
+          <span>エージェントにできること <b>3</b> つ</span>
+          <span>静かに失敗するフラグ <b>1</b> つ</span>
+          <span>他人のためにインストールする方法は <b>0</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月3日</p>
+        <h3><a href="notes/sources-a-machine-cannot-cite/">機械があなたのために引用できないソース — それでも引用する方法</a></h3>
+        <p>
+          引用ツールがソースを返却するとき、原因は3つのうちの1つです: ボット防御、ネットワーク
+          への拒否、あるいは自分について何も宣言しないページ。それぞれ必要な作業が異なり、
+          ブラウザでページを開くことで解決するのは1つだけです。
+        </p>
+        <div class="figures">
+          <span>原因は <b>3</b> つ</span>
+          <span>ブラウザで解決するのは <b>1</b> つ</span>
+          <span>見分けるのに必要なリクエストは <b>2</b> つ</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月2日</p>
+        <h3><a href="notes/mcp-server-what-it-solves/">このサイトは MCP サーバーを運営しています。測定結果: 競合するファイルより小さい</a></h3>
+        <p>
+          <code>/mcp</code> のエンドポイントが、データセット、メソッド、引用リーダーを
+          JSON-RPC で AI クライアントに渡します — キーなし、アカウントなし。実際に何の
+          役に立つのか、そして同じドメインの素のテキストファイルですでに用が足りるのは
+          どこか。
+        </p>
+        <div class="figures">
+          <span>ツール <b>4</b> つ</span>
+          <span>合計 <b>1,300</b> トークン</span>
+          <span>llms.txt では <b>1,988</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月1日</p>
+        <h3><a href="notes/building-with-ai-what-went-wrong/">AI アシスタントと1日でソフトウェアを作って、6つうまくいかなかったこと</a></h3>
+        <p>
+          ブラウザエンジンについての間違った思い込み、公開前に見つかった虚偽の主張、公開
+          リポジトリまであと1コミットだった22のローカルパス — あと3つ。実際に何が見つけたかで
+          並べています — 2つは幸運で、1つは何によっても見つかりませんでした。
+        </p>
+        <div class="figures">
+          <span><b>6件中3件</b> は外部ソースの確認で発見</span>
+          <span><b>1</b> つは本番でいまだ未テスト</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>測定</h2>
+    <p class="sub">それぞれに、再現するためのコマンドと、その背後にある生データがあります。</p>
+
+    <div class="items">
+      <div class="item">
+        <p class="date">2026年8月3日</p>
+        <h3><a href="measurements/install-an-extension-without-a-click/">クリックなしでブラウザ拡張機能をインストールし、再び削除する</a></h3>
+        <p>
+          4つの経路、双方向。1つは署名済みストアビルドをウィンドウなし・管理者権限なしで
+          4.1秒でインストールとアンインストールを行い — 2つのコマンド自体は0.24秒です。
+          コストはブラウザの起動であって、作業ではありません。クリック経路は179秒かかり、
+          すべてのステップで成功と報告し、何もインストールしませんでした: 空所へのクリックも
+          有効なクリックなのです。速い経路はストアのユーザー統計にカウントされません —
+          それは欠陥ではなく、要点です。
+        </p>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月3日</p>
+        <h3><a href="measurements/reading-list-to-bibliography/">20のリンク、10の引用: 機械が終わらせるものと、返すもの</a></h3>
+        <p>
+          読書リストを参考文献に、最初から最後まで。分かれ目は有料か無料かではなく —
+          引用されるために作られたページと、読まれるために作られたページの間にあります。
+          学術出版社はどちらにしてもレコードを返します。統計ポータル、商工会議所、新聞は
+          返しません — 防御しているからではありません。
+        </p>
+        <div class="figures">
+          <span>完全なレコード <b>10/20</b></span>
+          <span>ボット防御 <b>1</b></span>
+          <span>宣言するものがないページ <b>5</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月3日</p>
+        <h3><a href="measurements/citation-triage/">エージェントは12件中8件を引用できる — 有用なのは、できない4件が分かること</a></h3>
+        <p>
+          混合の読書リストを引用エンドポイントに通しました: 3分の2は RIS 付きの完全な
+          レコード、残りは手で取得できるだけ正確に — 捏造するのではなく — 名前を挙げて
+          返されます。
+        </p>
+        <div class="figures">
+          <span>エージェントが処理 <b>8/12</b></span>
+          <span>1ソースあたり <b>1.09秒</b></span>
+          <span>推測でなく指名 <b>4</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月2日</p>
+        <h3><a href="measurements/citation-extraction/">ランダムサンプルで Citoid と比較測定: 同じカバレッジ、捏造なし</a></h3>
+        <p>
+          Zotero トランスレーター上に構築された Wikimedia のサービスが物差しです。ランダムに
+          抽出した18の著作で: カバレッジは同等、拒否を成功と報告したことは一度もありません。
+        </p>
+        <div class="figures">
+          <span>フィールド完全 <b>13/13</b></span>
+          <span>誤ったブロック報告 <b>0</b></span>
+          <span>中央値 <b>0.35秒</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月1日</p>
+        <h3><a href="measurements/print-to-pdf-vs-screenshot/">PDF に印刷するか、画面をキャプチャするか? 同じページを両方の方法で測定</a></h3>
+        <p>
+          Firefox はすでに無料でページを PDF 保存できます。では、キャプチャが報われるのは
+          どんなときか? 同じ記事を両方の経路で — 答えは、どちらの側も普段認めるより、
+          狭く、そして有用です。
+        </p>
+        <div class="figures">
+          <span>ページ数 <b>1 : 26</b></span>
+          <span>文を断ち切る改ページ <b>9</b></span>
+          <span>テキストではキャプチャが優位: <b>91.5%</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月1日</p>
+        <h3><a href="measurements/webpage-to-pdf-for-ocr/">OCR のためのウェブページ PDF 化: 実際にどれだけのテキストが残るか?</a></h3>
+        <p>
+          全ページスクリーンショット PDF を Tesseract にかけ、出典記事と比較しました。
+          認識が崩壊する解像度の閾値も含まれています。
+        </p>
+        <div class="figures">
+          <span>語彙の <b>92.6%</b> を回復</span>
+          <span>重要な値 <b>8/8</b></span>
+          <span>崩壊点 <b>72 dpi</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月1日</p>
+        <h3><a href="measurements/pdf-extension-permissions/">あなたの PDF 拡張機能はページをアップロードしていますか?</a></h3>
+        <p>
+          現在の PDF 拡張機能がマニフェストで宣言していること、30秒で検証する方法 — そして
+          誰も言わない帰結: サーバーサイドのコンバーターはログインの後ろのページに届きません。
+        </p>
+        <div class="figures">
+          <span>調査した拡張機能 <b>8</b> 件</span>
+          <span>生データ公開済み</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月1日</p>
+        <h3><a href="measurements/extension-permissions-risk/">拡張機能は、その権限が許す範囲でしか危険にならない</a></h3>
+        <p>
+          Mozilla が開発者アカウントのフィッシングを警告してから1年: 有用な問いは「誰を
+          信頼するか」ではなく、「侵害された拡張機能が何に届きうるか」です。
+        </p>
+        <div class="figures">
+          <span>最悪ケースの権限表</span>
+          <span>評価チェックリスト</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>ここでの測定のしかた</h2>
+    <div class="principles">
+      <div class="pr">
+        <h3>コントロールランを、必ず</h3>
+        <p>
+          結果がカウントされる前に、方法は失敗すべきところで失敗しなければなりません。参照
+          ケースを区別できない比較は、何も測っていません。
+        </p>
+      </div>
+      <div class="pr">
+        <h3>生データを公開</h3>
+        <p>
+          数字は、計算元のファイルとタイムスタンプ付きで提供されます。それが検証可能性を
+          意味し — 誰も主張を信用で受け入れる必要がないことを意味します。
+        </p>
+      </div>
+      <div class="pr">
+        <h3>劣る点を先に挙げる</h3>
+        <p>
+          自分たちのツールが劣っているところ — ファイルサイズ、処理時間、欠けている機能 — は、
+          利点より先に述べます。お世辞だけの比較は無価値です。
+        </p>
+      </div>
+      <div class="pr">
+        <h3>時代を超えない、日付付きで</h3>
+        <p>
+          すべての数字は取得日を伴います。ソフトウェアは変わります。日付のない測定は、静かに
+          虚偽の主張へと変わります。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>ツール</h2>
+    <p class="sub">
+      ここで作られたソフトウェア。このサイトの他のすべてと同じように — できないことも
+      含めて — 文書化しています。上の測定のいくつかに登場しますが、それは各測定で開示しています。
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
+        <p>
+          ウェブページ全体を1つの連続した PDF として保存する Firefox 拡張機能。デバイス上で
+          動作し、全サイトへのアクセスではなく <code>activeTab</code> を要求し、Android 版
+          Firefox で動きます。MIT ライセンス。オプションで、ページが宣言する引用情報 —
+          著者、DOI、ライセンス、取得時刻 — を RIS レコードとともに PDF に書き込みます。
+        </p>
+      </div>
+      <div class="item">
+        <h3><a href="notes/mcp-server-what-it-solves/"><code>/mcp</code> の引用エンドポイント</a></h3>
+        <p>
+          URL を渡すと、そのページが自分について宣言していることを RIS と BibTeX 付きの
+          構造化レコードとして返します — あるいは、ページが著作物ではなくペイウォール、
+          エラー、ボットチェックだった場合は、名前付きの拒否を返します。アカウントもキーも
+          不要。AI クライアントには MCP を、それ以外には素の HTTP を話します。
+        </p>
+        <div class="figures">
+          <span>学術ソースの <b>10件中7件</b> が完全</span>
+          <span>中央値 <b>0.45秒</b></span>
+          <span><b>2026年8月3日</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <h3><a href="recipes/">レシピ: 読書リストを参考文献リストに</a></h3>
+        <p>
+          引用エンドポイントを、人々が実際に使っているツールに組み込むための、完全で実行
+          可能な手順: <code>reading-list.txt</code> を Zotero や Citavi にインポートできる
+          1つの <code>.ris</code> に変えるシェルループ、Claude Code をつなぐ1行、Claude
+          Desktop や他の MCP クライアント向けのリモートサーバー設定、そして Python の
+          最小構成。すべて、書き留める前に実行済みです。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>どの数字でも、自分で確かめてください</h2>
+    <p class="sub">
+      ここにあるすべてには方法、生データ、コントロールランがあります — 信じるためではなく、
+      確かめるためです。
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="mitmachen/">いちばん有用な貢献は、違う結果の出る追測定です</a></h3>
+        <p>
+          公開されている数字がいちばん揺らぎそうな4か所を明示しています — まず、20件中
+          10件のソースで、4件の拒否がデータセンターのアドレスへのブロックだった点から。
+          家庭のネットワークからなら率はもっと高いはずで、それは未測定です。
+        </p>
+        <div class="figures">
+          <span>挙げた弱点 <b>4</b> か所</span>
+          <span>データセット <b>9</b> 件、CC BY 4.0</span>
+          <span>未解決のタスクは <b>GitHub</b> に</span>
+        </div>
+      </div>
+      <div class="item">
+        <h3><a href="AGENTS.md">AI エージェントへ: ルール、作り、限界</a></h3>
+        <p>
+          このプロジェクトは、エージェントが誰かに尋ねることなく作業できるように構成されて
+          います。未解決のタスクは <code>open_work</code> ツールが
+          <a href="for-agents/">/mcp</a> で機械可読に提供します — ラベル、抜粋、そしてここが
+          普通と違う5つのルールとともに。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="disclosure">
+      <h3>開示</h3>
+      <p>
+        このサイトは <a href="tools/full-page-pdf-snap/">Full Page
+        PDF Snap</a> の開発者が運営しており、このツールは上のいくつかの測定に登場します。
+        そのことは関連する各記事に記されており、ツールは中立的な体裁の後ろに隠すのではなく、
+        <code>/tools/</code> の下に公開されています。
+      </p>
+      <p>
+        他社製品についての数字は、公開された宣言データ — マニフェストとストアの説明文 — のみに
+        由来し、取得日が記されています。どの製品も逆コンパイルしておらず、どの提供者の意図
+        についても主張していません。修正は
+        <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a>
+        で歓迎し、取り入れられます。
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Proving Lab · <a href="about/">概要</a> · <a href="privacy.html">プライバシー</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap">ソース</a> · <a href="disclaimer/">免責事項</a></p>
+    <p>コンテンツは帰属表示付きの再利用ライセンス。ソフトウェアは MIT ライセンス。</p>
+  </div>
+</footer>
+</div>
+
+<div data-lang="pt-BR" lang="pt-BR">
+<header>
+  <div class="wrap">
+    <p class="mark">Proving Lab</p>
+    <h1>Guarde a página da web de que você vai precisar depois.</h1>
+    <p class="tagline">
+      Salve uma página inteira como um único PDF que carrega sua origem e sua data — e
+      transforme uma lista de links numa bibliografia. <strong>19,3 % das fontes em
+      bibliografias reais já desapareceram</strong>, e 8,7 % não têm cópia arquivada em
+      lugar nenhum.
+      <a href="/how-to/save-a-webpage-as-pdf/">Comece aqui</a> ·
+      <a href="/for-agents/">para agentes de IA</a>
+    </p>
+    <p class="tagline" style="margin-top:14px;font-size:.98rem">
+      Medições, não opiniões: tudo aqui tem <strong>método, dados brutos e uma execução de
+      controle</strong>. O que não pode ser recalculado não é escrito. O que deu errado é
+      escrito primeiro.
+    </p>
+  </div>
+</header>
+
+<section class="direkt">
+  <div class="wrap">
+    <div class="dkarte">
+      <div class="dtext">
+        <p class="dmark">A ferramenta construída aqui</p>
+        <h2>Full Page PDF Snap</h2>
+        <p>Salva uma página da web inteira como um PDF contínuo — toda a página rolável numa única folha. Nada cortado nas bordas e nenhuma quebra de página atravessando uma tabela ou uma frase. Tudo acontece no seu navegador: sem upload, sem conta, sem coleta de dados. Licença MIT, gratuito, Firefox e Chrome.</p>
+        <p class="dzahlen">
+        <span><b>Uma folha</b>, não 26 páginas</span>
+        <span><b>Funciona atrás de um login</b></span>
+        <span><b>Fica no seu dispositivo</b></span>
+      </p>
+      <p class="dbeleg">Cada afirmação aqui é medida e datada:
+        <a href="measurements/print-to-pdf-vs-screenshot/">uma folha contra 26</a>,
+        <a href="measurements/webpage-to-pdf-for-ocr/">92,6&nbsp;% do texto legível por OCR</a>,
+        <a href="measurements/pdf-extension-permissions/">zero requisições de rede</a>.</p>
+      </div>
+      <div class="dknopf">
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Baixar para Firefox</a>
+        <p class="dklein">Versão 2.33.4 — assinada pela Mozilla. Instala em um passo, desktop e Android.</p>
+        <p class="dklein">
+          <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Sem nenhuma loja</a> ·
+          <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome e Edge</a> ·
+          <a href="tools/full-page-pdf-snap/">O que ela faz</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Notas</h2>
+    <p class="sub">Relatos de trabalho real — incluindo as partes que deram errado.</p>
+    <div class="items">
+      <div class="item">
+        <p class="date">15 de agosto de 2026</p>
+        <h3><a href="how-to/firefox-and-chrome/">Para pesquisadores e estudantes: a extensão no Firefox e no Chrome</a></h3>
+        <p>
+          O complemento prático do artigo para estudantes: todas as vias de instalação —
+          Firefox no desktop e no Android, a Chrome Web Store e os dois caminhos sem loja —,
+          depois o fluxo capturar–citar–arquivar e as quatro configurações que importam para
+          os trabalhos. Em nove idiomas.
+        </p>
+        <div class="figures">
+          <span><b>2</b> navegadores, 4 vias de instalação</span>
+          <span><b>18</b> campos XMP no PDF</span>
+          <span><b>2</b> caminhos para o registro RIS</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">10 de agosto de 2026</p>
+        <h3><a href="how-to/for-students/">Para estudantes: uma fonte que se cita sozinha, sobrevive e pode ser lida por máquina</a></h3>
+        <p>
+          Três coisas dão errado com uma fonte da web num trabalho acadêmico: ela desaparece,
+          sua citação precisa ser digitada à mão, e o arquivo guardado é uma imagem que
+          nenhuma ferramenta pesquisa. O que uma captura faz contra cada uma — incluindo as
+          seis fontes em vinte que ela devolve para você. Em nove idiomas.
+        </p>
+        <div class="figures">
+          <span><b>61 %</b> de cobertura, igual ao Citoid</span>
+          <span><b>100 %</b> correto contra os 79 % dele</span>
+          <span><b>6 de 20</b> devolvidas</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3 de agosto de 2026</p>
+        <h3><a href="notes/what-an-agent-can-do-with-an-extension/">O que um agente de IA pode e não pode fazer com uma extensão de navegador</a></h3>
+        <p>
+          Instalar uma no navegador de alguém é um gesto do usuário por projeto — nenhuma loja
+          expõe uma API para isso. O que um agente pode fazer em vez disso, a flag de linha de
+          comando que não carrega nada e não diz nada, e onde o trabalho se divide entre os dois.
+        </p>
+        <div class="figures">
+          <span><b>3</b> coisas que um agente pode fazer</span>
+          <span><b>1</b> flag que falha em silêncio</span>
+          <span><b>0</b> formas de instalar para outra pessoa</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3 de agosto de 2026</p>
+        <h3><a href="notes/sources-a-machine-cannot-cite/">As fontes que uma máquina não pode citar por você — e como citá-las mesmo assim</a></h3>
+        <p>
+          Quando uma ferramenta de citação devolve uma fonte, a causa é uma de três: uma defesa
+          contra bots, uma recusa dirigida à rede ou uma página que não declara nada sobre si.
+          Cada uma exige um trabalho diferente, e só uma se resolve abrindo a página num
+          navegador.
+        </p>
+        <div class="figures">
+          <span><b>3</b> causas</span>
+          <span><b>1</b> resolvida por um navegador</span>
+          <span><b>2</b> requisições para distingui-las</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2 de agosto de 2026</p>
+        <h3><a href="notes/mcp-server-what-it-solves/">Este site roda um servidor MCP. Medido: é menor que o arquivo com que compete</a></h3>
+        <p>
+          Um endpoint em <code>/mcp</code> entrega os conjuntos de dados, os métodos e um leitor
+          de citações a clientes de IA via JSON-RPC — sem chave, sem conta. Para que isso
+          realmente serve, e onde um simples arquivo de texto no mesmo domínio já faz o
+          trabalho.
+        </p>
+        <div class="figures">
+          <span><b>4</b> ferramentas</span>
+          <span><b>1.300</b> tokens no total</span>
+          <span><b>1.988</b> no llms.txt</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 de agosto de 2026</p>
+        <h3><a href="notes/building-with-ai-what-went-wrong/">Seis coisas deram errado construindo software com um assistente de IA em um dia</a></h3>
+        <p>
+          Uma suposição errada sobre motores de navegador, uma afirmação falsa detectada antes
+          da publicação, 22 caminhos locais a um commit de um repositório público — e mais três.
+          Ordenadas pelo que realmente as detectou: duas foram encontradas por sorte, uma por
+          nada.
+        </p>
+        <div class="figures">
+          <span><b>3 de 6</b> detectadas verificando uma fonte externa</span>
+          <span><b>1</b> ainda não testada em produção</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Medições</h2>
+    <p class="sub">Cada uma com os comandos para repeti-la e os dados brutos por trás.</p>
+
+    <div class="items">
+      <div class="item">
+        <p class="date">3 de agosto de 2026</p>
+        <h3><a href="measurements/install-an-extension-without-a-click/">Instalar uma extensão de navegador sem um clique, e removê-la de novo</a></h3>
+        <p>
+          Quatro vias, nas duas direções. Uma instala e desinstala uma versão assinada da loja em
+          4,1 segundos sem janela e sem direitos de administrador — e os dois comandos em si
+          levam 0,24 s; o custo é iniciar o navegador, não o trabalho. A via do clique levou
+          179 segundos, relatou sucesso em cada passo e não instalou nada: um clique no vazio é
+          um clique válido. A via rápida não conta nas estatísticas de usuários da loja — e essa
+          é a questão, não o defeito.
+        </p>
+      </div>
+      <div class="item">
+        <p class="date">3 de agosto de 2026</p>
+        <h3><a href="measurements/reading-list-to-bibliography/">Vinte links, dez citações: o que uma máquina termina e o que devolve</a></h3>
+        <p>
+          Uma lista de leitura transformada em bibliografia, de ponta a ponta. A divisão não
+          passa entre pago e grátis — passa entre páginas feitas para serem citadas e páginas
+          feitas para serem lidas. Editoras científicas entregam registros nos dois casos;
+          portais de estatística, câmaras de comércio e jornais não entregam nenhum, e não porque
+          se defendam.
+        </p>
+        <div class="figures">
+          <span><b>10/20</b> registros completos</span>
+          <span><b>1</b> defesa contra bots</span>
+          <span><b>5</b> páginas sem nada a declarar</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3 de agosto de 2026</p>
+        <h3><a href="measurements/citation-triage/">Um agente consegue citar oito de doze fontes — a parte útil é saber quais quatro não consegue</a></h3>
+        <p>
+          Uma lista de leitura mista pelo endpoint de citação: registros completos com RIS para
+          dois terços, e o resto nomeado com precisão suficiente para buscar à mão em vez de
+          inventar.
+        </p>
+        <div class="figures">
+          <span><b>8/12</b> feitas pelo agente</span>
+          <span><b>1,09 s</b> por fonte</span>
+          <span><b>4</b> nomeadas, não adivinhadas</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2 de agosto de 2026</p>
+        <h3><a href="measurements/citation-extraction/">Medido contra o Citoid em amostras aleatórias: mesma cobertura, nada inventado</a></h3>
+        <p>
+          O serviço da Wikimedia construído sobre os tradutores do Zotero é o parâmetro. Em 18
+          obras sorteadas ao acaso: cobertura igual, e nenhuma recusa relatada como sucesso.
+        </p>
+        <div class="figures">
+          <span><b>13/13</b> campos completos</span>
+          <span><b>0</b> falsos relatórios de bloqueio</span>
+          <span><b>0,35 s</b> de mediana</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 de agosto de 2026</p>
+        <h3><a href="measurements/print-to-pdf-vs-screenshot/">Imprimir em PDF ou capturar a tela? A mesma página medida dos dois jeitos</a></h3>
+        <p>
+          O Firefox já salva páginas em PDF de graça. Quando vale uma captura? O mesmo artigo
+          pelas duas vias — e a resposta é mais estreita, e mais útil, do que qualquer um dos
+          lados costuma admitir.
+        </p>
+        <div class="figures">
+          <span><b>1 : 26</b> páginas</span>
+          <span><b>9</b> quebras cortam uma frase</span>
+          <span>captura vence no texto: <b>91,5 %</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 de agosto de 2026</p>
+        <h3><a href="measurements/webpage-to-pdf-for-ocr/">Página da web em PDF para OCR: quanto texto realmente sobrevive?</a></h3>
+        <p>
+          Um PDF de captura de página inteira passado pelo Tesseract e comparado com o artigo de
+          origem. Inclui o limiar de resolução em que o reconhecimento colapsa.
+        </p>
+        <div class="figures">
+          <span><b>92,6 %</b> do vocabulário recuperado</span>
+          <span><b>8/8</b> valores críticos</span>
+          <span><b>72 dpi</b> ponto de colapso</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 de agosto de 2026</p>
+        <h3><a href="measurements/pdf-extension-permissions/">Sua extensão de PDF envia a página?</a></h3>
+        <p>
+          O que as extensões de PDF atuais declaram em seus manifestos, como verificar em
+          30 segundos — e a consequência que ninguém menciona: conversores no lado do servidor
+          não alcançam páginas atrás de um login.
+        </p>
+        <div class="figures">
+          <span><b>8</b> extensões examinadas</span>
+          <span>dados brutos publicados</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 de agosto de 2026</p>
+        <h3><a href="measurements/extension-permissions-risk/">Uma extensão só é tão perigosa quanto suas permissões permitem</a></h3>
+        <p>
+          Um ano depois do alerta da Mozilla sobre contas de desenvolvedor roubadas: por que a
+          pergunta útil não é em quem você confia, mas o que uma extensão comprometida poderia
+          alcançar.
+        </p>
+        <div class="figures">
+          <span>tabela de permissões no pior caso</span>
+          <span>checklist de avaliação</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Como se mede aqui</h2>
+    <div class="principles">
+      <div class="pr">
+        <h3>Uma execução de controle, sempre</h3>
+        <p>
+          Antes que um resultado conte, o método tem de falhar onde deve. Uma comparação que não
+          distingue o caso de referência não mede nada.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Dados brutos publicados</h3>
+        <p>
+          Os números vêm com o arquivo de onde foram calculados, com carimbo de data. Isso os torna
+          verificáveis — e significa que ninguém precisa aceitar uma afirmação pela confiança.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>As perdas nomeadas primeiro</h3>
+        <p>
+          Onde a nossa própria ferramenta é pior — tamanho de arquivo, tempo de processamento,
+          funções ausentes —, isso é dito antes das vantagens. Uma comparação que só elogia
+          não vale nada.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Datadas, não atemporais</h3>
+        <p>
+          Cada número carrega a data em que foi levantado. Software muda; uma medição sem data se
+          torna em silêncio uma afirmação falsa.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Ferramentas</h2>
+    <p class="sub">
+      Software construído aqui, documentado como tudo o mais neste site — incluindo o que não
+      consegue fazer. Aparece em algumas das medições acima; isso é declarado em cada uma.
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
+        <p>
+          Extensão do Firefox que salva uma página da web inteira como um PDF contínuo. Roda no
+          dispositivo, pede <code>activeTab</code> em vez de acesso a todos os sites, funciona
+          no Firefox para Android. Licença MIT. Opcionalmente grava no PDF a citação que a
+          página declara — autores, DOI, licença, momento da consulta —, com um registro RIS
+          ao lado.
+        </p>
+      </div>
+      <div class="item">
+        <h3><a href="notes/mcp-server-what-it-solves/">Endpoint de citação em <code>/mcp</code></a></h3>
+        <p>
+          Dê uma URL, receba o que essa página declara sobre si como registro estruturado com
+          RIS e BibTeX — ou uma recusa nomeada quando a página se revela um paywall, um erro
+          ou uma verificação de bots em vez de uma obra. Sem conta e sem chave. Fala MCP para
+          clientes de IA e HTTP simples para todo o resto.
+        </p>
+        <div class="figures">
+          <span><b>7 de 10</b> fontes acadêmicas completas</span>
+          <span><b>0,45 s</b> de mediana</span>
+          <span><b>3 ago 2026</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <h3><a href="recipes/">Receitas: uma lista de leitura transformada em bibliografia</a></h3>
+        <p>
+          Instruções completas e executáveis para colocar o endpoint de citação nas ferramentas
+          em que as pessoas realmente trabalham: um laço de shell que transforma
+          <code>reading-list.txt</code> num <code>.ris</code> importável para Zotero ou Citavi,
+          uma linha para conectar o Claude Code, a entrada de servidor remoto para o Claude
+          Desktop e outros clientes MCP, e o mínimo em Python. Cada uma foi executada antes de
+          ser escrita.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Confira qualquer número</h2>
+    <p class="sub">
+      Tudo aqui tem método, dados brutos e uma execução de controle — para poder ser conferido,
+      não para precisar ser acreditado.
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="mitmachen/">A contribuição mais útil é uma contramedição que dá um resultado diferente</a></h3>
+        <p>
+          Quatro pontos onde os números publicados têm mais chance de balançar são nomeados
+          explicitamente — começando pelas dez de vinte fontes cujas quatro recusas são
+          bloqueios contra um endereço de data center. De uma rede doméstica a taxa deveria
+          ser maior, e isso não está medido.
+        </p>
+        <div class="figures">
+          <span><b>4</b> pontos fracos nomeados</span>
+          <span><b>9</b> conjuntos de dados, CC BY 4.0</span>
+          <span>tarefas abertas no <b>GitHub</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <h3><a href="AGENTS.md">Para agentes de IA: regras, construção, limites</a></h3>
+        <p>
+          O projeto é montado para que um agente possa trabalhar nele sem antes perguntar a
+          ninguém. As tarefas abertas são servidas em formato legível por máquina pela ferramenta
+          <code>open_work</code> em <a href="for-agents/">/mcp</a> — com rótulos, um trecho e as
+          cinco regras que aqui são diferentes do habitual.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="disclosure">
+      <h3>Transparência</h3>
+      <p>
+        Este site é operado pelo desenvolvedor do <a href="tools/full-page-pdf-snap/">Full Page
+        PDF Snap</a>, que aparece em várias das medições acima. Isso é indicado em cada artigo em
+        que é relevante, e a ferramenta está abertamente em <code>/tools/</code> em vez de
+        escondida atrás de um enquadramento neutro.
+      </p>
+      <p>
+        Os números sobre produtos de terceiros vêm exclusivamente de dados publicamente declarados —
+        manifestos e descrições de loja — com a data de consulta informada. Nenhum produto foi
+        descompilado, e nada se afirma sobre as intenções de qualquer fornecedor. Correções são
+        bem-vindas via
+        <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues no GitHub</a> e
+        são aplicadas.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Proving Lab · <a href="about/">Sobre</a> · <a href="privacy.html">Privacidade</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap">Código-fonte</a> · <a href="disclaimer/">Aviso legal</a></p>
+    <p>Conteúdo licenciado para reutilização com atribuição. Software sob licença MIT.</p>
+  </div>
+</footer>
+</div>
+
+<div data-lang="ru" lang="ru">
+<header>
+  <div class="wrap">
+    <p class="mark">Proving Lab</p>
+    <h1>Сохраните веб-страницу, которая понадобится вам позже.</h1>
+    <p class="tagline">
+      Сохраните страницу целиком одним PDF, который несёт её источник и дату — и превратите
+      список ссылок в библиографию. <strong>19,3 % источников в реальных библиографиях уже
+      исчезли</strong>, а у 8,7 % нет ни одной архивной копии.
+      <a href="/how-to/save-a-webpage-as-pdf/">Начните здесь</a> ·
+      <a href="/for-agents/">для ИИ-агентов</a>
+    </p>
+    <p class="tagline" style="margin-top:14px;font-size:.98rem">
+      Измерения, а не мнения: у всего здесь есть <strong>метод, сырые данные и контрольный
+      прогон</strong>. Что нельзя пересчитать, то не записывается. Что пошло не так,
+      записывается первым.
+    </p>
+  </div>
+</header>
+
+<section class="direkt">
+  <div class="wrap">
+    <div class="dkarte">
+      <div class="dtext">
+        <p class="dmark">Инструмент, построенный здесь</p>
+        <h2>Full Page PDF Snap</h2>
+        <p>Сохраняет веб-страницу целиком одним непрерывным PDF — вся прокручиваемая страница на одном листе. Ничего не обрезано по краям, и ни один разрыв страницы не проходит через таблицу или предложение. Всё происходит в вашем браузере: без выгрузки, без учётной записи, без сбора данных. Лицензия MIT, бесплатно, Firefox и Chrome.</p>
+        <p class="dzahlen">
+        <span><b>Один лист</b>, а не 26 страниц</span>
+        <span><b>Работает за логином</b></span>
+        <span><b>Остаётся на вашем устройстве</b></span>
+      </p>
+      <p class="dbeleg">Каждое утверждение здесь измерено и датировано:
+        <a href="measurements/print-to-pdf-vs-screenshot/">один лист против 26</a>,
+        <a href="measurements/webpage-to-pdf-for-ocr/">92,6&nbsp;% текста читается OCR</a>,
+        <a href="measurements/pdf-extension-permissions/">ноль сетевых запросов</a>.</p>
+      </div>
+      <div class="dknopf">
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Скачать для Firefox</a>
+        <p class="dklein">Версия 2.33.4 — подписана Mozilla. Устанавливается в один шаг, компьютер и Android.</p>
+        <p class="dklein">
+          <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Совсем без магазина</a> ·
+          <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome и Edge</a> ·
+          <a href="tools/full-page-pdf-snap/">Что она умеет</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Заметки</h2>
+    <p class="sub">Отчёты из реальной работы — включая части, которые пошли не так.</p>
+    <div class="items">
+      <div class="item">
+        <p class="date">15 августа 2026 г.</p>
+        <h3><a href="how-to/firefox-and-chrome/">Исследователям и студентам: расширение в Firefox и Chrome</a></h3>
+        <p>
+          Практическая пара к статье для студентов: все способы установки — Firefox на
+          компьютере и Android, Chrome Web Store и оба пути без магазина —, затем цикл
+          «захват–цитирование–архив» и четыре настройки, важные для научных работ.
+          На девяти языках.
+        </p>
+        <div class="figures">
+          <span><b>2</b> браузера, 4 способа установки</span>
+          <span><b>18</b> полей XMP в PDF</span>
+          <span><b>2</b> пути для RIS-записи</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">10 августа 2026 г.</p>
+        <h3><a href="how-to/for-students/">Студентам: источник, который сам себя цитирует, выживает и читается машиной</a></h3>
+        <p>
+          Три вещи идут не так с веб-источником в курсовой: он исчезает, его цитату приходится
+          перепечатывать вручную, а сохранённый файл — картинка, которую ни один инструмент
+          не ищет. Что захват делает против каждой — включая шесть источников из двадцати,
+          которые он возвращает вам. На девяти языках.
+        </p>
+        <div class="figures">
+          <span><b>61 %</b> покрытия, как у Citoid</span>
+          <span><b>100 %</b> точности против его 79 %</span>
+          <span><b>6 из 20</b> возвращены</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3 августа 2026 г.</p>
+        <h3><a href="notes/what-an-agent-can-do-with-an-extension/">Что ИИ-агент может и чего не может с расширением браузера</a></h3>
+        <p>
+          Установка в чужой браузер — это по замыслу жест пользователя: ни один магазин не
+          предоставляет для этого API. Что агент может вместо этого, флаг командной строки,
+          который ничего не загружает и ничего не говорит, и где между ними двоими делится
+          работа.
+        </p>
+        <div class="figures">
+          <span><b>3</b> вещи, которые агент может</span>
+          <span><b>1</b> флаг, который молча не срабатывает</span>
+          <span><b>0</b> способов установить за кого-то</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3 августа 2026 г.</p>
+        <h3><a href="notes/sources-a-machine-cannot-cite/">Источники, которые машина не может процитировать за вас — и как процитировать их всё же</a></h3>
+        <p>
+          Когда инструмент цитирования возвращает источник, причина — одна из трёх: защита от
+          ботов, отказ, направленный на сеть, или страница, которая ничего о себе не заявляет.
+          Каждая требует своей работы, и лишь одна решается открытием страницы в браузере.
+        </p>
+        <div class="figures">
+          <span><b>3</b> причины</span>
+          <span><b>1</b> решается браузером</span>
+          <span><b>2</b> запроса, чтобы их различить</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2 августа 2026 г.</p>
+        <h3><a href="notes/mcp-server-what-it-solves/">Этот сайт держит MCP-сервер. Измерено: он меньше файла, с которым соревнуется</a></h3>
+        <p>
+          Конечная точка на <code>/mcp</code> передаёт наборы данных, методы и читалку цитат
+          ИИ-клиентам по JSON-RPC — без ключа, без учётной записи. Для чего это на самом деле
+          годится, и где обычный текстовый файл на том же домене уже справляется.
+        </p>
+        <div class="figures">
+          <span><b>4</b> инструмента</span>
+          <span><b>1 300</b> токенов всего</span>
+          <span><b>1 988</b> в llms.txt</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 августа 2026 г.</p>
+        <h3><a href="notes/building-with-ai-what-went-wrong/">Шесть вещей, пошедших не так при создании ПО с ИИ-ассистентом за один день</a></h3>
+        <p>
+          Неверное предположение о браузерных движках, ложное утверждение, пойманное до
+          публикации, 22 локальных пути в одном коммите от публичного репозитория — и ещё три.
+          Отсортированы по тому, что их реально поймало: два нашлись по везению, один — ничем.
+        </p>
+        <div class="figures">
+          <span><b>3 из 6</b> пойманы проверкой внешнего источника</span>
+          <span><b>1</b> до сих пор не проверен в продакшене</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Измерения</h2>
+    <p class="sub">Каждое — с командами для его повторения и с сырыми данными за ним.</p>
+
+    <div class="items">
+      <div class="item">
+        <p class="date">3 августа 2026 г.</p>
+        <h3><a href="measurements/install-an-extension-without-a-click/">Установка расширения браузера без единого щелчка — и удаление обратно</a></h3>
+        <p>
+          Четыре пути, в обе стороны. Один устанавливает и удаляет подписанную магазинную сборку
+          за 4,1 секунды без окна и без прав администратора — а сами две команды занимают
+          0,24 с; цена — запуск браузера, а не работа. Путь со щелчком занял 179 секунд,
+          сообщил об успехе на каждом шаге и не установил ничего: щелчок в пустоту —
+          действительный щелчок. Быстрый путь не считается в статистике пользователей магазина —
+          и это суть, а не недостаток.
+        </p>
+      </div>
+      <div class="item">
+        <p class="date">3 августа 2026 г.</p>
+        <h3><a href="measurements/reading-list-to-bibliography/">Двадцать ссылок, десять цитат: что машина доводит до конца, а что возвращает</a></h3>
+        <p>
+          Список чтения в библиографию, от начала до конца. Граница проходит не между платным и
+          бесплатным — она проходит между страницами, построенными, чтобы их цитировали, и
+          страницами, построенными, чтобы их читали. Научные издательства дают записи в обоих
+          случаях; статистические порталы, торговые палаты и газеты не дают никаких — и не
+          потому, что защищаются.
+        </p>
+        <div class="figures">
+          <span><b>10/20</b> полных записей</span>
+          <span><b>1</b> защита от ботов</span>
+          <span><b>5</b> страниц без единого заявления</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">3 августа 2026 г.</p>
+        <h3><a href="measurements/citation-triage/">Агент может процитировать восемь из двенадцати источников — полезно знать, какие четыре он не может</a></h3>
+        <p>
+          Смешанный список чтения через конечную точку цитирования: полные записи с RIS для
+          двух третей, а остальные названы достаточно точно, чтобы забрать их вручную вместо
+          выдумывания.
+        </p>
+        <div class="figures">
+          <span><b>8/12</b> сделано агентом</span>
+          <span><b>1,09 с</b> на источник</span>
+          <span><b>4</b> названы, а не угаданы</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2 августа 2026 г.</p>
+        <h3><a href="measurements/citation-extraction/">Измерено против Citoid на случайных выборках: то же покрытие, ничего выдуманного</a></h3>
+        <p>
+          Эталон — сервис Wikimedia, построенный на трансляторах Zotero. На 18 случайно
+          извлечённых произведениях: одинаковое покрытие, и ни одного отказа, доложенного
+          как успех.
+        </p>
+        <div class="figures">
+          <span><b>13/13</b> полей заполнены</span>
+          <span><b>0</b> ложных сообщений о блокировке</span>
+          <span><b>0,35 с</b> медиана</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 августа 2026 г.</p>
+        <h3><a href="measurements/print-to-pdf-vs-screenshot/">Печатать в PDF или захватывать экран? Одна и та же страница, измеренная двумя способами</a></h3>
+        <p>
+          Firefox уже сохраняет страницы в PDF бесплатно. Так когда окупается захват? Одна и та
+          же статья обоими путями — и ответ уже и полезнее, чем обычно признаёт любая из сторон.
+        </p>
+        <div class="figures">
+          <span><b>1 : 26</b> страниц</span>
+          <span><b>9</b> разрывов режут предложение</span>
+          <span>захват ведёт по тексту: <b>91,5 %</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 августа 2026 г.</p>
+        <h3><a href="measurements/webpage-to-pdf-for-ocr/">Веб-страница в PDF для OCR: сколько текста реально выживает?</a></h3>
+        <p>
+          PDF полностраничного скриншота прогнан через Tesseract и сравнён с исходной статьёй.
+          Включая порог разрешения, на котором распознавание рушится.
+        </p>
+        <div class="figures">
+          <span><b>92,6 %</b> словаря восстановлено</span>
+          <span><b>8/8</b> критических значений</span>
+          <span><b>72 dpi</b> точка обвала</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 августа 2026 г.</p>
+        <h3><a href="measurements/pdf-extension-permissions/">Выгружает ли ваше PDF-расширение страницу?</a></h3>
+        <p>
+          Что декларируют актуальные PDF-расширения в своих манифестах, как проверить это за
+          30 секунд — и следствие, о котором никто не говорит: серверные конвертеры не достают
+          страницы за логином.
+        </p>
+        <div class="figures">
+          <span><b>8</b> расширений исследовано</span>
+          <span>сырые данные опубликованы</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">1 августа 2026 г.</p>
+        <h3><a href="measurements/extension-permissions-risk/">Расширение опасно ровно настолько, насколько позволяют его разрешения</a></h3>
+        <p>
+          Год спустя после предупреждения Mozilla об украденных учётках разработчиков: почему
+          полезный вопрос не «кому вы доверяете», а «до чего дотянется скомпрометированное
+          расширение».
+        </p>
+        <div class="figures">
+          <span>таблица разрешений наихудшего случая</span>
+          <span>контрольный список оценки</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Как здесь измеряют</h2>
+    <div class="principles">
+      <div class="pr">
+        <h3>Контрольный прогон — всегда</h3>
+        <p>
+          Прежде чем результат засчитывается, метод должен отказать там, где должен. Сравнение,
+          не различающее эталонный случай, не измеряет ничего.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Сырые данные опубликованы</h3>
+        <p>
+          Цифры приходят с файлом, из которого они вычислены, и с меткой времени. Это делает их
+          проверяемыми — и значит, никому не нужно принимать утверждение на веру.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Потери названы первыми</h3>
+        <p>
+          Где наш собственный инструмент хуже — размер файла, время обработки, недостающие функции —,
+          сказано до преимуществ. Сравнение, которое только льстит, ничего не стоит.
+        </p>
+      </div>
+      <div class="pr">
+        <h3>Датировано, а не вне времени</h3>
+        <p>
+          Каждая цифра несёт дату своего снятия. Программы меняются; измерение без даты тихо
+          превращается в ложное утверждение.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Инструменты</h2>
+    <p class="sub">
+      Программы, построенные здесь, задокументированы как всё на этом сайте — включая то, чего
+      они не умеют. Они встречаются в некоторых измерениях выше; это раскрыто в каждом из них.
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
+        <p>
+          Расширение Firefox, сохраняющее веб-страницу целиком одним непрерывным PDF. Работает
+          на устройстве, запрашивает <code>activeTab</code> вместо доступа ко всем сайтам,
+          работает на Firefox для Android. Лицензия MIT. Опционально записывает в PDF цитату,
+          которую заявляет страница — авторы, DOI, лицензия, время обращения —, с RIS-записью
+          рядом.
+        </p>
+      </div>
+      <div class="item">
+        <h3><a href="notes/mcp-server-what-it-solves/">Конечная точка цитирования на <code>/mcp</code></a></h3>
+        <p>
+          Дайте ей URL — получите то, что эта страница заявляет о себе, в виде структурированной
+          записи с RIS и BibTeX, или именованный отказ, если страница оказывается пейволом,
+          ошибкой или проверкой на бота, а не произведением. Ни учётной записи, ни ключа.
+          Говорит на MCP для ИИ-клиентов и на простом HTTP для всего остального.
+        </p>
+        <div class="figures">
+          <span><b>7 из 10</b> научных источников полные</span>
+          <span><b>0,45 с</b> медиана</span>
+          <span><b>3 авг 2026</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <h3><a href="recipes/">Рецепты: список чтения в библиографию</a></h3>
+        <p>
+          Полные, исполняемые инструкции, как встроить конечную точку цитирования в инструменты,
+          в которых люди реально работают: цикл shell, превращающий <code>reading-list.txt</code>
+          в импортируемый <code>.ris</code> для Zotero или Citavi, одна строка для подключения
+          Claude Code, запись удалённого сервера для Claude Desktop и других MCP-клиентов и
+          минимум на Python. Каждая была выполнена до того, как записана.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Перепроверьте любую цифру</h2>
+    <p class="sub">
+      У всего здесь есть метод, сырые данные и контрольный прогон — чтобы это можно было
+      перепроверить, а не чтобы этому приходилось верить.
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="mitmachen/">Самый полезный вклад — контр-измерение с другим результатом</a></h3>
+        <p>
+          Явно названы четыре места, где опубликованные цифры наиболее вероятно шатаются —
+          начиная с десяти из двадцати источников, чьи четыре отказа были блокировками адреса
+          дата-центра. Из домашней сети показатель должен быть выше, и это не измерено.
+        </p>
+        <div class="figures">
+          <span><b>4</b> названных слабых места</span>
+          <span><b>9</b> наборов данных, CC BY 4.0</span>
+          <span>открытые задачи на <b>GitHub</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <h3><a href="AGENTS.md">Для ИИ-агентов: правила, устройство, границы</a></h3>
+        <p>
+          Проект устроен так, что агент может работать над ним, ни у кого предварительно не
+          спрашивая. Открытые задачи машиночитаемо выдаёт инструмент <code>open_work</code> на
+          <a href="for-agents/">/mcp</a> — с метками, выдержкой и пятью правилами, которые здесь
+          отличаются от обычных.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="disclosure">
+      <h3>Раскрытие</h3>
+      <p>
+        Этот сайт ведёт разработчик <a href="tools/full-page-pdf-snap/">Full Page
+        PDF Snap</a>, который встречается в нескольких измерениях выше. Это указано в каждой
+        статье, где это уместно, и инструмент открыто лежит под <code>/tools/</code>, а не
+        спрятан за нейтральной рамкой.
+      </p>
+      <p>
+        Цифры о чужих продуктах происходят исключительно из публично заявленных данных — манифестов
+        и описаний в магазинах — с указанной датой обращения. Ни один продукт не был
+        декомпилирован, и ничего не утверждается о намерениях какого-либо поставщика.
+        Исправления приветствуются через
+        <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues на GitHub</a> и
+        применяются.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Proving Lab · <a href="about/">О сайте</a> · <a href="privacy.html">Конфиденциальность</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap">Исходный код</a> · <a href="disclaimer/">Отказ от ответственности</a></p>
+    <p>Содержимое лицензировано для переиспользования с указанием авторства. Программы — под лицензией MIT.</p>
+  </div>
+</footer>
+</div>
+
+<div data-lang="zh-CN" lang="zh-CN">
+<header>
+  <div class="wrap">
+    <p class="mark">Proving Lab</p>
+    <h1>留住你以后会用到的网页。</h1>
+    <p class="tagline">
+      把整个页面保存为一份带来源和日期的 PDF——并把一串链接变成参考文献列表。
+      <strong>真实参考文献中 19.3% 的来源已经消失</strong>,8.7% 的来源在任何地方都没有存档副本。
+      <a href="/how-to/save-a-webpage-as-pdf/">从这里开始</a> ·
+      <a href="/for-agents/">面向 AI 代理</a>
+    </p>
+    <p class="tagline" style="margin-top:14px;font-size:.98rem">
+      要测量,不要观点:这里的一切都有<strong>方法、原始数据和对照运行</strong>。无法复算的数字
+      不写下来;出了差错的事情最先写下来。
+    </p>
+  </div>
+</header>
+
+<section class="direkt">
+  <div class="wrap">
+    <div class="dkarte">
+      <div class="dtext">
+        <p class="dmark">这里打造的工具</p>
+        <h2>Full Page PDF Snap</h2>
+        <p>把整个网页保存为一份连续的 PDF——整个可滚动的页面在一张纸上。边缘无裁切,也没有穿过表格或句子的分页符。一切都在你的浏览器中发生:无上传、无账户、无数据收集。MIT 许可,免费,支持 Firefox 和 Chrome。</p>
+        <p class="dzahlen">
+        <span><b>一张纸</b>,而不是 26 页</span>
+        <span><b>在登录之后也能用</b></span>
+        <span><b>留在你的设备上</b></span>
+      </p>
+      <p class="dbeleg">这里的每一项主张都经过测量并注明日期:
+        <a href="measurements/print-to-pdf-vs-screenshot/">一张纸对 26 页</a>、
+        <a href="measurements/webpage-to-pdf-for-ocr/">92.6% 的文本可被 OCR 读取</a>、
+        <a href="measurements/pdf-extension-permissions/">零网络请求</a>。</p>
+      </div>
+      <div class="dknopf">
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">下载 Firefox 版</a>
+        <p class="dklein">版本 2.33.4——由 Mozilla 签名。桌面端和 Android 均可一步安装。</p>
+        <p class="dklein">
+          <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">完全不经过商店</a> ·
+          <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome 和 Edge</a> ·
+          <a href="tools/full-page-pdf-snap/">功能介绍</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>笔记</h2>
+    <p class="sub">来自真实工作的构建记录——包括出错的部分。</p>
+    <div class="items">
+      <div class="item">
+        <p class="date">2026年8月15日</p>
+        <h3><a href="how-to/firefox-and-chrome/">致研究人员和学生:Firefox 与 Chrome 中的扩展</a></h3>
+        <p>
+          学生篇的实践姊妹篇:所有安装途径——桌面端与 Android 的 Firefox、Chrome 应用商店,
+          以及两条不经商店的路径——然后是“捕获—引用—归档”工作流,以及对论文至关重要
+          的四项设置。以九种语言提供。
+        </p>
+        <div class="figures">
+          <span><b>2</b> 款浏览器,4 条安装途径</span>
+          <span>PDF 中的 <b>18</b> 个 XMP 字段</span>
+          <span>RIS 记录的 <b>2</b> 条路径</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月10日</p>
+        <h3><a href="how-to/for-students/">致学生:一个能自引出处、能够存活、可被机器读取的来源</a></h3>
+        <p>
+          网络来源在课程论文中会出三种问题:它会消失;它的引用要手工录入;你保存的文件是
+          任何工具都无法搜索的图片。一次捕获对这三者各能做什么——包括 20 个来源中它
+          交还给你的 6 个。以九种语言提供。
+        </p>
+        <div class="figures">
+          <span>覆盖率 <b>61%</b>,与 Citoid 持平</span>
+          <span>准确率 <b>100%</b>,对其 79%</span>
+          <span><b>20 个中 6 个</b>被交还</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月3日</p>
+        <h3><a href="notes/what-an-agent-can-do-with-an-extension/">AI 代理用浏览器扩展能做什么、不能做什么</a></h3>
+        <p>
+          向他人浏览器安装扩展,按设计是用户操作——没有任何商店为此提供 API。代理可以改做
+          什么、那个什么都不加载也什么都不说的命令行参数,以及两者之间的工作如何划分。
+        </p>
+        <div class="figures">
+          <span>代理能做的 <b>3</b> 件事</span>
+          <span><b>1</b> 个静默失败的参数</span>
+          <span>替他人安装的方式 <b>0</b> 种</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月3日</p>
+        <h3><a href="notes/sources-a-machine-cannot-cite/">机器无法替你引用的来源——以及如何照样引用它们</a></h3>
+        <p>
+          当引用工具把一个来源退回时,原因是三者之一:反机器人防御、针对网络的拒绝,或是
+          一个对自身毫无声明的页面。三者需要的处理各不相同,而其中只有一种靠用浏览器
+          打开页面解决。
+        </p>
+        <div class="figures">
+          <span>原因 <b>3</b> 种</span>
+          <span><b>1</b> 种靠浏览器解决</span>
+          <span>区分它们需要 <b>2</b> 次请求</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月2日</p>
+        <h3><a href="notes/mcp-server-what-it-solves/">本站运行一个 MCP 服务器。实测:它比与之竞争的文件还小</a></h3>
+        <p>
+          <code>/mcp</code> 端点通过 JSON-RPC 向 AI 客户端提供数据集、方法和引用读取器——
+          无需密钥、无需账户。它究竟有什么用,以及在哪些地方同域名下的一个纯文本文件
+          就已经够用。
+        </p>
+        <div class="figures">
+          <span>工具 <b>4</b> 个</span>
+          <span>合计 <b>1,300</b> token</span>
+          <span>llms.txt 中为 <b>1,988</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月1日</p>
+        <h3><a href="notes/building-with-ai-what-went-wrong/">一天之内与 AI 助手开发软件出错的六件事</a></h3>
+        <p>
+          一个关于浏览器引擎的错误假设、一个在发布前被拦下的虚假陈述、距离公开仓库仅一次
+          提交的 22 个本地路径——还有三件。按究竟是什么抓住了它们来排序:两个靠运气被
+          发现,一个什么都没发现它。
+        </p>
+        <div class="figures">
+          <span><b>6 件中 3 件</b>靠核对来源被发现</span>
+          <span><b>1</b> 个至今未在生产中验证</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>测量</h2>
+    <p class="sub">每一项都附有复现它的命令和其背后的原始数据。</p>
+
+    <div class="items">
+      <div class="item">
+        <p class="date">2026年8月3日</p>
+        <h3><a href="measurements/install-an-extension-without-a-click/">无需点击即可安装浏览器扩展,并将其移除</a></h3>
+        <p>
+          四条路径,双向。其中一条在 4.1 秒内安装并卸载了商店签名版本,无窗口、无管理员权限
+          ——而两条命令本身只需 0.24 秒,成本在启动浏览器,而非工作。点击路径用了 179 秒,
+          每一步都报告成功,却什么都没装上:点击空白处也是有效点击。快速路径不计入商店的
+          用户统计——这正是关键,而非缺陷。
+        </p>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月3日</p>
+        <h3><a href="measurements/reading-list-to-bibliography/">二十个链接,十条引用:机器完成了什么,交还了什么</a></h3>
+        <p>
+          把一份阅读清单从头到尾变成参考文献。分界线不在付费与免费之间——而在为被引用而
+          建的页面和为被阅读而建的页面之间。学术出版社两种情况下都会给出记录;统计门户、
+          商会和报纸一条也不给,而且并不是因为它们在防御。
+        </p>
+        <div class="figures">
+          <span>完整记录 <b>10/20</b></span>
+          <span>反机器人防御 <b>1</b></span>
+          <span>无任何可声明内容的页面 <b>5</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月3日</p>
+        <h3><a href="measurements/citation-triage/">代理能引用 12 个来源中的 8 个——有用的部分是知道哪 4 个不行</a></h3>
+        <p>
+          把一份混合阅读清单送入引用端点:三分之二得到带 RIS 的完整记录,其余的被足够精确地
+          命名,可以手动获取,而不是靠编造。
+        </p>
+        <div class="figures">
+          <span>代理完成 <b>8/12</b></span>
+          <span>每个来源 <b>1.09 秒</b></span>
+          <span><b>4</b> 个被指名而非猜测</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月2日</p>
+        <h3><a href="measurements/citation-extraction/">在随机样本上与 Citoid 对比测量:相同覆盖率,零编造</a></h3>
+        <p>
+          基于 Zotero 翻译器构建的维基媒体服务是标尺。随机抽取 18 部著作:覆盖率相同,
+          且没有一次拒答被报为成功。
+        </p>
+        <div class="figures">
+          <span>字段完整 <b>13/13</b></span>
+          <span>错误的拦截报告 <b>0</b></span>
+          <span>中位数 <b>0.35 秒</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月1日</p>
+        <h3><a href="measurements/print-to-pdf-vs-screenshot/">打印为 PDF 还是截屏?同一页面两种方式实测</a></h3>
+        <p>
+          Firefox 已经可以免费把页面存为 PDF。那么什么时候值得捕获?同一篇文章走两条路径
+          ——答案比任何一方通常承认的都更窄,也更有用。
+        </p>
+        <div class="figures">
+          <span>页数 <b>1 : 26</b></span>
+          <span><b>9</b> 处分页截断句子</span>
+          <span>文本方面捕获领先:<b>91.5%</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月1日</p>
+        <h3><a href="measurements/webpage-to-pdf-for-ocr/">网页转 PDF 用于 OCR:究竟有多少文本存活?</a></h3>
+        <p>
+          把整页截图 PDF 送入 Tesseract,与源文章对比。还包括识别崩溃的分辨率阈值。
+        </p>
+        <div class="figures">
+          <span>词汇恢复 <b>92.6%</b></span>
+          <span>关键值 <b>8/8</b></span>
+          <span>崩溃点 <b>72 dpi</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月1日</p>
+        <h3><a href="measurements/pdf-extension-permissions/">你的 PDF 扩展会上传页面吗?</a></h3>
+        <p>
+          当前 PDF 扩展在清单中声明了什么、如何在 30 秒内验证——以及没人提及的后果:
+          服务器端转换器够不到登录之后的页面。
+        </p>
+        <div class="figures">
+          <span>调查了 <b>8</b> 款扩展</span>
+          <span>原始数据已公开</span>
+        </div>
+      </div>
+      <div class="item">
+        <p class="date">2026年8月1日</p>
+        <h3><a href="measurements/extension-permissions-risk/">扩展的危险程度只取决于其权限允许的范围</a></h3>
+        <p>
+          在 Mozilla 就开发者账户被钓鱼发出警告一年后:为什么有用的问题不是你信任谁,
+          而是被攻陷的扩展能够触及什么。
+        </p>
+        <div class="figures">
+          <span>最坏情况权限表</span>
+          <span>评估清单</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>这里如何测量</h2>
+    <div class="principles">
+      <div class="pr">
+        <h3>对照运行,每次都有</h3>
+        <p>
+          在结果作数之前,方法必须在应当失败的地方失败。不能区分参照案例的比较,什么也测不到。
+        </p>
+      </div>
+      <div class="pr">
+        <h3>原始数据公开</h3>
+        <p>
+          数字都附带计算它们的文件和时间戳。这使它们可以被检验——也意味着没有人需要凭信任
+          接受一个说法。
+        </p>
+      </div>
+      <div class="pr">
+        <h3>先讲不足</h3>
+        <p>
+          我们自己的工具在哪些方面更差——文件大小、处理时间、缺失的功能——都先讲,再讲优点。
+          只会讨好的比较一文不值。
+        </p>
+      </div>
+      <div class="pr">
+        <h3>注明日期,而非脱离时间</h3>
+        <p>
+          每个数字都带有采集日期。软件在变;没有日期的测量会悄悄变成虚假陈述。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>工具</h2>
+    <p class="sub">
+      这里构建的软件,与本站其他内容一样记录在案——包括它做不到的事。它出现在上面的一些
+      测量中;这一点在每一篇里都有披露。
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
+        <p>
+          把整个网页保存为一份连续 PDF 的 Firefox 扩展。在设备上运行,只请求
+          <code>activeTab</code> 而非全站访问,支持 Android 版 Firefox。MIT 许可。
+          可选地把页面声明的引用信息——作者、DOI、许可、获取时间——连同一条 RIS 记录
+          写入 PDF。
+        </p>
+      </div>
+      <div class="item">
+        <h3><a href="notes/mcp-server-what-it-solves/"><code>/mcp</code> 引用端点</a></h3>
+        <p>
+          给它一个 URL,得到该页面关于自身的结构化记录(含 RIS 和 BibTeX)——或者,当页面
+          其实是付费墙、错误或机器人检查而非一部著作时,得到一个具名的拒绝。无需账户,
+          无需密钥。对 AI 客户端说 MCP,对其他一切说普通 HTTP。
+        </p>
+        <div class="figures">
+          <span>学术来源 <b>10 个里 7 个</b>完整</span>
+          <span>中位数 <b>0.45 秒</b></span>
+          <span><b>2026年8月3日</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <h3><a href="recipes/">食谱:把阅读清单变成参考文献</a></h3>
+        <p>
+          把引用端点接入人们实际使用的工具的完整可运行说明:一个把 <code>reading-list.txt</code>
+          变成可导入 Zotero 或 Citavi 的 <code>.ris</code> 的 shell 循环,连接 Claude Code
+          的一行命令,Claude Desktop 及其他 MCP 客户端的远程服务器配置,以及 Python 最小
+          示例。每一条都在写下之前实际运行过。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>任何数字,都请自己验算</h2>
+    <p class="sub">
+      这里的一切都有方法、原始数据和对照运行——是为了可以被验算,而不是必须被相信。
+    </p>
+    <div class="items">
+      <div class="item">
+        <h3><a href="mitmachen/">最有用的贡献,是得出不同结果的复核测量</a></h3>
+        <p>
+          我们明确指出了公开数字最可能站不住脚的四个地方——首先是 20 个来源中的 10 个,
+          其 4 次拒绝是针对数据中心地址的封锁。从家庭网络测,比率应该更高,而这尚未测量。
+        </p>
+        <div class="figures">
+          <span>指出的薄弱环节 <b>4</b> 处</span>
+          <span>数据集 <b>9</b> 个,CC BY 4.0</span>
+          <span>开放任务见 <b>GitHub</b></span>
+        </div>
+      </div>
+      <div class="item">
+        <h3><a href="AGENTS.md">面向 AI 代理:规则、构建方式、边界</a></h3>
+        <p>
+          这个项目被配置成代理无需先询问任何人即可上手工作。开放任务由 <code>open_work</code>
+          工具在 <a href="for-agents/">/mcp</a> 上以机器可读方式提供——附标签、摘要,以及这里
+          与常规不同的五条规则。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="disclosure">
+      <h3>披露</h3>
+      <p>
+        本站由 <a href="tools/full-page-pdf-snap/">Full Page
+        PDF Snap</a> 的开发者运营,该工具出现在上面的多项测量中。这一点在每一篇相关文章里
+        都有说明,而且该工具公开放在 <code>/tools/</code> 下,而不是藏在中立的表述背后。
+      </p>
+      <p>
+        关于其他产品的数字完全来自公开声明的数据——清单文件和商店描述——并注明获取日期。
+        没有反编译任何产品,也不对任何提供商的意图作任何主张。欢迎通过
+        <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a>
+        提出更正,并会被采纳。
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Proving Lab · <a href="about/">关于</a> · <a href="privacy.html">隐私</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap">源代码</a> · <a href="disclaimer/">免责声明</a></p>
+    <p>内容以署名方式许可再利用。软件采用 MIT 许可。</p>
+  </div>
+</footer>
+</div>
 </body>
 </html>
