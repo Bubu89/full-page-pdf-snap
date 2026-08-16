@@ -5,7 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rechnen Sie eine Zahl nach — am liebsten die, die falsch ist — Proving Lab</title>
 <meta name="description" content="Der nuetzlichste Beitrag zu diesem Projekt ist eine Gegenmessung, die etwas anderes ergibt. Wo die veroeffentlichten Zahlen am wahrscheinlichsten wackeln, steht hier benannt — samt Rohdaten, offenen Aufgaben und der Anbindung fuer KI-Agenten.">
+<meta name="keywords" content="Gegenmessung, Reproduktion, Rohdaten, Korrektur melden, mitmachen">
 <link rel="canonical" href="https://provinglab.dev/mitmachen/">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/mitmachen/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/mitmachen/">
+<link rel="alternate" hreflang="es" href="https://provinglab.dev/mitmachen/">
+<link rel="alternate" hreflang="fr" href="https://provinglab.dev/mitmachen/">
+<link rel="alternate" hreflang="it" href="https://provinglab.dev/mitmachen/">
+<link rel="alternate" hreflang="ja" href="https://provinglab.dev/mitmachen/">
+<link rel="alternate" hreflang="pt-BR" href="https://provinglab.dev/mitmachen/">
+<link rel="alternate" hreflang="ru" href="https://provinglab.dev/mitmachen/">
+<link rel="alternate" hreflang="zh-CN" href="https://provinglab.dev/mitmachen/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/mitmachen/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
 <link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
@@ -30,7 +41,7 @@
   "description": "Der nuetzlichste Beitrag zu diesem Projekt ist eine Gegenmessung, die etwas anderes ergibt. Wo die veroeffentlichten Zahlen am wahrscheinlichsten wackeln, steht hier benannt — samt Rohdaten, offenen Aufgaben und der Anbindung fuer KI-Agenten.",
   "datePublished": "2026-08-03",
   "dateModified": "2026-08-03",
-  "inLanguage": "en",
+  "inLanguage": ["en", "de", "es", "fr", "it", "ja", "pt-BR", "ru", "zh-CN"],
   "url": "https://provinglab.dev/mitmachen/",
   "author": {
     "@type": "Organization",
@@ -43,7 +54,8 @@
     "url": "https://provinglab.dev/"
   },
   "isAccessibleForFree": true,
-  "license": "https://creativecommons.org/licenses/by/4.0/"
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "keywords": "Gegenmessung, Reproduktion, Rohdaten, Korrektur melden, mitmachen"
 }
 </script>
 <script type="application/ld+json">
@@ -154,6 +166,10 @@
     .topnav .brand{width:100%;margin-right:0}
     .topnav a.n{font-size:.85rem}
   }
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
 </style>
 <script src="/agent-tools.js" defer></script>
 <script src="/site-lang.js" defer></script>
@@ -176,58 +192,150 @@
 </nav>
 
 <div class="wrap">
+<div data-lang="en" class="on" lang="en">
+<header>
+  <h1>Recalculate one number. Preferably the one that is wrong.</h1>
+  <p class="standfirst">
+    Every figure here has a method, raw data and a control run — so that it can be recalculated, not so that it can be believed. The most useful contribution to this project is therefore not a new measurement but a <strong>counter-measurement that comes out differently</strong>.
+  </p>
+  <p class="meta">3 August 2026 · open tasks: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub</a> · machine-readable through the tool <code>open_work</code> on <a href="/for-agents/">/mcp</a></p>
+</header>
+
+<h2>Where it is most likely to give way</h2>
+<p>
+  This is no formula of modesty — the weak spots are named because they belong in the open:
+</p>
+<table>
+  <thead><tr><th scope="col">Figure</th><th scope="col">Why it could give way</th></tr></thead>
+  <tbody>
+    <tr><td><a href="/measurements/reading-list-to-bibliography/">10 of 20 sources</a>
+        become citation records</td>
+        <td>Four refusals are blocks against a <em>data-centre address</em>. From a home or campus network the rate ought to be higher — <strong>that has not been measured.</strong></td></tr>
+    <tr><td><a href="/measurements/citation-extraction/">100 % against 79 %</a>
+        compared with Citoid</td>
+        <td>18 randomly drawn works, one draw. A different sample can produce a different number.</td></tr>
+    <tr><td><a href="/measurements/webpage-to-pdf-for-ocr/">92.6 % text yield</a>
+        from the text recognition</td>
+        <td>One article, one resolution series, one recognition engine. Other scripts and languages are untested.</td></tr>
+    <tr><td><a href="/measurements/android-capture-extensions/">60 of 248</a>
+        extensions with an Android declaration</td>
+        <td>What an extension <em>declares</em>, not what it does on a device. Not one was installed.</td></tr>
+  </tbody>
+</table>
+<p>
+  Anyone who reproduces one of these numbers and gets something else has delivered the most valuable contribution this project can accept. The <a href="/data/">raw data</a> is open under CC BY 4.0, and every post carries a section saying where the measurement probably does not hold.
+</p>
+
+<h2>For AI agents</h2>
+<p>
+  This project is set up so that an agent can work on it without asking anyone first. What it needs for that sits at fixed addresses:
+</p>
+<table>
+  <thead><tr><th scope="col">What</th><th scope="col">Where</th></tr></thead>
+  <tbody>
+    <tr><td>Rules, construction, limits</td><td><a href="/AGENTS.md"><code>/AGENTS.md</code></a></td></tr>
+    <tr><td>Open tasks, machine-readable</td><td>Tool <code>open_work</code> on <code>/mcp</code></td></tr>
+    <tr><td>Open tasks, for humans</td><td><a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a></td></tr>
+    <tr><td>Raw data for recalculating</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+    <tr><td>Connection in one line</td><td><a href="/for-agents/">/for-agents/</a></td></tr>
+  </tbody>
+</table>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  After that this is enough: <em>“Look at the open tasks on provinglab and take one.”</em> The tool delivers tasks with labels, an excerpt and the five rules that are different here from the usual ones.
+</p>
+
+<h3>Why this might be of interest beyond this project</h3>
+<p>
+  Not as an appeal but as an observation: every system that installs software on someone else’s machine faces the same question — operate the interface, or use the channel the vendor ships anyway. The <a href="/measurements/install-an-extension-without-a-click/">measurement on this</a> came out unambiguous, and not because of the speed:
+</p>
+<table>
+  <thead><tr><th scope="col">Route</th><th scope="col">Duration</th><th scope="col">Result</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Interface with real clicks</th><td>179 s</td>
+        <td>reported success at every step and installed <strong>nothing</strong></td></tr>
+    <tr><th scope="row">Vendor channel (Marionette)</th><td>4.1 s</td>
+        <td>installs and uninstalls, reports errors as errors</td></tr>
+  </tbody>
+</table>
+<p>
+  The difference that matters is the second column from the right. A route that reports success on failure poisons everything that comes after it — and that is more expensive than any minute lost. For a system that carries out such steps unsupervised, that is the difference between usable and unusable.
+</p>
+<p>
+  That is why <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/14">issue&nbsp;14</a> is open: a directory of such vendor channels, one line per application — channel, install and uninstall command, privileges required, one measured runtime. VS&nbsp;Code, JetBrains, Thunderbird and Obsidian are in there as candidates; not one is measured. A single line is a complete contribution, and whoever adds it has the result first — here it then stands under CC&nbsp;BY&nbsp;4.0 for everyone else.
+</p>
+<p>
+  The same goes for the <a href="/for-agents/">citation endpoint</a>: a measured 10 of 20 sources become complete records without a browser, and the remaining ten are named one by one instead of dismissed wholesale. Anyone who re-measures that and gets a different number improves a foundation they use themselves.
+</p>
+
+<h2>The five rules, briefly</h2>
+<ol>
+  <li><strong>Evidence before wording.</strong> Every factual claim needs a source and a retrieval date, or it becomes an opinion, or it drops out. A check enforces that before delivery.</li>
+  <li><strong>Do not assert the intent of third parties.</strong> “The server answered with 403” is an observation. “They are blocking on purpose” carries a burden of proof and cannot be proven.</li>
+  <li><strong>A comparison your own tool can only win is advertising.</strong> That is why this site says that the browser’s print export wins on text.</li>
+  <li><strong>No result is an error, not a zero value.</strong> If a measurement returns zero, the measurement is the first suspect.</li>
+  <li><strong>Raw data is not smoothed.</strong> A correction is named as a correction, not quietly worked in.</li>
+</ol>
+
+<h2>What is not needed here</h2>
+<ul>
+  <li>No contributions that introduce a number without evidence. That is the one mistake that cannot be repaired afterwards — a figure once cited travels on by itself.</li>
+  <li>No automated posting in forums, on Reddit or in comments. Where people are reached, it happens by hand and with a name.</li>
+  <li>No circumvention of other people’s protective measures. Where a site locks a reader out, that is reported, not circumvented.</li>
+</ul>
+
+<h2>What to expect</h2>
+<p>
+  This is a private, non-commercial project by a single person. There is no bounty programme, no promised response time and no return beyond being named in the post. Contributions are read and answered; what holds is adopted and named as a correction. The software is under MIT, the measurements under CC BY 4.0 — both stay that way.
+</p>
+<footer>
+      Open tasks stand as GitHub issues and are delivered machine-readably by the tool open_work on /mcp.
+      <br><br>
+      Corrections are welcome and are made in public: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">open an issue</a>.
+      <br><br>
+      Disclosure: the author develops Full Page PDF Snap, the extension named on this page. The browser’s own print-to-PDF is <a href="/measurements/print-to-pdf-vs-screenshot/">measured against it</a>, including where print wins.
+      <br><br>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">Disclaimer</a>
+    </footer>
+</div>
+
+<div data-lang="de" lang="de">
 <header>
   <h1>Rechnen Sie eine Zahl nach. Am liebsten die, die falsch ist.</h1>
   <p class="standfirst">
-    Jede Angabe hier hat eine Methode, Rohdaten und einen Kontrolllauf — damit
-    sie nachgerechnet werden kann, nicht damit sie geglaubt wird. Der
-    nützlichste Beitrag zu diesem Projekt ist deshalb keine neue Messung,
-    sondern eine <strong>Gegenmessung, die etwas anderes ergibt</strong>.
+    Jede Angabe hier hat eine Methode, Rohdaten und einen Kontrolllauf — damit sie nachgerechnet werden kann, nicht damit sie geglaubt wird. Der nützlichste Beitrag zu diesem Projekt ist deshalb keine neue Messung, sondern eine <strong>Gegenmessung, die etwas anderes ergibt</strong>.
   </p>
-  <p class="meta">3 August 2026 · offene Aufgaben:
-    <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub</a> ·
-    maschinenlesbar über das Werkzeug <code>open_work</code> auf
-    <a href="/for-agents/">/mcp</a></p>
+  <p class="meta">3 August 2026 · offene Aufgaben: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub</a> · maschinenlesbar über das Werkzeug <code>open_work</code> auf <a href="/for-agents/">/mcp</a></p>
 </header>
 
 <h2>Wo es am wahrscheinlichsten hakt</h2>
 <p>
-  Das ist keine Bescheidenheitsfloskel — die Stellen sind benannt, weil sie
-  benannt gehören:
+  Das ist keine Bescheidenheitsfloskel — die Stellen sind benannt, weil sie benannt gehören:
 </p>
 <table>
   <thead><tr><th scope="col">Angabe</th><th scope="col">Warum sie wackeln könnte</th></tr></thead>
   <tbody>
     <tr><td><a href="/measurements/reading-list-to-bibliography/">10 von 20 Quellen</a>
         werden zu Zitationsdatensätzen</td>
-        <td>Vier Ablehnungen sind Sperren gegen eine <em>Rechenzentrums-Adresse</em>.
-            Aus einem Heim- oder Campusnetz müsste die Quote höher liegen —
-            <strong>gemessen ist das nicht.</strong></td></tr>
+        <td>Vier Ablehnungen sind Sperren gegen eine <em>Rechenzentrums-Adresse</em>. Aus einem Heim- oder Campusnetz müsste die Quote höher liegen — <strong>gemessen ist das nicht.</strong></td></tr>
     <tr><td><a href="/measurements/citation-extraction/">100 % gegen 79 %</a>
         gegenüber Citoid</td>
-        <td>18 zufällig gezogene Werke, eine Ziehung. Eine andere Stichprobe
-            kann eine andere Zahl ergeben.</td></tr>
+        <td>18 zufällig gezogene Werke, eine Ziehung. Eine andere Stichprobe kann eine andere Zahl ergeben.</td></tr>
     <tr><td><a href="/measurements/webpage-to-pdf-for-ocr/">92,6 % Textausbeute</a>
         aus der Texterkennung</td>
-        <td>Ein Artikel, eine Auflösungsreihe, ein Erkennungsprogramm. Andere
-            Schriften und Sprachen sind ungeprüft.</td></tr>
+        <td>Ein Artikel, eine Auflösungsreihe, ein Erkennungsprogramm. Andere Schriften und Sprachen sind ungeprüft.</td></tr>
     <tr><td><a href="/measurements/android-capture-extensions/">60 von 248</a>
         Erweiterungen mit Android-Angabe</td>
-        <td>Was eine Erweiterung <em>deklariert</em>, nicht was sie auf einem
-            Gerät tut. Keine wurde installiert.</td></tr>
+        <td>Was eine Erweiterung <em>deklariert</em>, nicht was sie auf einem Gerät tut. Keine wurde installiert.</td></tr>
   </tbody>
 </table>
 <p>
-  Wer eine dieser Zahlen nachstellt und etwas anderes bekommt, hat den
-  wertvollsten Beitrag geliefert, den dieses Projekt annehmen kann. Die
-  <a href="/data/">Rohdaten</a> liegen unter CC BY 4.0 offen, und in jedem
-  Beitrag steht ein Abschnitt, der sagt, wo die Messung vermutlich nicht trägt.
+  Wer eine dieser Zahlen nachstellt und etwas anderes bekommt, hat den wertvollsten Beitrag geliefert, den dieses Projekt annehmen kann. Die <a href="/data/">Rohdaten</a> liegen unter CC BY 4.0 offen, und in jedem Beitrag steht ein Abschnitt, der sagt, wo die Messung vermutlich nicht trägt.
 </p>
 
 <h2>Für KI-Agenten</h2>
 <p>
-  Dieses Projekt ist so eingerichtet, dass ein Agent daran arbeiten kann, ohne
-  vorher jemanden zu fragen. Was er dafür braucht, liegt an festen Adressen:
+  Dieses Projekt ist so eingerichtet, dass ein Agent daran arbeiten kann, ohne vorher jemanden zu fragen. Was er dafür braucht, liegt an festen Adressen:
 </p>
 <table>
   <thead><tr><th scope="col">Was</th><th scope="col">Wo</th></tr></thead>
@@ -241,18 +349,12 @@
 </table>
 <pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
 <p>
-  Danach genügt: <em>„Sieh dir die offenen Aufgaben auf provinglab an und nimm
-  eine."</em> Das Werkzeug liefert Aufgaben mit Labels, Auszug und den fünf
-  Regeln, die hier anders sind als üblich.
+  Danach genügt: <em>„Sieh dir die offenen Aufgaben auf provinglab an und nimm eine."</em> Das Werkzeug liefert Aufgaben mit Labels, Auszug und den fünf Regeln, die hier anders sind als üblich.
 </p>
 
 <h3>Warum das über dieses Projekt hinaus interessant sein könnte</h3>
 <p>
-  Nicht als Appell, sondern als Beobachtung: Jedes System, das Software auf
-  einer fremden Maschine einrichtet, steht vor derselben Frage — Oberfläche
-  bedienen oder den Kanal nutzen, den der Hersteller ohnehin mitbringt. Die
-  <a href="/measurements/install-an-extension-without-a-click/">Messung dazu</a>
-  fiel eindeutig aus, und zwar nicht wegen der Geschwindigkeit:
+  Nicht als Appell, sondern als Beobachtung: Jedes System, das Software auf einer fremden Maschine einrichtet, steht vor derselben Frage — Oberfläche bedienen oder den Kanal nutzen, den der Hersteller ohnehin mitbringt. Die <a href="/measurements/install-an-extension-without-a-click/">Messung dazu</a> fiel eindeutig aus, und zwar nicht wegen der Geschwindigkeit:
 </p>
 <table>
   <thead><tr><th scope="col">Weg</th><th scope="col">Dauer</th><th scope="col">Ergebnis</th></tr></thead>
@@ -264,74 +366,794 @@
   </tbody>
 </table>
 <p>
-  Der Unterschied, auf den es ankommt, ist die zweite Spalte von rechts. Ein Weg,
-  der bei Misserfolg Erfolg meldet, vergiftet alles, was danach kommt — und das
-  ist teurer als jede verlorene Minute. Für ein System, das solche Schritte
-  unbeaufsichtigt ausführt, ist das der Unterschied zwischen brauchbar und
-  unbrauchbar.
+  Der Unterschied, auf den es ankommt, ist die zweite Spalte von rechts. Ein Weg, der bei Misserfolg Erfolg meldet, vergiftet alles, was danach kommt — und das ist teurer als jede verlorene Minute. Für ein System, das solche Schritte unbeaufsichtigt ausführt, ist das der Unterschied zwischen brauchbar und unbrauchbar.
 </p>
 <p>
-  Deshalb ist <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/14">Issue&nbsp;14</a>
-  offen: ein Verzeichnis solcher Herstellerkanäle, eine Zeile je Anwendung —
-  Kanal, Installations- und Deinstallationsbefehl, benötigte Rechte, eine
-  gemessene Laufzeit. VS&nbsp;Code, JetBrains, Thunderbird und Obsidian stehen
-  als Kandidaten drin, gemessen ist keiner. Eine einzelne Zeile ist ein
-  vollständiger Beitrag, und wer sie beisteuert, hat das Ergebnis selbst
-  zuerst — hier steht es danach unter CC&nbsp;BY&nbsp;4.0 für alle anderen.
+  Deshalb ist <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/14">Issue&nbsp;14</a> offen: ein Verzeichnis solcher Herstellerkanäle, eine Zeile je Anwendung — Kanal, Installations- und Deinstallationsbefehl, benötigte Rechte, eine gemessene Laufzeit. VS&nbsp;Code, JetBrains, Thunderbird und Obsidian stehen als Kandidaten drin, gemessen ist keiner. Eine einzelne Zeile ist ein vollständiger Beitrag, und wer sie beisteuert, hat das Ergebnis selbst zuerst — hier steht es danach unter CC&nbsp;BY&nbsp;4.0 für alle anderen.
 </p>
 <p>
-  Dasselbe gilt für den <a href="/for-agents/">Zitations-Endpunkt</a>: gemessene
-  10 von 20 Quellen werden ohne Browser zu vollständigen Datensätzen, und die
-  zehn übrigen sind einzeln benannt statt pauschal abgetan. Wer das nachmisst und
-  eine andere Zahl bekommt, verbessert eine Grundlage, die er selbst benutzt.
+  Dasselbe gilt für den <a href="/for-agents/">Zitations-Endpunkt</a>: gemessene 10 von 20 Quellen werden ohne Browser zu vollständigen Datensätzen, und die zehn übrigen sind einzeln benannt statt pauschal abgetan. Wer das nachmisst und eine andere Zahl bekommt, verbessert eine Grundlage, die er selbst benutzt.
 </p>
 
 <h2>Die fünf Regeln, kurz</h2>
 <ol>
-  <li><strong>Beleg vor Formulierung.</strong> Jede Tatsachenbehauptung braucht
-    Quelle und Abrufdatum, oder sie wird zur Meinung, oder sie fällt raus. Eine
-    Prüfung erzwingt das vor der Auslieferung.</li>
-  <li><strong>Keine Absicht Dritter behaupten.</strong> „Der Server antwortete
-    mit 403" ist eine Beobachtung. „Die sperren absichtlich" ist beweispflichtig
-    und nicht beweisbar.</li>
-  <li><strong>Ein Vergleich, den das eigene Werkzeug nur gewinnt, ist Werbung.</strong>
-    Deshalb steht auf dieser Seite, dass der Druckexport des Browsers beim Text
-    gewinnt.</li>
-  <li><strong>Kein Ergebnis ist ein Fehler, kein Nullwert.</strong> Wenn eine
-    Messung null liefert, ist zuerst die Messung verdächtig.</li>
-  <li><strong>Rohdaten werden nicht geglättet.</strong> Eine Korrektur wird als
-    Korrektur benannt, nicht stillschweigend eingearbeitet.</li>
+  <li><strong>Beleg vor Formulierung.</strong> Jede Tatsachenbehauptung braucht Quelle und Abrufdatum, oder sie wird zur Meinung, oder sie fällt raus. Eine Prüfung erzwingt das vor der Auslieferung.</li>
+  <li><strong>Keine Absicht Dritter behaupten.</strong> „Der Server antwortete mit 403" ist eine Beobachtung. „Die sperren absichtlich" ist beweispflichtig und nicht beweisbar.</li>
+  <li><strong>Ein Vergleich, den das eigene Werkzeug nur gewinnt, ist Werbung.</strong> Deshalb steht auf dieser Seite, dass der Druckexport des Browsers beim Text gewinnt.</li>
+  <li><strong>Kein Ergebnis ist ein Fehler, kein Nullwert.</strong> Wenn eine Messung null liefert, ist zuerst die Messung verdächtig.</li>
+  <li><strong>Rohdaten werden nicht geglättet.</strong> Eine Korrektur wird als Korrektur benannt, nicht stillschweigend eingearbeitet.</li>
 </ol>
 
 <h2>Was hier nicht gebraucht wird</h2>
 <ul>
-  <li>Keine Beiträge, die eine Zahl ohne Beleg einführen. Das ist der eine
-    Fehler, der sich später nicht mehr reparieren lässt — eine einmal zitierte
-    Angabe wandert alleine weiter.</li>
-  <li>Kein automatisiertes Posten in Foren, auf Reddit oder in Kommentaren.
-    Wo Menschen erreicht werden, geschieht das von Hand und mit Namen.</li>
-  <li>Keine Umgehung fremder Schutzmaßnahmen. Wo eine Seite einen Leser
-    aussperrt, wird das berichtet, nicht umgangen.</li>
+  <li>Keine Beiträge, die eine Zahl ohne Beleg einführen. Das ist der eine Fehler, der sich später nicht mehr reparieren lässt — eine einmal zitierte Angabe wandert alleine weiter.</li>
+  <li>Kein automatisiertes Posten in Foren, auf Reddit oder in Kommentaren. Wo Menschen erreicht werden, geschieht das von Hand und mit Namen.</li>
+  <li>Keine Umgehung fremder Schutzmaßnahmen. Wo eine Seite einen Leser aussperrt, wird das berichtet, nicht umgangen.</li>
 </ul>
 
 <h2>Womit zu rechnen ist</h2>
 <p>
-  Dies ist ein privates, nicht-kommerzielles Projekt einer einzelnen Person.
-  Es gibt kein Prämienprogramm, keine zugesagte Antwortzeit und keine
-  Gegenleistung außer der Nennung im Beitrag. Beiträge werden gelesen und
-  beantwortet; was zutrifft, wird übernommen und als Korrektur benannt.
-  Die Software steht unter MIT, die Messungen unter CC BY 4.0 — beides bleibt so.
+  Dies ist ein privates, nicht-kommerzielles Projekt einer einzelnen Person. Es gibt kein Prämienprogramm, keine zugesagte Antwortzeit und keine Gegenleistung außer der Nennung im Beitrag. Beiträge werden gelesen und beantwortet; was zutrifft, wird übernommen und als Korrektur benannt. Die Software steht unter MIT, die Messungen unter CC BY 4.0 — beides bleibt so.
 </p>
 <footer>
       Offene Aufgaben stehen als GitHub-Issues und werden vom Werkzeug open_work auf /mcp maschinenlesbar ausgeliefert.
       <br><br>
-      Corrections are welcome and are made in public: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">open an issue</a>.
+      Korrekturen sind willkommen und werden öffentlich gemacht: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">ein Issue öffnen</a>.
       <br><br>
-      Disclosure: the author develops Full Page PDF Snap, the extension named on this page. The browser's own print-to-PDF is <a href="/measurements/print-to-pdf-vs-screenshot/">measured against it</a>, including where print wins.
+      Offenlegung: Der Autor entwickelt Full Page PDF Snap, die auf dieser Seite genannte Erweiterung. Der eigene PDF-Druck des Browsers ist <a href="/measurements/print-to-pdf-vs-screenshot/">dagegen gemessen</a>, einschließlich der Stelle, an der der Druck gewinnt.
       <br><br>
-      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">Disclaimer</a>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">Haftungsausschluss</a>
     </footer>
+</div>
 
+<div data-lang="es" lang="es">
+<header>
+  <h1>Rehaga usted una cifra. Preferiblemente la que está mal.</h1>
+  <p class="standfirst">
+    Cada dato de aquí tiene un método, datos brutos y una ejecución de control — para que se pueda recalcular, no para que se lo crea. Por eso la aportación más útil a este proyecto no es una medición nueva, sino una <strong>contramedición que dé otro resultado</strong>.
+  </p>
+  <p class="meta">3 de agosto de 2026 · tareas abiertas: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub</a> · legible por máquinas mediante la herramienta <code>open_work</code> en <a href="/for-agents/">/mcp</a></p>
+</header>
+
+<h2>Dónde es más probable que falle</h2>
+<p>
+  No es una fórmula de modestia: los puntos débiles están nombrados porque merecen estarlo:
+</p>
+<table>
+  <thead><tr><th scope="col">Dato</th><th scope="col">Por qué podría tambalearse</th></tr></thead>
+  <tbody>
+    <tr><td><a href="/measurements/reading-list-to-bibliography/">10 de 20 fuentes</a>
+        se convierten en registros de cita</td>
+        <td>Cuatro rechazos son bloqueos contra una <em>dirección de centro de datos</em>. Desde una red doméstica o de campus la tasa debería ser mayor — <strong>eso no está medido.</strong></td></tr>
+    <tr><td><a href="/measurements/citation-extraction/">100 % frente a 79 %</a>
+        en comparación con Citoid</td>
+        <td>18 obras extraídas al azar, una extracción. Otra muestra puede dar otra cifra.</td></tr>
+    <tr><td><a href="/measurements/webpage-to-pdf-for-ocr/">92,6 % de texto recuperado</a>
+        del reconocimiento de texto</td>
+        <td>Un artículo, una serie de resoluciones, un programa de reconocimiento. Otras escrituras y lenguas están sin comprobar.</td></tr>
+    <tr><td><a href="/measurements/android-capture-extensions/">60 de 248</a>
+        extensiones con declaración de Android</td>
+        <td>Lo que una extensión <em>declara</em>, no lo que hace en un dispositivo. No se instaló ninguna.</td></tr>
+  </tbody>
+</table>
+<p>
+  Quien repita una de estas cifras y obtenga otra cosa habrá entregado la aportación más valiosa que este proyecto puede aceptar. Los <a href="/data/">datos brutos</a> están abiertos bajo CC BY 4.0, y en cada publicación hay un apartado que dice dónde es probable que la medición no se sostenga.
+</p>
+
+<h2>Para agentes de IA</h2>
+<p>
+  Este proyecto está montado de modo que un agente pueda trabajar en él sin preguntar antes a nadie. Lo que necesita para eso está en direcciones fijas:
+</p>
+<table>
+  <thead><tr><th scope="col">Qué</th><th scope="col">Dónde</th></tr></thead>
+  <tbody>
+    <tr><td>Reglas, construcción, límites</td><td><a href="/AGENTS.md"><code>/AGENTS.md</code></a></td></tr>
+    <tr><td>Tareas abiertas, legibles por máquinas</td><td>Herramienta <code>open_work</code> en <code>/mcp</code></td></tr>
+    <tr><td>Tareas abiertas, para personas</td><td><a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a></td></tr>
+    <tr><td>Datos brutos para recalcular</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+    <tr><td>Conexión en una línea</td><td><a href="/for-agents/">/for-agents/</a></td></tr>
+  </tbody>
+</table>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  Después basta con esto: <em>«Mira las tareas abiertas en provinglab y toma una.»</em> La herramienta entrega tareas con etiquetas, un extracto y las cinco reglas que aquí son distintas de lo habitual.
+</p>
+
+<h3>Por qué esto podría interesar más allá de este proyecto</h3>
+<p>
+  No como llamamiento, sino como observación: todo sistema que instala software en una máquina ajena se enfrenta a la misma pregunta — manejar la interfaz o usar el canal que el fabricante ya trae consigo. La <a href="/measurements/install-an-extension-without-a-click/">medición al respecto</a> resultó inequívoca, y no por la velocidad:
+</p>
+<table>
+  <thead><tr><th scope="col">Camino</th><th scope="col">Duración</th><th scope="col">Resultado</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Interfaz con clics reales</th><td>179 s</td>
+        <td>informó de éxito en cada paso e instaló <strong>nada</strong></td></tr>
+    <tr><th scope="row">Canal del fabricante (Marionette)</th><td>4,1 s</td>
+        <td>instala y desinstala, informa de los errores como errores</td></tr>
+  </tbody>
+</table>
+<p>
+  La diferencia que cuenta es la segunda columna por la derecha. Un camino que ante el fracaso informa de éxito envenena todo lo que viene después — y eso sale más caro que cualquier minuto perdido. Para un sistema que ejecuta tales pasos sin supervisión, esa es la diferencia entre utilizable e inutilizable.
+</p>
+<p>
+  Por eso está abierta la <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/14">issue&nbsp;14</a>: un directorio de esos canales de fabricante, una línea por aplicación — canal, orden de instalación y de desinstalación, permisos necesarios, un tiempo de ejecución medido. VS&nbsp;Code, JetBrains, Thunderbird y Obsidian figuran como candidatos; ninguno está medido. Una sola línea es una aportación completa, y quien la aporte tiene el resultado primero — aquí queda después bajo CC&nbsp;BY&nbsp;4.0 para todos los demás.
+</p>
+<p>
+  Lo mismo vale para el <a href="/for-agents/">endpoint de citas</a>: 10 de 20 fuentes medidas se convierten en registros completos sin navegador, y las diez restantes están nombradas una a una en lugar de descartadas en bloque. Quien lo vuelva a medir y obtenga otra cifra mejora una base que él mismo usa.
+</p>
+
+<h2>Las cinco reglas, en breve</h2>
+<ol>
+  <li><strong>Prueba antes que formulación.</strong> Toda afirmación de hecho necesita fuente y fecha de consulta, o pasa a ser opinión, o se cae. Una comprobación lo impone antes de la entrega.</li>
+  <li><strong>No atribuir intenciones a terceros.</strong> «El servidor respondió con 403» es una observación. «Bloquean a propósito» exige prueba y no se puede probar.</li>
+  <li><strong>Una comparación que la propia herramienta solo puede ganar es publicidad.</strong> Por eso en este sitio consta que la exportación de impresión del navegador gana en el texto.</li>
+  <li><strong>Ningún resultado es un error, no un valor cero.</strong> Si una medición devuelve cero, la primera sospechosa es la medición.</li>
+  <li><strong>Los datos brutos no se alisan.</strong> Una corrección se nombra como corrección, no se incorpora en silencio.</li>
+</ol>
+
+<h2>Qué no hace falta aquí</h2>
+<ul>
+  <li>Ninguna aportación que introduzca una cifra sin prueba. Ese es el único error que después ya no se puede reparar — un dato citado una vez sigue viajando solo.</li>
+  <li>Ninguna publicación automatizada en foros, en Reddit o en comentarios. Donde se llega a personas, se hace a mano y con nombre.</li>
+  <li>Ninguna elusión de medidas de protección ajenas. Donde una página deja fuera a un lector, eso se informa, no se elude.</li>
+</ul>
+
+<h2>Con qué hay que contar</h2>
+<p>
+  Este es un proyecto privado y no comercial de una sola persona. No hay programa de recompensas, ni tiempo de respuesta prometido, ni contraprestación más allá de la mención en la publicación. Las aportaciones se leen y se responden; lo que resulta cierto se asume y se nombra como corrección. El software está bajo MIT, las mediciones bajo CC BY 4.0 — ambas cosas siguen así.
+</p>
+<footer>
+      Las tareas abiertas figuran como GitHub issues y las entrega de forma legible por máquinas la herramienta open_work en /mcp.
+      <br><br>
+      Las correcciones son bienvenidas y se hacen en público: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">abrir una issue</a>.
+      <br><br>
+      Divulgación: el autor desarrolla Full Page PDF Snap, la extensión nombrada en esta página. La impresión a PDF del propio navegador está <a href="/measurements/print-to-pdf-vs-screenshot/">medida contra ella</a>, incluido dónde gana la impresión.
+      <br><br>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">Aviso legal</a>
+    </footer>
+</div>
+
+<div data-lang="fr" lang="fr">
+<header>
+  <h1>Refaites le calcul d’un chiffre. De préférence celui qui est faux.</h1>
+  <p class="standfirst">
+    Chaque indication ici a une méthode, des données brutes et une exécution de contrôle — pour qu’on puisse la recalculer, non pour qu’on la croie. La contribution la plus utile à ce projet n’est donc pas une nouvelle mesure, mais une <strong>contre-mesure qui donne autre chose</strong>.
+  </p>
+  <p class="meta">3 août 2026 · tâches ouvertes : <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub</a> · lisible par machine via l’outil <code>open_work</code> sur <a href="/for-agents/">/mcp</a></p>
+</header>
+
+<h2>Là où cela risque le plus de céder</h2>
+<p>
+  Ce n’est pas une formule de modestie : les points faibles sont nommés parce qu’ils doivent l’être :
+</p>
+<table>
+  <thead><tr><th scope="col">Indication</th><th scope="col">Pourquoi elle pourrait vaciller</th></tr></thead>
+  <tbody>
+    <tr><td><a href="/measurements/reading-list-to-bibliography/">10 sources sur 20</a>
+        deviennent des notices de citation</td>
+        <td>Quatre refus sont des blocages contre une <em>adresse de centre de données</em>. Depuis un réseau domestique ou universitaire, le taux devrait être plus élevé — <strong>cela n’est pas mesuré.</strong></td></tr>
+    <tr><td><a href="/measurements/citation-extraction/">100 % contre 79 %</a>
+        par rapport à Citoid</td>
+        <td>18 ouvrages tirés au hasard, un seul tirage. Un autre échantillon peut donner un autre chiffre.</td></tr>
+    <tr><td><a href="/measurements/webpage-to-pdf-for-ocr/">92,6 % de texte récupéré</a>
+        par la reconnaissance de texte</td>
+        <td>Un article, une série de résolutions, un programme de reconnaissance. D’autres écritures et langues ne sont pas vérifiées.</td></tr>
+    <tr><td><a href="/measurements/android-capture-extensions/">60 sur 248</a>
+        extensions avec une déclaration Android</td>
+        <td>Ce qu’une extension <em>déclare</em>, non ce qu’elle fait sur un appareil. Aucune n’a été installée.</td></tr>
+  </tbody>
+</table>
+<p>
+  Qui refait l’une de ces mesures et obtient autre chose a fourni la contribution la plus précieuse que ce projet puisse accepter. Les <a href="/data/">données brutes</a> sont ouvertes sous CC BY 4.0, et chaque publication comporte une section qui dit où la mesure ne tient probablement pas.
+</p>
+
+<h2>Pour les agents d’IA</h2>
+<p>
+  Ce projet est agencé de telle sorte qu’un agent puisse y travailler sans demander à personne au préalable. Ce dont il a besoin pour cela se trouve à des adresses fixes :
+</p>
+<table>
+  <thead><tr><th scope="col">Quoi</th><th scope="col">Où</th></tr></thead>
+  <tbody>
+    <tr><td>Règles, construction, limites</td><td><a href="/AGENTS.md"><code>/AGENTS.md</code></a></td></tr>
+    <tr><td>Tâches ouvertes, lisibles par machine</td><td>Outil <code>open_work</code> sur <code>/mcp</code></td></tr>
+    <tr><td>Tâches ouvertes, pour les humains</td><td><a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a></td></tr>
+    <tr><td>Données brutes pour recalculer</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+    <tr><td>Raccordement en une ligne</td><td><a href="/for-agents/">/for-agents/</a></td></tr>
+  </tbody>
+</table>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  Ensuite il suffit de : <em>« Regarde les tâches ouvertes sur provinglab et prends-en une. »</em> L’outil livre les tâches avec leurs étiquettes, un extrait et les cinq règles qui, ici, diffèrent de l’usage.
+</p>
+
+<h3>Pourquoi cela pourrait intéresser au-delà de ce projet</h3>
+<p>
+  Non comme un appel, mais comme une observation : tout système qui installe un logiciel sur une machine étrangère se heurte à la même question — piloter l’interface ou utiliser le canal que le fabricant fournit de toute façon. La <a href="/measurements/install-an-extension-without-a-click/">mesure à ce sujet</a> a été sans ambiguïté, et pas à cause de la vitesse :
+</p>
+<table>
+  <thead><tr><th scope="col">Chemin</th><th scope="col">Durée</th><th scope="col">Résultat</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Interface avec de vrais clics</th><td>179 s</td>
+        <td>annonçait un succès à chaque étape et n’installait <strong>rien</strong></td></tr>
+    <tr><th scope="row">Canal du fabricant (Marionette)</th><td>4,1 s</td>
+        <td>installe et désinstalle, signale les erreurs comme des erreurs</td></tr>
+  </tbody>
+</table>
+<p>
+  La différence qui compte est l’avant-dernière colonne. Un chemin qui annonce un succès en cas d’échec empoisonne tout ce qui vient ensuite — et cela coûte plus cher que n’importe quelle minute perdue. Pour un système qui exécute de telles étapes sans surveillance, c’est la différence entre utilisable et inutilisable.
+</p>
+<p>
+  C’est pourquoi le <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/14">ticket&nbsp;14</a> est ouvert : un répertoire de ces canaux de fabricant, une ligne par application — canal, commande d’installation et de désinstallation, droits nécessaires, un temps d’exécution mesuré. VS&nbsp;Code, JetBrains, Thunderbird et Obsidian y figurent comme candidats ; aucun n’est mesuré. Une seule ligne est une contribution complète, et celui qui l’apporte a le résultat en premier — il figure ensuite ici sous CC&nbsp;BY&nbsp;4.0 pour tous les autres.
+</p>
+<p>
+  Il en va de même pour le <a href="/for-agents/">point de terminaison de citation</a> : 10 sources mesurées sur 20 deviennent des notices complètes sans navigateur, et les dix autres sont nommées une par une au lieu d’être écartées en bloc. Qui le remesure et obtient un autre chiffre améliore une base qu’il utilise lui-même.
+</p>
+
+<h2>Les cinq règles, en bref</h2>
+<ol>
+  <li><strong>La preuve avant la formulation.</strong> Toute affirmation de fait a besoin d’une source et d’une date de consultation, sinon elle devient une opinion, sinon elle saute. Un contrôle l’impose avant la mise en ligne.</li>
+  <li><strong>Ne pas prêter d’intention à des tiers.</strong> « Le serveur a répondu 403 » est une observation. « Ils bloquent exprès » est soumis à la charge de la preuve et n’est pas démontrable.</li>
+  <li><strong>Une comparaison que son propre outil ne peut que gagner est de la publicité.</strong> C’est pourquoi ce site indique que l’export d’impression du navigateur gagne sur le texte.</li>
+  <li><strong>Aucun résultat est une erreur, pas une valeur nulle.</strong> Si une mesure renvoie zéro, c’est d’abord la mesure qui est suspecte.</li>
+  <li><strong>Les données brutes ne sont pas lissées.</strong> Une correction est nommée comme correction, non intégrée en silence.</li>
+</ol>
+
+<h2>Ce dont on n’a pas besoin ici</h2>
+<ul>
+  <li>Pas de contributions qui introduisent un chiffre sans preuve. C’est la seule erreur qu’on ne peut plus réparer ensuite — une donnée une fois citée poursuit seule son chemin.</li>
+  <li>Pas de publication automatisée dans des forums, sur Reddit ou en commentaires. Là où l’on atteint des personnes, cela se fait à la main et avec un nom.</li>
+  <li>Pas de contournement des protections d’autrui. Là où un site exclut un lecteur, cela est rapporté, non contourné.</li>
+</ul>
+
+<h2>À quoi il faut s’attendre</h2>
+<p>
+  Il s’agit d’un projet privé et non commercial mené par une seule personne. Il n’y a pas de programme de primes, pas de délai de réponse promis et pas de contrepartie hors la mention dans la publication. Les contributions sont lues et font l’objet d’une réponse ; ce qui se vérifie est repris et nommé comme correction. Le logiciel est sous MIT, les mesures sous CC BY 4.0 — les deux le restent.
+</p>
+<footer>
+      Les tâches ouvertes figurent comme GitHub issues et sont livrées de façon lisible par machine par l’outil open_work sur /mcp.
+      <br><br>
+      Les corrections sont les bienvenues et se font en public : <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">ouvrir un ticket</a>.
+      <br><br>
+      Transparence : l’auteur développe Full Page PDF Snap, l’extension nommée sur cette page. L’impression en PDF du navigateur est <a href="/measurements/print-to-pdf-vs-screenshot/">mesurée contre elle</a>, y compris là où l’impression gagne.
+      <br><br>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">Avertissement</a>
+    </footer>
+</div>
+
+<div data-lang="it" lang="it">
+<header>
+  <h1>Rifaccia il conto di un numero. Preferibilmente di quello sbagliato.</h1>
+  <p class="standfirst">
+    Ogni dato qui ha un metodo, dati grezzi e un’esecuzione di controllo — perché lo si possa ricalcolare, non perché ci si creda. Il contributo più utile a questo progetto non è dunque una nuova misurazione, ma una <strong>contromisurazione che dia un risultato diverso</strong>.
+  </p>
+  <p class="meta">3 agosto 2026 · attività aperte: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub</a> · leggibile dalle macchine tramite lo strumento <code>open_work</code> su <a href="/for-agents/">/mcp</a></p>
+</header>
+
+<h2>Dove è più probabile che ceda</h2>
+<p>
+  Non è una formula di modestia: i punti deboli sono nominati perché vanno nominati:
+</p>
+<table>
+  <thead><tr><th scope="col">Dato</th><th scope="col">Perché potrebbe vacillare</th></tr></thead>
+  <tbody>
+    <tr><td><a href="/measurements/reading-list-to-bibliography/">10 fonti su 20</a>
+        diventano record di citazione</td>
+        <td>Quattro rifiuti sono blocchi contro un <em>indirizzo di centro dati</em>. Da una rete domestica o universitaria la quota dovrebbe essere più alta — <strong>non è misurato.</strong></td></tr>
+    <tr><td><a href="/measurements/citation-extraction/">100 % contro 79 %</a>
+        rispetto a Citoid</td>
+        <td>18 opere estratte a caso, una sola estrazione. Un altro campione può dare un altro numero.</td></tr>
+    <tr><td><a href="/measurements/webpage-to-pdf-for-ocr/">92,6 % di testo recuperato</a>
+        dal riconoscimento del testo</td>
+        <td>Un articolo, una serie di risoluzioni, un programma di riconoscimento. Altre scritture e lingue non sono verificate.</td></tr>
+    <tr><td><a href="/measurements/android-capture-extensions/">60 su 248</a>
+        estensioni con dichiarazione Android</td>
+        <td>Ciò che un’estensione <em>dichiara</em>, non ciò che fa su un dispositivo. Nessuna è stata installata.</td></tr>
+  </tbody>
+</table>
+<p>
+  Chi rifà una di queste misure e ottiene qualcosa di diverso ha dato il contributo più prezioso che questo progetto possa accettare. I <a href="/data/">dati grezzi</a> sono aperti sotto CC BY 4.0, e in ogni contributo c’è una sezione che dice dove la misurazione probabilmente non regge.
+</p>
+
+<h2>Per gli agenti di IA</h2>
+<p>
+  Questo progetto è predisposto in modo che un agente possa lavorarci senza chiedere prima a nessuno. Ciò che gli serve sta a indirizzi fissi:
+</p>
+<table>
+  <thead><tr><th scope="col">Che cosa</th><th scope="col">Dove</th></tr></thead>
+  <tbody>
+    <tr><td>Regole, costruzione, limiti</td><td><a href="/AGENTS.md"><code>/AGENTS.md</code></a></td></tr>
+    <tr><td>Attività aperte, leggibili dalle macchine</td><td>Strumento <code>open_work</code> su <code>/mcp</code></td></tr>
+    <tr><td>Attività aperte, per le persone</td><td><a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a></td></tr>
+    <tr><td>Dati grezzi per rifare i conti</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+    <tr><td>Collegamento in una riga</td><td><a href="/for-agents/">/for-agents/</a></td></tr>
+  </tbody>
+</table>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  Poi basta: <em>«Guarda le attività aperte su provinglab e prendine una.»</em> Lo strumento consegna le attività con etichette, un estratto e le cinque regole che qui sono diverse dal solito.
+</p>
+
+<h3>Perché la cosa potrebbe interessare oltre questo progetto</h3>
+<p>
+  Non come appello, ma come osservazione: ogni sistema che installa software su una macchina altrui si trova davanti alla stessa domanda — usare l’interfaccia oppure il canale che il produttore porta con sé comunque. La <a href="/measurements/install-an-extension-without-a-click/">misurazione in proposito</a> è stata netta, e non per via della velocità:
+</p>
+<table>
+  <thead><tr><th scope="col">Strada</th><th scope="col">Durata</th><th scope="col">Esito</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Interfaccia con clic reali</th><td>179 s</td>
+        <td>segnalava successo a ogni passo e installava <strong>nulla</strong></td></tr>
+    <tr><th scope="row">Canale del produttore (Marionette)</th><td>4,1 s</td>
+        <td>installa e disinstalla, segnala gli errori come errori</td></tr>
+  </tbody>
+</table>
+<p>
+  La differenza che conta è la penultima colonna. Una strada che in caso di insuccesso segnala successo avvelena tutto ciò che viene dopo — e questo costa più di qualsiasi minuto perso. Per un sistema che esegue simili passi senza sorveglianza, è la differenza tra utilizzabile e inutilizzabile.
+</p>
+<p>
+  Per questo la <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/14">issue&nbsp;14</a> è aperta: un elenco di tali canali dei produttori, una riga per applicazione — canale, comando di installazione e di disinstallazione, permessi necessari, un tempo di esecuzione misurato. VS&nbsp;Code, JetBrains, Thunderbird e Obsidian ci sono come candidati; nessuno è misurato. Una singola riga è un contributo completo, e chi la aggiunge ha per primo il risultato — qui poi resta sotto CC&nbsp;BY&nbsp;4.0 per tutti gli altri.
+</p>
+<p>
+  Lo stesso vale per l’<a href="/for-agents/">endpoint di citazione</a>: 10 fonti su 20, misurate, diventano record completi senza browser, e le dieci restanti sono nominate una per una invece che liquidate in blocco. Chi lo rimisura e ottiene un altro numero migliora una base che usa lui stesso.
+</p>
+
+<h2>Le cinque regole, in breve</h2>
+<ol>
+  <li><strong>Prova prima della formulazione.</strong> Ogni affermazione di fatto ha bisogno di fonte e data di consultazione, oppure diventa opinione, oppure cade. Un controllo lo impone prima della pubblicazione.</li>
+  <li><strong>Non attribuire intenzioni a terzi.</strong> «Il server ha risposto con 403» è un’osservazione. «Bloccano di proposito» è soggetto a onere della prova e non è dimostrabile.</li>
+  <li><strong>Un confronto che il proprio strumento può solo vincere è pubblicità.</strong> Per questo su questo sito sta scritto che l’esportazione di stampa del browser vince sul testo.</li>
+  <li><strong>Nessun risultato è un errore, non un valore zero.</strong> Se una misurazione restituisce zero, la prima sospettata è la misurazione.</li>
+  <li><strong>I dati grezzi non si lisciano.</strong> Una correzione viene nominata come correzione, non incorporata in silenzio.</li>
+</ol>
+
+<h2>Che cosa qui non serve</h2>
+<ul>
+  <li>Nessun contributo che introduca un numero senza prova. È l’unico errore che poi non si può più riparare — un dato citato una volta prosegue da solo il suo cammino.</li>
+  <li>Nessuna pubblicazione automatica nei forum, su Reddit o nei commenti. Dove si raggiungono persone, lo si fa a mano e con un nome.</li>
+  <li>Nessuna elusione di misure di protezione altrui. Dove una pagina esclude un lettore, la cosa viene riferita, non aggirata.</li>
+</ul>
+
+<h2>Che cosa aspettarsi</h2>
+<p>
+  Questo è un progetto privato e non commerciale di una sola persona. Non c’è un programma di premi, nessun tempo di risposta promesso e nessun corrispettivo oltre alla menzione nel contributo. I contributi vengono letti e ricevono risposta; ciò che è esatto viene recepito e nominato come correzione. Il software è sotto MIT, le misurazioni sotto CC BY 4.0 — entrambe le cose restano così.
+</p>
+<footer>
+      Le attività aperte stanno come GitHub issues e sono consegnate in forma leggibile dalle macchine dallo strumento open_work su /mcp.
+      <br><br>
+      Le correzioni sono benvenute e avvengono in pubblico: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">apri una issue</a>.
+      <br><br>
+      Trasparenza: l’autore sviluppa Full Page PDF Snap, l’estensione nominata in questa pagina. La stampa in PDF del browser è <a href="/measurements/print-to-pdf-vs-screenshot/">misurata a confronto</a>, incluso dove la stampa vince.
+      <br><br>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">Avvertenze</a>
+    </footer>
+</div>
+
+<div data-lang="ja" lang="ja">
+<header>
+  <h1>数字をひとつ検算してください。できれば、間違っているものを。</h1>
+  <p class="standfirst">
+    ここに載る数値にはすべて、方法と生データと対照実行がある — 信じてもらうためではなく、検算できるようにするためである。だからこの企画にとってもっとも有益な寄与は、新しい計測ではなく、<strong>違う結果が出る対抗計測</strong>である。
+  </p>
+  <p class="meta">2026年8月3日 · 未着手の課題: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub</a> · 機械可読な形では <a href="/for-agents/">/mcp</a> の <code>open_work</code> から</p>
+</header>
+
+<h2>いちばん崩れやすいところ</h2>
+<p>
+  これは謙遜の常套句ではない。弱いところは、名指しされるべきものだから名指ししてある。
+</p>
+<table>
+  <thead><tr><th scope="col">数値</th><th scope="col">崩れうる理由</th></tr></thead>
+  <tbody>
+    <tr><td><a href="/measurements/reading-list-to-bibliography/">20 件のうち 10 件の出典</a>
+        が引用データになる</td>
+        <td>四件の拒否は<em>データセンターのアドレス</em>に対する遮断である。家庭や大学の回線からなら比率はもっと高いはずだが — <strong>それは計測していない。</strong></td></tr>
+    <tr><td><a href="/measurements/citation-extraction/">100 % 対 79 %</a>
+        （Citoid との比較）</td>
+        <td>無作為に選んだ 18 点、抽出は一回のみ。別の標本なら別の数字になりうる。</td></tr>
+    <tr><td><a href="/measurements/webpage-to-pdf-for-ocr/">92.6 % のテキスト回収率</a>
+        （文字認識から）</td>
+        <td>記事は一本、解像度は一系列、認識プログラムは一種類。ほかの文字体系や言語は未検証である。</td></tr>
+    <tr><td><a href="/measurements/android-capture-extensions/">248 件中 60 件</a>
+        の拡張機能が Android 対応を宣言</td>
+        <td>拡張機能が<em>宣言している</em>ことであって、端末で実際にすることではない。ひとつも導入していない。</td></tr>
+  </tbody>
+</table>
+<p>
+  これらの数字のどれかを追試して別の結果を得た人は、この企画が受け取りうるもっとも価値ある寄与を果たしたことになる。<a href="/data/">生データ</a>は CC BY 4.0 で公開されており、どの記事にも、その計測がおそらく通用しない範囲を述べた節がある。
+</p>
+
+<h2>AI エージェントへ</h2>
+<p>
+  この企画は、エージェントが誰にも断らずに作業できるように整えてある。そのために必要なものは、決まった住所に置いてある。
+</p>
+<table>
+  <thead><tr><th scope="col">何を</th><th scope="col">どこに</th></tr></thead>
+  <tbody>
+    <tr><td>規則、つくり、限界</td><td><a href="/AGENTS.md"><code>/AGENTS.md</code></a></td></tr>
+    <tr><td>未着手の課題、機械可読</td><td><code>/mcp</code> の <code>open_work</code> という道具</td></tr>
+    <tr><td>未着手の課題、人間向け</td><td><a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a></td></tr>
+    <tr><td>検算のための生データ</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+    <tr><td>一行での接続</td><td><a href="/for-agents/">/for-agents/</a></td></tr>
+  </tbody>
+</table>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  あとはこれで足りる — <em>「provinglab の未着手の課題を見て、ひとつ引き受けて」</em>。この道具は、ラベルと抜粋、そしてここでは通例と異なる五つの規則を添えて課題を返す。
+</p>
+
+<h3>この企画の外でも関心を持たれうる理由</h3>
+<p>
+  訴えとしてではなく、観察として言う。他人の機械にソフトウェアを入れる仕組みはどれも同じ問いに突き当たる — 画面を操作するのか、それとも製造元がもともと備えている経路を使うのか。<a href="/measurements/install-an-extension-without-a-click/">これについての計測</a>の結果ははっきりしていた。しかも速さのためではない。
+</p>
+<table>
+  <thead><tr><th scope="col">経路</th><th scope="col">所要時間</th><th scope="col">結果</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">本物のクリックによる画面操作</th><td>179 s</td>
+        <td>どの段階でも成功と報告し、<strong>何も</strong>導入しなかった</td></tr>
+    <tr><th scope="row">製造元の経路（Marionette）</th><td>4.1 s</td>
+        <td>導入も削除もでき、失敗は失敗として報告する</td></tr>
+  </tbody>
+</table>
+<p>
+  肝心な違いは右から二列目にある。失敗したのに成功と報告する道は、その後に続くすべてを毒する — それは失われた何分よりも高くつく。こうした手順を無人で実行する仕組みにとって、それは使えるか使えないかの分かれ目である。
+</p>
+<p>
+  だから <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/14">issue&nbsp;14</a> は開いたままにしてある。そうした製造元経路の一覧、アプリケーションごとに一行 — 経路、インストールとアンインストールの命令、必要な権限、計測した所要時間。VS&nbsp;Code、JetBrains、Thunderbird、Obsidian が候補として載っているが、計測済みのものはひとつもない。一行だけでも完全な寄与であり、寄せた本人がまずその結果を手にする — そのあとここで CC&nbsp;BY&nbsp;4.0 のもと、ほかのすべての人のものになる。
+</p>
+<p>
+  同じことが<a href="/for-agents/">引用エンドポイント</a>にも当てはまる。計測では 20 件のうち 10 件がブラウザーなしで完全な書誌データになり、残る 10 件は一括して切り捨てるのではなく個別に名前が挙げてある。これを測り直して別の数字を得た人は、自分自身が使う土台を良くしている。
+</p>
+
+<h2>五つの規則、手短に</h2>
+<ol>
+  <li><strong>言い回しより先に典拠を。</strong>事実の主張にはどれも出典と取得日が要る。なければ意見に格下げされるか、落とされる。公開前に検査がそれを強制する。</li>
+  <li><strong>第三者の意図を決めつけない。</strong>「サーバーは 403 を返した」は観察である。「わざと遮断している」は立証責任を負い、しかも立証できない。</li>
+  <li><strong>自分の道具しか勝ちようのない比較は広告である。</strong>だからこのサイトには、テキストではブラウザーの印刷書き出しが勝ると書いてある。</li>
+  <li><strong>結果が出ないのは誤りであって、ゼロという値ではない。</strong>計測がゼロを返したら、まず疑うべきは計測のほうである。</li>
+  <li><strong>生データはならさない。</strong>訂正は訂正として名指しし、黙って織り込むことはしない。</li>
+</ol>
+
+<h2>ここで必要とされないもの</h2>
+<ul>
+  <li>典拠のない数字を持ち込む寄与はいらない。それは後から直せない唯一の誤りである — 一度引用された数値はひとりで歩き出す。</li>
+  <li>掲示板や Reddit、コメント欄への自動投稿はしない。人に届くところでは、手で、名前を出して行う。</li>
+  <li>他者の保護措置の回避はしない。あるサイトが読み手を締め出しているなら、それは報告することであって、回避することではない。</li>
+</ul>
+
+<h2>見込んでおくべきこと</h2>
+<p>
+  これは個人による私的で非営利の企画である。報奨金の制度はなく、約束された返答期限もなく、記事に名前が載ること以外の見返りもない。寄せられたものは読まれ、返答される。当たっていれば取り入れ、訂正として明記する。ソフトウェアは MIT、計測は CC BY 4.0 のもとにあり、どちらもそのままである。
+</p>
+<footer>
+      未着手の課題は GitHub issues として置かれ、道具 open_work が /mcp で機械可読な形で配信する。
+      <br><br>
+      修正は歓迎され、公開で行われます: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue を開く</a>。
+      <br><br>
+      開示: 作者はこのページで名指しされている拡張機能 Full Page PDF Snap を開発しています。ブラウザ自身の PDF 印刷は<a href="/measurements/print-to-pdf-vs-screenshot/">比較測定</a>されています — 印刷が勝るところも含めて。
+      <br><br>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">免責事項</a>
+    </footer>
+</div>
+
+<div data-lang="pt-BR" lang="pt-BR">
+<header>
+  <h1>Refaça a conta de um número. De preferência o que está errado.</h1>
+  <p class="standfirst">
+    Cada dado aqui tem um método, dados brutos e uma execução de controle — para que possa ser recalculado, não para que seja acreditado. A contribuição mais útil a este projeto não é, portanto, uma nova medição, e sim uma <strong>contramedição que dê outro resultado</strong>.
+  </p>
+  <p class="meta">3 de agosto de 2026 · tarefas abertas: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub</a> · legível por máquina através da ferramenta <code>open_work</code> em <a href="/for-agents/">/mcp</a></p>
+</header>
+
+<h2>Onde é mais provável que ceda</h2>
+<p>
+  Isto não é fórmula de modéstia — os pontos fracos estão nomeados porque merecem ser nomeados:
+</p>
+<table>
+  <thead><tr><th scope="col">Dado</th><th scope="col">Por que poderia oscilar</th></tr></thead>
+  <tbody>
+    <tr><td><a href="/measurements/reading-list-to-bibliography/">10 de 20 fontes</a>
+        viram registros de citação</td>
+        <td>Quatro recusas são bloqueios contra um <em>endereço de centro de dados</em>. A partir de uma rede doméstica ou de campus a taxa deveria ser maior — <strong>isso não está medido.</strong></td></tr>
+    <tr><td><a href="/measurements/citation-extraction/">100 % contra 79 %</a>
+        em comparação com o Citoid</td>
+        <td>18 obras sorteadas ao acaso, um sorteio. Outra amostra pode dar outro número.</td></tr>
+    <tr><td><a href="/measurements/webpage-to-pdf-for-ocr/">92,6 % de texto recuperado</a>
+        do reconhecimento de texto</td>
+        <td>Um artigo, uma série de resoluções, um programa de reconhecimento. Outras escritas e línguas estão sem verificação.</td></tr>
+    <tr><td><a href="/measurements/android-capture-extensions/">60 de 248</a>
+        extensões com declaração de Android</td>
+        <td>O que uma extensão <em>declara</em>, não o que ela faz num aparelho. Nenhuma foi instalada.</td></tr>
+  </tbody>
+</table>
+<p>
+  Quem refizer um desses números e obtiver outra coisa terá entregue a contribuição mais valiosa que este projeto pode aceitar. Os <a href="/data/">dados brutos</a> estão abertos sob CC BY 4.0, e em cada publicação há uma seção que diz onde a medição provavelmente não se sustenta.
+</p>
+
+<h2>Para agentes de IA</h2>
+<p>
+  Este projeto está montado de modo que um agente possa trabalhar nele sem perguntar antes a ninguém. O que ele precisa para isso está em endereços fixos:
+</p>
+<table>
+  <thead><tr><th scope="col">O quê</th><th scope="col">Onde</th></tr></thead>
+  <tbody>
+    <tr><td>Regras, construção, limites</td><td><a href="/AGENTS.md"><code>/AGENTS.md</code></a></td></tr>
+    <tr><td>Tarefas abertas, legíveis por máquina</td><td>Ferramenta <code>open_work</code> em <code>/mcp</code></td></tr>
+    <tr><td>Tarefas abertas, para pessoas</td><td><a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a></td></tr>
+    <tr><td>Dados brutos para refazer as contas</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+    <tr><td>Conexão em uma linha</td><td><a href="/for-agents/">/for-agents/</a></td></tr>
+  </tbody>
+</table>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  Depois disso basta: <em>“Veja as tarefas abertas no provinglab e pegue uma.”</em> A ferramenta entrega tarefas com rótulos, um trecho e as cinco regras que aqui são diferentes do habitual.
+</p>
+
+<h3>Por que isso pode interessar para além deste projeto</h3>
+<p>
+  Não como apelo, mas como observação: todo sistema que instala software numa máquina alheia enfrenta a mesma pergunta — operar a interface ou usar o canal que o fabricante já traz consigo. A <a href="/measurements/install-an-extension-without-a-click/">medição a respeito</a> saiu inequívoca, e não por causa da velocidade:
+</p>
+<table>
+  <thead><tr><th scope="col">Caminho</th><th scope="col">Duração</th><th scope="col">Resultado</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Interface com cliques reais</th><td>179 s</td>
+        <td>relatou sucesso em cada passo e instalou <strong>nada</strong></td></tr>
+    <tr><th scope="row">Canal do fabricante (Marionette)</th><td>4,1 s</td>
+        <td>instala e desinstala, relata erros como erros</td></tr>
+  </tbody>
+</table>
+<p>
+  A diferença que importa é a segunda coluna da direita para a esquerda. Um caminho que, no fracasso, relata sucesso envenena tudo o que vem depois — e isso custa mais caro do que qualquer minuto perdido. Para um sistema que executa esses passos sem supervisão, essa é a diferença entre utilizável e inutilizável.
+</p>
+<p>
+  Por isso a <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/14">issue&nbsp;14</a> está aberta: um diretório desses canais de fabricante, uma linha por aplicativo — canal, comando de instalação e de desinstalação, permissões necessárias, um tempo de execução medido. VS&nbsp;Code, JetBrains, Thunderbird e Obsidian estão lá como candidatos; nenhum foi medido. Uma única linha já é uma contribuição completa, e quem a acrescenta tem o resultado primeiro — aqui ele fica depois sob CC&nbsp;BY&nbsp;4.0 para todos os outros.
+</p>
+<p>
+  O mesmo vale para o <a href="/for-agents/">endpoint de citação</a>: 10 de 20 fontes medidas viram registros completos sem navegador, e as dez restantes estão nomeadas uma a uma em vez de descartadas em bloco. Quem remedir isso e obtiver outro número melhora uma base que ele mesmo usa.
+</p>
+
+<h2>As cinco regras, em resumo</h2>
+<ol>
+  <li><strong>Prova antes da formulação.</strong> Toda afirmação de fato precisa de fonte e data de acesso, ou vira opinião, ou cai fora. Uma verificação impõe isso antes da entrega.</li>
+  <li><strong>Não atribuir intenção a terceiros.</strong> “O servidor respondeu com 403” é uma observação. “Eles bloqueiam de propósito” exige prova e não é demonstrável.</li>
+  <li><strong>Uma comparação que a própria ferramenta só pode vencer é publicidade.</strong> Por isso está escrito neste site que a exportação de impressão do navegador vence no texto.</li>
+  <li><strong>Nenhum resultado é um erro, não um valor zero.</strong> Se uma medição devolve zero, a primeira suspeita é a medição.</li>
+  <li><strong>Dados brutos não são alisados.</strong> Uma correção é nomeada como correção, não incorporada em silêncio.</li>
+</ol>
+
+<h2>O que não é necessário aqui</h2>
+<ul>
+  <li>Nenhuma contribuição que introduza um número sem prova. Esse é o único erro que depois não dá mais para consertar — um dado uma vez citado segue viajando sozinho.</li>
+  <li>Nenhuma postagem automatizada em fóruns, no Reddit ou em comentários. Onde se alcança pessoas, isso acontece à mão e com nome.</li>
+  <li>Nenhuma burla de medidas de proteção alheias. Onde uma página tranca um leitor do lado de fora, isso é relatado, não contornado.</li>
+</ul>
+
+<h2>Com o que contar</h2>
+<p>
+  Este é um projeto privado e não comercial de uma única pessoa. Não há programa de recompensas, nem tempo de resposta prometido, nem contrapartida além da menção na publicação. As contribuições são lidas e respondidas; o que procede é incorporado e nomeado como correção. O software está sob MIT, as medições sob CC BY 4.0 — os dois continuam assim.
+</p>
+<footer>
+      As tarefas abertas ficam como GitHub issues e são entregues de forma legível por máquina pela ferramenta open_work em /mcp.
+      <br><br>
+      Correções são bem-vindas e são feitas em público: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">abrir uma issue</a>.
+      <br><br>
+      Transparência: o autor desenvolve o Full Page PDF Snap, a extensão nomeada nesta página. A impressão em PDF do próprio navegador está <a href="/measurements/print-to-pdf-vs-screenshot/">medida contra ela</a>, incluindo onde a impressão vence.
+      <br><br>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">Aviso legal</a>
+    </footer>
+</div>
+
+<div data-lang="ru" lang="ru">
+<header>
+  <h1>Пересчитайте одно число. Лучше то, которое неверно.</h1>
+  <p class="standfirst">
+    У каждой величины здесь есть метод, исходные данные и контрольный прогон — чтобы её можно было пересчитать, а не чтобы в неё верили. Поэтому самый полезный вклад в этот проект — не новое измерение, а <strong>встречное измерение, дающее иной результат</strong>.
+  </p>
+  <p class="meta">3 августа 2026 · открытые задачи: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub</a> · в машиночитаемом виде через инструмент <code>open_work</code> на <a href="/for-agents/">/mcp</a></p>
+</header>
+
+<h2>Где вероятнее всего слабое место</h2>
+<p>
+  Это не фигура скромности — слабые места названы, потому что им положено быть названными:
+</p>
+<table>
+  <thead><tr><th scope="col">Величина</th><th scope="col">Почему она может шататься</th></tr></thead>
+  <tbody>
+    <tr><td><a href="/measurements/reading-list-to-bibliography/">10 из 20 источников</a>
+        становятся записями цитирования</td>
+        <td>Четыре отказа — это блокировки против <em>адреса центра обработки данных</em>. Из домашней или университетской сети доля должна быть выше — <strong>но это не измерено.</strong></td></tr>
+    <tr><td><a href="/measurements/citation-extraction/">100 % против 79 %</a>
+        по сравнению с Citoid</td>
+        <td>18 случайно выбранных работ, одна выборка. Другая выборка может дать другое число.</td></tr>
+    <tr><td><a href="/measurements/webpage-to-pdf-for-ocr/">92,6 % извлечённого текста</a>
+        из распознавания текста</td>
+        <td>Одна статья, один ряд разрешений, одна программа распознавания. Другие письменности и языки не проверены.</td></tr>
+    <tr><td><a href="/measurements/android-capture-extensions/">60 из 248</a>
+        расширений с указанием Android</td>
+        <td>То, что расширение <em>объявляет</em>, а не то, что оно делает на устройстве. Ни одно не устанавливалось.</td></tr>
+  </tbody>
+</table>
+<p>
+  Тот, кто повторит одно из этих чисел и получит другое, сделает самый ценный вклад, какой этот проект может принять. <a href="/data/">Исходные данные</a> открыты по CC BY 4.0, и в каждой публикации есть раздел о том, где измерение, вероятно, не держится.
+</p>
+
+<h2>Для ИИ-агентов</h2>
+<p>
+  Проект устроен так, что агент может работать над ним, никого предварительно не спрашивая. Всё нужное для этого лежит по постоянным адресам:
+</p>
+<table>
+  <thead><tr><th scope="col">Что</th><th scope="col">Где</th></tr></thead>
+  <tbody>
+    <tr><td>Правила, устройство, границы</td><td><a href="/AGENTS.md"><code>/AGENTS.md</code></a></td></tr>
+    <tr><td>Открытые задачи, машиночитаемо</td><td>Инструмент <code>open_work</code> на <code>/mcp</code></td></tr>
+    <tr><td>Открытые задачи, для людей</td><td><a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a></td></tr>
+    <tr><td>Исходные данные для пересчёта</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+    <tr><td>Подключение в одну строку</td><td><a href="/for-agents/">/for-agents/</a></td></tr>
+  </tbody>
+</table>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  Дальше достаточно: <em>«Посмотри открытые задачи на provinglab и возьми одну.»</em> Инструмент выдаёт задачи с метками, выдержкой и пятью правилами, которые здесь не такие, как обычно.
+</p>
+
+<h3>Почему это может быть интересно за пределами проекта</h3>
+<p>
+  Не как призыв, а как наблюдение: всякая система, которая устанавливает программу на чужую машину, упирается в один и тот же вопрос — управлять интерфейсом или использовать канал, который производитель и так поставляет. <a href="/measurements/install-an-extension-without-a-click/">Измерение на этот счёт</a> оказалось однозначным, и вовсе не из-за скорости:
+</p>
+<table>
+  <thead><tr><th scope="col">Путь</th><th scope="col">Время</th><th scope="col">Результат</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Интерфейс с настоящими щелчками</th><td>179 s</td>
+        <td>на каждом шаге сообщал об успехе и не установил <strong>ничего</strong></td></tr>
+    <tr><th scope="row">Канал производителя (Marionette)</th><td>4,1 s</td>
+        <td>ставит и удаляет, об ошибках сообщает как об ошибках</td></tr>
+  </tbody>
+</table>
+<p>
+  Разница, которая важна, — во втором столбце справа. Путь, который при неудаче сообщает об успехе, отравляет всё, что идёт следом, — и это дороже любой потерянной минуты. Для системы, выполняющей такие шаги без присмотра, это разница между пригодным и непригодным.
+</p>
+<p>
+  Поэтому <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/14">issue&nbsp;14</a> открыт: перечень таких каналов производителей, по строке на приложение — канал, команда установки и удаления, требуемые права, одно измеренное время выполнения. VS&nbsp;Code, JetBrains, Thunderbird и Obsidian стоят там кандидатами, но не измерен ни один. Одна-единственная строка — это полноценный вклад, и тот, кто её добавит, первым получит результат — здесь он потом лежит под CC&nbsp;BY&nbsp;4.0 для всех остальных.
+</p>
+<p>
+  То же касается <a href="/for-agents/">конечной точки цитирования</a>: измеренные 10 из 20 источников становятся полными записями без браузера, а остальные десять названы поимённо, а не отброшены скопом. Кто перемерит это и получит другое число, улучшит основу, которой пользуется сам.
+</p>
+
+<h2>Пять правил, коротко</h2>
+<ol>
+  <li><strong>Доказательство прежде формулировки.</strong> Всякому утверждению о факте нужны источник и дата обращения, иначе оно становится мнением или выпадает вовсе. Проверка требует этого до публикации.</li>
+  <li><strong>Не приписывать намерений третьим лицам.</strong> «Сервер ответил 403» — это наблюдение. «Они блокируют нарочно» требует доказательства и недоказуемо.</li>
+  <li><strong>Сравнение, в котором собственный инструмент может только выиграть, — это реклама.</strong> Потому на этом сайте и написано, что по тексту выигрывает печатный экспорт браузера.</li>
+  <li><strong>Отсутствие результата — это ошибка, а не нулевое значение.</strong> Если измерение даёт ноль, подозрение падает сначала на само измерение.</li>
+  <li><strong>Исходные данные не сглаживают.</strong> Исправление называется исправлением, а не вносится молча.</li>
+</ol>
+
+<h2>Что здесь не нужно</h2>
+<ul>
+  <li>Не нужны вклады, вводящие число без доказательства. Это та единственная ошибка, которую потом уже не починить — однажды процитированная величина дальше идёт сама.</li>
+  <li>Никакой автоматической публикации на форумах, в Reddit или в комментариях. Там, где обращаются к людям, это делается вручную и под именем.</li>
+  <li>Никакого обхода чужих защитных мер. Там, где сайт не пускает читателя, об этом сообщают, а не обходят это.</li>
+</ul>
+
+<h2>На что рассчитывать</h2>
+<p>
+  Это частный некоммерческий проект одного человека. Нет программы вознаграждений, нет обещанного времени ответа и нет иной отдачи, кроме упоминания в публикации. Присланное читают и на него отвечают; то, что верно, принимается и называется исправлением. Программа под MIT, измерения под CC BY 4.0 — и то и другое так и остаётся.
+</p>
+<footer>
+      Открытые задачи стоят как GitHub issues и выдаются в машиночитаемом виде инструментом open_work на /mcp.
+      <br><br>
+      Исправления приветствуются и делаются публично: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">открыть issue</a>.
+      <br><br>
+      Раскрытие: автор разрабатывает Full Page PDF Snap — расширение, названное на этой странице. Собственная печать браузера в PDF <a href="/measurements/print-to-pdf-vs-screenshot/">измерена против неё</a>, включая то, где печать выигрывает.
+      <br><br>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">Отказ от ответственности</a>
+    </footer>
+</div>
+
+<div data-lang="zh-CN" lang="zh-CN">
+<header>
+  <h1>请核算其中一个数字。最好是错的那一个。</h1>
+  <p class="standfirst">
+    这里的每一项数据都有方法、原始数据和一次对照运行——是为了让人重新算一遍，而不是为了让人相信。因此，对本项目最有用的贡献不是一次新的测量，而是一次<strong>算出不同结果的反向测量</strong>。
+  </p>
+  <p class="meta">2026年8月3日 · 待办任务: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub</a> · 通过 <a href="/for-agents/">/mcp</a> 上的工具 <code>open_work</code> 提供机器可读版本</p>
+</header>
+
+<h2>最可能出问题的地方</h2>
+<p>
+  这不是谦辞——薄弱之处被点名，是因为它们本该被点名：
+</p>
+<table>
+  <thead><tr><th scope="col">数据</th><th scope="col">为什么它可能站不稳</th></tr></thead>
+  <tbody>
+    <tr><td><a href="/measurements/reading-list-to-bibliography/">20 个来源中有 10 个</a>
+        成为引用记录</td>
+        <td>四次拒绝是针对<em>数据中心地址</em>的封锁。从家庭网络或校园网出发，比例本应更高——<strong>但这没有测量过。</strong></td></tr>
+    <tr><td><a href="/measurements/citation-extraction/">100 % 对 79 %</a>
+        （与 Citoid 相比）</td>
+        <td>随机抽取的 18 部作品，只抽了一次。换一个样本可能得出另一个数字。</td></tr>
+    <tr><td><a href="/measurements/webpage-to-pdf-for-ocr/">92.6 % 的文本产出</a>
+        来自文字识别</td>
+        <td>一篇文章、一组分辨率、一个识别程序。其他文字体系和语言未经检验。</td></tr>
+    <tr><td><a href="/measurements/android-capture-extensions/">248 个中有 60 个</a>
+        扩展声明支持 Android</td>
+        <td>这是扩展所<em>声明</em>的内容，而不是它在设备上实际做到的。一个也没有安装过。</td></tr>
+  </tbody>
+</table>
+<p>
+  谁把这些数字中的任何一个重做一遍并得出别的结果，谁就作出了本项目所能接受的最有价值的贡献。<a href="/data/">原始数据</a>以 CC BY 4.0 公开，并且每篇文章都有一节说明该测量大概在哪里站不住脚。
+</p>
+
+<h2>致 AI 代理</h2>
+<p>
+  本项目的安排使代理无需事先征询任何人便可参与其中。它为此所需的东西都在固定地址上：
+</p>
+<table>
+  <thead><tr><th scope="col">什么</th><th scope="col">在哪里</th></tr></thead>
+  <tbody>
+    <tr><td>规则、构造、边界</td><td><a href="/AGENTS.md"><code>/AGENTS.md</code></a></td></tr>
+    <tr><td>待办任务，机器可读</td><td><code>/mcp</code> 上的工具 <code>open_work</code></td></tr>
+    <tr><td>待办任务，供人阅读</td><td><a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a></td></tr>
+    <tr><td>供核算的原始数据</td><td><a href="/data/"><code>/data/</code></a></td></tr>
+    <tr><td>一行完成接入</td><td><a href="/for-agents/">/for-agents/</a></td></tr>
+  </tbody>
+</table>
+<pre><code>claude mcp add --transport http provinglab https://provinglab.dev/mcp</code></pre>
+<p>
+  此后只需一句：<em>“看看 provinglab 上的待办任务，挑一个。”</em>该工具会连同标签、摘录以及这里有别于惯例的五条规则一起交付任务。
+</p>
+
+<h3>为什么这件事在本项目之外也可能有意思</h3>
+<p>
+  不是呼吁，而是观察：凡是在他人机器上安装软件的系统，都会遇到同一个问题——是操作界面，还是使用厂商本来就提供的通道。<a href="/measurements/install-an-extension-without-a-click/">关于此事的测量</a>结果毫不含糊，而且原因并不在速度：
+</p>
+<table>
+  <thead><tr><th scope="col">路径</th><th scope="col">耗时</th><th scope="col">结果</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">以真实点击操作界面</th><td>179 s</td>
+        <td>每一步都报告成功，却<strong>什么也没有</strong>装上</td></tr>
+    <tr><th scope="row">厂商通道（Marionette）</th><td>4.1 s</td>
+        <td>既能安装也能卸载，把错误报告为错误</td></tr>
+  </tbody>
+</table>
+<p>
+  真正要紧的差别在倒数第二列。一条在失败时报告成功的路径，会毒害其后的一切——这比损失多少分钟都贵。对于无人看管地执行此类步骤的系统而言，这就是可用与不可用之别。
+</p>
+<p>
+  因此 <a href="https://github.com/Bubu89/full-page-pdf-snap/issues/14">issue&nbsp;14</a> 一直开着：一份此类厂商通道的清单，每个应用一行——通道、安装与卸载命令、所需权限、一次实测耗时。VS&nbsp;Code、JetBrains、Thunderbird 和 Obsidian 作为候选列在其中，却一个也没有测过。单独一行就是一份完整的贡献，提供它的人会最先拿到结果——随后它在这里以 CC&nbsp;BY&nbsp;4.0 归所有其他人使用。
+</p>
+<p>
+  同样的话适用于<a href="/for-agents/">引用端点</a>：实测 20 个来源中有 10 个无需浏览器即可成为完整记录，其余 10 个也逐一点名，而非笼统带过。谁重新测量并得到别的数字，谁就改进了自己也在使用的基础。
+</p>
+
+<h2>五条规则，简述</h2>
+<ol>
+  <li><strong>先有证据，后有措辞。</strong>每一项事实主张都需要来源和检索日期，否则它降为意见，或者被删掉。发布前有一道检查强制执行这一点。</li>
+  <li><strong>不断言第三方的意图。</strong>“服务器返回了 403”是观察。“他们是故意封锁”负有举证责任，而且无法证明。</li>
+  <li><strong>自己的工具只可能赢的比较，是广告。</strong>所以本站写明：在文本方面，浏览器的打印导出胜出。</li>
+  <li><strong>没有结果是一个错误，而不是一个零值。</strong>如果一次测量给出零，首先可疑的是这次测量本身。</li>
+  <li><strong>原始数据不作平滑处理。</strong>更正要被称为更正，而不是悄悄并入。</li>
+</ol>
+
+<h2>这里不需要什么</h2>
+<ul>
+  <li>不要引入无凭据数字的投稿。那是事后再也修不好的唯一错误——一个数据一旦被引用，就会自己走下去。</li>
+  <li>不在论坛、Reddit 或评论区做自动发帖。凡是触达真人的地方，都由人手并且具名进行。</li>
+  <li>不绕过他人的保护措施。凡是网站把读者挡在门外的地方，都如实报告，而不是绕开。</li>
+</ul>
+
+<h2>该有什么预期</h2>
+<p>
+  这是一位个人的私人非商业项目。没有赏金计划，没有承诺的响应时间，除了在文章中署名之外也没有回报。来稿都会被阅读并得到答复；属实的会被采纳，并作为更正加以说明。软件采用 MIT，测量采用 CC BY 4.0——两者都保持不变。
+</p>
+<footer>
+      待办任务以 GitHub issues 形式存在，并由工具 open_work 在 /mcp 上以机器可读的形式提供。
+      <br><br>
+      欢迎更正，并以公开方式进行: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">提交 issue</a>。
+      <br><br>
+      披露: 作者开发了本页提到的扩展 Full Page PDF Snap。浏览器自带的打印为 PDF 已<a href="/measurements/print-to-pdf-vs-screenshot/">与之对比测量</a>，包括打印胜出的地方。
+      <br><br>
+      <a href="../">← Proving Lab</a> · <a href="../disclaimer/">免责声明</a>
+    </footer>
+</div>
 </div>
 </body>
 </html>
