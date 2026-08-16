@@ -7,6 +7,16 @@
 <meta name="description" content="AI systems made more requests to this site than search engines did — 299 against 282 in 24 hours, on a domain two days old. ClaudeBot and GPTBot lead. Twenty requests carrying AI user agents were not reading at all but scanning for /keys.json and /.git/HEAD, and are counted separately. Self-reported figures with the query published.">
 <meta name="keywords" content="crawler logs, web analytics, GPTBot, ClaudeBot, reader statistics">>
 <link rel="canonical" href="https://provinglab.dev/notes/who-actually-reads-this/">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/notes/who-actually-reads-this/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/notes/who-actually-reads-this/">
+<link rel="alternate" hreflang="es" href="https://provinglab.dev/notes/who-actually-reads-this/">
+<link rel="alternate" hreflang="fr" href="https://provinglab.dev/notes/who-actually-reads-this/">
+<link rel="alternate" hreflang="it" href="https://provinglab.dev/notes/who-actually-reads-this/">
+<link rel="alternate" hreflang="ja" href="https://provinglab.dev/notes/who-actually-reads-this/">
+<link rel="alternate" hreflang="pt-BR" href="https://provinglab.dev/notes/who-actually-reads-this/">
+<link rel="alternate" hreflang="ru" href="https://provinglab.dev/notes/who-actually-reads-this/">
+<link rel="alternate" hreflang="zh-CN" href="https://provinglab.dev/notes/who-actually-reads-this/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/notes/who-actually-reads-this/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
 <link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
@@ -30,7 +40,7 @@
   "description": "AI systems made more requests to this site than search engines did — 299 against 282 in 24 hours, on a domain two days old. ClaudeBot and GPTBot lead. Twenty requests carrying AI user agents were not reading at all but scanning for /keys.json and /.git/HEAD, and are counted separately. Self-reported figures with the query published.",
   "datePublished": "2026-08-03",
   "dateModified": "2026-08-03",
-  "inLanguage": "en",
+  "inLanguage": ["en", "de", "es", "fr", "it", "ja", "pt-BR", "ru", "zh-CN"],
   "url": "https://provinglab.dev/notes/who-actually-reads-this/",
   "author": {
     "@type": "Organization",
@@ -151,6 +161,10 @@
     .topnav .brand{width:100%;margin-right:0}
     .topnav a.n{font-size:.85rem}
   }
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
 </style>
 <script src="/agent-tools.js" defer></script>
 <script src="/site-lang.js" defer></script>
@@ -161,7 +175,7 @@
     <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
     <a class="n" href="../../notes/">Notes</a>
     <a class="n" href="../../measurements/" aria-current="page">Measurements</a>
-    <a class="n" href="../../how-to/save-a-webpage-as-pdf/">How&nbsp;to</a>
+    <a class="n" href="../../how-to/">How&nbsp;to</a>
     <a class="n" href="../../recipes/">Recipes</a>
     <a class="n" href="../../for-agents/">For&nbsp;agents</a>
     <a class="n" href="../../mitmachen/">Mitmachen</a>
@@ -173,14 +187,11 @@
 </nav>
 
 <div class="wrap">
-
+<div data-lang="en" class="on" lang="en">
 <header>
   <h1>Who actually reads this site: 24 hours of crawler logs, published</h1>
   <p class="standfirst">
-    Plenty is claimed about AI crawlers and very little is shown. Anyone running
-    a site can see in their own logs which systems actually arrive, what they
-    take and how often — and almost nobody publishes it. Here is one day of it,
-    with the query that produced it.
+    Plenty is claimed about AI crawlers and very little is shown. Anyone running a site can see in their own logs which systems actually arrive, what they take and how often — and almost nobody publishes it. Here is one day of it, with the query that produced it.
   </p>
   <p class="meta">Collected 2026-08-03 · 23.9 h window ·
     <a href="/data/ki-crawler-aktuell.json">raw data</a></p>
@@ -188,16 +199,10 @@
 
 <h2>The headline</h2>
 <p>
-  <strong>AI systems made more requests than search engines did</strong> —
-  299 against 282. The search engines pulled
-  more data (4.0 MB against
-  2.1 MB), because Googlebot fetches images and
-  stylesheets that a language model has no use for.
+  <strong>AI systems made more requests than search engines did</strong> — 299 against 282. The search engines pulled more data (4.0 MB against 2.1 MB), because Googlebot fetches images and stylesheets that a language model has no use for.
 </p>
 <p>
-  This domain was registered on 1 August 2026. It is two days old, ranks for
-  nothing, and has no inbound links worth counting — and seven distinct AI
-  systems have already read it.
+  This domain was registered on 1 August 2026. It is two days old, ranks for nothing, and has no inbound links worth counting — and seven distinct AI systems have already read it.
 </p>
 
 <h2>AI systems</h2>
@@ -210,7 +215,7 @@
       <tr><th scope="row">GPTBot (OpenAI)</th><td class="num">96</td><td class="num">798 kB</td><td class="num">32 %</td></tr>
       <tr><th scope="row">PerplexityBot</th><td class="num">22</td><td class="num">213 kB</td><td class="num">7 %</td></tr>
       <tr><th scope="row">CCBot (Common Crawl)</th><td class="num">16</td><td class="num">69 kB</td><td class="num">5 %</td></tr>
-      <tr><th scope="row">ChatGPT-User (OpenAI, im Auftrag eines Menschen)</th><td class="num">15</td><td class="num">152 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI, on behalf of a human)</th><td class="num">15</td><td class="num">152 kB</td><td class="num">5 %</td></tr>
       <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">9</td><td class="num">43 kB</td><td class="num">3 %</td></tr>
       <tr><th scope="row">Amazonbot</th><td class="num">6</td><td class="num">45 kB</td><td class="num">2 %</td></tr>
   </tbody>
@@ -229,16 +234,12 @@
   </tbody>
 </table>
 <p>
-  YandexBot at 130 requests is
-  within reach of Googlebot, which is not the ratio most sites see. Bingbot at
-  10 is the surprise in the other
-  direction.
+  YandexBot at 130 requests is within reach of Googlebot, which is not the ratio most sites see. Bingbot at 10 is the surprise in the other direction.
 </p>
 
 <h2>Twenty requests were not reading</h2>
 <p>
-  Separated out rather than counted: requests carrying an AI user agent that went
-  straight for files nobody links to.
+  Separated out rather than counted: requests carrying an AI user agent that went straight for files nobody links to.
 </p>
 <table>
   <caption>Credential scans arriving under AI or crawler user agents</caption>
@@ -248,61 +249,807 @@
       <tr><th scope="row">Bingbot</th><td class="num">5</td><td><code>/.env.prod</code></td></tr>
       <tr><th scope="row">PerplexityBot</th><td class="num">5</td><td><code>/terraform.tfvars</code></td></tr>
       <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">5</td><td><code>/.git/HEAD</code></td></tr>
-      <tr><th scope="row">ChatGPT-User (OpenAI, im Auftrag eines Menschen)</th><td class="num">5</td><td><code>/keys.json</code></td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI, on behalf of a human)</th><td class="num">5</td><td><code>/keys.json</code></td></tr>
   </tbody>
 </table>
 <p>
-  <strong>A user agent is not an identity.</strong> It is a string the client
-  chooses. Whether these came from the named operators or from someone borrowing
-  their name cannot be determined from this side, and this page does not claim
-  to know. What can be said: they were not reading, all of them got 404, and
-  nothing they sought exists here.
+  <strong>A user agent is not an identity.</strong> It is a string the client chooses. Whether these came from the named operators or from someone borrowing their name cannot be determined from this side, and this page does not claim to know. What can be said: they were not reading, all of them got 404, and nothing they sought exists here.
 </p>
 
 <h2>What the AI systems actually fetched</h2>
 <p>
-  The most-requested paths across all of them are the machine-readable ones —
-  <code>/sitemap.xml</code>, <code>/llms.txt</code>, <code>/mcp</code> — before
-  the articles. That is the whole argument for maintaining those files: they are
-  not decoration, they are what gets read first.
+  The most-requested paths across all of them are the machine-readable ones — <code>/sitemap.xml</code>, <code>/llms.txt</code>, <code>/mcp</code> — before the articles. That is the whole argument for maintaining those files: they are not decoration, they are what gets read first.
 </p>
 
 <h2>What this is not</h2>
 <p>
-  <strong>These numbers cannot be checked from outside.</strong> They come from
-  our own provider's analytics, retrieved with a token only the operator holds.
-  Nobody can recompute them. What is published instead is the method: the query
-  runs in
-  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/tools/crawler-bericht.py"><code>tools/crawler-bericht.py</code></a>,
-  in plain text, and anyone with a Cloudflare zone can run the same one against
-  their own.
+  <strong>These numbers cannot be checked from outside.</strong> They come from our own provider's analytics, retrieved with a token only the operator holds. Nobody can recompute them. What is published instead is the method: the query runs in
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/tools/crawler-bericht.py"><code>tools/crawler-bericht.py</code></a>, in plain text, and anyone with a Cloudflare zone can run the same one against their own.
 </p>
 <p>
-  So this is a self-report with a disclosed method, not a measurement someone
-  could repeat. Everywhere else on this site that distinction is the point, and
-  it would be dishonest to blur it here because the numbers happen to be
-  flattering.
+  So this is a self-report with a disclosed method, not a measurement someone could repeat. Everywhere else on this site that distinction is the point, and it would be dishonest to blur it here because the numbers happen to be flattering.
 </p>
 <p>
-  Two further limits. One day is one day — a crawler that visits weekly is
-  invisible in it. And requests are counted at the edge, so a system reading a
-  cached copy through an intermediary never appears at all.
+  Two further limits. One day is one day — a crawler that visits weekly is invisible in it. And requests are counted at the edge, so a system reading a cached copy through an intermediary never appears at all.
 </p>
 
 <footer>
-      Method: Cloudflare GraphQL Analytics, <code>httpRequestsAdaptiveGroups</code>,
-      grouped by user agent over a 24-hour window, collected 2026-08-03. Requests
-      for paths that only a scanner seeks are separated out and not counted as reading. The
-      query is published; the underlying log is not accessible to anyone but the operator,
-      so these figures are a self-report and are labelled as one. A user agent can be set
-      freely and is not proof of origin. Nothing here is legal advice.
+      Method: Cloudflare GraphQL Analytics, <code>httpRequestsAdaptiveGroups</code>, grouped by user agent over a 24-hour window, collected 2026-08-03. Requests for paths that only a scanner seeks are separated out and not counted as reading. The query is published; the underlying log is not accessible to anyone but the operator, so these figures are a self-report and are labelled as one. A user agent can be set freely and is not proof of origin. Nothing here is legal advice.
       <br><br>
       Corrections are welcome and are made in public:
       <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">open an issue</a>.
       <br><br>
       <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
     </footer>
+</div>
 
+<div data-lang="de" lang="de">
+<header>
+  <h1>Wer diese Seite wirklich liest: 24 Stunden Crawler-Protokoll, veröffentlicht</h1>
+  <p class="standfirst">
+    Über KI-Crawler wird viel behauptet und wenig gezeigt. Wer eine Seite betreibt, kann im eigenen Protokoll sehen, welche Systeme tatsächlich kommen, was sie holen und wie oft — und fast niemand veröffentlicht es. Hier ist ein Tag davon, mitsamt der Abfrage, die ihn erzeugt hat.
+  </p>
+  <p class="meta">Erhoben am 03.08.2026 · Zeitfenster 23,9 h ·
+    <a href="/data/ki-crawler-aktuell.json">Rohdaten</a></p>
+</header>
+
+<h2>Der Befund</h2>
+<p>
+  <strong>Die KI-Systeme haben mehr Anfragen gestellt als die Suchmaschinen</strong> — 299 gegen 282. Die Suchmaschinen haben mehr Daten gezogen (4,0 MB gegen 2,1 MB), weil Googlebot Bilder und Stilvorlagen holt, mit denen ein Sprachmodell nichts anfangen kann.
+</p>
+<p>
+  Diese Domain wurde am 1. August 2026 registriert. Sie ist zwei Tage alt, rankt für nichts und hat keine nennenswerten eingehenden Links — und sieben verschiedene KI-Systeme haben sie bereits gelesen.
+</p>
+
+<h2>KI-Systeme</h2>
+<table>
+  <caption>Anfragen nach KI-User-Agent, 23,9 Stunden bis 2026-08-03 18:04 UTC</caption>
+  <thead><tr><th scope="col">System</th><th scope="col">Anfragen</th>
+    <th scope="col">Daten</th><th scope="col">Anteil</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">ClaudeBot (Anthropic)</th><td class="num">135</td><td class="num">795 kB</td><td class="num">45 %</td></tr>
+      <tr><th scope="row">GPTBot (OpenAI)</th><td class="num">96</td><td class="num">798 kB</td><td class="num">32 %</td></tr>
+      <tr><th scope="row">PerplexityBot</th><td class="num">22</td><td class="num">213 kB</td><td class="num">7 %</td></tr>
+      <tr><th scope="row">CCBot (Common Crawl)</th><td class="num">16</td><td class="num">69 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI, im Auftrag eines Menschen)</th><td class="num">15</td><td class="num">152 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">9</td><td class="num">43 kB</td><td class="num">3 %</td></tr>
+      <tr><th scope="row">Amazonbot</th><td class="num">6</td><td class="num">45 kB</td><td class="num">2 %</td></tr>
+  </tbody>
+</table>
+
+<h2>Suchmaschinen zum Vergleich</h2>
+<table>
+  <caption>Dasselbe Zeitfenster, herkömmliche Crawler</caption>
+  <thead><tr><th scope="col">Crawler</th><th scope="col">Anfragen</th>
+    <th scope="col">Daten</th><th scope="col">Anteil</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">Googlebot</th><td class="num">134</td><td class="num">2658 kB</td><td class="num">48 %</td></tr>
+      <tr><th scope="row">YandexBot</th><td class="num">130</td><td class="num">1306 kB</td><td class="num">46 %</td></tr>
+      <tr><th scope="row">Bingbot</th><td class="num">10</td><td class="num">78 kB</td><td class="num">4 %</td></tr>
+      <tr><th scope="row">Applebot</th><td class="num">8</td><td class="num">53 kB</td><td class="num">3 %</td></tr>
+  </tbody>
+</table>
+<p>
+  YandexBot liegt mit 130 Anfragen in Reichweite von Googlebot, und das ist nicht das Verhältnis, das die meisten Seiten sehen. Bingbot mit 10 ist die Überraschung in die andere Richtung.
+</p>
+
+<h2>Zwanzig Anfragen haben nicht gelesen</h2>
+<p>
+  Herausgerechnet statt mitgezählt: Anfragen mit einem KI-User-Agent, die direkt auf Dateien zielten, die niemand verlinkt.
+</p>
+<table>
+  <caption>Zugangsdaten-Scans unter KI- oder Crawler-User-Agents</caption>
+  <thead><tr><th scope="col">Behaupteter User-Agent</th><th scope="col">Anfragen</th>
+    <th scope="col">Gesuchte Pfade</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">Bingbot</th><td class="num">5</td><td><code>/.env.prod</code></td></tr>
+      <tr><th scope="row">PerplexityBot</th><td class="num">5</td><td><code>/terraform.tfvars</code></td></tr>
+      <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">5</td><td><code>/.git/HEAD</code></td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI, im Auftrag eines Menschen)</th><td class="num">5</td><td><code>/keys.json</code></td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>Ein User-Agent ist keine Identität.</strong> Er ist eine Zeichenkette, die der Client wählt. Ob diese Anfragen von den genannten Betreibern kamen oder von jemandem, der sich ihren Namen leiht, lässt sich von dieser Seite aus nicht feststellen, und diese Seite behauptet nicht, es zu wissen. Sagen lässt sich: Sie haben nicht gelesen, alle bekamen 404, und nichts von dem, was sie suchten, gibt es hier.
+</p>
+
+<h2>Was die KI-Systeme tatsächlich geholt haben</h2>
+<p>
+  Die meistgefragten Pfade über alle hinweg sind die maschinenlesbaren — <code>/sitemap.xml</code>, <code>/llms.txt</code>, <code>/mcp</code> — vor den Artikeln. Das ist das ganze Argument dafür, diese Dateien zu pflegen: Sie sind keine Zierde, sie sind das, was zuerst gelesen wird.
+</p>
+
+<h2>Was das nicht ist</h2>
+<p>
+  <strong>Diese Zahlen sind von außen nicht überprüfbar.</strong> Sie stammen aus der Auswertung unseres eigenen Anbieters, abgerufen mit einem Token, das nur der Betreiber hat. Niemand kann sie nachrechnen. Veröffentlicht wird stattdessen die Methode: Die Abfrage steht in
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/tools/crawler-bericht.py"><code>tools/crawler-bericht.py</code></a>, im Klartext, und wer eine Cloudflare-Zone hat, kann dieselbe gegen die eigene laufen lassen.
+</p>
+<p>
+  Das hier ist also eine Selbstauskunft mit offengelegter Methode, keine Messung, die jemand wiederholen könnte. Überall sonst auf dieser Seite ist genau dieser Unterschied der Punkt, und es wäre unredlich, ihn hier zu verwischen, weil die Zahlen zufällig schmeichelhaft sind.
+</p>
+<p>
+  Zwei weitere Grenzen. Ein Tag ist ein Tag — ein Crawler, der wöchentlich vorbeikommt, ist darin unsichtbar. Und gezählt wird am Rand des Netzes, ein System also, das über einen Zwischenspeicher eine Kopie liest, taucht überhaupt nicht auf.
+</p>
+
+<footer>
+      Methode: Cloudflare GraphQL Analytics, <code>httpRequestsAdaptiveGroups</code>, gruppiert nach User-Agent über ein 24-Stunden-Fenster, erhoben am 2026-08-03. Anfragen auf Pfade, die nur ein Scanner sucht, sind herausgerechnet und nicht als Lesen gezählt. Die Abfrage ist veröffentlicht; das zugrunde liegende Protokoll ist für niemanden außer dem Betreiber zugänglich, diese Zahlen sind also eine Selbstauskunft und als solche gekennzeichnet. Ein User-Agent lässt sich frei setzen und ist kein Herkunftsnachweis. Nichts davon ist eine Rechtsberatung.
+      <br><br>
+      Korrekturen sind willkommen und werden öffentlich gemacht:
+      <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">ein Issue eröffnen</a>.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Haftungsausschluss</a>
+    </footer>
+</div>
+
+<div data-lang="es" lang="es">
+<header>
+  <h1>Quién lee realmente este sitio: 24 horas de registros de rastreadores, publicadas</h1>
+  <p class="standfirst">
+    Sobre los rastreadores de IA se afirma mucho y se muestra muy poco. Quien gestiona un sitio puede ver en sus propios registros qué sistemas llegan de verdad, qué se llevan y con qué frecuencia — y casi nadie lo publica. Aquí hay un día de ello, junto con la consulta que lo produjo.
+  </p>
+  <p class="meta">Recogido el 2026-08-03 · ventana de 23,9 h ·
+    <a href="/data/ki-crawler-aktuell.json">datos en bruto</a></p>
+</header>
+
+<h2>El titular</h2>
+<p>
+  <strong>Los sistemas de IA hicieron más peticiones que los motores de búsqueda</strong> — 299 frente a 282. Los motores de búsqueda se llevaron más datos (4,0 MB frente a 2,1 MB), porque Googlebot recupera imágenes y hojas de estilo que a un modelo de lenguaje no le sirven de nada.
+</p>
+<p>
+  Este dominio se registró el 1 de agosto de 2026. Tiene dos días, no posiciona para nada y no tiene enlaces entrantes dignos de contarse — y siete sistemas de IA distintos ya lo han leído.
+</p>
+
+<h2>Sistemas de IA</h2>
+<table>
+  <caption>Peticiones por agente de usuario de IA, 23,9 horas hasta 2026-08-03 18:04 UTC</caption>
+  <thead><tr><th scope="col">Sistema</th><th scope="col">Peticiones</th>
+    <th scope="col">Datos</th><th scope="col">Cuota</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">ClaudeBot (Anthropic)</th><td class="num">135</td><td class="num">795 kB</td><td class="num">45 %</td></tr>
+      <tr><th scope="row">GPTBot (OpenAI)</th><td class="num">96</td><td class="num">798 kB</td><td class="num">32 %</td></tr>
+      <tr><th scope="row">PerplexityBot</th><td class="num">22</td><td class="num">213 kB</td><td class="num">7 %</td></tr>
+      <tr><th scope="row">CCBot (Common Crawl)</th><td class="num">16</td><td class="num">69 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI, por encargo de una persona)</th><td class="num">15</td><td class="num">152 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">9</td><td class="num">43 kB</td><td class="num">3 %</td></tr>
+      <tr><th scope="row">Amazonbot</th><td class="num">6</td><td class="num">45 kB</td><td class="num">2 %</td></tr>
+  </tbody>
+</table>
+
+<h2>Motores de búsqueda, para comparar</h2>
+<table>
+  <caption>La misma ventana, rastreadores convencionales</caption>
+  <thead><tr><th scope="col">Rastreador</th><th scope="col">Peticiones</th>
+    <th scope="col">Datos</th><th scope="col">Cuota</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">Googlebot</th><td class="num">134</td><td class="num">2658 kB</td><td class="num">48 %</td></tr>
+      <tr><th scope="row">YandexBot</th><td class="num">130</td><td class="num">1306 kB</td><td class="num">46 %</td></tr>
+      <tr><th scope="row">Bingbot</th><td class="num">10</td><td class="num">78 kB</td><td class="num">4 %</td></tr>
+      <tr><th scope="row">Applebot</th><td class="num">8</td><td class="num">53 kB</td><td class="num">3 %</td></tr>
+  </tbody>
+</table>
+<p>
+  YandexBot, con 130 peticiones, está al alcance de Googlebot, y esa no es la proporción que ve la mayoría de los sitios. Bingbot, con 10, es la sorpresa en la dirección contraria.
+</p>
+
+<h2>Veinte peticiones no estaban leyendo</h2>
+<p>
+  Separadas en lugar de contadas: peticiones que llevaban un agente de usuario de IA y fueron directas a archivos que nadie enlaza.
+</p>
+<table>
+  <caption>Escaneos de credenciales llegados bajo agentes de usuario de IA o de rastreadores</caption>
+  <thead><tr><th scope="col">Agente de usuario declarado</th><th scope="col">Peticiones</th>
+    <th scope="col">Rutas buscadas</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">Bingbot</th><td class="num">5</td><td><code>/.env.prod</code></td></tr>
+      <tr><th scope="row">PerplexityBot</th><td class="num">5</td><td><code>/terraform.tfvars</code></td></tr>
+      <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">5</td><td><code>/.git/HEAD</code></td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI, por encargo de una persona)</th><td class="num">5</td><td><code>/keys.json</code></td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>Un agente de usuario no es una identidad.</strong> Es una cadena que elige el cliente. Si estas vinieron de los operadores nombrados o de alguien que toma prestado su nombre no puede determinarse desde este lado, y esta página no pretende saberlo. Lo que sí puede decirse: no estaban leyendo, todas recibieron 404 y nada de lo que buscaban existe aquí.
+</p>
+
+<h2>Qué recuperaron realmente los sistemas de IA</h2>
+<p>
+  Las rutas más solicitadas por todos ellos son las legibles por máquina — <code>/sitemap.xml</code>, <code>/llms.txt</code>, <code>/mcp</code> — antes que los artículos. Ese es todo el argumento para mantener esos archivos: no son adorno, son lo que se lee primero.
+</p>
+
+<h2>Qué no es esto</h2>
+<p>
+  <strong>Estas cifras no pueden comprobarse desde fuera.</strong> Proceden de la analítica de nuestro propio proveedor, obtenidas con un token que solo tiene el operador. Nadie puede recalcularlas. Lo que se publica en su lugar es el método: la consulta está en
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/tools/crawler-bericht.py"><code>tools/crawler-bericht.py</code></a>, en texto plano, y cualquiera que tenga una zona de Cloudflare puede ejecutar la misma contra la suya.
+</p>
+<p>
+  Así que esto es un autoinforme con el método revelado, no una medición que alguien pudiera repetir. En todo el resto de este sitio esa distinción es justamente el asunto, y sería deshonesto difuminarla aquí porque las cifras resulten halagadoras.
+</p>
+<p>
+  Dos límites más. Un día es un día — un rastreador que pasa semanalmente es invisible en él. Y las peticiones se cuentan en el borde, así que un sistema que lee una copia en caché a través de un intermediario no aparece en absoluto.
+</p>
+
+<footer>
+      Método: Cloudflare GraphQL Analytics, <code>httpRequestsAdaptiveGroups</code>, agrupado por agente de usuario sobre una ventana de 24 horas, recogido el 2026-08-03. Las peticiones a rutas que solo busca un escáner se separan y no se cuentan como lectura. La consulta está publicada; el registro subyacente no es accesible para nadie salvo el operador, de modo que estas cifras son un autoinforme y se etiquetan como tal. Un agente de usuario puede fijarse libremente y no prueba el origen. Nada de esto es asesoramiento jurídico.
+      <br><br>
+      Las correcciones son bienvenidas y se hacen en público:
+      <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">abrir un issue</a>.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Aviso legal</a>
+    </footer>
+</div>
+
+<div data-lang="fr" lang="fr">
+<header>
+  <h1>Qui lit vraiment ce site : 24 heures de journaux de robots, publiées</h1>
+  <p class="standfirst">
+    On affirme beaucoup de choses sur les robots d’IA et on en montre très peu. Qui exploite un site peut voir dans ses propres journaux quels systèmes arrivent réellement, ce qu’ils prennent et à quelle fréquence — et presque personne ne le publie. En voici une journée, avec la requête qui l’a produite.
+  </p>
+  <p class="meta">Relevé le 2026-08-03 · fenêtre de 23,9 h ·
+    <a href="/data/ki-crawler-aktuell.json">données brutes</a></p>
+</header>
+
+<h2>Le constat</h2>
+<p>
+  <strong>Les systèmes d’IA ont fait plus de requêtes que les moteurs de recherche</strong> — 299 contre 282. Les moteurs de recherche ont tiré plus de données (4,0 MB contre 2,1 MB), parce que Googlebot récupère des images et des feuilles de style dont un modèle de langue n’a aucun usage.
+</p>
+<p>
+  Ce domaine a été enregistré le 1er août 2026. Il a deux jours, ne se classe sur rien et n’a aucun lien entrant digne d’être compté — et sept systèmes d’IA distincts l’ont déjà lu.
+</p>
+
+<h2>Systèmes d’IA</h2>
+<table>
+  <caption>Requêtes par agent utilisateur d’IA, 23,9 heures jusqu’au 2026-08-03 18:04 UTC</caption>
+  <thead><tr><th scope="col">Système</th><th scope="col">Requêtes</th>
+    <th scope="col">Données</th><th scope="col">Part</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">ClaudeBot (Anthropic)</th><td class="num">135</td><td class="num">795 kB</td><td class="num">45 %</td></tr>
+      <tr><th scope="row">GPTBot (OpenAI)</th><td class="num">96</td><td class="num">798 kB</td><td class="num">32 %</td></tr>
+      <tr><th scope="row">PerplexityBot</th><td class="num">22</td><td class="num">213 kB</td><td class="num">7 %</td></tr>
+      <tr><th scope="row">CCBot (Common Crawl)</th><td class="num">16</td><td class="num">69 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI, pour le compte d’un humain)</th><td class="num">15</td><td class="num">152 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">9</td><td class="num">43 kB</td><td class="num">3 %</td></tr>
+      <tr><th scope="row">Amazonbot</th><td class="num">6</td><td class="num">45 kB</td><td class="num">2 %</td></tr>
+  </tbody>
+</table>
+
+<h2>Moteurs de recherche, pour comparaison</h2>
+<table>
+  <caption>Même fenêtre, robots classiques</caption>
+  <thead><tr><th scope="col">Robot</th><th scope="col">Requêtes</th>
+    <th scope="col">Données</th><th scope="col">Part</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">Googlebot</th><td class="num">134</td><td class="num">2658 kB</td><td class="num">48 %</td></tr>
+      <tr><th scope="row">YandexBot</th><td class="num">130</td><td class="num">1306 kB</td><td class="num">46 %</td></tr>
+      <tr><th scope="row">Bingbot</th><td class="num">10</td><td class="num">78 kB</td><td class="num">4 %</td></tr>
+      <tr><th scope="row">Applebot</th><td class="num">8</td><td class="num">53 kB</td><td class="num">3 %</td></tr>
+  </tbody>
+</table>
+<p>
+  YandexBot, avec 130 requêtes, est à portée de Googlebot, et ce n’est pas le rapport que voient la plupart des sites. Bingbot, avec 10, est la surprise dans l’autre sens.
+</p>
+
+<h2>Vingt requêtes ne lisaient pas</h2>
+<p>
+  Mises à part plutôt que comptées : des requêtes portant un agent utilisateur d’IA et allant droit vers des fichiers que personne ne lie.
+</p>
+<table>
+  <caption>Scans d’identifiants arrivés sous des agents utilisateurs d’IA ou de robots</caption>
+  <thead><tr><th scope="col">Agent utilisateur déclaré</th><th scope="col">Requêtes</th>
+    <th scope="col">Chemins recherchés</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">Bingbot</th><td class="num">5</td><td><code>/.env.prod</code></td></tr>
+      <tr><th scope="row">PerplexityBot</th><td class="num">5</td><td><code>/terraform.tfvars</code></td></tr>
+      <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">5</td><td><code>/.git/HEAD</code></td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI, pour le compte d’un humain)</th><td class="num">5</td><td><code>/keys.json</code></td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>Un agent utilisateur n’est pas une identité.</strong> C’est une chaîne que le client choisit. Savoir si celles-ci venaient des opérateurs nommés ou de quelqu’un qui emprunte leur nom ne peut pas être déterminé depuis ce côté-ci, et cette page ne prétend pas le savoir. Ce qu’on peut dire : elles ne lisaient pas, toutes ont reçu 404, et rien de ce qu’elles cherchaient n’existe ici.
+</p>
+
+<h2>Ce que les systèmes d’IA ont réellement récupéré</h2>
+<p>
+  Les chemins les plus demandés, tous confondus, sont ceux lisibles par machine — <code>/sitemap.xml</code>, <code>/llms.txt</code>, <code>/mcp</code> — avant les articles. C’est tout l’argument pour entretenir ces fichiers : ce ne sont pas des ornements, ce sont eux qu’on lit en premier.
+</p>
+
+<h2>Ce que ceci n’est pas</h2>
+<p>
+  <strong>Ces chiffres ne sont pas vérifiables de l’extérieur.</strong> Ils viennent de l’analytique de notre propre fournisseur, récupérée avec un jeton que seul l’exploitant détient. Personne ne peut les recalculer. Ce qui est publié à la place, c’est la méthode : la requête se trouve dans
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/tools/crawler-bericht.py"><code>tools/crawler-bericht.py</code></a>, en clair, et quiconque dispose d’une zone Cloudflare peut lancer la même contre la sienne.
+</p>
+<p>
+  Ceci est donc une auto-déclaration à méthode divulguée, pas une mesure que quelqu’un pourrait répéter. Partout ailleurs sur ce site cette distinction est le sujet même, et il serait malhonnête de la brouiller ici parce que les chiffres se trouvent être flatteurs.
+</p>
+<p>
+  Deux limites de plus. Un jour est un jour — un robot qui passe chaque semaine y est invisible. Et les requêtes sont comptées en bordure de réseau : un système qui lit une copie en cache via un intermédiaire n’apparaît pas du tout.
+</p>
+
+<footer>
+      Méthode : Cloudflare GraphQL Analytics, <code>httpRequestsAdaptiveGroups</code>, groupé par agent utilisateur sur une fenêtre de 24 heures, relevé le 2026-08-03. Les requêtes vers des chemins que seul un scanner cherche sont mises à part et ne comptent pas comme lecture. La requête est publiée ; le journal sous-jacent n’est accessible à personne d’autre qu’à l’exploitant, ces chiffres sont donc une auto-déclaration et sont signalés comme tels. Un agent utilisateur peut être fixé librement et ne prouve pas l’origine. Rien de ceci n’est un conseil juridique.
+      <br><br>
+      Les corrections sont bienvenues et sont faites en public :
+      <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">ouvrir un issue</a>.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Avertissement</a>
+    </footer>
+</div>
+
+<div data-lang="it" lang="it">
+<header>
+  <h1>Chi legge davvero questo sito: 24 ore di registri dei crawler, pubblicate</h1>
+  <p class="standfirst">
+    Sui crawler di IA si afferma molto e si mostra pochissimo. Chi gestisce un sito può vedere nei propri registri quali sistemi arrivano davvero, che cosa prendono e con quale frequenza — e quasi nessuno lo pubblica. Eccone una giornata, con la query che l’ha prodotta.
+  </p>
+  <p class="meta">Rilevato il 2026-08-03 · finestra di 23,9 h ·
+    <a href="/data/ki-crawler-aktuell.json">dati grezzi</a></p>
+</header>
+
+<h2>Il dato principale</h2>
+<p>
+  <strong>I sistemi di IA hanno fatto più richieste dei motori di ricerca</strong> — 299 contro 282. I motori di ricerca hanno tirato più dati (4,0 MB contro 2,1 MB), perché Googlebot preleva immagini e fogli di stile che a un modello linguistico non servono.
+</p>
+<p>
+  Questo dominio è stato registrato il 1° agosto 2026. Ha due giorni, non si posiziona per nulla e non ha link in entrata degni di essere contati — e sette sistemi di IA distinti lo hanno già letto.
+</p>
+
+<h2>Sistemi di IA</h2>
+<table>
+  <caption>Richieste per user agent di IA, 23,9 ore fino al 2026-08-03 18:04 UTC</caption>
+  <thead><tr><th scope="col">Sistema</th><th scope="col">Richieste</th>
+    <th scope="col">Dati</th><th scope="col">Quota</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">ClaudeBot (Anthropic)</th><td class="num">135</td><td class="num">795 kB</td><td class="num">45 %</td></tr>
+      <tr><th scope="row">GPTBot (OpenAI)</th><td class="num">96</td><td class="num">798 kB</td><td class="num">32 %</td></tr>
+      <tr><th scope="row">PerplexityBot</th><td class="num">22</td><td class="num">213 kB</td><td class="num">7 %</td></tr>
+      <tr><th scope="row">CCBot (Common Crawl)</th><td class="num">16</td><td class="num">69 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI, per conto di una persona)</th><td class="num">15</td><td class="num">152 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">9</td><td class="num">43 kB</td><td class="num">3 %</td></tr>
+      <tr><th scope="row">Amazonbot</th><td class="num">6</td><td class="num">45 kB</td><td class="num">2 %</td></tr>
+  </tbody>
+</table>
+
+<h2>Motori di ricerca, per confronto</h2>
+<table>
+  <caption>Stessa finestra, crawler convenzionali</caption>
+  <thead><tr><th scope="col">Crawler</th><th scope="col">Richieste</th>
+    <th scope="col">Dati</th><th scope="col">Quota</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">Googlebot</th><td class="num">134</td><td class="num">2658 kB</td><td class="num">48 %</td></tr>
+      <tr><th scope="row">YandexBot</th><td class="num">130</td><td class="num">1306 kB</td><td class="num">46 %</td></tr>
+      <tr><th scope="row">Bingbot</th><td class="num">10</td><td class="num">78 kB</td><td class="num">4 %</td></tr>
+      <tr><th scope="row">Applebot</th><td class="num">8</td><td class="num">53 kB</td><td class="num">3 %</td></tr>
+  </tbody>
+</table>
+<p>
+  YandexBot, con 130 richieste, è a portata di Googlebot, e non è il rapporto che vede la maggior parte dei siti. Bingbot, con 10, è la sorpresa nella direzione opposta.
+</p>
+
+<h2>Venti richieste non stavano leggendo</h2>
+<p>
+  Messe da parte anziché contate: richieste che portavano uno user agent di IA e puntavano dritto a file che nessuno collega.
+</p>
+<table>
+  <caption>Scansioni di credenziali giunte sotto user agent di IA o di crawler</caption>
+  <thead><tr><th scope="col">User agent dichiarato</th><th scope="col">Richieste</th>
+    <th scope="col">Percorsi cercati</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">Bingbot</th><td class="num">5</td><td><code>/.env.prod</code></td></tr>
+      <tr><th scope="row">PerplexityBot</th><td class="num">5</td><td><code>/terraform.tfvars</code></td></tr>
+      <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">5</td><td><code>/.git/HEAD</code></td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI, per conto di una persona)</th><td class="num">5</td><td><code>/keys.json</code></td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>Uno user agent non è un’identità.</strong> È una stringa che sceglie il client. Se queste siano venute dagli operatori nominati o da qualcuno che ne prende in prestito il nome non è determinabile da questo lato, e questa pagina non pretende di saperlo. Quello che si può dire: non stavano leggendo, tutte hanno ricevuto 404 e nulla di ciò che cercavano esiste qui.
+</p>
+
+<h2>Che cosa hanno davvero prelevato i sistemi di IA</h2>
+<p>
+  I percorsi più richiesti nel complesso sono quelli leggibili dalla macchina — <code>/sitemap.xml</code>, <code>/llms.txt</code>, <code>/mcp</code> — prima degli articoli. È tutto qui l’argomento per mantenere quei file: non sono decorazione, sono ciò che viene letto per primo.
+</p>
+
+<h2>Che cosa questo non è</h2>
+<p>
+  <strong>Questi numeri non sono verificabili dall’esterno.</strong> Vengono dall’analitica del nostro stesso fornitore, recuperata con un token che ha solo il gestore. Nessuno può ricalcolarli. Ciò che si pubblica al loro posto è il metodo: la query sta in
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/tools/crawler-bericht.py"><code>tools/crawler-bericht.py</code></a>, in chiaro, e chiunque abbia una zona Cloudflare può eseguire la stessa sulla propria.
+</p>
+<p>
+  Questa è quindi un’autodichiarazione con metodo dichiarato, non una misura che qualcuno potrebbe ripetere. In ogni altro punto di questo sito quella distinzione è il punto, e sarebbe disonesto sfumarla qui perché i numeri risultano lusinghieri.
+</p>
+<p>
+  Altri due limiti. Un giorno è un giorno — un crawler che passa ogni settimana lì è invisibile. E le richieste si contano al bordo della rete, quindi un sistema che legge una copia in cache tramite un intermediario non compare affatto.
+</p>
+
+<footer>
+      Metodo: Cloudflare GraphQL Analytics, <code>httpRequestsAdaptiveGroups</code>, raggruppato per user agent su una finestra di 24 ore, rilevato il 2026-08-03. Le richieste verso percorsi che solo uno scanner cerca sono messe da parte e non contate come lettura. La query è pubblicata; il registro sottostante non è accessibile a nessuno tranne al gestore, quindi queste cifre sono un’autodichiarazione e come tali sono etichettate. Uno user agent può essere impostato liberamente e non è prova di origine. Nulla di qui è consulenza legale.
+      <br><br>
+      Le correzioni sono benvenute e vengono fatte in pubblico:
+      <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">aprire un issue</a>.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Avvertenza</a>
+    </footer>
+</div>
+
+<div data-lang="ja" lang="ja">
+<header>
+  <h1>このサイトを実際に読んでいるのは誰か——クローラー記録 24 時間分の公開</h1>
+  <p class="standfirst">
+    AI クローラーについては多くが語られ、ほとんど示されていない。サイトを運用していれば、どのシステムが実際に来て、何を持ち去り、どれくらいの頻度で来るのかを、自分の記録で見ることができる。それを公開する者はほとんどいない。ここにその一日分を、生成に使ったクエリとともに置く。
+  </p>
+  <p class="meta">取得日 2026-08-03 · 対象期間 23.9 時間 ·
+    <a href="/data/ki-crawler-aktuell.json">生データ</a></p>
+</header>
+
+<h2>要点</h2>
+<p>
+  <strong>AI システムのほうが検索エンジンより多くリクエストした。</strong>299 対 282 である。データ量では検索エンジンのほうが多く（4.0 MB 対 2.1 MB）、Googlebot が画像やスタイルシートまで取得するからで、それらは言語モデルには用がない。
+</p>
+<p>
+  このドメインは 2026 年 8 月 1 日に登録された。二日目であり、何の検索順位もなく、数えるに値する被リンクもない。それでも七つの異なる AI システムがすでに読んでいる。
+</p>
+
+<h2>AI システム</h2>
+<table>
+  <caption>AI ユーザーエージェント別のリクエスト数、2026-08-03 18:04 UTC までの 23.9 時間</caption>
+  <thead><tr><th scope="col">システム</th><th scope="col">リクエスト</th>
+    <th scope="col">データ量</th><th scope="col">割合</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">ClaudeBot (Anthropic)</th><td class="num">135</td><td class="num">795 kB</td><td class="num">45 %</td></tr>
+      <tr><th scope="row">GPTBot (OpenAI)</th><td class="num">96</td><td class="num">798 kB</td><td class="num">32 %</td></tr>
+      <tr><th scope="row">PerplexityBot</th><td class="num">22</td><td class="num">213 kB</td><td class="num">7 %</td></tr>
+      <tr><th scope="row">CCBot (Common Crawl)</th><td class="num">16</td><td class="num">69 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI、人間の依頼による)</th><td class="num">15</td><td class="num">152 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">9</td><td class="num">43 kB</td><td class="num">3 %</td></tr>
+      <tr><th scope="row">Amazonbot</th><td class="num">6</td><td class="num">45 kB</td><td class="num">2 %</td></tr>
+  </tbody>
+</table>
+
+<h2>比較としての検索エンジン</h2>
+<table>
+  <caption>同じ期間、従来型のクローラー</caption>
+  <thead><tr><th scope="col">クローラー</th><th scope="col">リクエスト</th>
+    <th scope="col">データ量</th><th scope="col">割合</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">Googlebot</th><td class="num">134</td><td class="num">2658 kB</td><td class="num">48 %</td></tr>
+      <tr><th scope="row">YandexBot</th><td class="num">130</td><td class="num">1306 kB</td><td class="num">46 %</td></tr>
+      <tr><th scope="row">Bingbot</th><td class="num">10</td><td class="num">78 kB</td><td class="num">4 %</td></tr>
+      <tr><th scope="row">Applebot</th><td class="num">8</td><td class="num">53 kB</td><td class="num">3 %</td></tr>
+  </tbody>
+</table>
+<p>
+  YandexBot は 130 リクエストで Googlebot に手が届く位置にあり、これはたいていのサイトが見る比率ではない。Bingbot の 10 は、逆方向の驚きである。
+</p>
+
+<h2>20 件のリクエストは読んでいなかった</h2>
+<p>
+  数えずに切り分けたもの——AI のユーザーエージェントを名乗りながら、誰もリンクしていないファイルへ一直線に向かったリクエストである。
+</p>
+<table>
+  <caption>AI またはクローラーのユーザーエージェントで届いた認証情報スキャン</caption>
+  <thead><tr><th scope="col">名乗ったユーザーエージェント</th><th scope="col">リクエスト</th>
+    <th scope="col">求めたパス</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">Bingbot</th><td class="num">5</td><td><code>/.env.prod</code></td></tr>
+      <tr><th scope="row">PerplexityBot</th><td class="num">5</td><td><code>/terraform.tfvars</code></td></tr>
+      <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">5</td><td><code>/.git/HEAD</code></td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI、人間の依頼による)</th><td class="num">5</td><td><code>/keys.json</code></td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>ユーザーエージェントは身元ではない。</strong>クライアントが選ぶ文字列にすぎない。これらが名指しされた運営者から来たのか、その名を借りた誰かから来たのかは、こちら側からは判定できず、本ページはそれを知っているとは主張しない。言えるのは、それらは読んでいなかった、すべて 404 を受け取った、求めていたものはここに何一つ存在しない、ということである。
+</p>
+
+<h2>AI システムが実際に取得したもの</h2>
+<p>
+  すべてを通じて最も多く求められたパスは、機械可読なもの——<code>/sitemap.xml</code>、<code>/llms.txt</code>、<code>/mcp</code>——であり、記事より先である。これらのファイルを整備する理由はそれに尽きる。飾りではなく、最初に読まれるものだ。
+</p>
+
+<h2>これが何ではないか</h2>
+<p>
+  <strong>これらの数字は外部から検証できない。</strong>自分たちの事業者の解析から得たもので、運営者しか持たないトークンで取得した。誰も再計算できない。代わりに公開するのは方法である。クエリは
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/tools/crawler-bericht.py"><code>tools/crawler-bericht.py</code></a>に平文で置いてあり、Cloudflare のゾーンを持つ者は誰でも、同じものを自分のゾーンに対して実行できる。
+</p>
+<p>
+  したがってこれは方法を開示した自己申告であって、誰かが再現できる測定ではない。本サイトの他のどこでもこの区別こそが要点であり、数字がたまたま好都合だからといってここでぼかすのは不誠実だろう。
+</p>
+<p>
+  さらに二つの限界がある。一日は一日でしかない——週に一度来るクローラーはそこには映らない。そしてリクエストは配信の縁で数えるので、仲介を経てキャッシュされた複製を読む系統はまったく現れない。
+</p>
+
+<footer>
+      方法：Cloudflare GraphQL Analytics の <code>httpRequestsAdaptiveGroups</code> を、24 時間の窓でユーザーエージェント別に集計。取得日は 2026-08-03。スキャナーしか探さないパスへのリクエストは切り分け、読んだものとしては数えていない。クエリは公開しているが、元の記録は運営者以外に閲覧できないため、これらの数値は自己申告であり、そう明示している。ユーザーエージェントは自由に設定でき、出所の証明にはならない。ここに書かれたことは法的助言ではない。
+      <br><br>
+      訂正は歓迎し、公開の場で行う：
+      <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue を立てる</a>.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">免責事項</a>
+    </footer>
+</div>
+
+<div data-lang="pt-BR" lang="pt-BR">
+<header>
+  <h1>Quem realmente lê este site: 24 horas de registros de rastreadores, publicadas</h1>
+  <p class="standfirst">
+    Sobre rastreadores de IA afirma-se muito e mostra-se muito pouco. Quem mantém um site pode ver nos próprios registros quais sistemas de fato chegam, o que levam e com que frequência — e quase ninguém publica isso. Aqui está um dia disso, com a consulta que o produziu.
+  </p>
+  <p class="meta">Coletado em 2026-08-03 · janela de 23,9 h ·
+    <a href="/data/ki-crawler-aktuell.json">dados brutos</a></p>
+</header>
+
+<h2>O achado principal</h2>
+<p>
+  <strong>Os sistemas de IA fizeram mais requisições do que os buscadores</strong> — 299 contra 282. Os buscadores puxaram mais dados (4,0 MB contra 2,1 MB), porque o Googlebot busca imagens e folhas de estilo que não servem para um modelo de linguagem.
+</p>
+<p>
+  Este domínio foi registrado em 1º de agosto de 2026. Tem dois dias, não posiciona para nada e não tem links de entrada dignos de contagem — e sete sistemas de IA distintos já o leram.
+</p>
+
+<h2>Sistemas de IA</h2>
+<table>
+  <caption>Requisições por agente de usuário de IA, 23,9 horas até 2026-08-03 18:04 UTC</caption>
+  <thead><tr><th scope="col">Sistema</th><th scope="col">Requisições</th>
+    <th scope="col">Dados</th><th scope="col">Participação</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">ClaudeBot (Anthropic)</th><td class="num">135</td><td class="num">795 kB</td><td class="num">45 %</td></tr>
+      <tr><th scope="row">GPTBot (OpenAI)</th><td class="num">96</td><td class="num">798 kB</td><td class="num">32 %</td></tr>
+      <tr><th scope="row">PerplexityBot</th><td class="num">22</td><td class="num">213 kB</td><td class="num">7 %</td></tr>
+      <tr><th scope="row">CCBot (Common Crawl)</th><td class="num">16</td><td class="num">69 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI, a pedido de uma pessoa)</th><td class="num">15</td><td class="num">152 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">9</td><td class="num">43 kB</td><td class="num">3 %</td></tr>
+      <tr><th scope="row">Amazonbot</th><td class="num">6</td><td class="num">45 kB</td><td class="num">2 %</td></tr>
+  </tbody>
+</table>
+
+<h2>Buscadores, para comparação</h2>
+<table>
+  <caption>Mesma janela, rastreadores convencionais</caption>
+  <thead><tr><th scope="col">Rastreador</th><th scope="col">Requisições</th>
+    <th scope="col">Dados</th><th scope="col">Participação</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">Googlebot</th><td class="num">134</td><td class="num">2658 kB</td><td class="num">48 %</td></tr>
+      <tr><th scope="row">YandexBot</th><td class="num">130</td><td class="num">1306 kB</td><td class="num">46 %</td></tr>
+      <tr><th scope="row">Bingbot</th><td class="num">10</td><td class="num">78 kB</td><td class="num">4 %</td></tr>
+      <tr><th scope="row">Applebot</th><td class="num">8</td><td class="num">53 kB</td><td class="num">3 %</td></tr>
+  </tbody>
+</table>
+<p>
+  O YandexBot, com 130 requisições, está ao alcance do Googlebot, e essa não é a proporção que a maioria dos sites vê. O Bingbot, com 10, é a surpresa na direção oposta.
+</p>
+
+<h2>Vinte requisições não estavam lendo</h2>
+<p>
+  Separadas em vez de contadas: requisições que traziam um agente de usuário de IA e foram direto a arquivos que ninguém liga.
+</p>
+<table>
+  <caption>Varreduras de credenciais chegadas sob agentes de usuário de IA ou de rastreadores</caption>
+  <thead><tr><th scope="col">Agente de usuário declarado</th><th scope="col">Requisições</th>
+    <th scope="col">Caminhos procurados</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">Bingbot</th><td class="num">5</td><td><code>/.env.prod</code></td></tr>
+      <tr><th scope="row">PerplexityBot</th><td class="num">5</td><td><code>/terraform.tfvars</code></td></tr>
+      <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">5</td><td><code>/.git/HEAD</code></td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI, a pedido de uma pessoa)</th><td class="num">5</td><td><code>/keys.json</code></td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>Um agente de usuário não é uma identidade.</strong> É uma cadeia de caracteres que o cliente escolhe. Se estas vieram dos operadores nomeados ou de alguém que toma emprestado o nome deles não se pode determinar deste lado, e esta página não afirma saber. O que se pode dizer: não estavam lendo, todas receberam 404 e nada do que procuravam existe aqui.
+</p>
+
+<h2>O que os sistemas de IA de fato buscaram</h2>
+<p>
+  Os caminhos mais requisitados no conjunto são os legíveis por máquina — <code>/sitemap.xml</code>, <code>/llms.txt</code>, <code>/mcp</code> — antes dos artigos. É esse todo o argumento para manter esses arquivos: não são enfeite, são o que se lê primeiro.
+</p>
+
+<h2>O que isto não é</h2>
+<p>
+  <strong>Estes números não podem ser verificados de fora.</strong> Vêm da analítica do nosso próprio provedor, obtida com um token que só o operador tem. Ninguém pode recalculá-los. O que se publica em vez disso é o método: a consulta está em
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/tools/crawler-bericht.py"><code>tools/crawler-bericht.py</code></a>, em texto claro, e quem tiver uma zona Cloudflare pode rodar a mesma contra a sua.
+</p>
+<p>
+  Portanto isto é um autorrelato com método divulgado, não uma medição que alguém pudesse repetir. Em todo o resto deste site essa distinção é justamente a questão, e seria desonesto borrá-la aqui porque os números por acaso são lisonjeiros.
+</p>
+<p>
+  Mais dois limites. Um dia é um dia — um rastreador que passa semanalmente é invisível nele. E as requisições são contadas na borda, de modo que um sistema que lê uma cópia em cache por meio de um intermediário não aparece de jeito nenhum.
+</p>
+
+<footer>
+      Método: Cloudflare GraphQL Analytics, <code>httpRequestsAdaptiveGroups</code>, agrupado por agente de usuário sobre uma janela de 24 horas, coletado em 2026-08-03. Requisições a caminhos que só um scanner procura são separadas e não contadas como leitura. A consulta está publicada; o registro subjacente não é acessível a ninguém além do operador, portanto estes números são um autorrelato e estão rotulados como tal. Um agente de usuário pode ser definido livremente e não é prova de origem. Nada aqui é aconselhamento jurídico.
+      <br><br>
+      Correções são bem-vindas e são feitas em público:
+      <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">abrir um issue</a>.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Aviso legal</a>
+    </footer>
+</div>
+
+<div data-lang="ru" lang="ru">
+<header>
+  <h1>Кто на самом деле читает этот сайт: 24 часа журналов краулеров, опубликованные</h1>
+  <p class="standfirst">
+    Об ИИ-краулерах утверждают много, а показывают крайне мало. Тот, кто держит сайт, может увидеть в собственных журналах, какие системы приходят на самом деле, что забирают и как часто, — и почти никто этого не публикует. Вот один день, вместе с запросом, который его получил.
+  </p>
+  <p class="meta">Собрано 2026-08-03 · окно 23,9 ч ·
+    <a href="/data/ki-crawler-aktuell.json">исходные данные</a></p>
+</header>
+
+<h2>Главное</h2>
+<p>
+  <strong>ИИ-системы сделали больше запросов, чем поисковые машины</strong> — 299 против 282. Поисковые машины вытянули больше данных (4,0 MB против 2,1 MB), потому что Googlebot забирает изображения и таблицы стилей, которые языковой модели ни к чему.
+</p>
+<p>
+  Этот домен зарегистрирован 1 августа 2026 года. Ему два дня, он ни по чему не ранжируется и не имеет входящих ссылок, достойных подсчёта, — и семь разных ИИ-систем уже его прочитали.
+</p>
+
+<h2>ИИ-системы</h2>
+<table>
+  <caption>Запросы по ИИ-агентам пользователя, 23,9 часа до 2026-08-03 18:04 UTC</caption>
+  <thead><tr><th scope="col">Система</th><th scope="col">Запросы</th>
+    <th scope="col">Данные</th><th scope="col">Доля</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">ClaudeBot (Anthropic)</th><td class="num">135</td><td class="num">795 kB</td><td class="num">45 %</td></tr>
+      <tr><th scope="row">GPTBot (OpenAI)</th><td class="num">96</td><td class="num">798 kB</td><td class="num">32 %</td></tr>
+      <tr><th scope="row">PerplexityBot</th><td class="num">22</td><td class="num">213 kB</td><td class="num">7 %</td></tr>
+      <tr><th scope="row">CCBot (Common Crawl)</th><td class="num">16</td><td class="num">69 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI, по поручению человека)</th><td class="num">15</td><td class="num">152 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">9</td><td class="num">43 kB</td><td class="num">3 %</td></tr>
+      <tr><th scope="row">Amazonbot</th><td class="num">6</td><td class="num">45 kB</td><td class="num">2 %</td></tr>
+  </tbody>
+</table>
+
+<h2>Поисковые машины для сравнения</h2>
+<table>
+  <caption>То же окно, обычные краулеры</caption>
+  <thead><tr><th scope="col">Краулер</th><th scope="col">Запросы</th>
+    <th scope="col">Данные</th><th scope="col">Доля</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">Googlebot</th><td class="num">134</td><td class="num">2658 kB</td><td class="num">48 %</td></tr>
+      <tr><th scope="row">YandexBot</th><td class="num">130</td><td class="num">1306 kB</td><td class="num">46 %</td></tr>
+      <tr><th scope="row">Bingbot</th><td class="num">10</td><td class="num">78 kB</td><td class="num">4 %</td></tr>
+      <tr><th scope="row">Applebot</th><td class="num">8</td><td class="num">53 kB</td><td class="num">3 %</td></tr>
+  </tbody>
+</table>
+<p>
+  YandexBot со 130 запросами находится в пределах досягаемости Googlebot, и это не то соотношение, которое видит большинство сайтов. Bingbot с 10 — неожиданность в другую сторону.
+</p>
+
+<h2>Двадцать запросов ничего не читали</h2>
+<p>
+  Выделено отдельно, а не засчитано: запросы с ИИ-агентом пользователя, шедшие прямо к файлам, на которые никто не ссылается.
+</p>
+<table>
+  <caption>Сканирование учётных данных под ИИ- или краулерными агентами пользователя</caption>
+  <thead><tr><th scope="col">Заявленный агент пользователя</th><th scope="col">Запросы</th>
+    <th scope="col">Искомые пути</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">Bingbot</th><td class="num">5</td><td><code>/.env.prod</code></td></tr>
+      <tr><th scope="row">PerplexityBot</th><td class="num">5</td><td><code>/terraform.tfvars</code></td></tr>
+      <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">5</td><td><code>/.git/HEAD</code></td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI, по поручению человека)</th><td class="num">5</td><td><code>/keys.json</code></td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>Агент пользователя — не удостоверение личности.</strong> Это строка, которую выбирает клиент. Пришли ли эти запросы от названных операторов или от того, кто позаимствовал их имя, с этой стороны определить нельзя, и эта страница не утверждает, что знает. Сказать можно вот что: они не читали, все получили 404, и ничего из того, что они искали, здесь нет.
+</p>
+
+<h2>Что ИИ-системы на самом деле забрали</h2>
+<p>
+  Самые запрашиваемые пути по всем вместе — машиночитаемые: <code>/sitemap.xml</code>, <code>/llms.txt</code>, <code>/mcp</code> — раньше статей. В этом и весь довод за то, чтобы эти файлы вести: они не украшение, они то, что читают первым.
+</p>
+
+<h2>Чем это не является</h2>
+<p>
+  <strong>Эти числа нельзя проверить снаружи.</strong> Они получены из аналитики нашего собственного провайдера, извлечены токеном, который есть только у оператора. Пересчитать их никто не может. Вместо этого публикуется метод: запрос лежит в
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/tools/crawler-bericht.py"><code>tools/crawler-bericht.py</code></a>, открытым текстом, и всякий, у кого есть зона Cloudflare, может выполнить такой же для своей.
+</p>
+<p>
+  Итак, это самоотчёт с раскрытым методом, а не измерение, которое кто-то мог бы повторить. Везде на этом сайте именно это различие и составляет суть, и было бы нечестно размывать его здесь только потому, что числа случайно лестны.
+</p>
+<p>
+  Ещё два ограничения. День есть день — краулер, приходящий раз в неделю, в нём невидим. И запросы считаются на границе сети, поэтому система, читающая кэшированную копию через посредника, не появляется вовсе.
+</p>
+
+<footer>
+      Метод: Cloudflare GraphQL Analytics, <code>httpRequestsAdaptiveGroups</code>, сгруппировано по агенту пользователя за 24-часовое окно, собрано 2026-08-03. Запросы к путям, которые ищет только сканер, выделены отдельно и не засчитаны как чтение. Запрос опубликован; лежащий в основе журнал недоступен никому, кроме оператора, поэтому эти цифры — самоотчёт, и они так и обозначены. Агент пользователя можно задать свободно, и он не доказывает происхождение. Ничто здесь не является юридической консультацией.
+      <br><br>
+      Исправления приветствуются и вносятся публично:
+      <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">открыть issue</a>.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Отказ от ответственности</a>
+    </footer>
+</div>
+
+<div data-lang="zh-CN" lang="zh-CN">
+<header>
+  <h1>究竟谁在读这个站点：24 小时爬虫日志，公开</h1>
+  <p class="standfirst">
+    关于 AI 爬虫，说的多，拿出来看的极少。任何运营站点的人都能在自己的日志里看到哪些系统真的来过、取走了什么、来得多频繁——却几乎没有人把它公开。这里是其中一天，连同产生它的那条查询。
+  </p>
+  <p class="meta">采集于 2026-08-03 · 时间窗 23.9 h ·
+    <a href="/data/ki-crawler-aktuell.json">原始数据</a></p>
+</header>
+
+<h2>要点</h2>
+<p>
+  <strong>AI 系统发出的请求比搜索引擎更多</strong>——299 对 282。搜索引擎拉走的数据更多（4.0 MB 对 2.1 MB），因为 Googlebot 会取图片和样式表，而语言模型用不上这些。
+</p>
+<p>
+  这个域名注册于 2026 年 8 月 1 日。它只有两天大，没有任何排名，也没有值得计入的外部链接——而已经有七个不同的 AI 系统读过它。
+</p>
+
+<h2>AI 系统</h2>
+<table>
+  <caption>按 AI 用户代理统计的请求数，截至 2026-08-03 18:04 UTC 的 23.9 小时</caption>
+  <thead><tr><th scope="col">系统</th><th scope="col">请求数</th>
+    <th scope="col">数据量</th><th scope="col">占比</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">ClaudeBot (Anthropic)</th><td class="num">135</td><td class="num">795 kB</td><td class="num">45 %</td></tr>
+      <tr><th scope="row">GPTBot (OpenAI)</th><td class="num">96</td><td class="num">798 kB</td><td class="num">32 %</td></tr>
+      <tr><th scope="row">PerplexityBot</th><td class="num">22</td><td class="num">213 kB</td><td class="num">7 %</td></tr>
+      <tr><th scope="row">CCBot (Common Crawl)</th><td class="num">16</td><td class="num">69 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI，代表人类发起)</th><td class="num">15</td><td class="num">152 kB</td><td class="num">5 %</td></tr>
+      <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">9</td><td class="num">43 kB</td><td class="num">3 %</td></tr>
+      <tr><th scope="row">Amazonbot</th><td class="num">6</td><td class="num">45 kB</td><td class="num">2 %</td></tr>
+  </tbody>
+</table>
+
+<h2>搜索引擎，用作对照</h2>
+<table>
+  <caption>同一时间窗，传统爬虫</caption>
+  <thead><tr><th scope="col">爬虫</th><th scope="col">请求数</th>
+    <th scope="col">数据量</th><th scope="col">占比</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">Googlebot</th><td class="num">134</td><td class="num">2658 kB</td><td class="num">48 %</td></tr>
+      <tr><th scope="row">YandexBot</th><td class="num">130</td><td class="num">1306 kB</td><td class="num">46 %</td></tr>
+      <tr><th scope="row">Bingbot</th><td class="num">10</td><td class="num">78 kB</td><td class="num">4 %</td></tr>
+      <tr><th scope="row">Applebot</th><td class="num">8</td><td class="num">53 kB</td><td class="num">3 %</td></tr>
+  </tbody>
+</table>
+<p>
+  YandexBot 以 130 次请求已在 Googlebot 的射程之内，这不是大多数站点看到的比例。Bingbot 的 10 次，则是反方向上的意外。
+</p>
+
+<h2>有二十次请求不是在读</h2>
+<p>
+  单列出来而不计入：带着 AI 用户代理、却径直奔向无人链接的文件的请求。
+</p>
+<table>
+  <caption>以 AI 或爬虫用户代理到达的凭据扫描</caption>
+  <thead><tr><th scope="col">声称的用户代理</th><th scope="col">请求数</th>
+    <th scope="col">所求路径</th></tr></thead>
+  <tbody>
+      <tr><th scope="row">Bingbot</th><td class="num">5</td><td><code>/.env.prod</code></td></tr>
+      <tr><th scope="row">PerplexityBot</th><td class="num">5</td><td><code>/terraform.tfvars</code></td></tr>
+      <tr><th scope="row">OAI-SearchBot (OpenAI)</th><td class="num">5</td><td><code>/.git/HEAD</code></td></tr>
+      <tr><th scope="row">ChatGPT-User (OpenAI，代表人类发起)</th><td class="num">5</td><td><code>/keys.json</code></td></tr>
+  </tbody>
+</table>
+<p>
+  <strong>用户代理不是身份。</strong>它只是客户端自己选定的一个字符串。这些请求究竟来自被点名的运营方，还是来自借用其名号的人，从这一侧无法判定，本页也不声称知道。可以说的是：它们不是在读，全部收到 404，它们所寻找的东西这里一样都没有。
+</p>
+
+<h2>AI 系统实际取走了什么</h2>
+<p>
+  在所有请求中被要得最多的路径是机器可读的那几个——<code>/sitemap.xml</code>、<code>/llms.txt</code>、<code>/mcp</code>——排在文章之前。维护这些文件的全部理由就在这里：它们不是装饰，它们是最先被读到的东西。
+</p>
+
+<h2>这不是什么</h2>
+<p>
+  <strong>这些数字无法从外部核验。</strong>它们出自我们自己服务商的分析数据，用只有运营者持有的令牌取得。没有人能重算。作为替代，公开的是方法：这条查询就在
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/tools/crawler-bericht.py"><code>tools/crawler-bericht.py</code></a>里，以明文写出；任何拥有 Cloudflare 区域的人，都可以对自己的区域运行同一条。
+</p>
+<p>
+  所以这是一份公开了方法的自述，而不是一次别人能够重复的测量。在本站其他任何地方，这个区分正是要点所在；仅仅因为数字碰巧好看就在这里把它抹糊，那是不诚实的。
+</p>
+<p>
+  还有两条界限。一天就只是一天——每周才来一次的爬虫在其中是看不见的。而且请求是在网络边缘计数的，因此经由中间层读取缓存副本的系统根本不会出现。
+</p>
+
+<footer>
+      方法：Cloudflare GraphQL Analytics 的 <code>httpRequestsAdaptiveGroups</code>，以 24 小时为窗口按用户代理分组，采集于 2026-08-03。只有扫描器才会去找的路径，其请求被单列出来，不计为阅读。查询已公开；底层日志除运营者外无人可以访问，因此这些数字是自述，并已如此标注。用户代理可以随意设置，不构成来源证明。此处内容均不构成法律建议。
+      <br><br>
+      欢迎指正，更正将公开进行：
+      <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">提一个 issue</a>.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">免责声明</a>
+    </footer>
+</div>
 </div>
 </body>
 </html>

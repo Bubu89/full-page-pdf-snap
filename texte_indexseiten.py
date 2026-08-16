@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Die Index-Seiten (measurements/, notes/, tools/) in neun Sprachen.
+"""Die Index-Seiten (measurements/, notes/, tools/, how-to/) in neun Sprachen.
 
 Gleiches Muster wie texte_startseite.py: ENGLISCH ist die Ausgangsfassung,
 Rendering ueber build-indexseiten.py. Wer einen Eintrag ergaenzt oder aendert,
@@ -12,7 +12,7 @@ uebrigen Fremdsprachen drin, im Deutschen entfaellt er (da ist er gegenstandslos
 
 SPRACHEN = ["en", "de", "es", "fr", "it", "ja", "pt-BR", "ru", "zh-CN"]
 BASIS = "en"
-SEITEN = ["measurements", "notes", "tools"]
+SEITEN = ["measurements", "notes", "tools", "how-to"]
 
 TEXTE = {s: {} for s in SEITEN}
 
@@ -558,7 +558,7 @@ TEXTE["notes"]["en"] = {
          "title": "The sources a machine cannot cite for you — and how to cite them anyway",
          "text": "When a citation tool hands a source back, the cause is one of three: a bot defence, a refusal aimed at the network, or a page that declares nothing about itself. Each needs different work, and two requests tell them apart.",
          "figures": ["<b>3</b> causes", "<b>1</b> solved by a browser", "<b>2</b> requests to tell them apart"]},
-        {"date": "2 August 2026", "href": "mcp-server-what-it-solves/",
+        {"date": "3 August 2026", "href": "mcp-server-what-it-solves/",
          "title": "This site runs an MCP server. Measured: it is smaller than the file it competes with",
          "text": "An endpoint at /mcp hands the datasets and methods to AI clients. Everything it can return adds up to less than the plain text file already on the same domain — what that leaves it good for.",
          "figures": ["<b>1,300</b> tokens total", "<b>1,988</b> in llms.txt", "<b>3</b> tools"]},
@@ -610,7 +610,7 @@ TEXTE["notes"]["de"] = {
          "title": "Die Quellen, die eine Maschine nicht für Sie zitieren kann — und wie man sie trotzdem zitiert",
          "text": "Wenn ein Zitationswerkzeug eine Quelle zurückgibt, ist die Ursache eine von dreien: eine Bot-Abwehr, eine Weigerung gegen das Netzwerk oder eine Seite, die nichts über sich erklärt. Jede braucht andere Arbeit, und zwei Anfragen unterscheiden sie.",
          "figures": ["<b>3</b> Ursachen", "<b>1</b> durch einen Browser gelöst", "<b>2</b> Anfragen zur Unterscheidung"]},
-        {"date": "2. August 2026", "href": "mcp-server-what-it-solves/",
+        {"date": "3. August 2026", "href": "mcp-server-what-it-solves/",
          "title": "Diese Seite betreibt einen MCP-Server. Gemessen: Er ist kleiner als die Datei, mit der er konkurriert",
          "text": "Ein Endpunkt unter /mcp reicht die Datensätze und Methoden an KI-Clients. Alles, was er zurückgeben kann, summiert sich zu weniger als die schlichte Textdatei auf derselben Domain — wozu ihn das noch taugt.",
          "figures": ["<b>1.300</b> Token insgesamt", "<b>1.988</b> in llms.txt", "<b>3</b> Werkzeuge"]},
@@ -662,7 +662,7 @@ TEXTE["notes"]["es"] = {
          "title": "Las fuentes que una máquina no puede citar por ti — y cómo citarlas igualmente",
          "text": "Cuando una herramienta de citación devuelve una fuente, la causa es una de tres: una defensa contra bots, una negativa dirigida a la red o una página que no declara nada de sí misma. Cada una necesita un trabajo distinto, y dos peticiones las distinguen.",
          "figures": ["<b>3</b> causas", "<b>1</b> resuelta con un navegador", "<b>2</b> peticiones para distinguirlas"]},
-        {"date": "2 de agosto de 2026", "href": "mcp-server-what-it-solves/",
+        {"date": "3 de agosto de 2026", "href": "mcp-server-what-it-solves/",
          "title": "Este sitio opera un servidor MCP. Medido: es más pequeño que el archivo con el que compite",
          "text": "Un endpoint en /mcp entrega los conjuntos de datos y los métodos a clientes de IA. Todo lo que puede devolver suma menos que el simple archivo de texto ya presente en el mismo dominio — para qué le queda entonces.",
          "figures": ["<b>1.300</b> tokens en total", "<b>1.988</b> en llms.txt", "<b>3</b> herramientas"]},
@@ -714,7 +714,7 @@ TEXTE["notes"]["fr"] = {
          "title": "Les sources qu'une machine ne peut pas citer pour vous — et comment les citer quand même",
          "text": "Quand un outil de citation rend une source, la cause est l'une de trois : une défense anti-robots, un refus visant le réseau, ou une page qui ne déclare rien sur elle-même. Chacune demande un travail différent, et deux requêtes les distinguent.",
          "figures": ["<b>3</b> causes", "<b>1</b> résolue par un navigateur", "<b>2</b> requêtes pour les distinguer"]},
-        {"date": "2 août 2026", "href": "mcp-server-what-it-solves/",
+        {"date": "3 août 2026", "href": "mcp-server-what-it-solves/",
          "title": "Ce site fait tourner un serveur MCP. Mesuré : il est plus petit que le fichier auquel il se mesure",
          "text": "Un point d'accès sur /mcp remet les jeux de données et les méthodes aux clients IA. Tout ce qu'il peut rendre totalise moins que le simple fichier texte déjà présent sur le même domaine — ce qu'il lui reste de bon.",
          "figures": ["<b>1 300</b> jetons au total", "<b>1 988</b> dans llms.txt", "<b>3</b> outils"]},
@@ -766,7 +766,7 @@ TEXTE["notes"]["it"] = {
          "title": "Le fonti che una macchina non può citare per te — e come citarle comunque",
          "text": "Quando uno strumento di citazione restituisce una fonte, la causa è una di tre: una difesa anti-bot, un rifiuto rivolto alla rete o una pagina che non dichiara nulla di sé. Ognuna richiede un lavoro diverso, e due richieste le distinguono.",
          "figures": ["<b>3</b> cause", "<b>1</b> risolta da un browser", "<b>2</b> richieste per distinguerle"]},
-        {"date": "2 agosto 2026", "href": "mcp-server-what-it-solves/",
+        {"date": "3 agosto 2026", "href": "mcp-server-what-it-solves/",
          "title": "Questo sito gestisce un server MCP. Misurato: è più piccolo del file con cui compete",
          "text": "Un endpoint su /mcp consegna i set di dati e i metodi ai client IA. Tutto ciò che può restituire somma a meno del semplice file di testo già presente sullo stesso dominio — a cosa gli resta da servire.",
          "figures": ["<b>1.300</b> token in totale", "<b>1.988</b> in llms.txt", "<b>3</b> strumenti"]},
@@ -818,7 +818,7 @@ TEXTE["notes"]["ja"] = {
          "title": "機械があなたのために引用できないソース — それでも引用する方法",
          "text": "引用ツールがソースを返却するとき、原因は3つのうちの1つです: ボット防御、ネットワークへの拒否、あるいは自分について何も宣言しないページ。それぞれ必要な作業が異なり、2つのリクエストで見分けられます。",
          "figures": ["原因 <b>3</b> つ", "ブラウザで解決 <b>1</b>", "見分けるリクエスト <b>2</b> つ"]},
-        {"date": "2026年8月2日", "href": "mcp-server-what-it-solves/",
+        {"date": "2026年8月3日", "href": "mcp-server-what-it-solves/",
          "title": "このサイトは MCP サーバーを運営しています。測定結果: 競合するファイルより小さい",
          "text": "/mcp のエンドポイントがデータセットとメソッドを AI クライアントに渡します。返せるものの合計は、同じドメインにすでにある素のテキストファイルより小さい — それでも残る使い道とは。",
          "figures": ["合計 <b>1,300</b> トークン", "llms.txt では <b>1,988</b>", "ツール <b>3</b> つ"]},
@@ -870,7 +870,7 @@ TEXTE["notes"]["pt-BR"] = {
          "title": "As fontes que uma máquina não pode citar por você — e como citá-las mesmo assim",
          "text": "Quando uma ferramenta de citação devolve uma fonte, a causa é uma de três: uma defesa contra bots, uma recusa dirigida à rede ou uma página que não declara nada sobre si. Cada uma exige um trabalho diferente, e duas requisições as distinguem.",
          "figures": ["<b>3</b> causas", "<b>1</b> resolvida por um navegador", "<b>2</b> requisições para distingui-las"]},
-        {"date": "2 de agosto de 2026", "href": "mcp-server-what-it-solves/",
+        {"date": "3 de agosto de 2026", "href": "mcp-server-what-it-solves/",
          "title": "Este site roda um servidor MCP. Medido: é menor que o arquivo com que compete",
          "text": "Um endpoint em /mcp entrega os conjuntos de dados e os métodos a clientes de IA. Tudo o que ele pode devolver soma menos que o simples arquivo de texto já presente no mesmo domínio — para que ele ainda serve.",
          "figures": ["<b>1.300</b> tokens no total", "<b>1.988</b> no llms.txt", "<b>3</b> ferramentas"]},
@@ -922,7 +922,7 @@ TEXTE["notes"]["ru"] = {
          "title": "Источники, которые машина не может процитировать за вас — и как процитировать их всё же",
          "text": "Когда инструмент цитирования возвращает источник, причина — одна из трёх: защита от ботов, отказ, направленный на сеть, или страница, которая ничего о себе не заявляет. Каждая требует своей работы, и два запроса их различают.",
          "figures": ["<b>3</b> причины", "<b>1</b> решается браузером", "<b>2</b> запроса для различения"]},
-        {"date": "2 августа 2026 г.", "href": "mcp-server-what-it-solves/",
+        {"date": "3 августа 2026 г.", "href": "mcp-server-what-it-solves/",
          "title": "Этот сайт держит MCP-сервер. Измерено: он меньше файла, с которым соревнуется",
          "text": "Конечная точка на /mcp передаёт наборы данных и методы ИИ-клиентам. Всё, что она может вернуть, в сумме меньше простого текстового файла, уже лежащего на том же домене, — для чего она тогда ещё годится.",
          "figures": ["<b>1 300</b> токенов всего", "<b>1 988</b> в llms.txt", "<b>3</b> инструмента"]},
@@ -974,7 +974,7 @@ TEXTE["notes"]["zh-CN"] = {
          "title": "机器无法替你引用的来源——以及如何照样引用它们",
          "text": "当引用工具把一个来源退回时,原因是三者之一:反机器人防御、针对网络的拒绝,或是一个对自身毫无声明的页面。三者需要的处理各不相同,两次请求即可区分。",
          "figures": ["原因 <b>3</b> 种", "靠浏览器解决 <b>1</b>", "区分所需请求 <b>2</b> 次"]},
-        {"date": "2026年8月2日", "href": "mcp-server-what-it-solves/",
+        {"date": "2026年8月3日", "href": "mcp-server-what-it-solves/",
          "title": "本站运行一个 MCP 服务器。实测:它比与之竞争的文件还小",
          "text": "/mcp 端点把数据集和方法交给 AI 客户端。它能返回的一切加起来,还不如同域名下已有的那个纯文本文件——那它还剩下什么用。",
          "figures": ["合计 <b>1,300</b> token", "llms.txt 中为 <b>1,988</b>", "工具 <b>3</b> 个"]},
@@ -1365,6 +1365,191 @@ TEXTE["tools"]["zh-CN"] = {
         {"para": True, "label": "披露。",
          "text": "这里列出的工具由本站作者开发。它出现在本站发布的多项测量中,这一点在每个相应页面上都有说明。不出售任何东西,没有广告,也没有联盟链接——见<a href=\"../about/\">关于与披露</a>。更正: <a href=\"https://github.com/Bubu89/full-page-pdf-snap/issues\">GitHub issues</a>。",
          "extra": "我们的工具若出现在某项测量中,会在该页面本身注明。屏幕捕获 PDF 不是合格的电子文档——见<a href=\"full-page-pdf-snap/#limits\">限制说明</a>。"},
+    ],
+    "foot": '<a href="../">← Proving Lab</a> · <a href="../about/">关于与披露</a> · 更正: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">免责声明</a>',
+}
+
+# ================================================================= HOW-TO ====
+# Quelle je Eintrag: die ausgelieferte Artikelseite selbst (h1, standfirst und
+# p.meta derselben Sprachfassung). Titel woertlich uebernommen, nicht neu
+# uebersetzt. Zahlen in allen neun Fassungen identisch, Dezimaltrennzeichen
+# sprachueblich.
+TEXTE["how-to"]["en"] = {
+    "h1": "How to",
+    "lead": "Step-by-step guides for saving a web page as a PDF, citing it and keeping it. Every figure links to the measurement it comes from, and every guide names what it does not do.",
+    "items": [
+        {"date": "15 August 2026", "href": "firefox-and-chrome/",
+         "title": "For researchers and students: the add-on in Firefox and Chrome",
+         "text": "How to set the extension up in Firefox and Chrome, and how the capture–cite–archive workflow runs in practice. Install routes first, then the workflow, then the settings that matter — and an honest list of what it does not do.",
+         "figures": ["<b>4</b> settings that matter", "<b>18</b> XMP fields", "<b>92.6 %</b> recovered at 150 dpi", "<b>0</b> host permissions"]},
+        {"date": "10 August 2026", "href": "for-students/",
+         "title": "For students: a source that cites itself, survives, and can be read by a machine",
+         "text": "Three things go wrong with a web source in a term paper: it disappears before the deadline, its citation has to be typed out by hand, and the file you kept is a picture no tool can search. What a full-page capture does about each of the three — and where it hands the work back to you.",
+         "figures": ["<b>18</b> works, drawn at random", "<b>100 %</b> accurate, against 79 %", "<b>0</b> wrong records, against 3", "<b>14/20</b> complete records"]},
+        {"date": "3 August 2026", "href": "save-a-webpage-as-pdf/",
+         "title": "How to save a web page as a PDF — one sheet, with its source on it",
+         "text": "The short answer: use a capture extension, not the print dialog. Print paginates — the same article came out as 26 pages with 9 breaks cutting through a sentence. A capture writes one continuous sheet and can stamp the page with where it came from and when.",
+         "figures": ["<b>26</b> pages against 1 sheet", "<b>9</b> breaks cut a sentence, against 0", "<b>91.5 %</b> recall, against 87.6 %", "<b>19.3 %</b> of cited sources gone"]},
+    ],
+    "foot": '<a href="../">← Proving Lab</a> · <a href="../about/">About &amp; disclosure</a> · Corrections: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">Disclaimer</a>',
+}
+
+TEXTE["how-to"]["de"] = {
+    "h1": "Anleitung",
+    "lead": "Schritt-für-Schritt-Anleitungen zum Speichern, Zitieren und Aufbewahren einer Webseite als PDF. Jede Zahl verweist auf die Messung, aus der sie stammt, und jede Anleitung nennt, was sie nicht tut.",
+    "items": [
+        {"date": "15. August 2026", "href": "firefox-and-chrome/",
+         "title": "Für Wissenschaftler:innen und Studierende: die Erweiterung in Firefox und Chrome",
+         "text": "Wie die Erweiterung in Firefox und Chrome eingerichtet wird und wie der Ablauf aufnehmen–zitieren–archivieren in der Praxis läuft. Zuerst die Installationswege, dann der Arbeitsfluss, dann die Einstellungen, die zählen — und eine ehrliche Liste dessen, was sie nicht tut.",
+         "figures": ["<b>4</b> Einstellungen, die zählen", "<b>18</b> XMP-Felder", "<b>92,6 %</b> erkannt bei 150 dpi", "<b>0</b> Host-Berechtigungen"]},
+        {"date": "10. August 2026", "href": "for-students/",
+         "title": "Für Studierende: eine Quelle, die sich selbst zitiert, überlebt und maschinenlesbar ist",
+         "text": "Drei Dinge gehen mit einer Webquelle in einer Seminararbeit schief: Sie verschwindet vor der Abgabe, ihre Zitation muss von Hand abgetippt werden, und die aufgehobene Datei ist ein Bild, das kein Werkzeug durchsucht. Was eine Ganzseiten-Aufnahme gegen jedes der drei tut — und wo die Arbeit an Sie zurückgeht.",
+         "figures": ["<b>18</b> Werke, zufällig gezogen", "<b>100 %</b> zutreffend, gegen 79 %", "<b>0</b> falsche Datensätze, gegen 3", "<b>14/20</b> vollständige Datensätze"]},
+        {"date": "3. August 2026", "href": "save-a-webpage-as-pdf/",
+         "title": "Wie man eine Webseite als PDF speichert — ein Blatt, mit der Quelle darauf",
+         "text": "Die kurze Antwort: eine Aufnahme-Erweiterung, nicht der Druckdialog. Der Druck teilt in Seiten auf — derselbe Artikel kam als 26 Seiten heraus, mit 9 Umbrüchen mitten durch einen Satz. Eine Aufnahme schreibt ein durchgehendes Blatt und kann der Seite aufprägen, woher sie stammt und wann.",
+         "figures": ["<b>26</b> Seiten gegen 1 Blatt", "<b>9</b> Umbrüche mitten im Satz, gegen 0", "<b>91,5 %</b> Trefferquote, gegen 87,6 %", "<b>19,3 %</b> der zitierten Quellen weg"]},
+    ],
+    "foot": '<a href="../">← Proving Lab</a> · <a href="../about/">Über &amp; Offenlegung</a> · Korrekturen: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a> · <a href="../disclaimer/">Haftungsausschluss</a>',
+}
+
+TEXTE["how-to"]["es"] = {
+    "h1": "Guías",
+    "lead": "Guías paso a paso para guardar una página web como PDF, citarla y conservarla. Cada cifra enlaza con la medición de la que procede, y cada guía nombra lo que no hace.",
+    "items": [
+        {"date": "15 de agosto de 2026", "href": "firefox-and-chrome/",
+         "title": "Para investigadores y estudiantes: la extensión en Firefox y Chrome",
+         "text": "Cómo configurar la extensión en Firefox y Chrome y cómo funciona en la práctica el ciclo capturar–citar–archivar. Primero las vías de instalación, después el flujo de trabajo, luego los ajustes que importan — y una lista honesta de lo que no hace.",
+         "figures": ["<b>4</b> ajustes que importan", "<b>18</b> campos XMP", "<b>92,6 %</b> recuperado a 150 dpi", "<b>0</b> permisos de host"]},
+        {"date": "10 de agosto de 2026", "href": "for-students/",
+         "title": "Para estudiantes: una fuente que se cita sola, sobrevive y es legible por una máquina",
+         "text": "Tres cosas fallan con una fuente web en un trabajo académico: desaparece antes de la entrega, su cita hay que teclearla a mano, y el archivo que guardó es una imagen en la que ninguna herramienta puede buscar. Lo que hace una captura de página completa con cada una de las tres — y dónde le devuelve el trabajo a usted.",
+         "figures": ["<b>18</b> obras, al azar", "<b>100 %</b> exacto, frente a 79 %", "<b>0</b> registros erróneos, frente a 3", "<b>14/20</b> registros completos"]},
+        {"date": "3 de agosto de 2026", "href": "save-a-webpage-as-pdf/",
+         "title": "Cómo guardar una página web como PDF — una sola hoja, con su fuente encima",
+         "text": "La respuesta corta: una extensión de captura, no el diálogo de impresión. La impresión pagina — el mismo artículo salió como 26 páginas con 9 saltos que cortaban una frase. Una captura escribe una hoja continua y puede estampar en la página de dónde vino y cuándo.",
+         "figures": ["<b>26</b> páginas frente a 1 hoja", "<b>9</b> saltos cortan una frase, frente a 0", "<b>91,5 %</b> de recuperación, frente a 87,6 %", "<b>19,3 %</b> de las fuentes citadas desaparecidas"]},
+    ],
+    "foot": '<a href="../">← Proving Lab</a> · <a href="../about/">Acerca de &amp; divulgación</a> · Correcciones: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues de GitHub</a> · <a href="../disclaimer/">Aviso legal</a>',
+}
+
+TEXTE["how-to"]["fr"] = {
+    "h1": "Guides",
+    "lead": "Des guides pas à pas pour enregistrer une page web en PDF, la citer et la conserver. Chaque chiffre renvoie à la mesure dont il provient, et chaque guide nomme ce qu'il ne fait pas.",
+    "items": [
+        {"date": "15 août 2026", "href": "firefox-and-chrome/",
+         "title": "Pour les chercheuses, chercheurs et étudiant·e·s : l'extension dans Firefox et Chrome",
+         "text": "Comment configurer l'extension dans Firefox et Chrome et comment se déroule en pratique le cycle capturer–citer–archiver. D'abord les voies d'installation, puis le flux de travail, ensuite les réglages qui comptent — et une liste honnête de ce qu'elle ne fait pas.",
+         "figures": ["<b>4</b> réglages qui comptent", "<b>18</b> champs XMP", "<b>92,6 %</b> récupéré à 150 dpi", "<b>0</b> permission d'hôte"]},
+        {"date": "10 août 2026", "href": "for-students/",
+         "title": "Pour les étudiants : une source qui se cite elle-même, survit et se laisse lire par une machine",
+         "text": "Trois choses tournent mal avec une source web dans un travail universitaire : elle disparaît avant la remise, sa citation doit être saisie à la main, et le fichier que vous avez gardé est une image dans laquelle aucun outil ne peut chercher. Ce qu'une capture pleine page fait pour chacune des trois — et où le travail vous revient.",
+         "figures": ["<b>18</b> travaux tirés au hasard", "<b>100 %</b> d'exactitude, contre 79 %", "<b>0</b> notice erronée, contre 3", "<b>14/20</b> notices complètes"]},
+        {"date": "3 août 2026", "href": "save-a-webpage-as-pdf/",
+         "title": "Comment enregistrer une page web en PDF — une seule feuille, avec sa source dessus",
+         "text": "La réponse courte : une extension de capture, pas la boîte de dialogue d’impression. L’impression pagine — le même article est sorti en 26 pages, avec 9 sauts coupant une phrase. Une capture écrit une feuille continue et peut inscrire sur la page d’où elle vient et quand.",
+         "figures": ["<b>26</b> pages contre 1 feuille", "<b>9</b> sauts coupent une phrase, contre 0", "<b>91,5 %</b> de rappel, contre 87,6 %", "<b>19,3 %</b> des sources citées disparues"]},
+    ],
+    "foot": '<a href="../">← Proving Lab</a> · <a href="../about/">À propos &amp; transparence</a> · Corrections : <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">tickets GitHub</a> · <a href="../disclaimer/">Mentions légales</a>',
+}
+
+TEXTE["how-to"]["it"] = {
+    "h1": "Guide",
+    "lead": "Guide passo per passo per salvare una pagina web in PDF, citarla e conservarla. Ogni cifra rimanda alla misurazione da cui proviene, e ogni guida dice che cosa non fa.",
+    "items": [
+        {"date": "15 agosto 2026", "href": "firefox-and-chrome/",
+         "title": "Per ricercatori, ricercatrici e studenti: l'estensione in Firefox e Chrome",
+         "text": "Come configurare l'estensione in Firefox e Chrome e come funziona in pratica il ciclo catturare–citare–archiviare. Prima le vie di installazione, poi il flusso di lavoro, quindi le impostazioni che contano — e una lista onesta di ciò che non fa.",
+         "figures": ["<b>4</b> impostazioni che contano", "<b>18</b> campi XMP", "<b>92,6 %</b> recuperato a 150 dpi", "<b>0</b> permessi host"]},
+        {"date": "10 agosto 2026", "href": "for-students/",
+         "title": "Per studenti: una fonte che si cita da sola, sopravvive ed è leggibile da una macchina",
+         "text": "Tre cose vanno storte con una fonte web in una tesina: sparisce prima della consegna, la citazione va battuta a mano, e il file conservato è un'immagine in cui nessuno strumento può cercare. Che cosa fa una cattura a pagina intera per ciascuna delle tre — e dove il lavoro torna a voi.",
+         "figures": ["<b>18</b> opere estratte a caso", "<b>100 %</b> corretto, contro 79 %", "<b>0</b> record errati, contro 3", "<b>14/20</b> record completi"]},
+        {"date": "3 agosto 2026", "href": "save-a-webpage-as-pdf/",
+         "title": "Come salvare una pagina web in PDF — un solo foglio, con la sua fonte sopra",
+         "text": "La risposta breve: un’estensione di cattura, non la finestra di stampa. La stampa impagina — lo stesso articolo è uscito come 26 pagine con 9 interruzioni che tagliavano una frase. Una cattura scrive un foglio continuo e può imprimere sulla pagina da dove viene e quando.",
+         "figures": ["<b>26</b> pagine contro 1 foglio", "<b>9</b> interruzioni tagliano una frase, contro 0", "<b>91,5 %</b> di richiamo, contro 87,6 %", "<b>19,3 %</b> delle fonti citate sparite"]},
+    ],
+    "foot": '<a href="../">← Proving Lab</a> · <a href="../about/">Informazioni &amp; trasparenza</a> · Correzioni: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue su GitHub</a> · <a href="../disclaimer/">Esclusione di responsabilità</a>',
+}
+
+TEXTE["how-to"]["ja"] = {
+    "h1": "ガイド",
+    "lead": "ウェブページを PDF として保存し、引用し、保管するための手順ガイド。数値はすべて、その出どころとなった計測にリンクしており、各ガイドはできないことも明記しています。",
+    "items": [
+        {"date": "2026年8月15日", "href": "firefox-and-chrome/",
+         "title": "研究者・学生の方へ: Firefox と Chrome での拡張機能",
+         "text": "Firefox と Chrome で拡張機能をセットアップする方法と、キャプチャ→引用→アーカイブの流れの実践。まずインストール経路、次にワークフロー、そして重要な設定 — 最後に、できないことの正直なリスト。",
+         "figures": ["<b>4</b> つの重要な設定", "<b>18</b> の XMP フィールド", "150 dpi で <b>92.6 %</b> 復元", "<b>0</b> ホスト権限"]},
+        {"date": "2026年8月10日", "href": "for-students/",
+         "title": "学生のために：自分で出典を名乗り、消えず、機械が読めるソース",
+         "text": "レポートのウェブ出典では三つのことが起きます。締切前にページが消える、書誌情報を手で打ち直すことになる、そして保存したファイルは画像なのでどの道具でも検索できない。ページ全体のキャプチャがこの三つに何をするのか——そしてどこで作業があなたに戻ってくるのか。",
+         "figures": ["無作為に選んだ <b>18</b> 件", "正確さ <b>100 %</b>、対 79 %", "誤りのある記録 <b>0</b> 件、対 3 件", "<b>14/20</b> 件が完全な書誌"]},
+        {"date": "2026年8月3日", "href": "save-a-webpage-as-pdf/",
+         "title": "ウェブページを PDF として保存する方法 — 1 枚の紙に、出典を載せて",
+         "text": "短い答え: 印刷ダイアログではなく、キャプチャ拡張機能を使う。印刷はページに分割する — 同じ記事が 26 ページになり、9 か所の改ページが文の途中を切った。キャプチャは 1 枚の連続した紙に書き出し、どこから取得したか、そしていつ取得したかをページに刻める。",
+         "figures": ["<b>26</b> ページ対 1 枚", "文を切る改ページ <b>9</b> か所、対 0", "再現率 <b>91.5 %</b>、対 87.6 %", "引用元の <b>19.3 %</b> が消失"]},
+    ],
+    "foot": '<a href="../">← Proving Lab</a> · <a href="../about/">概要と開示</a> · 修正: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">免責事項</a>',
+}
+
+TEXTE["how-to"]["pt-BR"] = {
+    "h1": "Guias",
+    "lead": "Guias passo a passo para salvar uma página web em PDF, citá-la e conservá-la. Cada número leva à medição de onde ele vem, e cada guia diz o que não faz.",
+    "items": [
+        {"date": "15 de agosto de 2026", "href": "firefox-and-chrome/",
+         "title": "Para pesquisadores e estudantes: a extensão no Firefox e no Chrome",
+         "text": "Como configurar a extensão no Firefox e no Chrome e como funciona na prática o ciclo capturar–citar–arquivar. Primeiro as vias de instalação, depois o fluxo de trabalho, em seguida as configurações que importam — e uma lista honesta do que ela não faz.",
+         "figures": ["<b>4</b> configurações que importam", "<b>18</b> campos XMP", "<b>92,6 %</b> recuperado a 150 dpi", "<b>0</b> permissões de host"]},
+        {"date": "10 de agosto de 2026", "href": "for-students/",
+         "title": "Para estudantes: uma fonte que se cita sozinha, sobrevive e é legível por uma máquina",
+         "text": "Três coisas dão errado com uma fonte da web num trabalho acadêmico: ela some antes da entrega, a citação precisa ser digitada à mão, e o arquivo que você guardou é uma imagem em que nenhuma ferramenta consegue buscar. O que uma captura de página inteira faz com cada uma das três — e onde o trabalho volta para você.",
+         "figures": ["<b>18</b> obras, sorteadas ao acaso", "<b>100 %</b> de acerto, contra 79 %", "<b>0</b> registros errados, contra 3", "<b>14/20</b> registros completos"]},
+        {"date": "3 de agosto de 2026", "href": "save-a-webpage-as-pdf/",
+         "title": "Como salvar uma página web em PDF — uma única folha, com a fonte nela",
+         "text": "A resposta curta: uma extensão de captura, não a caixa de impressão. A impressão pagina — o mesmo artigo saiu como 26 páginas com 9 quebras cortando uma frase. Uma captura escreve uma folha contínua e pode carimbar na página de onde ela veio e quando.",
+         "figures": ["<b>26</b> páginas contra 1 folha", "<b>9</b> quebras cortam uma frase, contra 0", "<b>91,5 %</b> de recuperação, contra 87,6 %", "<b>19,3 %</b> das fontes citadas sumiram"]},
+    ],
+    "foot": '<a href="../">← Proving Lab</a> · <a href="../about/">Sobre &amp; transparência</a> · Correções: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues no GitHub</a> · <a href="../disclaimer/">Aviso legal</a>',
+}
+
+TEXTE["how-to"]["ru"] = {
+    "h1": "Инструкции",
+    "lead": "Пошаговые руководства: как сохранить веб-страницу в PDF, сослаться на неё и сохранить её надолго. Каждое число ведёт к измерению, из которого оно взято, а каждое руководство называет и то, чего оно не делает.",
+    "items": [
+        {"date": "15 августа 2026 г.", "href": "firefox-and-chrome/",
+         "title": "Исследователям и студентам: расширение в Firefox и Chrome",
+         "text": "Как настроить расширение в Firefox и Chrome и как на практике выглядит цикл «захват–цитирование–архив». Сначала способы установки, затем рабочий процесс, потом важные настройки — и честный список того, чего расширение не делает.",
+         "figures": ["<b>4</b> важные настройки", "<b>18</b> полей XMP", "<b>92,6 %</b> распознано при 150 dpi", "<b>0</b> host-разрешений"]},
+        {"date": "10 августа 2026 г.", "href": "for-students/",
+         "title": "Студентам: источник, который сам себя цитирует, не исчезает и читается машиной",
+         "text": "С веб-источником в курсовой случаются три вещи: он исчезает до сдачи, описание для списка литературы приходится набирать вручную, а сохранённый файл — картинка, по которой ни один инструмент не ищет. Что делает снимок всей страницы с каждой из трёх — и где работа возвращается к вам.",
+         "figures": ["<b>18</b> работ, выбранных случайно", "<b>100 %</b> точности, против 79 %", "<b>0</b> ошибочных записей, против 3", "<b>14/20</b> полных записей"]},
+        {"date": "3 августа 2026 г.", "href": "save-a-webpage-as-pdf/",
+         "title": "Как сохранить веб-страницу в PDF — одним листом, с указанием источника",
+         "text": "Короткий ответ: расширение для съёмки страницы, а не диалог печати. Печать разбивает на страницы — та же статья вышла как 26 страниц, и 9 разрывов прошли посреди предложения. Съёмка пишет один непрерывный лист и может проставить на странице, откуда она взята и когда.",
+         "figures": ["<b>26</b> страниц против 1 листа", "<b>9</b> разрывов посреди предложения, против 0", "<b>91,5 %</b> полноты текста, против 87,6 %", "<b>19,3 %</b> процитированных источников исчезли"]},
+    ],
+    "foot": '<a href="../">← Proving Lab</a> · <a href="../about/">О сайте и раскрытие</a> · Исправления: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues на GitHub</a> · <a href="../disclaimer/">Отказ от ответственности</a>',
+}
+
+TEXTE["how-to"]["zh-CN"] = {
+    "h1": "指南",
+    "lead": "把网页保存为 PDF、引用它并长期留存的分步指南。每一个数字都链接到它出自的那次测量,每一篇指南也都写明它不做什么。",
+    "items": [
+        {"date": "2026年8月15日", "href": "firefox-and-chrome/",
+         "title": "致研究人员和学生:Firefox 与 Chrome 中的扩展",
+         "text": "如何在 Firefox 和 Chrome 中配置该扩展,以及“捕获—引用—归档”流程的实际操作。先讲安装途径,再讲工作流,然后是关键设置——最后是一份诚实说明它不做什么的清单。",
+         "figures": ["<b>4</b> 项关键设置", "<b>18</b> 个 XMP 字段", "150 dpi 下复原 <b>92.6 %</b>", "<b>0</b> 项主机权限"]},
+        {"date": "2026年8月10日", "href": "for-students/",
+         "title": "写给学生：一份自带出处、不会消失、机器能读的来源",
+         "text": "论文里的网页来源常出三种问题:交稿前页面就没了,著录信息得一个字一个字敲,保存下来的文件是一张图、任何工具都搜不了。整页捕获对这三件事各自做了什么——以及它在哪里把活儿退回给你。",
+         "figures": ["随机抽取的 <b>18</b> 篇", "准确率 <b>100 %</b>,对比 79 %", "错误记录 <b>0</b> 条,对比 3 条", "<b>14/20</b> 条完整记录"]},
+        {"date": "2026年8月3日", "href": "save-a-webpage-as-pdf/",
+         "title": "如何把网页保存为 PDF —— 一整张，并带上出处",
+         "text": "简短的答案：用抓取扩展，而不是打印对话框。打印会分页——同一篇文章印出来是 26 页，其中 9 处分页把句子拦腰截断。抓取写出的是一张连续的长纸，还能把来源和时间盖在页面上。",
+         "figures": ["<b>26</b> 页对 1 张", "<b>9</b> 处分页截断句子,对比 0", "文本召回率 <b>91.5 %</b>,对比 87.6 %", "被引来源有 <b>19.3 %</b> 已消失"]},
     ],
     "foot": '<a href="../">← Proving Lab</a> · <a href="../about/">关于与披露</a> · 更正: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">免责声明</a>',
 }

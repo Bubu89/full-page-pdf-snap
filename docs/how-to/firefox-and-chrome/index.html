@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>For researchers and students: the add-on in Firefox and Chrome — setup and the academic workflow — Proving Lab</title>
 <meta name="description" content="How to install Full Page PDF Snap in Firefox (desktop and Android) and in Chrome, and how to run the academic capture workflow: full page or visible area, citation details on the sheet, the RIS record into Citavi, Zotero or EndNote, and the four settings that matter for papers.">
-<meta name="keywords" content="Firefox add-on, Chrome extension, academic workflow, citation, print to PDF, screenshot, OCR, web archiving">>
+<meta name="keywords" content="citation endpoint, MCP, extract_citation, reading list, Literaturverzeichnis erstellen, Internetquellen zitieren, Abrufdatum, RIS, BibTeX, Citavi, Zotero">
 <link rel="canonical" href="https://provinglab.dev/how-to/firefox-and-chrome/">
 <link rel="alternate" hreflang="en" href="https://provinglab.dev/how-to/firefox-and-chrome/">
 <link rel="alternate" hreflang="de" href="https://provinglab.dev/how-to/firefox-and-chrome/">
@@ -61,28 +61,24 @@
     "@type": "Organization",
     "name": "Proving Lab",
     "url": "https://provinglab.dev/"
-  },
-  "keywords": "Firefox add-on, Chrome extension, academic workflow, citation, print to PDF, screenshot, OCR, web archiving"
+  }
 }
 </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org", "@type": "Dataset",
-  "name": "Print-to-PDF versus screenshot capture, same document",
-  "description": "Page counts, page-break analysis, word recall against the source text, embedded images and file sizes for the same Wikipedia article captured both ways on 1 August 2026.",
-  "url": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
-  "identifier": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json",
-  "datePublished": "2026-08-01", "license": "https://creativecommons.org/licenses/by/4.0/",
-  "isAccessibleForFree": true, "inLanguage": "en",
-  "keywords": ["print to PDF","screenshot","page breaks","OCR","web archiving"],
-  "variableMeasured": ["pages","page breaks","breaks mid-sentence","word recall","file size","embedded images"],
-  "creator": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
-  "distribution": [{ "@type": "DataDownload", "encodingFormat": "application/json",
-    "contentUrl": "https://provinglab.dev/data/2026-08-01-print-vs-screenshot.json" }],
-  "measurementTechnique": "Both routes run on the same URL on the same day; text compared against the source article via the Wikipedia API."
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Citation triage agent and human",
+  "description": "Given a reading list, how much can an AI agent turn into citable records on its own, and what does it have to hand back?",
+  "url": "https://provinglab.dev/data/2026-08-03-citation-triage.json",
+  "identifier": "https://provinglab.dev/data/2026-08-03-citation-triage.json",
+  "datePublished": "2026-08-03",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "keywords": "citation endpoint, MCP, extract_citation, reading list, Literaturverzeichnis erstellen, Internetquellen zitieren, Abrufdatum, RIS, BibTeX, Citavi, Zotero"
 }
 </script>
-
 <style>
   :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
     --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c; }
@@ -181,7 +177,7 @@
     <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
     <a class="n" href="../../notes/">Notes</a>
     <a class="n" href="../../measurements/">Measurements</a>
-    <a class="n" href="../../how-to/save-a-webpage-as-pdf/" aria-current="page">How&nbsp;to</a>
+    <a class="n" href="../../how-to/" aria-current="page">How&nbsp;to</a>
     <a class="n" href="../../recipes/">Recipes</a>
     <a class="n" href="../../for-agents/">For&nbsp;agents</a>
     <a class="n" href="../../mitmachen/">Mitmachen</a>

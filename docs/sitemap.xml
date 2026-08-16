@@ -2,13 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://provinglab.dev/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/recipes/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -20,229 +20,235 @@
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/notes/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/tools/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/data/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/deutsch/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/android-capture-extensions/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/citation-by-platform/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/citation-extraction/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/citation-triage/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/de-plattformen/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/extension-permissions-risk/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/install-an-extension-without-a-click/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/pdf-extension-permissions/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/print-to-pdf-vs-screenshot/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/reading-list-to-bibliography/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/web-citations-that-vanish/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/webpage-to-pdf-for-ocr/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/notes/agent-cites-a-source/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/notes/building-with-ai-what-went-wrong/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/notes/installing-your-own-tool/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/notes/mcp-server-what-it-solves/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/notes/nineteen-issues/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/notes/pages-gone-before-you-need-them/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/notes/smaller-files-better-ocr/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/notes/sources-a-machine-cannot-cite/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/notes/what-an-agent-may-install/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/notes/who-actually-reads-this/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/anleitung/webseite-als-pdf-speichern/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/for-agents/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://provinglab.dev/how-to/firefox-and-chrome/</loc>
+    <loc>https://provinglab.dev/how-to/</loc>
     <lastmod>2026-08-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://provinglab.dev/how-to/firefox-and-chrome/</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://provinglab.dev/how-to/for-students/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/how-to/save-a-webpage-as-pdf/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/mitmachen/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/tools/pushdictate/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/about/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/disclaimer/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/privacy.html</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

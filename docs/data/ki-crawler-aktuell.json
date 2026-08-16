@@ -1,7 +1,75 @@
 {
-  "gemessen_am": "2026-08-06",
-  "stand": "2026-08-06T06:08:47Z",
-  "fenster_stunden": 23.9,
+  "gemessen_am": "2026-08-16",
+  "stand": "2026-08-16T08:31:01Z",
+  "fenster_stunden": 23.5,
+  "herkunft_geprueft": {
+    "chatgpt-user": {
+      "erwartet": "OpenAI",
+      "bestaetigt": 2,
+      "unbestaetigt": 154,
+      "fremde_herkunft": {}
+    },
+    "perplexitybot": {
+      "erwartet": "Perplexity",
+      "bestaetigt": 0,
+      "unbestaetigt": 66,
+      "fremde_herkunft": {}
+    },
+    "oai-searchbot": {
+      "erwartet": "OpenAI",
+      "bestaetigt": 7,
+      "unbestaetigt": 62,
+      "fremde_herkunft": {}
+    },
+    "gptbot": {
+      "erwartet": "OpenAI",
+      "bestaetigt": 2,
+      "unbestaetigt": 58,
+      "fremde_herkunft": {}
+    },
+    "claudebot": {
+      "erwartet": "Anthropic",
+      "bestaetigt": 0,
+      "unbestaetigt": 57,
+      "fremde_herkunft": {}
+    },
+    "google-extended": {
+      "erwartet": "Google",
+      "bestaetigt": 0,
+      "unbestaetigt": 57,
+      "fremde_herkunft": {}
+    },
+    "googlebot": {
+      "erwartet": "Google",
+      "bestaetigt": 12,
+      "unbestaetigt": 0,
+      "fremde_herkunft": {}
+    }
+  },
+  "mcp_aufrufe": {
+    "gesamt": 1389,
+    "je_pfad": {
+      "/mcp": 1353,
+      "/mcp/.well-known/mcp": 13,
+      "/mcp/.well-known/oauth-authorization-server": 8,
+      "/mcp/.well-known/oauth-protected-resource": 7,
+      "/.well-known/mcp.json": 4,
+      "/mcp/server-card": 2,
+      "/mcp/.well-known/owners.json": 2
+    },
+    "je_aufrufer": {
+      "SentinelOracle/0.1 (+https://glimind.com/opt-out; liveness-o": 666,
+      "mcpbeat/0.1 (+https://mcpbeat.com/bot/; liveness check)": 267,
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36": 60,
+      "python-httpx/0.28.1": 56,
+      "zevruna-monitor/1.0 (+https://zevruna.com)": 41,
+      "agent-tools.cloud-crawler/0.1 (+https://agent-tools.cloud)": 37,
+      "aisec-registry/0.2 (+https://sec.sqrx.io)": 36,
+      "node": 27,
+      "provinglab-abnahme/1.0 (+https://provinglab.dev/for-agents/)": 24,
+      "MCPScoringEngine/1.0": 18
+    }
+  },
   "lizenz": "CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/",
   "methode": {
     "quelle": "Cloudflare GraphQL Analytics, httpRequestsAdaptiveGroups, Zone provinglab.dev. Beide Abfragen stehen im Klartext in tools/crawler-bericht.py.",
@@ -11,61 +79,176 @@
   "nicht_pruefbar": "Diese Zahlen stammen aus der Analytik des eigenen Anbieters und lassen sich von aussen nicht nachrechnen. Sie sind eine Selbstauskunft mit offengelegter Methode, keine Messung, die jemand wiederholen koennte. Ein User-Agent ist ausserdem kein Ausweis: er laesst sich frei setzen.",
   "ki_systeme": {
     "Amazonbot": {
-      "anfragen": 65,
-      "bytes": 1008960,
-      "top_pfade": {}
-    },
-    "ClaudeBot (Anthropic)": {
-      "anfragen": 46,
-      "bytes": 141539,
+      "anfragen": 251,
+      "bytes": 2322680,
       "top_pfade": {
-        "/robots.txt": 22,
-        "/sitemap.xml": 22
+        "/@fs/home/ubuntu/.oci/config": 10,
+        "/": 10,
+        "/api/ping": 4,
+        "/keyfile.json": 3,
+        "/serverless.yaml": 3
       }
     },
     "ChatGPT-User (OpenAI, im Auftrag eines Menschen)": {
-      "anfragen": 40,
-      "bytes": 553114,
-      "top_pfade": {}
-    },
-    "GPTBot (OpenAI)": {
-      "anfragen": 34,
-      "bytes": 292534,
-      "top_pfade": {}
+      "anfragen": 139,
+      "bytes": 1634016,
+      "top_pfade": {
+        "/": 8,
+        "/config/database.yml": 3,
+        "/_ignition/health-check": 3,
+        "/configuration.js": 3,
+        "/keys/gcp.json": 2
+      }
     },
     "OAI-SearchBot (OpenAI)": {
-      "anfragen": 6,
-      "bytes": 19436,
-      "top_pfade": {}
+      "anfragen": 65,
+      "bytes": 513939,
+      "top_pfade": {
+        "/robots.txt": 7,
+        "/config.js": 2,
+        "/admin": 2,
+        "/__env.js": 2,
+        "/config/firebase-admin.json": 2
+      }
+    },
+    "PerplexityBot": {
+      "anfragen": 63,
+      "bytes": 266706,
+      "top_pfade": {
+        "/rclone.conf": 3,
+        "/.codex/config.toml": 3,
+        "/_debugbar/open": 3,
+        "/secret.json": 2,
+        "/application.properties": 2
+      }
+    },
+    "GPTBot (OpenAI)": {
+      "anfragen": 60,
+      "bytes": 466235,
+      "top_pfade": {
+        "/service-account.json": 3,
+        "/google-service-account.json": 3,
+        "/auth.json": 2,
+        "/secrets.json": 2,
+        "/api/settings": 2
+      }
+    },
+    "ClaudeBot (Anthropic)": {
+      "anfragen": 48,
+      "bytes": 473871,
+      "top_pfade": {
+        "/.azure/azureProfile.json": 3,
+        "/config/config.php": 2,
+        "/": 2,
+        "/aws-config.js": 2,
+        "/env.json": 2
+      }
+    },
+    "Google-Extended": {
+      "anfragen": 46,
+      "bytes": 230180,
+      "top_pfade": {
+        "/config.php.bak": 3,
+        "/.cursor/mcp.json": 3,
+        "/config/env.php": 2,
+        "/ssl/server.key": 2,
+        "/gcp-service.json": 2
+      }
     }
   },
   "suchmaschinen": {
-    "Googlebot": {
-      "anfragen": 58,
-      "bytes": 1630245,
+    "YandexBot": {
+      "anfragen": 12,
+      "bytes": 333224,
       "top_pfade": {
-        "/robots.txt": 25
+        "/robots.txt": 4,
+        "/tools/pushdictate/": 2,
+        "/how-to/for-students/": 2,
+        "/notes/installing-your-own-tool/": 2,
+        "/how-to/firefox-and-chrome/": 2
+      }
+    },
+    "Googlebot": {
+      "anfragen": 12,
+      "bytes": 168989,
+      "top_pfade": {
+        "/robots.txt": 6
       }
     },
     "Applebot": {
-      "anfragen": 30,
-      "bytes": 239263,
+      "anfragen": 8,
+      "bytes": 23438,
       "top_pfade": {
-        "/agent-tools.js": 12
+        "/data/2026-08-03-agent-real-gesture.json": 4,
+        "/robots.txt": 4
       }
-    },
-    "Bingbot": {
-      "anfragen": 4,
-      "bytes": 10277,
-      "top_pfade": {}
     }
   },
-  "scans_mit_ki_kennzeichen": {},
+  "scans_mit_ki_kennzeichen": {
+    "ChatGPT-User (OpenAI, im Auftrag eines Menschen)": {
+      "anfragen": 17,
+      "gesuchte_pfade": [
+        "/.azure/credentials",
+        "/.git-credentials",
+        "/api/config.json",
+        "/app/config.json",
+        "/application.env",
+        "/credentials.ini",
+        "/gcp-credentials.json",
+        "/root/.config/gcloud/application_default_credentials.json"
+      ]
+    },
+    "Amazonbot": {
+      "anfragen": 17,
+      "gesuchte_pfade": [
+        "/.anthropic/config.json",
+        "/.docker/config.json",
+        "/.github/workflows/deploy.yml",
+        "/.sendgrid.env",
+        "/azure-credentials.json",
+        "/config/credentials.json.bak",
+        "/credentials.json",
+        "/stripe.env"
+      ]
+    },
+    "Google-Extended": {
+      "anfragen": 11,
+      "gesuchte_pfade": [
+        "/.openai/config.json",
+        "/api-keys.json",
+        "/aws-credentials.json",
+        "/config/gcp-credentials.json",
+        "/terraform.tfvars"
+      ]
+    },
+    "ClaudeBot (Anthropic)": {
+      "anfragen": 9,
+      "gesuchte_pfade": [
+        "/application_default_credentials.json",
+        "/dump.sql",
+        "/home/ubuntu/.config/gcloud/application_default_credentials.json",
+        "/sendgrid.env"
+      ]
+    },
+    "OAI-SearchBot (OpenAI)": {
+      "anfragen": 4,
+      "gesuchte_pfade": [
+        "/config/credentials.json",
+        "/s3/credentials"
+      ]
+    },
+    "PerplexityBot": {
+      "anfragen": 3,
+      "gesuchte_pfade": [
+        "/.gcp/credentials.json"
+      ]
+    }
+  },
   "summe": {
-    "ki_anfragen": 191,
-    "ki_bytes": 2015583,
-    "such_anfragen": 92,
-    "such_bytes": 1879785,
-    "scan_anfragen": 0
+    "ki_anfragen": 672,
+    "ki_bytes": 5907627,
+    "such_anfragen": 32,
+    "such_bytes": 525651,
+    "scan_anfragen": 61
   }
 }

@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to — Proving Lab</title>
+<meta name="description" content="Step-by-step guides for saving a web page as a PDF, citing it and keeping it — every figure links to the measurement it comes from.">
+<meta name="keywords" content="how to, save a webpage as PDF, cite a web source, browser extension, Firefox, Chrome">
+<link rel="canonical" href="https://provinglab.dev/how-to/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../icon-128.png">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="How to — Proving Lab">
+<meta property="og:description" content="Step-by-step guides for saving a web page as a PDF, citing it and keeping it — every figure links to the measurement it comes from.">
+<meta property="og:url" content="https://provinglab.dev/how-to/">
+<meta name="twitter:card" content="summary">
+<style>
+  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.65;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:820px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  header{padding:50px 0 34px;border-bottom:1px solid var(--line);margin-bottom:8px}
+  h1{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.025em;margin-bottom:14px}
+  .lead{color:var(--dim);font-size:1.05rem;max-width:60ch}
+  .item{padding:24px 0;border-bottom:1px solid var(--line)}
+  .item h2{font-size:1.18rem;margin-bottom:8px;letter-spacing:-.01em}
+  .item p{color:var(--dim);font-size:.96rem;margin-bottom:10px}
+  .date{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.75rem;
+    color:var(--dim);letter-spacing:.04em;margin-bottom:7px}
+  .figures{display:flex;flex-wrap:wrap;gap:16px;font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:.8rem;color:var(--dim)}
+  .figures b{color:var(--good);font-weight:600;font-variant-numeric:tabular-nums}
+  footer{padding:36px 0 60px;color:var(--dim);font-size:.85rem}
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;font-size:.98rem;color:var(--tx);text-decoration:none;
+    margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){ .topnav .brand{width:100%;margin-right:0} }
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
+</style>
+<script src="/agent-tools.js" defer></script>
+<script src="/site-lang.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "How to — Proving Lab",
+  "description": "Step-by-step guides for saving a web page as a PDF, citing it and keeping it — every figure links to the measurement it comes from.",
+  "url": "https://provinglab.dev/how-to/",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "keywords": "how to, save a webpage as PDF, cite a web source, browser extension, Firefox, Chrome"
+}
+</script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../"><img src="../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../notes/">Notes</a>
+    <a class="n" href="../measurements/">Measurements</a>
+    <a class="n" href="../how-to/" aria-current="page">How&nbsp;to</a>
+    <a class="n" href="../recipes/">Recipes</a>
+    <a class="n" href="../for-agents/">For&nbsp;agents</a>
+    <a class="n" href="../mitmachen/">Mitmachen</a>
+    <a class="n" href="../tools/">Tools</a>
+    <a class="n" href="../about/">About</a>
+    <a class="n" href="../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
+      <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+<div data-lang="en" class="on" lang="en">
+<header>
+  <h1>How to</h1>
+  <p class="lead">Step-by-step guides for saving a web page as a PDF, citing it and keeping it. Every figure links to the measurement it comes from, and every guide names what it does not do.</p>
+</header>
+<div class="item">
+  <p class="date">15 August 2026</p>
+  <h2><a href="firefox-and-chrome/">For researchers and students: the add-on in Firefox and Chrome</a></h2>
+  <p>How to set the extension up in Firefox and Chrome, and how the capture–cite–archive workflow runs in practice. Install routes first, then the workflow, then the settings that matter — and an honest list of what it does not do.</p>
+  <div class="figures"><span><b>4</b> settings that matter</span><span><b>18</b> XMP fields</span><span><b>92.6 %</b> recovered at 150 dpi</span><span><b>0</b> host permissions</span></div>
+</div>
+<div class="item">
+  <p class="date">10 August 2026</p>
+  <h2><a href="for-students/">For students: a source that cites itself, survives, and can be read by a machine</a></h2>
+  <p>Three things go wrong with a web source in a term paper: it disappears before the deadline, its citation has to be typed out by hand, and the file you kept is a picture no tool can search. What a full-page capture does about each of the three — and where it hands the work back to you.</p>
+  <div class="figures"><span><b>18</b> works, drawn at random</span><span><b>100 %</b> accurate, against 79 %</span><span><b>0</b> wrong records, against 3</span><span><b>14/20</b> complete records</span></div>
+</div>
+<div class="item">
+  <p class="date">3 August 2026</p>
+  <h2><a href="save-a-webpage-as-pdf/">How to save a web page as a PDF — one sheet, with its source on it</a></h2>
+  <p>The short answer: use a capture extension, not the print dialog. Print paginates — the same article came out as 26 pages with 9 breaks cutting through a sentence. A capture writes one continuous sheet and can stamp the page with where it came from and when.</p>
+  <div class="figures"><span><b>26</b> pages against 1 sheet</span><span><b>9</b> breaks cut a sentence, against 0</span><span><b>91.5 %</b> recall, against 87.6 %</span><span><b>19.3 %</b> of cited sources gone</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">About &amp; disclosure</a> · Corrections: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">Disclaimer</a></footer>
+</div>
+
+<div data-lang="de" lang="de">
+<header>
+  <h1>Anleitung</h1>
+  <p class="lead">Schritt-für-Schritt-Anleitungen zum Speichern, Zitieren und Aufbewahren einer Webseite als PDF. Jede Zahl verweist auf die Messung, aus der sie stammt, und jede Anleitung nennt, was sie nicht tut.</p>
+</header>
+<div class="item">
+  <p class="date">15. August 2026</p>
+  <h2><a href="firefox-and-chrome/">Für Wissenschaftler:innen und Studierende: die Erweiterung in Firefox und Chrome</a></h2>
+  <p>Wie die Erweiterung in Firefox und Chrome eingerichtet wird und wie der Ablauf aufnehmen–zitieren–archivieren in der Praxis läuft. Zuerst die Installationswege, dann der Arbeitsfluss, dann die Einstellungen, die zählen — und eine ehrliche Liste dessen, was sie nicht tut.</p>
+  <div class="figures"><span><b>4</b> Einstellungen, die zählen</span><span><b>18</b> XMP-Felder</span><span><b>92,6 %</b> erkannt bei 150 dpi</span><span><b>0</b> Host-Berechtigungen</span></div>
+</div>
+<div class="item">
+  <p class="date">10. August 2026</p>
+  <h2><a href="for-students/">Für Studierende: eine Quelle, die sich selbst zitiert, überlebt und maschinenlesbar ist</a></h2>
+  <p>Drei Dinge gehen mit einer Webquelle in einer Seminararbeit schief: Sie verschwindet vor der Abgabe, ihre Zitation muss von Hand abgetippt werden, und die aufgehobene Datei ist ein Bild, das kein Werkzeug durchsucht. Was eine Ganzseiten-Aufnahme gegen jedes der drei tut — und wo die Arbeit an Sie zurückgeht.</p>
+  <div class="figures"><span><b>18</b> Werke, zufällig gezogen</span><span><b>100 %</b> zutreffend, gegen 79 %</span><span><b>0</b> falsche Datensätze, gegen 3</span><span><b>14/20</b> vollständige Datensätze</span></div>
+</div>
+<div class="item">
+  <p class="date">3. August 2026</p>
+  <h2><a href="save-a-webpage-as-pdf/">Wie man eine Webseite als PDF speichert — ein Blatt, mit der Quelle darauf</a></h2>
+  <p>Die kurze Antwort: eine Aufnahme-Erweiterung, nicht der Druckdialog. Der Druck teilt in Seiten auf — derselbe Artikel kam als 26 Seiten heraus, mit 9 Umbrüchen mitten durch einen Satz. Eine Aufnahme schreibt ein durchgehendes Blatt und kann der Seite aufprägen, woher sie stammt und wann.</p>
+  <div class="figures"><span><b>26</b> Seiten gegen 1 Blatt</span><span><b>9</b> Umbrüche mitten im Satz, gegen 0</span><span><b>91,5 %</b> Trefferquote, gegen 87,6 %</span><span><b>19,3 %</b> der zitierten Quellen weg</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Über &amp; Offenlegung</a> · Korrekturen: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a> · <a href="../disclaimer/">Haftungsausschluss</a></footer>
+</div>
+
+<div data-lang="es" lang="es">
+<header>
+  <h1>Guías</h1>
+  <p class="lead">Guías paso a paso para guardar una página web como PDF, citarla y conservarla. Cada cifra enlaza con la medición de la que procede, y cada guía nombra lo que no hace.</p>
+</header>
+<div class="item">
+  <p class="date">15 de agosto de 2026</p>
+  <h2><a href="firefox-and-chrome/">Para investigadores y estudiantes: la extensión en Firefox y Chrome</a></h2>
+  <p>Cómo configurar la extensión en Firefox y Chrome y cómo funciona en la práctica el ciclo capturar–citar–archivar. Primero las vías de instalación, después el flujo de trabajo, luego los ajustes que importan — y una lista honesta de lo que no hace.</p>
+  <div class="figures"><span><b>4</b> ajustes que importan</span><span><b>18</b> campos XMP</span><span><b>92,6 %</b> recuperado a 150 dpi</span><span><b>0</b> permisos de host</span></div>
+</div>
+<div class="item">
+  <p class="date">10 de agosto de 2026</p>
+  <h2><a href="for-students/">Para estudiantes: una fuente que se cita sola, sobrevive y es legible por una máquina</a></h2>
+  <p>Tres cosas fallan con una fuente web en un trabajo académico: desaparece antes de la entrega, su cita hay que teclearla a mano, y el archivo que guardó es una imagen en la que ninguna herramienta puede buscar. Lo que hace una captura de página completa con cada una de las tres — y dónde le devuelve el trabajo a usted.</p>
+  <div class="figures"><span><b>18</b> obras, al azar</span><span><b>100 %</b> exacto, frente a 79 %</span><span><b>0</b> registros erróneos, frente a 3</span><span><b>14/20</b> registros completos</span></div>
+</div>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="save-a-webpage-as-pdf/">Cómo guardar una página web como PDF — una sola hoja, con su fuente encima</a></h2>
+  <p>La respuesta corta: una extensión de captura, no el diálogo de impresión. La impresión pagina — el mismo artículo salió como 26 páginas con 9 saltos que cortaban una frase. Una captura escribe una hoja continua y puede estampar en la página de dónde vino y cuándo.</p>
+  <div class="figures"><span><b>26</b> páginas frente a 1 hoja</span><span><b>9</b> saltos cortan una frase, frente a 0</span><span><b>91,5 %</b> de recuperación, frente a 87,6 %</span><span><b>19,3 %</b> de las fuentes citadas desaparecidas</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Acerca de &amp; divulgación</a> · Correcciones: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues de GitHub</a> · <a href="../disclaimer/">Aviso legal</a></footer>
+</div>
+
+<div data-lang="fr" lang="fr">
+<header>
+  <h1>Guides</h1>
+  <p class="lead">Des guides pas à pas pour enregistrer une page web en PDF, la citer et la conserver. Chaque chiffre renvoie à la mesure dont il provient, et chaque guide nomme ce qu'il ne fait pas.</p>
+</header>
+<div class="item">
+  <p class="date">15 août 2026</p>
+  <h2><a href="firefox-and-chrome/">Pour les chercheuses, chercheurs et étudiant·e·s : l'extension dans Firefox et Chrome</a></h2>
+  <p>Comment configurer l'extension dans Firefox et Chrome et comment se déroule en pratique le cycle capturer–citer–archiver. D'abord les voies d'installation, puis le flux de travail, ensuite les réglages qui comptent — et une liste honnête de ce qu'elle ne fait pas.</p>
+  <div class="figures"><span><b>4</b> réglages qui comptent</span><span><b>18</b> champs XMP</span><span><b>92,6 %</b> récupéré à 150 dpi</span><span><b>0</b> permission d'hôte</span></div>
+</div>
+<div class="item">
+  <p class="date">10 août 2026</p>
+  <h2><a href="for-students/">Pour les étudiants : une source qui se cite elle-même, survit et se laisse lire par une machine</a></h2>
+  <p>Trois choses tournent mal avec une source web dans un travail universitaire : elle disparaît avant la remise, sa citation doit être saisie à la main, et le fichier que vous avez gardé est une image dans laquelle aucun outil ne peut chercher. Ce qu'une capture pleine page fait pour chacune des trois — et où le travail vous revient.</p>
+  <div class="figures"><span><b>18</b> travaux tirés au hasard</span><span><b>100 %</b> d'exactitude, contre 79 %</span><span><b>0</b> notice erronée, contre 3</span><span><b>14/20</b> notices complètes</span></div>
+</div>
+<div class="item">
+  <p class="date">3 août 2026</p>
+  <h2><a href="save-a-webpage-as-pdf/">Comment enregistrer une page web en PDF — une seule feuille, avec sa source dessus</a></h2>
+  <p>La réponse courte : une extension de capture, pas la boîte de dialogue d’impression. L’impression pagine — le même article est sorti en 26 pages, avec 9 sauts coupant une phrase. Une capture écrit une feuille continue et peut inscrire sur la page d’où elle vient et quand.</p>
+  <div class="figures"><span><b>26</b> pages contre 1 feuille</span><span><b>9</b> sauts coupent une phrase, contre 0</span><span><b>91,5 %</b> de rappel, contre 87,6 %</span><span><b>19,3 %</b> des sources citées disparues</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">À propos &amp; transparence</a> · Corrections : <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">tickets GitHub</a> · <a href="../disclaimer/">Mentions légales</a></footer>
+</div>
+
+<div data-lang="it" lang="it">
+<header>
+  <h1>Guide</h1>
+  <p class="lead">Guide passo per passo per salvare una pagina web in PDF, citarla e conservarla. Ogni cifra rimanda alla misurazione da cui proviene, e ogni guida dice che cosa non fa.</p>
+</header>
+<div class="item">
+  <p class="date">15 agosto 2026</p>
+  <h2><a href="firefox-and-chrome/">Per ricercatori, ricercatrici e studenti: l'estensione in Firefox e Chrome</a></h2>
+  <p>Come configurare l'estensione in Firefox e Chrome e come funziona in pratica il ciclo catturare–citare–archiviare. Prima le vie di installazione, poi il flusso di lavoro, quindi le impostazioni che contano — e una lista onesta di ciò che non fa.</p>
+  <div class="figures"><span><b>4</b> impostazioni che contano</span><span><b>18</b> campi XMP</span><span><b>92,6 %</b> recuperato a 150 dpi</span><span><b>0</b> permessi host</span></div>
+</div>
+<div class="item">
+  <p class="date">10 agosto 2026</p>
+  <h2><a href="for-students/">Per studenti: una fonte che si cita da sola, sopravvive ed è leggibile da una macchina</a></h2>
+  <p>Tre cose vanno storte con una fonte web in una tesina: sparisce prima della consegna, la citazione va battuta a mano, e il file conservato è un'immagine in cui nessuno strumento può cercare. Che cosa fa una cattura a pagina intera per ciascuna delle tre — e dove il lavoro torna a voi.</p>
+  <div class="figures"><span><b>18</b> opere estratte a caso</span><span><b>100 %</b> corretto, contro 79 %</span><span><b>0</b> record errati, contro 3</span><span><b>14/20</b> record completi</span></div>
+</div>
+<div class="item">
+  <p class="date">3 agosto 2026</p>
+  <h2><a href="save-a-webpage-as-pdf/">Come salvare una pagina web in PDF — un solo foglio, con la sua fonte sopra</a></h2>
+  <p>La risposta breve: un’estensione di cattura, non la finestra di stampa. La stampa impagina — lo stesso articolo è uscito come 26 pagine con 9 interruzioni che tagliavano una frase. Una cattura scrive un foglio continuo e può imprimere sulla pagina da dove viene e quando.</p>
+  <div class="figures"><span><b>26</b> pagine contro 1 foglio</span><span><b>9</b> interruzioni tagliano una frase, contro 0</span><span><b>91,5 %</b> di richiamo, contro 87,6 %</span><span><b>19,3 %</b> delle fonti citate sparite</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Informazioni &amp; trasparenza</a> · Correzioni: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue su GitHub</a> · <a href="../disclaimer/">Esclusione di responsabilità</a></footer>
+</div>
+
+<div data-lang="ja" lang="ja">
+<header>
+  <h1>ガイド</h1>
+  <p class="lead">ウェブページを PDF として保存し、引用し、保管するための手順ガイド。数値はすべて、その出どころとなった計測にリンクしており、各ガイドはできないことも明記しています。</p>
+</header>
+<div class="item">
+  <p class="date">2026年8月15日</p>
+  <h2><a href="firefox-and-chrome/">研究者・学生の方へ: Firefox と Chrome での拡張機能</a></h2>
+  <p>Firefox と Chrome で拡張機能をセットアップする方法と、キャプチャ→引用→アーカイブの流れの実践。まずインストール経路、次にワークフロー、そして重要な設定 — 最後に、できないことの正直なリスト。</p>
+  <div class="figures"><span><b>4</b> つの重要な設定</span><span><b>18</b> の XMP フィールド</span><span>150 dpi で <b>92.6 %</b> 復元</span><span><b>0</b> ホスト権限</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月10日</p>
+  <h2><a href="for-students/">学生のために：自分で出典を名乗り、消えず、機械が読めるソース</a></h2>
+  <p>レポートのウェブ出典では三つのことが起きます。締切前にページが消える、書誌情報を手で打ち直すことになる、そして保存したファイルは画像なのでどの道具でも検索できない。ページ全体のキャプチャがこの三つに何をするのか——そしてどこで作業があなたに戻ってくるのか。</p>
+  <div class="figures"><span>無作為に選んだ <b>18</b> 件</span><span>正確さ <b>100 %</b>、対 79 %</span><span>誤りのある記録 <b>0</b> 件、対 3 件</span><span><b>14/20</b> 件が完全な書誌</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="save-a-webpage-as-pdf/">ウェブページを PDF として保存する方法 — 1 枚の紙に、出典を載せて</a></h2>
+  <p>短い答え: 印刷ダイアログではなく、キャプチャ拡張機能を使う。印刷はページに分割する — 同じ記事が 26 ページになり、9 か所の改ページが文の途中を切った。キャプチャは 1 枚の連続した紙に書き出し、どこから取得したか、そしていつ取得したかをページに刻める。</p>
+  <div class="figures"><span><b>26</b> ページ対 1 枚</span><span>文を切る改ページ <b>9</b> か所、対 0</span><span>再現率 <b>91.5 %</b>、対 87.6 %</span><span>引用元の <b>19.3 %</b> が消失</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">概要と開示</a> · 修正: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">免責事項</a></footer>
+</div>
+
+<div data-lang="pt-BR" lang="pt-BR">
+<header>
+  <h1>Guias</h1>
+  <p class="lead">Guias passo a passo para salvar uma página web em PDF, citá-la e conservá-la. Cada número leva à medição de onde ele vem, e cada guia diz o que não faz.</p>
+</header>
+<div class="item">
+  <p class="date">15 de agosto de 2026</p>
+  <h2><a href="firefox-and-chrome/">Para pesquisadores e estudantes: a extensão no Firefox e no Chrome</a></h2>
+  <p>Como configurar a extensão no Firefox e no Chrome e como funciona na prática o ciclo capturar–citar–arquivar. Primeiro as vias de instalação, depois o fluxo de trabalho, em seguida as configurações que importam — e uma lista honesta do que ela não faz.</p>
+  <div class="figures"><span><b>4</b> configurações que importam</span><span><b>18</b> campos XMP</span><span><b>92,6 %</b> recuperado a 150 dpi</span><span><b>0</b> permissões de host</span></div>
+</div>
+<div class="item">
+  <p class="date">10 de agosto de 2026</p>
+  <h2><a href="for-students/">Para estudantes: uma fonte que se cita sozinha, sobrevive e é legível por uma máquina</a></h2>
+  <p>Três coisas dão errado com uma fonte da web num trabalho acadêmico: ela some antes da entrega, a citação precisa ser digitada à mão, e o arquivo que você guardou é uma imagem em que nenhuma ferramenta consegue buscar. O que uma captura de página inteira faz com cada uma das três — e onde o trabalho volta para você.</p>
+  <div class="figures"><span><b>18</b> obras, sorteadas ao acaso</span><span><b>100 %</b> de acerto, contra 79 %</span><span><b>0</b> registros errados, contra 3</span><span><b>14/20</b> registros completos</span></div>
+</div>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="save-a-webpage-as-pdf/">Como salvar uma página web em PDF — uma única folha, com a fonte nela</a></h2>
+  <p>A resposta curta: uma extensão de captura, não a caixa de impressão. A impressão pagina — o mesmo artigo saiu como 26 páginas com 9 quebras cortando uma frase. Uma captura escreve uma folha contínua e pode carimbar na página de onde ela veio e quando.</p>
+  <div class="figures"><span><b>26</b> páginas contra 1 folha</span><span><b>9</b> quebras cortam uma frase, contra 0</span><span><b>91,5 %</b> de recuperação, contra 87,6 %</span><span><b>19,3 %</b> das fontes citadas sumiram</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Sobre &amp; transparência</a> · Correções: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues no GitHub</a> · <a href="../disclaimer/">Aviso legal</a></footer>
+</div>
+
+<div data-lang="ru" lang="ru">
+<header>
+  <h1>Инструкции</h1>
+  <p class="lead">Пошаговые руководства: как сохранить веб-страницу в PDF, сослаться на неё и сохранить её надолго. Каждое число ведёт к измерению, из которого оно взято, а каждое руководство называет и то, чего оно не делает.</p>
+</header>
+<div class="item">
+  <p class="date">15 августа 2026 г.</p>
+  <h2><a href="firefox-and-chrome/">Исследователям и студентам: расширение в Firefox и Chrome</a></h2>
+  <p>Как настроить расширение в Firefox и Chrome и как на практике выглядит цикл «захват–цитирование–архив». Сначала способы установки, затем рабочий процесс, потом важные настройки — и честный список того, чего расширение не делает.</p>
+  <div class="figures"><span><b>4</b> важные настройки</span><span><b>18</b> полей XMP</span><span><b>92,6 %</b> распознано при 150 dpi</span><span><b>0</b> host-разрешений</span></div>
+</div>
+<div class="item">
+  <p class="date">10 августа 2026 г.</p>
+  <h2><a href="for-students/">Студентам: источник, который сам себя цитирует, не исчезает и читается машиной</a></h2>
+  <p>С веб-источником в курсовой случаются три вещи: он исчезает до сдачи, описание для списка литературы приходится набирать вручную, а сохранённый файл — картинка, по которой ни один инструмент не ищет. Что делает снимок всей страницы с каждой из трёх — и где работа возвращается к вам.</p>
+  <div class="figures"><span><b>18</b> работ, выбранных случайно</span><span><b>100 %</b> точности, против 79 %</span><span><b>0</b> ошибочных записей, против 3</span><span><b>14/20</b> полных записей</span></div>
+</div>
+<div class="item">
+  <p class="date">3 августа 2026 г.</p>
+  <h2><a href="save-a-webpage-as-pdf/">Как сохранить веб-страницу в PDF — одним листом, с указанием источника</a></h2>
+  <p>Короткий ответ: расширение для съёмки страницы, а не диалог печати. Печать разбивает на страницы — та же статья вышла как 26 страниц, и 9 разрывов прошли посреди предложения. Съёмка пишет один непрерывный лист и может проставить на странице, откуда она взята и когда.</p>
+  <div class="figures"><span><b>26</b> страниц против 1 листа</span><span><b>9</b> разрывов посреди предложения, против 0</span><span><b>91,5 %</b> полноты текста, против 87,6 %</span><span><b>19,3 %</b> процитированных источников исчезли</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">О сайте и раскрытие</a> · Исправления: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues на GitHub</a> · <a href="../disclaimer/">Отказ от ответственности</a></footer>
+</div>
+
+<div data-lang="zh-CN" lang="zh-CN">
+<header>
+  <h1>指南</h1>
+  <p class="lead">把网页保存为 PDF、引用它并长期留存的分步指南。每一个数字都链接到它出自的那次测量,每一篇指南也都写明它不做什么。</p>
+</header>
+<div class="item">
+  <p class="date">2026年8月15日</p>
+  <h2><a href="firefox-and-chrome/">致研究人员和学生:Firefox 与 Chrome 中的扩展</a></h2>
+  <p>如何在 Firefox 和 Chrome 中配置该扩展,以及“捕获—引用—归档”流程的实际操作。先讲安装途径,再讲工作流,然后是关键设置——最后是一份诚实说明它不做什么的清单。</p>
+  <div class="figures"><span><b>4</b> 项关键设置</span><span><b>18</b> 个 XMP 字段</span><span>150 dpi 下复原 <b>92.6 %</b></span><span><b>0</b> 项主机权限</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月10日</p>
+  <h2><a href="for-students/">写给学生：一份自带出处、不会消失、机器能读的来源</a></h2>
+  <p>论文里的网页来源常出三种问题:交稿前页面就没了,著录信息得一个字一个字敲,保存下来的文件是一张图、任何工具都搜不了。整页捕获对这三件事各自做了什么——以及它在哪里把活儿退回给你。</p>
+  <div class="figures"><span>随机抽取的 <b>18</b> 篇</span><span>准确率 <b>100 %</b>,对比 79 %</span><span>错误记录 <b>0</b> 条,对比 3 条</span><span><b>14/20</b> 条完整记录</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="save-a-webpage-as-pdf/">如何把网页保存为 PDF —— 一整张，并带上出处</a></h2>
+  <p>简短的答案：用抓取扩展，而不是打印对话框。打印会分页——同一篇文章印出来是 26 页，其中 9 处分页把句子拦腰截断。抓取写出的是一张连续的长纸，还能把来源和时间盖在页面上。</p>
+  <div class="figures"><span><b>26</b> 页对 1 张</span><span><b>9</b> 处分页截断句子,对比 0</span><span>文本召回率 <b>91.5 %</b>,对比 87.6 %</span><span>被引来源有 <b>19.3 %</b> 已消失</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">关于与披露</a> · 更正: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">免责声明</a></footer>
+</div>
+</div>
+</body>
+</html>
