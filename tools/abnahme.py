@@ -65,6 +65,9 @@ PRUEFUNGEN = [
     # Faengt den Unfall ab, der die Neun-Sprachen-Umstellung bedroht: einen
     # veralteten Builder als Textquelle nehmen und damit Inhalt loeschen.
     ("drift",       "Builder passen zu den Seiten", "builder-drift.py",     False, 3),
+    # Faengt Seiten ab, die veroeffentlicht sind, aber in keinem Verzeichnis
+    # stehen — /how-to/ hatte drei davon und antwortete selbst mit 404.
+    ("systematik",  "Jede Seite in ihrem Verzeichnis", "seiten-systematik.py", False, 2),
     # Rechnet die Zugriffsauswertung richtig? Laeuft OHNE Token gegen eine
     # nachgestellte Anbieter-Antwort — sonst bliebe die Logik ungeprueft,
     # solange kein Zugang da ist, und der erste echte Lauf waere zugleich
