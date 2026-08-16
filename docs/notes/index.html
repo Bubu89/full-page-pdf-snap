@@ -57,6 +57,10 @@
   .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
   .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
   @media (max-width:640px){ .topnav .brand{width:100%;margin-right:0} }
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
 </style>
 <script src="/agent-tools.js" defer></script>
 <script src="/site-lang.js" defer></script>
@@ -95,6 +99,7 @@
 </nav>
 
 <div class="wrap">
+<div data-lang="en" class="on" lang="en">
 <header>
   <h1>Notes</h1>
   <p class="lead">Build reports from real work — including the parts that went wrong, and which check caught them. A log that only lists solved problems is marketing.</p>
@@ -167,6 +172,607 @@
 </div>
 
 <footer><a href="../">← Proving Lab</a> · <a href="../about/">About &amp; disclosure</a> · Corrections: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">Disclaimer</a></footer>
+</div>
+
+<div data-lang="de" lang="de">
+<header>
+  <h1>Notizen</h1>
+  <p class="lead">Bauberichte aus echter Arbeit — einschließlich der Teile, die schiefgingen, und welche Prüfung sie erwischt hat. Ein Log, das nur gelöste Probleme auflistet, ist Marketing.</p>
+</header>
+<div class="item">
+  <p class="date">7. August 2026</p>
+  <h2><a href="installing-your-own-tool/">Ich habe mein eigenes Werkzeug installiert wie ein Fremder. Vier Dinge waren falsch.</a></h2>
+  <p>Die Installationsanleitung war getestet — auf der Maschine, auf der jede Abhängigkeit bereits vorhanden und das Programm bereits lief. Eine saubere Installation fand ein Einrichtungsfenster, das kein Skript klicken kann, eine dokumentierte Filter-Messung, die auf niemanden zutraf, eine Ausnahme bei jeder Fensternachricht, die ungesehen verworfen wurde, und zwei Voraussetzungen, die die Anleitung nie nannte.</p>
+  <div class="figures"><span><b>4</b> Defekte, alle behoben</span><span><b>&minus;14,2 dB</b> gemessen, <b>0,0 dB</b> ausgeliefert</span><span><b>3 von 4</b> hätte ein Statusbefehl erwischt</span></div>
+</div>
+<div class="item">
+  <p class="date">4. August 2026</p>
+  <h2><a href="agent-cites-a-source/">Wie ein KI-Agent eine Webseite in ein zitierfähiges PDF verwandelt</a></h2>
+  <p>Ein Agent, der ein Literaturverzeichnis baut, kommt gut voran, bis er auf eine Quelle trifft, die eine Sitzung braucht. Zehn von zwanzig Quellen im eigenen Lauf kamen ohne Zitierbares zurück. Der Weg für diese zehn — Aufnahme-Erweiterung ohne Fenster installieren, zweckgerichtet einstellen, aufnehmen, entfernen — und unser Fehler, der ihn verborgen hielt: Der Endpunkt konnte all das, aber kein Werkzeugname sagte es.</p>
+  <div class="figures"><span><b>0,12 s</b> zur Installation in Firefox</span><span><b>5,49 s</b> in Chrome</span><span><b>0</b> Eingabeereignisse</span></div>
+</div>
+<div class="item">
+  <p class="date">4. August 2026</p>
+  <h2><a href="nineteen-issues/">Neunzehn Issues, und die zwei wichtigen betrafen unsere eigenen Fehler</a></h2>
+  <p>Zwölf geschlossen, sieben offen, fast keines ein Feature. Eine veröffentlichte Zahl, die unser eigenes Werkzeug schlechter aussehen ließ, als es ist, eine hartkodierte Version, die den Chrome-Build fünfzehn Fassungen zurückfallen ließ, ohne dass jemand etwas vergessen hätte, und eine Prüfsumme, die einen Commit davon entfernt war, nichts zu bestätigen.</p>
+  <div class="figures"><span><b>13</b> Seiten tragen eine veraltete Zahl</span><span><b>15</b> Fassungen hinkte der Chrome-Build hinterher</span><span><b>9</b> neue Tests</span><span><b>6</b> Issues offen für Agenten</span></div>
+</div>
+<div class="item">
+  <p class="date">4. August 2026</p>
+  <h2><a href="smaller-files-better-ocr/">Eine Aufnahme mit 8,5 % der Größe — und OCR liest sie minimal besser</a></h2>
+  <p>Unser eigener Vergleich hatte die Aufnahme mit 6,7 MB gegen 1,1 MB des Druckexports, notiert und kommentarlos stehen gelassen. Das Nachsehen brachte etwas Besseres als eine Kompressionseinstellung: Auf einer Textseite kostet das Fallenlassen der Farbe nichts, das zählt. Eingebaut in 2.28.0 als Einstellung — auf einer Seite voller Fotos zerstört dieselbe Wahl das Bild.</p>
+  <div class="figures"><span><b>113 kB</b> gegen 1327</span><span><b>989</b> Wörter zurückgelesen, gegen 987</span><span><b>0,199</b> SSIM auf einer Bildseite</span></div>
+</div>
+<div class="item">
+  <p class="date">4. August 2026</p>
+  <h2><a href="what-an-agent-may-install/">Ein Agent kann eine Erweiterung in beiden Browsern installieren. Ob er darf, ist eine andere Frage</a></h2>
+  <p>Firefox in 5,2 s, Chrome in 10,7 s — und Chrome holt die Store-Version selbst, angestoßen von einer 75-Byte-Datei. Kein Fenster, kein Klick, keine Admin-Rechte; der Browser muss nur dem Agenten gehören. Was das einer Erweiterung nützt, ist weniger, als es aussieht, und der rechtliche Rahmen ist von der Messung getrennt statt hineingemischt.</p>
+  <div class="figures"><span><b>5,2 s</b> Firefox Hin- und Rückweg</span><span><b>10,7 s</b> Chrome, aus dem Store</span><span><b>0</b> Eingabeereignisse</span><span><b>0</b> Fenster</span></div>
+</div>
+<div class="item">
+  <p class="date">3. August 2026</p>
+  <h2><a href="who-actually-reads-this/">Wer diese Seite tatsächlich liest: 24 Stunden Crawler-Logs, veröffentlicht</a></h2>
+  <p>KI-Systeme stellten mehr Anfragen als Suchmaschinen — auf einer zwei Tage alten Domain. Zwanzig Anfragen mit KI-User-Agents lasen überhaupt nicht, sondern suchten nach <code>/keys.json</code> und <code>/.git/HEAD</code> — herausgetrennt statt mitgezählt. Selbst ausgewiesene Zahlen, mit veröffentlichter Abfrage und benannten Grenzen.</p>
+  <div class="figures"><span><b>299</b> KI-Anfragen</span><span><b>282</b> Suchmaschinen-Anfragen</span><span><b>7</b> verschiedene KI-Systeme</span><span><b>20</b> lesen nicht</span></div>
+</div>
+<div class="item">
+  <p class="date">3. August 2026</p>
+  <h2><a href="what-an-agent-can-do-with-an-extension/">Was ein KI-Agent mit einer Browser-Erweiterung kann — und was nicht</a></h2>
+  <p>Kein Store hat eine API zum Installieren im Auftrag eines Nutzers, und Inline-Install wurde vor Jahren entfernt — diese Reibung ist das Sicherheitsmodell, kein Versehen. Was ein Agent stattdessen kann, was auf Chrome 150 still versagt, und wie die Arbeit sich tatsächlich aufteilt.</p>
+  <div class="figures"><span><b>3</b> Dinge, die ein Agent kann</span><span><b>1</b> Schalter, der still versagt</span><span><b>0</b> Wege, in einen Browser zu installieren, den man nicht erreicht</span></div>
+</div>
+<div class="item">
+  <p class="date">3. August 2026</p>
+  <h2><a href="sources-a-machine-cannot-cite/">Die Quellen, die eine Maschine nicht für Sie zitieren kann — und wie man sie trotzdem zitiert</a></h2>
+  <p>Wenn ein Zitationswerkzeug eine Quelle zurückgibt, ist die Ursache eine von dreien: eine Bot-Abwehr, eine Weigerung gegen das Netzwerk oder eine Seite, die nichts über sich erklärt. Jede braucht andere Arbeit, und zwei Anfragen unterscheiden sie.</p>
+  <div class="figures"><span><b>3</b> Ursachen</span><span><b>1</b> durch einen Browser gelöst</span><span><b>2</b> Anfragen zur Unterscheidung</span></div>
+</div>
+<div class="item">
+  <p class="date">2. August 2026</p>
+  <h2><a href="mcp-server-what-it-solves/">Diese Seite betreibt einen MCP-Server. Gemessen: Er ist kleiner als die Datei, mit der er konkurriert</a></h2>
+  <p>Ein Endpunkt unter /mcp reicht die Datensätze und Methoden an KI-Clients. Alles, was er zurückgeben kann, summiert sich zu weniger als die schlichte Textdatei auf derselben Domain — wozu ihn das noch taugt.</p>
+  <div class="figures"><span><b>1.300</b> Token insgesamt</span><span><b>1.988</b> in llms.txt</span><span><b>3</b> Werkzeuge</span></div>
+</div>
+<div class="item">
+  <p class="date">2. August 2026</p>
+  <h2><a href="pages-gone-before-you-need-them/">Seiten, die weg sind, bevor Sie sie brauchen: acht Momente in einem Studium</a></h2>
+  <p>Abgabebestätigungen, Kursräume, die schließen, die Prüfungsordnung, die bei Ihrer Immatrikulation galt — acht Situationen, in denen ein Bildschirm später zählt und nicht mehr da ist. Dazu, was man nicht aufheben sollte.</p>
+  <div class="figures"><span><b>8</b> Situationen</span><span><b>2</b> Grenzen, die zu achten sind</span></div>
+</div>
+<div class="item">
+  <p class="date">1. August 2026</p>
+  <h2><a href="building-with-ai-what-went-wrong/">Sechs Dinge, die beim Bauen von Software mit einem KI-Assistenten an einem Tag schiefgingen</a></h2>
+  <p>Eine falsche Annahme über Browser-Engines, eine vor Veröffentlichung erwischte Falschbehauptung, 22 lokale Pfade einen Commit vor einem öffentlichen Repository — und drei weitere, sortiert danach, was sie tatsächlich erwischt hat.</p>
+  <div class="figures"><span><b>3 von 6</b> durch eine externe Prüfung erwischt</span><span><b>1</b> noch ungetestet</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Über &amp; Offenlegung</a> · Korrekturen: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a> · <a href="../disclaimer/">Haftungsausschluss</a></footer>
+</div>
+
+<div data-lang="es" lang="es">
+<header>
+  <h1>Notas</h1>
+  <p class="lead">Crónicas de trabajo real — incluidas las partes que salieron mal y qué comprobación las detectó. Un registro que solo lista problemas resueltos es marketing.</p>
+</header>
+<div class="item">
+  <p class="date">7 de agosto de 2026</p>
+  <h2><a href="installing-your-own-tool/">Instalé mi propia herramienta como lo haría un extraño. Cuatro cosas estaban mal.</a></h2>
+  <p>Las instrucciones de instalación habían sido probadas — en la máquina donde cada dependencia ya estaba presente y el programa ya corría. Una instalación limpia encontró una ventana de configuración que ningún script puede clicar, una medición de filtro documentada que no aplicaba a nadie, una excepción lanzada en cada mensaje de ventana y descartada sin ser vista, y dos prerrequisitos que las instrucciones nunca nombraron.</p>
+  <div class="figures"><span><b>4</b> defectos, todos corregidos</span><span><b>&minus;14,2 dB</b> medido, <b>0,0 dB</b> entregado</span><span><b>3 de 4</b> los habría detectado un comando de estado</span></div>
+</div>
+<div class="item">
+  <p class="date">4 de agosto de 2026</p>
+  <h2><a href="agent-cites-a-source/">Cómo un agente de IA convierte una página web en un PDF citable</a></h2>
+  <p>Un agente que construye una bibliografía va bien hasta que encuentra una fuente que necesita una sesión. Diez de veinte fuentes en nuestra propia ejecución volvieron sin nada citable. La ruta para esas diez — instalar la extensión de captura sin ventana, configurarla por propósito, capturar, quitar — y el error nuestro que la mantuvo oculta: el endpoint podía hacerlo todo, pero ningún nombre de herramienta lo decía.</p>
+  <div class="figures"><span><b>0,12 s</b> para instalar en Firefox</span><span><b>5,49 s</b> en Chrome</span><span><b>0</b> eventos de entrada</span></div>
+</div>
+<div class="item">
+  <p class="date">4 de agosto de 2026</p>
+  <h2><a href="nineteen-issues/">Diecinueve issues, y las dos que importaban trataban de nuestros propios errores</a></h2>
+  <p>Doce cerradas, siete abiertas, casi ninguna de funciones. Una cifra publicada que hacía ver nuestra propia herramienta peor de lo que es, una versión fija en el código que dejó la compilación de Chrome quince versiones atrás sin que nadie olvidara nada, y una suma de verificación que estuvo a un commit de no certificar nada.</p>
+  <div class="figures"><span><b>13</b> páginas llevan una cifra desactualizada</span><span><b>15</b> versiones de retraso de la compilación de Chrome</span><span><b>9</b> pruebas nuevas</span><span><b>6</b> issues abiertas a agentes</span></div>
+</div>
+<div class="item">
+  <p class="date">4 de agosto de 2026</p>
+  <h2><a href="smaller-files-better-ocr/">Una captura al 8,5 % del tamaño, y el OCR la lee ligeramente mejor</a></h2>
+  <p>Nuestra propia comparación tenía la captura en 6,7 MB contra 1,1 MB de la exportación de impresión, anotado y dejado sin comentario. Mirarlo más de cerca reveló algo mejor que un ajuste de compresión: en una página de texto, soltar el color no cuesta nada que importe. Incorporado en 2.28.0 como ajuste — en una página de fotografías la misma elección destruye la imagen.</p>
+  <div class="figures"><span><b>113 kB</b> contra 1327</span><span><b>989</b> palabras leídas de vuelta, contra 987</span><span><b>0,199</b> SSIM en una página de imágenes</span></div>
+</div>
+<div class="item">
+  <p class="date">4 de agosto de 2026</p>
+  <h2><a href="what-an-agent-may-install/">Un agente puede instalar una extensión en ambos navegadores. Si puede permitírsele es otra cuestión</a></h2>
+  <p>Firefox en 5,2 s, Chrome en 10,7 s — y Chrome trae la compilación de la tienda por sí mismo, impulsado por un archivo de 75 bytes. Sin ventana, sin clic, sin derechos de administrador; el navegador solo tiene que pertenecer al agente. Lo que eso vale para una extensión es menos de lo que parece, y el marco legal está separado de la medición en lugar de mezclado en ella.</p>
+  <div class="figures"><span><b>5,2 s</b> ida y vuelta en Firefox</span><span><b>10,7 s</b> Chrome, desde la tienda</span><span><b>0</b> eventos de entrada</span><span><b>0</b> ventanas</span></div>
+</div>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="who-actually-reads-this/">Quién lee realmente este sitio: 24 horas de registros de rastreadores, publicados</a></h2>
+  <p>Los sistemas de IA hicieron más peticiones que los buscadores, en un dominio de dos días. Veinte peticiones con agentes de usuario de IA no leían en absoluto, sino que buscaban <code>/keys.json</code> y <code>/.git/HEAD</code> — separadas en lugar de contadas. Cifras autodeclaradas, con la consulta publicada y los límites nombrados.</p>
+  <div class="figures"><span><b>299</b> peticiones de IA</span><span><b>282</b> peticiones de buscadores</span><span><b>7</b> sistemas de IA distintos</span><span><b>20</b> no leen</span></div>
+</div>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="what-an-agent-can-do-with-an-extension/">Qué puede y qué no puede hacer un agente de IA con una extensión de navegador</a></h2>
+  <p>Ninguna tienda tiene una API para instalar en nombre de un usuario, y la instalación en línea se eliminó hace años — esa fricción es el modelo de seguridad, no un descuido. Qué puede hacer un agente en su lugar, qué falla en silencio en Chrome 150, y cómo se divide realmente el trabajo.</p>
+  <div class="figures"><span><b>3</b> cosas que un agente puede hacer</span><span><b>1</b> flag que falla en silencio</span><span><b>0</b> formas de instalar en un navegador al que no se llega</span></div>
+</div>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="sources-a-machine-cannot-cite/">Las fuentes que una máquina no puede citar por ti — y cómo citarlas igualmente</a></h2>
+  <p>Cuando una herramienta de citación devuelve una fuente, la causa es una de tres: una defensa contra bots, una negativa dirigida a la red o una página que no declara nada de sí misma. Cada una necesita un trabajo distinto, y dos peticiones las distinguen.</p>
+  <div class="figures"><span><b>3</b> causas</span><span><b>1</b> resuelta con un navegador</span><span><b>2</b> peticiones para distinguirlas</span></div>
+</div>
+<div class="item">
+  <p class="date">2 de agosto de 2026</p>
+  <h2><a href="mcp-server-what-it-solves/">Este sitio opera un servidor MCP. Medido: es más pequeño que el archivo con el que compite</a></h2>
+  <p>Un endpoint en /mcp entrega los conjuntos de datos y los métodos a clientes de IA. Todo lo que puede devolver suma menos que el simple archivo de texto ya presente en el mismo dominio — para qué le queda entonces.</p>
+  <div class="figures"><span><b>1.300</b> tokens en total</span><span><b>1.988</b> en llms.txt</span><span><b>3</b> herramientas</span></div>
+</div>
+<div class="item">
+  <p class="date">2 de agosto de 2026</p>
+  <h2><a href="pages-gone-before-you-need-them/">Páginas que desaparecen antes de que las necesites: ocho momentos en una carrera</a></h2>
+  <p>Recibos de entrega, aulas de curso que cierran, la versión del reglamento vigente al matricularte — ocho situaciones en las que una pantalla importa después y ya no está. Más lo que no conviene guardar. Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span><b>8</b> situaciones</span><span><b>2</b> límites que conviene respetar</span></div>
+</div>
+<div class="item">
+  <p class="date">1 de agosto de 2026</p>
+  <h2><a href="building-with-ai-what-went-wrong/">Seis cosas salieron mal construyendo software con un asistente de IA en un día</a></h2>
+  <p>Una suposición errónea sobre motores de navegador, una afirmación falsa detectada antes de publicar, 22 rutas locales a un commit de un repositorio público — y tres más, ordenadas por lo que realmente las detectó.</p>
+  <div class="figures"><span><b>3 de 6</b> detectadas por una comprobación externa</span><span><b>1</b> aún sin probar</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Acerca de &amp; divulgación</a> · Correcciones: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues de GitHub</a> · <a href="../disclaimer/">Aviso legal</a></footer>
+</div>
+
+<div data-lang="fr" lang="fr">
+<header>
+  <h1>Notes</h1>
+  <p class="lead">Comptes rendus de travail réel — y compris les parties qui ont mal tourné, et quel contrôle les a repérées. Un journal qui ne liste que les problèmes résolus est du marketing.</p>
+</header>
+<div class="item">
+  <p class="date">7 août 2026</p>
+  <h2><a href="installing-your-own-tool/">J'ai installé mon propre outil comme un étranger le ferait. Quatre choses clochaient.</a></h2>
+  <p>Les instructions d'installation avaient été testées — sur la machine où chaque dépendance était déjà présente et le programme déjà lancé. Une installation propre a trouvé une fenêtre de configuration qu'aucun script ne peut cliquer, une mesure de filtre documentée qui ne s'appliquait à personne, une exception levée à chaque message de fenêtre et jetée sans être vue, et deux prérequis que les instructions n'ont jamais nommés.</p>
+  <div class="figures"><span><b>4</b> défauts, tous corrigés</span><span><b>&minus;14,2 dB</b> mesuré, <b>0,0 dB</b> livré</span><span><b>3 sur 4</b> qu'une commande d'état aurait repérés</span></div>
+</div>
+<div class="item">
+  <p class="date">4 août 2026</p>
+  <h2><a href="agent-cites-a-source/">Comment un agent IA transforme une page web en PDF citable</a></h2>
+  <p>Un agent qui construit une bibliographie s'en sort bien jusqu'à rencontrer une source qui exige une session. Dix sources sur vingt dans notre propre essai sont revenues sans rien de citable. La voie pour ces dix — installer l'extension de capture sans fenêtre, la régler par usage, capturer, retirer — et notre erreur qui la tenait cachée : le point d'accès savait tout faire, mais aucun nom d'outil ne le disait.</p>
+  <div class="figures"><span><b>0,12 s</b> pour installer dans Firefox</span><span><b>5,49 s</b> dans Chrome</span><span><b>0</b> événement de saisie</span></div>
+</div>
+<div class="item">
+  <p class="date">4 août 2026</p>
+  <h2><a href="nineteen-issues/">Dix-neuf tickets, et les deux qui comptaient portaient sur nos propres erreurs</a></h2>
+  <p>Douze fermés, sept ouverts, presque aucun ne concernant une fonction. Un chiffre publié qui faisait paraître notre propre outil pire qu'il n'est, une version codée en dur qui a laissé la version Chrome prendre quinze publications de retard sans que personne n'oublie rien, et une somme de contrôle qui est passée à un commit de ne rien certifier.</p>
+  <div class="figures"><span><b>13</b> pages portent un chiffre périmé</span><span><b>15</b> versions de retard pour Chrome</span><span><b>9</b> nouveaux tests</span><span><b>6</b> tickets ouverts aux agents</span></div>
+</div>
+<div class="item">
+  <p class="date">4 août 2026</p>
+  <h2><a href="smaller-files-better-ocr/">Une capture à 8,5 % de la taille, et l'OCR la lit un peu mieux</a></h2>
+  <p>Notre propre comparaison affichait la capture à 6,7 Mo contre 1,1 Mo pour l'export d'impression, noté et laissé sans commentaire. En y regardant de plus près, on a trouvé mieux qu'un réglage de compression : sur une page de texte, abandonner la couleur ne coûte rien qui compte. Intégré dans 2.28.0 comme réglage — sur une page de photographies, le même choix détruit l'image.</p>
+  <div class="figures"><span><b>113 ko</b> contre 1327</span><span><b>989</b> mots relus, contre 987</span><span><b>0,199</b> SSIM sur une page d'images</span></div>
+</div>
+<div class="item">
+  <p class="date">4 août 2026</p>
+  <h2><a href="what-an-agent-may-install/">Un agent peut installer une extension dans les deux navigateurs. S'il en a le droit est une autre question</a></h2>
+  <p>Firefox en 5,2 s, Chrome en 10,7 s — et Chrome récupère lui-même la version de la boutique, déclenché par un fichier de 75 octets. Ni fenêtre, ni clic, ni droits d'administrateur ; le navigateur doit seulement appartenir à l'agent. Ce que cela vaut pour une extension est moindre qu'il n'y paraît, et le cadre juridique est séparé de la mesure plutôt que mélangé à elle.</p>
+  <div class="figures"><span><b>5,2 s</b> aller-retour Firefox</span><span><b>10,7 s</b> Chrome, depuis la boutique</span><span><b>0</b> événement de saisie</span><span><b>0</b> fenêtre</span></div>
+</div>
+<div class="item">
+  <p class="date">3 août 2026</p>
+  <h2><a href="who-actually-reads-this/">Qui lit vraiment ce site : 24 heures de journaux de robots, publiés</a></h2>
+  <p>Les systèmes d'IA ont fait plus de requêtes que les moteurs de recherche, sur un domaine vieux de deux jours. Vingt requêtes portant des agents utilisateurs d'IA ne lisaient pas du tout mais cherchaient <code>/keys.json</code> et <code>/.git/HEAD</code> — séparées plutôt que comptées. Chiffres autodéclarés, avec la requête publiée et les limites nommées.</p>
+  <div class="figures"><span><b>299</b> requêtes d'IA</span><span><b>282</b> requêtes de moteurs</span><span><b>7</b> systèmes d'IA distincts</span><span><b>20</b> ne lisent pas</span></div>
+</div>
+<div class="item">
+  <p class="date">3 août 2026</p>
+  <h2><a href="what-an-agent-can-do-with-an-extension/">Ce qu'un agent IA peut et ne peut pas faire avec une extension de navigateur</a></h2>
+  <p>Aucune boutique n'a d'API pour installer au nom d'un utilisateur, et l'installation en ligne a été retirée il y a des années — cette friction est le modèle de sécurité, pas un oubli. Ce qu'un agent peut faire à la place, ce qui échoue en silence sur Chrome 150, et comment le travail se partage réellement.</p>
+  <div class="figures"><span><b>3</b> choses qu'un agent peut faire</span><span><b>1</b> drapeau qui échoue en silence</span><span><b>0</b> façon d'installer dans un navigateur hors de portée</span></div>
+</div>
+<div class="item">
+  <p class="date">3 août 2026</p>
+  <h2><a href="sources-a-machine-cannot-cite/">Les sources qu'une machine ne peut pas citer pour vous — et comment les citer quand même</a></h2>
+  <p>Quand un outil de citation rend une source, la cause est l'une de trois : une défense anti-robots, un refus visant le réseau, ou une page qui ne déclare rien sur elle-même. Chacune demande un travail différent, et deux requêtes les distinguent.</p>
+  <div class="figures"><span><b>3</b> causes</span><span><b>1</b> résolue par un navigateur</span><span><b>2</b> requêtes pour les distinguer</span></div>
+</div>
+<div class="item">
+  <p class="date">2 août 2026</p>
+  <h2><a href="mcp-server-what-it-solves/">Ce site fait tourner un serveur MCP. Mesuré : il est plus petit que le fichier auquel il se mesure</a></h2>
+  <p>Un point d'accès sur /mcp remet les jeux de données et les méthodes aux clients IA. Tout ce qu'il peut rendre totalise moins que le simple fichier texte déjà présent sur le même domaine — ce qu'il lui reste de bon.</p>
+  <div class="figures"><span><b>1 300</b> jetons au total</span><span><b>1 988</b> dans llms.txt</span><span><b>3</b> outils</span></div>
+</div>
+<div class="item">
+  <p class="date">2 août 2026</p>
+  <h2><a href="pages-gone-before-you-need-them/">Des pages disparues avant que vous en ayez besoin : huit moments d'un cursus</a></h2>
+  <p>Récépissés de remise, salles de cours qui ferment, la version du règlement en vigueur à votre inscription — huit situations où un écran compte plus tard et n'est plus là. Plus ce qu'il ne faut pas conserver. Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span><b>8</b> situations</span><span><b>2</b> limites qui méritent respect</span></div>
+</div>
+<div class="item">
+  <p class="date">1 août 2026</p>
+  <h2><a href="building-with-ai-what-went-wrong/">Six choses ont mal tourné en construisant un logiciel avec un assistant IA en un jour</a></h2>
+  <p>Une hypothèse fausse sur les moteurs de navigateur, une affirmation erronée repérée avant publication, 22 chemins locaux à un commit d'un dépôt public — et trois de plus, triées selon ce qui les a réellement repérées.</p>
+  <div class="figures"><span><b>3 sur 6</b> repérées par un contrôle externe</span><span><b>1</b> encore non testée</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">À propos &amp; transparence</a> · Corrections : <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">tickets GitHub</a> · <a href="../disclaimer/">Mentions légales</a></footer>
+</div>
+
+<div data-lang="it" lang="it">
+<header>
+  <h1>Note</h1>
+  <p class="lead">Resoconti di lavoro reale — comprese le parti andate storte e quale controllo le ha intercettate. Un registro che elenca solo problemi risolti è marketing.</p>
+</header>
+<div class="item">
+  <p class="date">7 agosto 2026</p>
+  <h2><a href="installing-your-own-tool/">Ho installato il mio stesso strumento come farebbe uno sconosciuto. Quattro cose erano sbagliate.</a></h2>
+  <p>Le istruzioni di installazione erano state testate — sulla macchina in cui ogni dipendenza era già presente e il programma già in esecuzione. Un'installazione pulita ha trovato una finestra di configurazione che nessuno script può cliccare, una misurazione di filtro documentata che non si applicava a nessuno, un'eccezione lanciata a ogni messaggio di finestra e scartata senza essere vista, e due prerequisiti che le istruzioni non hanno mai nominato.</p>
+  <div class="figures"><span><b>4</b> difetti, tutti corretti</span><span><b>&minus;14,2 dB</b> misurato, <b>0,0 dB</b> consegnato</span><span><b>3 su 4</b> li avrebbe colti un comando di stato</span></div>
+</div>
+<div class="item">
+  <p class="date">4 agosto 2026</p>
+  <h2><a href="agent-cites-a-source/">Come un agente IA trasforma una pagina web in un PDF citabile</a></h2>
+  <p>Un agente che costruisce una bibliografia va bene finché non incontra una fonte che richiede una sessione. Dieci fonti su venti nella nostra stessa esecuzione sono tornate senza nulla di citabile. La via per quelle dieci — installare l'estensione di cattura senza finestra, impostarla per scopo, catturare, rimuovere — e il nostro errore che la teneva nascosta: l'endpoint sapeva fare tutto, ma nessun nome di strumento lo diceva.</p>
+  <div class="figures"><span><b>0,12 s</b> per installare in Firefox</span><span><b>5,49 s</b> in Chrome</span><span><b>0</b> eventi di input</span></div>
+</div>
+<div class="item">
+  <p class="date">4 agosto 2026</p>
+  <h2><a href="nineteen-issues/">Diciannove issue, e le due che contavano riguardavano i nostri stessi errori</a></h2>
+  <p>Dodici chiuse, sette aperte, quasi nessuna una funzione. Una cifra pubblicata che faceva sembrare il nostro strumento peggiore di quanto sia, una versione fissata nel codice che ha lasciato la build di Chrome quindici versioni indietro senza che nessuno dimenticasse nulla, e una checksum che è arrivata a un commit dal non certificare nulla.</p>
+  <div class="figures"><span><b>13</b> pagine portano una cifra obsoleta</span><span><b>15</b> versioni di ritardo della build Chrome</span><span><b>9</b> nuovi test</span><span><b>6</b> issue aperte agli agenti</span></div>
+</div>
+<div class="item">
+  <p class="date">4 agosto 2026</p>
+  <h2><a href="smaller-files-better-ocr/">Una cattura all'8,5 % della dimensione, e l'OCR la legge leggermente meglio</a></h2>
+  <p>Il nostro stesso confronto aveva la cattura a 6,7 MB contro 1,1 MB dell'export di stampa, annotato e lasciato senza commento. Guardandoci dentro è emerso qualcosa di meglio di un'impostazione di compressione: su una pagina di testo, lasciare cadere il colore non costa nulla che conti. Integrato in 2.28.0 come impostazione — su una pagina di fotografie la stessa scelta distrugge l'immagine.</p>
+  <div class="figures"><span><b>113 kB</b> contro 1327</span><span><b>989</b> parole rilette, contro 987</span><span><b>0,199</b> SSIM su una pagina di immagini</span></div>
+</div>
+<div class="item">
+  <p class="date">4 agosto 2026</p>
+  <h2><a href="what-an-agent-may-install/">Un agente può installare un'estensione in entrambi i browser. Se gli sia lecito è un'altra questione</a></h2>
+  <p>Firefox in 5,2 s, Chrome in 10,7 s — e Chrome recupera da solo la build dello store, spinto da un file di 75 byte. Nessuna finestra, nessun clic, nessun diritto di amministratore; il browser deve solo appartenere all'agente. Quanto questo valga per un'estensione è meno di quanto sembri, e la cornice legale è separata dalla misurazione invece che mescolata dentro.</p>
+  <div class="figures"><span><b>5,2 s</b> andata e ritorno Firefox</span><span><b>10,7 s</b> Chrome, dallo store</span><span><b>0</b> eventi di input</span><span><b>0</b> finestre</span></div>
+</div>
+<div class="item">
+  <p class="date">3 agosto 2026</p>
+  <h2><a href="who-actually-reads-this/">Chi legge davvero questo sito: 24 ore di log dei crawler, pubblicati</a></h2>
+  <p>I sistemi di IA hanno fatto più richieste dei motori di ricerca, su un dominio vecchio di due giorni. Venti richieste con user agent di IA non stavano leggendo affatto, ma cercavano <code>/keys.json</code> e <code>/.git/HEAD</code> — separate invece che contate. Cifre autodichiarate, con la query pubblicata e i limiti nominati.</p>
+  <div class="figures"><span><b>299</b> richieste IA</span><span><b>282</b> richieste dei motori</span><span><b>7</b> sistemi IA distinti</span><span><b>20</b> non leggono</span></div>
+</div>
+<div class="item">
+  <p class="date">3 agosto 2026</p>
+  <h2><a href="what-an-agent-can-do-with-an-extension/">Cosa può e cosa non può fare un agente IA con un'estensione del browser</a></h2>
+  <p>Nessuno store ha un'API per installare per conto di un utente, e l'installazione inline è stata rimossa anni fa — quella frizione è il modello di sicurezza, non una svista. Cosa può fare invece un agente, cosa fallisce in silenzio su Chrome 150, e come il lavoro si divide davvero.</p>
+  <div class="figures"><span><b>3</b> cose che un agente può fare</span><span><b>1</b> flag che fallisce in silenzio</span><span><b>0</b> modi di installare in un browser irraggiungibile</span></div>
+</div>
+<div class="item">
+  <p class="date">3 agosto 2026</p>
+  <h2><a href="sources-a-machine-cannot-cite/">Le fonti che una macchina non può citare per te — e come citarle comunque</a></h2>
+  <p>Quando uno strumento di citazione restituisce una fonte, la causa è una di tre: una difesa anti-bot, un rifiuto rivolto alla rete o una pagina che non dichiara nulla di sé. Ognuna richiede un lavoro diverso, e due richieste le distinguono.</p>
+  <div class="figures"><span><b>3</b> cause</span><span><b>1</b> risolta da un browser</span><span><b>2</b> richieste per distinguerle</span></div>
+</div>
+<div class="item">
+  <p class="date">2 agosto 2026</p>
+  <h2><a href="mcp-server-what-it-solves/">Questo sito gestisce un server MCP. Misurato: è più piccolo del file con cui compete</a></h2>
+  <p>Un endpoint su /mcp consegna i set di dati e i metodi ai client IA. Tutto ciò che può restituire somma a meno del semplice file di testo già presente sullo stesso dominio — a cosa gli resta da servire.</p>
+  <div class="figures"><span><b>1.300</b> token in totale</span><span><b>1.988</b> in llms.txt</span><span><b>3</b> strumenti</span></div>
+</div>
+<div class="item">
+  <p class="date">2 agosto 2026</p>
+  <h2><a href="pages-gone-before-you-need-them/">Pagine sparite prima che ti servano: otto momenti di un percorso di studi</a></h2>
+  <p>Ricevute di consegna, aule di corso che chiudono, la versione del regolamento in vigore alla tua iscrizione — otto situazioni in cui uno schermo conta più avanti e non c'è più. E cosa non conservare. Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span><b>8</b> situazioni</span><span><b>2</b> limiti che vale la pena rispettare</span></div>
+</div>
+<div class="item">
+  <p class="date">1 agosto 2026</p>
+  <h2><a href="building-with-ai-what-went-wrong/">Sei cose andate storte costruendo software con un assistente IA in un giorno</a></h2>
+  <p>Un'ipotesi sbagliata sui motori di browser, un'affermazione falsa intercettata prima della pubblicazione, 22 percorsi locali a un commit da un repository pubblico — e altre tre, ordinate per ciò che le ha davvero intercettate.</p>
+  <div class="figures"><span><b>3 su 6</b> intercettate da un controllo esterno</span><span><b>1</b> ancora non testata</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Informazioni &amp; trasparenza</a> · Correzioni: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue su GitHub</a> · <a href="../disclaimer/">Esclusione di responsabilità</a></footer>
+</div>
+
+<div data-lang="ja" lang="ja">
+<header>
+  <h1>ノート</h1>
+  <p class="lead">実際の作業からのビルドレポート — うまくいかなかった部分と、どのチェックがそれを見つけたかも含めて。解決した問題だけを並べるログは、マーケティングです。</p>
+</header>
+<div class="item">
+  <p class="date">2026年8月7日</p>
+  <h2><a href="installing-your-own-tool/">自分のツールを他人のようにインストールしてみた。4つ間違っていた。</a></h2>
+  <p>インストール手順はテスト済みでした — すべての依存関係がすでに揃い、プログラムもすでに動いているマシンで。クリーンインストールで見つかったのは: どのスクリプトもクリックできないセットアップウィンドウ、誰にも当てはまらない文書化されたフィルター測定、すべてのウィンドウメッセージで投げられ見られることなく捨てられた例外、そして手順が一度も挙げなかった2つの前提条件です。</p>
+  <div class="figures"><span>欠陥 <b>4</b> 件、すべて修正済み</span><span>実測 <b>&minus;14.2 dB</b>、出荷時は <b>0.0 dB</b></span><span><b>4件中3件</b> はステータスコマンドで検出できた</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月4日</p>
+  <h2><a href="agent-cites-a-source/">AI エージェントがウェブページを引用可能な PDF に変える方法</a></h2>
+  <p>参考文献を作るエージェントは、セッションを必要とするソースに出会うまでは順調です。私たち自身の実行でも、20件中10件のソースは引用できるものが何もなく返ってきました。その10件のための経路 — キャプチャ拡張機能をウィンドウなしでインストールし、用途別に設定し、キャプチャし、削除する —、そしてそれを隠していた私たちのミス: エンドポイントはそのすべてができたのに、どのツール名もそう言っていなかったのです。</p>
+  <div class="figures"><span>Firefox へのインストール <b>0.12秒</b></span><span>Chrome では <b>5.49秒</b></span><span>入力イベント <b>0</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月4日</p>
+  <h2><a href="nineteen-issues/">19の issue、そして重要だった2件は私たち自身のミスについてだった</a></h2>
+  <p>12件クローズ、7件オープン、ほとんど機能ではありません。自分たちのツールを実際より悪く見せた公開済みの数字、誰も何も忘れていないのに Chrome ビルドを15リリース遅らせたハードコードされたバージョン、そして「何も証明しない」まであと1コミットだったチェックサム。</p>
+  <div class="figures"><span>古い数字を載せたページ <b>13</b></span><span>Chrome ビルドの遅れ <b>15</b> バージョン</span><span>新しいテスト <b>9</b></span><span>エージェントに開かれた issue <b>6</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月4日</p>
+  <h2><a href="smaller-files-better-ocr/">サイズ8.5%のキャプチャで、OCR の読み取りはわずかに良くなった</a></h2>
+  <p>私たち自身の比較は、キャプチャを6.7 MB、印刷エクスポートを1.1 MBとしていました — 記録され、コメントなしで放置されていました。調べてみると、圧縮設定より良いものが見つかりました: テキストのページでは、色を落としても大事なものは何も失われません。2.28.0 に設定として搭載 — 写真のページでは、同じ選択が画像を破壊します。</p>
+  <div class="figures"><span><b>113 kB</b> 対 1327</span><span>読み戻した語数 <b>989</b> 対 987</span><span>画像ページの SSIM <b>0.199</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月4日</p>
+  <h2><a href="what-an-agent-may-install/">エージェントは両方のブラウザに拡張機能をインストールできる。してよいかは別の問い</a></h2>
+  <p>Firefox で5.2秒、Chrome で10.7秒 — しかも Chrome は75バイトのファイルに促されて、ストアビルドを自分で取ってきます。ウィンドウなし、クリックなし、管理者権限なし。ブラウザはエージェントのものであるだけでよい。それが拡張機能にとってどれほどの価値かは見た目より小さく、法的な枠組みは測定に混ぜず分離しています。</p>
+  <div class="figures"><span>Firefox 往復 <b>5.2秒</b></span><span>Chrome <b>10.7秒</b>、ストアから</span><span>入力イベント <b>0</b></span><span>ウィンドウ <b>0</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="who-actually-reads-this/">このサイトを実際に読んでいるのは誰か: 24時間のクローラーログを公開</a></h2>
+  <p>開設2日のドメインで、AI システムは検索エンジンより多くのリクエストを送っていました。AI のユーザーエージェントを名乗る20件のリクエストは読んでもいず、<code>/keys.json</code> と <code>/.git/HEAD</code> を探していました — カウントせず分離。自己申告の数字で、クエリを公開し、限界を明示しています。</p>
+  <div class="figures"><span>AI リクエスト <b>299</b></span><span>検索エンジン <b>282</b></span><span>異なる AI システム <b>7</b></span><span>読んでいない <b>20</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="what-an-agent-can-do-with-an-extension/">AI エージェントがブラウザ拡張機能にできること、できないこと</a></h2>
+  <p>ユーザーの代わりにインストールする API はどのストアにもなく、インラインインストールは何年も前に廃止されました — その摩擦こそがセキュリティモデルであり、見落としではありません。エージェントが代わりにできること、Chrome 150 で静かに失敗すること、そして仕事の実際の分かれ方。</p>
+  <div class="figures"><span>エージェントにできること <b>3</b> つ</span><span>静かに失敗するフラグ <b>1</b></span><span>届かないブラウザへのインストール方法 <b>0</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="sources-a-machine-cannot-cite/">機械があなたのために引用できないソース — それでも引用する方法</a></h2>
+  <p>引用ツールがソースを返却するとき、原因は3つのうちの1つです: ボット防御、ネットワークへの拒否、あるいは自分について何も宣言しないページ。それぞれ必要な作業が異なり、2つのリクエストで見分けられます。</p>
+  <div class="figures"><span>原因 <b>3</b> つ</span><span>ブラウザで解決 <b>1</b></span><span>見分けるリクエスト <b>2</b> つ</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月2日</p>
+  <h2><a href="mcp-server-what-it-solves/">このサイトは MCP サーバーを運営しています。測定結果: 競合するファイルより小さい</a></h2>
+  <p>/mcp のエンドポイントがデータセットとメソッドを AI クライアントに渡します。返せるものの合計は、同じドメインにすでにある素のテキストファイルより小さい — それでも残る使い道とは。</p>
+  <div class="figures"><span>合計 <b>1,300</b> トークン</span><span>llms.txt では <b>1,988</b></span><span>ツール <b>3</b> つ</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月2日</p>
+  <h2><a href="pages-gone-before-you-need-them/">必要になる前に消えているページ: 学位課程での8つの瞬間</a></h2>
+  <p>提出の受領証、閉じるコースルーム、入学時に有効だった規程の版 — 画面があとで重要になるのに、もうそこにない8つの状況。そして、残してはいけないもの。Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span>状況 <b>8</b> つ</span><span>守るべき制限 <b>2</b> つ</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月1日</p>
+  <h2><a href="building-with-ai-what-went-wrong/">AI アシスタントと1日でソフトウェアを作って、6つうまくいかなかったこと</a></h2>
+  <p>ブラウザエンジンについての間違った思い込み、公開前に見つかった虚偽の主張、公開リポジトリまであと1コミットだった22のローカルパス — あと3つ。実際に何が見つけたかで並べています。</p>
+  <div class="figures"><span><b>6件中3件</b> は外部チェックで発見</span><span><b>1</b> つはいまだ未テスト</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">概要と開示</a> · 修正: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">免責事項</a></footer>
+</div>
+
+<div data-lang="pt-BR" lang="pt-BR">
+<header>
+  <h1>Notas</h1>
+  <p class="lead">Relatos de trabalho real — incluindo as partes que deram errado e qual verificação as detectou. Um registro que só lista problemas resolvidos é marketing.</p>
+</header>
+<div class="item">
+  <p class="date">7 de agosto de 2026</p>
+  <h2><a href="installing-your-own-tool/">Instalei minha própria ferramenta como um estranho faria. Quatro coisas estavam erradas.</a></h2>
+  <p>As instruções de instalação tinham sido testadas — na máquina em que cada dependência já estava presente e o programa já rodando. Uma instalação limpa encontrou uma janela de configuração que nenhum script consegue clicar, uma medição de filtro documentada que não se aplicava a ninguém, uma exceção lançada a cada mensagem de janela e descartada sem ser vista, e dois pré-requisitos que as instruções nunca nomearam.</p>
+  <div class="figures"><span><b>4</b> defeitos, todos corrigidos</span><span><b>&minus;14,2 dB</b> medido, <b>0,0 dB</b> entregue</span><span><b>3 de 4</b> um comando de status teria detectado</span></div>
+</div>
+<div class="item">
+  <p class="date">4 de agosto de 2026</p>
+  <h2><a href="agent-cites-a-source/">Como um agente de IA transforma uma página da web num PDF citável</a></h2>
+  <p>Um agente construindo uma bibliografia vai bem até encontrar uma fonte que precisa de uma sessão. Dez de vinte fontes na nossa própria execução voltaram sem nada citável. A rota para essas dez — instalar a extensão de captura sem janela, configurá-la por propósito, capturar, remover — e o nosso erro que a mantinha escondida: o endpoint fazia tudo isso, mas nenhum nome de ferramenta dizia.</p>
+  <div class="figures"><span><b>0,12 s</b> para instalar no Firefox</span><span><b>5,49 s</b> no Chrome</span><span><b>0</b> eventos de entrada</span></div>
+</div>
+<div class="item">
+  <p class="date">4 de agosto de 2026</p>
+  <h2><a href="nineteen-issues/">Dezenove issues, e as duas que importavam eram sobre os nossos próprios erros</a></h2>
+  <p>Doze fechadas, sete abertas, quase nenhuma de funcionalidades. Um número publicado que fazia nossa própria ferramenta parecer pior do que é, uma versão fixa no código que deixou a versão do Chrome quinze lançamentos atrás sem que ninguém esquecesse nada, e uma checksum que chegou a um commit de não certificar nada.</p>
+  <div class="figures"><span><b>13</b> páginas carregam um número desatualizado</span><span><b>15</b> versões de atraso do build Chrome</span><span><b>9</b> novos testes</span><span><b>6</b> issues abertas a agentes</span></div>
+</div>
+<div class="item">
+  <p class="date">4 de agosto de 2026</p>
+  <h2><a href="smaller-files-better-ocr/">Uma captura com 8,5 % do tamanho, e o OCR a lê um pouco melhor</a></h2>
+  <p>Nossa própria comparação tinha a captura em 6,7 MB contra 1,1 MB da exportação de impressão, anotado e deixado sem comentário. Olhar de perto revelou algo melhor que uma configuração de compressão: numa página de texto, abandonar a cor não custa nada que importe. Incorporado na 2.28.0 como configuração — numa página de fotografias a mesma escolha destrói a imagem.</p>
+  <div class="figures"><span><b>113 kB</b> contra 1327</span><span><b>989</b> palavras lidas de volta, contra 987</span><span><b>0,199</b> SSIM numa página de imagens</span></div>
+</div>
+<div class="item">
+  <p class="date">4 de agosto de 2026</p>
+  <h2><a href="what-an-agent-may-install/">Um agente pode instalar uma extensão nos dois navegadores. Se é permitido é outra questão</a></h2>
+  <p>Firefox em 5,2 s, Chrome em 10,7 s — e o Chrome busca sozinho a versão da loja, acionado por um arquivo de 75 bytes. Sem janela, sem clique, sem direitos de administrador; o navegador só precisa pertencer ao agente. O que isso vale para uma extensão é menos do que parece, e o quadro legal está separado da medição em vez de misturado a ela.</p>
+  <div class="figures"><span><b>5,2 s</b> ida e volta no Firefox</span><span><b>10,7 s</b> Chrome, da loja</span><span><b>0</b> eventos de entrada</span><span><b>0</b> janelas</span></div>
+</div>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="who-actually-reads-this/">Quem realmente lê este site: 24 horas de logs de crawlers, publicados</a></h2>
+  <p>Sistemas de IA fizeram mais requisições que os buscadores, num domínio de dois dias. Vinte requisições com user agents de IA não estavam lendo, mas procurando <code>/keys.json</code> e <code>/.git/HEAD</code> — separadas em vez de contadas. Números autodeclarados, com a consulta publicada e os limites nomeados.</p>
+  <div class="figures"><span><b>299</b> requisições de IA</span><span><b>282</b> requisições de buscadores</span><span><b>7</b> sistemas de IA distintos</span><span><b>20</b> não leem</span></div>
+</div>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="what-an-agent-can-do-with-an-extension/">O que um agente de IA pode e não pode fazer com uma extensão de navegador</a></h2>
+  <p>Nenhuma loja tem API para instalar em nome de um usuário, e a instalação inline foi removida anos atrás — esse atrito é o modelo de segurança, não um descuido. O que um agente pode fazer em vez disso, o que falha em silêncio no Chrome 150, e como o trabalho realmente se divide.</p>
+  <div class="figures"><span><b>3</b> coisas que um agente pode fazer</span><span><b>1</b> flag que falha em silêncio</span><span><b>0</b> formas de instalar num navegador fora de alcance</span></div>
+</div>
+<div class="item">
+  <p class="date">3 de agosto de 2026</p>
+  <h2><a href="sources-a-machine-cannot-cite/">As fontes que uma máquina não pode citar por você — e como citá-las mesmo assim</a></h2>
+  <p>Quando uma ferramenta de citação devolve uma fonte, a causa é uma de três: uma defesa contra bots, uma recusa dirigida à rede ou uma página que não declara nada sobre si. Cada uma exige um trabalho diferente, e duas requisições as distinguem.</p>
+  <div class="figures"><span><b>3</b> causas</span><span><b>1</b> resolvida por um navegador</span><span><b>2</b> requisições para distingui-las</span></div>
+</div>
+<div class="item">
+  <p class="date">2 de agosto de 2026</p>
+  <h2><a href="mcp-server-what-it-solves/">Este site roda um servidor MCP. Medido: é menor que o arquivo com que compete</a></h2>
+  <p>Um endpoint em /mcp entrega os conjuntos de dados e os métodos a clientes de IA. Tudo o que ele pode devolver soma menos que o simples arquivo de texto já presente no mesmo domínio — para que ele ainda serve.</p>
+  <div class="figures"><span><b>1.300</b> tokens no total</span><span><b>1.988</b> no llms.txt</span><span><b>3</b> ferramentas</span></div>
+</div>
+<div class="item">
+  <p class="date">2 de agosto de 2026</p>
+  <h2><a href="pages-gone-before-you-need-them/">Páginas que somem antes de você precisar: oito momentos de uma graduação</a></h2>
+  <p>Comprovantes de entrega, salas de curso que fecham, a versão do regulamento vigente na sua matrícula — oito situações em que uma tela importa depois e não está mais lá. E o que não guardar. Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span><b>8</b> situações</span><span><b>2</b> limites que valem respeito</span></div>
+</div>
+<div class="item">
+  <p class="date">1 de agosto de 2026</p>
+  <h2><a href="building-with-ai-what-went-wrong/">Seis coisas deram errado construindo software com um assistente de IA em um dia</a></h2>
+  <p>Uma suposição errada sobre motores de navegador, uma afirmação falsa detectada antes da publicação, 22 caminhos locais a um commit de um repositório público — e mais três, ordenadas pelo que realmente as detectou.</p>
+  <div class="figures"><span><b>3 de 6</b> detectadas por uma verificação externa</span><span><b>1</b> ainda não testada</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Sobre &amp; transparência</a> · Correções: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues no GitHub</a> · <a href="../disclaimer/">Aviso legal</a></footer>
+</div>
+
+<div data-lang="ru" lang="ru">
+<header>
+  <h1>Заметки</h1>
+  <p class="lead">Отчёты из реальной работы — включая части, которые пошли не так, и какая проверка их поймала. Журнал, перечисляющий только решённые проблемы, — это маркетинг.</p>
+</header>
+<div class="item">
+  <p class="date">7 августа 2026 г.</p>
+  <h2><a href="installing-your-own-tool/">Я установил свой собственный инструмент, как это сделал бы чужой. Четыре вещи были неверны.</a></h2>
+  <p>Инструкции по установке были проверены — на машине, где каждая зависимость уже присутствовала, а программа уже работала. Чистая установка обнаружила окно настройки, которое ни один скрипт не может щёлкнуть, задокументированное измерение фильтра, неприменимое ни к кому, исключение, бросаемое на каждое оконное сообщение и незаметно отбрасываемое, и два предусловия, которые инструкции никогда не называли.</p>
+  <div class="figures"><span><b>4</b> дефекта, все исправлены</span><span><b>&minus;14,2 дБ</b> измерено, <b>0,0 дБ</b> поставлено</span><span><b>3 из 4</b> поймала бы команда статуса</span></div>
+</div>
+<div class="item">
+  <p class="date">4 августа 2026 г.</p>
+  <h2><a href="agent-cites-a-source/">Как ИИ-агент превращает веб-страницу в цитируемый PDF</a></h2>
+  <p>Агент, строящий библиографию, справляется, пока не встречает источник, которому нужна сессия. Десять из двадцати источников в нашем собственном прогоне вернулись без ничего цитируемого. Путь для этих десяти — установить расширение захвата без окна, настроить по назначению, захватить, удалить — и наша ошибка, державшая его скрытым: конечная точка умела всё это, но ни одно имя инструмента этого не говорило.</p>
+  <div class="figures"><span><b>0,12 с</b> на установку в Firefox</span><span><b>5,49 с</b> в Chrome</span><span><b>0</b> событий ввода</span></div>
+</div>
+<div class="item">
+  <p class="date">4 августа 2026 г.</p>
+  <h2><a href="nineteen-issues/">Девятнадцать задач, и две важные были о наших собственных ошибках</a></h2>
+  <p>Двенадцать закрыты, семь открыты, почти ни одной о функциях. Опубликованная цифра, выставлявшая наш собственный инструмент хуже, чем он есть, зашитая в код версия, из-за которой сборка Chrome отстала на пятнадцать выпусков без чьего-либо забытья, и контрольная сумма, оказавшаяся в одном коммите от удостоверения ничего.</p>
+  <div class="figures"><span><b>13</b> страниц несут устаревшую цифру</span><span><b>15</b> версий отставания сборки Chrome</span><span><b>9</b> новых тестов</span><span><b>6</b> задач открыты агентам</span></div>
+</div>
+<div class="item">
+  <p class="date">4 августа 2026 г.</p>
+  <h2><a href="smaller-files-better-ocr/">Захват в 8,5 % размера — и OCR читает его чуть лучше</a></h2>
+  <p>Наше собственное сравнение показывало захват в 6,7 МБ против 1,1 МБ у экспорта печати — отмечено и оставлено без комментария. Разбор обнаружил кое-что лучше настройки сжатия: на странице текста отказ от цвета не стоит ничего важного. Встроено в 2.28.0 как настройка — на странице фотографий тот же выбор разрушает изображение.</p>
+  <div class="figures"><span><b>113 кБ</b> против 1327</span><span><b>989</b> слов прочитано обратно, против 987</span><span><b>0,199</b> SSIM на странице изображений</span></div>
+</div>
+<div class="item">
+  <p class="date">4 августа 2026 г.</p>
+  <h2><a href="what-an-agent-may-install/">Агент может установить расширение в обоих браузерах. Имеет ли он право — другой вопрос</a></h2>
+  <p>Firefox за 5,2 с, Chrome за 10,7 с — и Chrome сам забирает магазинную сборку, побуждаемый файлом в 75 байт. Ни окна, ни щелчка, ни прав администратора; браузер должен лишь принадлежать агенту. Что это даёт расширению — меньше, чем кажется, и юридическая рамка отделена от измерения, а не замешана в него.</p>
+  <div class="figures"><span><b>5,2 с</b> Firefox туда-обратно</span><span><b>10,7 с</b> Chrome, из магазина</span><span><b>0</b> событий ввода</span><span><b>0</b> окон</span></div>
+</div>
+<div class="item">
+  <p class="date">3 августа 2026 г.</p>
+  <h2><a href="who-actually-reads-this/">Кто на самом деле читает этот сайт: 24 часа логов краулеров, опубликовано</a></h2>
+  <p>ИИ-системы делали больше запросов, чем поисковики, — на домене двухдневной давности. Двадцать запросов с ИИ-юзер-агентами вовсе не читали, а искали <code>/keys.json</code> и <code>/.git/HEAD</code> — отделены, а не посчитаны. Самодекларируемые цифры, с опубликованным запросом и названными пределами.</p>
+  <div class="figures"><span><b>299</b> запросов ИИ</span><span><b>282</b> запроса поисковиков</span><span><b>7</b> разных ИИ-систем</span><span><b>20</b> не читают</span></div>
+</div>
+<div class="item">
+  <p class="date">3 августа 2026 г.</p>
+  <h2><a href="what-an-agent-can-do-with-an-extension/">Что ИИ-агент может и чего не может с расширением браузера</a></h2>
+  <p>Ни в одном магазине нет API для установки от имени пользователя, а встроенная установка удалена много лет назад — это трение и есть модель безопасности, а не упущение. Что агент может вместо этого, что молча не срабатывает на Chrome 150, и как работа делится на самом деле.</p>
+  <div class="figures"><span><b>3</b> вещи, которые агент может</span><span><b>1</b> флаг, молча не срабатывающий</span><span><b>0</b> способов установить в недостижимый браузер</span></div>
+</div>
+<div class="item">
+  <p class="date">3 августа 2026 г.</p>
+  <h2><a href="sources-a-machine-cannot-cite/">Источники, которые машина не может процитировать за вас — и как процитировать их всё же</a></h2>
+  <p>Когда инструмент цитирования возвращает источник, причина — одна из трёх: защита от ботов, отказ, направленный на сеть, или страница, которая ничего о себе не заявляет. Каждая требует своей работы, и два запроса их различают.</p>
+  <div class="figures"><span><b>3</b> причины</span><span><b>1</b> решается браузером</span><span><b>2</b> запроса для различения</span></div>
+</div>
+<div class="item">
+  <p class="date">2 августа 2026 г.</p>
+  <h2><a href="mcp-server-what-it-solves/">Этот сайт держит MCP-сервер. Измерено: он меньше файла, с которым соревнуется</a></h2>
+  <p>Конечная точка на /mcp передаёт наборы данных и методы ИИ-клиентам. Всё, что она может вернуть, в сумме меньше простого текстового файла, уже лежащего на том же домене, — для чего она тогда ещё годится.</p>
+  <div class="figures"><span><b>1 300</b> токенов всего</span><span><b>1 988</b> в llms.txt</span><span><b>3</b> инструмента</span></div>
+</div>
+<div class="item">
+  <p class="date">2 августа 2026 г.</p>
+  <h2><a href="pages-gone-before-you-need-them/">Страницы, исчезнувшие раньше, чем понадобятся: восемь моментов учёбы</a></h2>
+  <p>Квитанции о сдаче, закрывающиеся курсовые комнаты, версия положения, действовавшая при вашем зачислении, — восемь ситуаций, когда экран важен позже, а его уже нет. Плюс что не стоит хранить. Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span><b>8</b> ситуаций</span><span><b>2</b> предела, которые стоит соблюдать</span></div>
+</div>
+<div class="item">
+  <p class="date">1 августа 2026 г.</p>
+  <h2><a href="building-with-ai-what-went-wrong/">Шесть вещей, пошедших не так при создании ПО с ИИ-ассистентом за один день</a></h2>
+  <p>Неверное предположение о браузерных движках, ложное утверждение, пойманное до публикации, 22 локальных пути в одном коммите от публичного репозитория — и ещё три, отсортированные по тому, что их реально поймало.</p>
+  <div class="figures"><span><b>3 из 6</b> пойманы внешней проверкой</span><span><b>1</b> до сих пор не проверен</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">О сайте и раскрытие</a> · Исправления: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues на GitHub</a> · <a href="../disclaimer/">Отказ от ответственности</a></footer>
+</div>
+
+<div data-lang="zh-CN" lang="zh-CN">
+<header>
+  <h1>笔记</h1>
+  <p class="lead">来自真实工作的构建记录——包括出错的部分,以及是哪项检查抓住了它们。只列出已解决问题的日志,是营销。</p>
+</header>
+<div class="item">
+  <p class="date">2026年8月7日</p>
+  <h2><a href="installing-your-own-tool/">我像陌生人一样安装了自己的工具。有四个地方是错的。</a></h2>
+  <p>安装说明经过测试——在那台每个依赖都已就位、程序已在运行的机器上。一次干净的安装发现了:任何脚本都无法点击的设置窗口、一份对谁都不适用的有据可查的过滤器测量、在每个窗口消息上抛出又被悄悄丢弃的异常,以及说明从未提及的两个前提条件。</p>
+  <div class="figures"><span>缺陷 <b>4</b> 处,全部修复</span><span>实测 <b>&minus;14.2 dB</b>,出厂为 <b>0.0 dB</b></span><span><b>4 处中 3 处</b>一个状态命令就能发现</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月4日</p>
+  <h2><a href="agent-cites-a-source/">AI 代理如何把网页变成可引用的 PDF</a></h2>
+  <p>构建参考文献的代理一路顺利,直到遇到一个需要会话的来源。在我们自己的运行中,20 个来源里有 10 个没有返回任何可引用的内容。这 10 个的路径——无窗口安装捕获扩展、按用途设置、捕获、移除——以及我们让它一直隐而不见的错误:端点能做这一切,但没有任何工具名称说明这一点。</p>
+  <div class="figures"><span>在 Firefox 中安装 <b>0.12 秒</b></span><span>在 Chrome 中 <b>5.49 秒</b></span><span>输入事件 <b>0</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月4日</p>
+  <h2><a href="nineteen-issues/">十九个 issue,而重要的两个是关于我们自己的错误</a></h2>
+  <p>十二个已关闭,七个未关闭,几乎都不是功能问题。一个让我们自己的工具显得比实际更差的已公开数字、一个让 Chrome 版本在无人遗忘任何事的情况下落后十五个发布的硬编码版本,以及一个差一次提交就什么都证明不了的校验和。</p>
+  <div class="figures"><span><b>13</b> 个页面带着过时数字</span><span>Chrome 版本落后 <b>15</b> 个发布</span><span>新增测试 <b>9</b> 个</span><span>对代理开放的 issue <b>6</b> 个</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月4日</p>
+  <h2><a href="smaller-files-better-ocr/">只有 8.5% 大小的捕获,OCR 读起来反而略好</a></h2>
+  <p>我们自己的对比中,捕获为 6.7 MB,打印导出为 1.1 MB——记下了,却没加评论。深入一查,发现了比压缩设置更好的东西:在文本页面上,去掉颜色不会损失任何重要的东西。已作为设置内置于 2.28.0——在满是照片的页面上,同样的选择会毁掉图像。</p>
+  <div class="figures"><span><b>113 kB</b> 对 1327</span><span>读回 <b>989</b> 个词,对 987</span><span>图像页面上 SSIM <b>0.199</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月4日</p>
+  <h2><a href="what-an-agent-may-install/">代理能在两种浏览器中安装扩展。它是否被允许,是另一个问题</a></h2>
+  <p>Firefox 5.2 秒,Chrome 10.7 秒——而且 Chrome 在一个 75 字节文件的引导下自己取回商店版本。无窗口、无点击、无管理员权限;浏览器只需属于这个代理。这对一个扩展的价值比看上去要小,法律框架与测量分开陈述,而不是混在一起。</p>
+  <div class="figures"><span>Firefox 往返 <b>5.2 秒</b></span><span>Chrome <b>10.7 秒</b>,来自商店</span><span>输入事件 <b>0</b></span><span>窗口 <b>0</b></span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="who-actually-reads-this/">究竟谁在读这个网站:24 小时爬虫日志,已公开</a></h2>
+  <p>在一个上线两天的域名上,AI 系统的请求超过了搜索引擎。二十个带着 AI 用户代理的请求根本不是在阅读,而是在找 <code>/keys.json</code> 和 <code>/.git/HEAD</code>——单独分出,不计入。自我申报的数字,查询已公开,局限已说明。</p>
+  <div class="figures"><span>AI 请求 <b>299</b></span><span>搜索引擎请求 <b>282</b></span><span>不同的 AI 系统 <b>7</b> 个</span><span>不在阅读的 <b>20</b> 个</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="what-an-agent-can-do-with-an-extension/">AI 代理用浏览器扩展能做什么、不能做什么</a></h2>
+  <p>没有任何商店有替用户安装的 API,内联安装多年前就已移除——那种摩擦正是安全模型,而非疏漏。代理可以改做什么、在 Chrome 150 上什么会静默失败,以及工作实际上如何划分。</p>
+  <div class="figures"><span>代理能做的 <b>3</b> 件事</span><span>静默失败的参数 <b>1</b> 个</span><span>向无法触及的浏览器安装的方式 <b>0</b> 种</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月3日</p>
+  <h2><a href="sources-a-machine-cannot-cite/">机器无法替你引用的来源——以及如何照样引用它们</a></h2>
+  <p>当引用工具把一个来源退回时,原因是三者之一:反机器人防御、针对网络的拒绝,或是一个对自身毫无声明的页面。三者需要的处理各不相同,两次请求即可区分。</p>
+  <div class="figures"><span>原因 <b>3</b> 种</span><span>靠浏览器解决 <b>1</b></span><span>区分所需请求 <b>2</b> 次</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月2日</p>
+  <h2><a href="mcp-server-what-it-solves/">本站运行一个 MCP 服务器。实测:它比与之竞争的文件还小</a></h2>
+  <p>/mcp 端点把数据集和方法交给 AI 客户端。它能返回的一切加起来,还不如同域名下已有的那个纯文本文件——那它还剩下什么用。</p>
+  <div class="figures"><span>合计 <b>1,300</b> token</span><span>llms.txt 中为 <b>1,988</b></span><span>工具 <b>3</b> 个</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月2日</p>
+  <h2><a href="pages-gone-before-you-need-them/">在你需要之前就已消失的页面:一个学位过程中的八个时刻</a></h2>
+  <p>提交回执、会关闭的课程房间、你入学时有效的规章版本——八个屏幕日后很重要却已不在的场景。外加不该保留的东西。Deutsche Fassung auf derselben Seite.</p>
+  <div class="figures"><span>场景 <b>8</b> 个</span><span>值得遵守的界限 <b>2</b> 条</span></div>
+</div>
+<div class="item">
+  <p class="date">2026年8月1日</p>
+  <h2><a href="building-with-ai-what-went-wrong/">一天之内与 AI 助手开发软件出错的六件事</a></h2>
+  <p>一个关于浏览器引擎的错误假设、一个在发布前被拦下的虚假陈述、距离公开仓库仅一次提交的 22 个本地路径——还有三件,按究竟是什么抓住了它们排序。</p>
+  <div class="figures"><span><b>6 件中 3 件</b>被外部检查发现</span><span><b>1</b> 个仍未测试</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">关于与披露</a> · 更正: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">免责声明</a></footer>
+</div>
 </div>
 </body>
 </html>

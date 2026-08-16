@@ -60,6 +60,10 @@
   .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
   .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
   @media (max-width:640px){ .topnav .brand{width:100%;margin-right:0} }
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
 </style>
 <script type="application/ld+json">
 {
@@ -151,19 +155,15 @@
 </nav>
 
 <div class="wrap">
+<div data-lang="en" class="on" lang="en">
 <header>
   <h1>Tools</h1>
   <p class="lead">Built here, and measured here under the same rules as everything else — including where they lose against an alternative.</p>
 </header>
-
 <div class="item">
   <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
   <p>Downloads an entire webpage as one seamless PDF — the complete scrolling page on a single continuous sheet, no page breaks, nothing cropped. Runs entirely on the device: no upload, no account, no data collection, and <code>activeTab</code> instead of access to every site you visit. Works in Firefox on desktop and Android, and in Chrome.</p>
-  <div class="figures">
-    <span><b>92.6&nbsp;%</b> of text survives OCR</span>
-    <span><b>0</b> network requests</span>
-    <span><b>MIT</b> licence</span>
-  </div>
+  <div class="figures"><span><b>92.6&nbsp;%</b> of text survives OCR</span><span><b>0</b> network requests</span><span><b>MIT</b> licence</span></div>
   <div class="holen">
     <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download for Firefox</a>
     <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Without any store</a>
@@ -171,40 +171,19 @@
     <a href="full-page-pdf-snap/">Details and measurements</a>
   </div>
 </div>
-
 <div class="item">
   <h2><a href="pushdictate/">PushDictate</a></h2>
-  <p>Hold <code>Ctrl+Space</code>, speak, release — the transcribed text appears wherever
-  the cursor is blinking. It pastes through the clipboard instead of the Windows
-  text-services layer, which is why it also works in Windows Terminal, PowerShell, WSL,
-  SSH sessions and terminal-based coding agents. That is exactly where the built-in
-  Windows dictation gives up. Push-to-talk, so the microphone opens only while the key
-  is held. Runs with your own OpenAI key; none ships with it.</p>
-  <div class="figures">
-    <span><b>Terminal, WSL, SSH</b> covered</span>
-    <span><b>0</b> accounts, no telemetry</span>
-    <span><b>MIT</b> licence</span>
-  </div>
+  <p>Hold <code>Ctrl+Space</code>, speak, release — the transcribed text appears wherever the cursor is blinking. It pastes through the clipboard instead of the Windows text-services layer, which is why it also works in Windows Terminal, PowerShell, WSL, SSH sessions and terminal-based coding agents. That is exactly where the built-in Windows dictation gives up. Push-to-talk, so the microphone opens only while the key is held. Runs with your own OpenAI key; none ships with it.</p>
+  <div class="figures"><span><b>Terminal, WSL, SSH</b> covered</span><span><b>0</b> accounts, no telemetry</span><span><b>MIT</b> licence</span></div>
   <div class="holen">
     <a class="erst" href="https://github.com/Bubu89/pushdictate">Get it on GitHub</a>
     <a href="pushdictate/">Setup and how it works</a>
   </div>
 </div>
-
 <div class="item">
   <h2><a href="../notes/mcp-server-what-it-solves/">Citation endpoint (MCP server)</a></h2>
-  <p>Point it at a URL and it returns what that page declares about itself — authors,
-  title, journal, year, DOI, licence — as a structured record with a ready-to-import
-  RIS entry and BibTeX. Where a page is a paywall, an error or a bot check, it says so
-  and refuses instead of inventing a reference. No account and no key, used in proportion; it
-  reads the page from a server, so anything behind a login stays out of reach and is
-  named as such. Runs at <code>https://provinglab.dev/mcp</code> for any client that
-  speaks MCP, and answers plain <code>curl</code> just as well.</p>
-  <div class="figures">
-    <span><b>7 of 10</b> scholarly sources complete</span>
-    <span><b>0.45 s</b> median</span>
-    <span><b>RIS + BibTeX</b> returned</span>
-  </div>
+  <p>Point it at a URL and it returns what that page declares about itself — authors, title, journal, year, DOI, licence — as a structured record with a ready-to-import RIS entry and BibTeX. Where a page is a paywall, an error or a bot check, it says so and refuses instead of inventing a reference. No account and no key, used in proportion; it reads the page from a server, so anything behind a login stays out of reach and is named as such. Runs at <code>https://provinglab.dev/mcp</code> for any client that speaks MCP, and answers plain <code>curl</code> just as well.</p>
+  <div class="figures"><span><b>7 of 10</b> scholarly sources complete</span><span><b>0.45 s</b> median</span><span><b>RIS + BibTeX</b> returned</span></div>
   <div class="holen">
     <a class="erst" href="../recipes/">Recipes — copy and paste</a>
     <a href="../notes/mcp-server-what-it-solves/">How it works and what it refuses</a>
@@ -213,26 +192,400 @@
     <a href="/.well-known/mcp/server-card.json">Server card</a>
   </div>
 </div>
-
 <div class="item">
-  <p><strong>Together.</strong> The endpoint collects references at volume but never the
-  document; the extension produces the document with the same fields written into it,
-  and reaches the pages a server cannot — anything behind a login. Both emit the same
-  RIS format, so the results land in one Citavi or Zotero library either way.
-  <a href="../notes/mcp-server-what-it-solves/#the-workflow-it-was-actually-built-for">The
-  workflow in full</a>.</p>
+  <p><strong>Together.</strong> The endpoint collects references at volume but never the document; the extension produces the document with the same fields written into it, and reaches the pages a server cannot — anything behind a login. Both emit the same RIS format, so the results land in one Citavi or Zotero library either way. <a href="../notes/mcp-server-what-it-solves/#the-workflow-it-was-actually-built-for">The workflow in full</a>.</p>
 </div>
-
 <div class="item">
-  <p><strong>Disclosure.</strong> The tool listed here is developed by the author of this
-  site. It appears in several of the measurements published here, and that is stated on each
-  of those pages. Nothing is sold, there is no advertising and there are no affiliate links —
-  see <a href="../about/">About &amp; disclosure</a>.
-  Corrections: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a>.</p>
+  <p><strong>Disclosure.</strong> The tool listed here is developed by the author of this site. It appears in several of the measurements published here, and that is stated on each of those pages. Nothing is sold, there is no advertising and there are no affiliate links — see <a href="../about/">About &amp; disclosure</a>. Corrections: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a>.</p>
   <p style="margin-top:10px">Where a tool of ours appears in a measurement, that is stated on the page itself. A screen-capture PDF is not a qualified electronic document — see <a href="full-page-pdf-snap/#limits">the limits</a>.</p>
 </div>
 
 <footer><a href="../">← Proving Lab</a> · <a href="../about/">About &amp; disclosure</a> · Corrections: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">Disclaimer</a></footer>
+</div>
+
+<div data-lang="de" lang="de">
+<header>
+  <h1>Werkzeuge</h1>
+  <p class="lead">Hier gebaut und hier nach denselben Regeln gemessen wie alles andere — einschließlich der Stellen, an denen sie gegen eine Alternative verlieren.</p>
+</header>
+<div class="item">
+  <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
+  <p>Lädt eine ganze Webseite als ein nahtloses PDF herunter — die komplette scrollende Seite auf einem einzigen fortlaufenden Blatt, keine Seitenumbrüche, nichts abgeschnitten. Läuft vollständig auf dem Gerät: kein Upload, kein Konto, keine Datenerhebung, und <code>activeTab</code> statt Zugriff auf jede besuchte Seite. Funktioniert in Firefox auf Desktop und Android sowie in Chrome.</p>
+  <div class="figures"><span><b>92,6&nbsp;%</b> des Textes überlebt OCR</span><span><b>0</b> Netzwerkanfragen</span><span><b>MIT</b>-Lizenz</span></div>
+  <div class="holen">
+    <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Für Firefox herunterladen</a>
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Ganz ohne Store</a>
+    <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Für Chrome herunterladen</a>
+    <a href="full-page-pdf-snap/">Details und Messungen</a>
+  </div>
+</div>
+<div class="item">
+  <h2><a href="pushdictate/">PushDictate</a></h2>
+  <p><code>Strg+Leertaste</code> halten, sprechen, loslassen — der transkribierte Text erscheint dort, wo der Cursor blinkt. Er fügt über die Zwischenablage ein statt über die Textdienste-Schicht von Windows — deshalb funktioniert er auch in Windows Terminal, PowerShell, WSL, SSH-Sitzungen und terminalbasierten Coding-Agenten. Genau dort gibt die eingebaute Windows-Diktierfunktion auf. Push-to-Talk: Das Mikrofon öffnet nur, solange die Taste gehalten wird. Läuft mit Ihrem eigenen OpenAI-Schlüssel; keiner wird mitgeliefert.</p>
+  <div class="figures"><span><b>Terminal, WSL, SSH</b> abgedeckt</span><span><b>0</b> Konten, keine Telemetrie</span><span><b>MIT</b>-Lizenz</span></div>
+  <div class="holen">
+    <a class="erst" href="https://github.com/Bubu89/pushdictate">Auf GitHub holen</a>
+    <a href="pushdictate/">Einrichtung und Funktionsweise</a>
+  </div>
+</div>
+<div class="item">
+  <h2><a href="../notes/mcp-server-what-it-solves/">Zitations-Endpunkt (MCP-Server)</a></h2>
+  <p>Richten Sie ihn auf eine URL, und er gibt zurück, was diese Seite über sich selbst erklärt — Verfasser:innen, Titel, Zeitschrift, Jahr, DOI, Lizenz — als strukturierten Datensatz mit importfertigem RIS-Eintrag und BibTeX. Ist eine Seite eine Paywall, ein Fehler oder eine Bot-Prüfung, sagt er das und verweigert, statt einen Verweis zu erfinden. Kein Konto und kein Schlüssel, maßvolle Nutzung; er liest die Seite von einem Server, also bleibt alles hinter einem Login unerreichbar und wird als solches benannt. Läuft unter <code>https://provinglab.dev/mcp</code> für jeden Client, der MCP spricht, und antwortet schlichtem <code>curl</code> genauso.</p>
+  <div class="figures"><span><b>7 von 10</b> wissenschaftliche Quellen vollständig</span><span><b>0,45 s</b> Median</span><span><b>RIS + BibTeX</b> zurückgegeben</span></div>
+  <div class="holen">
+    <a class="erst" href="../recipes/">Rezepte — kopieren und einfügen</a>
+    <a href="../notes/mcp-server-what-it-solves/">Wie er funktioniert und was er verweigert</a>
+    <a href="../measurements/citation-extraction/">Gegen Citoid gemessen</a>
+    <a href="../measurements/citation-by-platform/">18 Plattformen untersucht</a>
+    <a href="/.well-known/mcp/server-card.json">Server-Karte</a>
+  </div>
+</div>
+<div class="item">
+  <p><strong>Zusammen.</strong> Der Endpunkt sammelt Verweise in Menge, aber nie das Dokument; die Erweiterung erzeugt das Dokument mit denselben hineingeschriebenen Feldern und erreicht die Seiten, die ein Server nicht erreicht — alles hinter einem Login. Beide geben dasselbe RIS-Format aus, die Ergebnisse landen also in jedem Fall in derselben Citavi- oder Zotero-Bibliothek. <a href="../notes/mcp-server-what-it-solves/#the-workflow-it-was-actually-built-for">Der Arbeitsablauf im Ganzen</a>.</p>
+</div>
+<div class="item">
+  <p><strong>Offenlegung.</strong> Das hier aufgeführte Werkzeug wird vom Autor dieser Seite entwickelt. Es kommt in mehreren der hier veröffentlichten Messungen vor, und das steht auf jeder dieser Seiten. Es wird nichts verkauft, es gibt keine Werbung und keine Affiliate-Links — siehe <a href="../about/">Über &amp; Offenlegung</a>. Korrekturen: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a>.</p>
+  <p style="margin-top:10px">Wo ein Werkzeug von uns in einer Messung vorkommt, steht das auf der Seite selbst. Ein Bildschirmaufnahme-PDF ist kein qualifiziertes elektronisches Dokument — siehe <a href="full-page-pdf-snap/#limits">die Grenzen</a>.</p>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Über &amp; Offenlegung</a> · Korrekturen: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a> · <a href="../disclaimer/">Haftungsausschluss</a></footer>
+</div>
+
+<div data-lang="es" lang="es">
+<header>
+  <h1>Herramientas</h1>
+  <p class="lead">Construidas aquí, y medidas aquí bajo las mismas reglas que todo lo demás — incluido dónde pierden contra una alternativa.</p>
+</header>
+<div class="item">
+  <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
+  <p>Descarga una página web entera como un PDF sin costuras — toda la página desplazable en una sola hoja continua, sin saltos de página, nada recortado. Funciona enteramente en el dispositivo: sin subidas, sin cuenta, sin recolección de datos, y <code>activeTab</code> en lugar de acceso a cada sitio que visitas. Funciona en Firefox en escritorio y Android, y en Chrome.</p>
+  <div class="figures"><span>el <b>92,6&nbsp;%</b> del texto sobrevive al OCR</span><span><b>0</b> peticiones de red</span><span>licencia <b>MIT</b></span></div>
+  <div class="holen">
+    <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Descargar para Firefox</a>
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Sin ninguna tienda</a>
+    <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Descargar para Chrome</a>
+    <a href="full-page-pdf-snap/">Detalles y mediciones</a>
+  </div>
+</div>
+<div class="item">
+  <h2><a href="pushdictate/">PushDictate</a></h2>
+  <p>Mantén <code>Ctrl+Espacio</code>, habla, suelta — el texto transcrito aparece donde parpadea el cursor. Pega a través del portapapeles en lugar de la capa de servicios de texto de Windows, por eso también funciona en Windows Terminal, PowerShell, WSL, sesiones SSH y agentes de código basados en terminal. Exactamente donde el dictado incorporado de Windows se rinde. Pulsar para hablar: el micrófono solo se abre mientras se mantiene la tecla. Funciona con tu propia clave de OpenAI; no se incluye ninguna.</p>
+  <div class="figures"><span><b>Terminal, WSL, SSH</b> cubiertos</span><span><b>0</b> cuentas, sin telemetría</span><span>licencia <b>MIT</b></span></div>
+  <div class="holen">
+    <a class="erst" href="https://github.com/Bubu89/pushdictate">Conseguirlo en GitHub</a>
+    <a href="pushdictate/">Configuración y funcionamiento</a>
+  </div>
+</div>
+<div class="item">
+  <h2><a href="../notes/mcp-server-what-it-solves/">Endpoint de citación (servidor MCP)</a></h2>
+  <p>Apúntalo a una URL y devuelve lo que esa página declara de sí misma — autores, título, revista, año, DOI, licencia — como registro estructurado con una entrada RIS lista para importar y BibTeX. Donde una página es un muro de pago, un error o una comprobación de bots, lo dice y se niega en lugar de inventar una referencia. Sin cuenta y sin clave, usado con medida; lee la página desde un servidor, así que todo lo que hay tras un inicio de sesión queda fuera de alcance y se nombra como tal. Corre en <code>https://provinglab.dev/mcp</code> para cualquier cliente que hable MCP, y responde a un simple <code>curl</code> igual de bien.</p>
+  <div class="figures"><span><b>7 de 10</b> fuentes académicas completas</span><span><b>0,45 s</b> de mediana</span><span><b>RIS + BibTeX</b> devueltos</span></div>
+  <div class="holen">
+    <a class="erst" href="../recipes/">Recetas — copiar y pegar</a>
+    <a href="../notes/mcp-server-what-it-solves/">Cómo funciona y qué rechaza</a>
+    <a href="../measurements/citation-extraction/">Medido contra Citoid</a>
+    <a href="../measurements/citation-by-platform/">18 plataformas examinadas</a>
+    <a href="/.well-known/mcp/server-card.json">Ficha del servidor</a>
+  </div>
+</div>
+<div class="item">
+  <p><strong>Juntos.</strong> El endpoint recolecta referencias en volumen pero nunca el documento; la extensión produce el documento con los mismos campos escritos dentro, y alcanza las páginas que un servidor no puede — todo lo que hay tras un inicio de sesión. Ambos emiten el mismo formato RIS, así que los resultados aterrizan en una misma biblioteca de Citavi o Zotero en cualquier caso. <a href="../notes/mcp-server-what-it-solves/#the-workflow-it-was-actually-built-for">El flujo de trabajo completo</a>.</p>
+</div>
+<div class="item">
+  <p><strong>Divulgación.</strong> La herramienta aquí listada es desarrollada por el autor de este sitio. Aparece en varias de las mediciones publicadas aquí, y eso se indica en cada una de esas páginas. No se vende nada, no hay publicidad ni enlaces de afiliado — ver <a href="../about/">Acerca de &amp; divulgación</a>. Correcciones: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues de GitHub</a>.</p>
+  <p style="margin-top:10px">Donde una herramienta nuestra aparece en una medición, eso se indica en la propia página. Un PDF de captura de pantalla no es un documento electrónico cualificado — ver <a href="full-page-pdf-snap/#limits">los límites</a>.</p>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Acerca de &amp; divulgación</a> · Correcciones: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues de GitHub</a> · <a href="../disclaimer/">Aviso legal</a></footer>
+</div>
+
+<div data-lang="fr" lang="fr">
+<header>
+  <h1>Outils</h1>
+  <p class="lead">Construits ici, et mesurés ici selon les mêmes règles que tout le reste — y compris là où ils perdent face à une alternative.</p>
+</header>
+<div class="item">
+  <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
+  <p>Télécharge une page web entière en un PDF sans couture — toute la page défilante sur une seule feuille continue, sans sauts de page, rien de rogné. Tourne entièrement sur l'appareil : aucun téléversement, aucun compte, aucune collecte de données, et <code>activeTab</code> plutôt qu'un accès à chaque site visité. Fonctionne dans Firefox sur bureau et Android, et dans Chrome.</p>
+  <div class="figures"><span><b>92,6&nbsp;%</b> du texte survit à l'OCR</span><span><b>0</b> requête réseau</span><span>licence <b>MIT</b></span></div>
+  <div class="holen">
+    <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Télécharger pour Firefox</a>
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Sans aucune boutique</a>
+    <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Télécharger pour Chrome</a>
+    <a href="full-page-pdf-snap/">Détails et mesures</a>
+  </div>
+</div>
+<div class="item">
+  <h2><a href="pushdictate/">PushDictate</a></h2>
+  <p>Maintenez <code>Ctrl+Espace</code>, parlez, relâchez — le texte transcrit apparaît là où le curseur clignote. Il colle via le presse-papiers plutôt que par la couche des services de texte de Windows, c'est pourquoi il fonctionne aussi dans Windows Terminal, PowerShell, WSL, les sessions SSH et les agents de code en terminal. C'est exactement là où la dictée intégrée de Windows abandonne. Appuyer pour parler : le micro ne s'ouvre que tant que la touche est maintenue. Fonctionne avec votre propre clé OpenAI ; aucune n'est fournie.</p>
+  <div class="figures"><span><b>Terminal, WSL, SSH</b> couverts</span><span><b>0</b> compte, pas de télémétrie</span><span>licence <b>MIT</b></span></div>
+  <div class="holen">
+    <a class="erst" href="https://github.com/Bubu89/pushdictate">Le récupérer sur GitHub</a>
+    <a href="pushdictate/">Installation et fonctionnement</a>
+  </div>
+</div>
+<div class="item">
+  <h2><a href="../notes/mcp-server-what-it-solves/">Point d'accès de citation (serveur MCP)</a></h2>
+  <p>Pointez-le sur une URL et il rend ce que cette page déclare d'elle-même — auteurs, titre, revue, année, DOI, licence — sous forme de notice structurée avec une entrée RIS prête à importer et du BibTeX. Lorsqu'une page est un mur payant, une erreur ou un contrôle anti-robots, il le dit et refuse au lieu d'inventer une référence. Ni compte ni clé, à utiliser avec mesure ; il lit la page depuis un serveur, donc tout ce qui se trouve derrière un identifiant reste hors de portée et est nommé comme tel. Tourne sur <code>https://provinglab.dev/mcp</code> pour tout client parlant MCP, et répond tout aussi bien à un simple <code>curl</code>.</p>
+  <div class="figures"><span><b>7 sur 10</b> sources savantes complètes</span><span><b>0,45 s</b> de médiane</span><span><b>RIS + BibTeX</b> rendus</span></div>
+  <div class="holen">
+    <a class="erst" href="../recipes/">Recettes — copier-coller</a>
+    <a href="../notes/mcp-server-what-it-solves/">Comment il marche et ce qu'il refuse</a>
+    <a href="../measurements/citation-extraction/">Mesuré contre Citoid</a>
+    <a href="../measurements/citation-by-platform/">18 plates-formes examinées</a>
+    <a href="/.well-known/mcp/server-card.json">Carte du serveur</a>
+  </div>
+</div>
+<div class="item">
+  <p><strong>Ensemble.</strong> Le point d'accès collecte des références en volume mais jamais le document ; l'extension produit le document avec les mêmes champs écrits dedans, et atteint les pages qu'un serveur ne peut pas — tout ce qui est derrière un identifiant. Les deux émettent le même format RIS, donc les résultats atterrissent dans une même bibliothèque Citavi ou Zotero dans tous les cas. <a href="../notes/mcp-server-what-it-solves/#the-workflow-it-was-actually-built-for">Le flux de travail en entier</a>.</p>
+</div>
+<div class="item">
+  <p><strong>Transparence.</strong> L'outil listé ici est développé par l'auteur de ce site. Il apparaît dans plusieurs des mesures publiées ici, et c'est indiqué sur chacune de ces pages. Rien n'est vendu, il n'y a ni publicité ni liens d'affiliation — voir <a href="../about/">À propos &amp; transparence</a>. Corrections : <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">tickets GitHub</a>.</p>
+  <p style="margin-top:10px">Lorsqu'un de nos outils apparaît dans une mesure, c'est indiqué sur la page elle-même. Un PDF de capture d'écran n'est pas un document électronique qualifié — voir <a href="full-page-pdf-snap/#limits">les limites</a>.</p>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">À propos &amp; transparence</a> · Corrections : <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">tickets GitHub</a> · <a href="../disclaimer/">Mentions légales</a></footer>
+</div>
+
+<div data-lang="it" lang="it">
+<header>
+  <h1>Strumenti</h1>
+  <p class="lead">Costruiti qui, e misurati qui con le stesse regole di tutto il resto — incluso dove perdono contro un'alternativa.</p>
+</header>
+<div class="item">
+  <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
+  <p>Scarica un'intera pagina web come un PDF senza cuciture — tutta la pagina scorrevole su un unico foglio continuo, senza interruzioni di pagina, niente di ritagliato. Funziona interamente sul dispositivo: nessun caricamento, nessun account, nessuna raccolta dati, e <code>activeTab</code> invece dell'accesso a ogni sito visitato. Funziona in Firefox su desktop e Android, e in Chrome.</p>
+  <div class="figures"><span>il <b>92,6&nbsp;%</b> del testo sopravvive all'OCR</span><span><b>0</b> richieste di rete</span><span>licenza <b>MIT</b></span></div>
+  <div class="holen">
+    <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Scarica per Firefox</a>
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Senza alcuno store</a>
+    <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Scarica per Chrome</a>
+    <a href="full-page-pdf-snap/">Dettagli e misurazioni</a>
+  </div>
+</div>
+<div class="item">
+  <h2><a href="pushdictate/">PushDictate</a></h2>
+  <p>Tieni premuto <code>Ctrl+Spazio</code>, parla, rilascia — il testo trascritto appare dove lampeggia il cursore. Incolla tramite gli appunti invece dello strato dei servizi di testo di Windows, ed è per questo che funziona anche in Windows Terminal, PowerShell, WSL, sessioni SSH e agenti di codice da terminale. Esattamente dove la dettatura integrata di Windows si arrende. Premi per parlare: il microfono si apre solo mentre il tasto è premuto. Funziona con la tua chiave OpenAI; nessuna è inclusa.</p>
+  <div class="figures"><span><b>Terminal, WSL, SSH</b> coperti</span><span><b>0</b> account, nessuna telemetria</span><span>licenza <b>MIT</b></span></div>
+  <div class="holen">
+    <a class="erst" href="https://github.com/Bubu89/pushdictate">Prendilo su GitHub</a>
+    <a href="pushdictate/">Configurazione e funzionamento</a>
+  </div>
+</div>
+<div class="item">
+  <h2><a href="../notes/mcp-server-what-it-solves/">Endpoint di citazione (server MCP)</a></h2>
+  <p>Puntalo su un URL e restituisce ciò che quella pagina dichiara di sé — autori, titolo, rivista, anno, DOI, licenza — come record strutturato con una voce RIS pronta da importare e BibTeX. Dove una pagina è un paywall, un errore o un controllo anti-bot, lo dice e rifiuta invece di inventare un riferimento. Nessun account e nessuna chiave, usato con misura; legge la pagina da un server, quindi tutto ciò che è dietro un login resta fuori portata ed è nominato come tale. Gira su <code>https://provinglab.dev/mcp</code> per qualsiasi client che parli MCP, e risponde altrettanto bene a un semplice <code>curl</code>.</p>
+  <div class="figures"><span><b>7 su 10</b> fonti accademiche complete</span><span><b>0,45 s</b> di mediana</span><span><b>RIS + BibTeX</b> restituiti</span></div>
+  <div class="holen">
+    <a class="erst" href="../recipes/">Ricette — copia e incolla</a>
+    <a href="../notes/mcp-server-what-it-solves/">Come funziona e cosa rifiuta</a>
+    <a href="../measurements/citation-extraction/">Misurato contro Citoid</a>
+    <a href="../measurements/citation-by-platform/">18 piattaforme esaminate</a>
+    <a href="/.well-known/mcp/server-card.json">Scheda del server</a>
+  </div>
+</div>
+<div class="item">
+  <p><strong>Insieme.</strong> L'endpoint raccoglie riferimenti in volume ma mai il documento; l'estensione produce il documento con gli stessi campi scritti dentro, e raggiunge le pagine che un server non può — tutto ciò che è dietro un login. Entrambi emettono lo stesso formato RIS, quindi i risultati finiscono in un'unica biblioteca Citavi o Zotero in ogni caso. <a href="../notes/mcp-server-what-it-solves/#the-workflow-it-was-actually-built-for">Il flusso di lavoro completo</a>.</p>
+</div>
+<div class="item">
+  <p><strong>Trasparenza.</strong> Lo strumento qui elencato è sviluppato dall'autore di questo sito. Compare in diverse misurazioni pubblicate qui, e questo è indicato su ciascuna di quelle pagine. Non si vende nulla, non c'è pubblicità e non ci sono link di affiliazione — vedi <a href="../about/">Informazioni &amp; trasparenza</a>. Correzioni: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue su GitHub</a>.</p>
+  <p style="margin-top:10px">Dove un nostro strumento compare in una misurazione, è indicato sulla pagina stessa. Un PDF di cattura schermo non è un documento elettronico qualificato — vedi <a href="full-page-pdf-snap/#limits">i limiti</a>.</p>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Informazioni &amp; trasparenza</a> · Correzioni: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue su GitHub</a> · <a href="../disclaimer/">Esclusione di responsabilità</a></footer>
+</div>
+
+<div data-lang="ja" lang="ja">
+<header>
+  <h1>ツール</h1>
+  <p class="lead">ここで作られ、ここで他のすべてと同じルールで測定されています — 代替案に劣るところも含めて。</p>
+</header>
+<div class="item">
+  <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
+  <p>ウェブページ全体を継ぎ目のない1つの PDF としてダウンロードします — スクロールするページ全体が1枚の連続したシートに。改ページなし、切り取りなし。完全にデバイス上で動作: アップロードなし、アカウントなし、データ収集なし、訪問するすべてのサイトへのアクセスではなく <code>activeTab</code>。デスクトップと Android の Firefox、および Chrome で動作します。</p>
+  <div class="figures"><span>テキストの <b>92.6&nbsp;%</b> が OCR を通過</span><span>ネットワークリクエスト <b>0</b></span><span><b>MIT</b> ライセンス</span></div>
+  <div class="holen">
+    <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Firefox 版をダウンロード</a>
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">ストアを使わない方法</a>
+    <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome 版をダウンロード</a>
+    <a href="full-page-pdf-snap/">詳細と測定</a>
+  </div>
+</div>
+<div class="item">
+  <h2><a href="pushdictate/">PushDictate</a></h2>
+  <p><code>Ctrl+Space</code> を押しながら話して離す — 転写されたテキストがカーソルの点滅している場所に現れます。Windows のテキストサービス層ではなくクリップボード経由で貼り付けるため、Windows Terminal、PowerShell、WSL、SSH セッション、ターミナルベースのコーディングエージェントでも動作します。まさに Windows 標準の音声入力が諦める場所です。プッシュ・トゥ・トークなので、マイクはキーを押している間だけ開きます。あなた自身の OpenAI キーで動きます。キーは付属しません。</p>
+  <div class="figures"><span><b>Terminal、WSL、SSH</b> をカバー</span><span>アカウント <b>0</b>、テレメトリーなし</span><span><b>MIT</b> ライセンス</span></div>
+  <div class="holen">
+    <a class="erst" href="https://github.com/Bubu89/pushdictate">GitHub で入手</a>
+    <a href="pushdictate/">セットアップと仕組み</a>
+  </div>
+</div>
+<div class="item">
+  <h2><a href="../notes/mcp-server-what-it-solves/">引用エンドポイント(MCP サーバー)</a></h2>
+  <p>URL を向けると、そのページが自分について宣言していること — 著者、タイトル、ジャーナル、年、DOI、ライセンス — を、インポート可能な RIS エントリと BibTeX 付きの構造化レコードとして返します。ページがペイウォール、エラー、ボットチェックの場合は、参照を捏造せず、そう告げて拒否します。アカウントもキーも不要、節度ある利用を。サーバーからページを読むため、ログインの後ろにあるものは届かず、その旨が明示されます。MCP を話すどんなクライアントにも <code>https://provinglab.dev/mcp</code> で動作し、素の <code>curl</code> にも同じように答えます。</p>
+  <div class="figures"><span>学術ソースの <b>10件中7件</b> が完全</span><span>中央値 <b>0.45秒</b></span><span><b>RIS + BibTeX</b> を返却</span></div>
+  <div class="holen">
+    <a class="erst" href="../recipes/">レシピ — コピー&ペースト</a>
+    <a href="../notes/mcp-server-what-it-solves/">仕組みと、拒否するもの</a>
+    <a href="../measurements/citation-extraction/">Citoid との比較測定</a>
+    <a href="../measurements/citation-by-platform/">18プラットフォームの調査</a>
+    <a href="/.well-known/mcp/server-card.json">サーバーカード</a>
+  </div>
+</div>
+<div class="item">
+  <p><strong>組み合わせると。</strong> エンドポイントは参照を大量に集めますが、文書そのものは扱いません。拡張機能は同じフィールドが書き込まれた文書を生成し、サーバーが届かないページ — ログインの後ろのすべて — に届きます。両者は同じ RIS 形式を出力するので、結果はどちらの経路でも同じ Citavi や Zotero のライブラリに収まります。<a href="../notes/mcp-server-what-it-solves/#the-workflow-it-was-actually-built-for">ワークフロー全体</a>。</p>
+</div>
+<div class="item">
+  <p><strong>開示。</strong> ここに挙げたツールは、このサイトの作者が開発しています。ここで公開されているいくつかの測定に登場し、そのことは各ページに記されています。販売はなく、広告もアフィリエイトリンクもありません — <a href="../about/">概要と開示</a>をご覧ください。修正: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a>。</p>
+  <p style="margin-top:10px">私たちのツールが測定に登場する場合、そのことはそのページ自体に記されています。画面キャプチャ PDF は適格な電子文書ではありません — <a href="full-page-pdf-snap/#limits">限界</a>をご覧ください。</p>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">概要と開示</a> · 修正: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">免責事項</a></footer>
+</div>
+
+<div data-lang="pt-BR" lang="pt-BR">
+<header>
+  <h1>Ferramentas</h1>
+  <p class="lead">Construídas aqui, e medidas aqui sob as mesmas regras de todo o resto — incluindo onde perdem para uma alternativa.</p>
+</header>
+<div class="item">
+  <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
+  <p>Baixa uma página da web inteira como um PDF sem emendas — toda a página rolável numa única folha contínua, sem quebras de página, nada cortado. Roda inteiramente no dispositivo: sem upload, sem conta, sem coleta de dados, e <code>activeTab</code> em vez de acesso a cada site visitado. Funciona no Firefox no desktop e no Android, e no Chrome.</p>
+  <div class="figures"><span><b>92,6&nbsp;%</b> do texto sobrevive ao OCR</span><span><b>0</b> requisições de rede</span><span>licença <b>MIT</b></span></div>
+  <div class="holen">
+    <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Baixar para Firefox</a>
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Sem nenhuma loja</a>
+    <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Baixar para Chrome</a>
+    <a href="full-page-pdf-snap/">Detalhes e medições</a>
+  </div>
+</div>
+<div class="item">
+  <h2><a href="pushdictate/">PushDictate</a></h2>
+  <p>Segure <code>Ctrl+Espaço</code>, fale, solte — o texto transcrito aparece onde o cursor está piscando. Ele cola pela área de transferência em vez da camada de serviços de texto do Windows, e é por isso que também funciona no Windows Terminal, PowerShell, WSL, sessões SSH e agentes de código em terminal. Exatamente onde a ditado embutido do Windows desiste. Aperte para falar: o microfone só abre enquanto a tecla está pressionada. Roda com a sua própria chave da OpenAI; nenhuma acompanha.</p>
+  <div class="figures"><span><b>Terminal, WSL, SSH</b> cobertos</span><span><b>0</b> contas, sem telemetria</span><span>licença <b>MIT</b></span></div>
+  <div class="holen">
+    <a class="erst" href="https://github.com/Bubu89/pushdictate">Pegar no GitHub</a>
+    <a href="pushdictate/">Instalação e funcionamento</a>
+  </div>
+</div>
+<div class="item">
+  <h2><a href="../notes/mcp-server-what-it-solves/">Endpoint de citação (servidor MCP)</a></h2>
+  <p>Aponte-o para uma URL e ele devolve o que essa página declara sobre si — autores, título, periódico, ano, DOI, licença — como registro estruturado com uma entrada RIS pronta para importar e BibTeX. Onde uma página é um paywall, um erro ou uma verificação de bots, ele diz isso e recusa em vez de inventar uma referência. Sem conta e sem chave, usado com medida; ele lê a página de um servidor, então tudo atrás de um login fica fora de alcance e é nomeado como tal. Roda em <code>https://provinglab.dev/mcp</code> para qualquer cliente que fale MCP, e responde a um simples <code>curl</code> da mesma forma.</p>
+  <div class="figures"><span><b>7 de 10</b> fontes acadêmicas completas</span><span><b>0,45 s</b> de mediana</span><span><b>RIS + BibTeX</b> devolvidos</span></div>
+  <div class="holen">
+    <a class="erst" href="../recipes/">Receitas — copiar e colar</a>
+    <a href="../notes/mcp-server-what-it-solves/">Como funciona e o que recusa</a>
+    <a href="../measurements/citation-extraction/">Medido contra o Citoid</a>
+    <a href="../measurements/citation-by-platform/">18 plataformas examinadas</a>
+    <a href="/.well-known/mcp/server-card.json">Ficha do servidor</a>
+  </div>
+</div>
+<div class="item">
+  <p><strong>Juntos.</strong> O endpoint coleta referências em volume, mas nunca o documento; a extensão produz o documento com os mesmos campos gravados nele, e alcança as páginas que um servidor não alcança — tudo atrás de um login. Ambos emitem o mesmo formato RIS, então os resultados caem numa mesma biblioteca do Citavi ou Zotero de qualquer jeito. <a href="../notes/mcp-server-what-it-solves/#the-workflow-it-was-actually-built-for">O fluxo de trabalho completo</a>.</p>
+</div>
+<div class="item">
+  <p><strong>Transparência.</strong> A ferramenta listada aqui é desenvolvida pelo autor deste site. Ela aparece em várias das medições publicadas aqui, e isso é indicado em cada uma dessas páginas. Nada é vendido, não há publicidade nem links de afiliado — veja <a href="../about/">Sobre &amp; transparência</a>. Correções: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues no GitHub</a>.</p>
+  <p style="margin-top:10px">Onde uma ferramenta nossa aparece numa medição, isso é indicado na própria página. Um PDF de captura de tela não é um documento eletrônico qualificado — veja <a href="full-page-pdf-snap/#limits">os limites</a>.</p>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Sobre &amp; transparência</a> · Correções: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues no GitHub</a> · <a href="../disclaimer/">Aviso legal</a></footer>
+</div>
+
+<div data-lang="ru" lang="ru">
+<header>
+  <h1>Инструменты</h1>
+  <p class="lead">Построены здесь и измерены здесь по тем же правилам, что и всё остальное, — включая то, где они проигрывают альтернативе.</p>
+</header>
+<div class="item">
+  <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
+  <p>Скачивает веб-страницу целиком одним бесшовным PDF — вся прокручиваемая страница на одном непрерывном листе, без разрывов страниц, без обрезки. Работает полностью на устройстве: без выгрузки, без учётной записи, без сбора данных, и <code>activeTab</code> вместо доступа к каждому посещаемому сайту. Работает в Firefox на компьютере и Android, и в Chrome.</p>
+  <div class="figures"><span><b>92,6&nbsp;%</b> текста переживает OCR</span><span><b>0</b> сетевых запросов</span><span>лицензия <b>MIT</b></span></div>
+  <div class="holen">
+    <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Скачать для Firefox</a>
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Совсем без магазина</a>
+    <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Скачать для Chrome</a>
+    <a href="full-page-pdf-snap/">Подробности и измерения</a>
+  </div>
+</div>
+<div class="item">
+  <h2><a href="pushdictate/">PushDictate</a></h2>
+  <p>Удерживайте <code>Ctrl+Пробел</code>, говорите, отпустите — расшифрованный текст появляется там, где мигает курсор. Он вставляет через буфер обмена, а не через слой текстовых служб Windows, поэтому работает и в Windows Terminal, PowerShell, WSL, SSH-сессиях и терминальных кодовых агентах. Именно там, где сдаётся встроенная диктовка Windows. Нажми-и-говори: микрофон открыт, только пока клавиша удерживается. Работает с вашим собственным ключом OpenAI; ключ в комплект не входит.</p>
+  <div class="figures"><span><b>Terminal, WSL, SSH</b> охвачены</span><span><b>0</b> учётных записей, без телеметрии</span><span>лицензия <b>MIT</b></span></div>
+  <div class="holen">
+    <a class="erst" href="https://github.com/Bubu89/pushdictate">Забрать на GitHub</a>
+    <a href="pushdictate/">Установка и устройство</a>
+  </div>
+</div>
+<div class="item">
+  <h2><a href="../notes/mcp-server-what-it-solves/">Конечная точка цитирования (MCP-сервер)</a></h2>
+  <p>Направьте её на URL — и она вернёт то, что эта страница заявляет о себе: авторы, заглавие, журнал, год, DOI, лицензия — как структурированную запись с готовой к импорту RIS-записью и BibTeX. Если страница — пейвол, ошибка или проверка на бота, она говорит об этом и отказывает, вместо того чтобы выдумать ссылку. Ни учётной записи, ни ключа, в меру; она читает страницу с сервера, поэтому всё за логином остаётся недостижимым и называется таковым. Работает на <code>https://provinglab.dev/mcp</code> для любого клиента, говорящего на MCP, и так же хорошо отвечает простому <code>curl</code>.</p>
+  <div class="figures"><span><b>7 из 10</b> научных источников полные</span><span><b>0,45 с</b> медиана</span><span><b>RIS + BibTeX</b> возвращаются</span></div>
+  <div class="holen">
+    <a class="erst" href="../recipes/">Рецепты — копируй и вставляй</a>
+    <a href="../notes/mcp-server-what-it-solves/">Как работает и что отклоняет</a>
+    <a href="../measurements/citation-extraction/">Измерено против Citoid</a>
+    <a href="../measurements/citation-by-platform/">Обследовано 18 платформ</a>
+    <a href="/.well-known/mcp/server-card.json">Карточка сервера</a>
+  </div>
+</div>
+<div class="item">
+  <p><strong>Вместе.</strong> Конечная точка собирает ссылки в объёме, но никогда — сам документ; расширение производит документ с теми же записанными в него полями и достаёт страницы, недоступные серверу, — всё за логином. Оба выдают один и тот же формат RIS, поэтому результаты в любом случае попадают в одну библиотеку Citavi или Zotero. <a href="../notes/mcp-server-what-it-solves/#the-workflow-it-was-actually-built-for">Весь рабочий процесс</a>.</p>
+</div>
+<div class="item">
+  <p><strong>Раскрытие.</strong> Перечисленный здесь инструмент разработан автором этого сайта. Он встречается в нескольких опубликованных здесь измерениях, и это указано на каждой из этих страниц. Ничего не продаётся, нет рекламы и партнёрских ссылок — см. <a href="../about/">О сайте и раскрытие</a>. Исправления: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues на GitHub</a>.</p>
+  <p style="margin-top:10px">Где наш инструмент появляется в измерении, это указано на самой странице. PDF экранного захвата не является квалифицированным электронным документом — см. <a href="full-page-pdf-snap/#limits">ограничения</a>.</p>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">О сайте и раскрытие</a> · Исправления: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues на GitHub</a> · <a href="../disclaimer/">Отказ от ответственности</a></footer>
+</div>
+
+<div data-lang="zh-CN" lang="zh-CN">
+<header>
+  <h1>工具</h1>
+  <p class="lead">在这里构建,也在这里按与其他一切相同的规则测量——包括它们输给替代品的地方。</p>
+</header>
+<div class="item">
+  <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
+  <p>把整个网页下载为一份无缝 PDF——整个可滚动页面在一张连续的纸上,无分页符、无裁切。完全在设备上运行:无上传、无账户、无数据收集,只请求 <code>activeTab</code> 而非访问你浏览的每个网站。支持桌面端和 Android 的 Firefox,以及 Chrome。</p>
+  <div class="figures"><span><b>92.6&nbsp;%</b> 的文本通过 OCR</span><span>网络请求 <b>0</b></span><span><b>MIT</b> 许可</span></div>
+  <div class="holen">
+    <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">下载 Firefox 版</a>
+    <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">完全不经过商店</a>
+    <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">下载 Chrome 版</a>
+    <a href="full-page-pdf-snap/">详情与测量</a>
+  </div>
+</div>
+<div class="item">
+  <h2><a href="pushdictate/">PushDictate</a></h2>
+  <p>按住 <code>Ctrl+空格</code>,说话,松开——转写文本出现在光标闪烁处。它通过剪贴板粘贴,而不是 Windows 文本服务层,因此在 Windows Terminal、PowerShell、WSL、SSH 会话和终端型编程代理中也能用——正是 Windows 内置听写放弃的地方。按键说话:麦克风只在按住按键时打开。使用你自己的 OpenAI 密钥;不附带任何密钥。</p>
+  <div class="figures"><span>覆盖 <b>Terminal、WSL、SSH</b></span><span>账户 <b>0</b> 个,无遥测</span><span><b>MIT</b> 许可</span></div>
+  <div class="holen">
+    <a class="erst" href="https://github.com/Bubu89/pushdictate">在 GitHub 获取</a>
+    <a href="pushdictate/">安装与原理</a>
+  </div>
+</div>
+<div class="item">
+  <h2><a href="../notes/mcp-server-what-it-solves/">引用端点(MCP 服务器)</a></h2>
+  <p>把它指向一个 URL,它就返回该页面关于自身的声明——作者、标题、期刊、年份、DOI、许可——作为带可导入 RIS 条目和 BibTeX 的结构化记录。如果页面是付费墙、错误或机器人检查,它会明说并拒绝,而不是编造一条引用。无需账户、无需密钥,请适度使用;它从服务器读取页面,因此登录之后的内容无法到达,并会被如实标明。任何讲 MCP 的客户端都可通过 <code>https://provinglab.dev/mcp</code> 使用,普通的 <code>curl</code> 也同样能应答。</p>
+  <div class="figures"><span>学术来源 <b>10 个里 7 个</b>完整</span><span>中位数 <b>0.45 秒</b></span><span>返回 <b>RIS + BibTeX</b></span></div>
+  <div class="holen">
+    <a class="erst" href="../recipes/">食谱——复制粘贴</a>
+    <a href="../notes/mcp-server-what-it-solves/">原理与它拒绝的东西</a>
+    <a href="../measurements/citation-extraction/">与 Citoid 对比测量</a>
+    <a href="../measurements/citation-by-platform/">18 个平台调查</a>
+    <a href="/.well-known/mcp/server-card.json">服务器卡片</a>
+  </div>
+</div>
+<div class="item">
+  <p><strong>配合使用。</strong> 端点可以批量收集引用,但永远不接触文档本身;扩展则生成写入了相同字段的文档,并能到达服务器无法到达的页面——登录之后的一切。两者输出相同的 RIS 格式,因此无论走哪条路径,结果都会进入同一个 Citavi 或 Zotero 文库。<a href="../notes/mcp-server-what-it-solves/#the-workflow-it-was-actually-built-for">完整工作流</a>。</p>
+</div>
+<div class="item">
+  <p><strong>披露。</strong> 这里列出的工具由本站作者开发。它出现在本站发布的多项测量中,这一点在每个相应页面上都有说明。不出售任何东西,没有广告,也没有联盟链接——见<a href="../about/">关于与披露</a>。更正: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a>。</p>
+  <p style="margin-top:10px">我们的工具若出现在某项测量中,会在该页面本身注明。屏幕捕获 PDF 不是合格的电子文档——见<a href="full-page-pdf-snap/#limits">限制说明</a>。</p>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">关于与披露</a> · 更正: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">免责声明</a></footer>
+</div>
 </div>
 </body>
 </html>

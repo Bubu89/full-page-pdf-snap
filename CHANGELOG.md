@@ -1,3 +1,22 @@
+## 2026-08-15 (3) — Auch Notizen- und Werkzeug-Index sprechen neun Sprachen
+
+**Was.** Nach Startseite und Messungs-Index liegen jetzt auch
+`docs/notes/index.html` und `docs/tools/index.html` in allen neun Sprachen
+vor — gleiche Textdatei (`texte_indexseiten.py`), gleicher Bauer
+(`build-indexseiten.py`). Damit sind alle vier Index-/Einstiegsseiten der
+Domain vollstaendig umschaltbar.
+
+**Wie.** Der Werkzeug-Index brachte zwei neue Eintragsarten mit, die der
+Bauer jetzt kann: Download-Knoepfe je Eintrag (`.holen`, Primaerknopf
+`erst`) und ueberschriftslose Absatz-Eintraege („Zusammen.", „Offenlegung.")
+mit optionalem zweiten Absatz. Struktur unveraendert, nur Inhalt je Sprache.
+
+**Mit welchem Ergebnis.** Browsertest auf beiden Seiten: neun Sprachen
+durchgeschaltet, Kennsatz je Sprache sichtbar, genau eine Fassung sichtbar,
+die drei Primaerknoepfe auf der Werkzeug-Seite zaehlen mit.
+`rechtscheck.py` 0 Fehler, 187 interne Links erreichbar, beide Seiten
+bauen idempotent.
+
 ## 2026-08-15 (2) — Startseite und Messungs-Index sprechen neun Sprachen
 
 **Was.** `docs/index.html` und `docs/measurements/index.html` liegen jetzt wie

@@ -27,6 +27,15 @@ def eintraege(liste):
     aus = []
     for e in liste:
         teile = ['<div class="item">']
+        # Absatz-Eintrag ohne Ueberschrift ("Zusammen.", "Offenlegung.") —
+        # label fett voran, optional ein zweiter Absatz mit Abstand.
+        if e.get("para"):
+            teile.append(f'  <p><strong>{e["label"]}</strong> {e["text"]}</p>')
+            if e.get("extra"):
+                teile.append(f'  <p style="margin-top:10px">{e["extra"]}</p>')
+            teile.append("</div>")
+            aus.append("\n".join(teile))
+            continue
         if e.get("date"):
             teile.append(f'  <p class="date">{e["date"]}</p>')
         teile.append(f'  <h2><a href="{e["href"]}">{e["title"]}</a></h2>')
@@ -34,6 +43,12 @@ def eintraege(liste):
         if e.get("figures"):
             spannen = "".join(f"<span>{f}</span>" for f in e["figures"])
             teile.append(f'  <div class="figures">{spannen}</div>')
+        if e.get("links"):
+            zeilen = []
+            for v in e["links"]:
+                kl = f' class="{v["class"]}"' if v.get("class") else ""
+                zeilen.append(f'    <a{kl} href="{v["href"]}">{v["text"]}</a>')
+            teile.append('  <div class="holen">\n' + "\n".join(zeilen) + "\n  </div>")
         teile.append("</div>")
         aus.append("\n".join(teile))
     return "\n".join(aus)
