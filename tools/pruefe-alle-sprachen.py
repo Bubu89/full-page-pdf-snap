@@ -54,6 +54,13 @@ def seiten():
         rel = f.relative_to(DOCS)
         if str(rel) == "404.html":
             continue
+        # Weiterleitungen enthalten keine Prosa und koennen nie mehrsprachig
+        # werden. Ohne diese Ausnahme meldete der Lauf drei alte Adressen
+        # dauerhaft als "einsprachig" — eine Baustelle, die keine ist, und
+        # die den Blick auf die echten 30 offenen Seiten verstellt.
+        # (16.08.2026)
+        if _weiterleitung(f):
+            continue
         if str(rel) == "index.html":
             pfad = "/"
         elif rel.name == "index.html":
@@ -62,6 +69,23 @@ def seiten():
             pfad = "/" + str(rel).replace("\\", "/")
         aus.append((pfad, f))
     return aus
+
+
+def _weiterleitung(datei) -> bool:
+    """Ist das nur eine Umleitung auf die eigentliche Seite?
+
+    Erkannt an beidem zusammen: Meta-Refresh UND sehr wenig Text. Nur am
+    Refresh festzumachen waere zu grob — eine echte Seite darf einen haben.
+    """
+    try:
+        h = datei.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return False
+    if 'http-equiv="refresh"' not in h.lower():
+        return False
+    import re as _re
+    roh = _re.sub(r"<script[\s\S]*?</script>|<style[\s\S]*?</style>", " ", h)
+    return len(_re.sub(r"<[^>]+>", " ", roh).split()) < 60
 
 
 def main():
