@@ -55,6 +55,10 @@
     background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
   .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
   @media (max-width:640px){ .topnav .brand{width:100%;margin-right:0} }
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
 </style>
 <script src="/agent-tools.js" defer></script>
 <script src="/site-lang.js" defer></script>
@@ -93,6 +97,7 @@
 </nav>
 
 <div class="wrap">
+<div data-lang="en" class="on" lang="en">
 <header>
   <h1>Data</h1>
   <p class="lead">The raw numbers behind the measurements, as JSON — including the control runs. Licensed CC BY 4.0, so they can be reused with attribution.</p>
@@ -136,7 +141,7 @@
 
 <div class="item">
   <h2><a href="2026-08-03-reading-list-to-bibliography.json">2026-08-03-reading-list-to-bibliography.json</a></h2>
-  <p>Twenty sources of a reading list through a citation endpoint, each with the fields returned and — for every source handed back — the response to a reader and to a browser, so a page's wall can be told from a reader's limit. <a href="../measurements/reading-list-to-bibliography/">Method and discussion</a>.</p>
+  <p>Twenty sources of a reading list through a citation endpoint, each with the fields returned and — for every source handed back — the response to a reader and to a browser, so a page’s wall can be told from a reader’s limit. <a href="../measurements/reading-list-to-bibliography/">Method and discussion</a>.</p>
   <div class="figures"><span><b>10/20</b> complete records</span><span><b>1</b> bot defence</span><span><b>5</b> with nothing to declare</span></div>
 </div>
 
@@ -166,11 +171,660 @@
 
 <div class="item">
   <h2><a href="2026-08-01-print-vs-screenshot.json">2026-08-01-print-vs-screenshot.json</a></h2>
-  <p>The same article through the browser's print export and through full-page capture: page count, broken sentences, file size, recovered text. <a href="../measurements/print-to-pdf-vs-screenshot/">Method and discussion</a>.</p>
+  <p>The same article through the browser’s print export and through full-page capture: page count, broken sentences, file size, recovered text. <a href="../measurements/print-to-pdf-vs-screenshot/">Method and discussion</a>.</p>
   <div class="figures"><span><b>26</b> pages against <b>1</b></span><span><b>9</b> sentences cut</span><span><b>6×</b> file size</span></div>
 </div>
 
 <footer><a href="../">← Proving Lab</a> · <a href="../about/">About &amp; disclosure</a> · Corrections: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">Disclaimer</a></footer>
+</div>
+
+<div data-lang="de" lang="de">
+<header>
+  <h1>Daten</h1>
+  <p class="lead">Die rohen Zahlen hinter den Messungen, als JSON — einschließlich der Kontrollläufe. Lizenziert unter CC BY 4.0, also mit Namensnennung wiederverwendbar.</p>
+</header>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-install-and-capture.json">2026-08-03-agent-install-and-capture.json</a></h2>
+  <p>Ein Browser-Agent installiert die Erweiterung aus dem Store und löst sie aus, durchgehend gemessen in echten Windows-Browsern: jeder Schritt mit dem, was geklickt wurde, was auf der Platte blieb, und den Fehlschlägen — ein harter Kill nach dem Add-Klick kostete die Firefox-Installation, und der Policy-Zweig des Benutzers war auf diesem Rechner per ACL gesperrt. <a href="/.well-known/agent-skills/install-as-a-counted-user.md">Methode als Agent-Skill</a>.</p>
+  <div class="figures"><span>Firefox ESR + Chrome</span><span>Store-Installationen auf der Platte verifiziert</span><span>Fehlschläge veröffentlicht</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-real-gesture.json">2026-08-03-agent-real-gesture.json</a></h2>
+  <p>Ob ein synthetisches Eingabeereignis auf Fenstersystem-Ebene die Geste für activeTab erfüllt: für die Erweiterung sichtbare Tabs vor und nach einem Tastaturbefehl über X11 XTEST. <a href="../notes/what-an-agent-can-do-with-an-extension/">Methode und Diskussion</a>.</p>
+  <div class="figures"><span><b>0</b> Tabs davor</span><span><b>1</b> Tab danach</span><span>Chromium 145</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-uses-the-extension.json">2026-08-03-agent-uses-the-extension.json</a></h2>
+  <p>Das Gegenstück: ein Agent, der den Browser nur über CDP und das DOM steuert. Die Erweiterung lädt und ihr Service Worker läuft, dann kommt jeder Tab mit leerer url zurück. <a href="../notes/what-an-agent-can-do-with-an-extension/">Methode und Diskussion</a>.</p>
+  <div class="figures"><span><b>2/4</b> Schritte bestehen</span><span><b>0</b> Tabs sichtbar</span><span>activeTab, keine Host-Rechte</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-quellen-archiv.json">2026-08-02-quellen-archiv.json</a></h2>
+  <p>Für 150 zitierte Webquellen: Live-Status, Urteil, ob das Internet Archive einen Schnappschuss hält und wie alt er ist. Fälle, in denen ein Dienst nicht antwortete, sind als solche markiert statt als negativ gezählt. <a href="../measurements/web-citations-that-vanish/">Methode und Diskussion</a>.</p>
+  <div class="figures"><span><b>19.3 %</b> verschwunden</span><span><b>8.7 %</b> nicht archiviert</span><span><b>603 d</b> medianes Schnappschuss-Alter</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-ocr-recall.json">2026-08-01-ocr-recall.json</a></h2>
+  <p>Wie viel Text überlebt, wenn ein PDF aus Vollbild-Screenshots durch OCR läuft, plus die volle Auflösungsserie und ein Kontrolllauf gegen fremden Text. <a href="../measurements/webpage-to-pdf-for-ocr/">Methode und Diskussion</a>.</p>
+  <div class="figures"><span><b>92.6&nbsp;%</b> Wortschatz-Trefferquote</span><span><b>110 dpi</b> Schwelle</span><span><b>0.0&nbsp;%</b> Kontrolle</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-extension-permissions.json">2026-08-01-extension-permissions.json</a></h2>
+  <p>Deklarierte Berechtigungen, Host-Berechtigungen, Nutzerzahlen und Bewertungen für acht PDF- und Capture-Erweiterungen, abgerufen über die Mozilla-Add-ons-API. <a href="../measurements/pdf-extension-permissions/">Methode und Diskussion</a>.</p>
+  <div class="figures"><span><b>8</b> Erweiterungen</span><span>Quelle: addons.mozilla.org API</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-reading-list-to-bibliography.json">2026-08-03-reading-list-to-bibliography.json</a></h2>
+  <p>Zwanzig Quellen einer Leseliste durch einen Zitations-Endpunkt, jede mit den zurückgegebenen Feldern und — für jede zurückgewiesene Quelle — die Antwort an einen Leser und an einen Browser, damit sich die Mauer einer Seite vom Limit eines Readers unterscheiden lässt. <a href="../measurements/reading-list-to-bibliography/">Methode und Diskussion</a>.</p>
+  <div class="figures"><span><b>10/20</b> vollständige Datensätze</span><span><b>1</b> Bot-Abwehr</span><span><b>5</b> ohne etwas zu deklarieren</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-citation-by-platform.json">2026-08-03-citation-by-platform.json</a></h2>
+  <p>Achtzehn wissenschaftliche Plattformen, jede auf die Zitationsdaten geprüft, die sie über ihre eigenen Werke deklariert, jeder zurückgegebene Titel gegen Crossref verifiziert. <a href="../measurements/citation-by-platform/">Methode und Diskussion</a>.</p>
+  <div class="figures"><span><b>11/18</b> lieferten Daten</span><span><b>10</b> mit Autoren und Jahr</span><span><b>8</b> passten zu Crossref</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-citation-triage.json">2026-08-03-citation-triage.json</a></h2>
+  <p>Eine gemischte Leseliste aus zwölf Quellen: was ein Agent allein in zitierfähige Datensätze verwandelte, und der Grund, warum jede der übrigen vier zurückgegeben wurde. <a href="../measurements/citation-triage/">Methode und Diskussion</a>.</p>
+  <div class="figures"><span><b>8/12</b> vom Agenten erledigt</span><span><b>1.09 s</b> pro Quelle</span><span><b>4</b> benannt</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-android-capture-extensions.json">2026-08-02-android-capture-extensions.json</a></h2>
+  <p>248 seiten-speichernde Erweiterungen aus der Mozilla-Add-ons-API mit ihrer deklarierten Android-Unterstützung, Nutzerzahlen und Bewertungen. <a href="../measurements/android-capture-extensions/">Methode und Diskussion</a>.</p>
+  <div class="figures"><span><b>248</b> Erweiterungen</span><span><b>60</b> deklarieren Android</span><span><b>0</b> auf einem Gerät getestet</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-citation-extraction.json">2026-08-02-citation-extraction.json</a></h2>
+  <p>Zitationsextraktion gemessen gegen Citoid, den Wikimedia-Dienst auf Basis der Zotero-Übersetzer, über 18 zufällig gezogene Werke — pro Quelle, mit Zeitmessungen und jeder gemeldeten Blockade nachgeprüft aus einem fremden Netz. <a href="../measurements/citation-extraction/">Methode und Diskussion</a>.</p>
+  <div class="figures"><span><b>13/13</b> Felder vollständig</span><span><b>0</b> falsche Blockade-Meldungen</span><span><b>0.35 s</b> Median</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-print-vs-screenshot.json">2026-08-01-print-vs-screenshot.json</a></h2>
+  <p>Derselbe Artikel durch den Druckexport des Browsers und durch Vollbild-Capture: Seitenzahl, zerrissene Sätze, Dateigröße, zurückgewonnener Text. <a href="../measurements/print-to-pdf-vs-screenshot/">Methode und Diskussion</a>.</p>
+  <div class="figures"><span><b>26</b> Seiten gegen <b>1</b></span><span><b>9</b> Sätze zerschnitten</span><span><b>6×</b> Dateigröße</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Über &amp; Offenlegung</a> · Korrekturen: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a> · <a href="../disclaimer/">Haftungsausschluss</a></footer>
+</div>
+
+<div data-lang="es" lang="es">
+<header>
+  <h1>Datos</h1>
+  <p class="lead">Las cifras en bruto detrás de las mediciones, en JSON — incluidas las ejecuciones de control. Con licencia CC BY 4.0, para reutilizarlas con atribución.</p>
+</header>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-install-and-capture.json">2026-08-03-agent-install-and-capture.json</a></h2>
+  <p>Un agente de navegador instalando la extensión desde la tienda y activándola, medido de extremo a extremo en navegadores Windows reales: cada paso con lo que se pulsó, lo que quedó en disco y los fallos — una interrupción forzada tras el clic en Add perdió la instalación de Firefox, y la rama de directivas por usuario estaba bloqueada por ACL en esta máquina. <a href="/.well-known/agent-skills/install-as-a-counted-user.md">Método como skill de agente</a>.</p>
+  <div class="figures"><span>Firefox ESR + Chrome</span><span>instalaciones de tienda verificadas en disco</span><span>fallos publicados</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-real-gesture.json">2026-08-03-agent-real-gesture.json</a></h2>
+  <p>Si un evento de entrada sintético a nivel del sistema de ventanas satisface el requisito de gesto de activeTab: pestañas visibles para la extensión antes y después de un comando de teclado enviado por X11 XTEST. <a href="../notes/what-an-agent-can-do-with-an-extension/">Método y discusión</a>.</p>
+  <div class="figures"><span><b>0</b> pestañas antes</span><span><b>1</b> pestaña después</span><span>Chromium 145</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-uses-the-extension.json">2026-08-03-agent-uses-the-extension.json</a></h2>
+  <p>La contraparte: un agente que controla el navegador solo mediante CDP y el DOM. La extensión se carga y su service worker corre, luego cada pestaña vuelve con una url vacía. <a href="../notes/what-an-agent-can-do-with-an-extension/">Método y discusión</a>.</p>
+  <div class="figures"><span><b>2/4</b> pasos superados</span><span><b>0</b> pestañas visibles</span><span>activeTab, sin permisos de host</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-quellen-archiv.json">2026-08-02-quellen-archiv.json</a></h2>
+  <p>Para 150 fuentes web citadas: estado en vivo, veredicto, si el Internet Archive conserva una captura y su antigüedad. Los casos en que un servicio no respondió se marcan como tales en lugar de contarse como negativos. <a href="../measurements/web-citations-that-vanish/">Método y discusión</a>.</p>
+  <div class="figures"><span><b>19.3 %</b> desaparecidas</span><span><b>8.7 %</b> sin archivar</span><span><b>603 d</b> mediana de antigüedad de la captura</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-ocr-recall.json">2026-08-01-ocr-recall.json</a></h2>
+  <p>Cuánto texto sobrevive cuando un PDF de captura de página completa pasa por OCR, más la serie completa de resoluciones y una ejecución de control contra texto no relacionado. <a href="../measurements/webpage-to-pdf-for-ocr/">Método y discusión</a>.</p>
+  <div class="figures"><span><b>92.6&nbsp;%</b> de recuperación de vocabulario</span><span>umbral de <b>110 dpi</b></span><span><b>0.0&nbsp;%</b> control</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-extension-permissions.json">2026-08-01-extension-permissions.json</a></h2>
+  <p>Permisos declarados, permisos de host, números de usuarios y valoraciones de ocho extensiones de PDF y captura, tal como se obtuvieron de la API de complementos de Mozilla. <a href="../measurements/pdf-extension-permissions/">Método y discusión</a>.</p>
+  <div class="figures"><span><b>8</b> extensiones</span><span>fuente: API de addons.mozilla.org</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-reading-list-to-bibliography.json">2026-08-03-reading-list-to-bibliography.json</a></h2>
+  <p>Veinte fuentes de una lista de lectura a través de un endpoint de citación, cada una con los campos devueltos y — para cada fuente rechazada — la respuesta a un lector y a un navegador, para distinguir el muro de una página del límite de un lector. <a href="../measurements/reading-list-to-bibliography/">Método y discusión</a>.</p>
+  <div class="figures"><span><b>10/20</b> registros completos</span><span><b>1</b> defensa contra bots</span><span><b>5</b> sin nada que declarar</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-citation-by-platform.json">2026-08-03-citation-by-platform.json</a></h2>
+  <p>Dieciocho plataformas académicas, cada una comprobada por los datos de citación que declara sobre sus propias obras, con cada título devuelto verificado contra Crossref. <a href="../measurements/citation-by-platform/">Método y discusión</a>.</p>
+  <div class="figures"><span><b>11/18</b> devolvieron datos</span><span><b>10</b> con autores y año</span><span><b>8</b> coincidieron con Crossref</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-citation-triage.json">2026-08-03-citation-triage.json</a></h2>
+  <p>Una lista de lectura mixta de doce fuentes: lo que un agente convirtió por sí solo en registros citables, y la razón por la que cada una de las cuatro restantes fue devuelta. <a href="../measurements/citation-triage/">Método y discusión</a>.</p>
+  <div class="figures"><span><b>8/12</b> hechas por el agente</span><span><b>1.09 s</b> por fuente</span><span><b>4</b> nombradas</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-android-capture-extensions.json">2026-08-02-android-capture-extensions.json</a></h2>
+  <p>248 extensiones para guardar páginas de la API de complementos de Mozilla con su soporte de Android declarado, números de usuarios y valoraciones. <a href="../measurements/android-capture-extensions/">Método y discusión</a>.</p>
+  <div class="figures"><span><b>248</b> extensiones</span><span><b>60</b> declaran Android</span><span><b>0</b> probadas en un dispositivo</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-citation-extraction.json">2026-08-02-citation-extraction.json</a></h2>
+  <p>Extracción de citas medida contra Citoid, el servicio de Wikimedia construido sobre los traductores de Zotero, en 18 obras elegidas al azar — por fuente, con tiempos y cada bloqueo reportado verificado de nuevo desde una red no relacionada. <a href="../measurements/citation-extraction/">Método y discusión</a>.</p>
+  <div class="figures"><span><b>13/13</b> campos completos</span><span><b>0</b> reportes de bloqueo falsos</span><span>mediana de <b>0.35 s</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-print-vs-screenshot.json">2026-08-01-print-vs-screenshot.json</a></h2>
+  <p>El mismo artículo a través de la exportación de impresión del navegador y de la captura de página completa: número de páginas, frases cortadas, tamaño de archivo, texto recuperado. <a href="../measurements/print-to-pdf-vs-screenshot/">Método y discusión</a>.</p>
+  <div class="figures"><span><b>26</b> páginas frente a <b>1</b></span><span><b>9</b> frases cortadas</span><span><b>6×</b> tamaño de archivo</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Acerca de &amp; divulgación</a> · Correcciones: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues de GitHub</a> · <a href="../disclaimer/">Aviso legal</a></footer>
+</div>
+
+<div data-lang="fr" lang="fr">
+<header>
+  <h1>Données</h1>
+  <p class="lead">Les chiffres bruts derrière les mesures, en JSON — y compris les passages de contrôle. Sous licence CC BY 4.0, réutilisables avec attribution.</p>
+</header>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-install-and-capture.json">2026-08-03-agent-install-and-capture.json</a></h2>
+  <p>Un agent de navigateur installant l’extension depuis la boutique et la déclenchant, mesuré de bout en bout sur de vrais navigateurs Windows : chaque étape avec ce qui a été cliqué, ce qui est resté sur le disque et les échecs — un arrêt brutal après le clic sur Add a perdu l’installation de Firefox, et la ruche de stratégie par utilisateur était verrouillée par ACL sur cette machine. <a href="/.well-known/agent-skills/install-as-a-counted-user.md">Méthode en tant que skill d’agent</a>.</p>
+  <div class="figures"><span>Firefox ESR + Chrome</span><span>installations boutique vérifiées sur le disque</span><span>échecs publiés</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-real-gesture.json">2026-08-03-agent-real-gesture.json</a></h2>
+  <p>Si un événement d’entrée synthétique au niveau du système de fenêtres satisfait l’exigence de geste d’activeTab : onglets visibles pour l’extension avant et après une commande clavier envoyée via X11 XTEST. <a href="../notes/what-an-agent-can-do-with-an-extension/">Méthode et discussion</a>.</p>
+  <div class="figures"><span><b>0</b> onglet avant</span><span><b>1</b> onglet après</span><span>Chromium 145</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-uses-the-extension.json">2026-08-03-agent-uses-the-extension.json</a></h2>
+  <p>Le pendant : un agent pilotant le navigateur uniquement via CDP et le DOM. L’extension se charge et son service worker tourne, puis chaque onglet revient avec une url vide. <a href="../notes/what-an-agent-can-do-with-an-extension/">Méthode et discussion</a>.</p>
+  <div class="figures"><span><b>2/4</b> étapes réussies</span><span><b>0</b> onglet visible</span><span>activeTab, sans permissions d’hôte</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-quellen-archiv.json">2026-08-02-quellen-archiv.json</a></h2>
+  <p>Pour 150 sources web citées : état en direct, verdict, si l’Internet Archive détient un instantané et quel est son âge. Les cas où un service n’a pas répondu sont marqués comme tels plutôt que comptés comme négatifs. <a href="../measurements/web-citations-that-vanish/">Méthode et discussion</a>.</p>
+  <div class="figures"><span><b>19.3 %</b> disparues</span><span><b>8.7 %</b> non archivées</span><span><b>603 j</b> âge médian des instantanés</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-ocr-recall.json">2026-08-01-ocr-recall.json</a></h2>
+  <p>Quelle quantité de texte survit quand un PDF de capture pleine page passe par OCR, plus la série complète de résolutions et un passage de contrôle contre un texte sans rapport. <a href="../measurements/webpage-to-pdf-for-ocr/">Méthode et discussion</a>.</p>
+  <div class="figures"><span><b>92.6&nbsp;%</b> de rappel du vocabulaire</span><span>seuil de <b>110 dpi</b></span><span><b>0.0&nbsp;%</b> contrôle</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-extension-permissions.json">2026-08-01-extension-permissions.json</a></h2>
+  <p>Permissions déclarées, permissions d’hôte, nombres d’utilisateurs et notes de huit extensions PDF et de capture, telles qu’obtenues de l’API des modules Mozilla. <a href="../measurements/pdf-extension-permissions/">Méthode et discussion</a>.</p>
+  <div class="figures"><span><b>8</b> extensions</span><span>source : API addons.mozilla.org</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-reading-list-to-bibliography.json">2026-08-03-reading-list-to-bibliography.json</a></h2>
+  <p>Vingt sources d’une liste de lecture à travers un point de terminaison de citation, chacune avec les champs renvoyés et — pour chaque source rendue — la réponse à un lecteur et à un navigateur, pour distinguer le mur d’une page de la limite d’un lecteur. <a href="../measurements/reading-list-to-bibliography/">Méthode et discussion</a>.</p>
+  <div class="figures"><span><b>10/20</b> notices complètes</span><span><b>1</b> défense anti-bots</span><span><b>5</b> sans rien à déclarer</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-citation-by-platform.json">2026-08-03-citation-by-platform.json</a></h2>
+  <p>Dix-huit plateformes savantes, chacune vérifiée pour les données de citation qu’elle déclare sur ses propres œuvres, chaque titre renvoyé étant vérifié contre Crossref. <a href="../measurements/citation-by-platform/">Méthode et discussion</a>.</p>
+  <div class="figures"><span><b>11/18</b> ont renvoyé des données</span><span><b>10</b> avec auteurs et année</span><span><b>8</b> concordant avec Crossref</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-citation-triage.json">2026-08-03-citation-triage.json</a></h2>
+  <p>Une liste de lecture mixte de douze sources : ce qu’un agent a transformé seul en notices citables, et la raison pour laquelle chacune des quatre restantes a été rendue. <a href="../measurements/citation-triage/">Méthode et discussion</a>.</p>
+  <div class="figures"><span><b>8/12</b> traitées par l’agent</span><span><b>1.09 s</b> par source</span><span><b>4</b> nommées</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-android-capture-extensions.json">2026-08-02-android-capture-extensions.json</a></h2>
+  <p>248 extensions de sauvegarde de pages issues de l’API des modules Mozilla avec leur prise en charge Android déclarée, nombres d’utilisateurs et notes. <a href="../measurements/android-capture-extensions/">Méthode et discussion</a>.</p>
+  <div class="figures"><span><b>248</b> extensions</span><span><b>60</b> déclarent Android</span><span><b>0</b> testée sur un appareil</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-citation-extraction.json">2026-08-02-citation-extraction.json</a></h2>
+  <p>Extraction de citations mesurée contre Citoid, le service Wikimedia bâti sur les traducteurs Zotero, sur 18 œuvres tirées au hasard — par source, avec chronométrages et chaque blocage rapporté revérifié depuis un réseau sans rapport. <a href="../measurements/citation-extraction/">Méthode et discussion</a>.</p>
+  <div class="figures"><span><b>13/13</b> champs complets</span><span><b>0</b> faux rapport de blocage</span><span>médiane de <b>0.35 s</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-print-vs-screenshot.json">2026-08-01-print-vs-screenshot.json</a></h2>
+  <p>Le même article via l’export d’impression du navigateur et via la capture pleine page : nombre de pages, phrases brisées, taille de fichier, texte récupéré. <a href="../measurements/print-to-pdf-vs-screenshot/">Méthode et discussion</a>.</p>
+  <div class="figures"><span><b>26</b> pages contre <b>1</b></span><span><b>9</b> phrases coupées</span><span><b>6×</b> taille de fichier</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">À propos &amp; transparence</a> · Corrections : <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">tickets GitHub</a> · <a href="../disclaimer/">Mentions légales</a></footer>
+</div>
+
+<div data-lang="it" lang="it">
+<header>
+  <h1>Dati</h1>
+  <p class="lead">I numeri grezzi dietro le misurazioni, in JSON — comprese le corse di controllo. Con licenza CC BY 4.0, riutilizzabili con attribuzione.</p>
+</header>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-install-and-capture.json">2026-08-03-agent-install-and-capture.json</a></h2>
+  <p>Un agente browser che installa l’estensione dallo store e la attiva, misurato dall’inizio alla fine su veri browser Windows: ogni passaggio con ciò che è stato cliccato, ciò che è rimasto su disco e i fallimenti — una terminazione forzata dopo il clic su Add ha perso l’installazione di Firefox, e l’hive dei criteri per utente era bloccato da ACL su questa macchina. <a href="/.well-known/agent-skills/install-as-a-counted-user.md">Metodo come skill per agenti</a>.</p>
+  <div class="figures"><span>Firefox ESR + Chrome</span><span>installazioni dallo store verificate su disco</span><span>fallimenti pubblicati</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-real-gesture.json">2026-08-03-agent-real-gesture.json</a></h2>
+  <p>Se un evento di input sintetico a livello di window system soddisfa il requisito del gesto di activeTab: schede visibili all’estensione prima e dopo un comando da tastiera inviato tramite X11 XTEST. <a href="../notes/what-an-agent-can-do-with-an-extension/">Metodo e discussione</a>.</p>
+  <div class="figures"><span><b>0</b> schede prima</span><span><b>1</b> scheda dopo</span><span>Chromium 145</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-uses-the-extension.json">2026-08-03-agent-uses-the-extension.json</a></h2>
+  <p>La controparte: un agente che guida il browser solo tramite CDP e il DOM. L’estensione si carica e il suo service worker gira, poi ogni scheda torna con una url vuota. <a href="../notes/what-an-agent-can-do-with-an-extension/">Metodo e discussione</a>.</p>
+  <div class="figures"><span><b>2/4</b> passaggi riusciti</span><span><b>0</b> schede visibili</span><span>activeTab, nessun permesso host</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-quellen-archiv.json">2026-08-02-quellen-archiv.json</a></h2>
+  <p>Per 150 fonti web citate: stato in tempo reale, verdetto, se l’Internet Archive conserva uno snapshot e quanto è vecchio. I casi in cui un servizio non ha risposto sono segnati come tali invece di essere contati come negativi. <a href="../measurements/web-citations-that-vanish/">Metodo e discussione</a>.</p>
+  <div class="figures"><span><b>19.3 %</b> scomparse</span><span><b>8.7 %</b> non archiviate</span><span><b>603 g</b> età mediana dello snapshot</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-ocr-recall.json">2026-08-01-ocr-recall.json</a></h2>
+  <p>Quanto testo sopravvive quando un PDF da screenshot a pagina intera passa per l’OCR, più l’intera serie di risoluzioni e una corsa di controllo contro testo estraneo. <a href="../measurements/webpage-to-pdf-for-ocr/">Metodo e discussione</a>.</p>
+  <div class="figures"><span><b>92.6&nbsp;%</b> di richiamo del vocabolario</span><span>soglia di <b>110 dpi</b></span><span><b>0.0&nbsp;%</b> controllo</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-extension-permissions.json">2026-08-01-extension-permissions.json</a></h2>
+  <p>Permessi dichiarati, permessi host, numeri di utenti e valutazioni di otto estensioni PDF e di cattura, come recuperati dall’API dei componenti aggiuntivi di Mozilla. <a href="../measurements/pdf-extension-permissions/">Metodo e discussione</a>.</p>
+  <div class="figures"><span><b>8</b> estensioni</span><span>fonte: API addons.mozilla.org</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-reading-list-to-bibliography.json">2026-08-03-reading-list-to-bibliography.json</a></h2>
+  <p>Venti fonti di una lista di lettura attraverso un endpoint di citazione, ognuna con i campi restituiti e — per ogni fonte rifiutata — la risposta a un lettore e a un browser, per distinguere il muro di una pagina dal limite di un reader. <a href="../measurements/reading-list-to-bibliography/">Metodo e discussione</a>.</p>
+  <div class="figures"><span><b>10/20</b> record completi</span><span><b>1</b> difesa anti-bot</span><span><b>5</b> senza nulla da dichiarare</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-citation-by-platform.json">2026-08-03-citation-by-platform.json</a></h2>
+  <p>Diciotto piattaforme accademiche, ognuna verificata per i dati di citazione che dichiara sulle proprie opere, con ogni titolo restituito verificato contro Crossref. <a href="../measurements/citation-by-platform/">Metodo e discussione</a>.</p>
+  <div class="figures"><span><b>11/18</b> hanno restituito dati</span><span><b>10</b> con autori e anno</span><span><b>8</b> corrispondenti a Crossref</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-citation-triage.json">2026-08-03-citation-triage.json</a></h2>
+  <p>Una lista di lettura mista di dodici fonti: cosa un agente ha trasformato da solo in record citabili, e il motivo per cui ciascuna delle quattro rimanenti è stata rifiutata. <a href="../measurements/citation-triage/">Metodo e discussione</a>.</p>
+  <div class="figures"><span><b>8/12</b> completate dall’agente</span><span><b>1.09 s</b> per fonte</span><span><b>4</b> nominate</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-android-capture-extensions.json">2026-08-02-android-capture-extensions.json</a></h2>
+  <p>248 estensioni per salvare pagine dall’API dei componenti aggiuntivi di Mozilla con il supporto Android dichiarato, numeri di utenti e valutazioni. <a href="../measurements/android-capture-extensions/">Metodo e discussione</a>.</p>
+  <div class="figures"><span><b>248</b> estensioni</span><span><b>60</b> dichiarano Android</span><span><b>0</b> testate su un dispositivo</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-citation-extraction.json">2026-08-02-citation-extraction.json</a></h2>
+  <p>Estrazione di citazioni misurata contro Citoid, il servizio Wikimedia costruito sui traduttori di Zotero, su 18 opere estratte a caso — per fonte, con tempi e ogni blocco segnalato riverificato da una rete estranea. <a href="../measurements/citation-extraction/">Metodo e discussione</a>.</p>
+  <div class="figures"><span><b>13/13</b> campi completi</span><span><b>0</b> false segnalazioni di blocco</span><span>mediana di <b>0.35 s</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-print-vs-screenshot.json">2026-08-01-print-vs-screenshot.json</a></h2>
+  <p>Lo stesso articolo attraverso l’esportazione di stampa del browser e la cattura a pagina intera: numero di pagine, frasi spezzate, dimensione del file, testo recuperato. <a href="../measurements/print-to-pdf-vs-screenshot/">Metodo e discussione</a>.</p>
+  <div class="figures"><span><b>26</b> pagine contro <b>1</b></span><span><b>9</b> frasi tagliate</span><span><b>6×</b> dimensione del file</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Informazioni &amp; trasparenza</a> · Correzioni: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issue su GitHub</a> · <a href="../disclaimer/">Esclusione di responsabilità</a></footer>
+</div>
+
+<div data-lang="ja" lang="ja">
+<header>
+  <h1>データ</h1>
+  <p class="lead">測定の裏にある生の数値を JSON で — コントロールランを含みます。CC BY 4.0 ライセンスのため、帰属表示付きで再利用できます。</p>
+</header>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-install-and-capture.json">2026-08-03-agent-install-and-capture.json</a></h2>
+  <p>ブラウザエージェントがストアから拡張機能をインストールして起動するまでを、実際の Windows ブラウザで端から端まで測定:クリックした内容、ディスクに残ったもの、失敗 — Add クリック後の強制終了で Firefox のインストールが失われ、このマシンではユーザーごとのポリシーハイブが ACL でロックされていました。<a href="/.well-known/agent-skills/install-as-a-counted-user.md">エージェントスキルとしての手法</a>。</p>
+  <div class="figures"><span>Firefox ESR + Chrome</span><span>ストアインストールをディスク上で検証</span><span>失敗も公開</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-real-gesture.json">2026-08-03-agent-real-gesture.json</a></h2>
+  <p>ウィンドウシステムレベルの合成入力イベントが activeTab のジェスチャ要件を満たすかどうか:X11 XTEST 経由で送ったキーボードコマンドの前後で拡張機能に見えるタブ。<a href="../notes/what-an-agent-can-do-with-an-extension/">手法と考察</a>。</p>
+  <div class="figures"><span>実行前 <b>0</b> タブ</span><span>実行後 <b>1</b> タブ</span><span>Chromium 145</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-uses-the-extension.json">2026-08-03-agent-uses-the-extension.json</a></h2>
+  <p>対照例:CDP と DOM のみでブラウザを操作するエージェント。拡張機能は読み込まれサービスワーカーも動きますが、すべてのタブが空の url で返ってきます。<a href="../notes/what-an-agent-can-do-with-an-extension/">手法と考察</a>。</p>
+  <div class="figures"><span><b>2/4</b> ステップ通過</span><span>見えるタブ <b>0</b></span><span>activeTab、ホスト権限なし</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-quellen-archiv.json">2026-08-02-quellen-archiv.json</a></h2>
+  <p>引用された 150 のウェブソースについて:ライブ状態、判定、Internet Archive がスナップショットを保持しているかとその古さ。サービスが応答しなかったケースは、ネガティブとして数えずその旨を明示しています。<a href="../measurements/web-citations-that-vanish/">手法と考察</a>。</p>
+  <div class="figures"><span><b>19.3 %</b> 消失</span><span><b>8.7 %</b> 未アーカイブ</span><span>スナップショット年齢の中央値 <b>603 日</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-ocr-recall.json">2026-08-01-ocr-recall.json</a></h2>
+  <p>フルページスクリーンショットの PDF を OCR に通したときにどれだけのテキストが残るか。全解像度シリーズと、無関係なテキストに対するコントロールラン付き。<a href="../measurements/webpage-to-pdf-for-ocr/">手法と考察</a>。</p>
+  <div class="figures"><span>語彙の再現率 <b>92.6&nbsp;%</b></span><span>閾値 <b>110 dpi</b></span><span>コントロール <b>0.0&nbsp;%</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-extension-permissions.json">2026-08-01-extension-permissions.json</a></h2>
+  <p>8 つの PDF・キャプチャ系拡張機能について、宣言された権限、ホスト権限、ユーザー数、評価を Mozilla アドオン API から取得したもの。<a href="../measurements/pdf-extension-permissions/">手法と考察</a>。</p>
+  <div class="figures"><span>拡張機能 <b>8</b> 件</span><span>出典:addons.mozilla.org API</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-reading-list-to-bibliography.json">2026-08-03-reading-list-to-bibliography.json</a></h2>
+  <p>読書リストの 20 ソースを引用エンドポイントに通した結果。各ソースについて返されたフィールドと、返却された各ソースについてリーダーへの応答とブラウザへの応答 — ページの壁とリーダーの制限を区別できるようにしています。<a href="../measurements/reading-list-to-bibliography/">手法と考察</a>。</p>
+  <div class="figures"><span>完全なレコード <b>10/20</b></span><span>ボット防御 <b>1</b></span><span>申告事項なし <b>5</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-citation-by-platform.json">2026-08-03-citation-by-platform.json</a></h2>
+  <p>18 の学術プラットフォームについて、それぞれが自プラットフォームの著作物に対して宣言している引用データを調査。返されたすべてのタイトルを Crossref と照合済みです。<a href="../measurements/citation-by-platform/">手法と考察</a>。</p>
+  <div class="figures"><span>データを返したのは <b>11/18</b></span><span>著者・年つき <b>10</b></span><span>Crossref と一致 <b>8</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-citation-triage.json">2026-08-03-citation-triage.json</a></h2>
+  <p>12 ソースの混在した読書リスト:エージェントが単独で引用可能なレコードに変換できたものと、残り 4 件がそれぞれ返却された理由。<a href="../measurements/citation-triage/">手法と考察</a>。</p>
+  <div class="figures"><span>エージェント処理 <b>8/12</b></span><span>1 ソースあたり <b>1.09 s</b></span><span>理由付き <b>4</b> 件</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-android-capture-extensions.json">2026-08-02-android-capture-extensions.json</a></h2>
+  <p>Mozilla アドオン API からのページ保存系拡張機能 248 件。宣言された Android 対応、ユーザー数、評価付き。<a href="../measurements/android-capture-extensions/">手法と考察</a>。</p>
+  <div class="figures"><span>拡張機能 <b>248</b> 件</span><span>Android 対応を宣言 <b>60</b></span><span>実機テスト <b>0</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-citation-extraction.json">2026-08-02-citation-extraction.json</a></h2>
+  <p>Zotero トランスレーター上に構築された Wikimedia のサービス Citoid を基準にした引用抽出の測定。ランダムに選んだ 18 著作物について、ソースごとに、タイミングと、報告されたブロックすべてを無関係のネットワークから再検証。<a href="../measurements/citation-extraction/">手法と考察</a>。</p>
+  <div class="figures"><span>フィールド完全 <b>13/13</b></span><span>ブロック誤報 <b>0</b></span><span>中央値 <b>0.35 s</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-print-vs-screenshot.json">2026-08-01-print-vs-screenshot.json</a></h2>
+  <p>同じ記事をブラウザの印刷エクスポートとフルページキャプチャで:ページ数、途切れた文、ファイルサイズ、復元されたテキスト。<a href="../measurements/print-to-pdf-vs-screenshot/">手法と考察</a>。</p>
+  <div class="figures"><span><b>26</b> ページ対 <b>1</b></span><span>切断された文 <b>9</b></span><span>ファイルサイズ <b>6 倍</b></span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">概要と開示</a> · 修正: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">免責事項</a></footer>
+</div>
+
+<div data-lang="pt-BR" lang="pt-BR">
+<header>
+  <h1>Dados</h1>
+  <p class="lead">Os números brutos por trás das medições, em JSON — incluindo as rodadas de controle. Licenciados sob CC BY 4.0, para reutilização com atribuição.</p>
+</header>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-install-and-capture.json">2026-08-03-agent-install-and-capture.json</a></h2>
+  <p>Um agente de navegador instalando a extensão da loja e acionando-a, medido de ponta a ponta em navegadores Windows reais: cada etapa com o que foi clicado, o que persistiu em disco e as falhas — um encerramento forçado após o clique em Add perdeu a instalação do Firefox, e a hive de políticas por usuário estava bloqueada por ACL nesta máquina. <a href="/.well-known/agent-skills/install-as-a-counted-user.md">Método como skill de agente</a>.</p>
+  <div class="figures"><span>Firefox ESR + Chrome</span><span>instalações da loja verificadas em disco</span><span>falhas publicadas</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-real-gesture.json">2026-08-03-agent-real-gesture.json</a></h2>
+  <p>Se um evento de entrada sintético no nível do sistema de janelas satisfaz o requisito de gesto do activeTab: abas visíveis para a extensão antes e depois de um comando de teclado enviado pelo X11 XTEST. <a href="../notes/what-an-agent-can-do-with-an-extension/">Método e discussão</a>.</p>
+  <div class="figures"><span><b>0</b> abas antes</span><span><b>1</b> aba depois</span><span>Chromium 145</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-uses-the-extension.json">2026-08-03-agent-uses-the-extension.json</a></h2>
+  <p>A contrapartida: um agente controlando o navegador apenas via CDP e o DOM. A extensão carrega e seu service worker roda, depois cada aba retorna com uma url vazia. <a href="../notes/what-an-agent-can-do-with-an-extension/">Método e discussão</a>.</p>
+  <div class="figures"><span><b>2/4</b> etapas aprovadas</span><span><b>0</b> abas visíveis</span><span>activeTab, sem permissões de host</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-quellen-archiv.json">2026-08-02-quellen-archiv.json</a></h2>
+  <p>Para 150 fontes web citadas: status ao vivo, veredito, se o Internet Archive guarda um snapshot e qual a sua idade. Casos em que um serviço não respondeu são marcados como tal em vez de contados como negativos. <a href="../measurements/web-citations-that-vanish/">Método e discussão</a>.</p>
+  <div class="figures"><span><b>19.3 %</b> desaparecidas</span><span><b>8.7 %</b> não arquivadas</span><span>idade mediana do snapshot de <b>603 d</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-ocr-recall.json">2026-08-01-ocr-recall.json</a></h2>
+  <p>Quanto texto sobrevive quando um PDF de captura de página inteira passa por OCR, mais a série completa de resoluções e uma rodada de controle contra texto não relacionado. <a href="../measurements/webpage-to-pdf-for-ocr/">Método e discussão</a>.</p>
+  <div class="figures"><span><b>92.6&nbsp;%</b> de recall de vocabulário</span><span>limiar de <b>110 dpi</b></span><span><b>0.0&nbsp;%</b> controle</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-extension-permissions.json">2026-08-01-extension-permissions.json</a></h2>
+  <p>Permissões declaradas, permissões de host, contagens de usuários e avaliações de oito extensões de PDF e captura, conforme obtidas da API de complementos da Mozilla. <a href="../measurements/pdf-extension-permissions/">Método e discussão</a>.</p>
+  <div class="figures"><span><b>8</b> extensões</span><span>fonte: API addons.mozilla.org</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-reading-list-to-bibliography.json">2026-08-03-reading-list-to-bibliography.json</a></h2>
+  <p>Vinte fontes de uma lista de leitura por um endpoint de citação, cada uma com os campos retornados e — para cada fonte devolvida — a resposta a um leitor e a um navegador, para distinguir o muro de uma página do limite de um leitor. <a href="../measurements/reading-list-to-bibliography/">Método e discussão</a>.</p>
+  <div class="figures"><span><b>10/20</b> registros completos</span><span><b>1</b> defesa contra bots</span><span><b>5</b> sem nada a declarar</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-citation-by-platform.json">2026-08-03-citation-by-platform.json</a></h2>
+  <p>Dezoito plataformas acadêmicas, cada uma verificada quanto aos dados de citação que declara sobre as próprias obras, com cada título retornado verificado contra o Crossref. <a href="../measurements/citation-by-platform/">Método e discussão</a>.</p>
+  <div class="figures"><span><b>11/18</b> retornaram dados</span><span><b>10</b> com autores e ano</span><span><b>8</b> bateram com o Crossref</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-citation-triage.json">2026-08-03-citation-triage.json</a></h2>
+  <p>Uma lista de leitura mista de doze fontes: o que um agente transformou sozinho em registros citáveis, e o motivo pelo qual cada uma das quatro restantes foi devolvida. <a href="../measurements/citation-triage/">Método e discussão</a>.</p>
+  <div class="figures"><span><b>8/12</b> feitas pelo agente</span><span><b>1.09 s</b> por fonte</span><span><b>4</b> nomeadas</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-android-capture-extensions.json">2026-08-02-android-capture-extensions.json</a></h2>
+  <p>248 extensões de salvar páginas da API de complementos da Mozilla com seu suporte a Android declarado, contagens de usuários e avaliações. <a href="../measurements/android-capture-extensions/">Método e discussão</a>.</p>
+  <div class="figures"><span><b>248</b> extensões</span><span><b>60</b> declaram Android</span><span><b>0</b> testadas em um dispositivo</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-citation-extraction.json">2026-08-02-citation-extraction.json</a></h2>
+  <p>Extração de citações medida contra o Citoid, o serviço da Wikimedia construído sobre os tradutores do Zotero, em 18 obras sorteadas ao acaso — por fonte, com tempos e cada bloqueio relatado reverificado a partir de uma rede não relacionada. <a href="../measurements/citation-extraction/">Método e discussão</a>.</p>
+  <div class="figures"><span><b>13/13</b> campos completos</span><span><b>0</b> falsos relatórios de bloqueio</span><span>mediana de <b>0.35 s</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-print-vs-screenshot.json">2026-08-01-print-vs-screenshot.json</a></h2>
+  <p>O mesmo artigo pela exportação de impressão do navegador e pela captura de página inteira: número de páginas, frases quebradas, tamanho do arquivo, texto recuperado. <a href="../measurements/print-to-pdf-vs-screenshot/">Método e discussão</a>.</p>
+  <div class="figures"><span><b>26</b> páginas contra <b>1</b></span><span><b>9</b> frases cortadas</span><span><b>6×</b> tamanho do arquivo</span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">Sobre &amp; transparência</a> · Correções: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues no GitHub</a> · <a href="../disclaimer/">Aviso legal</a></footer>
+</div>
+
+<div data-lang="ru" lang="ru">
+<header>
+  <h1>Данные</h1>
+  <p class="lead">Сырые числа, стоящие за измерениями, в JSON — включая контрольные прогоны. Лицензия CC BY 4.0: можно использовать повторно с указанием авторства.</p>
+</header>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-install-and-capture.json">2026-08-03-agent-install-and-capture.json</a></h2>
+  <p>Браузерный агент устанавливает расширение из магазина и запускает его, измерено от начала до конца на реальных браузерах Windows: каждый шаг с тем, что было нажато, что осталось на диске, и с отказами — жёсткое завершение после клика Add потеряло установку Firefox, а ветка пользовательских политик на этой машине была заблокирована ACL. <a href="/.well-known/agent-skills/install-as-a-counted-user.md">Метод как скилл агента</a>.</p>
+  <div class="figures"><span>Firefox ESR + Chrome</span><span>установки из магазина проверены на диске</span><span>отказы опубликованы</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-real-gesture.json">2026-08-03-agent-real-gesture.json</a></h2>
+  <p>Удовлетворяет ли синтетическое событие ввода на уровне оконной системы требованию жеста для activeTab: вкладки, видимые расширению, до и после клавиатурной команды, отправленной через X11 XTEST. <a href="../notes/what-an-agent-can-do-with-an-extension/">Метод и обсуждение</a>.</p>
+  <div class="figures"><span><b>0</b> вкладок до</span><span><b>1</b> вкладка после</span><span>Chromium 145</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-uses-the-extension.json">2026-08-03-agent-uses-the-extension.json</a></h2>
+  <p>Противоположный случай: агент управляет браузером только через CDP и DOM. Расширение загружается и его service worker работает, но каждая вкладка возвращается с пустым url. <a href="../notes/what-an-agent-can-do-with-an-extension/">Метод и обсуждение</a>.</p>
+  <div class="figures"><span><b>2/4</b> шагов пройдено</span><span>видимых вкладок <b>0</b></span><span>activeTab, без хост-разрешений</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-quellen-archiv.json">2026-08-02-quellen-archiv.json</a></h2>
+  <p>По 150 процитированным веб-источникам: текущий статус, вердикт, хранит ли Internet Archive снимок и какого он возраста. Случаи, когда сервис не ответил, помечены как таковые, а не посчитаны отрицательными. <a href="../measurements/web-citations-that-vanish/">Метод и обсуждение</a>.</p>
+  <div class="figures"><span><b>19.3 %</b> исчезли</span><span><b>8.7 %</b> не заархивированы</span><span>медианный возраст снимка <b>603 дн.</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-ocr-recall.json">2026-08-01-ocr-recall.json</a></h2>
+  <p>Сколько текста выживает, когда PDF из полностраничных скриншотов проходит через OCR, плюс полная серия разрешений и контрольный прогон на постороннем тексте. <a href="../measurements/webpage-to-pdf-for-ocr/">Метод и обсуждение</a>.</p>
+  <div class="figures"><span>полнота словаря <b>92.6&nbsp;%</b></span><span>порог <b>110 dpi</b></span><span>контроль <b>0.0&nbsp;%</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-extension-permissions.json">2026-08-01-extension-permissions.json</a></h2>
+  <p>Заявленные разрешения, хост-разрешения, число пользователей и оценки восьми PDF- и захватывающих расширений, полученные через API дополнений Mozilla. <a href="../measurements/pdf-extension-permissions/">Метод и обсуждение</a>.</p>
+  <div class="figures"><span><b>8</b> расширений</span><span>источник: API addons.mozilla.org</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-reading-list-to-bibliography.json">2026-08-03-reading-list-to-bibliography.json</a></h2>
+  <p>Двадцать источников из списка чтения через конечную точку цитирования, каждый с возвращёнными полями и — для каждого возвращённого источника — ответ ридеру и браузеру, чтобы отличить стену страницы от лимита ридера. <a href="../measurements/reading-list-to-bibliography/">Метод и обсуждение</a>.</p>
+  <div class="figures"><span>полных записей <b>10/20</b></span><span>защита от ботов <b>1</b></span><span>нечего заявить <b>5</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-citation-by-platform.json">2026-08-03-citation-by-platform.json</a></h2>
+  <p>Восемнадцать научных платформ, каждая проверена на предмет данных цитирования, которые она заявляет о собственных работах; каждый возвращённый заголовок сверен с Crossref. <a href="../measurements/citation-by-platform/">Метод и обсуждение</a>.</p>
+  <div class="figures"><span>вернули данные <b>11/18</b></span><span>с авторами и годом <b>10</b></span><span>совпали с Crossref <b>8</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-citation-triage.json">2026-08-03-citation-triage.json</a></h2>
+  <p>Смешанный список чтения из двенадцати источников: что агент сам превратил в цитируемые записи, и причина, по которой каждый из оставшихся четырёх был возвращён. <a href="../measurements/citation-triage/">Метод и обсуждение</a>.</p>
+  <div class="figures"><span>сделано агентом <b>8/12</b></span><span><b>1.09 с</b> на источник</span><span>названо <b>4</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-android-capture-extensions.json">2026-08-02-android-capture-extensions.json</a></h2>
+  <p>248 расширений для сохранения страниц из API дополнений Mozilla с заявленной поддержкой Android, числом пользователей и оценками. <a href="../measurements/android-capture-extensions/">Метод и обсуждение</a>.</p>
+  <div class="figures"><span><b>248</b> расширений</span><span>заявляют Android <b>60</b></span><span>проверено на устройстве <b>0</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-citation-extraction.json">2026-08-02-citation-extraction.json</a></h2>
+  <p>Извлечение цитирований, измеренное против Citoid — сервиса Викимедиа, построенного на трансляторах Zotero, — на 18 случайно выбранных работах: по каждому источнику, с замерами времени, каждый заявленный блок перепроверен из независимой сети. <a href="../measurements/citation-extraction/">Метод и обсуждение</a>.</p>
+  <div class="figures"><span>полей полностью <b>13/13</b></span><span>ложных сообщений о блоке <b>0</b></span><span>медиана <b>0.35 с</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-print-vs-screenshot.json">2026-08-01-print-vs-screenshot.json</a></h2>
+  <p>Одна и та же статья через печатный экспорт браузера и через полностраничный захват: число страниц, разорванные предложения, размер файла, восстановленный текст. <a href="../measurements/print-to-pdf-vs-screenshot/">Метод и обсуждение</a>.</p>
+  <div class="figures"><span><b>26</b> страниц против <b>1</b></span><span>обрезано предложений <b>9</b></span><span>размер файла <b>6×</b></span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">О сайте и раскрытие</a> · Исправления: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">issues на GitHub</a> · <a href="../disclaimer/">Отказ от ответственности</a></footer>
+</div>
+
+<div data-lang="zh-CN" lang="zh-CN">
+<header>
+  <h1>数据</h1>
+  <p class="lead">测量背后的原始数字,以 JSON 提供——包括对照运行。采用 CC BY 4.0 许可,署名即可复用。</p>
+</header>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-install-and-capture.json">2026-08-03-agent-install-and-capture.json</a></h2>
+  <p>一个浏览器代理从商店安装扩展并触发它,在真实 Windows 浏览器上端到端测量:每一步记录了点击了什么、磁盘上留下了什么以及失败——Add 点击后的强制终止丢失了 Firefox 的安装,而这台机器上的每用户策略配置单元被 ACL 锁定。<a href="/.well-known/agent-skills/install-as-a-counted-user.md">以代理技能形式提供的方法</a>。</p>
+  <div class="figures"><span>Firefox ESR + Chrome</span><span>商店安装已在磁盘上验证</span><span>失败也已公开</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-real-gesture.json">2026-08-03-agent-real-gesture.json</a></h2>
+  <p>窗口系统级别的合成输入事件是否满足 activeTab 的手势要求:通过 X11 XTEST 发送键盘命令前后扩展可见的标签页。<a href="../notes/what-an-agent-can-do-with-an-extension/">方法与讨论</a>。</p>
+  <div class="figures"><span>之前 <b>0</b> 个标签页</span><span>之后 <b>1</b> 个标签页</span><span>Chromium 145</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-agent-uses-the-extension.json">2026-08-03-agent-uses-the-extension.json</a></h2>
+  <p>对照组:一个只通过 CDP 和 DOM 驱动浏览器的代理。扩展加载成功、service worker 也在运行,但每个标签页返回的 url 都为空。<a href="../notes/what-an-agent-can-do-with-an-extension/">方法与讨论</a>。</p>
+  <div class="figures"><span><b>2/4</b> 步通过</span><span>可见标签页 <b>0</b></span><span>activeTab,无主机权限</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-quellen-archiv.json">2026-08-02-quellen-archiv.json</a></h2>
+  <p>针对 150 个被引用的网络来源:实时状态、判定、Internet Archive 是否保存快照及其保存时间。服务未应答的情形被如实标记,而不是计为阴性。<a href="../measurements/web-citations-that-vanish/">方法与讨论</a>。</p>
+  <div class="figures"><span><b>19.3 %</b> 已消失</span><span><b>8.7 %</b> 未存档</span><span>快照年龄中位数 <b>603 天</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-ocr-recall.json">2026-08-01-ocr-recall.json</a></h2>
+  <p>整页截图 PDF 经过 OCR 后有多少文本存活,外加完整的分辨率系列和针对无关文本的对照运行。<a href="../measurements/webpage-to-pdf-for-ocr/">方法与讨论</a>。</p>
+  <div class="figures"><span>词汇召回率 <b>92.6&nbsp;%</b></span><span>阈值 <b>110 dpi</b></span><span>对照 <b>0.0&nbsp;%</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-extension-permissions.json">2026-08-01-extension-permissions.json</a></h2>
+  <p>八个 PDF 与截图类扩展的已声明权限、主机权限、用户数和评分,取自 Mozilla 附加组件 API。<a href="../measurements/pdf-extension-permissions/">方法与讨论</a>。</p>
+  <div class="figures"><span><b>8</b> 个扩展</span><span>来源:addons.mozilla.org API</span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-reading-list-to-bibliography.json">2026-08-03-reading-list-to-bibliography.json</a></h2>
+  <p>阅读清单中的二十个来源经过引用端点处理,每个来源附有返回的字段,以及——对每个被退回的来源——对阅读器和浏览器各自的响应,从而区分页面的墙与阅读器的限额。<a href="../measurements/reading-list-to-bibliography/">方法与讨论</a>。</p>
+  <div class="figures"><span>完整记录 <b>10/20</b></span><span>机器人防御 <b>1</b></span><span>无可声明 <b>5</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-citation-by-platform.json">2026-08-03-citation-by-platform.json</a></h2>
+  <p>十八个学术平台,逐一检查其就自身作品声明的引用数据,每个返回的标题都与 Crossref 核对。<a href="../measurements/citation-by-platform/">方法与讨论</a>。</p>
+  <div class="figures"><span>返回数据 <b>11/18</b></span><span>含作者和年份 <b>10</b></span><span>与 Crossref 一致 <b>8</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-03-citation-triage.json">2026-08-03-citation-triage.json</a></h2>
+  <p>一个十二个来源的混合阅读清单:代理自行转化了多少条可引用记录,以及其余四个各自被退回的原因。<a href="../measurements/citation-triage/">方法与讨论</a>。</p>
+  <div class="figures"><span>代理完成 <b>8/12</b></span><span>每来源 <b>1.09 秒</b></span><span>已注明原因 <b>4</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-android-capture-extensions.json">2026-08-02-android-capture-extensions.json</a></h2>
+  <p>来自 Mozilla 附加组件 API 的 248 个网页保存类扩展,附其声明的 Android 支持、用户数和评分。<a href="../measurements/android-capture-extensions/">方法与讨论</a>。</p>
+  <div class="figures"><span><b>248</b> 个扩展</span><span>声明支持 Android <b>60</b></span><span>实机测试 <b>0</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-02-citation-extraction.json">2026-08-02-citation-extraction.json</a></h2>
+  <p>以 Citoid(维基媒体基于 Zotero 翻译器构建的服务)为基准测量的引用提取,随机抽取 18 部作品——逐来源,含耗时,并且每条报告的阻断都从未知网络复核。<a href="../measurements/citation-extraction/">方法与讨论</a>。</p>
+  <div class="figures"><span>字段完整 <b>13/13</b></span><span>误报阻断 <b>0</b></span><span>中位数 <b>0.35 秒</b></span></div>
+</div>
+
+<div class="item">
+  <h2><a href="2026-08-01-print-vs-screenshot.json">2026-08-01-print-vs-screenshot.json</a></h2>
+  <p>同一篇文章分别经过浏览器打印导出和整页捕获:页数、断句、文件大小、恢复的文本。<a href="../measurements/print-to-pdf-vs-screenshot/">方法与讨论</a>。</p>
+  <div class="figures"><span><b>26</b> 页对 <b>1</b> 页</span><span>截断句子 <b>9</b> 句</span><span>文件大小 <b>6 倍</b></span></div>
+</div>
+
+<footer><a href="../">← Proving Lab</a> · <a href="../about/">关于与披露</a> · 更正: <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub issues</a> · <a href="../disclaimer/">免责声明</a></footer>
+</div>
 </div>
 </body>
 </html>
