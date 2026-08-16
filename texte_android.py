@@ -1,0 +1,779 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""/measurements/android-capture-extensions/ in neun Sprachen.
+
+Ausgangstext ist die AUSGELIEFERTE Seite, woertlich uebernommen — nicht
+build-android-post.py (weicht ab, siehe tools/builder-drift.py).
+
+Die Tabelle mit fuenfzehn Erweiterungen steht als EINE Konstante: Namen,
+Nutzerzahlen, Bewertungen, Mindestversionen und Adressen sind Messwerte und
+Eigennamen, keine Prosa. Sie neunmal abzuschreiben hiesse, neun Gelegenheiten
+zu schaffen, eine Zahl zu verlieren.
+
+Rendern:  python3 tools/seite-neunsprachig.py texte_android.py
+"""
+
+URL = "https://provinglab.dev/measurements/android-capture-extensions/"
+ZIEL = "measurements/android-capture-extensions/index.html"
+SPRACHEN = ["en", "de", "es", "fr", "it", "ja", "pt-BR", "ru", "zh-CN"]
+BASIS = "en"
+
+_A = "https://addons.mozilla.org/firefox/addon/"
+
+# (Adresse, Name, Nutzer, Bewertung, Mindestversion) — in jeder Sprache gleich.
+_ZEILEN = [
+    ("search_by_image/", "Search by Image", "445,512", "4.6 (1818)", "115.0"),
+    ("read-aloud/", "Read Aloud: A Text to Speech Voice Reader", "214,574", "3.8 (1272)", "113.0"),
+    ("youtube-addon/", "'Improve YouTube!'  🎧 (For YouTube &amp; Video)", "102,005", "4.3 (894)", "120.0"),
+    ("single-file/", "SingleFile", "85,724", "4.8 (1029)", "113.0"),
+    ("turn-off-the-lights/", "Turn Off the Lights for Firefox", "63,144", "4.6 (700)", "120.0"),
+    ("pdf-mage/", "PDF Mage", "16,526", "3.3 (315)", "48.0"),
+    ("print-to-pdf-document/", "Print to PDF", "13,328", "3.5 (129)", "57.0"),
+    ("savescreenshot/", "Save Screenshot", "10,802", "4.5 (126)", "120.0"),
+    ("save-chatgpt-as-pdf/", "ChatGPT to PDF", "9,548", "4.5 (51)", "120.0"),
+    ("webscrapbook/", "WebScrapBook", "6,792", "4.0 (144)", "120.0"),
+    ("save-pdf/", "Save PDF", "5,573", "3.3 (115)", "56.0"),
+    ("print-for-firefox/", "Print for Firefox", "3,839", "3.8 (22)", "120.0"),
+    ("page-saver-webpage-to-pdf/", "PageSaver - Webpage to PDF or Image", "2,200", "3.7 (9)", "120.0"),
+    ("sprint-ускорение-youtube/", "Sprint — YouTube Speed Booster", "2,166", "3.9 (30)", "120.0"),
+    ("diigo-web-collector/", "Diigo Web Collector - Capture and Annotate", "1,915", "3.8 (244)", "120.0"),
+]
+
+_ISSUES = ('<a href="https://github.com/Bubu89/full-page-pdf-snap/issues">')
+_ROH = '<a href="/data/2026-08-02-android-capture-extensions.json">'
+
+
+def _tabelle(caption, th_ext, th_users, th_rating, th_min):
+    zeilen = "\n".join(
+        f'      <tr><td><a href="{_A}{s}" rel="nofollow">{n}</a></td>'
+        f'<td class="num">{u}</td><td class="num">{b}</td>'
+        f'<td class="num">{v}</td></tr>'
+        for s, n, u, b, v in _ZEILEN)
+    return f'''<table>
+  <caption>{caption}</caption>
+  <thead>
+    <tr><th scope="col">{th_ext}</th><th class="num">{th_users}</th><th class="num">{th_rating}</th>
+        <th class="num">{th_min}</th></tr>
+  </thead>
+  <tbody>
+{zeilen}
+  </tbody>
+</table>'''
+
+
+def _seite(h1, standfirst, abgerufen, rohdaten, h2, p, tabelle,
+           f1, fa1, f2, fa2, fuss, disclaimer):
+    return f'''<header>
+  <h1>{h1}</h1>
+  <p class="standfirst">
+    {standfirst}
+  </p>
+  <p class="meta">{abgerufen} · addons.mozilla.org API v5 ·
+    {_ROH}{rohdaten}</a></p>
+</header>
+
+<h2>{h2[0]}</h2>
+<p>
+  {p[0]}
+</p>
+
+<h2>{h2[1]}</h2>
+<p>
+  {p[1]}
+</p>
+
+{tabelle}
+
+<h2>{h2[2]}</h2>
+<p>
+  {p[2]}
+</p>
+<p>
+  {p[3]}
+</p>
+<p>
+  {p[4]}
+</p>
+
+<h2>{h2[3]}</h2>
+<p>
+  {p[5]}
+</p>
+<p>
+  {p[6]}
+</p>
+
+<h2>{h2[4]}</h2>
+<p>
+  {p[7]}
+</p>
+
+<h2>{h2[5]}</h2>
+<h3>{f1}</h3>
+<p>
+  {fa1}
+</p>
+<h3>{f2}</h3>
+<p>
+  {fa2}
+  {_ISSUES}{p[8]}</a> {p[9]}
+</p>
+
+<footer>
+      {fuss}
+      <br><br>
+      <a href="../../">← Proving Lab</a>
+     · <a href="../../disclaimer/">{disclaimer}</a></footer>'''
+
+
+INHALT = {}
+
+INHALT["en"] = _seite(
+    h1="Which page-saving extensions actually run on Firefox for Android?",
+    standfirst=(
+        "Firefox for Android has supported extensions since 2023, and that is the one "
+        "thing Chrome for Android still cannot do at all. So the interesting question is "
+        "not whether extensions run there — it is how many of the ones you would actually "
+        "reach for do. We checked 248 of them."),
+    abgerufen="Retrieved 2026-08-02", rohdaten="raw data",
+    h2=["What was measured", "Result", "Declaration is not function",
+        'What this means for the claim "one of the few"',
+        "Why Chrome does not appear here", "Questions"],
+    tabelle=_tabelle("The fifteen most-used extensions declaring Android support",
+                     "Extension", "Daily users", "Rating", "Min. Android version"),
+    p=[
+        ("Eight search terms were run against the add-ons search API — <em>full page "
+         "screenshot</em>, <em>save page as pdf</em>, <em>webpage to pdf</em>, "
+         "<em>screenshot pdf</em>, <em>capture page</em>, <em>print to pdf</em>, "
+         "<em>save webpage</em>, <em>page capture</em> — two result pages each, "
+         "duplicates merged. An extension counts as declaring Android support when the "
+         "current version lists an <code>android</code> entry in its compatibility data."),
+        ("Of 248 extensions, <strong>60 declare Android support</strong>. Their combined "
+         "user base is roughly 997,616 daily users, but that number is dominated by a "
+         "handful of large ones — the median is 221 users."),
+        ("This is the part that matters, and it is why the number above should not be "
+         "read as a ranking. A manifest entry means the extension <em>may be "
+         "installed</em> on Firefox for Android. It says nothing about whether the "
+         "feature works there."),
+        ("Capture extensions are especially exposed to this. A full-page capture needs to "
+         "scroll the document, wait for lazy-loaded images, stitch segments and hand the "
+         "result to a file picker — and every one of those steps behaves differently on "
+         "Android. The <code>min. Android version</code> column hints at the split: "
+         "entries at 48 or 57 predate the current extension platform on Android entirely "
+         "and were carried over, while 113 and above were set after Firefox reopened the "
+         "platform in 2023."),
+        ("<strong>We did not install or test any of these on a device.</strong> Verifying "
+         "sixty extensions on real hardware is a different piece of work, and until "
+         "someone does it, nobody — including us — can claim which of them actually "
+         "deliver a usable file on a phone."),
+        ("It does not hold. 55 of the extensions found here are page-saving or capture "
+         "tools with Android in their manifest, together around 172,160 daily users. "
+         "SingleFile alone has 85,724. Our own extension, Full Page PDF Snap, is one "
+         "entry among them, and its three daily users put it at the very bottom of that "
+         "list."),
+        ("We had that claim in our own store listing until this measurement. It is being "
+         "removed. The accurate statement is narrower and still useful: the extension "
+         "<em>does</em> run on Firefox for Android, and that puts it in a minority of "
+         "roughly a quarter of the tools people search for when they want to save a page "
+         "— not in a category of its own."),
+        ("Chrome for Android cannot install extensions at all. That is not a gap in this "
+         "measurement; it is the reason the measurement only covers Firefox. If you want "
+         "a page saved as a file on a phone, with an extension, Firefox is currently the "
+         "only mainstream browser where the question even arises."),
+        "issue tracker",
+        "is open.",
+    ],
+    f1="Does a higher minimum Android version mean better support?",
+    fa1=("It means the entry was set recently, nothing more. An extension declaring 113 "
+         "or 120 was updated after Firefox reopened the Android platform, so its author "
+         "at least saw the current environment. An entry of 48 was written for a platform "
+         "that no longer exists in that form."),
+    f2="Which of these actually work?",
+    fa2=("Unknown, and we will not guess. If you test any of them on a device and want "
+         "the result published here with your method, the"),
+    fuss=("Method: eight search terms against the addons.mozilla.org API v5, two result "
+          "pages each, duplicates merged by slug; Android support read from "
+          "<code>current_version.compatibility</code>. Retrieved 2 August 2026. No "
+          "extension was installed or tested on a device — declaration is not function. "
+          "User counts are AMO daily averages and fluctuate. The author develops one of "
+          "the extensions listed."),
+    disclaimer="Disclaimer",
+)
+
+INHALT["de"] = _seite(
+    h1="Welche Seiten-Speicher-Erweiterungen laufen wirklich auf Firefox für Android?",
+    standfirst=(
+        "Firefox für Android unterstützt Erweiterungen seit 2023 — und genau das kann "
+        "Chrome für Android bis heute überhaupt nicht. Die interessante Frage ist deshalb "
+        "nicht, ob dort Erweiterungen laufen, sondern wie viele von denen, nach denen man "
+        "tatsächlich greift. Wir haben 248 davon geprüft."),
+    abgerufen="Abgerufen am 02.08.2026", rohdaten="Rohdaten",
+    h2=["Was gemessen wurde", "Ergebnis", "Erklärung ist keine Funktion",
+        "Was das für die Behauptung „eine der wenigen“ bedeutet",
+        "Warum Chrome hier nicht vorkommt", "Fragen"],
+    tabelle=_tabelle("Die fünfzehn meistgenutzten Erweiterungen mit erklärter Android-Unterstützung",
+                     "Erweiterung", "Tägliche Nutzer", "Bewertung", "Mind. Android-Version"),
+    p=[
+        ("Acht Suchbegriffe wurden gegen die Add-ons-Such-API gefahren — <em>full page "
+         "screenshot</em>, <em>save page as pdf</em>, <em>webpage to pdf</em>, "
+         "<em>screenshot pdf</em>, <em>capture page</em>, <em>print to pdf</em>, "
+         "<em>save webpage</em>, <em>page capture</em> — je zwei Ergebnisseiten, "
+         "Dubletten zusammengeführt. Eine Erweiterung gilt als Android-erklärend, wenn "
+         "die aktuelle Fassung einen <code>android</code>-Eintrag in ihren "
+         "Kompatibilitätsdaten führt."),
+        ("Von 248 Erweiterungen erklären <strong>60 Android-Unterstützung</strong>. Ihre "
+         "Nutzerbasis zusammen liegt bei rund 997,616 täglichen Nutzern, doch diese Zahl "
+         "wird von einer Handvoll großer beherrscht — der Median liegt bei 221 Nutzern."),
+        ("Das ist der Teil, auf den es ankommt, und deshalb darf die Zahl oben nicht als "
+         "Rangliste gelesen werden. Ein Manifest-Eintrag heißt, dass die Erweiterung auf "
+         "Firefox für Android <em>installiert werden darf</em>. Über die Frage, ob die "
+         "Funktion dort arbeitet, sagt er nichts."),
+        ("Aufnahme-Erweiterungen trifft das besonders. Eine Ganzseitenaufnahme muss das "
+         "Dokument scrollen, auf nachgeladene Bilder warten, Abschnitte zusammensetzen "
+         "und das Ergebnis an eine Dateiauswahl übergeben — und jeder dieser Schritte "
+         "verhält sich unter Android anders. Die Spalte <code>Mind. Android-Version</code> "
+         "deutet die Trennlinie an: Einträge mit 48 oder 57 stammen aus der Zeit vor der "
+         "heutigen Erweiterungsplattform unter Android und wurden übernommen, während 113 "
+         "und darüber gesetzt wurden, nachdem Firefox die Plattform 2023 wieder geöffnet "
+         "hat."),
+        ("<strong>Wir haben keine davon auf einem Gerät installiert oder geprüft.</strong> "
+         "Sechzig Erweiterungen auf echter Hardware nachzuweisen ist eine eigene Arbeit, "
+         "und bis das jemand tut, kann niemand — wir eingeschlossen — behaupten, welche "
+         "von ihnen auf einem Telefon tatsächlich eine brauchbare Datei liefern."),
+        ("Sie hält nicht. 55 der hier gefundenen Erweiterungen sind Seiten-Speicher- oder "
+         "Aufnahme-Werkzeuge mit Android im Manifest, zusammen rund 172,160 tägliche "
+         "Nutzer. SingleFile allein hat 85,724. Unsere eigene Erweiterung, Full Page PDF "
+         "Snap, ist ein Eintrag unter ihnen, und ihre drei täglichen Nutzer setzen sie an "
+         "das untere Ende dieser Liste."),
+        ("Diese Behauptung stand bis zu dieser Messung in unserem eigenen "
+         "Store-Eintrag. Sie wird entfernt. Die zutreffende Aussage ist enger und "
+         "trotzdem nützlich: Die Erweiterung läuft <em>tatsächlich</em> auf Firefox für "
+         "Android, und das stellt sie in eine Minderheit von etwa einem Viertel der "
+         "Werkzeuge, nach denen Leute suchen, wenn sie eine Seite sichern wollen — nicht "
+         "in eine eigene Kategorie."),
+        ("Chrome für Android kann Erweiterungen überhaupt nicht installieren. Das ist "
+         "keine Lücke dieser Messung, sondern der Grund, warum sie nur Firefox umfasst. "
+         "Wer eine Seite auf dem Telefon als Datei sichern will, mit einer Erweiterung, "
+         "für den ist Firefox derzeit der einzige verbreitete Browser, bei dem sich die "
+         "Frage überhaupt stellt."),
+        "Fehlerverfolgung",
+        "steht offen.",
+    ],
+    f1="Bedeutet eine höhere Mindest-Android-Version bessere Unterstützung?",
+    fa1=("Sie bedeutet, dass der Eintrag kürzlich gesetzt wurde, mehr nicht. Eine "
+         "Erweiterung, die 113 oder 120 erklärt, wurde aktualisiert, nachdem Firefox die "
+         "Android-Plattform wieder geöffnet hatte — ihr Autor hat also zumindest die "
+         "heutige Umgebung gesehen. Ein Eintrag mit 48 wurde für eine Plattform "
+         "geschrieben, die es in dieser Form nicht mehr gibt."),
+    f2="Welche davon funktionieren tatsächlich?",
+    fa2=("Unbekannt, und wir raten nicht. Wer eine davon auf einem Gerät prüft und das "
+         "Ergebnis mit seiner Methode hier veröffentlicht sehen will: die"),
+    fuss=("Methode: acht Suchbegriffe gegen die addons.mozilla.org API v5, je zwei "
+          "Ergebnisseiten, Dubletten über den Slug zusammengeführt; Android-Unterstützung "
+          "aus <code>current_version.compatibility</code> gelesen. Abgerufen am 2. August "
+          "2026. Keine Erweiterung wurde auf einem Gerät installiert oder geprüft — "
+          "Erklärung ist keine Funktion. Nutzerzahlen sind AMO-Tagesmittel und schwanken. "
+          "Der Autor entwickelt eine der aufgeführten Erweiterungen."),
+    disclaimer="Haftungsausschluss",
+)
+
+INHALT["es"] = _seite(
+    h1="¿Qué extensiones para guardar páginas funcionan realmente en Firefox para Android?",
+    standfirst=(
+        "Firefox para Android admite extensiones desde 2023, y eso es justo lo que Chrome "
+        "para Android sigue sin poder hacer. La pregunta interesante no es, por tanto, si "
+        "allí funcionan extensiones, sino cuántas de las que uno buscaría realmente lo "
+        "hacen. Comprobamos 248 de ellas."),
+    abgerufen="Recuperado 2026-08-02", rohdaten="datos brutos",
+    h2=["Qué se midió", "Resultado", "Declarar no es funcionar",
+        "Qué significa esto para la afirmación «una de las pocas»",
+        "Por qué Chrome no aparece aquí", "Preguntas"],
+    tabelle=_tabelle("Las quince extensiones más usadas que declaran compatibilidad con Android",
+                     "Extensión", "Usuarios diarios", "Valoración", "Versión mín. de Android"),
+    p=[
+        ("Se lanzaron ocho términos de búsqueda contra la API de búsqueda de "
+         "complementos — <em>full page screenshot</em>, <em>save page as pdf</em>, "
+         "<em>webpage to pdf</em>, <em>screenshot pdf</em>, <em>capture page</em>, "
+         "<em>print to pdf</em>, <em>save webpage</em>, <em>page capture</em> — dos "
+         "páginas de resultados cada uno, duplicados fusionados. Una extensión cuenta "
+         "como declarante de compatibilidad con Android cuando la versión actual incluye "
+         "una entrada <code>android</code> en sus datos de compatibilidad."),
+        ("De 248 extensiones, <strong>60 declaran compatibilidad con Android</strong>. Su "
+         "base de usuarios conjunta ronda los 997,616 usuarios diarios, pero esa cifra "
+         "está dominada por un puñado de grandes — la mediana es de 221 usuarios."),
+        ("Esta es la parte que importa, y por eso la cifra anterior no debe leerse como "
+         "una clasificación. Una entrada en el manifiesto significa que la extensión "
+         "<em>puede instalarse</em> en Firefox para Android. No dice nada sobre si la "
+         "función sirve allí."),
+        ("Las extensiones de captura están especialmente expuestas a esto. Una captura de "
+         "página completa tiene que desplazar el documento, esperar a las imágenes de "
+         "carga diferida, unir segmentos y entregar el resultado a un selector de "
+         "archivos — y cada uno de esos pasos se comporta distinto en Android. La columna "
+         "<code>versión mín. de Android</code> insinúa la división: las entradas de 48 o "
+         "57 son anteriores a la plataforma de extensiones actual en Android y se "
+         "arrastraron, mientras que 113 y superiores se fijaron después de que Firefox "
+         "reabriera la plataforma en 2023."),
+        ("<strong>No instalamos ni probamos ninguna de ellas en un dispositivo.</strong> "
+         "Verificar sesenta extensiones en hardware real es otro trabajo, y hasta que "
+         "alguien lo haga, nadie — nosotros incluidos — puede afirmar cuáles entregan de "
+         "verdad un archivo utilizable en un teléfono."),
+        ("No se sostiene. 55 de las extensiones encontradas aquí son herramientas de "
+         "guardado o captura de páginas con Android en su manifiesto, en conjunto unos "
+         "172,160 usuarios diarios. SingleFile por sí sola tiene 85,724. Nuestra propia "
+         "extensión, Full Page PDF Snap, es una entrada entre ellas, y sus tres usuarios "
+         "diarios la sitúan en el último lugar de esa lista."),
+        ("Manteníamos esa afirmación en nuestra propia ficha de tienda hasta esta "
+         "medición. Se está retirando. La afirmación exacta es más estrecha y sigue "
+         "siendo útil: la extensión <em>sí</em> funciona en Firefox para Android, y eso "
+         "la coloca en una minoría de aproximadamente una cuarta parte de las "
+         "herramientas que la gente busca cuando quiere guardar una página — no en una "
+         "categoría propia."),
+        ("Chrome para Android no puede instalar extensiones en absoluto. Eso no es una "
+         "laguna de esta medición; es la razón por la que la medición solo cubre Firefox. "
+         "Si quiere guardar una página como archivo en un teléfono, con una extensión, "
+         "Firefox es actualmente el único navegador extendido en el que la pregunta "
+         "siquiera se plantea."),
+        "gestor de incidencias",
+        "está abierto.",
+    ],
+    f1="¿Una versión mínima de Android más alta significa mejor compatibilidad?",
+    fa1=("Significa que la entrada se fijó hace poco, nada más. Una extensión que declara "
+         "113 o 120 se actualizó después de que Firefox reabriera la plataforma Android, "
+         "así que su autor vio al menos el entorno actual. Una entrada de 48 se escribió "
+         "para una plataforma que ya no existe en esa forma."),
+    f2="¿Cuáles de estas funcionan de verdad?",
+    fa2=("Se desconoce, y no lo vamos a adivinar. Si prueba alguna en un dispositivo y "
+         "quiere ver el resultado publicado aquí con su método, el"),
+    fuss=("Método: ocho términos de búsqueda contra la API v5 de addons.mozilla.org, dos "
+          "páginas de resultados cada uno, duplicados fusionados por slug; compatibilidad "
+          "con Android leída de <code>current_version.compatibility</code>. Recuperado el "
+          "2 de agosto de 2026. Ninguna extensión fue instalada ni probada en un "
+          "dispositivo — declarar no es funcionar. Los recuentos de usuarios son medias "
+          "diarias de AMO y fluctúan. El autor desarrolla una de las extensiones "
+          "listadas."),
+    disclaimer="Aviso legal",
+)
+
+INHALT["fr"] = _seite(
+    h1="Quelles extensions d’enregistrement de pages fonctionnent vraiment sur Firefox pour Android ?",
+    standfirst=(
+        "Firefox pour Android prend en charge les extensions depuis 2023, et c’est "
+        "précisément ce que Chrome pour Android ne sait toujours pas faire. La question "
+        "intéressante n’est donc pas de savoir si des extensions y fonctionnent, mais "
+        "combien parmi celles vers lesquelles on se tournerait réellement. Nous en avons "
+        "vérifié 248."),
+    abgerufen="Récupéré le 2026-08-02", rohdaten="données brutes",
+    h2=["Ce qui a été mesuré", "Résultat", "Déclarer n’est pas fonctionner",
+        "Ce que cela signifie pour l’affirmation « l’une des rares »",
+        "Pourquoi Chrome ne figure pas ici", "Questions"],
+    tabelle=_tabelle("Les quinze extensions les plus utilisées déclarant la prise en charge d’Android",
+                     "Extension", "Utilisateurs quotidiens", "Note", "Version min. d’Android"),
+    p=[
+        ("Huit termes de recherche ont été soumis à l’API de recherche des modules — "
+         "<em>full page screenshot</em>, <em>save page as pdf</em>, <em>webpage to "
+         "pdf</em>, <em>screenshot pdf</em>, <em>capture page</em>, <em>print to pdf</em>, "
+         "<em>save webpage</em>, <em>page capture</em> — deux pages de résultats chacun, "
+         "doublons fusionnés. Une extension est comptée comme déclarant Android lorsque "
+         "sa version actuelle comporte une entrée <code>android</code> dans ses données "
+         "de compatibilité."),
+        ("Sur 248 extensions, <strong>60 déclarent la prise en charge d’Android</strong>. "
+         "Leur base d’utilisateurs cumulée avoisine 997,616 utilisateurs quotidiens, mais "
+         "ce nombre est dominé par une poignée de grosses — la médiane est de 221 "
+         "utilisateurs."),
+        ("C’est le point qui compte, et c’est pourquoi le nombre ci-dessus ne doit pas se "
+         "lire comme un classement. Une entrée de manifeste signifie que l’extension "
+         "<em>peut être installée</em> sur Firefox pour Android. Elle ne dit rien sur le "
+         "fait que la fonction y marche."),
+        ("Les extensions de capture y sont particulièrement exposées. Une capture de page "
+         "entière doit faire défiler le document, attendre les images chargées "
+         "paresseusement, assembler les segments et remettre le résultat à un sélecteur "
+         "de fichiers — et chacune de ces étapes se comporte différemment sur Android. La "
+         "colonne <code>version min. d’Android</code> laisse deviner la coupure : les "
+         "entrées à 48 ou 57 sont antérieures à la plateforme d’extensions actuelle sur "
+         "Android et ont été reportées, tandis que 113 et au-delà ont été fixées après la "
+         "réouverture de la plateforme par Firefox en 2023."),
+        ("<strong>Nous n’en avons installé ni testé aucune sur un appareil.</strong> "
+         "Vérifier soixante extensions sur du matériel réel est un autre travail, et tant "
+         "que personne ne l’aura fait, nul — nous compris — ne peut affirmer lesquelles "
+         "livrent effectivement un fichier utilisable sur un téléphone."),
+        ("Elle ne tient pas. 55 des extensions trouvées ici sont des outils "
+         "d’enregistrement ou de capture de pages avec Android dans leur manifeste, soit "
+         "environ 172,160 utilisateurs quotidiens au total. SingleFile à elle seule en a "
+         "85,724. Notre propre extension, Full Page PDF Snap, est une entrée parmi elles, "
+         "et ses trois utilisateurs quotidiens la placent tout en bas de cette liste."),
+        ("Nous portions cette affirmation dans notre propre fiche de boutique jusqu’à "
+         "cette mesure. Elle est retirée. L’énoncé exact est plus étroit et reste utile : "
+         "l’extension fonctionne <em>bien</em> sur Firefox pour Android, ce qui la place "
+         "dans une minorité d’environ un quart des outils que les gens cherchent quand "
+         "ils veulent enregistrer une page — pas dans une catégorie à part."),
+        ("Chrome pour Android ne peut pas installer d’extensions du tout. Ce n’est pas une "
+         "lacune de cette mesure ; c’est la raison pour laquelle elle ne couvre que "
+         "Firefox. Si vous voulez enregistrer une page en fichier sur un téléphone, avec "
+         "une extension, Firefox est actuellement le seul navigateur répandu où la "
+         "question se pose."),
+        "suivi des tickets",
+        "est ouvert.",
+    ],
+    f1="Une version minimale d’Android plus élevée signifie-t-elle une meilleure prise en charge ?",
+    fa1=("Elle signifie que l’entrée a été fixée récemment, rien de plus. Une extension "
+         "déclarant 113 ou 120 a été mise à jour après la réouverture de la plateforme "
+         "Android par Firefox : son auteur a donc au moins vu l’environnement actuel. Une "
+         "entrée à 48 a été écrite pour une plateforme qui n’existe plus sous cette "
+         "forme."),
+    f2="Lesquelles fonctionnent réellement ?",
+    fa2=("Inconnu, et nous ne devinerons pas. Si vous en testez une sur un appareil et "
+         "souhaitez voir le résultat publié ici avec votre méthode, le"),
+    fuss=("Méthode : huit termes de recherche contre l’API v5 d’addons.mozilla.org, deux "
+          "pages de résultats chacun, doublons fusionnés par slug ; prise en charge "
+          "d’Android lue dans <code>current_version.compatibility</code>. Récupéré le "
+          "2 août 2026. Aucune extension n’a été installée ni testée sur un appareil — "
+          "déclarer n’est pas fonctionner. Les nombres d’utilisateurs sont des moyennes "
+          "quotidiennes AMO et fluctuent. L’auteur développe l’une des extensions "
+          "listées."),
+    disclaimer="Avertissement",
+)
+
+INHALT["it"] = _seite(
+    h1="Quali estensioni per salvare pagine funzionano davvero su Firefox per Android?",
+    standfirst=(
+        "Firefox per Android supporta le estensioni dal 2023, ed è proprio ciò che Chrome "
+        "per Android tuttora non sa fare affatto. La domanda interessante non è dunque se "
+        "lì le estensioni funzionino, ma quante fra quelle a cui si ricorrerebbe davvero "
+        "lo facciano. Ne abbiamo verificate 248."),
+    abgerufen="Recuperato il 2026-08-02", rohdaten="dati grezzi",
+    h2=["Che cosa è stato misurato", "Risultato", "Dichiarare non è funzionare",
+        "Che cosa significa per l’affermazione «una delle poche»",
+        "Perché Chrome non compare qui", "Domande"],
+    tabelle=_tabelle("Le quindici estensioni più usate che dichiarano il supporto Android",
+                     "Estensione", "Utenti giornalieri", "Valutazione", "Versione min. Android"),
+    p=[
+        ("Otto termini di ricerca sono stati inviati all’API di ricerca dei componenti "
+         "aggiuntivi — <em>full page screenshot</em>, <em>save page as pdf</em>, "
+         "<em>webpage to pdf</em>, <em>screenshot pdf</em>, <em>capture page</em>, "
+         "<em>print to pdf</em>, <em>save webpage</em>, <em>page capture</em> — due pagine "
+         "di risultati ciascuno, duplicati uniti. Un’estensione conta come dichiarante il "
+         "supporto Android quando la versione corrente riporta una voce "
+         "<code>android</code> nei suoi dati di compatibilità."),
+        ("Su 248 estensioni, <strong>60 dichiarano il supporto Android</strong>. La loro "
+         "base utenti complessiva si aggira sui 997,616 utenti giornalieri, ma quel "
+         "numero è dominato da una manciata di grandi — la mediana è di 221 utenti."),
+        ("È questa la parte che conta, ed è il motivo per cui il numero qui sopra non va "
+         "letto come una classifica. Una voce nel manifest significa che l’estensione "
+         "<em>può essere installata</em> su Firefox per Android. Non dice nulla sul fatto "
+         "che la funzione lì operi."),
+        ("Le estensioni di cattura vi sono particolarmente esposte. Una cattura a pagina "
+         "intera deve scorrere il documento, attendere le immagini caricate in modo "
+         "differito, unire i segmenti e consegnare il risultato a un selettore di file — "
+         "e ognuno di questi passaggi si comporta diversamente su Android. La colonna "
+         "<code>versione min. Android</code> lascia intuire la spaccatura: le voci a 48 o "
+         "57 precedono del tutto l’attuale piattaforma di estensioni su Android e sono "
+         "state ereditate, mentre 113 e oltre sono state impostate dopo che Firefox ha "
+         "riaperto la piattaforma nel 2023."),
+        ("<strong>Non ne abbiamo installata né provata alcuna su un dispositivo.</strong> "
+         "Verificare sessanta estensioni su hardware reale è un lavoro a parte, e finché "
+         "qualcuno non lo farà, nessuno — noi compresi — può affermare quali di esse "
+         "consegnino davvero un file utilizzabile su un telefono."),
+        ("Non regge. 55 delle estensioni qui trovate sono strumenti di salvataggio o "
+         "cattura di pagine con Android nel manifest, insieme circa 172,160 utenti "
+         "giornalieri. SingleFile da sola ne ha 85,724. La nostra estensione, Full Page "
+         "PDF Snap, è una voce fra queste, e i suoi tre utenti giornalieri la collocano "
+         "in fondo a quell’elenco."),
+        ("Quell’affermazione era nella nostra scheda di negozio fino a questa "
+         "misurazione. Viene rimossa. L’enunciato corretto è più stretto e resta utile: "
+         "l’estensione <em>funziona</em> su Firefox per Android, e ciò la colloca in una "
+         "minoranza pari a circa un quarto degli strumenti che si cercano volendo salvare "
+         "una pagina — non in una categoria a sé."),
+        ("Chrome per Android non può installare estensioni del tutto. Non è una lacuna di "
+         "questa misurazione: è il motivo per cui essa copre solo Firefox. Chi vuole "
+         "salvare una pagina come file su un telefono, con un’estensione, ha in Firefox "
+         "attualmente l’unico browser diffuso in cui la domanda si ponga."),
+        "tracciatore delle segnalazioni",
+        "è aperto.",
+    ],
+    f1="Una versione minima di Android più alta significa supporto migliore?",
+    fa1=("Significa che la voce è stata impostata di recente, nulla di più. "
+         "Un’estensione che dichiara 113 o 120 è stata aggiornata dopo la riapertura "
+         "della piattaforma Android da parte di Firefox, quindi il suo autore ha almeno "
+         "visto l’ambiente attuale. Una voce con 48 è stata scritta per una piattaforma "
+         "che in quella forma non esiste più."),
+    f2="Quali di queste funzionano davvero?",
+    fa2=("Ignoto, e non tireremo a indovinare. Se ne provate una su un dispositivo e "
+         "volete vedere il risultato pubblicato qui con il vostro metodo, il"),
+    fuss=("Metodo: otto termini di ricerca contro l’API v5 di addons.mozilla.org, due "
+          "pagine di risultati ciascuno, duplicati uniti per slug; supporto Android letto "
+          "da <code>current_version.compatibility</code>. Recuperato il 2 agosto 2026. "
+          "Nessuna estensione è stata installata o provata su un dispositivo — dichiarare "
+          "non è funzionare. I conteggi utenti sono medie giornaliere AMO e oscillano. "
+          "L’autore sviluppa una delle estensioni elencate."),
+    disclaimer="Avvertenze",
+)
+
+INHALT["ja"] = _seite(
+    h1="Firefox for Android で実際に動くページ保存拡張機能はどれか",
+    standfirst=(
+        "Firefox for Android は 2023 年から拡張機能に対応しており、それは Chrome for "
+        "Android が今なおまったくできないことである。したがって興味深い問いは、そこで"
+        "拡張機能が動くかどうかではなく、実際に手を伸ばすであろうもののうち何割が動く"
+        "のか、である。248 件を調べた。"),
+    abgerufen="取得日 2026-08-02", rohdaten="生データ",
+    h2=["何を測ったか", "結果", "宣言は機能ではない",
+        "「数少ないひとつ」という主張にとって何を意味するか",
+        "なぜ Chrome がここに出てこないのか", "質問"],
+    tabelle=_tabelle("Android 対応を宣言している利用者数上位 15 件",
+                     "拡張機能", "1 日あたり利用者", "評価", "最小 Android バージョン"),
+    p=[
+        ("アドオン検索 API に対して 8 つの検索語を実行した — <em>full page screenshot</em>、"
+         "<em>save page as pdf</em>、<em>webpage to pdf</em>、<em>screenshot pdf</em>、"
+         "<em>capture page</em>、<em>print to pdf</em>、<em>save webpage</em>、"
+         "<em>page capture</em> — それぞれ結果 2 ページ分、重複は統合した。現行バージョンが"
+         "互換性データに <code>android</code> の項目を持つとき、その拡張機能は Android 対応を"
+         "宣言しているものと数える。"),
+        ("248 件のうち <strong>60 件が Android 対応を宣言している</strong>。合計の利用者は"
+         "1 日あたりおよそ 997,616 人だが、この数値はごく少数の大きなものに支配されている — "
+         "中央値は 221 人である。"),
+        ("ここが肝心であり、上の数字を順位として読んではならない理由でもある。マニフェストの"
+         "項目が意味するのは、その拡張機能が Firefox for Android に <em>インストールできる</em> "
+         "ということだけである。そこで機能が働くかどうかについては何も述べていない。"),
+        ("キャプチャ系の拡張機能はとりわけこの影響を受ける。ページ全体のキャプチャは、文書を"
+         "スクロールし、遅延読み込みの画像を待ち、断片をつなぎ、結果をファイル選択に引き渡す"
+         "必要がある — そのどの段階も Android では挙動が異なる。<code>最小 Android バージョン</code> "
+         "の列がその分かれ目を示している。48 や 57 の項目は現在の Android 拡張機能基盤より前の"
+         "もので、そのまま引き継がれた。113 以上は、Firefox が 2023 年に基盤を再び開いたあとに"
+         "設定されたものである。"),
+        ("<strong>いずれも実機にインストールも試験もしていない。</strong>60 件を実機で検証する"
+         "のは別の仕事であり、誰かがそれを行うまでは、私たちを含め誰も、そのうちどれが電話機で"
+         "実際に使えるファイルを出すかを主張できない。"),
+        ("成り立たない。ここで見つかった拡張機能のうち 55 件はマニフェストに Android を持つ"
+         "ページ保存またはキャプチャの道具で、合計およそ 172,160 人の 1 日あたり利用者がいる。"
+         "SingleFile だけで 85,724 人である。私たち自身の拡張機能 Full Page PDF Snap もその一つ"
+         "にすぎず、1 日 3 人という利用者数はその一覧の最下位に置かれる。"),
+        ("この測定までは、私たち自身のストア掲載文にその主張を載せていた。削除する。正確な"
+         "言い方はより狭く、それでも役に立つ。この拡張機能は Firefox for Android で"
+         "<em>実際に動く</em>。そしてそれは、ページを保存したい人が探す道具のおよそ 4 分の 1 "
+         "という少数派に属することを意味する — 独自の分類に属することではない。"),
+        ("Chrome for Android は拡張機能をまったくインストールできない。これはこの測定の欠落"
+         "ではなく、測定が Firefox のみを対象とする理由である。電話機でページを拡張機能によって"
+         "ファイルとして保存したいなら、現在その問いが成り立つ主要ブラウザーは Firefox だけで"
+         "ある。"),
+        "課題管理",
+        "は開かれている。",
+    ],
+    f1="最小 Android バージョンが高いほど対応が良いということか",
+    fa1=("それは項目が最近設定されたことを意味するだけで、それ以上ではない。113 や 120 を"
+         "宣言する拡張機能は、Firefox が Android 基盤を再び開いたあとに更新されており、作者は"
+         "少なくとも現在の環境を見ている。48 の項目は、その形ではもう存在しない基盤に向けて"
+         "書かれたものである。"),
+    f2="このうちどれが実際に動くのか",
+    fa2=("不明であり、推測はしない。いずれかを実機で試し、その方法とともに結果をここに掲載"
+         "したい方へ:"),
+    fuss=("方法: addons.mozilla.org API v5 に対して 8 つの検索語、それぞれ結果 2 ページ分、"
+          "重複は slug で統合。Android 対応は <code>current_version.compatibility</code> から"
+          "読み取った。2026 年 8 月 2 日取得。いかなる拡張機能も実機にインストール・試験して"
+          "いない — 宣言は機能ではない。利用者数は AMO の日次平均であり変動する。著者は"
+          "掲載された拡張機能のひとつを開発している。"),
+    disclaimer="免責事項",
+)
+
+INHALT["pt-BR"] = _seite(
+    h1="Quais extensões de salvar páginas realmente funcionam no Firefox para Android?",
+    standfirst=(
+        "O Firefox para Android suporta extensões desde 2023, e é justamente isso que o "
+        "Chrome para Android ainda não consegue fazer de jeito nenhum. A pergunta "
+        "interessante, portanto, não é se extensões funcionam ali, mas quantas daquelas "
+        "que se buscaria de fato funcionam. Verificamos 248 delas."),
+    abgerufen="Recuperado em 2026-08-02", rohdaten="dados brutos",
+    h2=["O que foi medido", "Resultado", "Declarar não é funcionar",
+        "O que isso significa para a afirmação “uma das poucas”",
+        "Por que o Chrome não aparece aqui", "Perguntas"],
+    tabelle=_tabelle("As quinze extensões mais usadas que declaram suporte a Android",
+                     "Extensão", "Usuários diários", "Avaliação", "Versão mín. do Android"),
+    p=[
+        ("Oito termos de busca foram executados contra a API de busca de complementos — "
+         "<em>full page screenshot</em>, <em>save page as pdf</em>, <em>webpage to "
+         "pdf</em>, <em>screenshot pdf</em>, <em>capture page</em>, <em>print to pdf</em>, "
+         "<em>save webpage</em>, <em>page capture</em> — duas páginas de resultados cada, "
+         "duplicatas mescladas. Uma extensão conta como declarante de suporte a Android "
+         "quando a versão atual traz uma entrada <code>android</code> em seus dados de "
+         "compatibilidade."),
+        ("De 248 extensões, <strong>60 declaram suporte a Android</strong>. Sua base "
+         "conjunta de usuários gira em torno de 997,616 usuários diários, mas esse número "
+         "é dominado por um punhado de grandes — a mediana é de 221 usuários."),
+        ("Esta é a parte que importa, e é por isso que o número acima não deve ser lido "
+         "como um ranking. Uma entrada no manifesto significa que a extensão <em>pode ser "
+         "instalada</em> no Firefox para Android. Nada diz sobre se o recurso funciona "
+         "ali."),
+        ("Extensões de captura estão especialmente expostas a isso. Uma captura de página "
+         "inteira precisa rolar o documento, esperar imagens de carregamento tardio, unir "
+         "segmentos e entregar o resultado a um seletor de arquivos — e cada um desses "
+         "passos se comporta de modo diferente no Android. A coluna <code>versão mín. do "
+         "Android</code> indica a divisão: entradas em 48 ou 57 são anteriores à "
+         "plataforma de extensões atual no Android e foram herdadas, enquanto 113 e acima "
+         "foram definidas depois que o Firefox reabriu a plataforma em 2023."),
+        ("<strong>Não instalamos nem testamos nenhuma delas em um aparelho.</strong> "
+         "Verificar sessenta extensões em hardware real é outro trabalho, e até que "
+         "alguém o faça, ninguém — nós inclusive — pode afirmar quais delas realmente "
+         "entregam um arquivo utilizável em um telefone."),
+        ("Ela não se sustenta. 55 das extensões encontradas aqui são ferramentas de "
+         "salvamento ou captura de páginas com Android no manifesto, somando cerca de "
+         "172,160 usuários diários. O SingleFile sozinho tem 85,724. Nossa própria "
+         "extensão, Full Page PDF Snap, é uma entrada entre elas, e seus três usuários "
+         "diários a colocam no fim daquela lista."),
+        ("Mantínhamos essa afirmação em nossa própria ficha de loja até esta medição. Ela "
+         "está sendo removida. A formulação exata é mais estreita e continua útil: a "
+         "extensão <em>de fato</em> funciona no Firefox para Android, e isso a coloca "
+         "numa minoria de cerca de um quarto das ferramentas que as pessoas procuram "
+         "quando querem salvar uma página — não numa categoria própria."),
+        ("O Chrome para Android não consegue instalar extensões de modo algum. Isso não é "
+         "uma lacuna desta medição; é a razão de a medição cobrir apenas o Firefox. Quem "
+         "quiser salvar uma página como arquivo em um telefone, com uma extensão, tem no "
+         "Firefox atualmente o único navegador difundido em que a pergunta sequer se "
+         "coloca."),
+        "rastreador de problemas",
+        "está aberto.",
+    ],
+    f1="Uma versão mínima de Android mais alta significa suporte melhor?",
+    fa1=("Significa que a entrada foi definida recentemente, nada além disso. Uma "
+         "extensão que declara 113 ou 120 foi atualizada depois que o Firefox reabriu a "
+         "plataforma Android, então seu autor ao menos viu o ambiente atual. Uma entrada "
+         "de 48 foi escrita para uma plataforma que já não existe naquela forma."),
+    f2="Quais dessas funcionam de verdade?",
+    fa2=("Desconhecido, e não vamos adivinhar. Se você testar alguma em um aparelho e "
+         "quiser ver o resultado publicado aqui com o seu método, o"),
+    fuss=("Método: oito termos de busca contra a API v5 do addons.mozilla.org, duas "
+          "páginas de resultados cada, duplicatas mescladas por slug; suporte a Android "
+          "lido de <code>current_version.compatibility</code>. Recuperado em 2 de agosto "
+          "de 2026. Nenhuma extensão foi instalada ou testada em um aparelho — declarar "
+          "não é funcionar. As contagens de usuários são médias diárias da AMO e flutuam. "
+          "O autor desenvolve uma das extensões listadas."),
+    disclaimer="Aviso legal",
+)
+
+INHALT["ru"] = _seite(
+    h1="Какие расширения для сохранения страниц действительно работают в Firefox для Android?",
+    standfirst=(
+        "Firefox для Android поддерживает расширения с 2023 года — и именно этого Chrome "
+        "для Android до сих пор не умеет вовсе. Поэтому интересен не вопрос, работают ли "
+        "там расширения, а сколько из тех, к которым действительно потянешься, работают. "
+        "Мы проверили 248 штук."),
+    abgerufen="Получено 2026-08-02", rohdaten="исходные данные",
+    h2=["Что измерялось", "Результат", "Заявление — не работа",
+        "Что это значит для утверждения «одно из немногих»",
+        "Почему здесь нет Chrome", "Вопросы"],
+    tabelle=_tabelle("Пятнадцать самых используемых расширений, заявляющих поддержку Android",
+                     "Расширение", "Пользователей в день", "Оценка", "Мин. версия Android"),
+    p=[
+        ("К поисковому API дополнений было отправлено восемь запросов — <em>full page "
+         "screenshot</em>, <em>save page as pdf</em>, <em>webpage to pdf</em>, "
+         "<em>screenshot pdf</em>, <em>capture page</em>, <em>print to pdf</em>, "
+         "<em>save webpage</em>, <em>page capture</em> — по две страницы результатов на "
+         "каждый, дубликаты объединены. Расширение считается заявившим поддержку Android, "
+         "если текущая версия содержит запись <code>android</code> в данных о "
+         "совместимости."),
+        ("Из 248 расширений <strong>60 заявляют поддержку Android</strong>. Их совокупная "
+         "аудитория — около 997,616 пользователей в день, но это число определяется "
+         "горсткой крупных: медиана составляет 221 пользователя."),
+        ("Именно это и важно, и именно поэтому число выше не следует читать как рейтинг. "
+         "Запись в манифесте означает, что расширение <em>можно установить</em> в Firefox "
+         "для Android. О том, работает ли там сама функция, она не говорит ничего."),
+        ("Расширения для снимков подвержены этому особенно. Снимок всей страницы должен "
+         "прокрутить документ, дождаться отложенно загружаемых изображений, сшить "
+         "фрагменты и передать результат в диалог выбора файла — и каждый из этих шагов "
+         "на Android ведёт себя иначе. Столбец <code>мин. версия Android</code> намекает "
+         "на раздел: записи 48 или 57 относятся ко времени до нынешней платформы "
+         "расширений на Android и были перенесены, тогда как 113 и выше проставлены после "
+         "того, как Firefox снова открыл платформу в 2023 году."),
+        ("<strong>Мы не устанавливали и не проверяли ни одно из них на устройстве.</strong> "
+         "Проверить шестьдесят расширений на реальном оборудовании — отдельная работа, и "
+         "пока её кто-нибудь не сделает, никто, включая нас, не может утверждать, какие "
+         "из них действительно выдают пригодный файл на телефоне."),
+        ("Оно не выдерживает проверки. 55 из найденных здесь расширений — это средства "
+         "сохранения или съёмки страниц с Android в манифесте, вместе около 172,160 "
+         "пользователей в день. У одного лишь SingleFile — 85,724. Наше собственное "
+         "расширение, Full Page PDF Snap, одна запись среди них, и три ежедневных "
+         "пользователя ставят его в самый низ этого списка."),
+        ("До этого измерения такое утверждение стояло в нашем собственном описании в "
+         "магазине. Оно убирается. Точная формулировка уже и всё же полезна: расширение "
+         "<em>действительно</em> работает в Firefox для Android, и это помещает его в "
+         "меньшинство — примерно четверть тех средств, которые ищут, желая сохранить "
+         "страницу, — а не в отдельную категорию."),
+        ("Chrome для Android вообще не может устанавливать расширения. Это не пробел "
+         "измерения, а причина, по которой измерение охватывает только Firefox. Если вы "
+         "хотите сохранить страницу файлом на телефоне с помощью расширения, Firefox "
+         "сейчас — единственный распространённый браузер, где этот вопрос вообще "
+         "возникает."),
+        "система заявок",
+        "открыта.",
+    ],
+    f1="Более высокая минимальная версия Android означает лучшую поддержку?",
+    fa1=("Она означает лишь то, что запись проставлена недавно. Расширение, заявляющее "
+         "113 или 120, обновлялось после того, как Firefox снова открыл платформу "
+         "Android, — значит, его автор по крайней мере видел нынешнюю среду. Запись 48 "
+         "написана для платформы, которой в таком виде больше нет."),
+    f2="Какие из них работают на самом деле?",
+    fa2=("Неизвестно, и гадать мы не станем. Если вы проверите какое-нибудь из них на "
+         "устройстве и захотите, чтобы результат был опубликован здесь вместе с вашим "
+         "методом, —"),
+    fuss=("Метод: восемь поисковых запросов к API v5 addons.mozilla.org, по две страницы "
+          "результатов на каждый, дубликаты объединены по slug; поддержка Android "
+          "прочитана из <code>current_version.compatibility</code>. Получено 2 августа "
+          "2026 года. Ни одно расширение не устанавливалось и не проверялось на "
+          "устройстве — заявление не есть работа. Число пользователей — суточные средние "
+          "AMO, они колеблются. Автор разрабатывает одно из перечисленных расширений."),
+    disclaimer="Отказ от ответственности",
+)
+
+INHALT["zh-CN"] = _seite(
+    h1="哪些保存网页的扩展在 Firefox for Android 上真的能用？",
+    standfirst=(
+        "Firefox for Android 自 2023 年起支持扩展，而这恰恰是 Chrome for Android 至今"
+        "完全做不到的事。因此有意思的问题不是那里能否运行扩展，而是人们真正会去用的那些"
+        "里有多少能运行。我们查了 248 个。"),
+    abgerufen="取得于 2026-08-02", rohdaten="原始数据",
+    h2=["测量了什么", "结果", "声明不等于能用",
+        "这对“少数几个之一”的说法意味着什么",
+        "为什么 Chrome 不出现在这里", "问题"],
+    tabelle=_tabelle("声明支持 Android 的十五个使用量最高的扩展",
+                     "扩展", "日活用户", "评分", "最低 Android 版本"),
+    p=[
+        ("对附加组件搜索 API 运行了八个检索词——<em>full page screenshot</em>、"
+         "<em>save page as pdf</em>、<em>webpage to pdf</em>、<em>screenshot pdf</em>、"
+         "<em>capture page</em>、<em>print to pdf</em>、<em>save webpage</em>、"
+         "<em>page capture</em>——每个取两页结果，重复项合并。当某扩展的当前版本在其兼容性"
+         "数据中列出 <code>android</code> 条目时，即计为声明支持 Android。"),
+        ("248 个扩展中，<strong>60 个声明支持 Android</strong>。它们合计的用户规模约为"
+         "每日 997,616 人，但这个数字被少数几个大的所主导——中位数是 221 人。"),
+        ("这才是要紧之处，也正因如此，上面的数字不应被读作排名。清单中的一个条目意味着该"
+         "扩展<em>可以被安装</em>到 Firefox for Android 上。它没有说明该功能在那里是否"
+         "有效。"),
+        ("抓取类扩展尤其容易受此影响。整页抓取需要滚动文档、等待延迟加载的图片、拼接片段，"
+         "并把结果交给文件选择器——而这些步骤在 Android 上的表现各不相同。"
+         "<code>最低 Android 版本</code>一列暗示了分界：48 或 57 的条目完全早于当前的 "
+         "Android 扩展平台，是沿用下来的；而 113 及以上是在 Firefox 于 2023 年重新开放"
+         "该平台之后设定的。"),
+        ("<strong>我们没有在任何设备上安装或测试过其中任何一个。</strong>在真实硬件上验证"
+         "六十个扩展是另一项工作；在有人去做之前，没有人——包括我们——能声称其中哪些在手机上"
+         "真的能产出可用的文件。"),
+        ("它站不住脚。这里找到的扩展中有 55 个是清单里带 Android 的网页保存或抓取工具，"
+         "合计约 172,160 名日活用户。仅 SingleFile 一个就有 85,724 名。我们自己的扩展 "
+         "Full Page PDF Snap 只是其中一条，其三名日活用户使它位于该名单的最末端。"),
+        ("在这次测量之前，我们自己的商店介绍里一直写着这句话。它正被删除。准确的说法更窄，"
+         "却依然有用：该扩展<em>确实</em>能在 Firefox for Android 上运行，这使它属于人们"
+         "想保存网页时会去搜索的工具中约四分之一的少数派——而不是自成一类。"),
+        ("Chrome for Android 根本无法安装扩展。这不是本次测量的缺口，而是测量只覆盖 "
+         "Firefox 的原因。若想在手机上用扩展把网页保存为文件，Firefox 目前是唯一让这个"
+         "问题得以成立的主流浏览器。"),
+        "问题跟踪",
+        "是开放的。",
+    ],
+    f1="更高的最低 Android 版本是否意味着更好的支持？",
+    fa1=("它只意味着该条目是最近设定的，仅此而已。声明 113 或 120 的扩展是在 Firefox 重新"
+         "开放 Android 平台之后更新的，因此其作者至少看到过当前的环境。写着 48 的条目是"
+         "为一个已不再以那种形态存在的平台而写的。"),
+    f2="这些当中哪些真的能用？",
+    fa2=("未知，我们也不去猜。若您在设备上测试了其中任何一个，并希望连同方法在此发表结果，"),
+    fuss=("方法：对 addons.mozilla.org API v5 使用八个检索词，每个取两页结果，按 slug "
+          "合并重复项；Android 支持从 <code>current_version.compatibility</code> 读取。"
+          "取得于 2026 年 8 月 2 日。没有任何扩展在设备上被安装或测试过——声明不等于能用。"
+          "用户数为 AMO 的日均值，会有波动。作者开发了所列扩展中的一个。"),
+    disclaimer="免责声明",
+)
