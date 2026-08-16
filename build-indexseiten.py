@@ -68,6 +68,74 @@ def block(seite, l):
 </div>'''
 
 
+# Anleitungen gehoeren auch in die Notizenliste.
+#
+# Warum: Wer den neuesten Beitrag sucht, sieht auf /notes/ nach — die Startseite
+# fuehrt dort selbst Anleitungen unter der Ueberschrift "Notizen". Stand die
+# Anleitung vom 15. August nur unter /how-to/, war der neueste Eintrag auf
+# /notes/ der 7. August, und der Beitrag praktisch unauffindbar. Dreimal
+# nachgefragt worden, dreimal von mir erklaert statt behoben. (16.08.2026)
+#
+# Zusammengefuehrt wird HIER, nicht in texte_indexseiten.py: so wandert jeder
+# neue Beitrag automatisch mit, ohne dass ihn jemand an zwei Stellen pflegt.
+MISCHEN = {"notes": ["how-to"]}
+
+_MONATE = {m: i for i, m in enumerate(
+    ["januar", "februar", "maerz", "märz", "april", "mai", "juni", "juli",
+     "august", "september", "oktober", "november", "dezember"], 1)}
+_MONATE.update({m: i for i, m in enumerate(
+    ["january", "february", "march", "april", "may", "june", "july", "august",
+     "september", "october", "november", "december"], 1)})
+
+
+def _sortschluessel(datum: str):
+    """Aus '15 August 2026' bzw. '15. August 2026' ein vergleichbares Tupel.
+
+    Sortiert wird ueber die ENGLISCHE Liste; die anderen Sprachen uebernehmen
+    deren Reihenfolge ueber den href. Neun Datumsformate zu parsen waere neun
+    Gelegenheiten, eine Reihenfolge falsch zu bekommen.
+    """
+    import re as _re
+    m = _re.match(r"(\d{1,2})\.?\s+([A-Za-zäöüÄÖÜ]+)\s+(\d{4})", datum.strip())
+    if not m:
+        return (0, 0, 0)
+    tag, monat, jahr = int(m.group(1)), _MONATE.get(m.group(2).lower(), 0), int(m.group(3))
+    return (jahr, monat, tag)
+
+
+def zusammenfuehren(seite):
+    """Fremde Rubriken in die Liste dieser Seite mischen, nach Datum."""
+    quellen = MISCHEN.get(seite)
+    if not quellen:
+        return
+    basis = T.BASIS
+    # Reihenfolge einmal an der Basissprache bestimmen.
+    reihenfolge = []
+    for eintrag in T.TEXTE[seite][basis]["items"]:
+        reihenfolge.append((_sortschluessel(eintrag["date"]), eintrag["href"]))
+    for rubrik in quellen:
+        if rubrik not in T.TEXTE:
+            continue
+        for eintrag in T.TEXTE[rubrik][basis]["items"]:
+            reihenfolge.append((_sortschluessel(eintrag["date"]),
+                                f"../{rubrik}/" + eintrag["href"]))
+    reihenfolge.sort(key=lambda x: x[0], reverse=True)
+    folge = [h for _, h in reihenfolge]
+
+    for spr in T.SPRACHEN:
+        if spr not in T.TEXTE[seite]:
+            continue
+        nach_href = {e["href"]: e for e in T.TEXTE[seite][spr]["items"]}
+        for rubrik in quellen:
+            if spr not in T.TEXTE.get(rubrik, {}):
+                continue
+            for e in T.TEXTE[rubrik][spr]["items"]:
+                kopie = dict(e)
+                kopie["href"] = f"../{rubrik}/" + e["href"]
+                nach_href[kopie["href"]] = kopie
+        T.TEXTE[seite][spr]["items"] = [nach_href[h] for h in folge if h in nach_href]
+
+
 def bauen(seite):
     ziel = DOCS / seite / "index.html"
     s = ziel.read_text(encoding="utf-8")
@@ -91,6 +159,7 @@ def bauen(seite):
 def main():
     for seite in T.SEITEN:
         if T.TEXTE.get(seite):
+            zusammenfuehren(seite)
             bauen(seite)
 
 
