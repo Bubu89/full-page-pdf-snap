@@ -19,6 +19,38 @@ DOCS = HIER / "docs"
 VORLAGE = DOCS / "notes" / "index.html"
 
 
+def vorschau(s: str, laenge: int = 190) -> str:
+    """Erster deutscher Fliesstext-Absatz einer Seite.
+
+    Frueher wurde nach `<p ... lang="de">` gesucht. Bei der
+    Neunsprachen-Auszeichnung sitzt `lang` aber am umschliessenden
+    `<div data-lang="de">`, die Absaetze darin tragen keins mehr — die Suche
+    lief ins Leere und jede umgestellte Seite verlor ihren Teaser STILL.
+    /about/ stand deshalb mit einem leeren <p></p> in der Uebersicht.
+    (16.08.2026)
+
+    Darum: erst den deutschen Sprachblock nehmen, dann darin den ersten
+    Absatz, der Fliesstext ist — Brotkrumen und Metazeilen sind keiner.
+    """
+    m = re.search(r'<div[^>]*data-lang="de"[^>]*>(.*?)(?=<div[^>]*data-lang=|\Z)',
+                  s, re.S)
+    bereich = m.group(1) if m else s
+    for absatz in re.finditer(r"<p([^>]*)>(.*?)</p>", bereich, re.S):
+        if re.search(r'class="[^"]*\b(crumb|meta|meta-line)\b', absatz.group(1)):
+            continue
+        text = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", absatz.group(2))).strip()
+        if len(text) < 30:
+            continue
+        if len(text) <= laenge:
+            return text
+        # An der Wortgrenze schneiden. Der harte Schnitt bei 190 Zeichen
+        # zerteilte Woerter ("durch den Zitatio", "Elf an") — im Listentext
+        # sieht das nach einem Fehler aus, nicht nach einer Kuerzung.
+        gekuerzt = text[:laenge].rsplit(" ", 1)[0].rstrip(" ,;:–—")
+        return gekuerzt + " …"
+    return ""
+
+
 def deutsche_seiten():
     """Alle Seiten mit einem eigenen deutschen Abschnitt, mit Titel und Umfang."""
     out = []
@@ -32,6 +64,12 @@ def deutsche_seiten():
         if 'data-lang="de"' not in s:
             continue
         pfad = str(Path(datei).relative_to(DOCS).parent).replace("\\", "/")
+        # Diese Seite selbst nicht auflisten. Seit sie neunsprachig ist, traegt
+        # sie `data-lang="de"` und erfuellt damit das eigene Suchmerkmal — die
+        # Uebersicht haette sich selbst als dreizehnten Beitrag gefuehrt.
+        # (16.08.2026)
+        if pfad == "deutsch":
+            continue
         url = "/" if pfad == "." else f"/{pfad}/"
         titel = (re.search(r"<title>(.*?)</title>", s, re.S) or [None, ""])[1]
         titel = re.sub(r"\s*[—|]\s*Proving Lab\s*$", "", titel).strip()
@@ -39,11 +77,7 @@ def deutsche_seiten():
         # nur bis zum ersten schliessenden Tag und war um Faktor drei zu klein.
         # Keine Zeichenzahl — siehe unten. Sortiert wird nach Titel.
         # Erste deutsche Zeile als Vorschau
-        vor = ""
-        m = re.search(r'<p[^>]*\blang="de"[^>]*>(.*?)</p>', s, re.S)
-        if m:
-            vor = re.sub(r"<[^>]+>", "", m.group(1)).strip()
-            vor = re.sub(r"\s+", " ", vor)[:190]
+        vor = vorschau(s)
         out.append({"url": url, "titel": titel, "vorschau": vor})
     out.sort(key=lambda x: x["titel"])
     return out
@@ -145,7 +179,20 @@ def main():
     kopf, fuss = kopf_und_fuss()
     ziel = DOCS / "deutsch"
     ziel.mkdir(parents=True, exist_ok=True)
-    (ziel / "index.html").write_text(anpassen(kopf, len(seiten)) + inhalt(seiten) + fuss, encoding="utf-8")
+    datei = ziel / "index.html"
+    # Seit dem 16.08.2026 ist diese Uebersicht selbst neunsprachig; ihr Text
+    # liegt in texte_deutsch_seite.py. Ein Lauf hier wuerde acht Sprachfassungen
+    # ueberschreiben, ohne dass es jemand merkt — der Bau sieht erfolgreich aus.
+    # Darum wird stattdessen die Liste ausgegeben, die zu uebertragen ist.
+    if datei.exists() and 'data-lang="es"' in datei.read_text(encoding="utf-8"):
+        print("  deutsch/index.html ist neunsprachig — NICHT ueberschrieben.")
+        print("  Inhalt gehoert in texte_deutsch_seite.py, danach:")
+        print("    python3 tools/seite-neunsprachig.py texte_deutsch_seite.py")
+        print(f"  Aktuell {len(seiten)} deutsche Fassungen:")
+        for s in seiten:
+            print(f"    {s['url']:<48} {s['titel'][:44]}")
+        return
+    datei.write_text(anpassen(kopf, len(seiten)) + inhalt(seiten) + fuss, encoding="utf-8")
     print(f"  deutsch/index.html geschrieben — {len(seiten)} Fassungen")
     for s in seiten:
         print(f"    {s['url']}")
