@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.23.0";
+const VERSION = "1.24.0";
 
 /* Welche Fassung die Stores gerade ausliefern — gefragt, nicht eingetragen.
  *
@@ -1418,6 +1418,85 @@ async function werkzeugZaehlen(env, werkzeug) {
   }
 }
 
+/**
+ * Wer ruft an? Gezaehlt wird der Name, den der Client in `initialize`
+ * selbst mitschickt (`clientInfo.name`) — sonst nichts.
+ *
+ * Warum ueberhaupt: Der Werkzeugzaehler sagt, WAS benutzt wird, aber nicht
+ * von WIE VIELEN. Sechzehn Aufrufe am Tag koennen ein Feldeinsatz sein oder
+ * ein Entwickler beim Testen. Ohne diese Unterscheidung laesst sich keine
+ * Massnahme bewerten — und genau das stand am 17.08.2026 an, bevor Eintraege
+ * in Verzeichnisse gemacht werden. (M6 vor M3.)
+ *
+ * Der Name ist FREMDBESTIMMTE Eingabe. Er wird deshalb zugeschnitten,
+ * bevor er in einen Schluessel wandert: nur Buchstaben, Ziffern, Punkt,
+ * Strich und Unterstrich, hoechstens 40 Zeichen. Ohne das koennte ein
+ * Aufrufer mit einem Doppelpunkt die Schluesselstruktur zerlegen oder mit
+ * einem langen Namen den Namensraum zumuellen.
+ *
+ * Was NICHT gezaehlt wird: Adresse, Version, Argumente, Nutzer, Sitzung.
+ * Es bleibt bei dem Grundsatz der Seite — was gezaehlt wird, liefert man
+ * selbst aus (siehe `adoption_stats`, Feld `live.clients`).
+ */
+function klientName(roh) {
+  const n = String(roh || "").trim().slice(0, 40)
+    .replace(/[^A-Za-z0-9._-]/g, "-").replace(/^-+|-+$/g, "");
+  return n || "ohne-Namen";
+}
+
+async function klientZaehlen(env, roh) {
+  if (!env || !env.ZAEHLER) return;
+  const k = `c:${klientName(roh)}:${new Date().toISOString().slice(0, 10)}`;
+  try {
+    const alt = parseInt(await env.ZAEHLER.get(k), 10) || 0;
+    await env.ZAEHLER.put(k, String(alt + 1), {
+      expirationTtl: ZAEHLER_TAGE * 86400,
+    });
+  } catch (e) {
+    // Ein Zaehler darf eine Sitzung niemals scheitern lassen.
+  }
+}
+
+async function klientLesen(env, tage = 30) {
+  if (!env || !env.ZAEHLER) return null;
+  try {
+    const grenze = new Date(Date.now() - tage * 86400000)
+      .toISOString().slice(0, 10);
+    const summe = {};
+    let cursor, gesamt = 0, seit = null;
+    do {
+      const l = await env.ZAEHLER.list({ prefix: "c:", cursor });
+      for (const s of l.keys) {
+        // Der Name kann Striche enthalten, der Tag nicht — deshalb von
+        // HINTEN trennen. Ein split(":")[1] haette Namen mit Doppelpunkt
+        // falsch zerlegt; die gibt es nach klientName() zwar nicht mehr,
+        // aber alte Schluessel muessen weiter lesbar bleiben.
+        const teile = s.name.split(":");
+        const tag = teile[teile.length - 1];
+        const name = teile.slice(1, -1).join(":");
+        if (!tag || tag < grenze) continue;
+        const n = parseInt(await env.ZAEHLER.get(s.name), 10) || 0;
+        summe[name] = (summe[name] || 0) + n;
+        gesamt += n;
+        if (!seit || tag < seit) seit = tag;
+      }
+      cursor = l.list_complete ? null : l.cursor;
+    } while (cursor);
+    const sortiert = Object.fromEntries(
+      Object.entries(summe).sort((a, b) => b[1] - a[1]));
+    return {
+      seit,
+      sitzungen: gesamt,
+      verschiedeneClients: Object.keys(summe).length,
+      jeClient: sortiert,
+      hinweis: "Sitzungseroeffnungen (initialize), kein Werkzeugaufruf. "
+             + "Der Name ist Selbstauskunft des Clients und ungeprueft.",
+    };
+  } catch (e) {
+    return null;
+  }
+}
+
 async function zaehlerLesen(env, tage = 30) {
   if (!env || !env.ZAEHLER) return null;
   try {
@@ -1529,14 +1608,50 @@ async function runTool(origin, name, args, env) {
   if (name === "adoption_stats") {
     const stand = await storeStand();
     const zaehler = await zaehlerLesen(env, 30);
+    const klienten = await klientLesen(env, 30);
+    // Zwei Datenstaende in einer Antwort sind eine Falle. Bis 17.08.2026
+    // standen die eingefrorenen Pfadzahlen vom 04./05.08. gleichberechtigt
+    // neben dem laufenden Zaehler; nur ein Hinweisfeld trennte sie. Wer die
+    // Antwort las, hielt 150 Server-Card-Abrufe fuer den Ist-Stand — live
+    // waren es sechzehn. Der Ausschlag der Registry-Eintragung sah aus wie
+    // Betrieb. Jetzt liegen sie in getrennten Bloecken, und das Alter des
+    // Schnappschusses wird ausgerechnet statt vom Leser erwartet.
+    const SNAPSHOT_ENDE = Date.UTC(2026, 7, 5, 7, 30);
+    const alterTage = Math.floor((Date.now() - SNAPSHOT_ENDE) / 86400000);
     return textResult(JSON.stringify({
-      // Diese Verkehrszahlen sind eine FESTE Momentaufnahme und altern.
-      // Sie stehen weiter hier, weil sie das Verhaeltnis der Pfade zeigen,
-      // das ein Zaehler im Worker nicht liefern kann — aber sie sind als
-      // Snapshot gekennzeichnet, damit niemand sie fuer heutige Zahlen haelt.
+      readMeFirst: "This answer holds TWO vintages. `live` is measured when "
+                 + "you call. `frozenSnapshot` is a single 23.5-hour window "
+                 + `from 4/5 August 2026, now ${alterTage} days old — it `
+                 + "shows the shape of the traffic at that moment, not what "
+                 + "is happening now. Do not quote it as current.",
+      live: {
+        readAt: new Date().toISOString(),
+        toolCalls: zaehler || {
+          note: "counter not reachable — no figures rather than made-up ones",
+        },
+        clients: klienten || {
+          note: "counter not reachable — no figures rather than made-up ones",
+        },
+        howToReadClients: "Sessions opened, not tools called. A client that "
+                        + "connects and calls nothing still appears here. The "
+                        + "name is what the client sends in initialize and is "
+                        + "not verified — it can be set to anything. Counting "
+                        + "started 2026-08-17; anything before that is absent, "
+                        + "not zero.",
+        note: "The two counters above are the only live traffic figures here. "
+            + "Path and status figures would need a Cloudflare analytics "
+            + "call, which this endpoint does not make on your behalf.",
+      },
+      frozenSnapshot: {
       measuredOver: "SNAPSHOT, not live: 23.5 hours, 2026-08-04 08:00 to "
-                  + "2026-08-05 07:30 UTC. The tool counter below is live; "
-                  + "these path figures are frozen at that window.",
+                  + "2026-08-05 07:30 UTC. Frozen. "
+                  + `Age at the time of your call: ${alterTage} days.`,
+      caveat: "These figures caught the spike that followed the registry "
+            + "listing on 2026-08-04, not steady-state traffic. Measured "
+            + "again on 2026-08-17, the descriptor reads had fallen from "
+            + "about 700 a day to 43, and most of those were registry "
+            + "crawlers. Use this block to read the RATIO between paths, "
+            + "never as a level.",
       howMeasured: "Cloudflare zone analytics for provinglab.dev, grouped by "
                  + "path and status. Not a counter inside the worker: nothing "
                  + "is recorded that a caller does not already send.",
@@ -1552,7 +1667,7 @@ async function runTool(origin, name, args, env) {
         },
       },
       whatAgentsRead: {
-        note: "paths an agent fetches before acting, same period",
+        note: "paths an agent fetched before acting, in that window",
         "/.well-known/mcp/server-card.json": 150,
         "/.well-known/agent-skills/index.json": 121,
         "/agent.md": 109,
@@ -1563,6 +1678,7 @@ async function runTool(origin, name, args, env) {
         "/.well-known/agent-card.json": 74,
         "/.well-known/agent-skills/install-an-extension-headless.md": 65,
         "/.well-known/mcp.json": 59,
+      },
       },
       extension: {
         firefoxStoreVersion: stand.firefox,
@@ -1600,9 +1716,6 @@ async function runTool(origin, name, args, env) {
                    + "sixteen releases, and a wrong figure is worse than a "
                    + "missing one. See the Firefox figure above, which is read "
                    + "live.",
-      },
-      toolCalls: zaehler || {
-        note: "counter not reachable — no figures rather than made-up ones",
       },
       rawContext: SITE + "/notes/who-actually-reads-this/",
     }, null, 2));
@@ -1697,6 +1810,8 @@ async function runTool(origin, name, args, env) {
         settings: {
           bildModus: "sw",
           sourceMetadata: true,
+          zitatDatei: true,
+          risDatei: true,
           provenanceFooter: true,
           textLayer: true,
           hideSticky: true,
@@ -1712,6 +1827,15 @@ async function runTool(origin, name, args, env) {
                           + "image under the capture. It attests the file has "
                           + "not changed since it was written, not that the "
                           + "page was genuine",
+          zitatDatei: "a text file beside the PDF with six citation styles — "
+                    + "APA 7, MLA 9, Chicago, Harvard, DIN 1505-2, ISO 690 — "
+                    + "plus BibTeX and the RIS record, in your interface "
+                    + "language and in English. Made to read and copy from",
+          risDatei: "a separate .ris record, because reference managers cannot "
+                  + "read prose: Citavi, Zotero and EndNote need a structured "
+                  + "record. The access date follows the RIS date format "
+                  + "YYYY/MM/DD/ — an ISO timestamp there is forgiven by "
+                  + "Zotero and rejected by Citavi",
           textLayer: "text taken from the page's DOM, not from OCR — copied "
                    + "text cannot be misread",
         },
@@ -2319,6 +2443,13 @@ async function handleMcp(request, origin, env, ctx) {
     try {
       switch (m.method) {
         case "initialize":
+          // Zaehlen, ohne die Antwort zu verzoegern: der Client wartet auf
+          // seine Sitzung, nicht auf unseren Zaehler. Faellt der Schreib-
+          // vorgang aus, bleibt die Sitzung davon unberuehrt.
+          if (ctx && ctx.waitUntil) {
+            ctx.waitUntil(klientZaehlen(env, m.params && m.params.clientInfo
+              && m.params.clientInfo.name));
+          }
           out.push({
             jsonrpc: "2.0",
             id,
@@ -2327,9 +2458,19 @@ async function handleMcp(request, origin, env, ctx) {
               capabilities: { tools: { listChanged: false } },
               serverInfo: { name: "provinglab", version: VERSION },
               instructions:
-                "Measurements on browser tools, OCR pipelines and AI-assisted " +
-                "development. Every dataset here has a documented method and a " +
-                "control run. Start with list_measurements. " +
+                // Die Aufgabe zuerst, die Belegtiefe danach. Bis 17.08.2026
+                // stand hier "Measurements on browser tools, OCR pipelines
+                // and AI-assisted development" — waehrend die Registry, ueber
+                // die ein Agent hierher findet, "Cite or capture a web page"
+                // sagt. Wer wegen des einen kam, las das andere und schloss
+                // daraus, er sei falsch. Ein Trichterbruch genau an der
+                // Uebergabestelle, und der teuerste: der Agent ist schon da.
+                "Cite or capture a web page. Use extract_citation when a page " +
+                "needs to enter a reference manager, how_to_capture when a " +
+                "source has to be saved as evidence, install_extension when " +
+                "the capture has to run in a browser without a click. " +
+                "Every figure behind these tools has a documented method and " +
+                "a control run — list_measurements shows them. " +
                 // Ohne diesen Satz weiss ein Agent nicht, dass es die Seiten in
                 // neun Sprachen gibt — und holt sie in der falschen. Der Weg
                 // dorthin ist eine Kopfzeile, keine andere Adresse.

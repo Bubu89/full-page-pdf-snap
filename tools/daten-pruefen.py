@@ -245,7 +245,15 @@ def main():
             return str(weg)
 
     schema = json.loads(a.schema.read_text(encoding="utf-8"))
-    dateien = sorted(f for f in a.daten.glob("*.json") if f.name != "schema.json")
+    # Nicht jede Datei unter data/ ist eine Messung.
+    #
+    # "sprachen-meta.json" ist eine Zuordnungstabelle von Adresse zu Titel und
+    # Beschreibung je Sprache, erzeugt von tools/sprachmeta.py. Sie hat weder
+    # eine Fragestellung noch ein Messdatum, und die Pflichtfelder eines
+    # Datensatzes darauf anzuwenden erzeugt drei Fehler, die keine sind — der
+    # Pruefer meldete damit seinen eigenen Zuschnitt statt eines Mangels.
+    KEINE_MESSUNG = {"schema.json", "sprachen-meta.json"}
+    dateien = sorted(f for f in a.daten.glob("*.json") if f.name not in KEINE_MESSUNG)
     if not dateien:
         print(f"Keine Datensaetze in {anzeige(a.daten)} gefunden.")
         return 1

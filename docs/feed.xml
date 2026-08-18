@@ -5,10 +5,18 @@
   <id>https://provinglab.dev/</id>
   <link rel="alternate" type="text/html" href="https://provinglab.dev/"/>
   <link rel="self" type="application/atom+xml" href="https://provinglab.dev/feed.xml"/>
-  <updated>2026-08-15T00:00:00Z</updated>
+  <updated>2026-08-18T00:00:00Z</updated>
   <author><name>Proving Lab</name><uri>https://provinglab.dev/</uri></author>
   <icon>https://provinglab.dev/icon-128.png</icon>
   <rights>Content licensed for reading and quoting with attribution.</rights>
+  <entry>
+    <title>Everything a citation needs, beside the PDF</title>
+    <id>https://provinglab.dev/notes/a-download-that-never-arrives/</id>
+    <link rel="alternate" type="text/html" href="https://provinglab.dev/notes/a-download-that-never-arrives/"/>
+    <published>2026-08-18T00:00:00Z</published>
+    <updated>2026-08-18T00:00:00Z</updated>
+    <summary type="text">Measured 18 August 2026: Firefox refuses data: addresses in downloads.download with "Access denied" while blob: succeeds, subfolder and all. Six citation styles in nine languages now land beside the PDF, plus a record Citavi and Zotero can read and a pointer inside the PDF for language models.</summary>
+  </entry>
   <entry>
     <title>For researchers and students: the add-on in Firefox and Chrome — setup and the academic workflow</title>
     <id>https://provinglab.dev/how-to/firefox-and-chrome/</id>

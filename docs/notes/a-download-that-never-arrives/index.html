@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Everything a citation needs, beside the PDF — Proving Lab</title>
+<meta name="description" content="Measured 18 August 2026: Firefox refuses data: addresses in downloads.download with "Access denied" while blob: succeeds, subfolder and all. Six citation styles in nine languages now land beside the PDF, plus a record reference managers can read and a pointer inside the PDF for language models.">
+<meta name="keywords" content="citation file, RIS, Citavi, Zotero, downloads.download, data URL, blob URL, Firefox, browser extension">>
+<link rel="canonical" href="https://provinglab.dev/notes/a-download-that-never-arrives/">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/notes/a-download-that-never-arrives/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/notes/a-download-that-never-arrives/">
+<link rel="alternate" hreflang="es" href="https://provinglab.dev/notes/a-download-that-never-arrives/">
+<link rel="alternate" hreflang="fr" href="https://provinglab.dev/notes/a-download-that-never-arrives/">
+<link rel="alternate" hreflang="it" href="https://provinglab.dev/notes/a-download-that-never-arrives/">
+<link rel="alternate" hreflang="ja" href="https://provinglab.dev/notes/a-download-that-never-arrives/">
+<link rel="alternate" hreflang="pt-BR" href="https://provinglab.dev/notes/a-download-that-never-arrives/">
+<link rel="alternate" hreflang="ru" href="https://provinglab.dev/notes/a-download-that-never-arrives/">
+<link rel="alternate" hreflang="zh-CN" href="https://provinglab.dev/notes/a-download-that-never-arrives/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/notes/a-download-that-never-arrives/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Everything a citation needs, beside the PDF">
+<meta property="og:description" content="Measured 18 August 2026: Firefox refuses data: addresses in downloads.download with "Access denied" while blob: succeeds, subfolder and all. Six citation styles in nine languages now land beside the PDF, plus a record reference managers can read and a pointer inside the PDF for language models.">
+<meta property="og:url" content="https://provinglab.dev/notes/a-download-that-never-arrives/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-08-01">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Everything a citation needs, beside the PDF",
+  "description": "Measured 18 August 2026: Firefox refuses data: addresses in downloads.download with "Access denied" while blob: succeeds, subfolder and all. Six citation styles in nine languages now land beside the PDF, plus a record reference managers can read and a pointer inside the PDF for language models.",
+  "datePublished": "2026-08-18",
+  "dateModified": "2026-08-18",
+  "inLanguage": ["en", "de", "es", "fr", "it", "ja", "pt-BR", "ru", "zh-CN"],
+  "url": "https://provinglab.dev/notes/a-download-that-never-arrives/",
+  "author": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "about": {
+    "@type": "Dataset",
+    "name": "Colour depth against file size and OCR recall, 2026-08-18",
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "distribution": [
+      {
+        "@type": "DataDownload",
+        "encodingFormat": "application/json",
+        "contentUrl": "https://provinglab.dev/data/2026-08-18-firefox-download-data-url.json"
+      }
+    ]
+  },
+  "keywords": "citation file, RIS, Citavi, Zotero, downloads.download, data URL, blob URL, Firefox"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Firefox download routes for extension side files, 2026-08-18",
+  "description": "",
+  "url": "https://provinglab.dev/data/2026-08-18-firefox-download-data-url.json",
+  "identifier": "https://provinglab.dev/data/2026-08-18-firefox-download-data-url.json",
+  "datePublished": "2026-08-18",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "keywords": "citation file, RIS, Citavi, Zotero, downloads.download, data URL, blob URL, Firefox"
+}
+</script>
+<style>
+  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.87em;background:var(--card);
+       padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:34px 0 36px;border-bottom:1px solid var(--line);margin-bottom:32px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.16;letter-spacing:-.025em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:60ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+  h2{font-size:1.4rem;line-height:1.25;margin:46px 0 14px;letter-spacing:-.015em;text-wrap:balance}
+  h3{font-size:1.04rem;margin:28px 0 8px}
+  p{margin-bottom:17px} ul,ol{margin:0 0 18px 24px} li{margin-bottom:9px}
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0}
+  .kf{flex:1 1 160px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px}
+  .kf .n{font-size:1.8rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.a .n{color:var(--good)} .kf.b .n{color:var(--warn)}
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--bg2);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .win{color:var(--good);font-weight:600} .lose{color:var(--bad)}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.84rem;line-height:1.6}
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0} .box p:last-child{margin-bottom:0}
+  .faq{margin:44px 0 0}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin:44px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+  footer{margin-top:52px;padding:24px 0 64px;border-top:1px solid var(--line);
+    font-size:.83rem;color:var(--dim);line-height:1.6}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
+</style>
+<script src="/agent-tools.js" defer></script>
+<script src="/site-lang.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/">Notes</a>
+    <a class="n" href="../../measurements/" aria-current="page">Measurements</a>
+    <a class="n" href="../../how-to/">How&nbsp;to</a>
+    <a class="n" href="../../recipes/">Recipes</a>
+    <a class="n" href="../../for-agents/">For&nbsp;agents</a>
+    <a class="n" href="../../mitmachen/">Mitmachen</a>
+    <a class="n" href="../../tools/">Tools</a>
+    <a class="n" href="../../about/">About</a>
+    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
+      <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+<div data-lang="en" class="on" lang="en">
+<header>
+  <h1>Everything a citation needs, beside the PDF</h1>
+  <p class="standfirst">
+    A screen capture becomes evidence only when the details travel with it. Six citation styles in nine languages, a record reference managers can actually read, and a pointer inside the PDF so a language model finds the rest. Plus the measurement that explains why none of it arrived for a long time.
+  </p>
+  <p class="meta">Measured 2026-08-18 ·
+    <a href="/data/2026-08-18-firefox-download-data-url.json">raw data</a></p>
+</header>
+
+<h2>Two files, two jobs</h2>
+<p>They are not two copies of the same thing. The text file is written to be read and copied from: one line per style, ready for a bibliography. The other is a record — plain, structured, and meant for a machine.</p>
+<table>
+  <thead><tr><th scope="col">File</th><th scope="col">For</th><th scope="col">Contains</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>.zitate.txt</code></th><td>reading, copying</td><td>APA 7, MLA 9, Chicago, Harvard, DIN 1505-2, ISO 690, BibTeX, and the RIS record — in your language and in English</td></tr>
+    <tr><th scope="row"><code>.ris</code></th><td>Citavi, Zotero, EndNote</td><td>the same source as an importable record</td></tr>
+  </tbody>
+</table>
+<p>Reference managers cannot read prose. That was the flaw in shipping only the text file: it looked complete and was useless to the one tool that would have saved the most work. Both files are optional, both are on by default, and both are tied to the citation switch in the menu — if that is off, only the PDF is written.</p>
+
+<h2>A date format that decides whether the import works</h2>
+<p>The access date sat in the record as an ISO timestamp. Zotero forgives that. Citavi and EndNote do not — the field arrived empty or as text nobody had asked for. RIS prescribes <code>YYYY/MM/DD/</code> followed by free text, and the time of day belongs in that free part: pages change during a day, and evidence without a time cannot be tied to a version.</p>
+<pre>Y2  - 2026-08-18T11:00:00+02:00      before
+Y2  - 2026/08/18/11:00               now</pre>
+
+<h2>A pointer inside the PDF, for whoever reads it next</h2>
+<p>The citation is written into the PDF itself — document properties, an XMP record, the RIS record as an attachment. What was missing was the connection to the file beside it. A PDF now carries the rule rather than the name: same folder, same file name, <code>.pdf</code> replaced by <code>.zitate.txt</code>. A rule, because a name would point nowhere the moment the browser appends " (1)". Anyone holding the path of the PDF — a person or a language model — holds the path of the citation.</p>
+
+<h2>Why none of it arrived</h2>
+<p>The PDF always landed. The file meant to lie beside it did not, and when it finally did, it sat in the wrong folder. The cause was not the logic that requests it. Firefox refuses data: addresses in <code>downloads.download</code> outright:</p>
+<table>
+  <caption>Firefox ESR 153.0.4, headless, throwaway profile, one purpose-built extension</caption>
+  <thead><tr><th scope="col">Case</th><th scope="col">Address</th><th scope="col">Subfolder</th><th scope="col">Result</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">A</th><td><code>data:</code></td><td>yes</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">B</th><td><code>data:</code></td><td>no</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">C</th><td><code>blob:</code></td><td>yes</td><td class="win">arrived, correct folder</td></tr>
+    <tr><th scope="row">D</th><td><code>blob:</code> then <code>data:</code></td><td>yes</td><td class="lose">only the first arrived</td></tr>
+  </tbody>
+</table>
+<p>The PDF is assembled in memory and handed over as a blob; a short text file was built as a string and handed over as data:, because that is shorter to write and looks equivalent. The two differed in the one property nobody compared. Case B rules out the folder — without it the call fails just the same.</p>
+<p>Behind that sits a second trap. When the download interface fails, extensions fall back to an anchor with a <code>download</code> attribute. That does put the file on disk — in the root of the download directory, because the attribute takes a file name and every browser discards path components (HTML Living Standard, 4.6.6). The visible sign is a companion file next to the download folder instead of inside it.</p>
+<p>The widely repeated rule of thumb says the opposite: that Firefox rejects blob: and accepts data:, citing Bugzilla 1287347 and 1696174. In Firefox 153 the reverse holds. A comment in our own source repeated that rule and sent the search the wrong way for a long time. The address is now chosen at runtime — blob: where it exists, data: in a Manifest V3 service worker, where <code>URL.createObjectURL</code> does not.</p>
+
+<h2>Where the versions stand</h2>
+<p>Both branches are at <strong>2.38.0</strong> in source. The Firefox store currently serves 2.37.0, the Chrome store 2.33.4 — this site does not claim when that changes. What is always current is the machine-readable answer at <a href="/.well-known/extension-versions.json">/.well-known/extension-versions.json</a>: both store versions, the source state and the declared permissions at one address. The MCP endpoint reports its own version in the server card; <code>recommend_settings</code> answers by purpose and names the measurement behind each value, or says plainly that none exists.</p>
+
+<footer>
+      Method: a purpose-built extension requests four downloads and logs, per case, the outcome, the path returned by downloads.search() and the error text. Verified against the directory tree after the run, not against the return value of the call. Firefox ESR 153.0.4 on Windows 11, headless, driven over Marionette, temporary install. One browser, one version — the mechanism is stable, the version boundary is not measured here. The citation styles are generated from the page's own details; where a page supplies nothing, the entry says so rather than guessing. Nothing here is legal advice.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+</div>
+<div data-lang="de" lang="de">
+<header>
+  <h1>Alles, was eine Zitation braucht, neben dem PDF</h1>
+  <p class="standfirst">
+    Eine Bildschirmaufnahme wird erst zum Beleg, wenn die Angaben mitkommen. Sechs Zitierweisen in neun Sprachen, ein Satz, den Literaturprogramme wirklich lesen können, und ein Wegweiser im PDF, damit ein Sprachmodell den Rest findet. Dazu die Messung, die erklärt, warum davon lange nichts ankam.
+  </p>
+  <p class="meta">Gemessen am 2026-08-18 ·
+    <a href="/data/2026-08-18-firefox-download-data-url.json">Rohdaten</a></p>
+</header>
+
+<h2>Zwei Dateien, zwei Aufgaben</h2>
+<p>Sie sind nicht zwei Abschriften derselben Sache. Die Textdatei ist zum Lesen und Abschreiben gemacht: eine Zeile je Zitierweise, fertig fürs Literaturverzeichnis. Die andere ist ein Datensatz — schmucklos, strukturiert, für eine Maschine gedacht.</p>
+<table>
+  <thead><tr><th scope="col">Datei</th><th scope="col">Wofür</th><th scope="col">Enthält</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>.zitate.txt</code></th><td>Lesen, Kopieren</td><td>APA 7, MLA 9, Chicago, Harvard, DIN 1505-2, ISO 690, BibTeX und den RIS-Satz — in Ihrer Sprache und auf Englisch</td></tr>
+    <tr><th scope="row"><code>.ris</code></th><td>Citavi, Zotero, EndNote</td><td>dieselbe Quelle als einlesbarer Datensatz</td></tr>
+  </tbody>
+</table>
+<p>Literaturprogramme lesen keinen Fließtext. Das war der Fehler daran, nur die Textdatei mitzugeben: Sie sah vollständig aus und war für genau das Werkzeug nutzlos, das die meiste Arbeit abgenommen hätte. Beide Dateien sind abwählbar, beide ab Werk an, und beide hängen am Zitationsschalter im Menü — ist der aus, wird nur das PDF geschrieben.</p>
+
+<h2>Ein Datumsformat, an dem der Import hängt</h2>
+<p>Das Abrufdatum stand im Datensatz als ISO-Zeitstempel. Zotero verzeiht das. Citavi und EndNote nicht — das Feld kam leer an oder als Text, nach dem niemand gefragt hatte. RIS schreibt <code>JJJJ/MM/TT/</code> vor, gefolgt von Freitext, und die Uhrzeit gehört in diesen freien Teil: Seiten ändern sich im Lauf eines Tages, und ein Beleg ohne Uhrzeit lässt sich keiner Fassung zuordnen.</p>
+<pre>Y2  - 2026-08-18T11:00:00+02:00      vorher
+Y2  - 2026/08/18/11:00               jetzt</pre>
+
+<h2>Ein Wegweiser im PDF, für den, der es als Nächstes liest</h2>
+<p>Die Zitation steht im PDF selbst — in den Dokumenteigenschaften, als XMP-Datensatz, der RIS-Satz als Anlage. Was fehlte, war die Verbindung zur Datei daneben. Ein PDF trägt jetzt die Regel statt des Namens: derselbe Ordner, derselbe Dateiname, <code>.pdf</code> ersetzt durch <code>.zitate.txt</code>. Eine Regel, weil ein fester Name in dem Moment ins Leere zeigt, in dem der Browser „ (1)“ anhängt. Wer den Pfad des PDF hat — ein Mensch oder ein Sprachmodell —, hat damit den Pfad der Zitation.</p>
+
+<h2>Warum nichts davon ankam</h2>
+<p>Das PDF kam immer an. Die Datei, die daneben liegen sollte, nicht — und als sie es endlich tat, lag sie im falschen Ordner. Die Ursache war nicht die Logik, die sie anfordert. Firefox verweigert data:-Adressen in <code>downloads.download</code> rundheraus:</p>
+<table>
+  <caption>Firefox ESR 153.0.4, headless, Wegwerf-Profil, eine eigens gebaute Erweiterung</caption>
+  <thead><tr><th scope="col">Fall</th><th scope="col">Adresse</th><th scope="col">Unterordner</th><th scope="col">Ergebnis</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">A</th><td><code>data:</code></td><td>ja</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">B</th><td><code>data:</code></td><td>nein</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">C</th><td><code>blob:</code></td><td>ja</td><td class="win">angekommen, richtiger Ordner</td></tr>
+    <tr><th scope="row">D</th><td><code>blob:</code>, dann <code>data:</code></td><td>ja</td><td class="lose">nur die erste kam an</td></tr>
+  </tbody>
+</table>
+<p>Das PDF entsteht im Speicher und wird als Blob übergeben; eine kurze Textdatei wurde als Zeichenkette gebaut und als data: übergeben, weil das kürzer zu schreiben ist und gleichwertig aussieht. Die beiden unterschieden sich in genau der Eigenschaft, die niemand verglichen hat. Fall B schließt den Ordner aus — ohne ihn scheitert der Aufruf genauso.</p>
+<p>Dahinter steckt eine zweite Falle. Scheitert die Download-Schnittstelle, weichen Erweiterungen auf einen Anker mit <code>download</code>-Attribut aus. Der legt die Datei tatsächlich ab — im Wurzelverzeichnis der Ablage, denn das Attribut nimmt einen Dateinamen, und Pfadanteile verwerfen alle Browser (HTML Living Standard, 4.6.6). Das sichtbare Zeichen ist eine Beilage neben dem Download-Ordner statt darin.</p>
+<p>Die vielfach wiederholte Merkregel sagt das Gegenteil: Firefox lehne blob: ab und akzeptiere data:, unter Verweis auf Bugzilla 1287347 und 1696174. In Firefox 153 gilt das Umgekehrte. Ein Kommentar im eigenen Quelltext hat diese Regel wiederholt und die Suche lange in die falsche Richtung geschickt. Die Adresse wird jetzt zur Laufzeit gewählt — blob:, wo es das gibt, data: im Service Worker von Manifest V3, wo <code>URL.createObjectURL</code> fehlt.</p>
+
+<h2>Wo die Fassungen stehen</h2>
+<p>Beide Zweige stehen im Quellstand bei <strong>2.38.0</strong>. Der Firefox-Store liefert derzeit 2.37.0 aus, der Chrome-Store 2.33.4 — wann sich das ändert, behauptet diese Seite nicht. Immer aktuell ist die maschinenlesbare Auskunft unter <a href="/.well-known/extension-versions.json">/.well-known/extension-versions.json</a>: beide Store-Stände, der Quellstand und die deklarierten Berechtigungen an einer Adresse. Der MCP-Endpunkt nennt seine eigene Fassung in der Serverkarte; <code>recommend_settings</code> antwortet nach Zweck und nennt zu jedem Wert die Messung dahinter — oder sagt ausdrücklich, dass es keine gibt.</p>
+
+<footer>
+      Methode: Eine eigens gebaute Erweiterung fordert vier Downloads an und protokolliert je Fall Ergebnis, den von downloads.search() gemeldeten Pfad und den Fehlertext. Geprüft wurde gegen den Verzeichnisbaum nach dem Lauf, nicht gegen den Rückgabewert des Aufrufs. Firefox ESR 153.0.4 unter Windows 11, headless, über Marionette gesteuert, temporär installiert. Ein Browser, eine Fassung — der Mechanismus ist stabil, die Versionsgrenze ist hier nicht gemessen. Die Zitierweisen entstehen aus den Angaben der Seite selbst; gibt eine Seite nichts her, sagt der Eintrag das, statt zu raten. Nichts hiervon ist Rechtsberatung.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+</div>
+<div data-lang="es" lang="es">
+<header>
+  <h1>Todo lo que una cita necesita, junto al PDF</h1>
+  <p class="standfirst">
+    Una captura de pantalla solo se convierte en prueba cuando los datos viajan con ella. Seis estilos de cita en nueve idiomas, un registro que los gestores bibliográficos sí pueden leer, y una indicación dentro del PDF para que un modelo de lenguaje encuentre el resto. Y la medición que explica por qué durante mucho tiempo no llegaba nada de eso.
+  </p>
+  <p class="meta">Medido el 2026-08-18 ·
+    <a href="/data/2026-08-18-firefox-download-data-url.json">datos brutos</a></p>
+</header>
+
+<h2>Dos archivos, dos tareas</h2>
+<p>No son dos copias de lo mismo. El archivo de texto está hecho para leerse y copiarse: una línea por estilo, lista para la bibliografía. El otro es un registro: sobrio, estructurado, pensado para una máquina.</p>
+<table>
+  <thead><tr><th scope="col">Archivo</th><th scope="col">Para</th><th scope="col">Contiene</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>.zitate.txt</code></th><td>leer, copiar</td><td>APA 7, MLA 9, Chicago, Harvard, DIN 1505-2, ISO 690, BibTeX y el registro RIS — en su idioma y en inglés</td></tr>
+    <tr><th scope="row"><code>.ris</code></th><td>Citavi, Zotero, EndNote</td><td>la misma fuente como registro importable</td></tr>
+  </tbody>
+</table>
+<p>Los gestores bibliográficos no leen prosa. Ese era el defecto de entregar solo el archivo de texto: parecía completo y resultaba inútil justo para la herramienta que más trabajo habría ahorrado. Ambos archivos son opcionales, ambos vienen activados y ambos dependen del interruptor de citas del menú: si está desactivado, solo se escribe el PDF.</p>
+
+<h2>Un formato de fecha del que depende la importación</h2>
+<p>La fecha de consulta figuraba en el registro como marca de tiempo ISO. Zotero lo perdona. Citavi y EndNote no: el campo llegaba vacío o como texto que nadie había pedido. RIS prescribe <code>AAAA/MM/DD/</code> seguido de texto libre, y la hora pertenece a esa parte libre: las páginas cambian a lo largo del día, y una prueba sin hora no puede asociarse a una versión.</p>
+<pre>Y2  - 2026-08-18T11:00:00+02:00      antes
+Y2  - 2026/08/18/11:00               ahora</pre>
+
+<h2>Una indicación dentro del PDF, para quien lo lea después</h2>
+<p>La cita se escribe en el propio PDF: propiedades del documento, registro XMP, el registro RIS como adjunto. Faltaba el vínculo con el archivo de al lado. Un PDF lleva ahora la regla en vez del nombre: misma carpeta, mismo nombre de archivo, <code>.pdf</code> sustituido por <code>.zitate.txt</code>. Una regla, porque un nombre fijo apuntaría al vacío en cuanto el navegador añadiera « (1)». Quien tiene la ruta del PDF —una persona o un modelo de lenguaje— tiene con ella la ruta de la cita.</p>
+
+<h2>Por qué no llegaba nada de eso</h2>
+<p>El PDF llegaba siempre. El archivo que debía quedar a su lado, no — y cuando por fin lo hizo, apareció en la carpeta equivocada. La causa no era la lógica que lo solicita. Firefox rechaza de plano las direcciones data: en <code>downloads.download</code>:</p>
+<table>
+  <caption>Firefox ESR 153.0.4, headless, perfil desechable, una extensión hecha para esta prueba</caption>
+  <thead><tr><th scope="col">Caso</th><th scope="col">Dirección</th><th scope="col">Subcarpeta</th><th scope="col">Resultado</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">A</th><td><code>data:</code></td><td>sí</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">B</th><td><code>data:</code></td><td>no</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">C</th><td><code>blob:</code></td><td>sí</td><td class="win">llegó, carpeta correcta</td></tr>
+    <tr><th scope="row">D</th><td><code>blob:</code> y luego <code>data:</code></td><td>sí</td><td class="lose">solo llegó el primero</td></tr>
+  </tbody>
+</table>
+<p>El PDF se compone en memoria y se entrega como blob; un archivo de texto corto se construía como cadena y se entregaba como data:, porque es más breve de escribir y parece equivalente. Los dos se diferenciaban justo en la propiedad que nadie comparó. El caso B descarta la subcarpeta: sin ella la llamada falla igual.</p>
+<p>Detrás hay una segunda trampa. Cuando la interfaz de descargas falla, las extensiones recurren a un enlace con el atributo <code>download</code>. Eso sí guarda el archivo, pero en la raíz del directorio de descargas, porque el atributo admite un nombre de archivo y todos los navegadores descartan los componentes de ruta (HTML Living Standard, 4.6.6). La señal visible es un archivo acompañante junto a la carpeta de descargas en lugar de dentro.</p>
+<p>La regla que se repite dice lo contrario: que Firefox rechaza blob: y acepta data:, citando Bugzilla 1287347 y 1696174. En Firefox 153 rige lo inverso. Un comentario en nuestro propio código repetía esa regla y desvió la búsqueda mucho tiempo. Ahora la dirección se elige en tiempo de ejecución: blob: donde existe, data: en un service worker de Manifest V3, donde no hay <code>URL.createObjectURL</code>.</p>
+
+<h2>En qué versiones estamos</h2>
+<p>Ambas ramas están en <strong>2.38.0</strong> en el código fuente. La tienda de Firefox sirve actualmente 2.37.0 y la de Chrome 2.33.4; este sitio no afirma cuándo cambiará. Siempre al día está la respuesta legible por máquina en <a href="/.well-known/extension-versions.json">/.well-known/extension-versions.json</a>: ambas versiones de tienda, el estado del código y los permisos declarados en una sola dirección. El extremo MCP indica su propia versión en la tarjeta de servidor; <code>recommend_settings</code> responde por finalidad y nombra la medición detrás de cada valor, o dice con claridad que no existe.</p>
+
+<footer>
+      Método: una extensión hecha para esta prueba solicita cuatro descargas y registra, por caso, el resultado, la ruta devuelta por downloads.search() y el texto del error. Se verificó contra el árbol de directorios tras la ejecución, no contra el valor devuelto por la llamada. Firefox ESR 153.0.4 en Windows 11, headless, controlado por Marionette, instalación temporal. Un navegador, una versión: el mecanismo es estable, el límite de versión no se mide aquí. Los estilos de cita se generan a partir de los datos de la propia página; si una página no aporta nada, la entrada lo dice en vez de adivinar. Nada de esto es asesoramiento jurídico.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+</div>
+<div data-lang="fr" lang="fr">
+<header>
+  <h1>Tout ce qu’une citation demande, à côté du PDF</h1>
+  <p class="standfirst">
+    Une capture d’écran ne devient une preuve que si les indications l’accompagnent. Six styles de citation en neuf langues, un enregistrement que les logiciels de bibliographie savent vraiment lire, et un renvoi dans le PDF pour qu’un modèle de langue trouve le reste. Avec la mesure qui explique pourquoi rien de tout cela n’arrivait pendant longtemps.
+  </p>
+  <p class="meta">Mesuré le 2026-08-18 ·
+    <a href="/data/2026-08-18-firefox-download-data-url.json">données brutes</a></p>
+</header>
+
+<h2>Deux fichiers, deux tâches</h2>
+<p>Ce ne sont pas deux copies de la même chose. Le fichier texte est fait pour être lu et recopié : une ligne par style, prête pour la bibliographie. L’autre est un enregistrement — sobre, structuré, destiné à une machine.</p>
+<table>
+  <thead><tr><th scope="col">Fichier</th><th scope="col">Pour</th><th scope="col">Contient</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>.zitate.txt</code></th><td>lire, copier</td><td>APA 7, MLA 9, Chicago, Harvard, DIN 1505-2, ISO 690, BibTeX et l’enregistrement RIS — dans votre langue et en anglais</td></tr>
+    <tr><th scope="row"><code>.ris</code></th><td>Citavi, Zotero, EndNote</td><td>la même source sous forme d’enregistrement importable</td></tr>
+  </tbody>
+</table>
+<p>Les logiciels de bibliographie ne lisent pas de prose. C’était le défaut de ne livrer que le fichier texte : il paraissait complet et restait inutile précisément pour l’outil qui aurait épargné le plus de travail. Les deux fichiers sont facultatifs, tous deux activés d’origine, et tous deux dépendent de l’interrupteur des citations dans le menu : s’il est éteint, seul le PDF est écrit.</p>
+
+<h2>Un format de date dont dépend l’import</h2>
+<p>La date de consultation figurait dans l’enregistrement sous forme d’horodatage ISO. Zotero le pardonne. Citavi et EndNote non : le champ arrivait vide ou sous forme de texte que personne n’avait demandé. RIS impose <code>AAAA/MM/JJ/</code> suivi de texte libre, et l’heure appartient à cette partie libre : les pages changent au cours d’une journée, et une preuve sans heure ne peut être rattachée à une version.</p>
+<pre>Y2  - 2026-08-18T11:00:00+02:00      avant
+Y2  - 2026/08/18/11:00               maintenant</pre>
+
+<h2>Un renvoi dans le PDF, pour qui le lira ensuite</h2>
+<p>La citation est inscrite dans le PDF lui-même : propriétés du document, enregistrement XMP, l’enregistrement RIS en pièce jointe. Ce qui manquait, c’était le lien vers le fichier voisin. Un PDF porte désormais la règle plutôt que le nom : même dossier, même nom de fichier, <code>.pdf</code> remplacé par <code>.zitate.txt</code>. Une règle, car un nom fixe renverrait dans le vide dès que le navigateur ajoute « (1) ». Qui détient le chemin du PDF — une personne ou un modèle de langue — détient celui de la citation.</p>
+
+<h2>Pourquoi rien de cela n’arrivait</h2>
+<p>Le PDF arrivait toujours. Le fichier qui devait se trouver à côté, non — et lorsqu’il est enfin arrivé, il était dans le mauvais dossier. La cause n’était pas la logique qui le demande. Firefox refuse catégoriquement les adresses data: dans <code>downloads.download</code> :</p>
+<table>
+  <caption>Firefox ESR 153.0.4, sans fenêtre, profil jetable, une extension construite pour l’essai</caption>
+  <thead><tr><th scope="col">Cas</th><th scope="col">Adresse</th><th scope="col">Sous-dossier</th><th scope="col">Résultat</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">A</th><td><code>data:</code></td><td>oui</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">B</th><td><code>data:</code></td><td>non</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">C</th><td><code>blob:</code></td><td>oui</td><td class="win">arrivé, bon dossier</td></tr>
+    <tr><th scope="row">D</th><td><code>blob:</code> puis <code>data:</code></td><td>oui</td><td class="lose">seul le premier est arrivé</td></tr>
+  </tbody>
+</table>
+<p>Le PDF est assemblé en mémoire et remis sous forme de blob ; un court fichier texte était construit comme chaîne et remis en data:, parce que c’est plus court à écrire et que cela paraît équivalent. Les deux différaient précisément par la propriété que personne n’avait comparée. Le cas B écarte le sous-dossier : sans lui, l’appel échoue tout autant.</p>
+<p>Derrière se cache un second piège. Quand l’interface de téléchargement échoue, les extensions se rabattent sur un lien portant l’attribut <code>download</code>. Le fichier est bien enregistré, mais à la racine du dossier de téléchargement, car l’attribut prend un nom de fichier et tous les navigateurs écartent les composants de chemin (HTML Living Standard, 4.6.6). Le signe visible : un fichier joint posé à côté du dossier au lieu d’être dedans.</p>
+<p>La règle souvent répétée dit l’inverse : Firefox refuserait blob: et accepterait data:, en citant Bugzilla 1287347 et 1696174. Dans Firefox 153, c’est le contraire qui vaut. Un commentaire dans notre propre code reprenait cette règle et a longtemps orienté la recherche du mauvais côté. L’adresse est désormais choisie à l’exécution : blob: là où elle existe, data: dans un service worker de Manifest V3, où <code>URL.createObjectURL</code> manque.</p>
+
+<h2>Où en sont les versions</h2>
+<p>Les deux branches sont en <strong>2.38.0</strong> dans les sources. La boutique Firefox sert actuellement 2.37.0, celle de Chrome 2.33.4 — ce site n’avance rien sur le moment où cela changera. Ce qui est toujours à jour, c’est la réponse lisible par machine à <a href="/.well-known/extension-versions.json">/.well-known/extension-versions.json</a> : les deux versions en boutique, l’état des sources et les permissions déclarées à une seule adresse. Le point d’accès MCP indique sa propre version dans la carte de serveur ; <code>recommend_settings</code> répond par usage et nomme la mesure derrière chaque valeur, ou dit clairement qu’il n’y en a pas.</p>
+
+<footer>
+      Méthode : une extension construite pour l’essai demande quatre téléchargements et consigne, pour chaque cas, le résultat, le chemin renvoyé par downloads.search() et le texte de l’erreur. Vérification contre l’arborescence après l’exécution, non contre la valeur retournée par l’appel. Firefox ESR 153.0.4 sous Windows 11, sans fenêtre, piloté par Marionette, installation temporaire. Un navigateur, une version : le mécanisme est stable, la limite de version n’est pas mesurée ici. Les styles de citation sont produits à partir des indications de la page elle-même ; si une page n’en donne aucune, l’entrée le dit au lieu de deviner. Rien de ceci ne constitue un conseil juridique.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+</div>
+<div data-lang="it" lang="it">
+<header>
+  <h1>Tutto ciò che serve a una citazione, accanto al PDF</h1>
+  <p class="standfirst">
+    Una schermata diventa prova solo se i dati la accompagnano. Sei stili di citazione in nove lingue, un record che i gestori bibliografici sanno davvero leggere e un rimando dentro al PDF perché un modello linguistico trovi il resto. Più la misurazione che spiega perché a lungo non arrivava niente di tutto questo.
+  </p>
+  <p class="meta">Misurato il 2026-08-18 ·
+    <a href="/data/2026-08-18-firefox-download-data-url.json">dati grezzi</a></p>
+</header>
+
+<h2>Due file, due compiti</h2>
+<p>Non sono due copie della stessa cosa. Il file di testo è fatto per essere letto e copiato: una riga per stile, pronta per la bibliografia. L’altro è un record — essenziale, strutturato, pensato per una macchina.</p>
+<table>
+  <thead><tr><th scope="col">File</th><th scope="col">Per</th><th scope="col">Contiene</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>.zitate.txt</code></th><td>leggere, copiare</td><td>APA 7, MLA 9, Chicago, Harvard, DIN 1505-2, ISO 690, BibTeX e il record RIS — nella sua lingua e in inglese</td></tr>
+    <tr><th scope="row"><code>.ris</code></th><td>Citavi, Zotero, EndNote</td><td>la stessa fonte come record importabile</td></tr>
+  </tbody>
+</table>
+<p>I gestori bibliografici non leggono prosa. Era questo il difetto del consegnare solo il file di testo: sembrava completo ed era inutile proprio per lo strumento che avrebbe fatto risparmiare più lavoro. Entrambi i file sono disattivabili, entrambi attivi di fabbrica ed entrambi legati all’interruttore delle citazioni nel menu: se è spento, viene scritto solo il PDF.</p>
+
+<h2>Un formato di data da cui dipende l’importazione</h2>
+<p>La data di consultazione stava nel record come marca temporale ISO. Zotero lo perdona. Citavi ed EndNote no: il campo arrivava vuoto o come testo che nessuno aveva chiesto. RIS prescrive <code>AAAA/MM/GG/</code> seguito da testo libero, e l’ora appartiene a quella parte libera: le pagine cambiano nel corso di una giornata, e una prova senza ora non si può ricondurre a una versione.</p>
+<pre>Y2  - 2026-08-18T11:00:00+02:00      prima
+Y2  - 2026/08/18/11:00               ora</pre>
+
+<h2>Un rimando dentro al PDF, per chi lo leggerà dopo</h2>
+<p>La citazione è scritta nel PDF stesso: proprietà del documento, record XMP, il record RIS come allegato. Mancava il collegamento al file accanto. Un PDF porta ora la regola anziché il nome: stessa cartella, stesso nome di file, <code>.pdf</code> sostituito da <code>.zitate.txt</code>. Una regola, perché un nome fisso punterebbe nel vuoto non appena il browser aggiunge « (1)». Chi ha il percorso del PDF — una persona o un modello linguistico — ha con esso il percorso della citazione.</p>
+
+<h2>Perché non arrivava nulla</h2>
+<p>Il PDF arrivava sempre. Il file che doveva stargli accanto no — e quando finalmente è arrivato, stava nella cartella sbagliata. La causa non era la logica che lo richiede. Firefox rifiuta senz’altro gli indirizzi data: in <code>downloads.download</code>:</p>
+<table>
+  <caption>Firefox ESR 153.0.4, headless, profilo usa e getta, un’estensione creata per la prova</caption>
+  <thead><tr><th scope="col">Caso</th><th scope="col">Indirizzo</th><th scope="col">Sottocartella</th><th scope="col">Esito</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">A</th><td><code>data:</code></td><td>sì</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">B</th><td><code>data:</code></td><td>no</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">C</th><td><code>blob:</code></td><td>sì</td><td class="win">arrivato, cartella giusta</td></tr>
+    <tr><th scope="row">D</th><td><code>blob:</code> poi <code>data:</code></td><td>sì</td><td class="lose">è arrivato solo il primo</td></tr>
+  </tbody>
+</table>
+<p>Il PDF si compone in memoria e viene consegnato come blob; un breve file di testo veniva costruito come stringa e consegnato come data:, perché è più corto da scrivere e sembra equivalente. I due differivano proprio nella proprietà che nessuno aveva confrontato. Il caso B esclude la sottocartella: senza di essa la chiamata fallisce ugualmente.</p>
+<p>Dietro c’è una seconda trappola. Quando l’interfaccia dei download fallisce, le estensioni ripiegano su un collegamento con l’attributo <code>download</code>. Il file viene salvato davvero, ma nella radice della cartella dei download, perché l’attributo prende un nome di file e tutti i browser scartano le parti di percorso (HTML Living Standard, 4.6.6). Il segno visibile è un allegato accanto alla cartella dei download invece che dentro.</p>
+<p>La regola che si ripete dice il contrario: che Firefox rifiuti blob: e accetti data:, citando Bugzilla 1287347 e 1696174. In Firefox 153 vale l’inverso. Un commento nel nostro stesso codice ripeteva quella regola e ha a lungo indirizzato male la ricerca. L’indirizzo ora si sceglie in esecuzione: blob: dove esiste, data: in un service worker di Manifest V3, dove <code>URL.createObjectURL</code> non c’è.</p>
+
+<h2>A che punto sono le versioni</h2>
+<p>Entrambi i rami sono a <strong>2.38.0</strong> nel codice. Lo store Firefox distribuisce attualmente la 2.37.0, quello Chrome la 2.33.4 — questo sito non afferma quando cambierà. Sempre aggiornata è la risposta leggibile da una macchina su <a href="/.well-known/extension-versions.json">/.well-known/extension-versions.json</a>: entrambe le versioni negli store, lo stato del codice e i permessi dichiarati a un solo indirizzo. L’endpoint MCP indica la propria versione nella scheda server; <code>recommend_settings</code> risponde per scopo e nomina la misurazione dietro ogni valore, oppure dice chiaramente che non ce n’è.</p>
+
+<footer>
+      Metodo: un’estensione creata per la prova richiede quattro download e registra, per ogni caso, l’esito, il percorso restituito da downloads.search() e il testo dell’errore. Verificato contro l’albero delle cartelle dopo l’esecuzione, non contro il valore restituito dalla chiamata. Firefox ESR 153.0.4 su Windows 11, headless, pilotato via Marionette, installazione temporanea. Un browser, una versione: il meccanismo è stabile, il confine di versione qui non è misurato. Gli stili di citazione nascono dai dati della pagina stessa; se una pagina non ne fornisce, la voce lo dice invece di indovinare. Nulla di quanto qui riportato è consulenza legale.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+</div>
+<div data-lang="ja" lang="ja">
+<header>
+  <h1>引用に必要なものは、すべて PDF の隣に</h1>
+  <p class="standfirst">
+    画面の取り込みは、出典が一緒に付いてきて初めて証拠になります。9 言語・6 種類の引用形式、文献管理ソフトが実際に読み込めるレコード、そして言語モデルが残りを見つけられるよう PDF 内に置いた手がかり。あわせて、なぜ長らくそれらが届かなかったのかを説明する測定も。
+  </p>
+  <p class="meta">測定日 2026-08-18 ·
+    <a href="/data/2026-08-18-firefox-download-data-url.json">生データ</a></p>
+</header>
+
+<h2>二つのファイル、二つの役割</h2>
+<p>同じものの写しが二つあるわけではありません。テキストファイルは読んで書き写すためのもので、形式ごとに 1 行、そのまま文献表に使えます。もう一方はレコードです。飾りがなく、構造化され、機械のために作られています。</p>
+<table>
+  <thead><tr><th scope="col">ファイル</th><th scope="col">用途</th><th scope="col">内容</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>.zitate.txt</code></th><td>読む・コピーする</td><td>APA 7・MLA 9・Chicago・Harvard・DIN 1505-2・ISO 690・BibTeX と RIS レコード — お使いの言語と英語で</td></tr>
+    <tr><th scope="row"><code>.ris</code></th><td>Citavi・Zotero・EndNote</td><td>同じ出典を取り込み可能なレコードとして</td></tr>
+  </tbody>
+</table>
+<p>文献管理ソフトは文章を読みません。テキストファイルだけを添えることの欠点はここにありました。見た目は完全なのに、最も手間を省いてくれるはずの道具にとっては役に立たなかったのです。どちらのファイルも個別に外せますが、初期状態では両方とも有効で、いずれもメニューの引用スイッチに従います。それを切れば、書き出されるのは PDF だけです。</p>
+
+<h2>取り込みの成否を分ける日付の書式</h2>
+<p>取得日時はレコードに ISO のタイムスタンプとして入っていました。Zotero はこれを大目に見ます。Citavi と EndNote は見ません。項目が空で届くか、誰も求めていないテキストとして届きました。RIS は <code>YYYY/MM/DD/</code> のあとに自由記述という形式を定めており、時刻はその自由部分に属します。ページは一日のうちに変わりますし、時刻のない証拠はどの版のものか結び付けられません。</p>
+<pre>Y2  - 2026-08-18T11:00:00+02:00      以前
+Y2  - 2026/08/18/11:00               現在</pre>
+
+<h2>次に読む者のための、PDF 内の手がかり</h2>
+<p>引用情報は PDF 自体に書き込まれています。文書プロパティ、XMP レコード、添付としての RIS レコード。欠けていたのは、隣のファイルとのつながりでした。PDF はいま、名前ではなく規則を持ちます。同じフォルダー、同じファイル名、<code>.pdf</code> を <code>.zitate.txt</code> に置き換える、という規則です。規則にしたのは、ブラウザーが「 (1)」を付けた瞬間に、固定した名前では行き先が消えてしまうからです。PDF のパスを持つ者は — 人であれ言語モデルであれ — それだけで引用情報のパスも持っていることになります。</p>
+
+<h2>なぜ何も届かなかったのか</h2>
+<p>PDF はいつも届いていました。その隣に置かれるはずのファイルは届かず、ようやく届いたときには別のフォルダーにありました。原因は、それを要求する側の処理ではありません。Firefox は <code>downloads.download</code> で data: のアドレスをはっきりと拒みます。</p>
+<table>
+  <caption>Firefox ESR 153.0.4、画面なし、使い捨てプロファイル、検証用に作った拡張機能</caption>
+  <thead><tr><th scope="col">事例</th><th scope="col">アドレス</th><th scope="col">サブフォルダー</th><th scope="col">結果</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">A</th><td><code>data:</code></td><td>あり</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">B</th><td><code>data:</code></td><td>なし</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">C</th><td><code>blob:</code></td><td>あり</td><td class="win">届いた・フォルダーも正しい</td></tr>
+    <tr><th scope="row">D</th><td><code>blob:</code> のあと <code>data:</code></td><td>あり</td><td class="lose">最初の一つだけ届いた</td></tr>
+  </tbody>
+</table>
+<p>PDF はメモリ上で組み立てられ blob として渡されます。短いテキストファイルは文字列として作られ data: として渡されていました。そのほうが短く書けて、同等に見えたからです。二つは、誰も比べなかったまさにその性質で違っていました。事例 B はサブフォルダーを容疑から外します。なくても同じように失敗するからです。</p>
+<p>その背後にもう一つの落とし穴があります。ダウンロードの窓口が失敗すると、拡張機能は <code>download</code> 属性を持つリンクに切り替えます。ファイルは確かに保存されますが、保存先の直下です。属性が受け取るのはファイル名であり、パスの部分はどのブラウザーも捨てるためです（HTML Living Standard, 4.6.6）。目に見える手がかりは、付随ファイルがダウンロードフォルダーの中ではなく隣に置かれることです。</p>
+<p>広く言われている経験則は逆を述べています。Firefox は blob: を拒み data: を受け入れる、根拠は Bugzilla 1287347 と 1696174 だ、と。Firefox 153 では逆が成り立ちます。自分たちのソースコード中のコメントもその経験則を繰り返しており、長いあいだ探索を誤った方向へ導いていました。アドレスはいま実行時に選ばれます。使えるところでは blob:、<code>URL.createObjectURL</code> のない Manifest V3 の service worker では data: です。</p>
+
+<h2>各版の現在地</h2>
+<p>ソースの状態は両系統とも <strong>2.38.0</strong> です。Firefox ストアは現在 2.37.0、Chrome ストアは 2.33.4 を配布しています。いつ変わるかを、このサイトは主張しません。つねに最新なのは <a href="/.well-known/extension-versions.json">/.well-known/extension-versions.json</a> の機械可読な回答です。両ストアの版、ソースの状態、宣言している権限が一つのアドレスにまとまっています。MCP エンドポイントは自身の版をサーバーカードに示します。<code>recommend_settings</code> は用途ごとに答え、各値の背後にある測定を挙げるか、測定がないことをはっきり述べます。</p>
+
+<footer>
+      方法: 検証用に作った拡張機能が四つのダウンロードを要求し、事例ごとに結果、downloads.search() が返した実際のパス、エラーの文言を記録します。検証は実行後のディレクトリ構造に対して行い、呼び出しの戻り値では判定していません。Windows 11 上の Firefox ESR 153.0.4、画面なし、Marionette 経由、一時的なインストール。ブラウザー一つ、版一つ — 仕組みは安定していますが、どの版から変わるかはここでは測っていません。引用形式はページ自身の記載から作られ、ページが何も示さない場合は推測せずその旨を書きます。本稿は法的助言ではありません。
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+</div>
+<div data-lang="pt-BR" lang="pt-BR">
+<header>
+  <h1>Tudo o que uma citação precisa, ao lado do PDF</h1>
+  <p class="standfirst">
+    Uma captura de tela só vira prova quando os dados vão junto. Seis estilos de citação em nove idiomas, um registro que os gerenciadores bibliográficos realmente conseguem ler e uma indicação dentro do PDF para que um modelo de linguagem encontre o resto. Além da medição que explica por que, durante muito tempo, nada disso chegava.
+  </p>
+  <p class="meta">Medido em 2026-08-18 ·
+    <a href="/data/2026-08-18-firefox-download-data-url.json">dados brutos</a></p>
+</header>
+
+<h2>Dois arquivos, duas tarefas</h2>
+<p>Não são duas cópias da mesma coisa. O arquivo de texto foi feito para ser lido e copiado: uma linha por estilo, pronta para a bibliografia. O outro é um registro — sóbrio, estruturado, pensado para uma máquina.</p>
+<table>
+  <thead><tr><th scope="col">Arquivo</th><th scope="col">Para</th><th scope="col">Contém</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>.zitate.txt</code></th><td>ler, copiar</td><td>APA 7, MLA 9, Chicago, Harvard, DIN 1505-2, ISO 690, BibTeX e o registro RIS — no seu idioma e em inglês</td></tr>
+    <tr><th scope="row"><code>.ris</code></th><td>Citavi, Zotero, EndNote</td><td>a mesma fonte como registro importável</td></tr>
+  </tbody>
+</table>
+<p>Gerenciadores bibliográficos não leem prosa. Esse era o defeito de entregar apenas o arquivo de texto: parecia completo e era inútil justamente para a ferramenta que teria poupado mais trabalho. Ambos os arquivos são opcionais, ambos vêm ativados e ambos dependem do interruptor de citações no menu: se ele estiver desligado, só o PDF é gravado.</p>
+
+<h2>Um formato de data do qual depende a importação</h2>
+<p>A data de acesso constava no registro como marca de tempo ISO. O Zotero perdoa isso. O Citavi e o EndNote não: o campo chegava vazio ou como texto que ninguém pediu. O RIS exige <code>AAAA/MM/DD/</code> seguido de texto livre, e a hora pertence a essa parte livre: páginas mudam ao longo do dia, e uma prova sem hora não pode ser atribuída a uma versão.</p>
+<pre>Y2  - 2026-08-18T11:00:00+02:00      antes
+Y2  - 2026/08/18/11:00               agora</pre>
+
+<h2>Uma indicação dentro do PDF, para quem o ler em seguida</h2>
+<p>A citação é gravada no próprio PDF: propriedades do documento, registro XMP, o registro RIS como anexo. Faltava a ligação com o arquivo ao lado. Um PDF agora carrega a regra em vez do nome: mesma pasta, mesmo nome de arquivo, <code>.pdf</code> substituído por <code>.zitate.txt</code>. Uma regra, porque um nome fixo apontaria para o vazio assim que o navegador acrescentasse “ (1)”. Quem tem o caminho do PDF — uma pessoa ou um modelo de linguagem — tem com ele o caminho da citação.</p>
+
+<h2>Por que nada disso chegava</h2>
+<p>O PDF sempre chegava. O arquivo que deveria ficar ao lado, não — e quando enfim chegou, estava na pasta errada. A causa não era a lógica que o solicita. O Firefox recusa categoricamente endereços data: em <code>downloads.download</code>:</p>
+<table>
+  <caption>Firefox ESR 153.0.4, headless, perfil descartável, uma extensão feita para o teste</caption>
+  <thead><tr><th scope="col">Caso</th><th scope="col">Endereço</th><th scope="col">Subpasta</th><th scope="col">Resultado</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">A</th><td><code>data:</code></td><td>sim</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">B</th><td><code>data:</code></td><td>não</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">C</th><td><code>blob:</code></td><td>sim</td><td class="win">chegou, pasta correta</td></tr>
+    <tr><th scope="row">D</th><td><code>blob:</code> e depois <code>data:</code></td><td>sim</td><td class="lose">só o primeiro chegou</td></tr>
+  </tbody>
+</table>
+<p>O PDF é montado na memória e entregue como blob; um arquivo de texto curto era construído como cadeia e entregue como data:, porque é mais curto de escrever e parece equivalente. Os dois diferiam exatamente na propriedade que ninguém comparou. O caso B descarta a subpasta: sem ela a chamada falha do mesmo jeito.</p>
+<p>Atrás disso há uma segunda armadilha. Quando a interface de downloads falha, as extensões recorrem a um link com o atributo <code>download</code>. O arquivo é de fato salvo, mas na raiz da pasta de downloads, porque o atributo aceita um nome de arquivo e todos os navegadores descartam os componentes de caminho (HTML Living Standard, 4.6.6). O sinal visível é um arquivo acompanhante ao lado da pasta de downloads em vez de dentro dela.</p>
+<p>A regra prática repetida por toda parte diz o contrário: que o Firefox rejeita blob: e aceita data:, citando Bugzilla 1287347 e 1696174. No Firefox 153 vale o inverso. Um comentário no nosso próprio código repetia essa regra e, por muito tempo, mandou a busca para o lado errado. O endereço agora é escolhido em tempo de execução: blob: onde existe, data: em um service worker do Manifest V3, onde não há <code>URL.createObjectURL</code>.</p>
+
+<h2>Em que ponto estão as versões</h2>
+<p>Ambos os ramos estão em <strong>2.38.0</strong> no código-fonte. A loja do Firefox entrega atualmente a 2.37.0 e a do Chrome a 2.33.4 — este site não afirma quando isso muda. Sempre atual é a resposta legível por máquina em <a href="/.well-known/extension-versions.json">/.well-known/extension-versions.json</a>: as duas versões nas lojas, o estado do código e as permissões declaradas em um só endereço. O endpoint MCP informa a própria versão no cartão do servidor; <code>recommend_settings</code> responde por finalidade e nomeia a medição por trás de cada valor, ou diz claramente que não existe nenhuma.</p>
+
+<footer>
+      Método: uma extensão feita para o teste solicita quatro downloads e registra, por caso, o resultado, o caminho devolvido por downloads.search() e o texto do erro. Verificado contra a árvore de diretórios após a execução, não contra o valor devolvido pela chamada. Firefox ESR 153.0.4 no Windows 11, headless, controlado por Marionette, instalação temporária. Um navegador, uma versão: o mecanismo é estável, o limite de versão não é medido aqui. Os estilos de citação são gerados a partir dos dados da própria página; se uma página não fornece nada, a entrada diz isso em vez de adivinhar. Nada aqui é aconselhamento jurídico.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+</div>
+<div data-lang="ru" lang="ru">
+<header>
+  <h1>Всё, что нужно ссылке, — рядом с PDF</h1>
+  <p class="standfirst">
+    Снимок экрана становится подтверждением только тогда, когда сведения идут вместе с ним. Шесть стилей оформления на девяти языках, запись, которую менеджеры литературы действительно читают, и указание внутри PDF, чтобы языковая модель нашла остальное. И измерение, объясняющее, почему долгое время ничего из этого не доходило.
+  </p>
+  <p class="meta">Измерено 2026-08-18 ·
+    <a href="/data/2026-08-18-firefox-download-data-url.json">исходные данные</a></p>
+</header>
+
+<h2>Два файла, две задачи</h2>
+<p>Это не две копии одного и того же. Текстовый файл сделан для чтения и переписывания: по строке на каждый стиль, готовой для списка литературы. Второй — запись: сухая, структурированная, предназначенная для машины.</p>
+<table>
+  <thead><tr><th scope="col">Файл</th><th scope="col">Для чего</th><th scope="col">Содержит</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>.zitate.txt</code></th><td>читать, копировать</td><td>APA 7, MLA 9, Chicago, Harvard, DIN 1505-2, ISO 690, BibTeX и запись RIS — на вашем языке и на английском</td></tr>
+    <tr><th scope="row"><code>.ris</code></th><td>Citavi, Zotero, EndNote</td><td>тот же источник в виде импортируемой записи</td></tr>
+  </tbody>
+</table>
+<p>Менеджеры литературы не читают связный текст. В этом и была ошибка: отдавать только текстовый файл. Он выглядел полным и оказывался бесполезен именно для того инструмента, который сэкономил бы больше всего труда. Оба файла отключаемы, оба включены по умолчанию и оба зависят от переключателя ссылок в меню: если он выключен, записывается только PDF.</p>
+
+<h2>Формат даты, от которого зависит импорт</h2>
+<p>Дата обращения стояла в записи как отметка времени ISO. Zotero это прощает. Citavi и EndNote — нет: поле приходило пустым или как текст, которого никто не просил. RIS предписывает <code>ГГГГ/ММ/ДД/</code> и далее свободный текст, и время суток относится именно к этой свободной части: страницы меняются в течение дня, а подтверждение без времени невозможно отнести к какой-либо редакции.</p>
+<pre>Y2  - 2026-08-18T11:00:00+02:00      было
+Y2  - 2026/08/18/11:00               стало</pre>
+
+<h2>Указание внутри PDF — для того, кто прочтёт его следующим</h2>
+<p>Библиографические данные записаны в сам PDF: свойства документа, запись XMP, запись RIS во вложении. Не хватало связи с файлом рядом. Теперь PDF несёт правило, а не имя: та же папка, то же имя файла, <code>.pdf</code> заменено на <code>.zitate.txt</code>. Именно правило, потому что жёстко записанное имя укажет в пустоту, как только браузер добавит « (1)». У того, у кого есть путь к PDF, — человека или языковой модели — тем самым есть и путь к библиографической записи.</p>
+
+<h2>Почему ничего из этого не доходило</h2>
+<p>PDF доходил всегда. Файл, который должен был лежать рядом, — нет, а когда наконец дошёл, оказался не в той папке. Причина была не в той логике, которая его запрашивает. Firefox прямо отказывает адресам data: в <code>downloads.download</code>:</p>
+<table>
+  <caption>Firefox ESR 153.0.4, без окна, одноразовый профиль, расширение, собранное для проверки</caption>
+  <thead><tr><th scope="col">Случай</th><th scope="col">Адрес</th><th scope="col">Подпапка</th><th scope="col">Результат</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">A</th><td><code>data:</code></td><td>да</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">B</th><td><code>data:</code></td><td>нет</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">C</th><td><code>blob:</code></td><td>да</td><td class="win">дошёл, папка верная</td></tr>
+    <tr><th scope="row">D</th><td><code>blob:</code>, затем <code>data:</code></td><td>да</td><td class="lose">дошёл только первый</td></tr>
+  </tbody>
+</table>
+<p>PDF собирается в памяти и передаётся как blob; короткий текстовый файл строился как строка и передавался как data:, потому что так короче писать и выглядит равноценно. Эти два файла различались ровно тем свойством, которое никто не сравнил. Случай B исключает подпапку: без неё вызов срывается точно так же.</p>
+<p>За этим стоит вторая ловушка. Когда интерфейс загрузок отказывает, расширения переходят к ссылке с атрибутом <code>download</code>. Файл действительно сохраняется — но в корне папки загрузок, поскольку атрибут принимает имя файла, а части пути отбрасывают все браузеры (HTML Living Standard, 4.6.6). Видимый признак — приложенный файл рядом с папкой загрузок, а не внутри неё.</p>
+<p>Расхожее правило утверждает обратное: будто Firefox отвергает blob: и принимает data:, со ссылкой на Bugzilla 1287347 и 1696174. В Firefox 153 верно противоположное. Комментарий в нашем собственном исходном коде повторял это правило и надолго увёл поиск не в ту сторону. Теперь адрес выбирается во время выполнения: blob: там, где он есть, data: — в service worker Manifest V3, где <code>URL.createObjectURL</code> отсутствует.</p>
+
+<h2>На каких версиях всё стоит</h2>
+<p>Обе ветви в исходном коде находятся на <strong>2.38.0</strong>. Магазин Firefox сейчас выдаёт 2.37.0, магазин Chrome — 2.33.4; этот сайт не утверждает, когда это изменится. Всегда актуален машиночитаемый ответ по адресу <a href="/.well-known/extension-versions.json">/.well-known/extension-versions.json</a>: обе магазинные версии, состояние исходного кода и заявленные разрешения по одному адресу. Конечная точка MCP указывает свою версию в карточке сервера; <code>recommend_settings</code> отвечает по назначению и называет измерение за каждым значением — либо прямо говорит, что его нет.</p>
+
+<footer>
+      Метод: расширение, собранное для проверки, запрашивает четыре загрузки и записывает по каждому случаю результат, фактический путь из downloads.search() и текст ошибки. Проверка велась по дереву каталогов после прогона, а не по возвращаемому значению вызова. Firefox ESR 153.0.4 в Windows 11, без окна, под управлением Marionette, временная установка. Один браузер, одна версия: механизм устойчив, границы версий здесь не измерялись. Стили оформления строятся из сведений самой страницы; если страница ничего не даёт, запись прямо об этом сообщает вместо того, чтобы угадывать. Ничто из изложенного не является юридической консультацией.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+</div>
+<div data-lang="zh-CN" lang="zh-CN">
+<header>
+  <h1>引用所需的一切，就放在 PDF 旁边</h1>
+  <p class="standfirst">
+    屏幕抓取只有在出处一同保存时才成为凭据。九种语言、六种引用格式，一份文献管理软件真正能读的记录，以及写在 PDF 内部的指引，让语言模型找到其余部分。此外还有一项测量，解释了为什么这些东西长期都没有送达。
+  </p>
+  <p class="meta">测量于 2026-08-18 ·
+    <a href="/data/2026-08-18-firefox-download-data-url.json">原始数据</a></p>
+</header>
+
+<h2>两个文件，两项任务</h2>
+<p>它们不是同一件东西的两份副本。文本文件是为阅读和抄录而写的：每种格式一行，可直接用于参考文献表。另一个是记录——朴素、结构化，为机器准备。</p>
+<table>
+  <thead><tr><th scope="col">文件</th><th scope="col">用途</th><th scope="col">内容</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>.zitate.txt</code></th><td>阅读、复制</td><td>APA 7、MLA 9、Chicago、Harvard、DIN 1505-2、ISO 690、BibTeX 以及 RIS 记录——以您的语言和英文两种版本</td></tr>
+    <tr><th scope="row"><code>.ris</code></th><td>Citavi、Zotero、EndNote</td><td>同一来源，作为可导入的记录</td></tr>
+  </tbody>
+</table>
+<p>文献管理软件读不了行文。这正是只附带文本文件的缺陷：它看上去很完整，却恰恰对最能省事的那件工具毫无用处。两个文件都可以单独关闭，出厂时都开启，并且都取决于菜单中的引用开关：开关关闭时，只写出 PDF。</p>
+
+<h2>决定能否导入的日期格式</h2>
+<p>访问时间在记录中写成了 ISO 时间戳。Zotero 能容忍这一点，Citavi 和 EndNote 不能——该字段要么为空，要么变成谁也没要的文本。RIS 规定的格式是 <code>YYYY/MM/DD/</code> 后接自由文本，而时刻属于那段自由部分：页面在一天之内会变化，没有时刻的凭据无法对应到某一版本。</p>
+<pre>Y2  - 2026-08-18T11:00:00+02:00      此前
+Y2  - 2026/08/18/11:00               现在</pre>
+
+<h2>写在 PDF 内部的指引，留给下一个读它的人</h2>
+<p>引用信息写在 PDF 本身之中：文档属性、XMP 记录、作为附件的 RIS 记录。缺的是与旁边那个文件的联系。现在 PDF 带的是规则而不是名字：同一文件夹、同一文件名，把 <code>.pdf</code> 换成 <code>.zitate.txt</code>。之所以用规则，是因为浏览器一旦追加“ (1)”，写死的名字就会指向空处。拿到 PDF 路径的人——无论是人还是语言模型——也就拿到了引用文件的路径。</p>
+
+<h2>为什么这些都没有送达</h2>
+<p>PDF 总能送到。本该放在它旁边的文件却没有；等它终于出现时，又落在了错误的文件夹里。原因不在请求它的那段逻辑。Firefox 在 <code>downloads.download</code> 中直接拒绝 data: 地址：</p>
+<table>
+  <caption>Firefox ESR 153.0.4，无界面，一次性配置文件，为测试专门构建的扩展</caption>
+  <thead><tr><th scope="col">情形</th><th scope="col">地址</th><th scope="col">子文件夹</th><th scope="col">结果</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">A</th><td><code>data:</code></td><td>有</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">B</th><td><code>data:</code></td><td>无</td><td class="lose">Access denied</td></tr>
+    <tr><th scope="row">C</th><td><code>blob:</code></td><td>有</td><td class="win">已送达，文件夹正确</td></tr>
+    <tr><th scope="row">D</th><td>先 <code>blob:</code> 后 <code>data:</code></td><td>有</td><td class="lose">只有第一个送达</td></tr>
+  </tbody>
+</table>
+<p>PDF 在内存中组装并以 blob 交出；一个简短的文本文件却是作为字符串构造、以 data: 交出的，因为那样写起来更短，看上去也等价。这两者的差别，恰恰在于没有人比较过的那一项属性。情形 B 排除了子文件夹：没有它，调用同样失败。</p>
+<p>其后还有第二个陷阱。当下载接口失败时，扩展通常改用带 <code>download</code> 属性的链接。文件确实会保存下来——但保存在下载目录的根部，因为该属性接受的是文件名，而所有浏览器都会丢弃路径部分（HTML Living Standard, 4.6.6）。可见的迹象就是：附带文件躺在下载文件夹旁边，而不是里面。</p>
+<p>广为流传的经验之谈说法正好相反：称 Firefox 拒绝 blob: 而接受 data:，并引用 Bugzilla 1287347 与 1696174。在 Firefox 153 上，成立的是相反的一面。我们自己源码中的一条注释也重复了这条经验，让排查长期走错了方向。现在地址在运行时选择：有 blob: 的地方用 blob:，在没有 <code>URL.createObjectURL</code> 的 Manifest V3 service worker 中用 data:。</p>
+
+<h2>各版本的现状</h2>
+<p>两个分支的源码状态均为 <strong>2.38.0</strong>。Firefox 商店目前提供 2.37.0，Chrome 商店提供 2.33.4——本站不断言何时会改变。始终保持最新的是 <a href="/.well-known/extension-versions.json">/.well-known/extension-versions.json</a> 上的机器可读答案：两个商店的版本、源码状态与声明的权限，都在同一个地址。MCP 端点在服务器卡片中标明自身版本；<code>recommend_settings</code> 按用途作答，并为每个取值指出背后的测量，或者明确说明没有测量。</p>
+
+<footer>
+      方法：为测试专门构建的扩展请求四次下载，并逐一记录结果、downloads.search() 返回的实际路径以及错误文本。核验依据是运行后的目录树，而不是调用的返回值。Windows 11 上的 Firefox ESR 153.0.4，无界面，经由 Marionette 驱动，临时安装。一种浏览器、一个版本——机制是稳定的，版本分界线在此未作测量。引用格式由页面自身的信息生成；页面若未提供，条目会如实说明，而不是猜测。本文不构成法律意见。
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+</div>
+</div>
+</body>
+</html>

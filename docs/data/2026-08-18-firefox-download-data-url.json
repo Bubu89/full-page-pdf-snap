@@ -1,0 +1,66 @@
+{
+  "gemessen_am": "2026-08-18",
+  "lizenz": "CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/",
+  "frage": "Warum kommt eine zweite Datei, die eine Browser-Erweiterung neben ihrer Hauptdatei ablegen will, in Firefox nicht am selben Ort an — und manchmal gar nicht?",
+  "antwort_kurz": "Firefox verweigert data:-Adressen in downloads.download mit 'Access denied'. Eine blob:-Adresse gelingt, auch mit Unterordner und auch als dritter Download hintereinander. Der uebliche Rueckfall auf einen Anker mit download-Attribut legt die Datei zwar ab, verliert dabei aber den Ordner: Das Attribut nimmt nur einen Dateinamen, Pfadanteile verwerfen alle Browser.",
+  "methode": {
+    "beschreibung": "Eine eigens gebaute Wegwerf-Erweiterung fordert vier Downloads an und protokolliert je Fall Erfolg, tatsaechlichen Zielpfad und Fehlertext. Gemessen wird der Zustand der Ablage, nicht die Rueckmeldung des Aufrufs.",
+    "browser": "Firefox ESR 153.0.4 (x64), Windows 11, headless",
+    "fernsteuerung": "Marionette auf TCP 2828, Addon:Install mit temporary:true",
+    "profil": "Wegwerf-Profil mit browser.download.folderList=2 und festem Zielordner",
+    "verification": "Verzeichnisbaum nach dem Lauf plus downloads.search() je Vorgangsnummer"
+  },
+  "faelle": [
+    {
+      "nr": "A",
+      "adresse": "data:",
+      "unterordner": true,
+      "ergebnis": "fehlgeschlagen",
+      "meldung": "Type error for parameter options (Error processing url: Error: Access denied for URL data:text/plain;charset=utf-8,...) for downloads.download.",
+      "datei_angekommen": false
+    },
+    {
+      "nr": "B",
+      "adresse": "data:",
+      "unterordner": false,
+      "ergebnis": "fehlgeschlagen",
+      "meldung": "Access denied for URL data:text/plain;...",
+      "datei_angekommen": false,
+      "bemerkung": "Der Unterordner ist nicht die Ursache — ohne ihn scheitert es genauso."
+    },
+    {
+      "nr": "C",
+      "adresse": "blob:",
+      "unterordner": true,
+      "ergebnis": "gelungen",
+      "zielpfad": "<Ablage>\\Full Page PDF Snap\\probe-c.zitate.txt",
+      "zustand": "complete",
+      "datei_angekommen": true
+    },
+    {
+      "nr": "D",
+      "adresse": "blob: (PDF) gefolgt von data: (Beilage)",
+      "unterordner": true,
+      "ergebnis": "geteilt",
+      "zielpfad_pdf": "<Ablage>\\Full Page PDF Snap\\probe-d.pdf",
+      "datei_angekommen": "nur das PDF",
+      "bemerkung": "Genau das Bild, das in der Praxis auffiel: Die Hauptdatei kommt an, die Beilage nicht."
+    }
+  ],
+  "zweiter_befund": {
+    "sache": "Der Rueckfall ueber die Seite verliert den Ordner",
+    "beschreibung": "Scheitert downloads.download, weichen Erweiterungen ueblicherweise auf einen Anker mit download-Attribut im Seitenkontext aus. Der legt die Datei ab, aber im Wurzelverzeichnis der Ablage.",
+    "grundlage": "HTML Living Standard 4.6.6: der Wert des download-Attributs ist ein Dateiname; Pfadanteile werden verworfen",
+    "sichtbares_zeichen": "Die Beilage liegt neben dem Download-Ordner statt im Unterordner der Hauptdatei"
+  },
+  "chromium": {
+    "beobachtung": "Im Service Worker von Manifest V3 gibt es URL.createObjectURL nicht; dort ist data: der einzige Weg und funktioniert seit jeher.",
+    "gemessen": false,
+    "hinweis": "Nicht Teil dieser Messung. Eine Umsetzung, die zur Laufzeit waehlt, deckt beide Faelle ab."
+  },
+  "merkregel_die_falsch_ist": {
+    "verbreitet": "Firefox lehne blob: in downloads.download ab und akzeptiere data:",
+    "quellen_der_merkregel": ["Bugzilla 1287347", "Bugzilla 1696174"],
+    "befund": "In Firefox 153 gilt das Gegenteil. Wer sich auf die Merkregel stuetzt, sucht den Fehler auf der falschen Seite."
+  }
+}

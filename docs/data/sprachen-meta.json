@@ -303,6 +303,44 @@
       "description": "麻烦的不是引用本身，而是几周之后再去还原：你读了什么、什么时候读的、谁写的。 捕获会把作者、期刊、DOI、许可与获取时间写在页面本身上，随附的 RIS 记录可直接 导入 Citavi、Zotero 或 EndNote。"
     }
   },
+  "/how-to/": {
+    "en": {
+      "title": "How to",
+      "description": "Step-by-step guides for saving a web page as a PDF, citing it and keeping it. Every figure links to the measurement it comes from, and every guide names what …"
+    },
+    "de": {
+      "title": "Anleitung",
+      "description": "Schritt-für-Schritt-Anleitungen zum Speichern, Zitieren und Aufbewahren einer Webseite als PDF. Jede Zahl verweist auf die Messung, aus der sie stammt, und …"
+    },
+    "es": {
+      "title": "Guías",
+      "description": "Guías paso a paso para guardar una página web como PDF, citarla y conservarla. Cada cifra enlaza con la medición de la que procede, y cada guía nombra lo que …"
+    },
+    "fr": {
+      "title": "Guides",
+      "description": "Des guides pas à pas pour enregistrer une page web en PDF, la citer et la conserver. Chaque chiffre renvoie à la mesure dont il provient, et chaque guide nomme …"
+    },
+    "it": {
+      "title": "Guide",
+      "description": "Guide passo per passo per salvare una pagina web in PDF, citarla e conservarla. Ogni cifra rimanda alla misurazione da cui proviene, e ogni guida dice che cosa …"
+    },
+    "ja": {
+      "title": "ガイド",
+      "description": "ウェブページを PDF として保存し、引用し、保管するための手順ガイド。数値はすべて、その出どころとなった計測にリンクしており、各ガイドはできないことも明記しています。"
+    },
+    "pt-BR": {
+      "title": "Guias",
+      "description": "Guias passo a passo para salvar uma página web em PDF, citá-la e conservá-la. Cada número leva à medição de onde ele vem, e cada guia diz o que não faz."
+    },
+    "ru": {
+      "title": "Инструкции",
+      "description": "Пошаговые руководства: как сохранить веб-страницу в PDF, сослаться на неё и сохранить её надолго. Каждое число ведёт к измерению, из которого оно взято, а …"
+    },
+    "zh-CN": {
+      "title": "指南",
+      "description": "把网页保存为 PDF、引用它并长期留存的分步指南。每一个数字都链接到它出自的那次测量,每一篇指南也都写明它不做什么。"
+    }
+  },
   "/how-to/save-a-webpage-as-pdf/": {
     "en": {
       "title": "How to save a web page as a PDF — one sheet, with its source on it",
@@ -541,6 +579,44 @@
     "zh-CN": {
       "title": "请核算其中一个数字。最好是错的那一个。",
       "description": "这里的每一项数据都有方法、原始数据和一次对照运行——是为了让人重新算一遍，而不是为了让人相信。因此，对本项目最有用的贡献不是一次新的测量，而是一次 算出不同结果的反向测量 。"
+    }
+  },
+  "/notes/a-download-that-never-arrives/": {
+    "en": {
+      "title": "Everything a citation needs, beside the PDF",
+      "description": "A screen capture becomes evidence only when the details travel with it. Six citation styles in nine languages, a record reference managers can actually read …"
+    },
+    "de": {
+      "title": "Alles, was eine Zitation braucht, neben dem PDF",
+      "description": "Eine Bildschirmaufnahme wird erst zum Beleg, wenn die Angaben mitkommen. Sechs Zitierweisen in neun Sprachen, ein Satz, den Literaturprogramme wirklich lesen …"
+    },
+    "es": {
+      "title": "Todo lo que una cita necesita, junto al PDF",
+      "description": "Una captura de pantalla solo se convierte en prueba cuando los datos viajan con ella. Seis estilos de cita en nueve idiomas, un registro que los gestores …"
+    },
+    "fr": {
+      "title": "Tout ce qu’une citation demande, à côté du PDF",
+      "description": "Une capture d’écran ne devient une preuve que si les indications l’accompagnent. Six styles de citation en neuf langues, un enregistrement que les logiciels de …"
+    },
+    "it": {
+      "title": "Tutto ciò che serve a una citazione, accanto al PDF",
+      "description": "Una schermata diventa prova solo se i dati la accompagnano. Sei stili di citazione in nove lingue, un record che i gestori bibliografici sanno davvero leggere …"
+    },
+    "ja": {
+      "title": "引用に必要なものは、すべて PDF の隣に",
+      "description": "画面の取り込みは、出典が一緒に付いてきて初めて証拠になります。9 言語・6 種類の引用形式、文献管理ソフトが実際に読み込めるレコード、そして言語モデルが残りを見つけられるよう PDF 内に置いた手がかり。あわせて、なぜ長らくそれらが届かなかったのかを説明する測定も。"
+    },
+    "pt-BR": {
+      "title": "Tudo o que uma citação precisa, ao lado do PDF",
+      "description": "Uma captura de tela só vira prova quando os dados vão junto. Seis estilos de citação em nove idiomas, um registro que os gerenciadores bibliográficos realmente …"
+    },
+    "ru": {
+      "title": "Всё, что нужно ссылке, — рядом с PDF",
+      "description": "Снимок экрана становится подтверждением только тогда, когда сведения идут вместе с ним. Шесть стилей оформления на девяти языках, запись, которую менеджеры …"
+    },
+    "zh-CN": {
+      "title": "引用所需的一切，就放在 PDF 旁边",
+      "description": "屏幕抓取只有在出处一同保存时才成为凭据。九种语言、六种引用格式，一份文献管理软件真正能读的记录，以及写在 PDF 内部的指引，让语言模型找到其余部分。此外还有一项测量，解释了为什么这些东西长期都没有送达。"
     }
   },
   "/notes/": {
