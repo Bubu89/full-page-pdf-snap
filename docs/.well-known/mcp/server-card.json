@@ -2,7 +2,7 @@
   "$schema": "https://modelcontextprotocol.io/schema/2025-06-18/server-card.json",
   "serverInfo": {
     "name": "provinglab",
-    "version": "1.24.0",
+    "version": "1.23.0",
     "title": "Proving Lab",
     "description": "Cite or capture a web page: read the citation details a page declares about itself, get a RIS record for Zotero or Citavi, and save the page as one PDF stamped with its source and time of retrieval — including pages a server cannot read. Installs the capture extension in Firefox and Chrome without a click. Every figure behind these tools has a documented method and a control run."
   },
