@@ -3,7 +3,7 @@
   "name": "dev.provinglab/browser-citation-capture",
   "title": "Proving Lab",
   "description": "Cite or capture a web page; installs the capture extension in Firefox and Chrome.",
-  "version": "1.24.1",
+  "version": "1.24.2",
   "websiteUrl": "https://provinglab.dev/",
   "remotes": [
     {

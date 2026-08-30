@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.24.1";
+const VERSION = "1.24.2";
 
 /* Welche Fassung die Stores gerade ausliefern — gefragt, nicht eingetragen.
  *
@@ -1508,9 +1508,33 @@ function vormerken(env, ctx, art, name) {
   else spuelen(env);
 }
 
+/**
+ * Zaehlt einen Werkzeugaufruf — und zwar sofort, ausser bei adoption_stats.
+ *
+ * Die gebuendelte Fassung vom 30.08.2026 verlor fast alles. Eine Instanz
+ * schreibt erst nach fuenf Minuten, ueberlebt aber selten so lange: Drei
+ * Testaufrufe von get_method kamen nie an. Fuer die inhaltlichen Werkzeuge
+ * ist das der falsche Tausch — sie werden ein paar Dutzend Mal am Tag
+ * aufgerufen, jeder einzelne zaehlt, und ein paar Dutzend Schreibvorgaenge
+ * sind kein Problem.
+ *
+ * adoption_stats ist der Sonderfall, der das Kontingent gerissen hat: 6.671
+ * von 6.817 Aufrufen, 98 Prozent. Das Werkzeug liefert diese Statistik aus —
+ * es in ihr mitzuzaehlen heisst, das Interesse von Verzeichnissen an der Zahl
+ * als Nutzung auszuweisen. Es wird deshalb gebuendelt gezaehlt: Die
+ * Groessenordnung bleibt sichtbar, der Preis dafuer sind ein paar verlorene
+ * Aufrufe je Instanz.
+ */
 function werkzeugZaehlen(env, werkzeug, ctx) {
   if (!env || !env.ZAEHLER || !WERKZEUGNAMEN.has(werkzeug)) return;
-  vormerken(env, ctx, "w", werkzeug);
+  if (werkzeug === "adoption_stats") {
+    vormerken(env, ctx, "w", werkzeug);
+    return;
+  }
+  offen.w[werkzeug] = (offen.w[werkzeug] || 0) + 1;
+  offenAnzahl += 1;
+  if (ctx && ctx.waitUntil) ctx.waitUntil(spuelen(env));
+  else spuelen(env);
 }
 
 /**

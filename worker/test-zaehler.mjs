@@ -178,14 +178,39 @@ console.log("\n=== I. Frische Instanz schreibt nicht sofort ===");
   // erzeugten Instanzen also fast jedes.
   const ZAEHLER = kvAttrappe();
   const env = { ZAEHLER };
+  // Geprueft am gebuendelten Pfad — adoption_stats und die Sitzungen. Die
+  // inhaltlichen Werkzeuge schreiben absichtlich sofort (Fall J).
   modul.zuruecksetzen();               // Instanz wie frisch gestartet
-  modul.werkzeugZaehlen(env, "install_extension");
+  modul.werkzeugZaehlen(env, "adoption_stats");
   await new Promise((r) => setTimeout(r, 20));
   pruefe("erstes Ereignis einer frischen Instanz schreibt nicht",
          ZAEHLER.schreibvorgaenge, 0);
   await modul.spuelen(env);
   pruefe("beim ausdruecklichen Spuelen kommt es an",
-         JSON.parse(await ZAEHLER.get(`t:${heute}`)).w.install_extension, 1);
+         JSON.parse(await ZAEHLER.get(`t:${heute}`)).w.adoption_stats, 1);
+}
+
+console.log("\n=== J. Inhaltliche Werkzeuge gehen nicht verloren ===");
+{
+  // Der Fall, der im Betrieb auftrat: Drei Aufrufe von get_method wurden
+  // vorgemerkt und nie geschrieben, weil die Instanz vor Ablauf des Fensters
+  // endete. Fuer die seltenen inhaltlichen Werkzeuge ist Verlaesslichkeit
+  // wichtiger als eingesparte Schreibvorgaenge.
+  const ZAEHLER = kvAttrappe();
+  const env = { ZAEHLER };
+  modul.zuruecksetzen();
+  modul.werkzeugZaehlen(env, "get_method");
+  await new Promise((r) => setTimeout(r, 30));
+  pruefe("get_method steht sofort im Speicher",
+         JSON.parse(await ZAEHLER.get(`t:${heute}`) || "{}").w?.get_method, 1);
+
+  // adoption_stats bleibt gebuendelt — es allein riss das Kontingent.
+  modul.zuruecksetzen();
+  const vorher = ZAEHLER.schreibvorgaenge;
+  for (let i = 0; i < 20; i++) modul.werkzeugZaehlen(env, "adoption_stats");
+  await new Promise((r) => setTimeout(r, 30));
+  pruefe("20x adoption_stats schreibt nicht sofort",
+         ZAEHLER.schreibvorgaenge, vorher);
 }
 
 console.log("\n=== H. Schreibfehler bleibt folgenlos ===");
