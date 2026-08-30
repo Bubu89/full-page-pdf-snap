@@ -444,6 +444,25 @@
       ]
     },
     {
+      "anchor": "https://provinglab.dev/data/2026-08-18-firefox-download-data-url.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
       "anchor": "https://provinglab.dev/data/ki-crawler-aktuell.json",
       "type": [
         {
@@ -464,6 +483,25 @@
     },
     {
       "anchor": "https://provinglab.dev/data/schema.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
+      "anchor": "https://provinglab.dev/data/sprachen-meta.json",
       "type": [
         {
           "href": "application/json"
