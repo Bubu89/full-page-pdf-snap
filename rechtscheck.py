@@ -141,9 +141,20 @@ UNBEGRENZT = re.compile(
 UMGEHUNG = re.compile(
     r"(bypass|umgeh\w+|circumvent|get (a)?round the (block|wall|paywall)"
     r"|spoof (the )?user.?agent|pretend to be a browser)", re.I)
+# Die Verneinung steht nicht immer beim Verb. "No circumvention of other
+# people's protective measures" ist die klarste Absage, die der Satz zulaesst —
+# und fiel trotzdem durch, weil das Muster nur "do not", "don't", "never" und
+# "nicht" kannte. Seit 16.08.2026 scheiterte deshalb jeder Lauf des Workflows,
+# und weil die Auslieferung daran haengt, lief zwei Wochen lang kein Deploy.
+#
+# Aufgenommen wird die Verneinung am Substantiv, nicht ein blosses "no": Im
+# Umfeld von 520 Zeichen kaeme sonst fast immer irgendein "no" vor und die
+# Regel wuerde nichts mehr fangen.
 UMGEHUNG_ERLAUBT = re.compile(
     r"(do not|don't|never|nicht|statt dessen|stattdessen|does not work|funktioniert nicht"
-    r"|is not something|keine? (route|weg))", re.I)
+    r"|is not something|keine? (route|weg)"
+    r"|\bno (circumvention|bypass\w*|workaround|umgehung)"
+    r"|\bkeine? (umgehung|umgehen))", re.I)
 
 # Verweise auf fremde Projekte ohne Distanzierung. Wer Dritt-Software empfiehlt,
 # ohne sie geprueft zu haben, sollte das sagen — sonst liest es sich als Zusage.

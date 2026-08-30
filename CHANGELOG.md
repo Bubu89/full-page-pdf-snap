@@ -1336,7 +1336,7 @@ _Quelle: change-stream, 36 Events, generiert 2026-08-19T20:18_
 - `full-page-pdf-snap-public/tests/druckformate.test.mjs` (1x)
 
 **Bemerkenswerte Commands:**
-- `cd /home/holo/repos/full-page-pdf-snap-public && git commit -q -F - <<'MSG' && git log --oneline -1
+- `git commit -q -F - <<'MSG' && git log --oneline -1
 Say what lies beside`
 
 <!-- change-stream:auto-block:2026-08-18:END -->
