@@ -1400,22 +1400,101 @@ async function zitatFuerUrl(roh) {
  */
 const ZAEHLER_TAGE = 90;
 
-function zaehlerSchluessel(werkzeug, datum) {
-  return `w:${werkzeug}:${datum}`;
+/* Gebuendeltes Schreiben — der Grund
+ *
+ * Bis zum 30.08.2026 schrieb jedes Ereignis sofort: ein `get`, ein `put`, je
+ * Werkzeug-und-Tag beziehungsweise Klient-und-Tag ein eigener Schluessel.
+ * Gemessen an drei Tagen ergab das 450, 606 und 650 Schreibvorgaenge taeglich
+ * — bei 1.000 im kostenlosen Kontingent. Cloudflare meldete am 30.08. die
+ * Haelfte als verbraucht. Die Lesevorgaenge lagen derweil bei einem Prozent
+ * ihres Limits: Nicht die Menge der Daten war das Problem, sondern die Zahl
+ * der Schreibzugriffe.
+ *
+ * Zwei Aenderungen, die zusammen wirken:
+ *
+ * 1. Ereignisse sammeln sich im Arbeitsspeicher der Instanz und werden
+ *    gebuendelt geschrieben — hoechstens alle fuenf Minuten.
+ * 2. Alles eines Tages liegt in EINEM Schluessel statt in einem je Werkzeug
+ *    und einem je Klient. Bei 131 verschiedenen Klienten war das der
+ *    eigentliche Vervielfacher.
+ *
+ * Zusammen deckelt das die Schreiblast auf 288 am Tag, unabhaengig davon,
+ * wie viel Verkehr kommt. Vorher wuchs sie mit jedem Aufruf.
+ *
+ * Der Preis, ehrlich benannt: Eine Instanz kann jederzeit beendet werden.
+ * Was dann noch nicht geschrieben war, ist verloren — im Mittel die
+ * Ereignisse der letzten Minuten. Fuer eine Nutzungsstatistik, die ohnehin
+ * "ungefaehr" sagt, ist das der richtige Tausch; fuer eine Abrechnung waere
+ * es keiner.
+ */
+const SPUEL_MS = 300000;          // hoechstens alle fuenf Minuten schreiben
+const SPUEL_STUECK = 100;         // ... oder frueher, wenn so viel offen ist
+
+let offen = { w: {}, c: {} };     // noch nicht geschriebene Ereignisse
+let offenAnzahl = 0;
+let zuletztGespuelt = 0;
+
+function tagSchluessel(datum) {
+  return `t:${datum}`;
 }
 
-async function werkzeugZaehlen(env, werkzeug) {
-  if (!env || !env.ZAEHLER || !WERKZEUGNAMEN.has(werkzeug)) return;
+let spuelLauf = null;
+
+/**
+ * Schreibt den gesammelten Stand — ein Lesen, ein Schreiben, ein Schluessel.
+ *
+ * Die Spuelvorgaenge werden aneinandergereiht, nicht nebeneinander gefahren.
+ * Der Test deckte auf, warum das noetig ist: Loesen Menge und Zeit kurz
+ * hintereinander aus, lesen zwei Laeufe denselben Stand und schreiben beide
+ * zurueck — der erste ist dann weg. Bei 120 Ereignissen kamen so 60 an.
+ */
+function spuelen(env) {
+  spuelLauf = (spuelLauf || Promise.resolve())
+    .then(() => spuelenIntern(env))
+    .catch(() => {});
+  return spuelLauf;
+}
+
+async function spuelenIntern(env) {
+  if (!env || !env.ZAEHLER || !offenAnzahl) return;
+  const stapel = offen;
+  offen = { w: {}, c: {} };
+  offenAnzahl = 0;
+  zuletztGespuelt = Date.now();
+
   const heute = new Date().toISOString().slice(0, 10);
-  const k = zaehlerSchluessel(werkzeug, heute);
+  const k = tagSchluessel(heute);
   try {
-    const alt = parseInt(await env.ZAEHLER.get(k), 10) || 0;
-    await env.ZAEHLER.put(k, String(alt + 1), {
+    const roh = await env.ZAEHLER.get(k);
+    const stand = roh ? JSON.parse(roh) : { w: {}, c: {} };
+    for (const art of ["w", "c"]) {
+      stand[art] = stand[art] || {};
+      for (const [name, n] of Object.entries(stapel[art])) {
+        stand[art][name] = (stand[art][name] || 0) + n;
+      }
+    }
+    await env.ZAEHLER.put(k, JSON.stringify(stand), {
       expirationTtl: ZAEHLER_TAGE * 86400,
     });
   } catch (e) {
-    // Ein Zaehler darf einen Werkzeugaufruf niemals scheitern lassen.
+    // Verloren ist verloren — ein Zaehler darf nichts scheitern lassen.
   }
+}
+
+/** Vormerken und nur dann schreiben, wenn Zeit oder Menge es rechtfertigen. */
+function vormerken(env, ctx, art, name) {
+  offen[art][name] = (offen[art][name] || 0) + 1;
+  offenAnzahl += 1;
+  const faellig = offenAnzahl >= SPUEL_STUECK
+    || Date.now() - zuletztGespuelt >= SPUEL_MS;
+  if (!faellig) return;
+  if (ctx && ctx.waitUntil) ctx.waitUntil(spuelen(env));
+  else spuelen(env);
+}
+
+function werkzeugZaehlen(env, werkzeug, ctx) {
+  if (!env || !env.ZAEHLER || !WERKZEUGNAMEN.has(werkzeug)) return;
+  vormerken(env, ctx, "w", werkzeug);
 }
 
 /**
@@ -1444,17 +1523,44 @@ function klientName(roh) {
   return n || "ohne-Namen";
 }
 
-async function klientZaehlen(env, roh) {
+function klientZaehlen(env, roh, ctx) {
   if (!env || !env.ZAEHLER) return;
-  const k = `c:${klientName(roh)}:${new Date().toISOString().slice(0, 10)}`;
-  try {
-    const alt = parseInt(await env.ZAEHLER.get(k), 10) || 0;
-    await env.ZAEHLER.put(k, String(alt + 1), {
-      expirationTtl: ZAEHLER_TAGE * 86400,
-    });
-  } catch (e) {
-    // Ein Zaehler darf eine Sitzung niemals scheitern lassen.
-  }
+  vormerken(env, ctx, "c", klientName(roh));
+}
+
+/**
+ * Liest die gebuendelten Tagesschluessel.
+ *
+ * Seit dem 30.08.2026 liegt alles eines Tages in einem Schluessel `t:TAG`.
+ * Die alten Formen `w:WERKZEUG:TAG` und `c:KLIENT:TAG` gibt es weiter — sie
+ * laufen erst nach 90 Tagen aus, und bis dahin waere ein Bruch in der
+ * Zeitreihe schlimmer als die doppelte Leseschleife. Beide Quellen werden
+ * addiert; Ueberschneidungen kann es nicht geben, weil ein Tag entweder in
+ * der alten oder der neuen Form geschrieben wurde.
+ */
+async function tageLesen(env, art, grenze) {
+  const summe = {};
+  let cursor, gesamt = 0, seit = null;
+  do {
+    const l = await env.ZAEHLER.list({ prefix: "t:", cursor });
+    for (const s of l.keys) {
+      const tag = s.name.slice(2);
+      if (!tag || tag < grenze) continue;
+      let stand;
+      try {
+        stand = JSON.parse(await env.ZAEHLER.get(s.name)) || {};
+      } catch (e) {
+        continue;
+      }
+      for (const [name, n] of Object.entries(stand[art] || {})) {
+        summe[name] = (summe[name] || 0) + n;
+        gesamt += n;
+      }
+      if (Object.keys(stand[art] || {}).length && (!seit || tag < seit)) seit = tag;
+    }
+    cursor = l.list_complete ? null : l.cursor;
+  } while (cursor);
+  return { summe, gesamt, seit };
 }
 
 async function klientLesen(env, tage = 30) {
@@ -1482,6 +1588,14 @@ async function klientLesen(env, tage = 30) {
       }
       cursor = l.list_complete ? null : l.cursor;
     } while (cursor);
+    // Die gebuendelten Tagesschluessel dazu.
+    const neu = await tageLesen(env, "c", grenze);
+    for (const [name, n] of Object.entries(neu.summe)) {
+      summe[name] = (summe[name] || 0) + n;
+    }
+    gesamt += neu.gesamt;
+    if (neu.seit && (!seit || neu.seit < seit)) seit = neu.seit;
+
     const sortiert = Object.fromEntries(
       Object.entries(summe).sort((a, b) => b[1] - a[1]));
     return {
@@ -1517,6 +1631,13 @@ async function zaehlerLesen(env, tage = 30) {
       }
       cursor = l.list_complete ? null : l.cursor;
     } while (cursor);
+    const neu = await tageLesen(env, "w", grenze);
+    for (const [name, n] of Object.entries(neu.summe)) {
+      summe[name] = (summe[name] || 0) + n;
+    }
+    gesamt += neu.gesamt;
+    if (neu.seit && (!seit || neu.seit < seit)) seit = neu.seit;
+
     const sortiert = Object.fromEntries(
       Object.entries(summe).sort((a, b) => b[1] - a[1]));
     return { seit, gesamt, jeWerkzeug: sortiert };
@@ -2445,11 +2566,10 @@ async function handleMcp(request, origin, env, ctx) {
         case "initialize":
           // Zaehlen, ohne die Antwort zu verzoegern: der Client wartet auf
           // seine Sitzung, nicht auf unseren Zaehler. Faellt der Schreib-
-          // vorgang aus, bleibt die Sitzung davon unberuehrt.
-          if (ctx && ctx.waitUntil) {
-            ctx.waitUntil(klientZaehlen(env, m.params && m.params.clientInfo
-              && m.params.clientInfo.name));
-          }
+          // vorgang aus, bleibt die Sitzung davon unberuehrt. Der Aufruf
+          // merkt nur vor; geschrieben wird gebuendelt (siehe spuelen).
+          klientZaehlen(env, m.params && m.params.clientInfo
+            && m.params.clientInfo.name, ctx);
           out.push({
             jsonrpc: "2.0",
             id,
@@ -2495,7 +2615,7 @@ async function handleMcp(request, origin, env, ctx) {
           const p = m.params || {};
           // Nach dem Antworten zaehlen, nicht davor: der Aufruf darf durch die
           // Buchhaltung weder langsamer werden noch scheitern.
-          if (ctx && p.name) ctx.waitUntil(werkzeugZaehlen(env, p.name));
+          if (p.name) werkzeugZaehlen(env, p.name, ctx);
           const res = await runTool(origin, p.name, p.arguments || {}, env);
           out.push({ jsonrpc: "2.0", id, result: res });
           break;

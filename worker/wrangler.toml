@@ -15,3 +15,10 @@ zone_name = "provinglab.dev"
 
 [observability]
 enabled = true
+
+# Zaehlt, welches Werkzeug wie oft aufgerufen wurde — nur Name und Tag.
+# Ohne diese Bindung laeuft der Worker unveraendert weiter, die Zaehlung
+# entfaellt dann stillschweigend (siehe werkzeugZaehlen).
+[[kv_namespaces]]
+binding = "ZAEHLER"
+id = "0642cc11fa6140c69be030968b4211d2"
