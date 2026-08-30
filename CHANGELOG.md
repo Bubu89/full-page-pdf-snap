@@ -1,3 +1,903 @@
+## 2026-08-30 — Zählung schreibt gebündelt (Worker 1.24.0)
+
+Cloudflare meldete am Morgen, das Konto habe die Hälfte des täglichen
+KV-Kontingents verbraucht. Die Messung zeigte, wo:
+
+| Tag | Lesen | Schreiben |
+|---|---|---|
+| 27.08. | 973 (1 % von 100.000) | 450 (45 % von 1.000) |
+| 28.08. | 606 (1 %) | 606 (61 %) |
+| 29.08. | 650 (1 %) | 650 (65 %) |
+
+Nicht die Datenmenge war das Problem, sondern die Zahl der Schreibzugriffe.
+Lesen und Schreiben lagen exakt gleich — das Muster von Lesen-Erhöhen-
+Schreiben, einmal je Ereignis. Bei 131 verschiedenen Klienten, jeder mit
+eigenem Schlüssel je Tag, wuchs die Last mit jedem Aufruf mit.
+
+**Zwei Änderungen, die zusammen wirken:**
+
+1. Ereignisse sammeln sich im Arbeitsspeicher der Instanz und werden
+   gebündelt geschrieben — höchstens alle fünf Minuten oder alle 100 Ereignisse.
+2. Alles eines Tages liegt in **einem** Schlüssel `t:TAG` statt in einem je
+   Werkzeug und einem je Klient.
+
+Damit ist die Schreiblast auf höchstens 288 am Tag gedeckelt (29 %) und wächst
+nicht mehr mit dem Verkehr.
+
+**Was der Test aufdeckte.** Die erste Fassung verlor Zählungen: Lösen Menge
+und Zeit kurz hintereinander aus, lesen zwei Spülvorgänge denselben Stand und
+schreiben beide zurück — von 120 Ereignissen kamen 60 an. Die Spülvorgänge
+werden jetzt aneinandergereiht. Ohne den Test wäre der Fehler still geblieben,
+weil er nur unter Last auftritt.
+
+**Zeitreihe bleibt.** Die alten Schlüsselformen `w:WERKZEUG:TAG` und
+`c:KLIENT:TAG` laufen erst nach 90 Tagen aus und werden bis dahin
+mitgelesen. Gegenprobe nach dem Deploy: 6.828 Werkzeugaufrufe seit 15.08.,
+7.164 Sitzungen seit 17.08. — ungebrochen.
+
+**Der Preis, ehrlich benannt.** Eine Worker-Instanz kann jederzeit beendet
+werden. Was dann noch nicht geschrieben war, ist verloren — im Mittel die
+Ereignisse der letzten Minuten. Für eine Nutzungsstatistik, die ohnehin
+„ungefähr" sagt, ist das der richtige Tausch; für eine Abrechnung wäre es
+keiner.
+
+Tests: `node worker/test-zaehler.mjs` — acht Blöcke, alle grün.
+
+---
+
+## 2026-08-18 (14) — Beide Beilagen, und ein Artikel darueber
+
+**Die .ris-Datei liegt wieder neben dem PDF, und beide Beilagen haben je einen
+Haken.** Citavi, Zotero und EndNote lesen keinen Fliesstext; die Zitationsdatei
+war fuer sie wertlos. Beide Beilagen sind ab Werk an und haengen am
+Zitationsschalter im Menue: ist der aus, liegt nur das PDF da. Geprueft an
+144 Kombinationen aus Aufnahmeart, Papier, Lage, Rand und Schalterstellung —
+keine Abweichung.
+
+**Zwei Fehler, die genau dorthin fuehrten, dass gar nichts mehr ankam:**
+
+    options.js DEFAULTS ohne zitatDatei/risDatei
+      -> storage.local.get(DEFAULTS) gibt beide nicht zurueck
+      -> Haken stehen leer
+      -> beim Speichern wird das leere Haekchen als "aus" geschrieben
+
+Wer die Einstellungen nur geoeffnet hatte, verlor die Beilagen. Eine einmalige
+Wiederherstellung setzt sie zurueck auf an; "false" laesst sich nicht ansehen,
+ob es vom Nutzer stammt oder von diesem Fehler. Der Pruefer dazu sah nur eine
+Richtung — was die Seite speichert, muss der Dienst kennen. Die Gegenrichtung
+fehlte und ist jetzt drin.
+
+Der zweite: In der Chrome-Fassung wird belegeAblegen an DREI Stellen gerufen
+(Hauptweg, Vektorweg, Markdown-Weg), in der Firefox-Fassung an zwei. Nur der
+Hauptweg bekam die Schalter mit. In `belegeAblegen` steht `z.risDatei !== false`
+— fehlt der Wert, ist er `undefined`, und `undefined !== false` ist wahr. Die
+Datei waere ueber diese Wege abgelegt worden, auch wenn sie abgewaehlt ist.
+Ein eigener Pruefer geht jetzt jede Aufrufstelle einzeln durch.
+
+**51 pt Rand im Hochformat, obwohl "ohne Rand" gewaehlt war.** Die Zahl ist
+exakt erklaerbar:
+
+    popup.js:  parseInt(el.value, 10) || 18      18 mm = 51,02 pt
+
+Der Rueckfallwert 18 war fuer die Artikel-Schriftgroesse gedacht und galt fuer
+jedes Zahlenfeld. Einmal leer, und 18 stand im Speicher — ein Wert, den die
+Liste (0/5/10) nicht kennt, weshalb das Auswahlfeld leer blieb und der alte
+Wert weiter wirkte. Der Rueckfall gehoert jetzt zum Feld, und ein Auswahlfeld
+mit unbekanntem Wert korrigiert Anzeige UND Speicher.
+
+**Der freie Rest unter dem Bild bekommt die Farbe der Seite.** Gemessen an
+einer Aufnahme im Querformat: links, rechts und oben sass das Bild bei exakt
+0,0 pt, unten blieben 15 bis 40 pt frei — der Zeilenschnitt, damit keine Zeile
+zerschnitten wird. Auf einer dunklen Seite schien dort das blanke Blatt durch.
+Die Farbe kommt aus den untersten Bildzeilen der Aufnahme (haeufigster Wert,
+nicht Mittelwert), bei Schwarzweiss bleibt es Weiss.
+
+**Das Abrufdatum im RIS-Satz war fuer Citavi unlesbar:**
+
+    Y2  - 2026-08-18T11:00:00+02:00      Zotero verzeiht es, Citavi nicht
+    Y2  - 2026/08/18/11:00               RIS-Format, Uhrzeit im Freitextteil
+
+**Im PDF steht jetzt, wo die Zitationsdatei liegt** — als Regel, nicht als
+Name: derselbe Ordner, `.pdf` durch `.zitate.txt` ersetzt. Ein fester Name
+zeigte ins Leere, sobald der Browser " (1)" anhaengt.
+
+**Auf Android gibt es die Beilagen zum ersten Mal.** Der Weg ueber die Seite,
+den das PDF dort ohnehin nimmt, traegt sie mit.
+
+**pack-chrome.py** baut das Chrome-Paket jetzt nach fester Liste und meldet,
+wenn gemeinsame Dateien zwischen den Fassungen auseinanderlaufen. Es fand
+sofort zwei echte Luecken: `beilagenAdresse` fehlte in Chrome, und dem
+Vektorweg fehlte die Reiterkennung fuer den Rueckfall.
+
+**Auf der Domain:** ein neuer Artikel in neun Sprachen — was neben dem PDF
+liegt, warum Literaturprogramme ein eigenes Format brauchen, und die Messung
+zum data:/blob-Befund. Dazu die Fassungsangaben aktualisiert
+(`/.well-known/extension-versions.json`), der MCP-Endpunkt auf 1.24.0, und
+`recommend_settings` kennt die beiden neuen Schalter samt Begruendung.
+
+## 2026-08-18 (13) — Warum die Zitationsdatei nie beim PDF lag
+
+**Firefox verweigert `data:`-Adressen in `downloads.download`.** Das ist die
+ganze Ursache. Gemessen am 18.08.2026 an Firefox ESR 153 mit einer eigens
+dafuer gebauten Erweiterung, vier Faelle:
+
+    data: + Unterordner     FEHLER  Access denied for URL data:text/plain;...
+    data: ohne Ordner       FEHLER  Access denied
+    blob: + Unterordner     OK      ...\Full Page PDF Snap\probe-c.zitate.txt
+    blob: als 3. Download   OK      ...\Full Page PDF Snap\probe-d.pdf
+
+Das PDF kam immer an, weil es seit jeher ueber eine blob-Adresse geht. Die
+Beilagen nutzten `data:` — sie scheiterten, fielen auf den Weg ueber die Seite
+zurueck, und der kann keinen Ordner setzen: Das `download`-Attribut nimmt nur
+einen Dateinamen, Pfadanteile verwerfen alle Browser (HTML-Norm 4.6.6). So
+landete die Zitationsdatei in `D:\Downloads` statt in
+`D:\Downloads\Full Page PDF Snap`. Jetzt gehen alle Beilagen ueber blob.
+
+**Die Zitationsdatei erschien in sieben von neun Sprachen auf Englisch.** Die
+Beschriftungstabelle kannte nur Deutsch und Englisch; alles andere fiel still
+zurueck. Ein Pruefer hielt genau das als Erwartung fest und machte den Mangel
+unsichtbar — er gruente, WEIL die Uebersetzung fehlte. Jetzt alle neun.
+
+**Eine Datei fuer Literaturprogramme, und zwei Haken.** Citavi, Zotero und
+EndNote lesen keinen Fliesstext; die `.zitate.txt` war fuer sie wertlos.
+Die `.ris` liegt wieder daneben. Beide Beilagen sind einzeln abwaehlbar und
+haengen am Zitationsschalter im Menue: ist der aus, liegt nur das PDF da.
+Die `.links.json` entfaellt — neben dem PDF soll klar sein, was zusammengehoert.
+
+**Das Abrufdatum im RIS-Satz war fuer Citavi unlesbar.** Dort stand ein
+ISO-Zeitstempel, RIS verlangt `JJJJ/MM/TT/Freitext`:
+
+    Y2  - 2026-08-18T11:00:00+02:00      (Zotero verzeiht es, Citavi nicht)
+    Y2  - 2026/08/18/11:00               (jetzt)
+
+**Im PDF steht jetzt, wo die Zitationsdatei liegt** — als Regel, nicht als
+Name: derselbe Ordner, derselbe Name, `.pdf` durch `.zitate.txt` ersetzt. Ein
+fest eingetragener Name zeigte ins Leere, sobald der Browser " (1)" anhaengt.
+
+**Auf Android gibt es die Beilagen ueberhaupt zum ersten Mal.** Dort fehlt die
+Download-Schnittstelle seit Firefox 79 — der Weg ueber die Seite, den das PDF
+ohnehin nimmt, traegt die Beilagen mit. Dass er keinen Unterordner setzen kann,
+faellt nicht ins Gewicht: Auf Android gibt es keinen.
+
+**Schwarzweiss: die Schrift wird vor der Schwelle nachgezogen.** Gemessen an
+6 Seiten in je 2 Aufloesungen, 50 Laeufe, Zeichengenauigkeit gegen den
+DOM-Text:
+
+    wie bisher      79,4 %        geglaettet       78,6 %  (-0,9)
+    GESCHAERFT      80,5 %        ortsabhaengig    79,0 %  (-0,4)
+                                  2x vergroessert  79,1 %  (-0,4)
+
+Glaetten — die naheliegende Vermutung — macht es schlechter: Es zieht die
+Zwischenstufen dorthin, wo die Schwelle raten muss. Die erste Umsetzung nahm
+einen 3x3-Kasten ohne Schwellwert und war mit 79,1 % schlechter als gar nichts
+zu tun; erst mit den gemessenen Werten (Gauss 1,2, Staerke 140 %, Schwelle 2)
+trifft die ausgelieferte Fassung die Messung.
+
+Die JPEG-Guete wirkt bei Schwarzweiss und Graustufen nur im Rueckfall — sonst
+gehen beide verlustfrei ueber Flate. In diesem Rueckfall wird jetzt ohne Sparen
+kodiert.
+
+**Ein Bauskript fuer Chrome.** Das Paket wurde bis 2.35.16 von Hand
+zusammengestellt. `pack-chrome.py` nimmt nach fester Liste auf und meldet,
+wenn gemeinsame Dateien zwischen den beiden Fassungen auseinanderlaufen.
+
+## 2026-08-18 (12) — Zeilen bleiben ganz, und "Quickstart" war nie ein Fehler
+
+**Der Schnitt zerschneidet keine Zeilen mehr.** Zwischenzeitlich stand das
+Gegenteil im Code: exakt auf Blatthoehe schneiden, damit kein weisser Rest
+bleibt. Das beseitigte den Streifen und zerschnitt dafuer Zeilen — bei
+mehrspaltigen Seiten gleich mehrere nebeneinander. Ein halbierter Buchstabe
+ist schlimmer als ein Millimeter Weiss: Das eine kostet Inhalt, das andere nur
+Flaeche.
+
+Damit trotzdem kein grosser Rest entsteht, wird das Bild nicht mehr
+kleingerechnet, bis es ganz aufs Blatt passt, sondern auf die Blattbreite
+gelegt und oben ausgerichtet. Vorher nahm die Einpassung das Minimum aus
+Breiten- und Hoehenverhaeltnis — sie verkleinerte also auch dann, wenn das
+Stueck nur ein paar Pixel zu hoch war, und dann blieb links UND rechts Platz.
+Genau so entstanden die gemeldeten 51 pt ringsum.
+
+Gemessen mit Stuecken, die an einer Zeilenluecke enden:
+
+    A4 hoch,  10 px kuerzer : Rest unten  2,6 mm · seitlich 0,0/0,0 · oben 0,0
+    A4 hoch,  40 px kuerzer : Rest unten 10,2 mm · seitlich 0,0/0,0 · oben 0,0
+    A4 quer, 100 px kuerzer : Rest unten 35,7 mm · seitlich 0,0/0,0 · oben 0,0
+
+Die Seitenraender stimmen immer, der Text beginnt an der Oberkante, und was
+unten frei bleibt, ist die Zeilenluecke selbst.
+
+**Rand: ohne, 5 oder 10 mm.** 15 mm ist entfallen.
+
+**Und "Quickstart".** Sechsmal als Fehler gemeldet, sechsmal gesucht — es war
+keiner. Die aufgenommene Seite ist platform.kimi.ai/docs/OVERVIEW, und diese
+Seite heisst tatsaechlich "Quickstart":
+
+    document.title : "Quickstart - Kimi API Platform"
+    og:title       : "Quickstart - Kimi API Platform"
+    einziges <h1>  : "Quickstart"
+
+Der Titel war also die ganze Zeit richtig ermittelt; nur die Adresse der Seite
+lautet anders als ihr Name. Der Dateiname im PDF nennt entsprechend
+UR = /docs/overview und TI = Quickstart — beides stimmt.
+
+Was daran unbefriedigend bleibt: Wer mehrere Seiten derselben Dokumentation
+aufnimmt, bekommt aehnliche Namen. Dagegen hilft die Dateinamen-Vorlage in den
+Einstellungen, etwa mit {n} fuer eine laufende Nummer.
+
+**Nebenbei behoben.** Die Rundung der Stueckhoehe auf ganze Bildpunkte liess
+das Bild um Bruchteile eines Punktes ueberstehen — im PDF stand dann ein
+negativer Versatz (y = -0,44). Beim Druck faellt dort eine Haarlinie weg, im
+Betrachter sieht es aus wie ein Fehler. In diesem Fall wird jetzt doch nach
+der Hoehe eingepasst; der Unterschied liegt unter einem Zehntelmillimeter.
+
+**Mit welchem Ergebnis.** Testsuite 36 Dateien gruen.
+
+## 2026-08-18 (11) — Die Matrix durchgemessen: 16 Druckfaelle, 8 Sprachfaelle
+
+**Was.** Auf die Frage, ob Druckformate, Raender, Zitation und Sprachen nun
+wirklich geprueft sind: bis dahin waren es Einzelfaelle. Jetzt die Matrix.
+
+**Alle 16 Druckkombinationen** (A4/Letter x hoch/quer x 0/5/10/15 mm): Blatt
+traegt die Masse des gewaehlten Papiers, Rest auf allen vier Seiten gleich dem
+eingestellten Rand, randlos heisst 0/0/0/0.
+
+**Dabei zwei Funde.**
+
+  a) Ein echter: Das Seitenverhaeltnis wurde in Millimetern gebildet, die
+     Blattmasse aber in Punkten. Zweimal runden ergab bei Letter mit Rand zwei
+     Punkt Unterschied — ein knapp sichtbarer Streifen. Jetzt rechnet beides in
+     derselben Einheit.
+
+  b) Ein eingebildeter, und der ist lehrreicher: Der erste Durchlauf meldete
+     zwei Fehler, die keine waren — das PRUEFSKRIPT rechnete in Millimetern,
+     waehrend der Code laengst in Punkten rechnete. Erst das Nachmessen der
+     Zwischenwerte (skala, nutzbare Flaeche, dy) zeigte, dass die Einpassung
+     auf zwei Nachkommastellen stimmte. Beinahe haette ich korrekten Code
+     "korrigiert".
+
+**Die Zitation im PDF**, Feld fuer Feld nachgewiesen: RIS-Satz als Anlage
+(quelle.ris, TY/DO/Y2 gesetzt), XMP-Datensatz mit dc:title und dc:creator,
+DOI, Zeitschrift und Quelladresse als eigene Dokumentfelder. Das ist der
+Grund, warum die Erweiterung ohne Datei daneben auskommt.
+
+**Sprachen und Automatik**, acht Faelle im Browser durchgeschaltet:
+ausdrueckliche Wahl (de, ja), "auto" mit de/es/ru, Landesvarianten (de-AT →
+Deutsch, pt-BR → Portugiesisch) und eine unbekannte Sprache (→ Englisch).
+Knopftext, Tooltip und Sprachauszeichnung je Fall geprueft.
+
+**Ein Fund dabei:** Die Sprachauszeichnung des Dokuments uebernahm die
+Browsersprache auch dann, wenn es dafuer keine Uebersetzung gibt — lang="xx"
+ueber englischem Text. Vorleseprogramme und Rechtschreibpruefungen richten
+sich danach. Sie folgt jetzt dem angezeigten Text.
+
+**Mit welchem Ergebnis.** Testsuite 36 Dateien gruen, darunter neu
+druckformate.test.mjs mit der vollstaendigen Matrix und dem Nachweis der
+Zitation im PDF.
+
+## 2026-08-18 (10) — Warum keine Beilage danebenlag, und warum alles "Quickstart" hiess
+
+**Beides hatte dieselbe Wurzel.** `quelle` blieb null. Dann faellt der
+Dateiname auf `tab.title` zurueck — und der traegt bei Seiten, die ihre
+Unterseiten nachladen, den Titel der EINSTIEGSSEITE. Wer auf "Quickstart"
+eingestiegen war, bekam jede Aufnahme so benannt. Und der Beilagen-Block, der
+an `quelle` haengt, lief gar nicht erst an.
+
+**Die Beilagen-Logik selbst war in Ordnung.** Mit einer Attrappe durchgemessen:
+belegeAblegen fordert alle drei Dateien an, mit korrekten Namen im
+Unterordner. Sie wurde nur nie erreicht.
+
+**Drei Absicherungen.**
+
+  a) Die Ersatzangabe steht jetzt unmittelbar VOR dem Ablegen, nicht nur im
+     Zweig der Meta-Auswertung. Bricht dort etwas ab, gibt es trotzdem
+     Beilagen. Zwei Zeilen doppelt sind der Preis dafuer, dass sie nicht mehr
+     davon abhaengen, welchen Weg die Aufnahme genommen hat.
+
+  b) Der Titel kommt aus der SEITE, nicht aus dem Reiter. Dafuer gibt es eine
+     schlanke Abfrage (`cmd: "seitenTitel"`), die nur die Ueberschrift und den
+     Dokumenttitel liest — und deshalb auch dann durchkommt, wenn die grosse
+     Meta-Auswertung mit ihren Dutzenden Feldern scheitert. `ueberschriftTitel`
+     musste dafuer aus `sammleQuelle` heraus auf die aeussere Ebene.
+     Nachgemessen an der gemeldeten Seite: "Kimi K2.6" statt "Quickstart".
+
+  c) Der RIS-Satz liegt IN der Zitationsdatei statt als eigene Datei daneben.
+     Recherche dazu: Browser lassen eine Erweiterung nur begrenzt viele
+     Downloads ohne Rueckfrage ablegen — das PDF kommt durch, weitere Dateien
+     koennen still verworfen werden. Eine Beilage weniger heisst ein Download
+     weniger. Wer den Satz einzeln braucht, kopiert den Block aus der
+     Textdatei oder holt ihn aus dem PDF, wo er als Anlage steckt.
+
+**Randlos drucken.** Beim Druck standen 28 pt Rand im PDF — gut gemeint, aber
+doppelt: Der Drucker haelt seinen eigenen ohnehin. Jetzt fuellt das Bild die
+Blattbreite. Nachgemessen: 842 pt Bild auf 842 pt Blatt, x = 0.
+
+**Querformat wirkt.** Bestaetigt an der Datei des Nutzers von 09:45:
+842 x 595 pt = 297 x 210 mm, 8 Seiten.
+
+**Mit welchem Ergebnis.** Testsuite 33 Dateien gruen, eine neu
+(beilagen-garantie: Ersatzangabe vor dem Ablegen, Titel aus der Seite,
+RIS in der Zitationsdatei — mit Gegenprobe).
+
+## 2026-08-18 (9) — Drei Hinweise standen fest auf Englisch, und kein Test konnte es sehen
+
+**Was.** Bildschirmfoto vom Nutzer: Oberflaeche auf Deutsch, der Hinweis am
+Zitationsschalter erscheint englisch — "Authors, DOI, licence and retrieval
+time…". Betroffen waren alle drei Schalter im Popup.
+
+**Warum.** Beim Verschlanken des Popups wanderten die Erklaerungen aus dem
+sichtbaren Text in title-Attribute. Dabei wurden sie direkt hineingeschrieben,
+ohne data-i18n-title daneben — als Text, nicht als Schluessel.
+
+**Warum kein Test das fand.** Die beiden bestehenden Sprachpruefungen
+vergleichen die Sprachdateien untereinander und pruefen, ob jeder BENUTZTE
+Schluessel existiert. Ein Text, der gar keinen Schluessel hat, kommt in keiner
+der beiden Richtungen vor. Die Pruefung sucht jetzt umgekehrt: Jedes
+title-Attribut mit mehr als ein paar Zeichen braucht ein data-i18n-title
+daneben.
+
+Sie fand beim ersten Lauf gleich eine zweite Sache — die Chrome-Fassung des
+Popups war nach der Korrektur nicht mitgezogen worden. Zwei Pakete, eine
+Aenderung, eine vergessen.
+
+**Der Hinweis auf die Zitation ist kuerzer.** Statt drei Zeilen jetzt eine:
+"Zitation im PDF gespeichert (RIS-Anlage + Dokumenteigenschaften)." Eine
+Meldung, die man im Vorbeigehen liest, sagt mehr als eine, die man wegklickt.
+
+**Nachgemessen.** Popup in drei Sprachen geladen, Knopf, Schalter und Tooltip
+je Sprache ausgelesen:
+
+    de  Aufnahme fuer Druck   · Quellenangaben mitschreiben
+        Verfasser, DOI, Lizenz und Abrufzeit — ins PDF und als Dateien daneben.
+    es  Captura para imprimir · Incluir los datos de cita
+        Autores, DOI, licencia y hora de consulta: dentro del PDF…
+    ja  印刷用に取り込む       · 引用情報を書き込む
+        著者・DOI・ライセンス・参照日時を PDF 内と併置ファイルに。
+
+Testsuite 32 Dateien gruen.
+
+## 2026-08-18 (8) — Querformat wirkte nie, und der Grund lag in einer Zeile Speicher-API
+
+**Der Fehler.** Querformat umstellen, Datei kommt als A4 hoch heraus, im Popup
+steht weiter "Querformat". Dreimal gemeldet als "geht immer noch nicht" — und
+tatsaechlich lag es nicht am Ausgabeweg, sondern daran, dass die Einstellung
+den Hintergrund nie erreichte:
+
+    browser.storage.local.get(defs)
+
+liest AUSSCHLIESSLICH die Schluessel, die in `defs` vorkommen. Sechs neue Werte
+standen nur im Popup und fehlten in den Voreinstellungen — druckPapier,
+druckQuer, artikelPapier, artikelQuerWahl, artikelSchriftgroesse,
+artikelAlsText. Das Popup speicherte sie brav, `getSettings` gab sie nie
+zurueck. Kein Fehler, keine Warnung; sie waren schlicht nicht da.
+
+Ein Bedienelement, das speichert und nichts bewirkt, ist von aussen nicht von
+einem kaputten Ausgabeweg zu unterscheiden. Deshalb dreimal dieselbe Meldung.
+
+**Die Pruefung dazu fand sofort einen zweiten Fall.**
+`tests/einstellungen-lesbar.test.mjs` haelt beides gegeneinander — was Popup
+und Einstellungsseite speichern, und was die Aufnahme aus `settings` liest —
+und meldete beim ersten Lauf `reviewPromptOff`: derselbe Fehler, andere Stelle,
+seit laengerem drin.
+
+**Und dabei fast ein groesserer Schaden.** Beim Aufraeumen des doppelten
+Beilagen-Blocks wurde `vektorAufnahme` mitgeloescht — sie stand zwischen den
+beiden Marken, nach denen geschnitten wurde. Der gesamte Vektorweg war weg.
+`tests/aufrufe-vorhanden.test.mjs` hat es im selben Durchgang gemeldet; die
+Funktion kam aus dem letzten Paket zurueck. Genau dafuer war der Test gebaut.
+
+**Beilagen: eine Stelle statt zwei.** Der alte Block schleppte zwei
+Konstruktionsfehler mit, die erklaeren, warum bei eingeschalteter Zitation
+keine .txt im Ordner lag: Die Zitationsdatei stand INNERHALB des Fangnetzes des
+RIS-Satzes — scheiterte der, entstand auch sie nicht —, und beide hingen an
+derselben Einstellung, sodass wer die RIS-Datei abwaehlte, auch die
+Zitationsdatei verlor. Jetzt legt `belegeAblegen` jede Beilage einzeln ab, mit
+eigenem Ergebnis, und meldet zurueck was gelang und was nicht.
+
+Kommt gar keine Beilage zustande, sagt die Meldung, wo die Angaben trotzdem
+stehen: als RIS-Anlage und in den Dokumenteigenschaften des PDF. In neun
+Sprachen.
+
+**Aufgeraeumt im Popup.** "Ganze Seite" hat kein Zahnraedchen mehr. Darin stand
+genau ein Schalter — "Eine fortlaufende Seite" —, also dieselbe Entscheidung
+ein zweites Mal und versteckt: "Aufnahme fuer Druck" IST die zerlegte Fassung
+derselben Aufnahme. Wer das Haekchen wegnahm, bekam still das, wofuer es einen
+eigenen Knopf gibt. Firefox zeigt damit drei Knoepfe und ein Zahnrad, 344 px.
+
+**Recherche zu den Beilagen in Firefox.** Firefox lehnt `blob:`-URLs in
+`downloads.download` ab (Bugzilla 1287347, 1696174) — `data:`-URLs, die diese
+Erweiterung verwendet, funktionieren dort. Belegt durch den Ordnerinhalt des
+Nutzers: Die Aufnahme vom 17.08. trug ihre `.txt` neben sich. In Chrome MV3
+koennen Downloads aus dem Service Worker dagegen still fehlschlagen; dort
+greift jetzt die Rueckmeldung.
+
+**Mit welchem Ergebnis.** Testsuite 32 Dateien gruen, zwei neu:
+einstellungen-lesbar (jede gespeicherte Einstellung steht in den
+Voreinstellungen, mit Gegenprobe) und die Erweiterung von modus-kette um den
+Artikel-Knopf. Querformat von der Popup-Einstellung bis zur MediaBox
+durchgemessen: 842 x 595 pt, breiter als hoch.
+
+## 2026-08-18 (7) — Der Artikel-Knopf steht nur noch dort, wo er traegt
+
+**Was.** Die Artikel-Schaltflaeche ist in der Firefox-Fassung entfallen.
+Grundsatz dahinter, vom Nutzer vorgegeben: Was in Firefox nicht so
+funktioniert wie in Chrome, wird dort nicht angeboten.
+
+**Warum das richtig ist.** Der Artikel-Weg setzt die Seite als Lesedokument.
+In Chromium uebernimmt das die Druckschnittstelle des Browsers, und es
+entsteht echter Text. In Firefox liesse sich dieselbe Leseansicht aufnehmen —
+aber als BILD. Derselbe Knopf haette damit je nach Browser eine andere
+Bedeutung: hier ein Dokument, dort ein Foto davon. Eine Funktion, die
+unterschiedlich liefert, ist schlechter als eine, die es nur dort gibt, wo sie
+haelt was sie verspricht.
+
+**Wie.** Beide Fassungen teilen sich weiterhin eine popup.html — zwei getrennte
+Dateien waeren zwei Orte, an denen dieselbe Schaltflaeche kuenftig
+auseinanderlaeuft. Entfernt wird zur Laufzeit, und zwar anhand dessen, was der
+Browser KANN (`browser.debugger`), nicht anhand seines Namens: Kennungen
+lassen sich faelschen und aendern sich, eine fehlende Schnittstelle nicht.
+Gemessen: Firefox 3 Knoepfe und 345 px, Chrome 4 Knoepfe und 386 px.
+
+**Und die Zusagen mit.** Die Release Notes des Firefox-Pakets versprachen den
+Artikel-Weg noch — sie waeren mit dem Paket bei AMO gelandet und haetten etwas
+angekuendigt, das darin nicht steckt. Abschnitt entfernt, Reviewer-Notiz
+umgeschrieben: Sie sagt jetzt ausdruecklich, dass die Schaltflaeche in diesem
+Paket fehlt und warum.
+
+Die Leseansicht selbst bleibt im Quelltext. Sie wird in Firefox nicht mehr
+aufgerufen, und der tote Weg schadet dort nichts — ihn aus einer gemeinsamen
+Datei herauszuschneiden hiesse, zwei Fassungen desselben Inhaltsskripts zu
+pflegen.
+
+**Mit welchem Ergebnis.** Testsuite 31 Dateien gruen; neu ist die Pruefung,
+dass die Schaltflaeche ohne DevTools-Protokoll verschwindet und dass die
+Entscheidung ueber die Faehigkeit faellt, nicht ueber die Browserkennung.
+
+## 2026-08-18 (6) — Beilagen entstehen jetzt immer, und sie melden sich
+
+**Was.** Zitation eingeschaltet, keine .txt daneben — und im Ordner vierzehn
+PDFs von heute, alle **byte-identisch 494.003 Bytes**, obwohl zwischendurch
+Papierformat und Ausrichtung umgestellt wurden. Beides zusammen war das
+Bild eines Programms, dessen Einstellungen ins Leere greifen.
+
+**Zwei Ursachen, beide behoben.**
+
+  a) Der Modus kam nicht an (siehe den vorigen Eintrag). Deshalb waren alle
+     Dateien gleich gross: Jeder Knopf machte dasselbe.
+
+  b) RIS-Satz und Zitationsdatei entstanden NUR, wenn die Seite verwertbare
+     Meta-Angaben trug. Gab sie nichts her, fehlten die Beilagen ersatzlos —
+     und der Nutzer erfuhr nicht einmal, warum. Dabei liegt das Wesentliche
+     einer Internetquelle immer vor: die Adresse, der Zeitpunkt des Abrufs
+     und ein Titel aus dem Reiter. Genau diese drei verlangt jede Zitierweise
+     fuer eine Webseite. Sie werden jetzt als Ersatzangabe gebildet, und was
+     fehlt, steht in der Datei als fehlend. Das ist ehrlicher und brauchbarer
+     als gar keine Datei.
+
+**Und sie sagen jetzt Bescheid.** Auf dem Rechner gab es bisher keine
+Fertigmeldung — die Datei war im Ordner, fertig. Wer die Zitation
+eingeschaltet hatte, musste nachsehen, ob eine Beilage entstand, und im
+Zweifel raten, warum nicht. Die Meldung nennt jetzt, was danebengelegt wurde
+(".ris · .zitate.txt · .links.json") und was nicht zustande kam, mit Grund.
+In neun Sprachen.
+
+**Nachgemessen zum Titel.** Die Quellenerfassung liefert auf der gemeldeten
+Seite "Kimi K2.6" — der Fix vom Vormittag wirkt. Dass in den Dateinamen
+weiterhin "Quickstart" stand, passt dazu: Ohne ankommende Quelle faellt der
+Name auf den Reitertitel zurueck, und der traegt bei nachladenden Seiten den
+Wert der Einstiegsseite. Mit (a) und (b) faellt beides weg.
+
+**Mit welchem Ergebnis.** Testsuite 30 Dateien gruen.
+
+**Hinweis zum Testen.** Chrome laedt entpackte Erweiterungen NICHT von selbst
+neu. Nach jedem neuen Paket muss unter chrome://extensions das Neu-Laden-
+Zeichen gedrueckt werden, sonst laeuft der alte Stand weiter — die
+Versionsnummer im PDF verraet, welcher.
+
+## 2026-08-18 (5) — Ein vergessener Parameter, drei Fehlermeldungen
+
+**Was.** Der Druckdialog des Nutzers als Beweisstueck: "Dokument: 220,1 x
+1008,9 mm" neben "Papier 297 x 210 mm", darunter "Seite 1 von 1". Eine Bahn
+von einem Meter, die ein Drucker auf ein Blatt zwingen soll — bei
+eingestelltem A4 Querformat.
+
+**Die Ursache, und sie war eine einzige.** In `runOnActiveTab` stand
+
+    await captureFullPage(tab, { region: gewaehlterBereich });
+
+Die Angabe, welche Ausgabeart der Nutzer gewaehlt hat, wurde entgegengenommen
+und nicht weitergereicht. Damit lief JEDER Knopf in dieselbe gewoehnliche
+Aufnahme. Drei Meldungen an drei Tagen hatten diesen einen Grund:
+"Aufnahme fuer Druck" erzeugte weiter eine Endlosbahn, Papierformat und
+Ausrichtung blieben wirkungslos, und der Artikel-Knopf lieferte die
+gewoehnliche Seite ("es macht nur normales pdf").
+
+**Warum kein Test das fand.** Jedes Teilstueck war geprueft, und zwar
+gruendlich: die Blattrechnung mit vier Formaten, der Vektorweg an einer echten
+Seite mit 13 A4-Blaettern, die Artikelerkennung mit 15.578 Zeichen. Nur die
+KETTE vom Knopf bis zur Aufnahme hatte niemand nachverfolgt. Ein Glied, das
+nichts weitergibt, ist an keinem seiner beiden Enden zu sehen —
+`tests/modus-kette.test.mjs` geht sie jetzt Station fuer Station ab, mit
+Gegenprobe.
+
+**Und die zweite Haelfte des Druckproblems.** Auch mit ankommendem Modus folgte
+die Seitengroesse dem BILD statt dem Papier: so breit wie die Aufnahme, so hoch
+wie der Ausschnitt. Deshalb standen im Druckdialog 220 mm, wo 297 hingehoeren.
+Jetzt gilt bei vorgegebenem Blatt das Blatt: Die MediaBox traegt die echten
+Masse (A4 595 x 842 pt, quer getauscht; Letter 612 x 792), und das Bild wird
+hineingerechnet — auf die Nutzflaeche gebracht, mittig, mit 28 pt Rand.
+Gemessen: **A4 quer 297 x 210 mm, alle Blaetter gleich gross, Aufteilung
+erhalten.** Ohne Vorgabe bleibt alles wie bisher, buchstaeblich: Faktor 1,
+Versatz 0.
+
+**Ausserdem in dieser Runde.**
+  - Die Zitationsdatei erscheint in der Sprache der Oberflaeche. Dafuer sind
+    die Zitierwoerter auf alle neun Sprachen erweitert ("consultado el",
+    "дата обращения", "参照日"), das Datumsformat folgt der Sprache, und
+    "de-AT" faellt richtig auf Deutsch zurueck statt auf das ISO-Datum. Ein
+    Fehler dabei gefunden: Das kaufmaennische Und ist in APA ein SYMBOL, keine
+    Vokabel — der erste Entwurf machte aus "Mueller, K., & Schmidt, A." im
+    Japanischen "Mueller, K., ・ Schmidt, A.".
+  - Die Datei nennt jetzt weit oben einen Abschnitt "FUER KI-WERKZEUGE": dass
+    dieselben Angaben maschinenlesbar im PDF stehen, in den
+    Dokumenteigenschaften und als XMP-Satz, samt RIS-Anlage. Wer die Datei
+    einem Sprachmodell vorlegt, soll das erfahren, BEVOR es Fliesstext parst —
+    deshalb vor den Eintraegen, nicht am Ende.
+  - Das Seitenverhaeltnis im Bildweg rechnet richtig. Es standen dort die
+    Papiermasse in Pixel (794 px fuer A4 quer); bei 832 px Aufnahmebreite ergab
+    das 1:0,95 — fast quadratisch, wo 1:0,71 hingehoert. Im Bildweg steht die
+    Breite fest, "quer" kann nur flacher machen, nie breiter.
+
+**Mit welchem Ergebnis.** Testsuite 30 Dateien gruen, drei davon neu:
+modus-kette, blattgroesse, seitenverhaeltnis. Jede mit Gegenprobe, weil die
+letzten Tage zweimal gezeigt haben, dass eine Pruefung ohne Gegenprobe auch
+dann gruen wird, wenn sie gar nichts misst.
+
+## 2026-08-18 (4) — Vier Meldungen aus der Benutzung, und die Sprachen zu Ende geprueft
+
+**"Aufnahme fuer Druck" tat im Vektorweg nichts.** Der Knopf stellte den
+Bildweg um — der Vektorweg las die Einstellung gar nicht und lieferte weiter
+eine einzige Bahn von mehreren Metern. Auf Papier unbrauchbar. Jetzt bekommt
+der Druckfall die tatsaechlichen Blattmasse in Zoll (A4 8,27 x 11,69, Letter
+8,5 x 11, quer getauscht) und KEIN `pageRanges`: Chromium bricht dann selbst
+um, und zwar dort, wo keine Zeile zerschnitten wird. Gemessen: **13 Seiten,
+MediaBox 595,9 x 841,9 pt — exakt A4.** Die Raender stehen bewusst auf 0,4
+Zoll; ohne sie schneidet jeder Drucker etwas ab.
+
+**Der Artikel war kein Lesetext.** Bisher wurde nur ausgeblendet, was neben
+dem Artikel stand — der Text behielt die Gestaltung der Website: dunkle
+Codefelder, enge Zeilen, Bildschirmgroessen. Gemeldet mit genau dieser
+Beobachtung ("es macht nur normales pdf"). Jetzt bekommt er eine eigene
+Typografie: heller Grund, dunkle Serifenschrift, ruhige Zeilenlaenge, Bilder
+auf Blattbreite, Codefelder hell und umgebrochen statt waagerecht schiebbar —
+auf Papier gibt es kein Schieben, was rechts hinausragt, fehlt. Alles ueber
+EIN Stylesheet und zwei Attribute; der Aufbau des Dokuments bleibt unangetastet.
+
+**"Quickstart" im Dateinamen — die Ursache lag woanders.** Nachgemessen:
+"Quickstart" kommt auf der Seite ueberhaupt nicht im Titel vor, nur in der
+Adresse. Die Seite meldet `og:title` "Kimi K2.6 - Kimi API Platform" und
+`h1` "Kimi K2.6". Der Grund ist das Verhalten von Seiten, die ihre
+Unterseiten per JavaScript nachladen: Die Meta-Angaben werden beim
+Weiterklicken NICHT aktualisiert und tragen bis zum Neuladen den Wert der
+Einstiegsseite. Deshalb hiess jede Aufnahme so wie die Seite, auf der man
+eingestiegen war.
+
+Die sichtbare Ueberschrift wird beim Umschalten zwangslaeufig mit ausgetauscht
+und ist damit die zuverlaessigere Angabe — sie bekommt jetzt Vorrang vor
+og:title, aber nicht vor einer echten Verlagsauszeichnung (citation_title,
+dc.title). Der erste Entwurf fand allerdings gar keine Ueberschrift: Er schloss
+jedes `<header>` aus, und auf der Messseite steht die Ueberschrift in
+"H1 < DIV < DIV < HEADER < DIV < DIV < MAIN" — ein Artikelkopf INNERHALB von
+main. Jetzt scheiden header und footer nur aus, wenn sie zum Seitengeruest
+gehoeren. Ergebnis: "Kimi K2.6" statt "Quickstart".
+
+**Schaltflaechen: gemessen statt vermutet.** Auf der genannten Seite stehen 21
+Schaltflaechen — **keine einzige mit ermittelbarem Ziel.** Es sind Suche,
+"Copy page", Zoom und Menue-Oeffner, also JavaScript-Aktionen. Eine
+PDF-Anmerkung braucht eine Adresse; ein Klickfeld ohne Ziel waere ein
+Versprechen, das die Datei nicht halten kann. Die Erfassung nimmt jetzt
+`button` und `[role=button]` mit, sofern sie ein Ziel TRAGEN (data-href,
+data-url, formaction, Verweis im Elternpfad) — auf Seiten, die solche haben.
+
+**Und die Sprachen, zu Ende geprueft.** 158 Schluessel in neun Sprachen, in
+beiden Paketen byte-identisch, in jedem Bereich (Popup, Einstellungen,
+Ergebnisseite, Hintergrund, Inhaltsskript) vollstaendig. Dabei zwei Funde:
+
+  a) **Vier Fehlermeldungen standen fest auf Deutsch im Quelltext** — fuer
+     geschuetzte Seiten, interne Seiten, fehlende Reiter und blockierte
+     Skripte. Fuer jede gab es einen uebersetzten Schluessel in allen neun
+     Sprachen; sie lagen unbenutzt herum. Ein japanischer Nutzer bekam "Chrome
+     schuetzt diese Seite" zu lesen. Der bestehende Test hatte genau diese
+     Fehlerart schon einmal gefunden (07.08.2026), sah aber nur auf `title:`
+     und `message:` — nicht auf `reason:` und nicht auf `makeUserHintError`.
+     Beides ist ergaenzt, mit Gegentest: harter Text eingesetzt, Pruefung rot;
+     zurueckgesetzt, gruen.
+
+  b) **37 Karteileichen entfernt** — Texte fuer Schalter, die es seit dem
+     Zusammenstreichen nicht mehr gibt (Zeitanker, Linkkarte, Textebene,
+     Fertigton, Kachelhoehe und weitere). Sie waren in neun Sprachen gepflegt
+     und wurden nirgends gelesen. Von 195 auf 158, die Sprachdatei schrumpft
+     von 138 auf 84 KB. Die vier Schluessel, die der Browser ueber das
+     Manifest liest (extName, extDescription, actionTitle, commandCapture),
+     sind ausgenommen — sie tauchen im Quelltext nicht auf und sind trotzdem
+     in Gebrauch.
+
+**Mit welchem Ergebnis.** Testsuite 27 Dateien gruen. A4-Druck 13 Seiten in
+exakter Blattgroesse, Artikel im Leselayout auf 794 px Breite mit 34 Verweisen,
+Titel "Kimi K2.6". Beide Pakete gebaut.
+
+## 2026-08-18 (3) — Artikel als Lesedokument, Einstellungen am Knopf, und ein Absturz, der noch nicht passiert war
+
+**Was.** Fuenf Rueckmeldungen aus der Benutzung, eine davon ein Fehler, der
+niemandem aufgefallen waere, bevor er zuschlaegt.
+
+**Der Artikel ist jetzt ein PDF.** Bisher gab der Artikel-Knopf eine
+Markdown-Datei heraus. Gemeint war aber das, was ein Leseprogramm daraus
+macht: der Text auf Blattbreite umgebrochen, ohne Navigation, ohne
+Seitenleisten. Der Vektorweg kann das — die Blattbreite wird VOR dem Messen
+gesetzt (A4 hoch 794 px, quer 1123 px, Letter 816/1056), die Hoehe ergibt sich
+erst daraus, wie der Text darauf umbricht. Die Textdatei bleibt: als Haken im
+Fach neben dem Knopf, und als Rueckfall in Firefox, wo es kein
+DevTools-Protokoll gibt.
+
+Gegen das Vergleichsstueck gemessen (web to pdf, Artikelausgabe derselben
+Seite): 595,9 gegen 598,1 pt Breite — dieselbe Form. Aber 10.050 gegen
+4.354 pt Hoehe, und der Grund ist aufschlussreich: **Das Vergleichsstueck
+laesst die Codebloecke weg.** Null Codestellen, 6.896 Zeichen. Unsere Ausgabe
+hat 23 Codestellen und 13.155 Zeichen. Bei einer API-Dokumentation sind die
+Beispiele der Inhalt; ein Artikel-PDF ohne sie ist kuerzer und leerer.
+
+**Einstellungen stehen am Knopf, nicht in einer Liste.** Jede Ausgabeart hat
+ein Zahnrad, das darunter aufklappt: Papiergroesse und Ausrichtung fuer den
+Druck, dazu Schriftgroesse und Textdatei-Haken beim Artikel. Immer nur eines
+ist offen. Aus "In A4-Seiten teilen" wurde "Aufnahme fuer Druck" — der Knopf
+sagt jetzt den Zweck und nicht das Mittel.
+
+**Der Zitationsschalter ist zurueck.** Er war in 2.35.0 entfallen, weil
+"sourceMetadata" beim Zusammenstreichen in die Liste der festen Werte geraten
+war und der Schalter dadurch nichts bewirkte. Richtig ist: Die BEILAGEN, die
+aus den Angaben entstehen — RIS-Satz, Zitationsdatei, Linkkarte — sind fest.
+Ob die Angaben ueberhaupt aus der Seite gelesen werden, bleibt eine Wahl.
+
+**Schaltflaechen als Klickziele.** Die Linkkarte sammelt jetzt auch
+`button` und `[role=button]`, sofern sie ein Ziel TRAGEN (data-href, data-url,
+formaction oder ein Verweis im Elternpfad). Nachgemessen an platform.kimi.ai:
+21 Schaltflaechen, keine einzige mit ermittelbarem Ziel — es sind Suche,
+"Copy page", Zoom und Menue-Oeffner. Eine PDF-Anmerkung braucht eine Adresse;
+ein Klickfeld ohne Ziel waere ein Versprechen, das die Datei nicht halten kann.
+Auf Seiten mit echten Schaltflaechen-Verweisen greift es.
+
+Bei der Gelegenheit nachgezaehlt, was von 93 Verweisen ankommt: 72. Die
+fehlenden 21 sind die Sprungmarken neben den Ueberschriften — unsichtbare
+Anker, deren Text ein Zero-Width-Space ist und deren Kasten kleiner als zwei
+Pixel misst. Sie anklickbar zu machen brachte nichts.
+
+**Der Dateiname traegt nicht mehr den Namen der Website.** Fast jede Seite
+haengt ihn an den Titel: "Kimi K2.6 - Kimi API Platform". Bei jeder Aufnahme
+derselben Website stand damit derselbe Zusatz im Dateinamen — und er war es,
+der bei der Laengengrenze den eigentlichen Titel abschnitt, weil er hinten
+steht und der Inhalt vorne wegfaellt. Entfernt wird nur, was nachweislich der
+Name der Website ist (og:site_name oder der Kern des Hostnamens) und nur
+hinter einem Trennzeichen; es muessen mindestens drei Zeichen stehen bleiben.
+Acht Faelle geprueft, darunter die Gegenproben "PubMed" (bleibt) und "Eine
+Studie zu X" (unveraendert).
+
+**Und der Fehler.** Beim Einbau des Artikelwegs wurden drei Hilfsfunktionen
+nur in die Chrome-Fassung geschrieben — `dateinamenBauen`, `belegeAblegen`,
+`beilageAblegen` —, waehrend die Firefox-Fassung sie aufrief. Syntaktisch
+einwandfrei, laedt fehlerfrei, faellt beim ersten Klick auf "Artikel" mit
+einem ReferenceError um. Weder `node --check` noch der Ladeketten-Test finden
+so etwas. `tests/aufrufe-vorhanden.test.mjs` findet es jetzt.
+
+**Wie dieser Test zweimal falsch war, bevor er richtig wurde.** Der erste
+Entwurf hielt alle Aufrufe gegen alle Definitionen und meldete zwanzig
+Fehlalarme: Er las deutsche Prosa als Quelltext, "…, nicht (wie frueher)…"
+wurde zum Aufruf von `nicht(`. Der zweite schnitt dafuer Kommentare und
+Zeichenketten weg — und zerstoerte den Code: Die Regel fuer Zeilenkommentare
+verschluckte das "//" in "https://" samt dem Rest der Zeile, danach hingen die
+Anfuehrungszeichen, und `dateinamenBauen` galt in BEIDEN Fassungen als nicht
+vorhanden. Der Test wurde dadurch gruen — er verglich zwei gleich falsche
+Messungen. Erst die Gegenprobe ("wird ein bekannter Name ueberhaupt
+gefunden?") deckte das auf. Jetzt sucht er ohne Vorverarbeitung nach
+Definitionen am Zeilenanfang, und die Gegenprobe laeuft bei jedem Durchgang
+mit.
+
+**Mit welchem Ergebnis.** 195 Texte in neun Sprachen, drei neue Ausnahmen im
+Uebersetzungspruefer ("Article", "Orientation", "Portrait" lauten im
+Franzoesischen gleich — der Pruefer zwingt dazu, sie zu benennen statt sie
+unter einer Schwelle verschwinden zu lassen). Testsuite 27 Dateien gruen.
+
+## 2026-08-18 (2) — Fuenf Texte waren nie uebersetzt, und die Pruefung konnte es nicht sehen
+
+**Was.** Auf die Frage, ob die Sprachen vollstaendig sind: die 42 neuen Texte
+ja, in allen neun Sprachen. Dabei kamen aber fuenf ALTE Texte ans Licht, die
+in sieben Sprachen englisch geblieben waren — `popupWorking` („Capturing …"),
+`popupSaved` („Saved"), `popupUnknownError`, `optShortcutCopy` und
+`optCopyPathFormat`. Die ersten beiden stehen bei JEDER Aufnahme im Popup: Wer
+die Oberflaeche auf Spanisch oder Japanisch gestellt hatte, las dort Englisch.
+
+**Warum es niemand bemerkt hat.** `tests/i18n.test.mjs` prueft, ob ein
+Schluessel VORHANDEN ist, ob keiner zuviel dasteht und ob die Platzhalter
+zusammenpassen. Ein englischer Satz in der spanischen Datei erfuellt alle drei
+Bedingungen. Die Pruefung war nicht nachlaessig, sie war auf die falsche Frage
+gerichtet.
+
+**Wie geprueft wurde.** Nicht nach Gefuehl, sondern gezaehlt: je Sprache die
+Zahl der Texte, die Zeichen fuer Zeichen dem englischen entsprechen. Deutsch 1
+von 187, die uebrigen zwischen 5 und 10. Dann die Gegenprobe, ob die
+Uebereinstimmung ueberhaupt etwas bedeutet — bei `resultPage` („page") und
+`menuScale20` („2.0x — maximum") lautet das Franzoesische zu Recht gleich, und
+Zotero, Citavi, APA und MLA werden nirgends uebersetzt. Zusaetzlich geprueft,
+ob Russisch tatsaechlich kyrillisch, Japanisch japanisch und Chinesisch
+chinesisch geschrieben ist: bis auf die Programmnamen durchgaengig ja.
+
+**Die Pruefung kann es jetzt sehen.** `tests/i18n.test.mjs` vergleicht
+zusaetzlich Zeichen fuer Zeichen gegen das Englische. Die berechtigten
+Ausnahmen stehen namentlich in einer Liste, die man beim Eintragen begruenden
+muss — nicht hinter einer Schwelle, die stillschweigend alles durchlaesst.
+
+**Und genau daran waere sie fast gescheitert.** Der erste Entwurf prueste erst
+ab acht Zeichen, weil kurze Texte oft Abkuerzungen sind. Der Gegentest — zwei
+spanische Texte absichtlich auf Englisch gesetzt — deckte auf, dass davon nur
+einer gefunden wurde: „Saved" hat fuenf Zeichen und rutschte durch.
+Ausgerechnet einer der beiden Texte, die den Anlass gaben. Ueber den gesamten
+Bestand gemessen erzeugt auch die Schwelle 1 keinen einzigen Fehlalarm, also
+ist sie ersatzlos entfallen. Ein Pruefer, der den Anlassfall nicht findet,
+prueft nichts.
+
+**Mit welchem Ergebnis.** 187 Schluessel in neun Sprachen, in beiden Paketen
+byte-identisch. Null unuebersetzte Texte. Gegentest bestanden: absichtlich
+englisch gesetzt, Pruefung rot; zurueckgesetzt, Pruefung gruen. Testsuite 26
+Dateien gruen. Ausgeliefert als 2.35.1 — 2.35.0 lag zu diesem Zeitpunkt schon
+bei AMO, und zwei verschiedene Pakete unter derselben Nummer sind genau der
+Fehler, den die Versionswache verhindern soll.
+
+## 2026-08-18 — Verweise sind jetzt anklickbar, und das Popup passt wieder ins Fenster
+
+**Was.** Vom Nutzer gemeldet: „die links werden auch im normalen pdf nicht
+mituebernommen und sind nicht anklickbar". Das stimmte. Behoben. Dazu ein
+schlankeres Popup mit drei neuen Ausgabearten und deutlich kuerzeren Texten
+ueberall.
+
+**Der eigentliche Fehler.** Der PDF-Schreiber kannte `/Annots` ueberhaupt
+nicht — 0 Vorkommen in der ganzen Datei. Das fertige PDF war ein Bild der
+Seite, und was darin wie ein Verweis aussah, war einer GEWESEN. Das Bittere
+daran: Die Lage jedes Verweises lag die ganze Zeit vor. Die Linkkarte sammelt
+sie seit 2.31.0 und legte sie als `.links.json` daneben — sie wurde nur nie
+ins PDF eingetragen. Alle Angaben vorhanden, nie verwendet.
+
+**Wie behoben.** `linkFlaechen()` rechnet die Verweise aus CSS-Dokumentpixeln
+in PDF-Punkte um, mit derselben Transformation wie die Textebene: Massstab
+ueber die Dokumentbreite, Y-Achse umgedreht (das PDF zaehlt nach oben, die
+Seite nach unten), Seitenversatz bei mehrseitiger Ausgabe. Jeder Verweis wird
+ein eigenes `/Annot`-Objekt mit `/Subtype /Link` und `/Border [0 0 0]` — ohne
+den Rand umranden die meisten Betrachter jeden Verweis mit einem Kasten, was
+ueber einem Bildschirmfoto aussaehe, als haette die Aufnahme Rahmen, die die
+Seite nie hatte.
+
+Zwei Arten von Zielen bleiben draussen: `javascript:` — ausfuehrbarer Code in
+einer Datei, die als Beleg weitergereicht wird — und Sprungmarken innerhalb
+der Seite, deren Ziel diese Karte nicht kennt. Ein Verweis, der irgendwohin
+springt, ist schlechter als keiner.
+
+**Neu im Popup.** Drei Ausgabearten statt einer, und der Knopf entscheidet,
+nicht die Einstellungsseite:
+  - **In A4-Seiten teilen** — dieselbe Aufnahme, auf Druckblaetter zerlegt.
+    Die Einstellung wird nur fuer diesen Lauf ueberschrieben und nicht
+    gespeichert; wer morgen wieder eine fortlaufende Seite will, muss nichts
+    zuruecksetzen.
+  - **Artikel als Textdatei** — der Lesetext als Markdown, mit den Verweisen
+    als `[Text](Ziel)`. Kein PDF: Ein PDF ist ein Beleg und laesst sich
+    schlecht weiterverarbeiten. Wer den Text zitieren, durchsuchen oder einem
+    Sprachmodell vorlegen will, braucht Text. Laeuft in beiden Browsern, weil
+    es reine DOM-Auswertung ist.
+  - **Bereich auswaehlen** wie bisher.
+
+**Kuerzer.** Die Erklaerungen unter den Schaltern sind aus dem Popup
+verschwunden (sie stehen als `title` dran und ausfuehrlich in den
+Einstellungen), sechzehn Hinweistexte auf der Einstellungsseite sind auf einen
+Satz eingedampft, und die sechs Absaetze der „Immer dabei"-Liste sind zwei
+Zeilen geworden, die die eine Frage beantworten, die man dort hat: welche
+Datei liegt wo. Gemessen: Popup von rund 630 auf **346 px**. Die Fusszeile mit
+Kuerzel und Einstellungen ist damit wieder sichtbar, ohne zu scrollen.
+
+**Drei Fehler, die dabei gefunden wurden.**
+  a) Die „Immer dabei"-Liste zeigte ihr HTML im Klartext an — `<strong>` und
+     `<code>` standen als Text auf der Seite. i18n.js setzt `textContent` und
+     nicht `innerHTML`, und das ist richtig so: Markup aus Uebersetzungsdateien
+     gehoert nicht ungeprueft ins Dokument. Auszeichnung steht jetzt im HTML,
+     uebersetzt wird nur der Fliesstext.
+  b) `hideSticky` war beim Zusammenstreichen in die Liste der festen Werte
+     geraten. Damit war der Schalter im Popup ein Bedienelement ohne Wirkung:
+     umlegbar, speicherbar, wirkungslos. Er ist wieder bedienbar — ob ein
+     Zustimmungsdialog mit aufs Bild soll, faellt von Seite zu Seite anders
+     aus. Der Schalter fuer die Quellenangaben ist dagegen ganz entfallen,
+     weil die Angaben tatsaechlich immer mitkommen.
+  c) Der Artikel brachte unsichtbare Zeichen mit: Dokumentationsseiten haengen
+     an jede Ueberschrift eine Sprungmarke aus einem Zero-Width-Space. Im Bild
+     sieht man nichts, im Markdown standen leere Ueberschriften („### ") und
+     Zeichen, die sich nicht loeschen lassen, weil man sie nicht sieht.
+
+**Die AMO-Pruefung von 2.34.0** meldete zwei Warnungen zu
+`permissions.request` unter Firefox for Android. Der Aufruf steht in einem
+Zweig, der in Firefox nie laeuft — ohne DevTools-Protokoll wird der ganze
+Block ausgeblendet. Statt die Mindestversion anzuheben und Nutzer
+auszuschliessen, laeuft der Zugriff jetzt ueber eine oertliche Bezugnahme.
+
+**Mit welchem Ergebnis.** `tests/pdf-verweise.test.mjs` prueft an einem
+gebauten PDF: drei von fuenf Verweisen uebernommen (javascript: und
+Sprungmarke aussortiert), Rechteck auf 0,5 pt genau an der erwarteten Stelle,
+Oberkante als groesserer Y-Wert, `/Annots` in der Seite eingetragen. Die
+Artikelausgabe an platform.kimi.ai: 16.608 Zeichen, 28 Ueberschriften,
+16 Verweise, keine leeren Ueberschriften, keine unsichtbaren Zeichen. Popup im
+Browser gemessen und angesehen. Testsuite 26 Dateien gruen.
+
+## 2026-08-17 — Text-PDF statt Bild, und eine Einstellungsseite mit drei Punkten
+
+**Was.** Chrome nimmt Seiten jetzt als Vektor-PDF auf statt als aneinander-
+gesetzte Bildschirmfotos: echte Buchstaben zum Auswaehlen und Suchen,
+anklickbare Verweise, Sprungmarken aus den Ueberschriften — auf EINEM Blatt,
+in einem Durchgang, ohne Scrollen. Dazu ein Artikelmodus, der Navigation und
+Seitenleisten weglaesst. Die Einstellungsseite ist von vierzig Schaltern auf
+drei zusammengestrichen (Qualitaet, Aufloesung, Sprache); die Belegangaben
+haben gar keinen Schalter mehr, sondern sind immer an. Und jede Aufnahme legt
+eine Zitationsdatei daneben — fertige Eintraege in sechs Stilen, deutsch und
+englisch, dazu BibTeX.
+
+**Warum.** Der Bildweg erzeugt mehrere Megabyte fuer eine Seite, deren Text
+sich nicht markieren laesst und deren Verweise tot sind. Die Vorlage war ein
+PDF der Erweiterung „web to pdf", das dasselbe Dokument in 489 kB ablegte, mit
+101 Verweisen und 22 Sprungmarken. Der Unterschied liegt nicht in der
+Sorgfalt, sondern im Verfahren: Chromium kann eine Seite selbst setzen.
+
+**Wie.** `chrome-mv3/cdp-vektor.js` fuehrt die Sequenz aus, auf die es dabei
+ankommt, und jeder Schritt darin ist eine eigene Falle:
+`Emulation.setEmulatedMedia` auf `screen` — ohne das druckt Chromium die
+Druckansicht, und die Seitenleisten fehlen. `Emulation.setDeviceMetricsOverride`
+auf die volle Dokumenthoehe VOR dem Druck — ohne das bleiben nachgeladene
+Bilder leer. Der Massstab des Reiters (`tabs.getZoom`) geht in die Rechnung
+ein, sonst schneidet der Druck rechts ab. Dann `Page.printToPDF` mit
+`paperHeight` = Dokumenthoehe und `pageRanges: "1"`. Oberhalb von 800 Zoll
+setzt Chromium aus; dort faellt die Ausgabe auf mehrere Blaetter zurueck.
+
+Die dafuer noetige Erlaubnis `debugger` steht als `optional_permissions` im
+Manifest und wird erst beim Einschalten erfragt — wer den Bildweg nutzt, sieht
+bei der Installation keine Warnung. Beim Ausschalten wird sie wieder abgegeben.
+Firefox bleibt unveraendert beim Bildweg: dort gibt es kein DevTools-Protokoll.
+
+**Zwei Fehler, die dabei gefunden und behoben wurden.** Der Artikelmodus
+erkannte nie einen Artikel, weil `document.body` als gleichberechtigter
+Kandidat in der Bewertung stand — er enthaelt jeden anderen Kandidaten und
+gewann deshalb immer (gemessen an platform.kimi.ai: 22.562 Punkte gegen 17.652
+des `<main>`). Und der CSS-Selektor der Ausblende-Marke war in
+Binnengrossschreibung notiert, waehrend `dataset` daraus ein Attribut mit
+Trennstrichen macht — er haette nie getroffen.
+
+**Mit welchem Ergebnis.** Gemessen gegen dieselbe Seite wie die Vorlage
+(platform.kimi.ai, Chrome 151, gleiche Fensterbreite): eigenes PDF
+948 x 9.664 pt gegen 959 x 9.617 pt der Vorlage, 125 Verweise gegen 101,
+23 Sprungmarken gegen 22, beide auf einem Blatt, beide `Skia/PDF m151`. Der
+Text laesst sich herausziehen (14.380 Zeichen, Seitenleiste enthalten). Im
+Artikelmodus fallen die Verweise von 125 auf 35 — die Navigation ist weg.
+Testsuite 24 Dateien gruen, darunter `tests/zitationsstile.test.mjs` mit den
+vier Zitierfehlern, die beim Bauen tatsaechlich dastanden („66 (3)" statt
+„66(3)", „o. J..", ein BibTeX-Schluessel ohne Umlaut, MLA mit Punkt statt
+Komma).
+
+**Wie schnell.** Am selben Dokument gemessen (12.805 px hoch, Fenster 900 px,
+Chrome 151, Last unter 2): Vektorweg 3,6 s, davon 3,2 s der Druck selbst und
+alles Uebrige zusammen unter 400 ms. Der Bildweg braucht fuer dieselbe Seite
+15 Ausschnitte und 16,9 s — und darin fehlen noch das Zusammensetzen, die
+JPEG-Kodierung und der PDF-Bau. Die erste Messung ergab 11,7 s fuer den
+Vektorweg; sie war ein Kaltstart und wurde erst im zweiten Durchgang richtig.
+
+**Was sich fuer bestehende Nutzer aendert.** Zeitanker und Linkkarte sind jetzt
+Standard. Der Zeitanker ist der einzige Netzabruf dieser Erweiterung, und
+`PRIVACY.md` sagte bisher, es gebe keinen — das ist berichtigt und im
+Abschnitt „Network activity" ausgeschrieben. Wer die Angaben frueher
+abgeschaltet hatte, bekommt sie wieder: `getSettings` uebergeht die
+gespeicherten Werte fuer die Pflichtangaben, statt sie zu lesen. Das braucht
+keinen Migrationsschritt, der halb durchlaufen kann.
+
 ## 2026-08-16 — /for-agents/ spricht neun Sprachen
 
 **Was.** Die Agenten-Seite — die, die ein KI-Leser zuerst findet — liegt jetzt
@@ -410,10 +1310,107 @@ Datei als `.ris` ankommt.
 
 # CHANGELOG — Full Page PDF Snap
 
+<!-- change-stream:auto-block:2026-08-18:START -->
+### 2026-08-18 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 36 Events, generiert 2026-08-19T20:18_
+
+**Aktivitaet:** 16 Datei(en), 36 Tool-Calls (27 Edit, 8 Write, 1 Bash), 1 Session(s).
+
+**Beruehrte Dateien:**
+- `full-page-pdf-snap-public/pdf-writer.js` (6x)
+- `full-page-pdf-snap-public/content.js` (5x)
+- `full-page-pdf-snap-public/options.js` (3x)
+- `full-page-pdf-snap-public/popup.html` (3x)
+- `full-page-pdf-snap-public/tests/i18n.test.mjs` (3x)
+- `full-page-pdf-snap-public/options.html` (2x)
+- `full-page-pdf-snap-public/tests/aufrufe-vorhanden.test.mjs` (2x)
+- `full-page-pdf-snap-public/tests/beilagen-garantie.test.mjs` (2x)
+- `full-page-pdf-snap-public/pack-chrome.py` (2x)
+- `full-page-pdf-snap-public/tests/ladekette.test.mjs` (1x)
+- `full-page-pdf-snap-public/chrome-mv3/cdp-vektor.js` (1x)
+- `full-page-pdf-snap-public/tests/modus-kette.test.mjs` (1x)
+- `full-page-pdf-snap-public/tests/einstellungen-lesbar.test.mjs` (1x)
+- `full-page-pdf-snap-public/zitate.js` (1x)
+- `full-page-pdf-snap-public/tests/zitationsstile.test.mjs` (1x)
+- `full-page-pdf-snap-public/tests/druckformate.test.mjs` (1x)
+
+**Bemerkenswerte Commands:**
+- `cd /home/holo/repos/full-page-pdf-snap-public && git commit -q -F - <<'MSG' && git log --oneline -1
+Say what lies beside`
+
+<!-- change-stream:auto-block:2026-08-18:END -->
+
+
+<!-- change-stream:auto-block:2026-08-17:START -->
+### 2026-08-17 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 37 Events, generiert 2026-08-18T18:00_
+
+**Aktivitaet:** 19 Datei(en), 37 Tool-Calls (23 Edit, 14 Write), 2 Session(s).
+
+**Beruehrte Dateien:**
+- `full-page-pdf-snap-public/zitate.js` (10x)
+- `full-page-pdf-snap-public/chrome-mv3/cdp-vektor.js` (7x)
+- `full-page-pdf-snap-public/pack-firefox.py` (3x)
+- `full-page-pdf-snap-public/PLAN_REICHWEITE_2026-08-17.md` (2x)
+- `full-page-pdf-snap-public/tools/nutzung-tabellen.py` (1x)
+- `full-page-pdf-snap-public/tools/menschen-gegenprobe.py` (1x)
+- `full-page-pdf-snap-public/tools/trichter-analyse.py` (1x)
+- `full-page-pdf-snap-public/tools/amo-sichtbarkeit.py` (1x)
+- `full-page-pdf-snap-public/M1_AMO_AENDERUNG.md` (1x)
+- `full-page-pdf-snap-public/tools/amo-listing-setzen.py` (1x)
+- `full-page-pdf-snap-public/tools/klientname-test.js` (1x)
+- `full-page-pdf-snap-public/docs/.well-known/mcp/server-card.json` (1x)
+- `full-page-pdf-snap-public/tools/beschreibungen-gleichlauf-test.py` (1x)
+- `full-page-pdf-snap-public/options.html` (1x)
+- `full-page-pdf-snap-public/options.js` (1x)
+- `full-page-pdf-snap-public/chrome-mv3/manifest.json` (1x)
+- `full-page-pdf-snap-public/background.html` (1x)
+- `full-page-pdf-snap-public/tests/android-dateiname.test.mjs` (1x)
+- `full-page-pdf-snap-public/tests/zitationsstile.test.mjs` (1x)
+
+<!-- change-stream:auto-block:2026-08-17:END -->
+<!-- change-stream:auto-block:2026-08-16:START -->
+### 2026-08-16 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 21 Events, generiert 2026-08-17T18:00_
+
+**Aktivitaet:** 14 Datei(en), 21 Tool-Calls (13 Write, 8 Edit), 1 Session(s).
+
+**Beruehrte Dateien:**
+- `full-page-pdf-snap-public/texte_howto_pdf.py` (4x)
+- `full-page-pdf-snap-public/texte_mitmachen.py` (3x)
+- `full-page-pdf-snap-public/texte_crawler.py` (2x)
+- `full-page-pdf-snap-public/texte_deutsch_seite.py` (2x)
+- `full-page-pdf-snap-public/tools/builder-drift.py` (1x)
+- `full-page-pdf-snap-public/tools/seite-neunsprachig.py` (1x)
+- `full-page-pdf-snap-public/texte_kompression.py` (1x)
+- `full-page-pdf-snap-public/texte_android.py` (1x)
+- `full-page-pdf-snap-public/texte_anleitung_pdf.py` (1x)
+- `full-page-pdf-snap-public/tools/cf_token.py` (1x)
+- `full-page-pdf-snap-public/tools/sprachmeta.py` (1x)
+- `full-page-pdf-snap-public/worker/test-sprachwahl.mjs` (1x)
+- `full-page-pdf-snap-public/tools/seiten-systematik.py` (1x)
+- `full-page-pdf-snap-public/tools/neue-seite.py` (1x)
+
+<!-- change-stream:auto-block:2026-08-16:END -->
+<!-- change-stream:auto-block:2026-08-15:START -->
+### 2026-08-15 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 2 Events, generiert 2026-08-16T18:00_
+
+**Aktivitaet:** 2 Datei(en), 2 Tool-Calls (2 Write), 1 Session(s).
+
+**Beruehrte Dateien:**
+- `full-page-pdf-snap-public/tools/test-crawler-bericht.py` (1x)
+- `full-page-pdf-snap-public/worker/test-zaehler.mjs` (1x)
+
+<!-- change-stream:auto-block:2026-08-15:END -->
 <!-- change-stream:auto-block:2026-08-14:START -->
 ### 2026-08-14 — Auto-Aggregat (change-stream)
 
-_Quelle: change-stream, 2 Events, generiert 2026-08-15T18:00_
+_Quelle: change-stream, 2 Events, generiert 2026-08-16T10:00_
 
 **Aktivitaet:** 2 Datei(en), 2 Tool-Calls (2 Write), 1 Session(s).
 
@@ -422,8 +1419,6 @@ _Quelle: change-stream, 2 Events, generiert 2026-08-15T18:00_
 - `full-page-pdf-snap-public/tools/abnahme.py` (1x)
 
 <!-- change-stream:auto-block:2026-08-14:END -->
-
-
 <!-- change-stream:auto-block:2026-08-11:START -->
 ### 2026-08-11 — Auto-Aggregat (change-stream)
 
@@ -3655,3 +4650,103 @@ Abgespalten vom internen Repo `firefox-pageshot` (dort verbleibt die Version mit
 - **Neu:** Android-Override `afterCapture: "open"` statt `"none"` — PDF wird nach Erstellung direkt in der System-App geoeffnet (Ordner-Anzeige existiert unter Android nicht)
 - **Neu:** Extension-ID `fullpage-pdf-snap@bubu89.public` (getrennter Slot fuer AMO-Listing)
 - **Neu:** Kontextmenue wird auf Android nicht mehr aufgebaut (existiert dort nicht)
+## 2026-08-17 — Reichweite: Datenstände getrennt (M7), AMO-Änderung vorbereitet (M1)
+
+**Anlass:** Auswertung, wer den MCP und die Seite tatsächlich nutzt.
+
+### Befund, der die Richtung umgedreht hat
+
+Die Live-Messung widerspricht dem, was `adoption_stats` nahelegte:
+
+| | eingefroren 04./05.08. | live 17.08. |
+|---|---:|---:|
+| Abrufe der Agenten-Beschreibungen | ~700 | **43** |
+
+Von den 43 sind 10 Registry-Crawler, 15 ohne Kennung, 8 ein gefälschter
+iPhone-User-Agent (iOS 13.2.3, Version von 2019). **Echte Agenten
+praktisch null.** Die Zahlen vom 04./05.08. waren der Ausschlag der
+Registry-Eintragung, nicht der Betrieb.
+
+**Der Engpass ist die Entdeckung, nicht die Umwandlung.** Ohne diese
+Messung wären Maßnahmen an den Werkzeugbeschreibungen entstanden — an
+etwas, das niemand erreicht.
+
+### M7 — zwei Datenstände in einer Antwort (behoben, live)
+
+`adoption_stats` lieferte den Werkzeugzähler live und die Pfadzahlen
+eingefroren, getrennt nur durch ein Hinweisfeld. Wer die Antwort las, hielt
+150 Server-Card-Abrufe für den Ist-Stand; live waren es 16.
+
+Jetzt drei getrennte Blöcke: `readMeFirst` (nennt beide Stände),
+`live` (Zähler + Lesezeitpunkt), `frozenSnapshot` (mit Warnung, die
+Verhältnisse zu lesen, nie die Höhe). Das Alter des Schnappschusses wird
+berechnet statt vom Leser erwartet — heute „12 days old".
+
+### M1 — AMO-Eintrag zeigt den falschen Anwendungsfall (vorbereitet)
+
+Gemessen mit `tools/amo-sichtbarkeit.py` über 14 Suchbegriffe: Das Add-on
+steht auf **Platz 1 bei „full page pdf"** und **fehlt in den Top 75** bei
+`citation` (462 Treffer), `reference manager` (319) und `scholar` (181).
+Es rankt, wo sein Name passt, nicht wo sein Nutzen liegt.
+
+Ursache: Kategorie `photos-music-videos` und Tag `security` beschreiben
+das Werkzeug nicht. Soll: `download-management` statt
+`photos-music-videos`, `scholar` statt `security` (gültiger AMO-Tag,
+759 Add-ons, wird von den Zotero-Erweiterungen benutzt).
+
+**Blockiert:** Der einzige funktionierende AMO-Schlüssel gehört Konto
+19887469 „Chris Yo", Eigentümer des Add-ons ist 20041617 „Silence".
+Zerstörungsfrei über `/accounts/profile/` geprüft, ohne Schreibversuch.
+
+`tools/amo-listing-setzen.py` ist fertig: Trockenlauf zeigt den Diff,
+`--anwenden` prüft **vor** dem Schreiben, ob das Konto Autor ist, und
+bricht sonst mit Begründung ab statt in ein 403 zu laufen.
+
+### Neue Werkzeuge
+
+`nutzung-tabellen.py`, `menschen-gegenprobe.py`, `trichter-analyse.py`,
+`amo-sichtbarkeit.py`, `amo-listing-setzen.py`
+
+### Nebenbefund
+
+`tools/crawler-bericht.py` zählt **Menschen gar nicht** — `einordnen()`
+verwirft jeden User-Agent, der weder KI-Bot noch Suchmaschine ist. Von
+1.324 Webseiten-Anfragen tauchten 201 im Bericht auf.
+
+## 2026-08-17 (2) — M1 und M6 ausgeführt
+
+### M1 — AMO-Eintrag umgestellt (live, unabhängig bestätigt)
+
+| | vorher | nachher |
+|---|---|---|
+| Kategorien | bookmarks, privacy-security, **photos-music-videos** | bookmarks, privacy-security, **download-management** |
+| Tags | download, privacy, **security** | download, privacy, **scholar** |
+
+Der Schlüssel des Eigentümerkontos (20041617 „Silence") kam vom Nutzer und
+liegt im Vault unter „Full Page PDF Snap — AMO JWT (Silence)".
+
+**Eine Falle dabei:** Die öffentliche AMO-API zeigte nach dem Schreiben noch
+den alten Stand — sie liefert gecacht aus. Wer nur dort nachsieht, hält den
+Schreibvorgang für gescheitert und schreibt womöglich ein zweites Mal.
+Mit Cache-Umgehung und in zwei Durchgängen bestätigt.
+
+### M6 — Client-Zähler (live)
+
+Zählt `clientInfo.name` aus `initialize`, je Tag, in KV. Ausgabe unter
+`live.clients` in `adoption_stats`, samt Hinweis, dass der Name eine
+ungeprüfte Selbstauskunft ist.
+
+Der Name ist fremdbestimmte Eingabe und wandert in einen Schlüssel der Form
+`c:<name>:<tag>`. Er wird deshalb zugeschnitten: nur `A-Za-z0-9._-`,
+höchstens 40 Zeichen, Randstriche entfernt, Rückfall `ohne-Namen`. Ohne das
+könnte ein Aufrufer mit einem Doppelpunkt die Schlüsselstruktur zerlegen.
+`tools/klientname-test.js` hält das fest — 16 Fälle, einschließlich
+`a:b:c`, `../../etc/passwd` und 200 Zeichen Länge.
+
+Gezählt wird per `ctx.waitUntil`: der Client wartet auf seine Sitzung, nicht
+auf den Zähler.
+
+**Erste Erkenntnis nach 15 Minuten:** fünf Sitzungen, fünf verschiedene
+Clients — die echten darunter `glimind-probe`, `mcpbeat`, `mcp`. Allesamt
+Monitore. Kein Claude, kein ChatGPT, kein Cursor. Das bestätigt die
+Entdeckungs-Diagnose mit einer zweiten, unabhängigen Messung.
