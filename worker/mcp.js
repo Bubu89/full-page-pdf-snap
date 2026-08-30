@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.24.0";
+const VERSION = "1.24.1";
 
 /* Welche Fassung die Stores gerade ausliefern — gefragt, nicht eingetragen.
  *
@@ -1481,10 +1481,26 @@ async function spuelenIntern(env) {
   }
 }
 
+/** Setzt die Sammlung zurueck — fuer den Test, der eine frische Instanz braucht. */
+function zuruecksetzen() {
+  offen = { w: {}, c: {} };
+  offenAnzahl = 0;
+  zuletztGespuelt = 0;
+  spuelLauf = null;
+}
+
 /** Vormerken und nur dann schreiben, wenn Zeit oder Menge es rechtfertigen. */
 function vormerken(env, ctx, art, name) {
   offen[art][name] = (offen[art][name] || 0) + 1;
   offenAnzahl += 1;
+  // Die Uhr beginnt beim ersten Ereignis dieser Instanz, nicht bei null.
+  //
+  // Stand sie auf null, war `Date.now() - 0` immer groesser als das Fenster —
+  // das allererste Ereignis einer Instanz schrieb also sofort. Weil Cloudflare
+  // laufend neue Instanzen erzeugt, in jedem Rechenzentrum eigene, buendelte
+  // in der Praxis fast nichts: Am 30.08.2026 kamen nach dem Umbau 294
+  // Schreibvorgaenge in elf Stunden zusammen statt der gerechneten 132.
+  if (!zuletztGespuelt) zuletztGespuelt = Date.now();
   const faellig = offenAnzahl >= SPUEL_STUECK
     || Date.now() - zuletztGespuelt >= SPUEL_MS;
   if (!faellig) return;

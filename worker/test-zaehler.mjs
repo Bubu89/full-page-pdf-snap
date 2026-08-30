@@ -17,7 +17,7 @@ const teile = [];
 for (const name of ["const ZAEHLER_TAGE", "const SPUEL_MS", "const SPUEL_STUECK",
                     "let offen", "let offenAnzahl", "let zuletztGespuelt",
                     "function tagSchluessel", "async function spuelenIntern", "let spuelLauf", "function spuelen",
-                    "function vormerken", "function werkzeugZaehlen",
+                    "function zuruecksetzen", "function vormerken", "function werkzeugZaehlen",
                     "function klientName", "function klientZaehlen",
                     "async function tageLesen", "async function zaehlerLesen"]) {
   const von = quelle.indexOf(name);
@@ -34,7 +34,7 @@ if (!WERKZEUGNAMEN_QUELLE) throw new Error("WERKZEUGNAMEN nicht gefunden");
 const modul = await import("data:text/javascript," + encodeURIComponent(
   WERKZEUGNAMEN_QUELLE[0] + "\n" + teile.join("\n") +
   "\nexport { werkzeugZaehlen, klientZaehlen, zaehlerLesen, spuelen, "
-  + "tagSchluessel, WERKZEUGNAMEN };"));
+  + "tagSchluessel, WERKZEUGNAMEN, zuruecksetzen };"));
 
 // --- KV-Attrappe -----------------------------------------------------------
 function kvAttrappe() {
@@ -168,6 +168,24 @@ console.log("\n=== G. Menge loest von selbst aus ===");
   modul.werkzeugZaehlen(env, "install_extension");
   await new Promise((r) => setTimeout(r, 20));
   pruefe("der hundertste loest aus", ZAEHLER.schreibvorgaenge, 1);
+}
+
+console.log("\n=== I. Frische Instanz schreibt nicht sofort ===");
+{
+  // Der Fall, der im Betrieb auftrat und im Test fehlte: Eine neue Instanz
+  // hat noch nie gespuelt. Stand die Uhr dabei auf null, galt das Fenster
+  // sofort als abgelaufen und das erste Ereignis schrieb — bei laufend neu
+  // erzeugten Instanzen also fast jedes.
+  const ZAEHLER = kvAttrappe();
+  const env = { ZAEHLER };
+  modul.zuruecksetzen();               // Instanz wie frisch gestartet
+  modul.werkzeugZaehlen(env, "install_extension");
+  await new Promise((r) => setTimeout(r, 20));
+  pruefe("erstes Ereignis einer frischen Instanz schreibt nicht",
+         ZAEHLER.schreibvorgaenge, 0);
+  await modul.spuelen(env);
+  pruefe("beim ausdruecklichen Spuelen kommt es an",
+         JSON.parse(await ZAEHLER.get(`t:${heute}`)).w.install_extension, 1);
 }
 
 console.log("\n=== H. Schreibfehler bleibt folgenlos ===");
