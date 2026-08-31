@@ -1,3 +1,55 @@
+## 2026-08-31 — Der Installationsweg meldete Erfolg und installierte nichts (Worker 1.25.0)
+
+Die Prüfung der eigenen Auto-Installation begann mit einem einfachen Lauf:
+`headless-agent-install.py firefox install`. Er endete mit `ok: false`. Sechs
+Wiederholungen später war klar, dass Marionette dabei nicht schwieg, sondern
+zusprach: `Addon:Install` antwortete mit der Add-on-Kennung, als wäre alles
+geschehen — im Profil stand nichts.
+
+**Die Ursache lag vier Wochen zurück.** Eine Deinstallation vom 4. August war
+auf die Richtlinien-Route zurückgefallen und hatte
+`distribution/policies.json` mit `installation_mode: blocked` hinterlassen.
+Eine Unternehmensrichtlinie steht über dem Steuerkanal und lehnt ab, ohne es
+zu sagen. Der Zyklus vergiftete sich selbst: seine eigene Deinstallation
+verhinderte jede spätere Installation.
+
+**Drei weitere kamen im selben Lauf ans Licht**, jeder davon ein Ergebnis, das
+in die falsche Richtung log:
+
+| Symptom | Ursache | Behebung |
+|---|---|---|
+| Deinstallation gelingt, Lauf meldet Misserfolg | `extensions.json` wird beim Herunterfahren geschrieben; ein Signal lässt die Entfernung bis zum nächsten Start vorgemerkt | `Marionette:Quit` in **beide** Richtungen, dann auf den Prozess warten |
+| Lauf nennt 2.37.0 und installiert 2.26.0 | Zwischenablage ohne Version im Dateinamen wird nie erneuert | Version in den Dateinamen, Gegenprobe im XPI-Manifest |
+| Chrome-Ergebnis wirkt veraltet | AMO und Chrome Web Store führen eigene Nummern, 2.37.0 gegen 2.38.0 | Nur Firefox gegen den AMO-Stand vergleichen |
+
+Gemessen nach der Behebung, beide Richtungen, je zweimal: Firefox 2,9 s und
+2,1 s, Chrome 4,1 s und 2,1 s. Vorher: 6,6 s bis zum stillen Fehlschlag und
+bis zu 25 s bis zur falschen Fehlmeldung.
+
+**Was gefehlt hat, war nicht die Beschreibung, sondern etwas Lauffähiges.**
+Alles zum fensterlosen Installieren lag hier als Text vor — Messung, Notiz,
+Agent-Skill, Werkzeugantwort. Wer dem folgte, musste es selbst bauen, und
+selbst bauen hieß in alle vier Fallen laufen.
+`https://provinglab.dev/install-extension.py` ist jetzt der kurze Weg: eine
+Datei, Python 3, nur Standardbibliothek, beide Browser, beide Richtungen. Sie
+prüft gegen das Profil auf der Platte statt gegen die Antwort des Browsers und
+endet mit einem Fehlercode, wenn der Zustand nicht der bestellte ist.
+`install_extension` liefert sie an erster Stelle, mit den vier Fallen daneben.
+
+**KV-Schreiblast, Nachmessung zur Bündelung vom Vortag.** Der Alarm vom
+30.08. betraf noch den Tag vor der Auslieferung (18:33 UTC). Seither:
+
+| Tag | Schreiben | Auslastung |
+|---|---|---|
+| 25.08. | 792 | 79 % |
+| 29.08. | 650 | 65 % |
+| 30.08. | 577 | 58 % |
+| 31.08. | 113 bis 11:44 UTC | 11 %, hochgerechnet 23 % |
+
+Die Bündelung wirkt. Gemessen wird das ab jetzt mit `provinglab-kv` statt von
+Hand — die Alarm-Mail nennt die Operationsart nicht, und genau sie ist die
+Auskunft, auf die es ankommt.
+
 ## 2026-08-30 — Zählung schreibt gebündelt (Worker 1.24.0)
 
 Cloudflare meldete am Morgen, das Konto habe die Hälfte des täglichen

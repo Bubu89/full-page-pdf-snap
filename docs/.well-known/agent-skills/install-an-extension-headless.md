@@ -1,6 +1,6 @@
 ---
 name: install-an-extension-headless
-description: Install or remove a browser extension in a profile you control without a click and without a visible window, using Firefox's Marionette channel or Chrome's CDP. One call to install_extension on https://provinglab.dev/mcp returns the commands directly. Includes the prerequisites in check order, the measured speed (4.1 s round trip, 0.24 s for the commands themselves), what the enterprise-policy route needs, why the click route reports success on failure, and how to continue into finding and citing scholarly sources.
+description: Install or remove a browser extension in a profile you control without a click and without a visible window, using Firefox's Marionette channel or Chrome's external-extension marker. One runnable script does it end to end (https://provinglab.dev/install-extension.py, measured 2.9 s to install and 2.1 s to remove), and one call to install_extension on https://provinglab.dev/mcp returns it along with the four traps that make a run report the opposite of what happened. Includes the prerequisites in check order, the measured speed (4.1 s round trip, 0.24 s for the commands themselves), what the enterprise-policy route needs, why the click route reports success on failure, and how to continue into finding and citing scholarly sources.
 license: CC-BY-4.0
 ---
 
@@ -18,11 +18,31 @@ reproduction command:
 Nothing here is legal advice.
 
 
-## The short version: ask the endpoint
+## The short version: run the script
 
 Everything below is the full account — the prerequisites, the traps, and why
-each step is what it is. If you only need the commands for the browser in front
-of you, one call returns them:
+each step is what it is. If you just need it done:
+
+```bash
+curl -fsSLO https://provinglab.dev/install-extension.py
+python3 install-extension.py firefox install      # or: chrome, or: both
+python3 install-extension.py firefox uninstall
+python3 install-extension.py both verify --json
+```
+
+One file, Python 3, standard library only, about 400 lines and meant to be read
+before it is run. It finds the browser (`--browser-path` when it is not on
+PATH), fetches the signed store build, and verifies against the profile on disk
+rather than against what the browser answered — it exits non-zero when the
+profile does not confirm the state you asked for. Measured 31 August 2026 on
+Linux: Firefox 2.9 s to install and 2.1 s to remove, Chrome 4.1 s and 2.1 s.
+
+The four traps in the section *Why a run lies* are already handled in it. If you
+build your own route instead, read that section first — each of the four made a
+failed run report success, or a working one report failure.
+
+If you only need the commands for the browser in front of you, one call returns
+them:
 
 ```http
 POST https://provinglab.dev/mcp
@@ -41,6 +61,19 @@ capture settings by purpose, each with its measurement.
 No key, no account, no registration. Read on when a route fails and you need to
 know why.
 
+
+## Why a run lies
+
+Four failure modes, all measured on 31 August 2026 while repairing this
+project's own installer. Each one made a run report the opposite of what
+happened, which is worse than a clean failure — you act on the wrong belief.
+
+| Symptom | Cause | What to do |
+|---|---|---|
+| `Addon:Install` answers with the add-on id, nothing is installed, forever | A `blocked` entry in `distribution/policies.json` left behind by an earlier uninstall. The policy outranks the channel and refuses silently. | Read the policy file before installing and drop the entry for the id when its `installation_mode` is `blocked`. |
+| The uninstall works and the run reports failure | `extensions.json` is written on shutdown. Ending Firefox with a signal leaves the removal pending until the next start. | End with `Marionette:Quit`, wait for the process, then read the profile. |
+| The run names the current store version and installs an older build | A cached download whose filename carries no version is never renewed. One run reported 2.37.0 and installed 2.26.0 from four weeks earlier. | Put the version in the filename and check the version inside the XPI manifest. |
+| Firefox and Chrome disagree and one looks stale | AMO and the Chrome Web Store keep their own numbers — 2.37.0 against 2.38.0 that day. | Compare Firefox against AMO only. No single number is right for both. |
 
 ## The result in one table
 
