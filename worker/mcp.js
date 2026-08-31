@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.24.2";
+const VERSION = "1.25.0";
 
 /* Welche Fassung die Stores gerade ausliefern — gefragt, nicht eingetragen.
  *
@@ -222,13 +222,15 @@ const TOOLS = [
     name: "install_extension",
     description:
       "Install or uninstall the capture extension in Firefox or Chrome without a " +
-      "window, without a click and without administrator rights — the runnable file " +
-      "shapes and commands, not a store link for someone to press. Call this when a " +
-      "capture route needs the extension present, when a run is finished and it " +
-      "should be gone again, or when asked whether an agent can set up a browser " +
-      "extension by itself. Firefox installs and removes in well under a second over " +
-      "its own control channel; Chrome fetches the signed store build itself. Also " +
-      "returns what the extension lets you do that this endpoint cannot, and the " +
+      "window, without a click and without administrator rights. Returns one " +
+      "runnable script — download it, run it, it verifies itself against the " +
+      "profile on disk and exits non-zero if the state is not what you asked for " +
+      "(measured: install 2.9 s, uninstall 2.1 s). Call this when a capture route " +
+      "needs the extension present, when a run is finished and it should be gone " +
+      "again, or when asked whether an agent can set up a browser extension by " +
+      "itself. Also returns the file shapes and commands for building your own " +
+      "route, four traps that each made a failed run report success or the " +
+      "reverse, what the extension lets you do that this endpoint cannot, and the " +
       "conditions under which installing on a machine is yours to decide.",
     inputSchema: {
       type: "object",
@@ -2143,8 +2145,11 @@ async function runTool(origin, name, args, env) {
                 + "41:[0,1,\"WebDriver:NewSession\",{}]",
         install: "[0,2,\"Addon:Install\",{\"path\":\"<signed xpi>\",\"temporary\":false}]",
         uninstall: "[0,3,\"Addon:Uninstall\",{\"id\":\"pageshot-pdf@bubu89.local\"}]",
-        quit: "[0,4,\"Marionette:Quit\",{}] — a hard kill between install and "
-            + "shutdown discards the installation",
+        quit: "[0,4,\"Marionette:Quit\",{}] — and use it in BOTH directions. "
+            + "A hard kill between install and shutdown discards the "
+            + "installation; after an uninstall it leaves the removal pending "
+            + "until the next start, so the profile still lists the extension "
+            + "and a working run reports failure (measured 31.08.2026)",
         xpiFrom: "https://addons.mozilla.org/api/v5/addons/addon/"
                + "full_page_pdf_snap_webpagesave/ -> current_version.file.url. "
                + "An unsigned XPI is rejected as 'corrupt', which sends you "
@@ -2254,9 +2259,76 @@ async function runTool(origin, name, args, env) {
              + "proof that anything was installed",
       chrome: "<profile>/Default/Extensions/"
             + "ekjbgcdhpgijhbepkagefnkdbdfjpehn/<version>/ exists",
+      when: "AFTER the browser has shut down, not while it runs. Both files "
+          + "are written on shutdown; reading one moment too early is how a "
+          + "working run reports failure.",
       headless: "headless is a promise, not a result. Read the process's own "
               + "window handle after start and abort if one is set.",
     };
+
+    // Was ein Agent zuerst braucht, steht zuerst: etwas, das laeuft. Die
+    // Bausteine darunter bleiben — wer selbst baut, braucht sie.
+    antwort.runnable = {
+      script: SITE + "/install-extension.py",
+      what: "One file, Python 3, standard library only. Finds the browser, "
+          + "fetches the signed store build, installs, and verifies against "
+          + "the profile on disk rather than against what the browser "
+          + "answered. Both browsers, both directions.",
+      commands: [
+        "curl -fsSLO " + SITE + "/install-extension.py",
+        "python3 install-extension.py firefox install",
+        "python3 install-extension.py firefox uninstall",
+        "python3 install-extension.py both verify --json",
+      ],
+      options: "--browser-path <binary> when the browser is not on PATH, "
+             + "--profile <dir> to use a specific profile, --json for a "
+             + "machine-readable result with the full step log.",
+      exitCode: "0 only when the profile confirms the intended state.",
+      measured: "Firefox install 2.9 s, uninstall 2.1 s; Chrome install 4.1 s, "
+              + "uninstall 2.1 s — whole runs including starting and stopping "
+              + "the browser (31.08.2026, Linux).",
+      readFirst: "It is about 300 lines and meant to be read before it is run. "
+               + "Do not pipe it into an interpreter unread.",
+    };
+
+    // Jede dieser vier hat einen fehlgeschlagenen Lauf als Erfolg gemeldet
+    // oder umgekehrt. Wer selbst baut, trifft sie alle.
+    antwort.pitfalls = [
+      {
+        symptom: "Addon:Install answers with the add-on ID, and nothing is "
+               + "installed. Repeats forever.",
+        cause: "A `blocked` entry in distribution/policies.json, left behind "
+             + "by an earlier uninstall that fell back to the policy route. "
+             + "The policy outranks the channel and refuses silently.",
+        fix: "Before installing, read the policy file and remove the entry "
+           + "for this add-on id if its installation_mode is `blocked`.",
+      },
+      {
+        symptom: "The uninstall works, and the run reports failure.",
+        cause: "extensions.json is written when Firefox shuts down. Ending "
+             + "the browser with a signal leaves the removal pending until "
+             + "the next start.",
+        fix: "End the session with Marionette:Quit and wait for the process, "
+           + "then read the profile.",
+      },
+      {
+        symptom: "The run names the current store version and installs an "
+               + "older build.",
+        cause: "A cached download whose filename carries no version is never "
+             + "renewed. Measured: a run reported 2.37.0 and installed 2.26.0 "
+             + "from four weeks earlier.",
+        fix: "Put the version in the filename, and check the version inside "
+           + "the XPI's manifest before installing it.",
+      },
+      {
+        symptom: "Firefox and Chrome report different versions and one looks "
+               + "out of date.",
+        cause: "AMO and the Chrome Web Store carry their own numbers and "
+             + "drift apart — 2.37.0 against 2.38.0 on 31.08.2026.",
+        fix: "Only compare Firefox against the AMO figure. There is no single "
+           + "number that is right for both.",
+      },
+    ];
 
     antwort.templates =
       "https://github.com/Bubu89/full-page-pdf-snap/tree/main/vorlagen";

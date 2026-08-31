@@ -92,6 +92,26 @@ def amo_xpi():
 
 # --- Firefox: policies.json ---------------------------------------------------
 
+def ff_policy_blockade_raeumen():
+    """Eine liegengebliebene `blocked`-Policy aus einem frueheren Rueckfall
+    verhindert JEDE spaetere Installation — und zwar stumm: Marionette
+    antwortet auf Addon:Install mit der Add-on-ID, als waere sie installiert
+    (gemessen 31.08.2026). Darum vor jedem Install pruefen und raeumen."""
+    if not FF_POLICIES.exists():
+        return False
+    try:
+        bestand = json.loads(FF_POLICIES.read_text(encoding="utf-8") or "{}")
+    except json.JSONDecodeError:
+        return False
+    eintrag = bestand.get("policies", {}).get("ExtensionSettings", {}).get(GECKO_ID)
+    if not eintrag or eintrag.get("installation_mode") != "blocked":
+        return False
+    bestand["policies"]["ExtensionSettings"].pop(GECKO_ID, None)
+    FF_POLICIES.write_text(json.dumps(bestand, indent=2), encoding="utf-8")
+    log("ff-policy-blockade-geraeumt", id=GECKO_ID)
+    return True
+
+
 def ff_policy_schreiben(modus, xpi_url):
     """normal_installed installiert (entfernbar), blocked deinstalliert und
     sperrt. Fremde Eintraege in derselben Datei bleiben unangetastet."""
@@ -258,6 +278,7 @@ def ff_marionette_aktion(aktion, xpi_pfad=None):
                          env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
                          start_new_session=True)
     log("start", browser="firefox", pid=p.pid, headless=True, marionette=True)
+    sauber = False
     try:
         m = Marionette()
         m.session()
@@ -265,9 +286,25 @@ def ff_marionette_aktion(aktion, xpi_pfad=None):
             m.ruf("Addon:Install", {"path": str(xpi_pfad), "temporary": False})
         else:
             m.ruf("Addon:Uninstall", {"id": GECKO_ID})
+        # Marionette:Quit statt SIGTERM. Eine Deinstallation bleibt sonst bis
+        # zum naechsten Start vorgemerkt: extensions.json trug die Erweiterung
+        # weiter, der Lauf meldete Misserfolg, und erst ein spaeterer Start
+        # machte die Entfernung sichtbar (gemessen 31.08.2026).
+        try:
+            m.ruf("Marionette:Quit", {})
+            sauber = True
+        except Exception as e:
+            log("marionette-quit-fehler", fehler=str(e)[:120])
         return True
     finally:
-        stoppe(p)
+        if sauber:
+            try:
+                p.wait(timeout=30)
+                log("stopp", pid=p.pid)
+            except Exception:
+                stoppe(p)
+        else:
+            stoppe(p)
 
 
 # --- Phasen -------------------------------------------------------------------
@@ -278,7 +315,11 @@ def install(browser):
     if browser == "firefox":
         # Primaer Marionette: schneller (gemessen 0,10 s) und mit echter
         # Fehlerrueckmeldung; Policy als Rueckfall ohne laufenden Browser.
-        xpi_lokal = ARBEIT / "pdfsnap.xpi"
+        # Der Dateiname traegt die Version: eine namenlose Zwischenablage
+        # wurde nie erneuert und installierte am 31.08.2026 die Fassung vom
+        # 04.08. weiter, waehrend der Lauf 2.37.0 meldete.
+        ff_policy_blockade_raeumen()
+        xpi_lokal = ARBEIT / f"pdfsnap-{store_version}.xpi"
         if not xpi_lokal.exists():
             urllib.request.urlretrieve(xpi_url, xpi_lokal)
         try:
@@ -296,9 +337,16 @@ def install(browser):
         poll(ch_version, 90)
         stoppe(p)
         pruefer = ch_version
-    version = pruefer()
+    # extensions.json wird erst beim Shutdown geschrieben — sofort danach zu
+    # lesen meldete eine gelungene Deinstallation als gescheitert.
+    version = poll(pruefer, 20, intervall=1)
     ok = bool(version)
-    log("install-verifiziert", browser=browser, version=version, ok=ok)
+    # Nur Firefox laesst sich gegen den AMO-Stand vergleichen: Chrome holt
+    # aus dem Web Store, der eine eigene Fassung fuehrt (2.38.0 gegen 2.37.0
+    # am 31.08.2026) — ein Abgleich dagegen meldete Falsches.
+    erwartet = store_version if browser == "firefox" else None
+    log("install-verifiziert", browser=browser, version=version, ok=ok,
+        erwartet=erwartet, aktuell=(version == erwartet) if erwartet else None)
     return ok
 
 
@@ -322,7 +370,7 @@ def uninstall(browser):
         poll(lambda: ch_version() is None, 90)
         stoppe(p)
         weg = lambda: ch_version() is None
-    ok = weg()
+    ok = poll(weg, 20, intervall=1)
     log("deinstall-verifiziert", browser=browser, ok=bool(ok))
     return bool(ok)
 
