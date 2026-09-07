@@ -46,3 +46,11 @@ _visual-check/
 store-texte/*.bak-*
 *.bak-*
 tools/.abnahme-verlauf.json
+
+# Wrangler-Zwischenstaende. Sie gehoeren in kein Repo und in ein oeffentliches
+# schon gar nicht: worker/.wrangler/cache/cf.json traegt die Verbindungsdaten
+# des letzten lokalen Laufs — Stadt, Postleitzahl, Koordinaten der
+# ISP-Zuordnung und TLS-Fingerabdruecke. Am 07.09.2026 versehentlich
+# mitcommittet, weil der Working Tree ungesicherte Arbeit trug.
+worker/.wrangler/
+.wrangler/
