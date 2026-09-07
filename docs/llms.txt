@@ -40,6 +40,7 @@ measurements. Disclosed on every page where it is relevant.
 - [Recipes: turn a web source into a citation](https://provinglab.dev/recipes/): Runnable recipes for the citation endpoint, each executed before it was written down.
 ## Measurements
 
+- [An MCP server that fetches sources and says where they came from](https://provinglab.dev/measurements/mcp-source-capture/): Four addresses, one file each — byte-exact, with citation metadata from `citation_*` and schema.org. The extension `.pdf` is a claim, not a fact: Zenodo's preview URL ends in it and returns 7 kB of HTML. 23 of 23 checks, 3.6 s.
 - [Print to PDF or capture the screen?](https://provinglab.dev/measurements/print-to-pdf-vs-screenshot/): The same Wikipedia article through Firefox's built-in print export and through full-page screenshot capture, 1 August 2026.
 - [Webpage to PDF for OCR](https://provinglab.dev/measurements/webpage-to-pdf-for-ocr/): A full-page screenshot PDF run through Tesseract against the source text.
 - [Does your PDF extension upload the page?](https://provinglab.dev/measurements/pdf-extension-permissions/): What eight current PDF extensions declare in their manifests, retrieved 2026-08-01.

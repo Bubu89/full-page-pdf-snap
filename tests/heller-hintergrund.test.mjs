@@ -15,7 +15,7 @@ import vm from "node:vm";
 const q = readFileSync("background.js", "utf8");
 const c = { Uint8Array, Uint32Array, Math, console }; c.globalThis = c;
 vm.createContext(c);
-vm.runInContext(q.slice(q.indexOf("function farbtiefeAnwenden"), q.indexOf("\nasync function canvasToFlateBytes")), c);
+vm.runInContext(q.slice(q.indexOf("/* Unscharfmaskierung:"), q.indexOf("\nasync function canvasToFlateBytes")), c);
 
 const B = 200, H = 100;
 const rgba = g => { const d = new Uint8Array(g.length*4); for (let i=0,j=0;i<g.length;i++,j+=4){d[j]=d[j+1]=d[j+2]=g[i];d[j+3]=255;} return d; };

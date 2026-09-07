@@ -1362,6 +1362,17 @@ Datei als `.ris` ankommt.
 
 # CHANGELOG — Full Page PDF Snap
 
+<!-- change-stream:auto-block:2026-08-31:START -->
+### 2026-08-31 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 1 Events, generiert 2026-09-01T15:18_
+
+**Aktivitaet:** 1 Datei(en), 1 Tool-Calls (1 Write), 1 Session(s).
+
+**Beruehrte Dateien:**
+- `full-page-pdf-snap-public/docs/install-extension.py` (1x)
+
+<!-- change-stream:auto-block:2026-08-31:END -->
 <!-- change-stream:auto-block:2026-08-18:START -->
 ### 2026-08-18 — Auto-Aggregat (change-stream)
 

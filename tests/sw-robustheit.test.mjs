@@ -15,7 +15,11 @@ import { readFileSync } from "node:fs";
 import vm from "node:vm";
 
 const quelle = readFileSync(new URL("../background.js", import.meta.url), "utf8");
-const von = quelle.indexOf("function farbtiefeAnwenden");
+/* Die Schaerfung vor der Schwelle gehoert zum Pruefling dazu — sie
+ * laeuft im sw-Zweig mit. Ohne sie fehlt der ausgeschnittenen Fassung
+ * eine Funktion, und der Pruefer meldet einen Fehler, den es in der
+ * Erweiterung nicht gibt. */
+const von = quelle.indexOf("/* Unscharfmaskierung:");
 const bis = quelle.indexOf("\nasync function canvasToFlateBytes");
 const kontext = { Uint8Array, Uint32Array, Math, console };
 kontext.globalThis = kontext;

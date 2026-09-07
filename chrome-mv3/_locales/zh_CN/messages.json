@@ -17,17 +17,8 @@
   "popupCapture": {
     "message": "捕获整个页面"
   },
-  "popupShortcut": {
-    "message": "整页快捷键："
-  },
   "popupSettings": {
     "message": "设置"
-  },
-  "popupRunning": {
-    "message": "正在捕获…"
-  },
-  "popupDone": {
-    "message": "已保存。"
   },
   "busy": {
     "message": "已有捕获正在进行"
@@ -116,29 +107,11 @@
   "optJpeg": {
     "message": "JPEG 质量"
   },
-  "optScrollWait": {
-    "message": "每步滚动等待时间（毫秒）"
-  },
-  "optPdfFormat": {
-    "message": "PDF 格式"
-  },
   "optSinglePage": {
     "message": "单页连续（默认 — 无可见接缝）"
   },
-  "optMultiPage": {
-    "message": "多页（用于打印）"
-  },
   "optPageHeight": {
     "message": "多页模式的页面高度（像素）"
-  },
-  "optTileHeight": {
-    "message": "单页模式的分块高度（像素）"
-  },
-  "optHideSticky": {
-    "message": "隐藏固定元素"
-  },
-  "optHideStickyHint": {
-    "message": "在抓取前隐藏侧边栏和顶栏。导航栏会在顶部保留一次。"
   },
   "optAppLayout": {
     "message": "应用界面（Gmail、Outlook、Notion …）"
@@ -151,9 +124,6 @@
   },
   "optLayoutFull": {
     "message": "全部捕获 — 菜单会重复"
-  },
-  "optAppLayoutHint": {
-    "message": "在内容于独立区域内滚动的页面上，页眉和侧边栏会保持不动，否则会在 PDF 的每一段中重复出现。对普通页面无效。"
   },
   "optAfter": {
     "message": "捕获后"
@@ -169,9 +139,6 @@
   },
   "optAfterBoth": {
     "message": "显示文件夹并打开 PDF"
-  },
-  "optAfterHint": {
-    "message": "默认为“显示文件夹”：保存后打开下载文件夹并选中该文件。“打开 PDF”改为启动 PDF 阅读器，“两者”则依次执行。"
   },
   "optScale": {
     "message": "捕获缩放（分辨率）"
@@ -189,7 +156,7 @@
     "message": "2.0x — 最高，适合大幅打印"
   },
   "optScaleHint": {
-    "message": "默认为 1.0x：PDF 完全按照屏幕上的样子呈现页面——在 144 dpi 下足以满足普通打印。更高的数值会让文字更清晰，但窗口内容纳的内容更少，因而菜单和侧边栏会更早结束。"
+    "message": "1.0x 与屏幕显示一致。调高更清晰，但窗口内容装得更少。"
   },
   "optLanguage": {
     "message": "语言"
@@ -207,22 +174,10 @@
     "message": "已保存。"
   },
   "optSubfolderHint": {
-    "message": "默认：Full Page PDF Snap。留空则直接保存到 Downloads/。出于安全考虑，浏览器只允许使用子文件夹。"
+    "message": "留空则直接保存到 Downloads/。仅支持子文件夹。"
   },
   "optSaveAsHint": {
-    "message": "若需保存到 Downloads/ 以外的文件夹，请启用此项。"
-  },
-  "optTitleLenHint": {
-    "message": "防止文件名过长。默认 40。"
-  },
-  "optCounterHint": {
-    "message": "每生成一个新 PDF 就加一。重置后归零。"
-  },
-  "optPdfFormatHint": {
-    "message": "单页连续输出可消除片段之间的可见接缝。多页模式会将结果分页——默认 A4，或使用下方设置的固定高度。"
-  },
-  "optPageHeightHint": {
-    "message": "仅在上方选择“固定高度（像素）”时生效。默认 2400 px。"
+    "message": "用于 Downloads/ 之外的文件夹。"
   },
   "optShortcut": {
     "message": "键盘快捷键"
@@ -230,14 +185,11 @@
   "optShortcutNone": {
     "message": "未分配——与浏览器快捷键冲突"
   },
-  "optShortcutManage": {
-    "message": "更改快捷键"
-  },
   "optShortcutHint": {
-    "message": "此处显示的是浏览器实际分配的快捷键。浏览器快捷键始终优先，扩展无法覆盖：若此处为空，则该组合已被浏览器本身占用。如需更改，请在新标签页中打开按钮旁的地址。"
+    "message": "如需更改，请打开按钮旁的地址。"
   },
   "optShortcutCopy": {
-    "message": "Copy address"
+    "message": "复制地址"
   },
   "optShortcutCopied": {
     "message": "地址已复制——请粘贴到新标签页中"
@@ -294,26 +246,11 @@
   "resultGone": {
     "message": "没有可用的截图。请从扩展图标重新开始。"
   },
-  "optProvenance": {
-    "message": "在截图下方添加来源信息行"
-  },
-  "optProvenanceHint": {
-    "message": "将页面地址、截取时间以及图像数据的 SHA-256 校验和写入图像下方的信息条。当文件需要归档或转交他人时很有用。屏幕截图并非合格电子文件：时间来自您设备的时钟，校验和只能证明文件自创建以来未被更改，并不能证明页面当时就是这个样子。无论是否启用此选项，相同的信息始终会写入 PDF 元数据。"
-  },
-  "optTextLayer": {
-    "message": "使 PDF 可搜索（不可见文本层）"
-  },
-  "optTextLayerHint": {
-    "message": "将页面自身的文本以不可见的方式写入 PDF，位置与图像中显示的位置一致。PDF 因此可以检索，文本也可以复制，而外观不会改变。文本取自文档本身，而非从图像识别得来：在真实页面上测得每个词都得以保留，而 OCR 的召回率为 92.6%。仅适用于“单页连续”格式。"
-  },
   "popupRegion": {
     "message": "选择区域…"
   },
   "popupHideOverlays": {
     "message": "隐藏横幅与弹出窗口"
-  },
-  "popupHideOverlaysHint": {
-    "message": "同意对话框和浮动栏仅在抓取期间隐藏，之后会恢复。"
   },
   "popupHideOn": {
     "message": "横幅将被隐藏"
@@ -322,13 +259,13 @@
     "message": "横幅将按原样抓取"
   },
   "popupWorking": {
-    "message": "Capturing …"
+    "message": "正在抓取 …"
   },
   "popupSaved": {
-    "message": "Saved"
+    "message": "已保存"
   },
   "popupUnknownError": {
-    "message": "Unknown error"
+    "message": "未知错误"
   },
   "regionHint": {
     "message": "拖动鼠标选择区域 · Esc 取消"
@@ -339,9 +276,6 @@
   "popupCite": {
     "message": "写入引用信息"
   },
-  "popupCiteHint": {
-    "message": "将作者、DOI、许可协议和获取时间写入 PDF，并附带 RIS 记录。若也希望 AI 工具读取，请在设置中一并启用来源行。"
-  },
   "popupCiteOn": {
     "message": "将写入引用信息"
   },
@@ -351,20 +285,11 @@
   "optCopyPath": {
     "message": "保存后将文件路径复制到剪贴板"
   },
-  "optCopyPathHint": {
-    "message": "用于把文件直接交给终端或语言模型：先抓取，再粘贴。默认关闭。"
-  },
   "optCopyPathFormat": {
-    "message": "Path format"
-  },
-  "optCopyPathFormatHint": {
-    "message": "把 Windows 路径粘贴到 Windows 下的 Linux 终端里是走不通的。选择 WSL 可在此一次性转换，省去每次手工修改。"
+    "message": "路径格式"
   },
   "popupCopyPath": {
-    "message": "保存后复制文件路径"
-  },
-  "popupCopyPathHint": {
-    "message": "可将路径直接粘贴到终端或聊天中。WSL 及其他 shell 的格式见设置。"
+    "message": "复制文件路径"
   },
   "popupCopyOn": {
     "message": "保存后将复制路径"
@@ -372,80 +297,17 @@
   "popupCopyOff": {
     "message": "不会复制路径"
   },
-  "optColourMode": {
-    "message": "色彩与文件大小"
-  },
-  "optColourModeHint": {
-    "message": "灰度和黑白可将文件缩小至 58 % 和 27 %，而且有助于文字识别而非有害：彩色下识别出 987 个词，灰度下为 989 个。含照片的页面需要彩色。"
-  },
   "optHellerDruck": {
     "message": "始终保持白色背景"
   },
-  "optHellerDruckHint": {
-    "message": "适用于灰度和黑白模式：深色模式的页面会被反转，使纸张保持白色、文字保持深色。可节省墨粉并让小字更易读。若希望 PDF 与屏幕完全一致，请关闭此项。彩色抓取不受影响。"
-  },
-  "optSourceMetadata": {
-    "message": "从页面读取引用信息"
-  },
-  "optSourceMetadataHint": {
-    "message": "从已打开的页面读取作者、期刊、卷号、DOI、许可协议和访问时间，写入 PDF 元数据，并附带可供 Citavi、Zotero 和 EndNote 使用的 RIS 记录。不会向任何服务发出请求。"
-  },
-  "optRisSidecar": {
-    "message": "同时将 RIS 记录另存为单独文件"
-  },
-  "optRisSidecarHint": {
-    "message": "引用记录本就作为附件「quelle.ris」嵌在 PDF 之中——关闭不会丢失任何内容。单独的文件只是图个方便：文献管理软件双击或拖拽即可导入，而附件需要先从 PDF 中取出。如果您希望每次保存只留一个文件，请关闭此项。"
-  },
   "optPageFormat": {
     "message": "多页输出的页面尺寸"
-  },
-  "optPageFormatA4": {
-    "message": "A4 — 页面适合打印纸张（默认）"
-  },
-  "optPageFormatFest": {
-    "message": "固定高度（像素，在下方设置）"
-  },
-  "optPageFormatHint": {
-    "message": "A4 会根据抓取宽度推算页面高度，因此打印出的页面无需缩放即可填满纸张。"
-  },
-  "optBreakAtLines": {
-    "message": "在行与行之间断页，而非穿行而过"
-  },
-  "optBreakAtLinesHint": {
-    "message": "将每个分页位置上移至文本行、图片和表格之间最近的空隙。在四个出版社页面上测得：固定网格下 46 处分页中有 30 处切断了文字行，启用此设置后为 47 处中的 2 处。代价是每页 1–3 % 的空白边距。"
   },
   "optFetchOriginal": {
     "message": "同时下载出版社的原始文件"
   },
   "optFetchOriginalHint": {
-    "message": "默认关闭：这是唯一会建立网络连接的功能。它下载页面自身声明的全文地址——与点击“PDF”发出的请求相同，访问权限也相同。付费墙之后的内容不会因此变得可读。"
-  },
-  "optNoReview": {
-    "message": "评分提示"
-  },
-  "optNoReviewHint": {
-    "message": "不要请求为此扩展评分。它只在第五次抓取后询问一次，此后不再询问——此开关连这一次也会免去。"
-  },
-  "optLinkMap": {
-    "message": "在 PDF 旁保存链接图"
-  },
-  "optLinkMapHint": {
-    "message": "一个 JSON 文件，收录页面上的所有链接：它们在图像中的位置、指向何处，以及属于页面的哪一部分——导航、页脚、正文、翻页。面向需要抵达目标的 AI 工具：在某个百科页面上，1528 个链接中有 741 个属于页面框架，可在搜索前排除。每次抓取会多出一个文件。"
-  },
-  "optTimeAnchor": {
-    "message": "添加时间锚点（需要联网）"
-  },
-  "optTimeAnchorHint": {
-    "message": "保存前从去中心化网络 drand 获取一个公开随机值，并写入抓取结果。由于该值事先无人能够知晓，它可以证明抓取不早于那一刻——无需依赖设备时钟。这是本扩展唯一的网络访问，默认关闭，除非您主动启用；并且不会发送任何内容：页面、抓取结果及其校验和都不会离开您的设备。但它仍然无法证明页面当时显示了什么，也不是 eIDAS 意义上的合格时间戳。若网络不可用，抓取将不带锚点保存。"
-  },
-  "diagTitel": {
-    "message": "系统信息（用于错误报告）"
-  },
-  "optFertigTon": {
-    "message": "抓取完成时播放短提示音"
-  },
-  "optFertigTonHint": {
-    "message": "两个柔和的音，约五分之一秒。在手机上，页面自动滚动时很少一直盯着屏幕，仅有通知容易错过。Android 默认开启，电脑端默认关闭。"
+    "message": "获取页面自身声明的全文地址。"
   },
   "androidFertig": {
     "message": "PDF 已就绪 — 打开可查看或下载"
@@ -475,5 +337,179 @@
         "example": "seite.pdf"
       }
     }
+  },
+  "optBildModus": {
+    "message": "质量"
+  },
+  "optBildFarbe": {
+    "message": "彩色 — 与屏幕一致（默认）"
+  },
+  "optBildGrau": {
+    "message": "灰度 — 体积约小 40%"
+  },
+  "optBildSw": {
+    "message": "黑白 — 最小，适合文字页面"
+  },
+  "optBildModusHint": {
+    "message": "灰度和黑白在文字识别相同的前提下文件小得多，但黑白会丢失照片。"
+  },
+  "optVektorTitel": {
+    "message": "文字 PDF 而非图片（Chrome）"
+  },
+  "optVektor": {
+    "message": "以文字方式抓取页面，而非图片"
+  },
+  "optVektorHint": {
+    "message": "由浏览器排版 PDF：可选择的文字、可用的链接、一次完成、文件小得多。需要一次授权。"
+  },
+  "optVektorModus": {
+    "message": "抓取范围"
+  },
+  "optVektorSeite": {
+    "message": "整个页面，与屏幕显示一致（默认）"
+  },
+  "optVektorArtikel": {
+    "message": "仅正文 — 不含导航和侧边栏"
+  },
+  "optVektorModusHint": {
+    "message": "若无法识别正文，则抓取整个页面。"
+  },
+  "optImmerTitel": {
+    "message": "始终写入 PDF 本身"
+  },
+  "optMehr": {
+    "message": "更多设置"
+  },
+  "optSingleOne": {
+    "message": "一整页连续（默认）"
+  },
+  "optSingleMany": {
+    "message": "多页（便于打印）"
+  },
+  "optPageA4": {
+    "message": "A4 — 铺满一张打印纸"
+  },
+  "optPageFree": {
+    "message": "固定像素高度"
+  },
+  "optSettling": {
+    "message": "每步等待时间（毫秒）"
+  },
+  "optSettlingHint": {
+    "message": "页面加载较慢时调高。"
+  },
+  "optTile": {
+    "message": "分块高度（像素）"
+  },
+  "optFooter": {
+    "message": "抓取内容下方的来源行"
+  },
+  "optFooterHint": {
+    "message": "会改变图像。相关信息本就写在 PDF 属性中。"
+  },
+  "optReviewOff": {
+    "message": "从不请求评分"
+  },
+  "optDiag": {
+    "message": "诊断"
+  },
+  "optTriggerTitle": {
+    "message": "如何开始抓取"
+  },
+  "optTriggerTitleAndroid": {
+    "message": "如何开始抓取"
+  },
+  "optTriggerToolbar": {
+    "message": "工具栏按钮"
+  },
+  "optTriggerMenu": {
+    "message": "在页面上右键单击 → 扩展条目"
+  },
+  "optTriggerAndroidMenu": {
+    "message": "浏览器菜单 → 扩展条目"
+  },
+  "optImmerImPdf": {
+    "message": "可搜索的文本层和时间锚点始终包含。启用「记录来源信息」后，引用信息会写入 PDF 本身（文档属性与附带的 RIS 记录），并以文本文件的形式保存在同一文件夹中 PDF 的旁边。完成时会有短提示音。"
+  },
+  "optJpegHint": {
+    "message": "默认 0.92。调高文件更大，调低会在渐变处出现可见杂讯。"
+  },
+  "popupArtikel": {
+    "message": "正文"
+  },
+  "artikelNichtGefunden": {
+    "message": "此页面未能识别正文。请改用“抓取整页”。"
+  },
+  "artikelNichtMoeglich": {
+    "message": "无法读取此页面的正文。"
+  },
+  "artikelAbgerufen": {
+    "message": "抓取时间"
+  },
+  "optVektorAbgelehnt": {
+    "message": "授权被拒绝 — 继续使用图片方式。"
+  },
+  "popupDruck": {
+    "message": "用于打印的抓取"
+  },
+  "popupEinstellungenDazu": {
+    "message": "此输出的设置"
+  },
+  "popupEinseitig": {
+    "message": "一整页连续"
+  },
+  "popupPapier": {
+    "message": "纸张大小"
+  },
+  "popupAusrichtung": {
+    "message": "方向"
+  },
+  "popupHoch": {
+    "message": "纵向"
+  },
+  "popupQuer": {
+    "message": "横向"
+  },
+  "popupSchrift": {
+    "message": "字号"
+  },
+  "popupArtikelText": {
+    "message": "存为文本文件而非 PDF"
+  },
+  "beilagenGespeichert": {
+    "message": "已随 PDF 一并保存："
+  },
+  "beilagenImPdf": {
+    "message": "引用已存入 PDF（RIS 附件 + 文档属性）。"
+  },
+  "beilagenFehlten": {
+    "message": "未保存："
+  },
+  "popupHideOverlaysTitel": {
+    "message": "同意弹窗和浮动栏仅在抓取期间隐藏，之后恢复。"
+  },
+  "popupCiteTitel": {
+    "message": "作者、DOI、许可和访问时间会写入 PDF 本身，并保存到同一文件夹中旁边的文本文件里。AI 工具可从中读取。"
+  },
+  "popupCopyPathTitel": {
+    "message": "完成后可用 Ctrl+V 把路径粘贴到终端或聊天窗口。"
+  },
+  "popupRand": {
+    "message": "页边距"
+  },
+  "popupRandOhne": {
+    "message": "无 — 图像铺满纸张"
+  },
+  "optBeilagenTitel": {
+    "message": "PDF 旁边的文件"
+  },
+  "optBeilagenText": {
+    "message": "仅当菜单中启用「记录来源信息」时。两者都保存在与 PDF 相同的文件夹中。"
+  },
+  "optZitatDatei": {
+    "message": "引用信息文本文件（.zitate.txt）— 便于阅读和复制"
+  },
+  "optRisDatei": {
+    "message": "文献管理软件文件（.ris）— Citavi、Zotero、EndNote"
   }
 }

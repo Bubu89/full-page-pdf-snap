@@ -106,7 +106,7 @@ test("ohne Farbraumangabe bleibt es bei DeviceRGB und 8 bit", () => {
  * ----------------------------------------------------------------------- */
 
 const hintergrund = readFileSync(new URL("../background.js", import.meta.url), "utf8");
-const anfang = hintergrund.indexOf("function farbtiefeAnwenden");
+const anfang = hintergrund.indexOf("/* Unscharfmaskierung:");
 const ende = hintergrund.indexOf("\nasync function canvasToFlateBytes");
 const kontext2 = { Uint8Array, Math, console };
 kontext2.globalThis = kontext2;

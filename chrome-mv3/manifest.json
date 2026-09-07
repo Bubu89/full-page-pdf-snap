@@ -3,7 +3,7 @@
   "name": "__MSG_extName__",
   "default_locale": "en",
   "short_name": "PDFSnap",
-  "version": "2.33.4",
+  "version": "2.38.0",
   "description": "__MSG_extDescription__",
   "author": "Bubu89",
   "minimum_chrome_version": "116",
@@ -20,6 +20,9 @@
     "contextMenus",
     "notifications",
     "scripting"
+  ],
+  "optional_permissions": [
+    "debugger"
   ],
   "background": {
     "service_worker": "background.js"

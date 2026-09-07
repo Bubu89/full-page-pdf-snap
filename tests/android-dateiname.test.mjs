@@ -215,9 +215,15 @@ for (const datei of ["chrome-mv3/background.js", "background.js"]) {
   ok(!/androidFertig[\s\S]{0,80}usedFilename/.test(src),
      `${datei}: nicht mehr die alte "zum Herunterladen oeffnen"-Meldung im Erfolgsfall`);
 
-  // Die Beidateien duerfen auf Android ebenfalls keinen Unterordner tragen.
+  /* Die Beidateien duerfen auf Android ebenfalls keinen Unterordner tragen.
+   *
+   * Seit 2.35.9 sind es zwei Stellen statt vier: Der Stamm wird EINMAL
+   * berechnet und an belegeAblegen gegeben, das RIS-Satz, Zitationsdatei und
+   * Linkkarte daraus ableitet. Die vierte Stelle ist die Originaldatei des
+   * Verlags, die einen eigenen Weg geht. Weniger Wiederholung heisst hier
+   * auch weniger Gelegenheit, eine davon zu vergessen. */
   const bei = (src.match(/\(p\.isAndroid \? filename : relPath\)/g) || []).length;
-  ok(bei === 3, `${datei}: RIS, Linkkarte und Originaldatei ohne Unterordner (${bei}/3)`);
+  ok(bei === 2, `${datei}: Beilagenstamm und Originaldatei ohne Unterordner (${bei}/2)`);
 
   // Der Ton muss im Ursprungsreiter spielen, nicht in einem neuen.
   ok(/fertigTon\(tab && tab\.id, settings, platform\)/.test(src),

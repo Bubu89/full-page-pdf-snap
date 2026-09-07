@@ -1,12 +1,19 @@
 # Privacy Policy
 
 **Full Page PDF Snap – Save Webpage as PDF**
-Last updated: 2026-07-31
+Last updated: 2026-08-17
 
 ## Summary
 
-This extension collects nothing, transmits nothing, and contacts no server.
-Everything happens on your device.
+This extension collects nothing about you and transmits nothing about you.
+Capturing, assembling and saving happen entirely on your device.
+
+One exception, and it is deliberate: the **time anchor** fetches a public random
+value from the drand network before saving. It sends nothing — no address, no
+page content, no identifier — it only asks for a number that is the same for
+everybody in that round. Since version 2.34.0 this is on by default, because a
+capture whose date rests solely on the device clock is worth little as evidence.
+See "Network activity" below.
 
 ## What the extension does with page data
 
@@ -31,10 +38,21 @@ usage statistics are stored.
 
 ## Network activity
 
-The extension makes no network requests of its own. It has no analytics, no telemetry, no
-crash reporting, no advertising, and no accounts. It works fully offline.
+The extension has no analytics, no telemetry, no crash reporting, no advertising
+and no accounts. Nothing about you or about the pages you capture leaves your
+device.
 
-Two addresses can be opened, both only on your explicit action:
+It makes exactly one request of its own:
+
+- **The time anchor** (`drand`) — a public randomness beacon. Before a PDF is
+  saved, the extension asks it for the current round's random value and places
+  that value in the capture. This proves the file cannot have been produced
+  before that round, without having to trust your device's clock. The request
+  carries no address, no page content and no identifier; the answer is identical
+  for every person asking in that round. **On by default since 2.34.0.** If the
+  network is unreachable, the capture proceeds without the anchor.
+
+Two further addresses can be opened, both only on your explicit action:
 
 - **The store's review page** — opens when you tap the rating notice.
 - **The publisher's original file** — only if you switch on *"Also download the
@@ -60,6 +78,7 @@ paper you are reading.
 | `storage` | Keep your settings on this device |
 | `menus` | Add the "Save page as PDF" context menu entry |
 | `notifications` | Show capture progress and the "saved" message |
+| `debugger` | **Optional, Chrome only, off until you ask for it.** Needed for the text-PDF path: it lets the browser typeset the page as a PDF itself, which is what produces selectable text, working links and much smaller files. It is requested the moment you switch that option on, and released again when you switch it off. It is used solely to issue the print command to the tab you are capturing — no debugging session is opened, nothing is read from other tabs, and nothing is sent anywhere. |
 
 The manifest declares `data_collection_permissions: ["none"]`, which is Firefox's
 built-in way of stating that no data is collected.

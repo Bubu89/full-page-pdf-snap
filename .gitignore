@@ -45,3 +45,4 @@ store-texte/EINREICHEN_*.md
 _visual-check/
 store-texte/*.bak-*
 *.bak-*
+tools/.abnahme-verlauf.json

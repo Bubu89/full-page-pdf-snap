@@ -43,6 +43,7 @@
   }
   body { font-family: system-ui, sans-serif; max-width: 560px; margin: 30px auto; padding: 0 16px; background: var(--bg); color: var(--fg); }
   h1 { font-size: 20px; margin: 0 0 6px 0; }
+  h2 { font-size: 14px; margin: 26px 0 0 0; padding-top: 18px; border-top: 1px solid var(--box-rand); }
   p.lead { color: var(--gedaempft); margin: 0 0 22px 0; font-size: 13px; }
   label { display: block; margin: 14px 0 6px 0; font-weight: 600; font-size: 13px; }
   .hint { color: var(--gedaempft); font-size: 12px; font-weight: 400; margin-top: 4px; }
@@ -54,218 +55,47 @@
   button:hover { background: #1d4ed8; }
   .status { margin-top: 10px; font-size: 13px; color: var(--erfolg); }
   .box { background: var(--box-bg); border: 1px solid var(--box-rand); border-radius: 8px; padding: 14px 16px; margin: 18px 0; font-size: 12px; color: var(--box-fg); }
+  .box ul { margin: 8px 0 0 0; padding-left: 18px; }
+  .box li { margin: 3px 0; }
   code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; font-family: monospace; }
+  details.mehr { margin-top: 26px; border-top: 1px solid var(--box-rand); padding-top: 16px; }
+  details.mehr > summary { cursor: pointer; font-weight: 600; font-size: 13px; }
 </style>
 </head>
 <body>
   <h1 data-i18n="optTitle">Full Page PDF Snap — Settings</h1>
   <p class="lead"><span data-i18n="optIntro">Save the whole page as a high-resolution PDF via auto-scroll.</span></p>
 
-  <label><span data-i18n="optSubfolder">Download subfolder</span>
-    <input id="subfolder" type="text" placeholder="Full Page PDF Snap">
-    <div class="hint"><span data-i18n="optSubfolderHint">Default: <code>Full Page PDF Snap</code>. Leave empty to save directly into Downloads/. For security reasons the browser only allows subfolders.</span></div>
-  </label>
+  <!-- Die drei Einstellungen, die den Unterschied machen. Alles Weitere hat
+       einen Standardwert, der in aller Regel richtig ist, und steht unten
+       unter "Weitere Einstellungen". -->
 
-  <div class="row" style="margin-top: 16px;">
-    <input id="saveAs" type="checkbox">
-    <label for="saveAs" style="margin: 0;"><span data-i18n="optSaveAs">Ask where to save every time</span>
-      <div class="hint"><span data-i18n="optSaveAsHint">Enable this if you want to save into folders outside Downloads/.</span></div>
-    </label>
-  </div>
-
-  <label><span data-i18n="optFilename">Filename template</span>
-    <input id="filenameTemplate" type="text" placeholder="{title}_{site}_{date}_{time}">
-    <div class="hint">
-      Placeholders:
-      <code>{site}</code> = website (e.g. <em>wikipedia_org</em>) &middot;
-      <code>{date}</code> = 2026-06-17 &middot;
-      <code>{time}</code> = 0923 &middot;
-      <code>{timesec}</code> = 092347 &middot;
-      <code>{n}</code> = sequential number (0001, 0002, ...) &middot;
-      <code>{title}</code> = page title (shortened)
-    </div>
-  </label>
-
-  <label><span data-i18n="optTitleLen">Max. length for {title} (characters)</span>
-    <input id="titleMaxLen" type="number" min="10" max="120" step="1" value="60">
-    <div class="hint"><span data-i18n="optTitleLenHint">Prevents overly long filenames. Default 40.</span></div>
-  </label>
-
-  <label><span data-i18n="optCounter">Sequential numbering</span>
-    <div class="row" style="margin-top: 4px;">
-      <span id="counterVal" style="font-family: monospace; background: var(--code-bg); color: var(--fg); padding: 4px 10px; border-radius: 4px;">0000</span>
-      <button id="resetCounter" type="button" data-i18n="optCounterReset" style="margin: 0; background: var(--grau-knopf);">Reset counter</button>
-    </div>
-    <div class="hint"><span data-i18n="optCounterHint">Increases by one with every new PDF. Reset sets it back to zero.</span></div>
+  <label><span data-i18n="optBildModus">Quality</span>
+    <select id="bildModus">
+      <option value="farbe" data-i18n="optBildFarbe">Colour — as on screen (default)</option>
+      <option value="graustufen" data-i18n="optBildGrau">Greyscale — about 40% smaller</option>
+      <option value="sw" data-i18n="optBildSw">Black and white — smallest, for text pages</option>
+    </select>
+    <div class="hint" data-i18n="optBildModusHint">Greyscale and black and white make much smaller files at the same text recognition &mdash; but black and white loses photographs.</div>
   </label>
 
   <label><span data-i18n="optJpeg">JPEG quality</span>: <span id="qVal">0.92</span>
     <input id="jpegQuality" type="range" min="0.70" max="1.00" step="0.01" value="0.92">
-    <div class="hint">
-      0.92 = default (chroma subsampling on, noticeably smaller file at nearly unchanged quality).
-      0.95 = near lossless, about twice the file size.
-      0.80 = very small, slight artefacts in colour gradients.
-    </div>
+    <div class="hint" data-i18n="optJpegHint">0.92 is the default. Higher means a bigger file, lower means visible artefacts in colour gradients.</div>
   </label>
 
-  <label><span data-i18n="optScrollWait">Scroll delay per step (ms)</span>
-    <input id="settlingMs" type="number" min="50" max="5000" step="10" value="400">
-    <div class="hint">Default 400 ms — covers lazy-loading pages such as LinkedIn, X/Twitter and news portals. Only reduce it if speed matters more to you than completeness.</div>
-  </label>
-
-  <label class="check"><input id="linkMap" type="checkbox">
-    <span data-i18n="optLinkMap">Save a link map beside the PDF</span>
-    <div class="hint" data-i18n="optLinkMapHint">A JSON file listing every link on the page:
-      where it sits in the image, where it leads, and what part of the page it belongs to —
-      navigation, footer, content, pagination. For AI tools that have to find their way to a
-      goal: on one encyclopedia page, 741 of 1,528 links turned out to be page furniture and
-      could be ruled out before searching. Costs one extra file per capture.</div>
-  </label>
-
-  <label class="check"><input id="textLayer" type="checkbox">
-    <span data-i18n="optTextLayer">Make the PDF searchable (invisible text layer)</span>
-    <div class="hint" data-i18n="optTextLayerHint">Copies the page's own text into the PDF,
-      invisibly, at the position where it appears in the image. The PDF becomes searchable and
-      the text can be copied — without changing how it looks. The text is taken from the
-      document, not recognised from the image: measured on a real page, every word survives,
-      where OCR recovered 92.6 percent. Only applies to the one-continuous-page format.</div>
-  </label>
-
-  <label class="check"><input id="provenanceFooter" type="checkbox">
-    <span data-i18n="optProvenance">Add a provenance line below the capture</span>
-    <div class="hint" data-i18n="optProvenanceHint">Writes the page address, the time of capture
-      and a SHA-256 checksum of the image data into a strip under the image. Useful when the file
-      has to be filed or handed on. A screen capture is not a qualified electronic document: the
-      time comes from your device clock, and the checksum shows the file has not changed since it
-      was made — not that the page looked this way. The same details are always written into the
-      PDF metadata, with or without this option.</div>
-  </label>
-
-  <label class="check"><input id="timeAnchor" type="checkbox">
-    <span data-i18n="optTimeAnchor">Add a time anchor (needs internet)</span>
-    <div class="hint" data-i18n="optTimeAnchorHint">Fetches a public random value from the
-      decentralised drand network before saving and writes it into the capture. Because nobody
-      could know that value beforehand, it shows the capture is not older than that moment —
-      without relying on your device clock. This is the only network access this extension makes,
-      it is off unless you switch it on, and nothing is sent: the page, the capture and its
-      checksum never leave your device. It still does not prove what the page showed, and it is
-      not a qualified electronic timestamp under eIDAS. If the network is unavailable, the capture
-      is saved without the anchor.</div>
-  </label>
-
-  <label><span data-i18n="optColourMode">Colour and file size</span>
-    <select id="bildModus" style="width:100%; padding: 8px 10px; border: 1px solid var(--rand); border-radius: 6px; font-size: 13px; background: var(--feld-bg); color: var(--fg);">
-      <option value="farbe">Full colour (default)</option>
-      <option value="graustufen">Greyscale — about 58 % of the size</option>
-      <option value="sw">Black and white — about 27 %, for text sources</option>
+  <label><span data-i18n="optScale">Capture scaling (resolution)</span>
+    <select id="captureScale">
+      <option value="1.0" data-i18n="optScale10">1.0x — exactly as on screen (default)</option>
+      <option value="1.25" data-i18n="optScale125">1.25x — slightly sharper</option>
+      <option value="1.5" data-i18n="optScale15">1.5x — noticeably sharper, about 50% longer</option>
+      <option value="2.0" data-i18n="optScale20">2.0x — maximum, for large prints</option>
     </select>
-    <div class="hint"><span data-i18n="optColourModeHint">Greyscale and black and white cut the file to 58 % and 27 % — and they help OCR rather than hurt it: 989 words read back against 987 in colour. Pages with photographs need colour.</span></div>
-  </label>
-
-  <label class="check"><input id="fertigTon" type="checkbox">
-    <span data-i18n="optFertigTon">Play a short sound when the capture is done</span>
-    <div class="hint" data-i18n="optFertigTonHint">Two soft notes, about a fifth of a second. On a phone the screen is rarely in view while the page scrolls through, so the notification alone is easy to miss. On by default on Android, off on the desktop — where the notification is visible anyway.</div>
-  </label>
-
-  <label class="check"><input id="hellerDruck" type="checkbox">
-    <span data-i18n="optHellerDruck">Always keep the background white</span>
-    <div class="hint" data-i18n="optHellerDruckHint">For greyscale and black and white: a page in dark mode is inverted so that the sheet stays white and the text dark. Saves toner and keeps small type legible. Turn this off if the PDF should look exactly like the screen. Colour captures are never changed.</div>
-  </label>
-
-  <label><span data-i18n="optPdfFormat">PDF format</span>
-    <select id="singlePagePdf" style="width:100%; padding: 8px 10px; border: 1px solid var(--rand); border-radius: 6px; font-size: 13px; background: var(--feld-bg); color: var(--fg);">
-      <option value="true" data-i18n="optSinglePage">One continuous page (default — no visible seams)</option>
-      <option value="false" data-i18n="optMultiPage">Multiple pages (for printing)</option>
-    </select>
-    <div class="hint"><span data-i18n="optPdfFormatHint">A single continuous page removes the visible seams between segments. Multi-page splits the result into pages of the height set below.</span></div>
-  </label>
-
-  <label><span data-i18n="optPageFormat">Page size for multi-page</span>
-    <select id="pageFormat" style="width:100%; padding: 8px 10px; border: 1px solid var(--rand); border-radius: 6px; font-size: 13px; background: var(--feld-bg); color: var(--fg);">
-      <option value="a4" data-i18n="optPageFormatA4">A4 — pages fit printed paper (default)</option>
-      <option value="free" data-i18n="optPageFormatFest">Fixed height in pixels (set below)</option>
-    </select>
-    <div class="hint"><span data-i18n="optPageFormatHint">A4 derives the page height from the captured width, so a printed page fills the sheet without scaling.</span></div>
-  </label>
-
-  <label class="row"><input id="breakAtLines" type="checkbox" checked>
-    <span><span data-i18n="optBreakAtLines">Break between lines, not through them</span>
-      <div class="hint"><span data-i18n="optBreakAtLinesHint">Moves each page break up to the nearest gap between text lines, images and tables. Measured on four publisher pages: 30 of 46 fixed-grid breaks cut through a line of text, 2 of 47 did with this setting on. Cost: 1–3 % empty margin per page.</span></div>
-    </span>
-  </label>
-
-  <label><span data-i18n="optPageHeight">Page height for multi-page (pixels)</span>
-    <input id="pageHeightPx" type="number" min="400" max="8000" step="100" value="2400">
-    <div class="hint"><span data-i18n="optPageHeightHint">Only relevant when "Multiple pages" and "Fixed height" are selected. Default 2400 px.</span></div>
-  </label>
-
-  <label class="row"><input id="copyPath" type="checkbox">
-    <span><span data-i18n="optCopyPath">Copy the file path to the clipboard after saving</span>
-      <div class="hint"><span data-i18n="optCopyPathHint">For handing the file straight to a terminal or a language model: capture, then paste. Off by default.</span></div>
-    </span>
-  </label>
-
-  <label><span data-i18n="optCopyPathFormat">Path format</span>
-    <select id="copyPathFormat" style="width:100%; padding: 8px 10px; border: 1px solid var(--rand); border-radius: 6px; font-size: 13px; background: var(--feld-bg); color: var(--fg);">
-      <option value="windows">Windows — C:\Users\You\Downloads\page.pdf</option>
-      <option value="wsl">WSL — /mnt/c/Users/You/Downloads/page.pdf</option>
-      <option value="posix">macOS / Linux — /home/you/Downloads/page.pdf</option>
-    </select>
-    <div class="hint"><span data-i18n="optCopyPathFormatHint">A Windows path pasted into a Linux shell under Windows leads nowhere. Choosing WSL converts it once here instead of every time by hand.</span></div>
-  </label>
-
-  <label class="row"><input id="sourceMetadata" type="checkbox" checked>
-    <span><span data-i18n="optSourceMetadata">Read citation details from the page</span>
-      <div class="hint"><span data-i18n="optSourceMetadataHint">Reads authors, journal, volume, DOI, licence and access time from the page that is already open, and writes them into the PDF metadata plus an attached RIS record for Citavi, Zotero and EndNote. No request is made to any service.</span></div>
-    </span>
-  </label>
-
-  <label class="row"><input id="risSidecar" type="checkbox" checked>
-    <span><span data-i18n="optRisSidecar">Also save the RIS record as a separate file</span>
-      <div class="hint"><span data-i18n="optRisSidecarHint">The citation record is always embedded inside the PDF as an attachment called <code>quelle.ris</code> — switching this off loses nothing. The separate file exists only for convenience: reference managers import it by double-click or drag, whereas an attachment has to be extracted from the PDF first. Turn it off if you would rather keep one file per capture.</span></div>
-    </span>
-  </label>
-
-  <label class="row"><input id="fetchOriginal" type="checkbox">
-    <span><span data-i18n="optFetchOriginal">Also download the publisher's original file</span>
-      <div class="hint"><span data-i18n="optFetchOriginalHint">Off by default: this is the only feature that opens a network connection. It downloads the full-text address the page itself declares — the same request a click on "PDF" makes, with the same access rights. Nothing behind a paywall becomes reachable.</span></div>
-    </span>
-  </label>
-
-  <label><span data-i18n="optTileHeight">Tile height for single-page (pixels)</span>
-    <input id="tilePx" type="number" min="800" max="8000" step="100" value="4000">
-    <div class="hint">
-      Long pages are internally split into JPEG tiles of this height and stacked onto a single PDF page — no visible seam, but a noticeably smaller file, since the JPEG encoder works more efficiently per tile. Default 4000 px. Lower means smaller tiles and more of them; higher means fewer tiles but less efficient compression across empty areas.
-    </div>
-  </label>
-
-  <label><span data-i18n="optHideSticky">Hide sticky/fixed elements</span>
-    <div class="row" style="margin-top: 4px;">
-      <input id="hideSticky" type="checkbox">
-      <span>Hide sidebars and top bars before capture (recommended, gives a consistent layout).</span>
-    </div>
-  </label>
-
-  <label><span data-i18n="optNoReview">Rating prompt</span>
-    <div class="row" style="margin-top: 4px;">
-      <input id="reviewPromptOff" type="checkbox">
-      <span data-i18n="optNoReviewHint">Do not ask me to rate this extension. It asks once, after five captures, and never again — this switch prevents even that one.</span>
-    </div>
-  </label>
-
-  <label><span data-i18n="optShortcut">Keyboard shortcut</span>
-    <div style="display:flex; gap:10px; align-items:center; margin-top:4px;">
-      <code id="shortcutNow" style="padding:6px 12px; background:var(--code-bg); color:var(--fg); border:1px solid var(--rand); border-radius:6px; font-size:13px;">…</code>
-      <button type="button" id="shortcutManage" data-i18n="optShortcutCopy"
-              style="padding:6px 12px; font-size:13px; cursor:pointer;">Copy address</button>
-      <code id="shortcutUrl" style="padding:6px 10px; background:var(--box-bg); color:var(--fg); border:1px solid var(--box-rand);
-            border-radius:6px; font-size:12px; user-select:all;">about:addons</code>
-    </div>
-    <div class="hint" data-i18n="optShortcutHint">Shown here is the shortcut the browser has actually assigned. To change it, open the address next to the button in a new tab.</div>
+    <div class="hint" data-i18n="optScaleHint">1.0x shows the page as on screen. Higher is sharper but fits less into the window.</div>
   </label>
 
   <label><span data-i18n="optLanguage">Language</span>
-    <select id="uiLanguage" style="width:100%; padding: 8px 10px; border: 1px solid var(--rand); border-radius: 6px; font-size: 13px; background: var(--feld-bg); color: var(--fg);">
+    <select id="uiLanguage">
       <option value="auto" data-i18n="optLanguageAuto">Automatic (browser language)</option>
       <option value="en">English</option>
       <option value="de">Deutsch</option>
@@ -280,83 +110,235 @@
     <div class="hint" data-i18n="optLanguageHint">Interface language.</div>
   </label>
 
-  <label><span data-i18n="optAppLayout">App layouts (Gmail, Outlook, Notion &hellip;)</span>
-    <select id="appLayout" style="width:100%; padding: 8px 10px; border: 1px solid var(--rand); border-radius: 6px; font-size: 13px; background: var(--feld-bg); color: var(--fg);">
-      <option value="context" data-i18n="optLayoutContext">Menu once at the top, content below (default)</option>
-      <option value="crop" data-i18n="optLayoutCrop">Content area only &mdash; narrowest PDF</option>
-      <option value="full" data-i18n="optLayoutFull">Capture everything &mdash; menu repeats</option>
-    </select>
-    <div class="hint" data-i18n="optAppLayoutHint">On pages that scroll their content in a separate area.</div>
-  </label>
+  <!-- Der Vektor-Weg. Nur in Chromium vorhanden, deshalb blendet options.js
+       den ganzen Block in Firefox aus. Der Schalter fordert die Erlaubnis an,
+       weil "permissions.request" eine Nutzerhandlung verlangt und im
+       Hintergrunddienst scheitert. -->
+  <div id="vektorBlock" style="display:none;">
+    <h2 data-i18n="optVektorTitel">Text PDF instead of image (Chrome)</h2>
+    <div class="row" style="margin-top: 12px;">
+      <input id="vektor" type="checkbox">
+      <label for="vektor" style="margin: 0;"><span data-i18n="optVektor">Capture the page as text, not as an image</span>
+        <div class="hint" data-i18n="optVektorHint">The browser typesets the PDF itself: selectable text, working links, one pass, much smaller files. Asks for one permission.</div>
+      </label>
+    </div>
 
-  <label><span data-i18n="optAfter">After capture</span>
-    <select id="afterCapture" style="width:100%; padding: 8px 10px; border: 1px solid var(--rand); border-radius: 6px; font-size: 13px; background: var(--feld-bg); color: var(--fg);">
-      <option value="none" data-i18n="optAfterNone">Do nothing</option>
-      <option value="open" data-i18n="optAfterOpen">Open the PDF automatically</option>
-      <option value="show" data-i18n="optAfterShow">Show folder (file preselected)</option>
-      <option value="both" data-i18n="optAfterBoth">Show folder and open the PDF</option>
-    </select>
-    <div class="hint"><span data-i18n="optAfterHint">Default is "Show folder": after saving, the download folder opens with the file preselected. "Open the PDF" starts the PDF viewer instead, "Both" does one after the other.</span></div>
-  </label>
+    <label><span data-i18n="optVektorModus">What to capture</span>
+      <select id="vektorModus">
+        <option value="seite" data-i18n="optVektorSeite">The whole page, as it looks on screen (default)</option>
+        <option value="artikel" data-i18n="optVektorArtikel">The article only — without navigation and sidebars</option>
+      </select>
+      <div class="hint" data-i18n="optVektorModusHint">If no article can be identified, the whole page is captured.</div>
+    </label>
+  </div>
 
-  <label><span data-i18n="optScale">Capture scaling (resolution)</span>
-    <select id="captureScale" style="width:100%; padding: 8px 10px; border: 1px solid var(--rand); border-radius: 6px; font-size: 13px; background: var(--feld-bg); color: var(--fg);">
-      <option value="1.0" data-i18n="optScale10">1.0x — exactly as on screen (default)</option>
-      <option value="1.25" data-i18n="optScale125">1.25x — slightly sharper</option>
-      <option value="1.5" data-i18n="optScale15">1.5x — noticeably sharper, about 50% longer</option>
-      <option value="2.0" data-i18n="optScale20">2.0x — maximum, for large prints</option>
-    </select>
-    <div class="hint" data-i18n="optScaleHint">Default is 1.0x: the PDF shows the page exactly as it appears on screen &mdash; enough for normal printing at 144&nbsp;dpi. Higher values sharpen the text but fit less into the window, so menus and sidebars end earlier.</div>
-  </label>
+  <!-- Was ohne Zutun immer mitkommt.
+       Diese Angaben waren bisher einzeln abschaltbar. Das war eine Falle: Wer
+       den Beleg spaeter brauchte, hatte den Schalter Monate vorher umgelegt
+       und wusste es nicht mehr. Sie sind billig, sie stehen neben dem PDF
+       statt darin, und ein Beleg, den man nicht hat, laesst sich nicht
+       nachtraeglich erzeugen. Deshalb: immer an, kein Schalter. -->
+  <!-- Kurz halten. Diese Liste stand einmal als sechs Absaetze hier und
+       beantwortete damit eine Frage, die niemand gestellt hatte. Gesucht wird
+       eine einzige Auskunft: welche Datei liegt wo, wenn ich die Zitation
+       brauche. Der Rest steht in der Datei selbst.
+
+       Kein HTML in den uebersetzten Texten: i18n.js setzt textContent, nicht
+       innerHTML — Markup erschiene woertlich auf der Seite. Auszeichnung
+       gehoert deshalb hierher, uebersetzt wird nur der Fliesstext. -->
+  <!-- Kein Versprechen ueber Dateien daneben.
+       Hier stand, die Zitation liege als .zitate.txt neben dem PDF. Bei
+       Nutzern kam sie nicht an — und ein Hinweistext, der etwas zusagt, was
+       nicht eintritt, ist schlechter als keiner: Er laesst den Nutzer suchen.
+       Genannt wird deshalb nur, was nachweislich in der Datei steckt. -->
+  <div class="box">
+    <strong data-i18n="optImmerTitel">Always in the PDF itself</strong>
+    <p style="margin:8px 0 0 0;" data-i18n="optImmerImPdf">Searchable text layer and time anchor — always. The citation (RIS record attached and in the document properties) whenever "Add citation details" is switched on. A short tone when it is done.</p>
+  </div>
+
+  <!-- Die zwei Beilagen. Beide haengen an "Quellenangaben mitschreiben" im
+       Menue: Ist das aus, entsteht keine von beiden. -->
+  <div class="box">
+    <strong data-i18n="optBeilagenTitel">Files next to the PDF</strong>
+    <p style="margin:8px 0 10px 0;" data-i18n="optBeilagenText">Only when “Add citation details” is switched on in the menu. Both land in the same folder as the PDF.</p>
+    <label class="row"><input type="checkbox" id="zitatDatei">
+      <span data-i18n="optZitatDatei">Citation as a text file (.zitate.txt) — to read and copy</span></label>
+    <label class="row"><input type="checkbox" id="risDatei">
+      <span data-i18n="optRisDatei">File for reference managers (.ris) — Citavi, Zotero, EndNote</span></label>
+  </div>
 
   <button id="save" data-i18n="optSave">Save</button>
   <span id="status" class="status"></span>
 
   <div class="box" id="triggerBoxDesktop" style="display:none;">
-    <strong>How to start a capture (desktop)</strong>
-    <ol style="margin: 8px 0 0 20px; padding: 0; line-height: 1.6;">
-      <li>Click the toolbar icon &rarr; Popup &rarr; <strong>Capture now</strong></li>
+    <strong data-i18n="optTriggerTitle">How to start a capture</strong>
+    <ul>
       <li>Keyboard shortcut <code id="shortcutInline">Alt+Shift+Y</code></li>
-      <li>Right-click the toolbar icon &rarr; <strong>Save the whole page as PDF</strong> (also quick switches for scaling, folder and sticky handling)</li>
-    </ol>
-    <div style="margin-top: 10px;"><strong>What happens next:</strong> the browser scrolls the page to the bottom, takes a screenshot at every step, stitches everything into one PDF and saves it to <code>Downloads/&lt;your subfolder&gt;</code>. On success the target folder opens (or the PDF itself, depending on your setting).</div>
+      <li data-i18n="optTriggerToolbar">The toolbar button</li>
+      <li data-i18n="optTriggerMenu">Right-click on the page &rarr; the extension's entry</li>
+    </ul>
   </div>
 
   <div class="box" id="triggerBoxAndroid" style="display:none;">
-    <strong>How to start a capture (Firefox for Android)</strong>
-    <ol style="margin: 8px 0 0 20px; padding: 0; line-height: 1.6;">
-      <li>Browser menu (three dots, top right) &rarr; <strong>Full Page PDF Snap</strong> tap</li>
-      <li>The capture starts immediately &mdash; no intermediate popup, no dialog</li>
-      <li>Progress is shown in the notification bar ("Capturing page … XX%")</li>
-      <li>When finished: notification "Done — X pages saved" &rarr; <strong>tap</strong> to open the PDF directly</li>
-    </ol>
-    <div style="margin-top: 10px;"><strong>Important notes for Android:</strong>
-      <ul style="margin: 6px 0 0 20px; padding: 0; line-height: 1.55;">
-        <li>The target tab must stay active. If you switch tabs, the extension switches back automatically</li>
-        <li>Do not send the browser to the background (home button) &mdash; Android pauses rendering, and the capture pauses with it</li>
-        <li>PDFs are saved to <code>Download/&lt;your subfolder&gt;/</code> &mdash; visible in any file manager under "Download"</li>
-        <li>The "show folder" options are not available on Android (the API does not exist there)</li>
-      </ul>
-    </div>
+    <strong data-i18n="optTriggerTitleAndroid">How to start a capture</strong>
+    <ul>
+      <li data-i18n="optTriggerAndroidMenu">Browser menu &rarr; the extension's entry</li>
+    </ul>
   </div>
 
-  <!-- Zugeklappt: Diese Angaben braucht, wer einen Fehler meldet. Im Alltag
-       stehen sie im Weg - auf dem Rechner sagen sie sogar ausdruecklich, dass
-       die angezeigte Kachelgroesse dort gar nicht angepasst wird. -->
-  <details class="box" id="diagBox" style="background: var(--diag-bg); border-color: var(--diag-rand);">
-    <summary style="cursor:pointer; font-weight:600;" data-i18n="diagTitel">System information (for bug reports)</summary>
-    <div style="margin-top:10px;">
-    <strong>Detected system:</strong> <span id="diagPlatform" style="font-family: monospace;">checking …</span><br>
-    <strong>Extension version:</strong> <span id="diagVersion" style="font-family: monospace;">?</span><br>
-    <strong>Screen resolution:</strong> <span id="diagScreen" style="font-family: monospace;">?</span><br>
-    <strong>Pixel density (DPR):</strong> <span id="diagDpr" style="font-family: monospace;">?</span><br>
-    <strong>Memory:</strong> <span id="diagRam" style="font-family: monospace;">?</span> GB &middot; <strong>CPU cores:</strong> <span id="diagCpu" style="font-family: monospace;">?</span><br>
-    <strong>Adaptive tile size:</strong> <span id="diagTile" style="font-family: monospace;">?</span> px
-    <div class="hint" style="margin-top:8px;">On Android the tile size adapts to your device — higher resolution and more memory allow larger tiles and a faster PDF build. It can be overridden above under "Tile height for single-page".</div>
+  <!-- Alles, was einen brauchbaren Standardwert hat. Zugeklappt, weil die
+       Seite sonst wieder das wird, was sie war: eine Liste von vierzig
+       Schaltern, in der die drei wichtigen untergehen. -->
+  <details class="mehr" id="mehrBox">
+    <summary data-i18n="optMehr">More settings</summary>
+
+    <label><span data-i18n="optSubfolder">Download subfolder</span>
+      <input id="subfolder" type="text" placeholder="Full Page PDF Snap">
+      <div class="hint"><span data-i18n="optSubfolderHint">Leave empty to save straight into Downloads/. Only subfolders are possible.</span></div>
+    </label>
+
+    <div class="row" style="margin-top: 16px;">
+      <input id="saveAs" type="checkbox">
+      <label for="saveAs" style="margin: 0;"><span data-i18n="optSaveAs">Ask where to save every time</span>
+        <div class="hint"><span data-i18n="optSaveAsHint">For folders outside Downloads/.</span></div>
+      </label>
     </div>
+
+    <label><span data-i18n="optFilename">Filename template</span>
+      <input id="filenameTemplate" type="text" placeholder="{title}_{site}_{date}_{time}">
+      <div class="hint">
+        Placeholders:
+        <code>{site}</code> = website (e.g. <em>wikipedia_org</em>) &middot;
+        <code>{date}</code> = 2026-06-17 &middot;
+        <code>{time}</code> = 0923 &middot;
+        <code>{timesec}</code> = 092347 &middot;
+        <code>{n}</code> = sequential number (0001, 0002, ...) &middot;
+        <code>{title}</code> = page title (shortened)
+      </div>
+    </label>
+
+    <label><span data-i18n="optTitleLen">Max. length for {title} (characters)</span>
+      <input id="titleMaxLen" type="number" min="10" max="120" step="1" value="60">
+
+    </label>
+
+    <label><span data-i18n="optCounter">Sequential numbering</span>
+      <div class="row" style="margin-top: 4px;">
+        <span id="counterVal" style="font-family: monospace; background: var(--code-bg); color: var(--fg); padding: 4px 10px; border-radius: 4px;">0000</span>
+        <button id="resetCounter" type="button" data-i18n="optCounterReset" style="margin: 0; background: var(--grau-knopf);">Reset counter</button>
+      </div>
+
+    </label>
+
+    <label><span data-i18n="optSinglePage">Page layout</span>
+      <select id="singlePagePdf">
+        <option value="true" data-i18n="optSingleOne">One continuous page (default)</option>
+        <option value="false" data-i18n="optSingleMany">Several pages (for printing)</option>
+      </select>
+    </label>
+
+    <label><span data-i18n="optPageFormat">Page size</span>
+      <select id="pageFormat">
+        <option value="a4" data-i18n="optPageA4">A4 — fills a printed sheet</option>
+        <option value="free" data-i18n="optPageFree">Fixed pixel height</option>
+      </select>
+    </label>
+
+    <label><span data-i18n="optPageHeight">Page height in pixels</span>
+      <input id="pageHeightPx" type="number" min="400" max="8000" step="100" value="2400">
+    </label>
+
+    <label><span data-i18n="optAppLayout">App layouts (Gmail, Outlook, Notion &hellip;)</span>
+      <select id="appLayout">
+        <option value="context" data-i18n="optLayoutContext">Menu once at the top, content below (default)</option>
+        <option value="crop" data-i18n="optLayoutCrop">Content area only &mdash; narrowest PDF</option>
+        <option value="full" data-i18n="optLayoutFull">Capture everything &mdash; menu repeats</option>
+      </select>
+
+    </label>
+
+    <label><span data-i18n="optAfter">After capture</span>
+      <select id="afterCapture">
+        <option value="none" data-i18n="optAfterNone">Do nothing</option>
+        <option value="open" data-i18n="optAfterOpen">Open the PDF automatically</option>
+        <option value="show" data-i18n="optAfterShow">Show folder (file preselected)</option>
+        <option value="both" data-i18n="optAfterBoth">Show folder and open the PDF</option>
+      </select>
+
+    </label>
+
+    <div class="row" style="margin-top: 16px;">
+      <input id="hellerDruck" type="checkbox">
+      <label for="hellerDruck" style="margin: 0;"><span data-i18n="optHellerDruck">Turn dark pages light</span>
+
+      </label>
+    </div>
+
+    <div class="row" style="margin-top: 16px;">
+      <input id="provenanceFooter" type="checkbox">
+      <label for="provenanceFooter" style="margin: 0;"><span data-i18n="optFooter">Visible provenance line under the capture</span>
+        <div class="hint" data-i18n="optFooterHint">Changes the image. The details are in the PDF properties anyway.</div>
+      </label>
+    </div>
+
+    <div class="row" style="margin-top: 16px;">
+      <input id="copyPath" type="checkbox">
+      <label for="copyPath" style="margin: 0;"><span data-i18n="optCopyPath">Copy the file path to the clipboard</span></label>
+    </div>
+
+    <label><span data-i18n="optCopyPathFormat">Path format</span>
+      <select id="copyPathFormat">
+        <option value="windows">Windows (C:\Users\…)</option>
+        <option value="wsl">WSL (/mnt/c/Users/…)</option>
+        <option value="posix">POSIX (/home/…)</option>
+      </select>
+    </label>
+
+    <div class="row" style="margin-top: 16px;">
+      <input id="fetchOriginal" type="checkbox">
+      <label for="fetchOriginal" style="margin: 0;"><span data-i18n="optFetchOriginal">Also download the publisher's original file</span>
+        <div class="hint" data-i18n="optFetchOriginalHint">Fetches the full-text address the page declares itself.</div>
+      </label>
+    </div>
+
+    <label><span data-i18n="optSettling">Settling time per step (ms)</span>
+      <input id="settlingMs" type="number" min="50" max="5000" step="10" value="400">
+      <div class="hint" data-i18n="optSettlingHint">Raise it on pages that load slowly.</div>
+    </label>
+
+    <label><span data-i18n="optTile">Tile height in pixels</span>
+      <input id="tilePx" type="number" min="800" max="8000" step="100" value="4000">
+    </label>
+
+    <label><span data-i18n="optShortcut">Keyboard shortcut</span>
+      <div style="display:flex; gap:10px; align-items:center; margin-top:4px;">
+        <code id="shortcutNow" style="padding:6px 12px; background:var(--code-bg); color:var(--fg); border:1px solid var(--rand); border-radius:6px; font-size:13px;">…</code>
+        <button type="button" id="shortcutManage" data-i18n="optShortcutCopy"
+                style="padding:6px 12px; font-size:13px; cursor:pointer;">Copy address</button>
+        <code id="shortcutUrl" style="padding:6px 10px; background:var(--box-bg); color:var(--fg); border:1px solid var(--box-rand);
+              border-radius:6px; font-size:12px; user-select:all;">about:addons</code>
+      </div>
+      <div class="hint" data-i18n="optShortcutHint">To change it, open the address next to the button.</div>
+    </label>
+
+    <div class="row" style="margin-top: 16px;">
+      <input id="reviewPromptOff" type="checkbox">
+      <label for="reviewPromptOff" style="margin: 0;"><span data-i18n="optReviewOff">Never ask for a rating</span></label>
+    </div>
+
+    <details class="box" id="diagBox" style="background: var(--diag-bg); border-color: var(--diag-rand);">
+      <summary data-i18n="optDiag">Diagnostics</summary>
+      <div style="margin-top: 10px;">
+        <strong>Detected system:</strong> <span id="diagPlatform" style="font-family: monospace;">checking &hellip;</span><br>
+        <strong>Extension version:</strong> <span id="diagVersion" style="font-family: monospace;">?</span><br>
+        <strong>Screen resolution:</strong> <span id="diagScreen" style="font-family: monospace;">?</span><br>
+        <strong>Pixel density (DPR):</strong> <span id="diagDpr" style="font-family: monospace;">?</span><br>
+        <strong>Memory:</strong> <span id="diagRam" style="font-family: monospace;">?</span> GB &middot; <strong>CPU cores:</strong> <span id="diagCpu" style="font-family: monospace;">?</span><br>
+        <strong>Adaptive tile size:</strong> <span id="diagTile" style="font-family: monospace;">?</span> px
+      </div>
+    </details>
   </details>
 
-  <script src="compat.js"></script>
   <script src="i18n-data.js"></script>
   <script src="i18n.js"></script>
   <script src="options.js"></script>

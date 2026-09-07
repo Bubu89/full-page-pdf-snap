@@ -17,17 +17,8 @@
   "popupCapture": {
     "message": "Capturar la página completa"
   },
-  "popupShortcut": {
-    "message": "Atajo para la página completa:"
-  },
   "popupSettings": {
     "message": "Ajustes"
-  },
-  "popupRunning": {
-    "message": "Capturando…"
-  },
-  "popupDone": {
-    "message": "Guardado."
   },
   "busy": {
     "message": "Ya hay una captura en curso"
@@ -116,29 +107,11 @@
   "optJpeg": {
     "message": "Calidad JPEG"
   },
-  "optScrollWait": {
-    "message": "Espera por paso de desplazamiento (ms)"
-  },
-  "optPdfFormat": {
-    "message": "Formato PDF"
-  },
   "optSinglePage": {
     "message": "Una página continua (predeterminado — sin cortes visibles)"
   },
-  "optMultiPage": {
-    "message": "Varias páginas (para imprimir)"
-  },
   "optPageHeight": {
     "message": "Altura de página en varias páginas (píxeles)"
-  },
-  "optTileHeight": {
-    "message": "Altura de mosaico en página continua (píxeles)"
-  },
-  "optHideSticky": {
-    "message": "Ocultar elementos fijos"
-  },
-  "optHideStickyHint": {
-    "message": "Oculta barras laterales y superiores antes de la captura. Las columnas de navegación se conservan una vez en la parte superior."
   },
   "optAppLayout": {
     "message": "Interfaces de aplicación (Gmail, Outlook, Notion …)"
@@ -151,9 +124,6 @@
   },
   "optLayoutFull": {
     "message": "Capturar todo — el menú se repite"
-  },
-  "optAppLayoutHint": {
-    "message": "En páginas que desplazan su contenido en un área propia, el encabezado y la barra lateral permanecen fijos y aparecerían de nuevo en cada sección del PDF. No tiene efecto en páginas corrientes."
   },
   "optAfter": {
     "message": "Después de la captura"
@@ -169,9 +139,6 @@
   },
   "optAfterBoth": {
     "message": "Mostrar carpeta y abrir el PDF"
-  },
-  "optAfterHint": {
-    "message": "El valor predeterminado es «Mostrar carpeta»: tras guardar, se abre la carpeta de descargas con el archivo preseleccionado. «Abrir el PDF» inicia en su lugar el visor de PDF; «Ambos» hace lo uno tras lo otro."
   },
   "optScale": {
     "message": "Escala de captura (resolución)"
@@ -189,7 +156,7 @@
     "message": "2.0x — máximo, para impresión grande"
   },
   "optScaleHint": {
-    "message": "El valor predeterminado es 1.0x: el PDF muestra la página exactamente como aparece en pantalla, suficiente para una impresión normal a 144 ppp. Los valores más altos dan más nitidez al texto, pero cabe menos en la ventana, por lo que menús y barras laterales terminan antes."
+    "message": "1,0x muestra la página como en pantalla. Más alto es más nítido pero cabe menos en la ventana."
   },
   "optLanguage": {
     "message": "Idioma"
@@ -207,22 +174,10 @@
     "message": "Guardado."
   },
   "optSubfolderHint": {
-    "message": "Predeterminado: Full Page PDF Snap. Déjalo vacío para guardar directamente en Downloads/. Por motivos de seguridad, el navegador solo permite subcarpetas."
+    "message": "Déjelo vacío para guardar directamente en Downloads/. Solo son posibles subcarpetas."
   },
   "optSaveAsHint": {
-    "message": "Actívalo si quieres guardar en carpetas fuera de Downloads/."
-  },
-  "optTitleLenHint": {
-    "message": "Evita nombres de archivo demasiado largos. Predeterminado: 40."
-  },
-  "optCounterHint": {
-    "message": "Aumenta en uno con cada PDF nuevo. Restablecer lo devuelve a cero."
-  },
-  "optPdfFormatHint": {
-    "message": "Una página continua elimina las juntas visibles entre segmentos. El modo de varias páginas divide el resultado en páginas: A4 de forma predeterminada, o la altura fija indicada abajo."
-  },
-  "optPageHeightHint": {
-    "message": "Solo se aplica si arriba está seleccionada «Altura fija en píxeles». Predeterminado: 2400 px."
+    "message": "Para carpetas fuera de Downloads/."
   },
   "optShortcut": {
     "message": "Atajo de teclado"
@@ -230,14 +185,11 @@
   "optShortcutNone": {
     "message": "ninguno asignado: conflicto con un atajo del navegador"
   },
-  "optShortcutManage": {
-    "message": "Cambiar el atajo"
-  },
   "optShortcutHint": {
-    "message": "Aquí se muestra el atajo que el navegador ha asignado realmente. Los atajos del navegador siempre tienen prioridad y una extensión no puede sobrescribirlos: si el campo aparece vacío, la combinación la ocupa el propio navegador. Para cambiarlo, abre en una pestaña nueva la dirección que hay junto al botón."
+    "message": "Para cambiarlo, abra la dirección junto al botón."
   },
   "optShortcutCopy": {
-    "message": "Copy address"
+    "message": "Copiar la dirección"
   },
   "optShortcutCopied": {
     "message": "Dirección copiada: pégala en una pestaña nueva"
@@ -294,26 +246,11 @@
   "resultGone": {
     "message": "No hay ninguna captura. Inicia una nueva desde el icono de la extensión."
   },
-  "optProvenance": {
-    "message": "Añadir una línea de procedencia bajo la captura"
-  },
-  "optProvenanceHint": {
-    "message": "Escribe la dirección de la página, la hora de la captura y una suma de verificación SHA-256 de los datos de imagen en una franja bajo la imagen. Útil cuando el archivo debe archivarse o entregarse. Una captura de pantalla no es un documento electrónico cualificado: la hora procede del reloj de su dispositivo, y la suma de verificación demuestra que el archivo no ha cambiado desde su creación, no que la página tuviera ese aspecto. Los mismos datos se escriben siempre en los metadatos del PDF, con o sin esta opción."
-  },
-  "optTextLayer": {
-    "message": "Hacer el PDF consultable (capa de texto invisible)"
-  },
-  "optTextLayerHint": {
-    "message": "Copia el texto de la página en el PDF de forma invisible, en la posición en que aparece en la imagen. El PDF se puede buscar y el texto se puede copiar, sin que cambie su aspecto. El texto procede del documento y no se reconoce a partir de la imagen: medido en una página real se conserva cada palabra, mientras que el OCR recuperó el 92,6 por ciento. Solo se aplica al formato de una página continua."
-  },
   "popupRegion": {
     "message": "Seleccionar un área…"
   },
   "popupHideOverlays": {
     "message": "Ocultar banners y ventanas emergentes"
-  },
-  "popupHideOverlaysHint": {
-    "message": "Los diálogos de consentimiento y las barras flotantes se ocultan solo para la captura y se restauran después."
   },
   "popupHideOn": {
     "message": "Los banners se ocultarán"
@@ -322,13 +259,13 @@
     "message": "Los banners se capturarán tal cual"
   },
   "popupWorking": {
-    "message": "Capturing …"
+    "message": "Capturando …"
   },
   "popupSaved": {
-    "message": "Saved"
+    "message": "Guardado"
   },
   "popupUnknownError": {
-    "message": "Unknown error"
+    "message": "Error desconocido"
   },
   "regionHint": {
     "message": "Arrastre para seleccionar un área · Esc cancela"
@@ -339,9 +276,6 @@
   "popupCite": {
     "message": "Incluir los datos de cita"
   },
-  "popupCiteHint": {
-    "message": "Autores, DOI, licencia y hora de consulta en el PDF, más un registro RIS. Para que las herramientas de IA también los lean, activa además la línea de procedencia en los ajustes."
-  },
   "popupCiteOn": {
     "message": "Se incluirán los datos de cita"
   },
@@ -351,20 +285,11 @@
   "optCopyPath": {
     "message": "Copiar la ruta del archivo al portapapeles tras guardar"
   },
-  "optCopyPathHint": {
-    "message": "Para pasar el archivo directamente a un terminal o a un modelo de lenguaje: capturar y pegar. Desactivado de forma predeterminada."
-  },
   "optCopyPathFormat": {
-    "message": "Path format"
-  },
-  "optCopyPathFormatHint": {
-    "message": "Una ruta de Windows pegada en un intérprete de Linux bajo Windows no lleva a ninguna parte. Elegir WSL la convierte una vez aquí en lugar de hacerlo a mano cada vez."
+    "message": "Formato de ruta"
   },
   "popupCopyPath": {
-    "message": "Copiar la ruta del archivo tras guardar"
-  },
-  "popupCopyPathHint": {
-    "message": "Pega la ruta directamente en un terminal o en un chat. El formato para WSL y otros intérpretes está en los ajustes."
+    "message": "Copiar la ruta"
   },
   "popupCopyOn": {
     "message": "La ruta se copiará tras guardar"
@@ -372,80 +297,17 @@
   "popupCopyOff": {
     "message": "La ruta no se copiará"
   },
-  "optColourMode": {
-    "message": "Color y tamaño de archivo"
-  },
-  "optColourModeHint": {
-    "message": "La escala de grises y el blanco y negro reducen el archivo al 58 % y al 27 %, y ayudan al OCR en lugar de perjudicarlo: se releen 989 palabras frente a 987 en color. Las páginas con fotografías necesitan color."
-  },
   "optHellerDruck": {
     "message": "Mantener siempre el fondo blanco"
   },
-  "optHellerDruckHint": {
-    "message": "Para escala de grises y blanco y negro: una página en modo oscuro se invierte para que la hoja quede blanca y el texto oscuro. Ahorra tóner y mantiene legible la letra pequeña. Desactívalo si el PDF debe verse igual que la pantalla. Las capturas en color no se modifican."
-  },
-  "optSourceMetadata": {
-    "message": "Leer los datos de cita desde la página"
-  },
-  "optSourceMetadataHint": {
-    "message": "Lee autores, revista, volumen, DOI, licencia y hora de acceso de la página ya abierta y los escribe en los metadatos del PDF, junto con un registro RIS adjunto para Citavi, Zotero y EndNote. No se consulta ningún servicio."
-  },
-  "optRisSidecar": {
-    "message": "Guardar también el registro RIS como archivo aparte"
-  },
-  "optRisSidecarHint": {
-    "message": "El registro de cita ya va incrustado en el PDF como adjunto «quelle.ris» — desactivarlo no pierde nada. El archivo aparte es pura comodidad: los gestores bibliográficos lo importan con doble clic o arrastrándolo, mientras que un adjunto hay que extraerlo antes del PDF. Desactívelo si prefiere conservar un solo archivo por captura."
-  },
   "optPageFormat": {
     "message": "Tamaño de página en varias páginas"
-  },
-  "optPageFormatA4": {
-    "message": "A4 — las páginas encajan en el papel impreso (predeterminado)"
-  },
-  "optPageFormatFest": {
-    "message": "Altura fija en píxeles (se ajusta abajo)"
-  },
-  "optPageFormatHint": {
-    "message": "A4 deriva la altura de página del ancho capturado, de modo que una página impresa llena la hoja sin escalado."
-  },
-  "optBreakAtLines": {
-    "message": "Cortar entre líneas, no a través de ellas"
-  },
-  "optBreakAtLinesHint": {
-    "message": "Desplaza cada salto de página hacia arriba, hasta el espacio más cercano entre líneas de texto, imágenes y tablas. Medido en cuatro páginas de editoriales: 30 de 46 saltos de rejilla fija cortaban una línea de texto; con esta opción activada, 2 de 47. Coste: entre el 1 y el 3 % de margen vacío por página."
   },
   "optFetchOriginal": {
     "message": "Descargar también el archivo original de la editorial"
   },
   "optFetchOriginalHint": {
-    "message": "Desactivado por defecto: es la única función que abre una conexión de red. Descarga la dirección del texto completo que la propia página declara — la misma petición que hace un clic en «PDF», con los mismos derechos de acceso. Nada que esté tras un muro de pago se vuelve accesible."
-  },
-  "optNoReview": {
-    "message": "Aviso de valoración"
-  },
-  "optNoReviewHint": {
-    "message": "No pedirme que valore esta extensión. Lo pregunta una vez, tras cinco capturas, y nunca más; este interruptor evita incluso esa vez."
-  },
-  "optLinkMap": {
-    "message": "Guardar un mapa de enlaces junto al PDF"
-  },
-  "optLinkMapHint": {
-    "message": "Un archivo JSON con todos los enlaces de la página: dónde están en la imagen, adónde llevan y a qué parte de la página pertenecen: navegación, pie, contenido, paginación. Para herramientas de IA que deben llegar a un objetivo: en una página de enciclopedia, 741 de 1.528 enlaces resultaron ser estructura de la página y pudieron descartarse antes de buscar. Añade un archivo por captura."
-  },
-  "optTimeAnchor": {
-    "message": "Añadir un anclaje temporal (requiere internet)"
-  },
-  "optTimeAnchorHint": {
-    "message": "Antes de guardar, obtiene un valor aleatorio público de la red descentralizada drand y lo escribe en la captura. Como nadie podía conocer ese valor de antemano, demuestra que la captura no es anterior a ese momento, sin depender del reloj del dispositivo. Es el único acceso a la red que hace esta extensión, está desactivado salvo que lo actives, y no se envía nada: la página, la captura y su suma de verificación nunca salen de tu dispositivo. Aun así no prueba lo que mostraba la página, y no es un sello de tiempo cualificado según eIDAS. Si la red no está disponible, la captura se guarda sin el anclaje."
-  },
-  "diagTitel": {
-    "message": "Información del sistema (para informes de errores)"
-  },
-  "optFertigTon": {
-    "message": "Reproducir un sonido breve al terminar la captura"
-  },
-  "optFertigTonHint": {
-    "message": "Dos notas suaves, alrededor de un quinto de segundo. En el móvil rara vez se mira la pantalla mientras la página se desplaza, así que la notificación sola pasa desapercibida. Activado por defecto en Android, desactivado en el escritorio."
+    "message": "Descarga la dirección de texto completo que la propia página declara."
   },
   "androidFertig": {
     "message": "PDF listo: ábrelo para verlo o descargarlo"
@@ -475,5 +337,179 @@
         "example": "seite.pdf"
       }
     }
+  },
+  "optBildModus": {
+    "message": "Calidad"
+  },
+  "optBildFarbe": {
+    "message": "Color — como en pantalla (predeterminado)"
+  },
+  "optBildGrau": {
+    "message": "Escala de grises — un 40 % más pequeño"
+  },
+  "optBildSw": {
+    "message": "Blanco y negro — el más pequeño, para páginas de texto"
+  },
+  "optBildModusHint": {
+    "message": "Grises y blanco y negro dan archivos mucho más pequeños con el mismo reconocimiento de texto, pero el blanco y negro pierde las fotos."
+  },
+  "optVektorTitel": {
+    "message": "PDF de texto en lugar de imagen (Chrome)"
+  },
+  "optVektor": {
+    "message": "Capturar la página como texto, no como imagen"
+  },
+  "optVektorHint": {
+    "message": "El navegador compone el PDF: texto seleccionable, enlaces que funcionan, una pasada, archivos mucho menores. Pide un permiso."
+  },
+  "optVektorModus": {
+    "message": "Qué capturar"
+  },
+  "optVektorSeite": {
+    "message": "Toda la página, tal como se ve en pantalla (predeterminado)"
+  },
+  "optVektorArtikel": {
+    "message": "Solo el artículo, sin navegación ni barras laterales"
+  },
+  "optVektorModusHint": {
+    "message": "Si no se reconoce ningún artículo, se captura la página completa."
+  },
+  "optImmerTitel": {
+    "message": "Siempre dentro del PDF"
+  },
+  "optMehr": {
+    "message": "Más ajustes"
+  },
+  "optSingleOne": {
+    "message": "Una página continua (predeterminado)"
+  },
+  "optSingleMany": {
+    "message": "Varias páginas (para imprimir)"
+  },
+  "optPageA4": {
+    "message": "A4 — llena una hoja impresa"
+  },
+  "optPageFree": {
+    "message": "Altura fija en píxeles"
+  },
+  "optSettling": {
+    "message": "Tiempo de espera por paso (ms)"
+  },
+  "optSettlingHint": {
+    "message": "Auméntelo en páginas que cargan despacio."
+  },
+  "optTile": {
+    "message": "Altura de mosaico en píxeles"
+  },
+  "optFooter": {
+    "message": "Línea de procedencia visible bajo la captura"
+  },
+  "optFooterHint": {
+    "message": "Altera la imagen. Los datos figuran igualmente en las propiedades del PDF."
+  },
+  "optReviewOff": {
+    "message": "No pedir nunca una valoración"
+  },
+  "optDiag": {
+    "message": "Diagnóstico"
+  },
+  "optTriggerTitle": {
+    "message": "Cómo iniciar una captura"
+  },
+  "optTriggerTitleAndroid": {
+    "message": "Cómo iniciar una captura"
+  },
+  "optTriggerToolbar": {
+    "message": "El botón de la barra de herramientas"
+  },
+  "optTriggerMenu": {
+    "message": "Clic derecho en la página → la entrada de la extensión"
+  },
+  "optTriggerAndroidMenu": {
+    "message": "Menú del navegador → la entrada de la extensión"
+  },
+  "optImmerImPdf": {
+    "message": "Capa de texto buscable y ancla temporal: siempre. La cita, en cuanto se activa «Incluir datos de la fuente»: dentro del PDF (propiedades del documento, registro RIS adjunto) y como archivo de texto junto al PDF, en la misma carpeta. Un tono breve al terminar."
+  },
+  "optJpegHint": {
+    "message": "0,92 es el valor predeterminado. Más alto, archivo mayor; más bajo, artefactos visibles en degradados."
+  },
+  "popupArtikel": {
+    "message": "Artículo"
+  },
+  "artikelNichtGefunden": {
+    "message": "No se reconoce ningún artículo en esta página. Capture la página completa."
+  },
+  "artikelNichtMoeglich": {
+    "message": "No se pudo leer el artículo en esta página."
+  },
+  "artikelAbgerufen": {
+    "message": "consultado"
+  },
+  "optVektorAbgelehnt": {
+    "message": "Permiso denegado: se mantiene la vía de imagen."
+  },
+  "popupDruck": {
+    "message": "Captura para imprimir"
+  },
+  "popupEinstellungenDazu": {
+    "message": "Ajustes para esta salida"
+  },
+  "popupEinseitig": {
+    "message": "Una página continua"
+  },
+  "popupPapier": {
+    "message": "Tamaño del papel"
+  },
+  "popupAusrichtung": {
+    "message": "Orientación"
+  },
+  "popupHoch": {
+    "message": "Vertical"
+  },
+  "popupQuer": {
+    "message": "Horizontal"
+  },
+  "popupSchrift": {
+    "message": "Tamaño de letra"
+  },
+  "popupArtikelText": {
+    "message": "Como archivo de texto en vez de PDF"
+  },
+  "beilagenGespeichert": {
+    "message": "Guardado junto al PDF:"
+  },
+  "beilagenImPdf": {
+    "message": "Cita guardada dentro del PDF (adjunto RIS + propiedades del documento)."
+  },
+  "beilagenFehlten": {
+    "message": "no guardado:"
+  },
+  "popupHideOverlaysTitel": {
+    "message": "Los diálogos de consentimiento y las barras flotantes se ocultan solo para la captura y se restauran después."
+  },
+  "popupCiteTitel": {
+    "message": "El autor, el DOI, la licencia y la hora de consulta van en el propio PDF y en un archivo de texto junto a él, en la misma carpeta. Las herramientas de IA los reconocen allí."
+  },
+  "popupCopyPathTitel": {
+    "message": "Al terminar, pega la ruta con Ctrl+V en el terminal o en un chat."
+  },
+  "popupRand": {
+    "message": "Margen"
+  },
+  "popupRandOhne": {
+    "message": "Sin margen — la imagen llena la hoja"
+  },
+  "optBeilagenTitel": {
+    "message": "Archivos junto al PDF"
+  },
+  "optBeilagenText": {
+    "message": "Solo si «Incluir datos de la fuente» está activado en el menú. Ambos se guardan en la misma carpeta que el PDF."
+  },
+  "optZitatDatei": {
+    "message": "Cita como archivo de texto (.zitate.txt): para leer y copiar"
+  },
+  "optRisDatei": {
+    "message": "Archivo para gestores bibliográficos (.ris): Citavi, Zotero, EndNote"
   }
 }

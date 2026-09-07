@@ -2,7 +2,7 @@
 
 // Chrome MV3 kennt keine background.html - alle dort geladenen
 // Skripte muessen hier importiert werden, sonst fehlen sie zur Laufzeit.
-importScripts("compat.js", "pdf-writer.js", "zeitanker.js");
+importScripts("compat.js", "pdf-writer.js", "zeitanker.js", "zitate.js", "cdp-vektor.js");
 
 const TAG = "[PDFSnap/bg]";
 const log = (...a) => console.log(TAG, ...a);
@@ -61,7 +61,10 @@ const DEFAULTS_DESKTOP = {
   // darunter leidet.
   bildModus: "farbe",
   hellerDruck: true,      // dunkle Oberflaechen umkehren, damit das Blatt weiss bleibt
-  fertigTon: null,        // null = nach Plattform (Android an, Rechner aus)
+  // Kurzer Ton, wenn die Aufnahme steht. Frueher nach Plattform (nur
+  // Android); jetzt ueberall an, weil eine Aufnahme ohne Rueckmeldung den
+  // Nutzer im Unklaren laesst, ob sie lief.
+  fertigTon: true,
   settlingMs: 400,
   filenameTemplate: "{title}_{site}_{date}_{time}",
   titleMaxLen: 60,
@@ -75,6 +78,19 @@ const DEFAULTS_DESKTOP = {
   // importieren sie per Doppelklick, eine Anlage muss erst herausgeholt
   // werden. Wer lieber eine Datei je Aufnahme behaelt, schaltet sie ab.
   risSidecar: true,
+  /* Die zwei Beilagen, jede fuer sich abschaltbar.
+   *
+   * Beide haengen an "Quellenangaben mitschreiben": Ist das aus, entsteht
+   * keine von beiden — dann liegt nur das PDF da. Ist es an, kommen beide
+   * mit, solange sie hier nicht einzeln abgewaehlt sind.
+   *
+   * Zwei getrennte Dateien, weil sie zwei verschiedene Dinge sind: Die
+   * Textdatei ist zum Lesen und Abschreiben gemacht, die RIS-Datei zum
+   * Einlesen. Citavi, Zotero und EndNote koennen mit der Textdatei nichts
+   * anfangen — sie erwarten ein Satzformat, keinen Fliesstext. */
+  beilagenRepariert: false, // Marke der einmaligen Wiederherstellung
+  zitatDatei: true,        // .zitate.txt — zum Lesen und Kopieren
+  risDatei: true,          // .ris — fuer Citavi, Zotero, EndNote
   copyPath: false,         // Pfad nach dem Speichern in die Zwischenablage
   copyPathFormat: "windows", // "windows" | "wsl" | "posix"
   fetchOriginal: false,    // Verlags-PDF holen — einziger Netzzugriff, daher aus
@@ -88,7 +104,7 @@ const DEFAULTS_DESKTOP = {
   // entstanden", ohne der Geraeteuhr zu glauben. Standard AUS, weil es der
   // einzige Netzzugriff des Add-ons ist — er findet nur statt, wenn er
   // ausdruecklich verlangt wurde. Gesendet wird dabei nichts.
-  timeAnchor: false,
+  timeAnchor: true,
   // Unsichtbare Textebene aus dem Dokument. Standard an: sie macht das PDF
   // durchsuchbar, ohne das Bild zu veraendern.
   textLayer: true,
@@ -96,14 +112,44 @@ const DEFAULTS_DESKTOP = {
   // Agenten, der ein Bild der Seite hat und wissen muss, wo er hin kann.
   // Standard aus — sie erzeugt eine zweite Datei, und wer sie nicht liest,
   // hat nur eine mehr im Ordner.
-  linkMap: false,
+  linkMap: true,
   uiLanguage: "auto",
   appLayout: "context",
   afterCapture: "show",
   // 1.0 = genau die Ansicht, die der Nutzer am Bildschirm sieht. Hoehere Werte
   // zoomen die Seite vor der Aufnahme: schaerfer, aber es passt weniger ins
   // Fenster - Menues und Seitenleisten werden dann frueher abgeschnitten.
-  captureScale: 1.0
+  captureScale: 1.0,
+  /* Vektor-Weg: die Seite vom Browser selbst setzen lassen statt sie zu
+   * fotografieren. Nur in Chromium vorhanden und nur wirksam, wenn die
+   * Erlaubnis "debugger" erteilt wurde — ohne sie bleibt es beim Bildweg,
+   * ohne dass der Nutzer etwas davon merkt. */
+  vektor: true,
+  vektorModus: "seite",   // "seite" | "artikel"
+
+  /* Die Einstellungen aus den Faechern neben den Knoepfen.
+   *
+   * Sie MUESSEN hier stehen, auch wenn sie nur im Popup gesetzt werden:
+   * getSettings ruft storage.local.get(defs) auf, und diese Form liest
+   * ausschliesslich die Schluessel, die in defs vorkommen. Fehlt einer, wird
+   * er nie gelesen — das Popup speichert ihn, der Hintergrund sieht ihn nicht.
+   *
+   * Genau daran scheiterte das Querformat: Der Nutzer stellte um, die Datei
+   * kam als A4 hoch heraus, und im Popup stand weiter "Querformat". Ein
+   * Bedienelement, das speichert und nichts bewirkt — von aussen nicht von
+   * einem kaputten Ausgabeweg zu unterscheiden. */
+  /* Auch dieser stand nur in der Einstellungsseite und wurde nie gelesen —
+   * gefunden von tests/einstellungen-lesbar.test.mjs beim ersten Lauf, also
+   * von derselben Pruefung, die wegen des Querformats entstand. */
+  reviewPromptOff: false,
+
+  druckPapier: "a4",            // "a4" | "letter"
+  druckQuer: "hoch",            // "hoch" | "quer"
+  druckRandMm: 0,               // 0 = randlos; 5/10/15 mm auf Wunsch
+  artikelPapier: "a4",
+  artikelQuerWahl: "hoch",
+  artikelSchriftgroesse: 18,
+  artikelAlsText: false,
 };
 
 // Android: kein Ordner-Zeigen (downloads.show fehlt), stattdessen PDF direkt oeffnen.
@@ -181,11 +227,80 @@ async function getManaged() {
   }
 }
 
+/* Angaben, die keinen Schalter mehr haben.
+ *
+ * Zitationsdatei, RIS-Satz, Linkkarte, Textebene, Zeitanker und Fertigton
+ * waren einmal einzeln abschaltbar. Wer sie abgeschaltet hatte, traegt den
+ * gespeicherten Wert weiter mit sich herum — und faende auf der
+ * Einstellungsseite keinen Schalter mehr, mit dem er sich erklaeren koennte,
+ * warum die Zitationsdatei fehlt.
+ *
+ * Deshalb wird der gespeicherte Wert hier nicht gelesen, sondern uebergangen.
+ * Das braucht keinen Migrationsschritt, der halb durchlaufen kann, und keinen
+ * Merker, der verlorengehen kann: Was keine Einstellung mehr ist, darf auch
+ * aus einer alten Einstellung nicht wieder auftauchen.
+ *
+ * Eine Unternehmensvorgabe schlaegt das weiterhin — wer die Erweiterung fuer
+ * eine Organisation einrichtet, hat Gruende, die diese Datei nicht kennt.
+ */
+const IMMER_AN = {
+  linkMap: true,          // Verweise IM PDF
+  textLayer: true,        // durchsuchbare Textebene im PDF
+  timeAnchor: true,       // Zeitanker (der einzige Netzabruf)
+  fertigTon: true,        // kurzer Ton, wenn die Aufnahme steht
+  breakAtLines: true,     // Schnitt in die naechste Luecke ziehen
+};
+
+/* "sourceMetadata" und "hideSticky" stehen bewusst NICHT in dieser Liste.
+
+ * Beim Zusammenstreichen waren beide hineingeraten, und beide Schalter im
+ * Popup waren damit Bedienelemente ohne Wirkung. Die Liste hier ist fuer
+ * Beilagen gedacht, die aus den Quellenangaben ENTSTEHEN — RIS-Satz,
+ * Zitationsdatei, Linkkarte —, nicht fuer die Frage, ob die Angaben ueberhaupt
+ * aus der Seite gelesen werden. Wer eine Aufnahme ohne Quellenbezug will,
+ * muss das entscheiden koennen.
+ *
+ *
+ * Beim Zusammenstreichen der Einstellungen war es zunaechst mit
+ * hineingeraten — und damit war der Schalter im Popup ein Bedienelement ohne
+ * Wirkung: Er liess sich umlegen, speichern, anzeigen, und die Aufnahme
+ * ignorierte ihn. Die Liste hier ist fuer BELEGANGABEN gedacht, die man nicht
+ * nachtraeglich erzeugen kann. Ob ein Zustimmungsdialog mit aufs Bild soll,
+ * ist dagegen eine Entscheidung, die von Seite zu Seite anders ausfaellt und
+ * deshalb bedienbar bleiben muss. */
+
+/* Einmalige Wiedergutmachung fuer die verlorenen Beilagen.
+ *
+ * In 2.36.0 fehlten "zitatDatei" und "risDatei" in den Voreinstellungen der
+ * Einstellungsseite. storage.local.get(DEFAULTS) gibt nur zurueck, was dort
+ * steht — beide Haken standen deshalb leer, und beim naechsten Speichern
+ * schrieb die Seite das leere Haekchen als "aus" in den Speicher. Wer die
+ * Einstellungen auch nur geoeffnet hatte, bekam ab da keine Beilagen mehr,
+ * ohne je etwas abgewaehlt zu haben.
+ *
+ * "false" laesst sich nicht ansehen, ob es von einem Nutzer stammt oder von
+ * diesem Fehler. Deshalb wird es genau EINMAL zurueckgesetzt, festgehalten an
+ * einer eigenen Marke. Wer die Beilagen danach abwaehlt, behaelt seine Wahl.
+ */
+async function beilagenEinmaligHerstellen() {
+  try {
+    const m = await browser.storage.local.get({ beilagenRepariert: false });
+    if (m.beilagenRepariert === true) return;
+    await browser.storage.local.set({
+      zitatDatei: true, risDatei: true, beilagenRepariert: true,
+    });
+    log("Beilagen einmalig auf 'an' gesetzt (Fehler aus 2.36.0).");
+  } catch (e) {
+    log("Beilagen-Wiederherstellung nicht moeglich:", e && e.message);
+  }
+}
+
 async function getSettings() {
+  await beilagenEinmaligHerstellen();
   const defs = await getDefaults();
   const stored = await browser.storage.local.get(defs);
   const managed = await getManaged();
-  const merged = { ...defs, ...stored, ...managed };
+  const merged = { ...defs, ...stored, ...IMMER_AN, ...managed };
   // Android-Safety: 'show'/'both' funktionieren dort nicht (downloads.show fehlt).
   // Falls Settings von Desktop-Sync hierher landen, mappen wir auf 'open'.
   const p = await getPlatform();
@@ -291,6 +406,59 @@ function dataUrlToBlob(dataUrl) {
  * der Seite zu tun hat, sondern nur mit dem Zuschnitt. Gemessen am
  * 07.08.2026: obere Kachel unveraendert, untere umgekehrt, beide fuer sich
  * richtig, zusammen unbrauchbar. */
+/* Unscharfmaskierung: Original + Anteil der Differenz zur weichgezeichneten
+ * Fassung. Das uebliche Verfahren der Druckvorstufe.
+ *
+ * DIE DREI WERTE SIND NICHT FREI GEWAEHLT. Gemessen wurde mit Radius 1,2,
+ * Staerke 140 % und Schwelle 2 — und die Umsetzung muss dieselben Werte
+ * treffen, sonst misst die Messung etwas anderes als das, was ausgeliefert
+ * wird. Ein erster Versuch nahm einen 3x3-Kasten ohne Schwelle: einfacher zu
+ * schreiben, und im Ergebnis SCHLECHTER als gar nichts zu tun (79,1 % gegen
+ * 80,3 % ohne Schaerfung, gegen 81,7 % mit den richtigen Werten). Ein
+ * Kastenfilter zieht harte Ecken nach, die im Bild nicht sind, und ohne
+ * Schwelle wird jedes Rauschen mitverstaerkt.
+ *
+ *   RADIUS 1,2   Gausz, getrennt nach Zeilen und Spalten gerechnet
+ *   STAERKE 1,4  entspricht den gemessenen 140 %
+ *   SCHWELLE 2   darunter bleibt der Punkt, wie er ist — sonst wird das
+ *                Grundrauschen der Bildschirmdarstellung mitgeschaerft
+ */
+function kantenNachziehen(grau, breite, hoehe) {
+  const SIGMA = 1.2, STAERKE = 1.4, SCHWELLE = 2;
+  const r = Math.max(1, Math.ceil(SIGMA * 2));
+  const kern = new Float32Array(2 * r + 1);
+  let summe = 0;
+  for (let i = -r; i <= r; i++) {
+    const v = Math.exp(-(i * i) / (2 * SIGMA * SIGMA));
+    kern[i + r] = v; summe += v;
+  }
+  for (let i = 0; i < kern.length; i++) kern[i] /= summe;
+
+  const klemmen = (v, max) => (v < 0 ? 0 : v > max ? max : v);
+  const waag = new Float32Array(grau.length);
+  for (let y = 0; y < hoehe; y++) {
+    const z = y * breite;
+    for (let x = 0; x < breite; x++) {
+      let s = 0;
+      for (let i = -r; i <= r; i++) s += kern[i + r] * grau[z + klemmen(x + i, breite - 1)];
+      waag[z + x] = s;
+    }
+  }
+  const aus = new Uint8Array(grau.length);
+  for (let y = 0; y < hoehe; y++) {
+    for (let x = 0; x < breite; x++) {
+      let s = 0;
+      for (let i = -r; i <= r; i++) s += kern[i + r] * waag[klemmen(y + i, hoehe - 1) * breite + x];
+      const i0 = y * breite + x;
+      const unterschied = grau[i0] - s;
+      if (Math.abs(unterschied) < SCHWELLE) { aus[i0] = grau[i0]; continue; }
+      const wert = grau[i0] + STAERKE * unterschied;
+      aus[i0] = wert < 0 ? 0 : wert > 255 ? 255 : Math.round(wert);
+    }
+  }
+  return aus;
+}
+
 function farbtiefeAnwenden(d, modus, breite, umkehrenVorgabe) {
   if (modus === "graustufen" || modus === "sw") {
     const n = d.length / 4;
@@ -301,6 +469,32 @@ function farbtiefeAnwenden(d, modus, breite, umkehrenVorgabe) {
     const grau = new Uint8Array(n);
     for (let i = 0, j = 0; j < n; i += 4, j++) {
       grau[j] = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114) | 0;
+    }
+    /* Vor der Schwelle die Kanten nachziehen — nur bei Schwarzweiss.
+     *
+     * Bildschirmschrift ist kantengeglaettet: Zwischen Schwarz und Weiss
+     * liegen graue Zwischenstufen, und genau die entscheidet die Schwelle
+     * willkuerlich in die eine oder andere Richtung. Duenne Striche fallen
+     * dabei auseinander. Eine Unscharfmaskierung zieht die Zwischenstufen zu
+     * den Enden hin, bevor geschwellt wird.
+     *
+     * Gemessen am 18.08.2026 an 6 Seiten in je 2 Aufloesungen, 50 Laeufe:
+     *
+     *   wie bisher        79,4 %      geglaettet     78,6 %  (-0,9)
+     *   GESCHAERFT        80,5 %      ortsabhaengig  79,0 %  (-0,4)
+     *                                 2x vergroessert 79,1 % (-0,4)
+     *
+     * Schaerfen war der einzige Weg, der ueberhaupt half, und in keinem
+     * einzigen Fall schadete er um mehr als 0,1 Punkte. Glaetten — die
+     * naheliegende Vermutung — machte es durchweg schlechter: Es zieht die
+     * Zwischenstufen in die Mitte, also genau dorthin, wo die Schwelle
+     * raten muss.
+     *
+     * Fuer Graustufen ausdruecklich NICHT: Dort gibt es keine Schwelle, die
+     * Zwischenstufen bleiben erhalten, und Schaerfen waere eine Veraenderung
+     * des Bildes ohne Gegenwert. */
+    if (modus === "sw" && breite > 2 && hoehe > 2) {
+      grau.set(kantenNachziehen(grau, breite, hoehe));
     }
     if (modus === "graustufen") {
       // Dieselbe Entscheidung wie bei Schwarzweiss, nur ohne Schwelle: Die
@@ -530,6 +724,52 @@ function sollUmkehren(canvas, modus, erlaubt) {
   }
 }
 
+/* Die Farbe, die hinter dem Bild durchscheinen soll.
+ *
+ * Bleibt auf einem Blatt unter dem Bild Platz — weil der Schnitt in die
+ * Zeilenluecke gezogen wurde oder weil das Dokument endet —, dann leuchtete
+ * dort bisher das blanke Blatt durch. Auf einer dunklen Seite ist das ein
+ * weisser Balken quer ueber die untere Kante.
+ *
+ * Genommen wird der haeufigste Farbwert der untersten drei Bildzeilen: Was
+ * dort die Flaeche beherrscht, ist der Seitenhintergrund. Ein Mittelwert waere
+ * falsch — er mischt Schrift und Grund zu einem Grau, das auf der Seite
+ * nirgends vorkommt.
+ *
+ * Die Farbe durchlaeuft dieselbe Umwandlung wie das Bild. Bei Schwarzweiss ist
+ * das Ergebnis immer Weiss: Der Hintergrund stellt die Mehrheit der Flaeche,
+ * die Schwelle legt ihn also auf die helle Seite, und bei dunklen Seiten kehrt
+ * die Aufnahme ohnehin um. */
+function seitenHintergrund(canvas, modus, umkehren) {
+  try {
+    const h = canvas.height, w = canvas.width;
+    if (!h || !w) return null;
+    if (modus === "sw") return [255, 255, 255];
+    const zeilen = Math.min(3, h);
+    const d = canvas.getContext("2d").getImageData(0, h - zeilen, w, zeilen).data;
+    const zaehler = new Map();
+    for (let i = 0; i < d.length; i += 4) {
+      // Grob gerastert auf 5 Bit je Kanal — sonst zaehlt jede Nuance einzeln
+      // und der Kantenglaettungssaum gewinnt gegen die Flaeche.
+      const k = ((d[i] >> 3) << 10) | ((d[i + 1] >> 3) << 5) | (d[i + 2] >> 3);
+      zaehler.set(k, (zaehler.get(k) || 0) + 1);
+    }
+    let best = 0, bestN = -1;
+    for (const [k, n] of zaehler) if (n > bestN) { bestN = n; best = k; }
+    const r = ((best >> 10) & 31) << 3, g = ((best >> 5) & 31) << 3, b = (best & 31) << 3;
+    if (modus === "graustufen") {
+      let y = Math.round(r * 0.299 + g * 0.587 + b * 0.114);
+      if (umkehren === true) y = 255 - y;
+      return [y, y, y];
+    }
+    return [r, g, b];
+  } catch (_) {
+    // Ohne Farbe bleibt alles wie bisher — ein geratener Ton waere schlimmer
+    // als der weisse Rest.
+    return null;
+  }
+}
+
 async function canvasToBildBytes(canvas, quality, modus, umkehrenVorgabe) {
   const m = modus || "farbe";
   let flate = null;
@@ -545,7 +785,19 @@ async function canvasToBildBytes(canvas, quality, modus, umkehrenVorgabe) {
                         kanaele: flate.kanaele, bits: flate.bits };
     log("Farbtiefe", m, "nicht moeglich — zurueck auf JPEG");
   }
-  const jpeg = await canvasToJpegBytes(canvas, quality);
+  /* Im Rueckfall fuer Schwarzweiss und Graustufen ohne Sparen kodieren.
+   *
+   * Sonst greift hier die eingestellte JPEG-Guete — ein Wert, der fuer
+   * FARBBILDER richtig gewaehlt ist. Bei Schrift zerstoert er genau das, was
+   * bei diesen beiden Betriebsarten allein zaehlt: die Kante. Wer
+   * Schwarzweiss waehlt, will drucken oder durchsuchbaren Text, und beides
+   * lebt von scharfen Kanten, nicht von kleinen Dateien.
+   *
+   * Auf dem normalen Weg spielt das keine Rolle: Dort gehen beide Betriebs-
+   * arten verlustfrei ueber Flate und sehen nie einen JPEG-Kodierer. Diese
+   * Zeile greift nur, wenn Flate ausfaellt. */
+  const guete = (m === "farbe") ? quality : 1.0;
+  const jpeg = await canvasToJpegBytes(canvas, guete);
   if (flate && m === "farbe" && flate.bytes.length < jpeg.length) {
     return { bytes: flate.bytes, filter: "FlateDecode",
              kanaele: flate.kanaele, bits: flate.bits };
@@ -637,8 +889,585 @@ async function ensureContentInjected(tabId) {
   if (!r || !r.ok) throw new Error("Content-Script antwortet nicht.");
 }
 
+/* Welche Sprache gilt fuer die Beleg-Datei?
+ *
+ * "auto" heisst: die Sprache des Browsers. Die Erweiterung kennt daneben eine
+ * eigene Wahl, und die muss gewinnen — wer die Oberflaeche auf Spanisch
+ * gestellt hat, will keine deutschen Abschnittstitel in der Datei, auch wenn
+ * der Browser deutsch laeuft. */
+function belegSprache(settings) {
+  const wahl = (settings && settings.uiLanguage) || "auto";
+  if (wahl && wahl !== "auto") return wahl;
+  try {
+    const b = browser.i18n.getUILanguage && browser.i18n.getUILanguage();
+    if (b) return String(b).replace("-", "_");
+  } catch (_) { /* Rueckfall */ }
+  return "en";
+}
+
+/* Die Blattmasse fuer den Druck, in Zoll.
+ *
+ * A4 misst 210 x 297 mm, das sind 8,27 x 11,69 Zoll. Letter misst 8,5 x 11.
+ * Quer gelegt tauschen die beiden Werte die Rollen — mehr ist daran nicht.
+ * In Zoll, weil die Druckschnittstelle in Zoll rechnet; jede Umrechnung
+ * mehr waere eine Stelle mehr, an der ein Faktor verrutschen kann. */
+function druckMasse(settings) {
+  const quer = (settings.druckQuer || "hoch") === "quer";
+  const letter = (settings.druckPapier || "a4") === "letter";
+  const kurz = letter ? 8.5 : 8.27;
+  const lang = letter ? 11 : 11.69;
+  return quer
+    ? { breiteZoll: lang, hoeheZoll: kurz }
+    : { breiteZoll: kurz, hoeheZoll: lang };
+}
+
+/* Wie breit ist das Blatt, auf dem der Artikel umbrechen soll?
+ *
+ * In CSS-Pixeln, weil das Dokument darin rechnet: 96 davon ergeben ein Zoll.
+ * A4 ist 210 mm breit, das sind 8,27 Zoll und damit 794 px; quer gelegt 297 mm
+ * = 1123 px. Letter misst 8,5 x 11 Zoll, also 816 bzw. 1056 px.
+ *
+ * Die Breite muss VOR dem Messen der Hoehe stehen — die Hoehe ergibt sich erst
+ * daraus, wie der Text auf dieser Breite umbricht. */
+function blattBreite(settings) {
+  const quer = (settings.artikelQuerWahl || "hoch") === "quer";
+  const letter = (settings.artikelPapier || "a4") === "letter";
+  if (letter) return quer ? 1056 : 816;
+  return quer ? 1123 : 794;
+}
+
+/* Den Dateinamen aus der Vorlage bauen.
+ *
+ * Herausgeloest, weil ihn seit dem Vektor-Weg zwei Aufrufer brauchen. Zwei
+ * Abschriften derselben Regel waeren zwei Orte, an denen die Vorlage
+ * kuenftig auseinanderlaufen kann. */
+async function dateinamenBauen(tab, settings, quelle) {
+  /* Denselben Titel nehmen wie fuer die Dokumenteigenschaften: den aus den
+   * Verlagsangaben der Seite, wenn es ihn gibt. Der Fenstertitel traegt fast
+   * immer Zusaetze mit — "… - PubMed", "… | Zeitschrift" —, die im
+   * Dateinamen nur Platz kosten und bei der Laengengrenze den eigentlichen
+   * Titel abschneiden. */
+  const baseTitle = sanitizeFilename(
+    (quelle && quelle.titel) || tab.title || "page", settings.titleMaxLen);
+  const stamp = nowStamp();
+  const n = await nextCounter();
+  const filename = (settings.filenameTemplate || "{title}_{site}_{date}_{time}")
+    .replace("{title}", baseTitle)
+    .replace("{site}", siteFromUrl(tab.url))
+    .replace("{date}", stamp.date)
+    .replace("{time}", stamp.time)
+    .replace("{timesec}", stamp.timeSec)
+    .replace("{n}", n) + ".pdf";
+  const subfolder = (settings.subfolder || "").replace(/^\/+|\/+$/g, "");
+  return { filename, relPath: subfolder ? `${subfolder}/${filename}` : filename };
+}
+
+/* Eine Datei neben das PDF legen.
+ *
+ * Fehlschlaege werden protokolliert, aber nicht weitergereicht: Eine Beilage,
+ * die nicht zustande kommt, ist kein Grund, eine gelungene Aufnahme scheitern
+ * zu lassen. Die Angaben stecken ohnehin auch im PDF. */
+/* Die Adresse, unter der die Download-Schnittstelle den Inhalt abholt.
+ *
+ * Firefox verweigert data:-Adressen in downloads.download rundheraus:
+ *
+ *     Error processing url: Error: Access denied for URL data:text/plain;...
+ *
+ * Gemessen am 18.08.2026 an Firefox ESR 153 mit einer eigens dafuer gebauten
+ * Erweiterung. Geprueft wurden vier Faelle; data: scheiterte in allen, blob:
+ * gelang in allen — auch mit Unterordner und auch als dritter Download
+ * hintereinander. Genau daran lag es, dass die Zitationsdatei jahrelang nicht
+ * neben dem PDF ankam: Sie fiel auf den Weg ueber die Seite zurueck, und der
+ * kann keinen Ordner setzen (siehe unten). Das PDF selbst kam an, weil es
+ * schon immer ueber eine blob-Adresse ging.
+ *
+ * Im Service Worker von Chrome gibt es URL.createObjectURL nicht. Dort bleibt
+ * es bei data: — was dort auch nie ein Problem war. */
+function beilagenAdresse(mime, inhalt) {
+  try {
+    if (typeof URL !== "undefined" && typeof URL.createObjectURL === "function"
+        && typeof Blob !== "undefined") {
+      return { url: URL.createObjectURL(new Blob([inhalt], { type: mime })), blob: true };
+    }
+  } catch (_) { /* faellt auf data: zurueck */ }
+  return { url: "data:" + mime + ";charset=utf-8," + encodeURIComponent(inhalt), blob: false };
+}
+
+async function beilageAblegen(name, mime, inhalt, tabId) {
+  const { url, blob } = beilagenAdresse(mime, inhalt);
+  /* Erst freigeben, wenn der Browser gelesen hat — sonst bricht der Download
+   * ab. Dieselbe Wartezeit wie beim PDF. */
+  const freigeben = () => { if (blob) setTimeout(() => { try { URL.revokeObjectURL(url); } catch (_) { /* egal */ } }, 30000); };
+
+  /* Erster Weg: die Download-Schnittstelle. */
+  try {
+    await browser.downloads.download({ url, filename: name, conflictAction: "uniquify" });
+    log("Beilage gespeichert:", name);
+    freigeben();
+    return { ok: true, weg: "downloads" };
+  } catch (e) {
+    freigeben();
+    log("Beilage ueber downloads gescheitert:", name, e && e.message);
+
+    /* Zweiter Weg: die Seite legt sie ab.
+     *
+     * Auf Android ist das seit langem der einzige gangbare Weg — die
+     * Download-Schnittstelle gibt es dort nicht. Am Rechner greift er, wenn
+     * der Browser eine zweite Datei ablehnt: Manche lassen einer Erweiterung
+     * nur eine Ablage ohne Rueckfrage durchgehen, und dann kam die Beilage
+     * nie an, ohne dass es irgendwo aufgefallen waere.
+     *
+     * Ein Anker mit download-Attribut zaehlt als Handlung der Seite, nicht
+     * der Erweiterung. */
+    if (tabId != null) {
+      try {
+        const r = await browser.tabs.sendMessage(tabId, {
+          cmd: "dateiAblegen",
+          name: String(name).split("/").pop(),
+          inhalt, mime,
+        });
+        if (r && r.ok) {
+          log("Beilage ueber die Seite abgelegt:", name);
+          return { ok: true, weg: "seite" };
+        }
+        return { ok: false, grund: (r && r.grund) || "die Seite konnte nicht ablegen" };
+      } catch (e2) {
+        return { ok: false, grund: (e2 && e2.message) || (e && e.message) || "unbekannt" };
+      }
+    }
+    return { ok: false, grund: (e && e.message) || "unbekannt" };
+  }
+}
+
+/* RIS-Satz, Zitationsdatei und Linkkarte neben das PDF.
+ *
+ * Im PDF steckt der RIS-Satz bereits als Anhang, aber dort findet ihn
+ * niemand: Es braucht die Anlagen-Ansicht des Betrachters oder ein Werkzeug
+ * auf der Kommandozeile. Eine Datei daneben laesst sich per Doppelklick in
+ * Citavi oder Zotero ziehen.
+ *
+ * Die Zitationsdatei ist die Antwort auf den haeufigsten Handgriff nach einer
+ * Aufnahme: eine Zeile ins Literaturverzeichnis kopieren. Dafuer musste man
+ * bisher den RIS-Satz durch ein Literaturprogramm schicken. */
+async function belegeAblegen(stamm, quelle, linkKarte, zusatz) {
+  const z = zusatz || {};
+  const abgelegt = [];
+  const gescheitert = [];
+
+  /* Jede Beilage steht fuer sich.
+   *
+   * Bis 2.35.8 hing die Zitationsdatei im Fangnetz des RIS-Satzes: Scheiterte
+   * der, entstand auch sie nicht — obwohl beide nichts miteinander zu tun
+   * haben. Und beide hingen an derselben Einstellung, sodass wer die
+   * RIS-Datei abwaehlte, auch die Zitationsdatei verlor.
+   *
+   * Deshalb hier drei getrennte Schritte mit je eigenem Ergebnis. Was
+   * scheitert, wird benannt und reisst die anderen nicht mit. */
+  async function legen(endung, mime, inhalt) {
+    const r = await beilageAblegen(stamm + endung, mime, inhalt, z.tabId);
+    if (r.ok) abgelegt.push(endung + (r.weg === "seite" ? " (über die Seite)" : ""));
+    else gescheitert.push(endung + ": " + (r.grund || "unbekannt"));
+    return r.ok;
+  }
+
+  if (quelle && quelle.titel) {
+    /* Der MIME-Typ muss zur Endung passen, sonst benennt Chrome die Datei
+     * um: mit "text/plain" wurde aus ".ris" beim Speichern ".txt" — gemessen
+     * am 10.08.2026. Zotero und Citavi erkennen ".ris" von selbst, ".txt"
+     * nicht; der Import verlangte dann Umbenennen von Hand. */
+    if (z.risDatei !== false && typeof PageShotPdf !== "undefined" && PageShotPdf.risSatz) {
+      try {
+        await legen(".ris", "application/x-research-info-systems", PageShotPdf.risSatz(quelle));
+      } catch (e) {
+        log("RIS-Satz nicht erzeugbar:", e && e.message);
+        gescheitert.push(".ris");
+      }
+    }
+    /* Die Zitationsdatei ist NICHT an die RIS-Einstellung gebunden.
+     * Sie beantwortet eine andere Frage: nicht "wie importiere ich das in
+     * Zotero", sondern "welche Zeile schreibe ich in meine Arbeit". */
+    if (z.zitatDatei !== false
+        && typeof PageShotZitate !== "undefined" && PageShotZitate.belegDatei) {
+      try {
+        await legen(".zitate.txt", "text/plain",
+          PageShotZitate.belegDatei(quelle, z, z.sprache));
+      } catch (e) {
+        log("Zitationsdatei nicht erzeugbar:", e && e.message);
+        gescheitert.push(".zitate.txt");
+      }
+    }
+  }
+
+  /* Die Linkkarte lag bis 2.35.17 als eigene .links.json daneben.
+   *
+   * Sie ist entfallen. Neben dem PDF soll GENAU EINE Datei liegen — die
+   * Zitationsdatei —, damit klar ist, was zusammengehoert. Die Verweise sind
+   * ohnehin dort, wo sie gebraucht werden: als anklickbare Flaechen im PDF
+   * selbst. Eine Koordinatenliste als zweite Beilage beantwortete eine Frage,
+   * die im Alltag niemand stellte, und verdoppelte dabei die Zahl der
+   * Downloads — was in Browsern, die einer Erweiterung nur wenige ohne
+   * Rueckfrage durchgehen lassen, die Zitationsdatei gefaehrdete. */
+
+  log("Beilagen:", abgelegt.join(" ") || "(keine)",
+      gescheitert.length ? "| gescheitert: " + gescheitert.join(" ") : "");
+  return { abgelegt, gescheitert };
+}
+
+/* Die Seite als Vektor aufnehmen.
+ *
+ * Gibt null zurueck, wenn der Weg nicht gangbar ist — dann laeuft die
+ * gewohnte Bildaufnahme. Ein fehlendes DevTools-Protokoll, eine nicht
+ * erteilte Erlaubnis oder eine Seite, die den Druck verweigert, sind kein
+ * Fehler des Nutzers und duerfen ihm nicht als solcher gezeigt werden. */
+async function vektorAufnahme(tab, settings, wahl) {
+  if (typeof PageShotVektor === "undefined") return null;
+  if (settings.vektor === false) return null;
+  /* Ein mit der Maus gewaehlter Ausschnitt hat im Vektor-Weg keine
+   * Entsprechung: gedruckt wird immer das ganze Dokument. Dafuer bleibt der
+   * Bildweg zustaendig. */
+  if (wahl && wahl.region) return null;
+  if (!(await PageShotVektor.vektorErlaubt())) return null;
+
+  const p = await getPlatform();
+  if (p.isAndroid) return null;
+
+  let quelle = null, linkKarte = null;
+
+  /* Die Angaben VOR dem Druck erheben: waehrend des Drucks steht die Seite
+   * unter einer veraenderten Fenstergroesse, und im Artikelmodus ist die
+   * Haelfte davon ausgeblendet. Die Koordinaten der Linkkarte waeren dann die
+   * einer anderen Seite. */
+  try {
+    await ensureContentInjected(tab.id);
+    if (settings.sourceMetadata !== false) {
+      const src = await browser.tabs.sendMessage(tab.id, { cmd: "collectSource" });
+      if (src && src.ok && src.quelle && src.quelle.titel) quelle = src.quelle;
+    }
+    const lm = await browser.tabs.sendMessage(tab.id, { cmd: "collectLinks" });
+    if (lm && lm.ok && lm.links && lm.links.length) linkKarte = lm;
+  } catch (e) {
+    log("Angaben vor dem Vektordruck nicht vollstaendig:", e && e.message);
+  }
+
+  let ergebnis;
+  try {
+    const modus = (wahl && wahl.modus) || settings.vektorModus || "seite";
+    const blattBreitePx = modus === "artikel" ? blattBreite(settings) : 0;
+    /* Beim Druck bekommt der Vektorweg die Blattmasse in Zoll — dieselben,
+     * die auch ein Drucker verwendet. A4 misst 8,27 x 11,69 Zoll, Letter
+     * 8,5 x 11. Quer gelegt tauschen Breite und Hoehe die Rollen. */
+    const druckblatt = modus === "a4" ? druckMasse(settings) : null;
+    ergebnis = await PageShotVektor.vektorAufnehmen(tab.id, {
+      modus,
+      blattBreitePx,
+      druckblatt,
+      settlingMs: settings.settlingMs,
+      hideSticky: settings.hideSticky,
+      artikelSchriftgroesse: settings.artikelSchriftgroesse || 18,
+    });
+  } catch (e) {
+    log("Vektorweg gescheitert, es laeuft der Bildweg:", e && e.message);
+    return null;
+  }
+  if (!ergebnis || !ergebnis.bytes || !ergebnis.bytes.length) return null;
+
+  const { filename, relPath } = await dateinamenBauen(tab, settings, quelle);
+
+  const blob = new Blob([ergebnis.bytes], { type: "application/pdf" });
+  const url = await blobToDataUrl(blob);
+  _lastPdfUrl = url;
+  _lastPages = 1;
+  _lastSaved = false;
+
+  const id = await browser.downloads.download({
+    url, filename: relPath, saveAs: !!settings.saveAs, conflictAction: "uniquify",
+  });
+  try { await waitForDownloadComplete(id, 30000); }
+  catch (e) { log("Warten auf den Download:", e.message); }
+
+  let pruefsumme = "";
+  try {
+    const digest = await crypto.subtle.digest("SHA-256", ergebnis.bytes);
+    pruefsumme = Array.from(new Uint8Array(digest))
+      .map(b => b.toString(16).padStart(2, "0")).join("");
+  } catch (e) { log("Pruefsumme nicht gebildet:", e && e.message); }
+
+  await belegeAblegen(relPath.replace(/\.pdf$/i, ""), quelle, linkKarte, {
+    url: tab.url,
+    sprache: belegSprache(settings),
+    pdfDatei: filename,
+    pruefsumme,
+    version: (browser.runtime.getManifest() || {}).version || "",
+    /* Ohne Reiter kein Rueckfall: Scheitert die Download-Schnittstelle, kann
+     * ohne ihn nicht die Seite einspringen. Fehlte hier bis 2.37.0. */
+    tabId: tab && tab.id,
+    /* Beide Beilagen haengen an den Quellenangaben: Ist der Schalter im
+     * Menue aus, kommt gar keine mit — dann liegt nur das PDF da. Ist er
+     * an, entscheidet die jeweilige Einstellung. */
+    risDatei: settings.sourceMetadata !== false && settings.risDatei !== false,
+    zitatDatei: settings.sourceMetadata !== false && settings.zitatDatei !== false,
+  });
+
+  _lastDownloadId = id;
+  _lastFilename = relPath;
+  _lastSaved = true;
+
+  try { await browser.notifications.clear("pdfsnap-progress"); } catch (_) { /* egal */ }
+  fertigTon(tab && tab.id, settings, p);
+
+  log("Vektoraufnahme fertig:", relPath,
+      Math.round(ergebnis.bytes.length / 1024) + " kB");
+
+  return {
+    ok: true, downloadId: id, filename: relPath,
+    pages: ergebnis.einBlatt ? 1 : null,
+    method: "vektor", modus: ergebnis.modus,
+  };
+}
+
+/* Den Artikel als Textdatei ablegen.
+ *
+ * Kein PDF: Ein PDF ist ein Beleg und laesst sich schlecht weiterverarbeiten.
+ * Wer den Text zitieren, durchsuchen oder einem Sprachmodell vorlegen will,
+ * braucht Text — und zwar mit den Verweisen, die im Bild verlorengehen.
+ * Markdown nimmt Gliederung und Verweise mit und laesst sich ueberall oeffnen.
+ *
+ * Die Beleg-Dateien kommen mit: Wer den Artikel behaelt, will ihn spaeter auch
+ * zitieren koennen. */
+async function artikelAlsDatei(tab, settings) {
+  await ensureContentInjected(tab.id);
+
+  let ergebnis;
+  try {
+    ergebnis = await browser.tabs.sendMessage(tab.id, { cmd: "collectArticle" });
+  } catch (e) {
+    throw makeUserHintError(browser.i18n.getMessage("artikelNichtMoeglich")
+      || "The article could not be read on this page.");
+  }
+  if (!ergebnis || !ergebnis.ok) {
+    /* Kein Artikel ist kein Fehler des Nutzers, und keine leere Datei.
+     * Eine Datei mit dem Seitengeruest darin waere schlimmer als keine: Sie
+     * saehe aus wie ein Ergebnis. */
+    throw makeUserHintError(browser.i18n.getMessage("artikelNichtGefunden")
+      || "No article found on this page. Use \"Capture whole page\" instead.");
+  }
+
+  let quelle = null;
+  try {
+    if (settings.sourceMetadata !== false) {
+      const src = await browser.tabs.sendMessage(tab.id, { cmd: "collectSource" });
+      if (src && src.ok && src.quelle && src.quelle.titel) quelle = src.quelle;
+    }
+  } catch (e) { log("Quellenangaben zum Artikel nicht verfuegbar:", e && e.message); }
+
+  const { filename, relPath } = await dateinamenBauen(tab, settings, quelle);
+  const stamm = relPath.replace(/\.pdf$/i, "");
+
+  // Kopfzeilen, damit die Datei fuer sich steht: woher, wann, wie lang.
+  const kopf = [
+    "# " + ((quelle && quelle.titel) || ergebnis.titel || "Artikel"),
+    "",
+    "> " + tab.url,
+    "> " + (browser.i18n.getMessage("artikelAbgerufen") || "retrieved")
+         + ": " + new Date().toISOString(),
+    "",
+    "---",
+    "",
+  ].join("\n");
+
+  const inhalt = kopf + ergebnis.markdown;
+  const url = "data:text/markdown;charset=utf-8," + encodeURIComponent(inhalt);
+  const id = await browser.downloads.download({
+    url, filename: stamm + ".md", saveAs: !!settings.saveAs, conflictAction: "uniquify",
+  });
+  try { await waitForDownloadComplete(id, 30000); }
+  catch (e) { log("Warten auf den Download:", e.message); }
+
+  await belegeAblegen(stamm, quelle, null, {
+    url: tab.url,
+    sprache: belegSprache(settings),
+    pdfDatei: filename.replace(/\.pdf$/i, ".md"),
+    version: (browser.runtime.getManifest() || {}).version || "",
+    /* Beide Beilagen haengen an den Quellenangaben: Ist der Schalter im
+     * Menue aus, kommt gar keine mit — dann liegt nur das PDF da. Ist er
+     * an, entscheidet die jeweilige Einstellung. */
+    risDatei: settings.sourceMetadata !== false && settings.risDatei !== false,
+    zitatDatei: settings.sourceMetadata !== false && settings.zitatDatei !== false,
+  });
+
+  _lastDownloadId = id;
+  _lastFilename = stamm + ".md";
+  _lastSaved = true;
+  _lastPages = 1;
+
+  try { await browser.notifications.clear("pdfsnap-progress"); } catch (_) { /* egal */ }
+  fertigTon(tab && tab.id, settings, await getPlatform());
+
+  log("Artikel gespeichert:", stamm + ".md",
+      ergebnis.zeichen + " Zeichen,", ergebnis.verweise + " Verweise");
+
+  return { ok: true, downloadId: id, filename: stamm + ".md",
+           pages: 1, method: "artikel-datei", verweise: ergebnis.verweise };
+}
+
 async function captureFullPage(tab, wahl) {
   const settings = await getSettings();
+
+  /* Der Artikel hat zwei Ausgabeformen, und die Reihenfolge ist Absicht.
+   *
+   * Gemeint ist damit das, was ein Leseprogramm daraus macht: der Text auf
+   * Blattbreite umgebrochen, ohne Navigation, ohne Seitenleisten — ein
+   * Dokument zum Lesen, nicht ein Bild einer Website. Das kann nur der
+   * Vektorweg, weil dort der Browser selbst setzt.
+   *
+   * Wo er nicht zur Verfuegung steht — Firefox, oder die Erlaubnis wurde nicht
+   * erteilt —, bleibt die Textdatei. Sie ist kein schlechterer Ersatz,
+   * sondern eine andere Antwort auf dieselbe Frage: Beide geben den Lesetext
+   * heraus, die eine zum Ansehen, die andere zum Weiterverarbeiten. */
+  if (wahl && wahl.modus === "artikel") {
+    if (settings.artikelAlsText === true) {
+      return await artikelAlsDatei(tab, settings);
+    }
+
+    /* Zuerst der Vektorweg — er setzt das Blatt selbst und liefert echten
+     * Text. Er braucht die Erlaubnis "debugger"; ohne sie faellt er aus. */
+    try {
+      const alsPdf = typeof vektorAufnahme === "function"
+        ? await vektorAufnahme(tab, settings, wahl) : null;
+      if (alsPdf) return alsPdf;
+    } catch (e) {
+      log("Vektor-Artikel nicht moeglich:", e && e.message);
+    }
+
+    /* Sonst die Leseansicht im Bildweg — derselbe Weg, den Firefox nimmt.
+     * Die Seite wird VOR der Aufnahme umgestellt und danach zurueckgesetzt;
+     * das Zuruecksetzen steht in einem finally, damit eine misslungene
+     * Aufnahme die Seite nicht dauerhaft veraendert. */
+    let umgestellt = false;
+    try {
+      await ensureContentInjected(tab.id);
+      const r = await browser.tabs.sendMessage(tab.id, {
+        cmd: "leseAn",
+        schriftgroesse: settings.artikelSchriftgroesse || 18,
+      });
+      if (r && r.ok) {
+        umgestellt = true;
+        log("Leseansicht gesetzt:", r.zeichen, "Zeichen");
+      } else {
+        log("Kein Artikel erkennbar:", r && r.grund);
+        return await artikelAlsDatei(tab, settings);
+      }
+      await sleep(250);
+      return await captureFullPageInner(tab, settings);
+    } finally {
+      if (umgestellt) {
+        try { await browser.tabs.sendMessage(tab.id, { cmd: "leseAus" }); }
+        catch (e) { log("Leseansicht nicht zurueckgesetzt:", e && e.message); }
+      }
+    }
+  }
+
+  /* Der Knopf entscheidet ueber die Ausgabeform, nicht die Einstellungsseite.
+   *
+   * "A4" ist kein eigener Aufnahmeweg, sondern dieselbe Aufnahme mit anderer
+   * Blatteinteilung — deshalb wird hier nur die Einstellung fuer DIESEN Lauf
+   * ueberschrieben und nicht gespeichert. Wer morgen wieder eine fortlaufende
+   * Seite will, klickt oben und muss nichts zuruecksetzen. */
+  /* "Aufnahme fuer Druck" ist dieselbe Aufnahme wie "Ganze Seite" — nur nicht
+   * fortlaufend, sondern auf Blaetter zerlegt.
+   *
+   * Mehr ist der Unterschied nicht, und genau deshalb hat "Ganze Seite" seit
+   * 2.35.9 kein eigenes Zahnraedchen mehr: Darin stand ein Schalter "Eine
+   * fortlaufende Seite", also dieselbe Entscheidung ein zweites Mal und
+   * versteckt. Wer ihn wegnahm, bekam still das, wofuer es einen eigenen Knopf
+   * gibt.
+   *
+   * Papier und Ausrichtung wirken auf das VERHAELTNIS der Blaetter und auf
+   * die Blattmasse der fertigen Datei. */
+  if (wahl && wahl.modus === "a4") {
+    settings.singlePagePdf = false;
+    settings.pageFormat = "a4";
+    /* Papier und Ausrichtung wirken hier ueber das SEITENVERHAELTNIS, nicht
+     * ueber absolute Masse.
+     *
+     * Im Bildweg steht die Breite fest: Sie ist die Breite der Aufnahme. Eine
+     * Seite "quer" kann deshalb nicht breiter werden — sie kann nur flacher
+     * werden. Der erste Versuch setzte stattdessen die Papiermasse in Pixel
+     * ein (794 px fuer A4 quer) und traf damit bei einer Aufnahmebreite von
+     * 832 px ein Verhaeltnis von 1:0,95 — fast quadratisch, wo 1:0,71
+     * hingehoert. Die Einstellung wirkte also, aber falsch.
+     *
+     * Gerechnet wird auf der Nutzflaeche, nicht auf dem Blatt: Bei 15 mm Rand
+     * bleiben von A4 180 x 267 mm. Das aufgenommene Bild fuellt die Breite
+     * dieser Flaeche, die Hoehe folgt aus dem Verhaeltnis. */
+    const quer = settings.druckQuer === "quer";
+    const letter = settings.druckPapier === "letter";
+    /* Das VOLLE Blatt, nicht die Nutzflaeche.
+     *
+     * Hier standen 15 mm Rand je Seite (210-30 x 297-30). Gedruckt wird aber
+     * randlos — das Bild soll das Blatt fuellen. Die Folge des falschen
+     * Verhaeltnisses war genau der weisse Streifen, der gemeldet wurde:
+     * quer 89 pt unten, hoch 12 pt seitlich. Das Stueck passte nicht aufs
+     * Blatt, also wurde es kleiner gerechnet und der Rest blieb leer.
+     *
+     * Wer Rand will, stellt ihn in den Einstellungen ein; er kommt dann als
+     * echter Rand ins PDF und nicht als Rechenfehler. */
+    const randMm = Math.max(0, Math.min(25, Number(settings.druckRandMm) || 0));
+    const randPt = randMm * 72 / 25.4;
+    /* Das Verhaeltnis in PUNKTEN rechnen, nicht in Millimetern.
+     *
+     * Die Blattmasse gehen in Punkten ins PDF (A4 595 x 842, Letter 612 x 792).
+     * Wird das Verhaeltnis daneben aus Millimeterwerten gebildet, entstehen
+     * durch zweimaliges Runden Differenzen — gemessen bei Letter hoch mit
+     * Rand: 2 pt zuviel unten, also ein knapp sichtbarer weisser Streifen.
+     * Eine Einheit fuer beides, und die Rechnung geht auf. */
+    const kurzPt = (letter ? 612 : 595) - 2 * randPt;
+    const langPt = (letter ? 792 : 842) - 2 * randPt;
+    const verhaeltnis = quer ? (kurzPt / langPt) : (langPt / kurzPt);
+    settings.pageFormat = "free";
+    settings.pageVerhaeltnis = verhaeltnis;
+    settings.randPt = randPt;
+
+    /* Der Schnitt bleibt in der Textluecke — auch beim Druck.
+     *
+     * Zwischenzeitlich stand hier das Gegenteil: exakt auf Blatthoehe
+     * schneiden, damit kein weisser Rest bleibt. Das beseitigte den Streifen
+     * und zerschnitt dafuer Zeilen — bei mehrspaltigen Seiten gleich mehrere
+     * nebeneinander. Ein halbierter Buchstabe ist schlimmer als ein
+     * Millimeter Weiss: Das eine kostet Inhalt, das andere nur Flaeche.
+     *
+     * Damit trotzdem kein grosser Rest entsteht, wird das Bild nicht mehr
+     * kleingerechnet, bis es ganz aufs Blatt passt, sondern auf die
+     * Blattbreite gelegt und oben ausgerichtet (siehe pdf-writer.js). Was
+     * unten frei bleibt, ist genau die Zeilenluecke, an der geschnitten
+     * wurde — wenige Millimeter statt der 51 pt von vorher. */
+    settings.breakAtLines = true;
+    /* Und das Blatt selbst, in Punkten (72 je Zoll).
+     * A4 misst 595 x 842 pt, Letter 612 x 792. Quer getauscht. Damit traegt
+     * die fertige Datei die Groesse, die auch im Drucker liegt — statt der
+     * Breite, die das Browserfenster zufaellig hatte.
+     *
+     * Dieselben Zahlen wie oben beim Verhaeltnis, nur ohne Randabzug: das
+     * Blatt ist das Blatt, der Rand liegt darin. */
+    const blattKurz = letter ? 612 : 595;
+    const blattLang = letter ? 792 : 842;
+    settings.blattPt = quer
+      ? { breite: blattLang, hoehe: blattKurz }
+      : { breite: blattKurz, hoehe: blattLang };
+  }
+
+  /* Zuerst der Vektor-Weg. Er liefert echte Buchstaben, anklickbare Verweise
+   * und eine deutlich kleinere Datei — und braucht dafuer weder Scrollen noch
+   * Zusammensetzen. Gibt er null zurueck, ist er auf diesem Browser, dieser
+   * Seite oder mit diesen Erlaubnissen nicht gangbar, und es laeuft
+   * unveraendert die Bildaufnahme. */
+  try {
+    const vektor = await vektorAufnahme(tab, settings, wahl);
+    if (vektor) return vektor;
+  } catch (e) {
+    log("Vektorweg uebersprungen:", e && e.message);
+  }
+
   // Der sichtbare Ausschnitt ist keine eigene Ausgabeform, sondern dieselbe
   // Aufnahme mit einem einzigen Abschnitt: ein Bild, eine Seite, gleiche
   // Textebene, gleiche Nachweiszeile. Alles andere waere ein zweiter Weg mit
@@ -1084,12 +1913,39 @@ async function captureFullPageInner(tab, settings) {
           log("Quelle:", quelle.art, "—", quelle.herkunft,
               quelle.vollstaendig ? "(vollstaendig)" : "(unvollstaendig)");
         } else {
-          // Die Seite gibt nichts her — kein Fehler, aber auch kein Beleg.
           fehlteStill.push({ was: "quelle", grund: "die Seite deklariert keine" });
         }
       } catch (e) {
         log("Quellenangaben nicht verfuegbar:", e && e.message);
         fehlteStill.push({ was: "quelle", grund: (e && e.message) || "unbekannt" });
+      }
+
+      /* Eine magere Angabe ist immer noch eine Angabe.
+       *
+       * Bisher entstanden RIS-Satz und Zitationsdatei NUR, wenn die Seite
+       * verwertbare Meta-Angaben trug. Gab sie nichts her, fehlten die
+       * Beilagen ersatzlos — und der Nutzer erfuhr nicht einmal, warum.
+       * Gemeldet am 18.08.2026: Zitation eingeschaltet, kein .txt daneben.
+       *
+       * Dabei liegt das Wesentliche einer Internetquelle immer vor: die
+       * Adresse, der Zeitpunkt des Abrufs und ein Titel aus dem Reiter. Genau
+       * diese drei verlangt jede Zitierweise fuer eine Webseite. Was fehlt,
+       * steht in der Datei als fehlend — das ist ehrlicher und brauchbarer
+       * als gar keine Datei. */
+      if (!quelle) {
+        const jetzt = new Date();
+        quelle = {
+          art: "Internetquelle",
+          autoren: [],
+          titel: (tab.title || "").trim() || tab.url,
+          url: tab.url,
+          urlZitat: tab.url,
+          abrufdatum: jetzt.toISOString().slice(0, 10),
+          abrufzeit: jetzt.toISOString(),
+          herkunft: "Adresse und Abrufzeitpunkt (die Seite gibt keine Angaben her)",
+          vollstaendig: false,
+        };
+        log("Ersatzangabe gebildet — die Seite deklariert nichts.");
       }
     }
     if (settings.linkMap) {
@@ -1408,9 +2264,14 @@ async function captureFullPageInner(tab, settings) {
    * seitenHoehe === null bedeutet: aus der Breite ein A4-Verhaeltnis ableiten.
    */
   function umbruchstellen(woerter, bloecke, seitenBreiteCss, pxW, bigH, seitenHoehe, anZeilen) {
-    // A4 hoch mit 15 mm Rand: 180 x 267 mm nutzbar. Die aufgenommene Breite
-    // fuellt diese 180 mm, daraus folgt die Hoehe.
-    const hoehe = seitenHoehe || Math.round(pxW * 267 / 180);
+    /* A4 hoch, randlos: 210 x 297 mm. Die aufgenommene Breite fuellt die
+     * Blattbreite, daraus folgt die Hoehe.
+     *
+     * Hier stand die NUTZFLAECHE bei 15 mm Rand (180 x 267 mm), also ein
+     * Verhaeltnis von 1:1,483 statt 1:1,414. Das Stueck war damit zu hoch fuer
+     * das Blatt, wurde beim Einpassen verkleinert, und seitlich blieben 12 pt
+     * weiss — genau der gemeldete Streifen. */
+    const hoehe = seitenHoehe || Math.round(pxW * 297 / 210);
     const grenzen = [0];
     if (!anZeilen || !woerter || !woerter.length || !seitenBreiteCss) {
       for (let y = hoehe; y < bigH; y += hoehe) grenzen.push(y);
@@ -1521,6 +2382,7 @@ async function captureFullPageInner(tab, settings) {
         slice.getContext("2d").drawImage(big, 0, y, pxW, h, 0, 0, pxW, h);
         tasks.push(
           canvasToBildBytes(slice, settings.jpegQuality, settings.bildModus, umkehrenGanz).then(b => ({
+            hintergrund: seitenHintergrund(slice, settings.bildModus, umkehrenGanz),
             bytes: b.bytes, filter: b.filter, kanaele: b.kanaele, bits: b.bits,
             xPx: 0, yPx: y, wPx: pxW, hPx: h
           }))
@@ -1534,7 +2396,14 @@ async function captureFullPageInner(tab, settings) {
           "total=", totalBytes, "bytes;", gespart, "davon verlustfrei");
     }
   } else {
-    const sliceH = Math.max(400, Math.min(8000, settings.pageHeightPx || 2400));
+    /* Die Seitenhoehe.
+     *
+     * Steht ein Verhaeltnis fest (Querformat, Letter), ergibt es sich aus der
+     * Aufnahmebreite — nur so stimmt die Form des Blattes. Sonst gilt die
+     * eingestellte feste Hoehe. */
+    const sliceH = settings.pageVerhaeltnis
+      ? Math.max(400, Math.min(8000, Math.round(pxW * settings.pageVerhaeltnis)))
+      : Math.max(400, Math.min(8000, settings.pageHeightPx || 2400));
     // Schnittstellen bestimmen. Ohne Wortgeometrie bleibt es beim festen
     // Raster — dann sind die Grenzen genau die Vielfachen von sliceH.
     const grenzen = umbruchstellen(
@@ -1553,6 +2422,7 @@ async function captureFullPageInner(tab, settings) {
       // yPx merkt sich, wo diese Seite im Gesamtbild beginnt. Ohne diese
       // Angabe laesst sich die Textebene den Seiten nicht zuordnen.
       tasks.push(canvasToBildBytes(slice, settings.jpegQuality, settings.bildModus, umkehrenGanz).then(b => ({
+        hintergrund: seitenHintergrund(slice, settings.bildModus, umkehrenGanz),
         bytes: b.bytes, filter: b.filter, kanaele: b.kanaele, bits: b.bits,
         widthPx: pxW, heightPx: h, yPx: y
       })));
@@ -1619,6 +2489,26 @@ async function captureFullPageInner(tab, settings) {
     textLayer: textWoerter,
     textLayerPageWidth: textSeiteBreite,
     source: quelle,
+    /* Die Verweise gehen jetzt IN das PDF, nicht nur als Datei daneben.
+     * Bis dahin war das fertige PDF ein Bild: Was wie ein Verweis aussah, war
+     * einer gewesen. Die Lage jedes Verweises lag die ganze Zeit vor — sie
+     * wurde nur nie eingetragen.
+     *
+     * Die eigene Bezugsbreite wird mitgegeben und nicht von der Textebene
+     * geliehen: Waere die Textebene einmal abgeschaltet, stuende dort 0, und
+     * die Verweise saessen um den Bildmassstab verschoben. */
+    links: (linkKarte && linkKarte.links) || null,
+    linksPageWidth: (linkKarte && linkKarte.seite && linkKarte.seite.w) || 0,
+    /* Bei "Aufnahme fuer Druck" bekommt das PDF echte Blattmasse — sonst
+     * folgt die Seite dem Bild, und der Drucker muss eine Bahn von einem
+     * Meter auf ein Blatt zwingen. */
+    blattPt: settings.blattPt || null,
+    randPt: settings.randPt || 0,
+    /* Damit im PDF steht, dass die Zitationsdatei danebenliegt — und ein
+     * Sprachmodell, dem nur der Pfad des PDF vorliegt, sie findet. Nur wenn
+     * sie auch wirklich erzeugt wird; ein Wegweiser ins Leere waere
+     * schlechter als keiner. */
+    zitatBeilage: settings.sourceMetadata !== false && settings.zitatDatei !== false,
   });
 
   /* Fuer den Dateinamen denselben Titel nehmen wie fuer die
@@ -1782,66 +2672,106 @@ async function captureFullPageInner(tab, settings) {
     // braucht die Anlagen-Ansicht des Betrachters oder ein Werkzeug auf der
     // Kommandozeile. Eine Datei neben dem PDF laesst sich per Doppelklick in
     // Citavi oder Zotero ziehen — das ist der Weg, den die Funktion meint.
-    if (!p.isAndroid && settings.sourceMetadata !== false && settings.risSidecar !== false
-        && quelle && quelle.titel && PageShotPdf.risSatz) {
+    /* Was tatsaechlich danebengelegt wurde — und was nicht.
+     *
+     * Bis 2.35.5 stand das nur im Protokoll. Wer die Zitation eingeschaltet
+     * hatte und keine Datei fand, konnte nicht wissen, ob sie nie erzeugt
+     * wurde, ob der Download scheiterte oder ob die Seite nichts hergab.
+     * Gemeldet am 18.08.2026 mit genau dieser Frage. Jetzt sagt es die
+     * Fertigmeldung. */
+    const beilagen = [];
+    const beilagenFehler = [];
+
+    /* Die Beilagen — ueber EINE Stelle, nicht zweimal geschrieben.
+     *
+     * Hier stand bis 2.35.8 ein eigener Block, der dasselbe tat wie
+     * belegeAblegen() — und dabei zwei Konstruktionsfehler mitschleppte, die
+     * genau erklaeren, warum bei eingeschalteter Zitation keine .txt im
+     * Ordner lag:
+     *
+     *   1. Die Zitationsdatei stand INNERHALB des try-Blocks des RIS-Satzes.
+     *      Scheiterte der RIS-Download aus irgendeinem Grund, entstand auch
+     *      die Zitationsdatei nicht — obwohl sie mit dem RIS-Satz nichts zu
+     *      tun hat.
+     *   2. Beide hingen an "settings.risSidecar !== false". Wer die RIS-Datei
+     *      nicht wollte, verlor damit auch die Zitationsdatei.
+     *
+     * belegeAblegen legt jede Beilage einzeln ab, jede mit eigenem Fangnetz:
+     * Was scheitert, reisst die anderen nicht mit. */
+    /* Die Ersatzangabe steht hier noch einmal — unmittelbar vor dem Ablegen.
+     *
+     * Sie wird zwar schon beim Erheben gebildet, aber nur INNERHALB des
+     * Zweigs, der die Seite befragt. Bricht dort etwas ab, bevor er erreicht
+     * wird, bleibt quelle null, und dann entfiel bisher alles: keine
+     * Zitationsdatei, kein RIS-Satz, und der Dateiname fiel auf den
+     * Reitertitel zurueck. Genau dieses Bild — "Quickstart_..." ohne jede
+     * Beilage — wurde am 18.08.2026 mehrfach gemeldet.
+     *
+     * Zwei Zeilen doppelt sind hier der Preis dafuer, dass die Beilagen nicht
+     * mehr davon abhaengen, welchen Weg die Aufnahme genommen hat. */
+    if (!p.isAndroid && settings.sourceMetadata !== false && !quelle) {
+      const jetzt = new Date();
+      /* Den Titel aus der SEITE holen, nicht aus dem Reiter.
+       *
+       * tab.title traegt bei Seiten, die ihre Unterseiten nachladen, den
+       * Titel der Einstiegsseite — deshalb hiess jede Aufnahme in derselben
+       * Dokumentation "Quickstart". Die schlanke Abfrage liest nur die
+       * Ueberschrift und den Dokumenttitel und ueberlebt deshalb auch dann,
+       * wenn die grosse Meta-Auswertung vorher nicht durchkam. */
+      let seitenTitel = "";
       try {
-        const ris = PageShotPdf.risSatz(quelle);
-        const risName = (p.isAndroid ? filename : relPath).replace(/\.pdf$/i, "") + ".ris";
-        // MIME muss zur Endung passen, sonst benennt Chrome die Datei um:
-        // mit "text/plain" wurde aus ".ris" beim Speichern ".txt" — gemessen
-        // am 10.08.2026. Zotero und Citavi erkennen ".ris" von selbst, ".txt"
-        // nicht; der Import verlangte dann Umbenennen von Hand.
-        const risUrl = "data:application/x-research-info-systems;charset=utf-8,"
-                     + encodeURIComponent(ris);
-        await browser.downloads.download({ url: risUrl, filename: risName,
-                                           conflictAction: "uniquify" });
-        log("RIS-Datei gespeichert:", risName);
-      } catch (e) {
-        // Kein Grund, die Aufnahme scheitern zu lassen — die Angaben stehen
-        // ohnehin im PDF.
-        log("RIS-Datei nicht gespeichert:", e && e.message);
-      }
+        const t = await browser.tabs.sendMessage(tab.id, { cmd: "seitenTitel" });
+        if (t && t.ok && t.titel) seitenTitel = String(t.titel).trim();
+      } catch (e) { log("Titel aus der Seite nicht lesbar:", e && e.message); }
+      quelle = {
+        art: "Internetquelle", autoren: [],
+        titel: seitenTitel || (tab.title || "").trim() || tab.url,
+        url: tab.url, urlZitat: tab.url,
+        abrufdatum: jetzt.toISOString().slice(0, 10),
+        abrufzeit: jetzt.toISOString(),
+        herkunft: "Adresse und Abrufzeitpunkt (die Seite gibt keine Angaben her)",
+        vollstaendig: false,
+      };
+      log("Ersatzangabe vor dem Ablegen gebildet.");
     }
 
-    // Linkkarte als Datei neben dem PDF.
-    //
-    // Sie beantwortet, was eine Adressliste nicht beantwortet: welcher von
-    // 1.528 Verweisen zum Ziel fuehrt. Jeder traegt seine Lage im Bild —
-    // dieselbe Bezugsgroesse wie die Textebene —, sein Ziel und seine Rolle.
-    // Ein Agent kann damit das Seitengeruest ausschliessen, bevor er sucht;
-    // auf einer Enzyklopaedie-Seite sind das 741 von 1.528 Verweisen.
-    if (!p.isAndroid && linkKarte && linkKarte.links && linkKarte.links.length) {
-      try {
-        const gez = {};
-        for (const l of linkKarte.links) {
-          const r = l.rolle || "nicht zugeordnet";
-          gez[r] = (gez[r] || 0) + 1;
-        }
-        const karte = {
-          erzeugt: "Full Page PDF Snap "
-                 + ((browser.runtime.getManifest() || {}).version || ""),
-          quelle: tab.url,
-          aufgenommen: new Date().toISOString(),
-          seite: linkKarte.seite,
-          hinweis: "Koordinaten in CSS-Pixeln des Dokuments, gleicher Bezug "
-                 + "wie die Textebene des PDF. Rollen mit Fragezeichen stammen "
-                 + "aus der Lage, nicht aus einer Auszeichnung des Dokuments — "
-                 + "der schwaechere Beleg. null heisst: nicht zuzuordnen, "
-                 + "nicht geraten.",
-          anzahl: linkKarte.links.length,
-          nach_rolle: gez,
-          links: linkKarte.links,
-        };
-        const kartenName = (p.isAndroid ? filename : relPath).replace(/\.pdf$/i, "") + ".links.json";
-        const kartenUrl = "data:application/json;charset=utf-8,"
-                        + encodeURIComponent(JSON.stringify(karte, null, 2));
-        await browser.downloads.download({ url: kartenUrl, filename: kartenName,
-                                           conflictAction: "uniquify" });
-        log("Linkkarte gespeichert:", kartenName, linkKarte.links.length, "Verweise");
-      } catch (e) {
-        // Wie bei der RIS-Datei: kein Grund, die Aufnahme scheitern zu lassen.
-        log("Linkkarte nicht gespeichert:", e && e.message);
-      }
+    /* Auch auf Android — dort ueber den Weg, den das PDF ohnehin nimmt.
+     *
+     * Bis 2.35.17 stand hier "!p.isAndroid": Auf dem Telefon gab es keine
+     * Beilagen, weil es dort seit Firefox 79 keine Download-Schnittstelle
+     * gibt. beilageAblegen() kennt aber den zweiten Weg, bei dem die Seite
+     * selbst ablegt — genau den, ueber den auf Android auch das PDF geht.
+     *
+     * Dass dieser Weg keinen Unterordner setzen kann, faellt hier nicht ins
+     * Gewicht: Auf Android gibt es ohnehin keinen, PDF und Beilagen landen
+     * beide unmittelbar in der Ablage. Damit liegt auch dort alles
+     * beieinander. */
+    if (quelle) {
+      const stamm = (p.isAndroid ? filename : relPath).replace(/\.pdf$/i, "");
+      /* Der RIS-Satz wandert IN die Zitationsdatei, statt als eigene daneben
+       * zu liegen. Eine Beilage weniger heisst ein Download weniger — und
+       * Browser lassen eine Erweiterung nur begrenzt viele ohne Rueckfrage
+       * ablegen. Wer ihn einzeln braucht, kopiert den Block aus der Textdatei
+       * oder holt ihn aus dem PDF, wo er als Anlage steckt. */
+      const risSatz = (typeof PageShotPdf !== "undefined" && PageShotPdf.risSatz && quelle.titel)
+        ? PageShotPdf.risSatz(quelle) : "";
+      const ergebnis = await belegeAblegen(stamm, quelle, linkKarte, {
+        url: tab.url,
+        pdfDatei: filename,
+        pruefsumme: (herkunft && herkunft.sha256) || "",
+        version: (browser.runtime.getManifest() || {}).version || "",
+        sprache: belegSprache(settings),
+        tabId: tab && tab.id,
+        ris: risSatz,
+        /* Beide Beilagen haengen an den Quellenangaben: Ist der Schalter im
+         * Menue aus, kommt gar keine mit — dann liegt nur das PDF da. Ist er
+         * an, entscheidet die jeweilige Einstellung. */
+        risDatei: settings.sourceMetadata !== false && settings.risDatei !== false,
+        zitatDatei: settings.sourceMetadata !== false && settings.zitatDatei !== false,
+        linkMap: settings.linkMap === true,
+      });
+      beilagen.push(...ergebnis.abgelegt);
+      beilagenFehler.push(...ergebnis.gescheitert);
     }
 
     // Pfad in die Zwischenablage, sofern gewuenscht. Erst hier, weil der
@@ -1884,6 +2814,45 @@ async function captureFullPageInner(tab, settings) {
       notifyInfo(browser.i18n.getMessage("androidGespeichert", [usedFilename])
         || ("Saved to your downloads: " + usedFilename));
     }
+    /* Sagen, was danebenliegt.
+     *
+     * Auf dem Rechner gab es bisher gar keine Fertigmeldung — die Datei war
+     * im Ordner, fertig. Wer die Zitation eingeschaltet hatte, musste
+     * nachsehen, ob eine Beilage entstanden ist, und im Zweifel raten, warum
+     * nicht. Eine kurze Meldung beantwortet das, ohne zu stoeren; sie
+     * erscheint nur, wenn ueberhaupt Beilagen gewuenscht waren. */
+    /* Sagen, was danebenliegt — und was NICHT, samt Ausweg.
+     *
+     * Kommt keine Beilage zustande, ist das kein Datenverlust: Die
+     * Quellenangaben stecken ohnehin im PDF selbst — als RIS-Anlage, in den
+     * Dokumenteigenschaften und als XMP-Satz. Nur weiss das niemand, der eine
+     * .txt erwartet und keine findet. Deshalb steht der Ausweg in derselben
+     * Meldung. */
+    /* Die Meldung sagt IMMER, was mit der Zitation geschehen ist.
+     *
+     * Bis 2.35.12 erschien sie nur, wenn es eine Quelle gab — und genau der
+     * Fall, in dem nichts danebenlag, blieb damit stumm. Der Nutzer sah eine
+     * fehlende Datei und hatte keine Erklaerung; ich hatte keine Angabe, mit
+     * der sich der Grund haette eingrenzen lassen. Eine Meldung, die schweigt,
+     * wenn etwas schiefgeht, ist die unbrauchbarste von allen. */
+    if (!platform.isAndroid && settings.sourceMetadata !== false) {
+      if (beilagen.length) {
+        const teile = [beilagen.join(" · ")];
+        if (beilagenFehler.length) {
+          teile.push((browser.i18n.getMessage("beilagenFehlten")
+            || "not saved:") + " " + beilagenFehler.join(" "));
+        }
+        notifyInfo((browser.i18n.getMessage("beilagenGespeichert")
+          || "Saved alongside the PDF:") + " " + teile.join(" | "));
+      } else if (beilagenFehler.length) {
+        notifyInfo((browser.i18n.getMessage("beilagenFehlten") || "not saved:")
+          + " " + beilagenFehler.join(" | "));
+      } else {
+        notifyInfo(browser.i18n.getMessage("beilagenImPdf")
+          || "Citation saved inside the PDF (RIS attachment + document properties).");
+      }
+    }
+
     // Kurzer Ton, wenn die Aufnahme steht. Absichtlich nach der Meldung und
     // ohne await: Er darf die Rueckgabe nicht verzoegern und nicht scheitern
     // lassen.
@@ -2070,15 +3039,36 @@ const BLOCKED_HOSTS = [
   "chrome.google.com"
 ];
 
+/* Ein uebersetzter Text, mit deutschem Rueckfall.
+ *
+ * Die Meldungen unten standen bis 2.35.3 fest auf Deutsch im Quelltext,
+ * obwohl es sie in allen neun Sprachen gibt — die Schluessel lagen unbenutzt
+ * in den Sprachdateien. Wer die Oberflaeche auf Japanisch oder Spanisch
+ * gestellt hatte, bekam trotzdem "Chrome schuetzt diese Seite". Aufgefallen
+ * ist es erst beim gezielten Abgleich zwischen den vorhandenen und den
+ * verwendeten Schluesseln.
+ *
+ * Der Rueckfall bleibt stehen: Schlaegt die Uebersetzung fehl, ist eine
+ * deutsche Meldung besser als eine leere. */
+function txt(schluessel, rueckfall) {
+  try {
+    const m = browser.i18n.getMessage(schluessel);
+    if (m) return m;
+  } catch (_) { /* Rueckfall */ }
+  return rueckfall;
+}
+
 function isCapturable(url) {
-  if (!url) return { ok: false, reason: "Kein Tab geladen." };
+  if (!url) return { ok: false, reason: txt("noTab", "Kein Tab geladen.") };
   if (!/^https?:|^file:/.test(url)) {
-    return { ok: false, reason: "Interne Browser-Seite (chrome://, Web Store, Einstellungen) — bitte zu einer normalen Webseite wechseln (https://...)." };
+    return { ok: false, reason: txt("internalPage",
+      "Interne Browser-Seite — bitte zu einer normalen Webseite wechseln (https://...).") };
   }
   try {
     const host = new URL(url).hostname;
     if (BLOCKED_HOSTS.some(h => host === h || host.endsWith("." + h))) {
-      return { ok: false, reason: "Chrome schuetzt diese Seite. Bitte zu einer normalen Webseite wechseln (z.B. wikipedia.org)." };
+      return { ok: false, reason: txt("protectedPage",
+        "Der Browser schuetzt diese Seite. Bitte zu einer normalen Webseite wechseln.") };
     }
     // PDF-Direkt-Modus: schon eine PDF geoeffnet -> nicht sinnlos screenshotten,
     // sondern die Datei direkt in unseren Downloads-Ordner kopieren.
@@ -2176,7 +3166,7 @@ async function runOnActiveTab(wahl) {
     return { ok: false, error: "Bereits laufend" };
   }
   const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
-  if (!tab) throw makeUserHintError("Kein aktiver Tab.");
+  if (!tab) throw makeUserHintError(txt("noTab", "Kein aktiver Tab."));
   const check = isCapturable(tab.url);
   if (!check.ok) {
     throw makeUserHintError(check.reason);
@@ -2231,7 +3221,25 @@ async function runOnActiveTab(wahl) {
   try {
     const res = useDirectPdf
       ? await capturePdfDirect(tab, check.pdfUrl)
-      : await captureFullPage(tab, { region: gewaehlterBereich });
+      /* Der Modus MUSS mit.
+       *
+       * Bis 2.35.4 stand hier nur "{ region: … }" — die Angabe, welche
+       * Ausgabeart der Nutzer gewaehlt hat, ging genau an dieser Stelle
+       * verloren. runOnActiveTab nahm sie entgegen und gab sie nicht weiter.
+       *
+       * Die Folge war dreifach und jedes Mal derselbe Fehler: "Aufnahme fuer
+       * Druck" erzeugte weiter eine Endlosbahn, Papierformat und Ausrichtung
+       * blieben wirkungslos, und der Artikel-Knopf lieferte die gewoehnliche
+       * Seite — gemeldet als "es macht nur normales pdf". Alle drei Meldungen
+       * hatten diese eine Ursache.
+       *
+       * Getestet war jedes Teilstueck fuer sich: die Blattrechnung, der
+       * Vektorweg, die Artikelerkennung. Nur die Kette vom Knopf bis zur
+       * Aufnahme hatte niemand nachverfolgt. */
+      : await captureFullPage(tab, {
+          region: gewaehlterBereich,
+          modus: (wahl && wahl.modus) || null,
+        });
     await setBadge("OK", "#059669");
     // Notification wird bereits aus captureFullPageInner gefeuert (vor downloads.open),
     // damit User auf Android auch dann Erfolg sieht wenn das Oeffnen haengt.
@@ -2283,7 +3291,7 @@ if (browser.commands && typeof browser.commands.onCommand?.addListener === "func
 
 browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg && msg.cmd === "capture") {
-    runOnActiveTab({ region: !!msg.region })
+    runOnActiveTab({ region: !!msg.region, modus: msg.modus || null })
       .then(r => {
         // runOnActiveTab wirft nicht mehr — Fehler kommen als {ok:false,error}.
         if (r && r.ok === false) sendResponse({ ok: false, error: r.error });

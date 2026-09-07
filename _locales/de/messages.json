@@ -17,17 +17,8 @@
   "popupCapture": {
     "message": "Ganze Seite aufnehmen"
   },
-  "popupShortcut": {
-    "message": "Kürzel für „Ganze Seite“:"
-  },
   "popupSettings": {
     "message": "Einstellungen"
-  },
-  "popupRunning": {
-    "message": "Aufnahme läuft …"
-  },
-  "popupDone": {
-    "message": "Gespeichert."
   },
   "busy": {
     "message": "Aufnahme läuft bereits"
@@ -116,29 +107,11 @@
   "optJpeg": {
     "message": "JPEG-Qualität"
   },
-  "optScrollWait": {
-    "message": "Wartezeit pro Scroll-Schritt (ms)"
-  },
-  "optPdfFormat": {
-    "message": "PDF-Format"
-  },
   "optSinglePage": {
     "message": "Eine fortlaufende Seite (Standard — ohne sichtbare Schnittkanten)"
   },
-  "optMultiPage": {
-    "message": "Mehrere Seiten (zum Drucken)"
-  },
   "optPageHeight": {
     "message": "Seitenhöhe bei mehrseitiger Ausgabe (Pixel)"
-  },
-  "optTileHeight": {
-    "message": "Kachelhöhe bei fortlaufender Seite (Pixel)"
-  },
-  "optHideSticky": {
-    "message": "Feste Elemente ausblenden"
-  },
-  "optHideStickyHint": {
-    "message": "Blendet Seitenleisten und Kopfzeilen vor der Aufnahme aus. Navigationsspalten bleiben einmal oben erhalten."
   },
   "optAppLayout": {
     "message": "App-Oberflächen (Gmail, Outlook, Notion …)"
@@ -151,9 +124,6 @@
   },
   "optLayoutFull": {
     "message": "Alles aufnehmen — Menü wiederholt sich"
-  },
-  "optAppLayoutHint": {
-    "message": "Bei Seiten, die ihren Inhalt in einem eigenen Bereich scrollen, bleiben Kopfzeile und Seitenleiste stehen und landen sonst in jedem Abschnitt erneut im PDF. Auf gewöhnlichen Seiten ohne Wirkung."
   },
   "optAfter": {
     "message": "Nach der Aufnahme"
@@ -169,9 +139,6 @@
   },
   "optAfterBoth": {
     "message": "Ordner zeigen und PDF öffnen"
-  },
-  "optAfterHint": {
-    "message": "Standard ist „Ordner zeigen“: Nach dem Speichern öffnet sich der Download-Ordner mit vorausgewählter Datei. „PDF öffnen“ startet stattdessen den PDF-Betrachter, „Beides“ macht nacheinander beides."
   },
   "optScale": {
     "message": "Aufnahme-Skalierung (Auflösung)"
@@ -189,7 +156,7 @@
     "message": "2.0x — maximal, für großen Druck"
   },
   "optScaleHint": {
-    "message": "Standard ist 1.0x: Das PDF zeigt die Seite genau so, wie sie am Bildschirm steht — bei 144 dpi für normalen Druck ausreichend. Höhere Werte schärfen den Text, es passt aber weniger ins Fenster, wodurch Menüs und Seitenleisten früher enden."
+    "message": "1,0x zeigt die Seite wie am Bildschirm. Höher ist schärfer, passt aber weniger ins Fenster."
   },
   "optLanguage": {
     "message": "Sprache"
@@ -207,22 +174,10 @@
     "message": "Gespeichert."
   },
   "optSubfolderHint": {
-    "message": "Standard: Full Page PDF Snap. Leer lassen speichert direkt in Downloads/. Aus Sicherheitsgründen erlaubt der Browser nur Unterordner."
+    "message": "Leer lassen, um direkt nach Downloads/ zu speichern. Möglich sind nur Unterordner."
   },
   "optSaveAsHint": {
-    "message": "Aktivieren, wenn du in beliebige Ordner außerhalb von Downloads/ speichern willst."
-  },
-  "optTitleLenHint": {
-    "message": "Verhindert überlange Dateinamen. Standard 40."
-  },
-  "optCounterHint": {
-    "message": "Erhöht sich mit jedem neuen PDF um eins. Zurücksetzen stellt auf null."
-  },
-  "optPdfFormatHint": {
-    "message": "Eine fortlaufende Seite beseitigt die sichtbaren Schnittkanten zwischen den Streifen. Mehrseitig teilt das Ergebnis in Seiten — standardmäßig A4, wahlweise die unten eingestellte feste Höhe."
-  },
-  "optPageHeightHint": {
-    "message": "Nur wirksam, wenn oben „Feste Höhe in Pixeln“ gewählt ist. Standard 2400 px."
+    "message": "Für Ordner außerhalb von Downloads/."
   },
   "optShortcut": {
     "message": "Tastenkürzel"
@@ -230,11 +185,8 @@
   "optShortcutNone": {
     "message": "keines vergeben — Konflikt mit einem Browser-Kürzel"
   },
-  "optShortcutManage": {
-    "message": "Kürzel ändern"
-  },
   "optShortcutHint": {
-    "message": "Angezeigt wird das Kürzel, das der Browser tatsächlich vergeben hat. Browser-Kürzel haben immer Vorrang und lassen sich von einer Erweiterung nicht überschreiben — steht dort keines, ist die Kombination vom Browser belegt. Zum Ändern die Adresse neben der Schaltfläche in einem neuen Tab öffnen."
+    "message": "Zum Ändern die Adresse neben der Schaltfläche öffnen."
   },
   "optShortcutCopy": {
     "message": "Adresse kopieren"
@@ -294,32 +246,11 @@
   "resultGone": {
     "message": "Keine Aufnahme vorhanden. Starte eine neue über das Erweiterungs-Symbol."
   },
-  "optProvenance": {
-    "message": "Herkunftszeile unter der Aufnahme einfügen"
-  },
-  "optProvenanceHint": {
-    "message": "Schreibt die Adresse der Seite, den Zeitpunkt der Aufnahme und eine SHA-256-Prüfsumme der Bilddaten in einen Streifen unter das Bild. Nützlich, wenn die Datei abgelegt oder weitergegeben wird. Eine Bildschirmaufnahme ist kein qualifiziertes elektronisches Dokument: Die Zeit stammt von der Uhr Ihres Geräts, und die Prüfsumme belegt, dass die Datei seit der Erstellung unverändert ist — nicht, dass die Seite so ausgesehen hat. Dieselben Angaben stehen mit und ohne diese Option immer in den PDF-Metadaten."
-  },
-  "optTimeAnchor": {
-    "message": "Zeitanker hinzufügen (benötigt Internet)"
-  },
-  "optTimeAnchorHint": {
-    "message": "Holt vor dem Speichern einen öffentlichen Zufallswert aus dem dezentralen drand-Netz und schreibt ihn in die Aufnahme. Weil diesen Wert vorher niemand kennen konnte, belegt er, dass die Aufnahme nicht älter ist als dieser Moment — ohne der Uhr Ihres Geräts zu glauben. Das ist der einzige Netzzugriff dieser Erweiterung, er ist ausgeschaltet solange Sie ihn nicht einschalten, und gesendet wird dabei nichts: Seite, Aufnahme und Prüfsumme verlassen Ihr Gerät nicht. Es beweist weiterhin nicht, was die Seite gezeigt hat, und ist kein qualifizierter Zeitstempel nach eIDAS. Ist kein Netz da, wird die Aufnahme ohne Anker gespeichert."
-  },
-  "optTextLayer": {
-    "message": "PDF durchsuchbar machen (unsichtbare Textebene)"
-  },
-  "optTextLayerHint": {
-    "message": "Übernimmt den Text der Seite unsichtbar ins PDF, an der Stelle, an der er im Bild steht. Das PDF wird durchsuchbar und der Text lässt sich kopieren — ohne dass sich am Aussehen etwas ändert. Der Text stammt aus dem Dokument und wird nicht aus dem Bild erkannt: An einer echten Seite gemessen bleibt jedes Wort erhalten, während OCR 92,6 Prozent wiedergab. Gilt nur für das Format „eine durchgehende Seite“."
-  },
   "popupRegion": {
     "message": "Bereich auswählen …"
   },
   "popupHideOverlays": {
     "message": "Banner und Einblendungen ausblenden"
-  },
-  "popupHideOverlaysHint": {
-    "message": "Zustimmungsdialoge und mitwandernde Leisten werden nur für die Aufnahme ausgeblendet und danach wiederhergestellt."
   },
   "popupHideOn": {
     "message": "Banner werden ausgeblendet"
@@ -345,9 +276,6 @@
   "popupCite": {
     "message": "Quellenangaben mitschreiben"
   },
-  "popupCiteHint": {
-    "message": "Verfasser, DOI, Lizenz und Abrufzeit ins PDF, dazu ein RIS-Satz. Damit KI-Werkzeuge sie ebenfalls lesen, zusätzlich die Nachweiszeile in den Einstellungen einschalten."
-  },
   "popupCiteOn": {
     "message": "Quellenangaben werden mitgeschrieben"
   },
@@ -357,20 +285,11 @@
   "optCopyPath": {
     "message": "Dateipfad nach dem Speichern in die Zwischenablage"
   },
-  "optCopyPathHint": {
-    "message": "Für den Weg ins Terminal oder an ein Sprachmodell: aufnehmen, einfügen. Standardmäßig aus."
-  },
   "optCopyPathFormat": {
     "message": "Pfadformat"
   },
-  "optCopyPathFormatHint": {
-    "message": "Ein Windows-Pfad in einer Linux-Shell unter Windows führt ins Leere. Die Wahl WSL rechnet ihn einmal hier um statt jedes Mal von Hand."
-  },
   "popupCopyPath": {
-    "message": "Dateipfad nach dem Speichern kopieren"
-  },
-  "popupCopyPathHint": {
-    "message": "Den Pfad direkt ins Terminal oder in einen Chat einfügen. Format für WSL und andere Shells in den Einstellungen."
+    "message": "Dateipfad kopieren"
   },
   "popupCopyOn": {
     "message": "Pfad wird nach dem Speichern kopiert"
@@ -378,74 +297,17 @@
   "popupCopyOff": {
     "message": "Pfad wird nicht kopiert"
   },
-  "optColourMode": {
-    "message": "Farbe und Dateigröße"
-  },
-  "optColourModeHint": {
-    "message": "Graustufen und Schwarzweiß verkleinern die Datei auf 58 % und 27 % — und helfen der Texterkennung, statt ihr zu schaden: 989 Wörter werden zurückgelesen gegenüber 987 in Farbe. Seiten mit Fotos brauchen Farbe."
-  },
   "optHellerDruck": {
     "message": "Hintergrund immer weiß halten"
   },
-  "optHellerDruckHint": {
-    "message": "Für Graustufen und Schwarzweiß: Eine Seite im Dunkelmodus wird umgekehrt, damit das Blatt weiß bleibt und die Schrift dunkel. Spart Toner und hält kleine Schrift lesbar. Ausschalten, wenn das PDF genau so aussehen soll wie der Bildschirm. Farbaufnahmen bleiben unberührt."
-  },
-  "optSourceMetadata": {
-    "message": "Zitationsangaben aus der Seite lesen"
-  },
-  "optSourceMetadataHint": {
-    "message": "Liest Verfasser, Zeitschrift, Jahrgang, DOI, Lizenz und Abrufzeit aus der bereits geöffneten Seite und schreibt sie in die PDF-Metadaten, dazu einen RIS-Datensatz für Citavi, Zotero und EndNote. Es wird kein Dienst angefragt."
-  },
-  "optRisSidecar": {
-    "message": "RIS-Satz zusätzlich als eigene Datei speichern"
-  },
-  "optRisSidecarHint": {
-    "message": "Der Zitationsdatensatz steckt ohnehin als Anlage „quelle.ris“ im PDF — ausschalten verliert nichts. Die Datei daneben ist reine Bequemlichkeit: Literaturverwaltungen übernehmen sie per Doppelklick oder Ziehen, eine Anlage muss erst aus dem PDF geholt werden. Abschalten, wenn Sie lieber eine einzige Datei je Aufnahme behalten."
-  },
   "optPageFormat": {
     "message": "Seitengröße bei mehrseitiger Ausgabe"
-  },
-  "optPageFormatA4": {
-    "message": "A4 — Seiten passen auf Druckpapier (Standard)"
-  },
-  "optPageFormatFest": {
-    "message": "Feste Höhe in Pixeln (unten einstellbar)"
-  },
-  "optPageFormatHint": {
-    "message": "A4 leitet die Seitenhöhe aus der aufgenommenen Breite ab, damit eine gedruckte Seite das Blatt ohne Skalierung füllt."
-  },
-  "optBreakAtLines": {
-    "message": "Zwischen Zeilen trennen, nicht mitten hindurch"
-  },
-  "optBreakAtLinesHint": {
-    "message": "Verschiebt jeden Seitenumbruch nach oben zur nächsten Lücke zwischen Textzeilen, Bildern und Tabellen. An vier Verlagsseiten gemessen: 30 von 46 Umbrüchen im festen Raster schnitten durch eine Textzeile, mit dieser Einstellung 2 von 47. Preis: 1–3 % leerer Rand je Seite."
   },
   "optFetchOriginal": {
     "message": "Originaldatei des Verlags zusätzlich laden"
   },
   "optFetchOriginalHint": {
-    "message": "Standardmäßig aus: Dies ist die einzige Funktion, die eine Netzverbindung öffnet. Sie lädt die Volltext-Adresse, die die Seite selbst angibt — dieselbe Anfrage wie ein Klick auf „PDF“, mit denselben Zugriffsrechten. Nichts hinter einer Bezahlschranke wird dadurch erreichbar."
-  },
-  "optNoReview": {
-    "message": "Bewertungshinweis"
-  },
-  "optNoReviewHint": {
-    "message": "Nicht nach einer Bewertung dieser Erweiterung fragen. Sie fragt einmal, nach fünf Aufnahmen, und nie wieder — dieser Schalter verhindert auch dieses eine Mal."
-  },
-  "optLinkMap": {
-    "message": "Linkkarte neben dem PDF speichern"
-  },
-  "optLinkMapHint": {
-    "message": "Eine JSON-Datei mit allen Verweisen der Seite: wo sie im Bild liegen, wohin sie führen und zu welchem Teil der Seite sie gehören — Navigation, Fußzeile, Inhalt, Blätterung. Für KI-Werkzeuge, die zu einem Ziel finden müssen: Auf einer Enzyklopädie-Seite erwiesen sich 741 von 1.528 Verweisen als Seitengerüst und ließen sich vorab ausschließen. Kostet eine zusätzliche Datei je Aufnahme."
-  },
-  "diagTitel": {
-    "message": "Systemangaben (für Fehlermeldungen)"
-  },
-  "optFertigTon": {
-    "message": "Kurzen Ton abspielen, wenn die Aufnahme fertig ist"
-  },
-  "optFertigTonHint": {
-    "message": "Zwei weiche Töne, etwa eine Fünftelsekunde. Am Telefon liegt der Blick selten auf dem Bildschirm, während die Seite durchscrollt — die Benachrichtigung allein übersieht man leicht. Auf Android standardmäßig an, am Rechner aus, wo die Benachrichtigung ohnehin sichtbar ist."
+    "message": "Holt die Volltext-Adresse, die die Seite selbst angibt."
   },
   "androidFertig": {
     "message": "PDF fertig — zum Ansehen oder Herunterladen öffnen"
@@ -475,5 +337,179 @@
         "example": "seite.pdf"
       }
     }
+  },
+  "optBildModus": {
+    "message": "Qualität"
+  },
+  "optBildFarbe": {
+    "message": "Farbe — wie am Bildschirm (Standard)"
+  },
+  "optBildGrau": {
+    "message": "Graustufen — rund 40 % kleiner"
+  },
+  "optBildSw": {
+    "message": "Schwarzweiß — am kleinsten, für Textseiten"
+  },
+  "optBildModusHint": {
+    "message": "Graustufen und Schwarzweiß ergeben viel kleinere Dateien bei gleicher Texterkennung — Schwarzweiß verliert aber Fotos."
+  },
+  "optVektorTitel": {
+    "message": "Text-PDF statt Bild (Chrome)"
+  },
+  "optVektor": {
+    "message": "Die Seite als Text aufnehmen, nicht als Bild"
+  },
+  "optVektorHint": {
+    "message": "Der Browser setzt das PDF selbst: markierbarer Text, funktionierende Verweise, ein Durchgang, viel kleinere Dateien. Fragt einmal um Erlaubnis."
+  },
+  "optVektorModus": {
+    "message": "Was aufgenommen wird"
+  },
+  "optVektorSeite": {
+    "message": "Die ganze Seite, so wie sie am Bildschirm aussieht (Standard)"
+  },
+  "optVektorArtikel": {
+    "message": "Nur den Artikel — ohne Navigation und Seitenleisten"
+  },
+  "optVektorModusHint": {
+    "message": "Lässt sich kein Artikel erkennen, wird die ganze Seite aufgenommen."
+  },
+  "optImmerTitel": {
+    "message": "Immer im PDF selbst"
+  },
+  "optMehr": {
+    "message": "Weitere Einstellungen"
+  },
+  "optSingleOne": {
+    "message": "Eine fortlaufende Seite (Standard)"
+  },
+  "optSingleMany": {
+    "message": "Mehrere Seiten (zum Drucken)"
+  },
+  "optPageA4": {
+    "message": "A4 — füllt ein Druckblatt"
+  },
+  "optPageFree": {
+    "message": "Feste Pixelhöhe"
+  },
+  "optSettling": {
+    "message": "Wartezeit je Schritt (ms)"
+  },
+  "optSettlingHint": {
+    "message": "Bei langsam ladenden Seiten erhöhen."
+  },
+  "optTile": {
+    "message": "Kachelhöhe in Pixeln"
+  },
+  "optFooter": {
+    "message": "Sichtbare Herkunftszeile unter der Aufnahme"
+  },
+  "optFooterHint": {
+    "message": "Verändert das Bild. Die Angaben stehen ohnehin in den PDF-Eigenschaften."
+  },
+  "optReviewOff": {
+    "message": "Nie nach einer Bewertung fragen"
+  },
+  "optDiag": {
+    "message": "Diagnose"
+  },
+  "optTriggerTitle": {
+    "message": "So wird eine Aufnahme ausgelöst"
+  },
+  "optTriggerTitleAndroid": {
+    "message": "So wird eine Aufnahme ausgelöst"
+  },
+  "optTriggerToolbar": {
+    "message": "Die Schaltfläche in der Symbolleiste"
+  },
+  "optTriggerMenu": {
+    "message": "Rechtsklick auf die Seite → Eintrag der Erweiterung"
+  },
+  "optTriggerAndroidMenu": {
+    "message": "Browser-Menü → Eintrag der Erweiterung"
+  },
+  "optImmerImPdf": {
+    "message": "Durchsuchbare Textebene und Zeitanker — immer. Die Zitation, sobald „Quellenangaben mitschreiben“ eingeschaltet ist: im PDF selbst (Dokumenteigenschaften, RIS-Anlage) und als Textdatei neben dem PDF im selben Ordner. Ein kurzer Ton, wenn es fertig ist."
+  },
+  "optJpegHint": {
+    "message": "0,92 ist der Standard. Höher heißt größere Datei, niedriger sichtbare Störungen in Farbverläufen."
+  },
+  "popupArtikel": {
+    "message": "Artikel"
+  },
+  "artikelNichtGefunden": {
+    "message": "Auf dieser Seite ist kein Artikel erkennbar. Nimm stattdessen die ganze Seite auf."
+  },
+  "artikelNichtMoeglich": {
+    "message": "Der Artikel konnte auf dieser Seite nicht gelesen werden."
+  },
+  "artikelAbgerufen": {
+    "message": "abgerufen"
+  },
+  "optVektorAbgelehnt": {
+    "message": "Erlaubnis abgelehnt — es bleibt beim Bildweg."
+  },
+  "popupDruck": {
+    "message": "Aufnahme für Druck"
+  },
+  "popupEinstellungenDazu": {
+    "message": "Einstellungen für diese Ausgabe"
+  },
+  "popupEinseitig": {
+    "message": "Eine fortlaufende Seite"
+  },
+  "popupPapier": {
+    "message": "Papiergröße"
+  },
+  "popupAusrichtung": {
+    "message": "Ausrichtung"
+  },
+  "popupHoch": {
+    "message": "Hochformat"
+  },
+  "popupQuer": {
+    "message": "Querformat"
+  },
+  "popupSchrift": {
+    "message": "Schriftgröße"
+  },
+  "popupArtikelText": {
+    "message": "Als Textdatei statt PDF"
+  },
+  "beilagenGespeichert": {
+    "message": "Neben dem PDF gespeichert:"
+  },
+  "beilagenImPdf": {
+    "message": "Zitation im PDF gespeichert (RIS-Anlage + Dokumenteigenschaften)."
+  },
+  "beilagenFehlten": {
+    "message": "nicht abgelegt:"
+  },
+  "popupHideOverlaysTitel": {
+    "message": "Zustimmungsdialoge und mitwandernde Leisten werden nur für die Aufnahme ausgeblendet und danach wiederhergestellt."
+  },
+  "popupCiteTitel": {
+    "message": "Verfasser, DOI, Lizenz und Abrufzeit kommen ins PDF selbst und als Textdatei daneben, im selben Ordner. KI-Werkzeuge erkennen sie dort."
+  },
+  "popupCopyPathTitel": {
+    "message": "Nach dem Fertigstellen den Pfad mit Strg+V ins Terminal oder in einen Chat einfügen."
+  },
+  "popupRand": {
+    "message": "Rand"
+  },
+  "popupRandOhne": {
+    "message": "Ohne — Bild füllt das Blatt"
+  },
+  "optBeilagenTitel": {
+    "message": "Dateien neben dem PDF"
+  },
+  "optBeilagenText": {
+    "message": "Nur wenn „Quellenangaben mitschreiben“ im Menü eingeschaltet ist. Beide landen im selben Ordner wie das PDF."
+  },
+  "optZitatDatei": {
+    "message": "Zitation als Textdatei (.zitate.txt) — zum Lesen und Kopieren"
+  },
+  "optRisDatei": {
+    "message": "Datei für Literaturprogramme (.ris) — Citavi, Zotero, EndNote"
   }
 }

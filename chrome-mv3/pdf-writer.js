@@ -183,6 +183,18 @@
     return t.join("");
   }
 
+  /** Datum in der Form, die RIS vorschreibt: JJJJ/MM/TT/Freitext.
+   *
+   * Nimmt einen ISO-Zeitstempel oder ein blosses Datum entgegen. Laesst sich
+   * daraus kein Datum lesen, wird der Wert unveraendert durchgereicht — ein
+   * unvollstaendiges Feld ist besser als ein erfundenes. */
+  function risDatum(wert) {
+    var s = String(wert || "");
+    var m = s.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2}))?/);
+    if (!m) return s;
+    return m[1] + "/" + m[2] + "/" + m[3] + "/" + (m[4] ? m[4] + ":" + m[5] : "");
+  }
+
   /** RIS-Satz — das Austauschformat, das Citavi, Zotero und EndNote lesen. */
   function risSatz(q) {
     var typ = q.art === "Zeitschriftenaufsatz" ? "JOUR"
@@ -225,10 +237,19 @@
     if (!dieselbe) setze("PB", q.verlag);
     setze("LA", q.sprache);
     setze("UR", q.urlZitat || q.url);
-    // Y2 ist im RIS-Standard das Abrufdatum. Die Uhrzeit gehoert dazu:
-    // Seiten aendern sich im Lauf eines Tages, und ein Beleg ohne Uhrzeit
-    // laesst sich einer Fassung nicht zuordnen.
-    setze("Y2", q.abrufzeit || q.abrufdatum);
+    /* Y2 ist im RIS-Standard das Abrufdatum — und Datumsfelder haben dort
+     * ein festes Format: JJJJ/MM/TT/Freitext. Bis 2.35.17 stand hier der
+     * ISO-Zeitstempel, wie ihn die Aufnahme liefert:
+     *
+     *     Y2  - 2026-08-18T11:00:00+02:00      (falsch)
+     *     Y2  - 2026/08/18/11:00 MESZ          (richtig)
+     *
+     * Zotero verzeiht die ISO-Form, Citavi und EndNote nicht — dort landete
+     * das Abrufdatum entweder leer oder als unverstandener Text im Feld.
+     * Die Uhrzeit bleibt erhalten, sie gehoert in den Freitextteil: Seiten
+     * aendern sich im Lauf eines Tages, und ein Beleg ohne Uhrzeit laesst
+     * sich einer Fassung nicht zuordnen. */
+    setze("Y2", risDatum(q.abrufzeit || q.abrufdatum));
     if (q.fassung && q.fassung !== q.url) setze("L2", q.fassung);
     (q.dateien || []).forEach(function (d) {
       if (d.art === "pdf") setze("L1", d.url);
@@ -304,6 +325,71 @@
    * einzelnen Seite null, im mehrseitigen Modus der Beginn des Ausschnitts.
    * Woerter ausserhalb des Ausschnitts gehoeren auf eine andere Seite.
    */
+  /* Anklickbare Verweise ueber dem Bild.
+   *
+   * Das PDF war bis dahin ein Bild der Seite: Was aussah wie ein Verweis, war
+   * einer gewesen. Die Linkkarte kannte Ziel und Lage jedes Verweises schon —
+   * sie lag nur als Datei daneben, statt im PDF zu stehen. Das war die
+   * eigentliche Luecke: alle Angaben vorhanden, nur nie eingetragen.
+   *
+   * Die Rechnung ist dieselbe wie bei der Textebene, und aus demselben Grund:
+   * Beide beziehen sich auf CSS-Pixel des ganzen Dokuments, waehrend das PDF
+   * in Punkten misst und seine Y-Achse nach OBEN zaehlt. Bei mehrseitiger
+   * Ausgabe sagt anfangYpx, wo dieser Ausschnitt beginnt.
+   *
+   * Ein PDF-Rechteck wird als [links unten rechts oben] geschrieben — die
+   * Oberkante des Verweises ergibt also den GROESSEREN Y-Wert. Vertauscht man
+   * die beiden, zeigen manche Betrachter gar nichts an und andere einen
+   * Verweis an der falschen Stelle; beides faellt erst beim Klicken auf. */
+  function linkFlaechen(links, skala, seitenHoehePx, versatzYpt, pxToPt, anfangYpx) {
+    var raus = [];
+    if (!links || !links.length) return raus;
+    var anfang = anfangYpx || 0;
+
+    for (var i = 0; i < links.length; i++) {
+      var l = links[i];
+      var ziel = String(l.href || "");
+
+      /* Nur Ziele, die ein Betrachter gefahrlos oeffnen darf.
+       *
+       * "javascript:" in einer PDF-Anmerkung ist ausfuehrbarer Code in einer
+       * Datei, die als Beleg weitergereicht wird. Solche Verweise stehen auf
+       * echten Seiten (Menues, Schaltflaechen) und haben in der Ausgabe nichts
+       * zu suchen. Sprungmarken innerhalb der Seite werden ebenfalls
+       * ausgelassen: Ihr Ziel ist eine Stelle im Dokument, die diese Karte
+       * nicht kennt — ein Verweis, der irgendwohin springt, ist schlechter als
+       * keiner. */
+      if (!/^(https?:|mailto:)/i.test(ziel)) continue;
+
+      var breitePx = (l.w || 0) * skala;
+      var hoehePx = (l.h || 0) * skala;
+      if (breitePx < 1 || hoehePx < 1) continue;
+
+      var xPx = (l.x || 0) * skala;
+      var obenPx = (l.y || 0) * skala - anfang;
+      var untenPx = obenPx + hoehePx;
+
+      // Liegt der Verweis ueberhaupt auf diesem Blatt? Bei mehrseitiger
+      // Ausgabe gehoert er sonst auf ein anderes.
+      if (untenPx <= 0 || obenPx >= seitenHoehePx) continue;
+
+      // Am Blattrand beschneiden, damit kein Klickfeld ins Nichts ragt.
+      if (obenPx < 0) obenPx = 0;
+      if (untenPx > seitenHoehePx) untenPx = seitenHoehePx;
+
+      var x1 = xPx * pxToPt;
+      var x2 = (xPx + breitePx) * pxToPt;
+      var yUnten = (seitenHoehePx - untenPx) * pxToPt + versatzYpt;
+      var yOben = (seitenHoehePx - obenPx) * pxToPt + versatzYpt;
+
+      raus.push({
+        rect: [x1, yUnten, x2, yOben],
+        uri: ziel,
+      });
+    }
+    return raus;
+  }
+
   function textebene(woerter, skala, seitenHoehePx, versatzYpt, pxToPt, anfangYpx) {
     var s = "";
     var anfang = anfangYpx || 0;
@@ -396,6 +482,10 @@
     const beleg = opts.provenance || null;   // { url, capturedAt:Date, sha256 }
     const woerter = opts.textLayer || null;  // [{t,x,y,w,h,s}] in CSS-Pixeln
     const quelle = opts.source || null;      // Zitationsdaten aus der Seite
+    /* Verweise mit Lage und Ziel, in CSS-Pixeln des ganzen Dokuments — dieselbe
+     * Bezugsgroesse wie die Textebene. Fehlen sie, bleibt das PDF wie bisher
+     * ein Bild ohne anklickbare Stellen. */
+    const verweise = (opts.links && opts.links.length) ? opts.links : null;
 
     const objects = [];                      // index 0 = unused
     objects.push(null);
@@ -429,8 +519,75 @@
 
     const pageRefs = [];
     for (const pg of pages) {
-      const wPt = (pg.widthPx * pxToPt).toFixed(2);
-      const hPt = (pg.heightPx * pxToPt + fussPt).toFixed(2);
+      /* Die Blattgroesse — und wann sie NICHT dem Bild folgt.
+       *
+       * Im Regelfall bestimmt das aufgenommene Bild die Seite: So breit wie
+       * die Aufnahme, so hoch wie der Ausschnitt. Fuer den Druck ist das
+       * falsch. Gemeldet am 18.08.2026 mit dem Druckdialog als Beleg: Dort
+       * stand "Dokument: 220,1 x 1008,9 mm" neben "Papier 297 x 210 mm" — der
+       * Drucker musste eine Bahn von einem Meter auf ein Blatt zwingen.
+       *
+       * Ist eine Blattgroesse vorgegeben, gilt sie. Das Bild wird
+       * hineingerechnet: auf die Breite der Nutzflaeche gebracht, mittig
+       * gesetzt, mit Rand ringsum. Dann stimmt das Papier, und der Drucker
+       * muss nichts mehr anpassen. */
+      const blatt = opts.blattPt || null;
+      /* Kein Rand, sofern keiner verlangt wird.
+       *
+       * Bis 2.35.10 standen hier 28 pt (rund 10 mm) — gut gemeint, weil jeder
+       * Drucker am Blattrand etwas abschneidet. Das Ergebnis war aber ein
+       * weisser Streifen rund um das Bild UND zusaetzlich der Rand, den der
+       * Drucker selbst haelt: doppelt, und das Bild entsprechend kleiner.
+       * Gewuenscht ist die Aufnahme randlos auf dem Blatt; wer Rand braucht,
+       * bekommt ihn ohnehin vom Drucker. */
+      const randPt = blatt ? (opts.randPt == null ? 0 : opts.randPt) : 0;
+      const wPt = (blatt ? blatt.breite : pg.widthPx * pxToPt).toFixed(2);
+      const hPt = (blatt ? blatt.hoehe : pg.heightPx * pxToPt + fussPt).toFixed(2);
+
+      /* Massstab und Versatz fuer das eingepasste Bild.
+       * Ohne Blattvorgabe ist beides neutral — der bisherige Weg bleibt
+       * unveraendert, und zwar buchstaeblich: Faktor 1, Versatz 0. */
+      let einpassung = { skala: 1, dx: 0, dy: 0 };
+      if (blatt) {
+        const nutzbarB = blatt.breite - 2 * randPt;
+        const nutzbarH = blatt.hoehe - 2 * randPt - fussPt;
+        const bildB = pg.widthPx * pxToPt;
+        const bildH = pg.heightPx * pxToPt;
+        /* Nach der BREITE einpassen, nicht nach dem kleineren von beiden.
+         *
+         * Das Minimum sorgt dafuer, dass alles aufs Blatt passt — es
+         * verkleinert das Bild aber auch dann, wenn es nur ein paar Pixel zu
+         * hoch ist, und dann bleibt links UND rechts Platz. Genau so kamen die
+         * gemeldeten 51 pt ringsum zustande.
+         *
+         * Die Stuecke sind ohnehin auf Blatthoehe geschnitten; sie koennen nur
+         * KUERZER sein, weil der Schnitt in die naechste Zeilenluecke gezogen
+         * wurde. Also nach der Breite skalieren und oben ausrichten: Die
+         * Seitenraender stimmen dann immer, und was unten frei bleibt, ist die
+         * Zeilenluecke selbst. */
+        const nachBreite = nutzbarB / bildB;
+        /* Ein Ueberstand von Bruchteilen eines Punktes stammt aus der Rundung
+         * der Stueckhoehe auf ganze Bildpunkte. Ihn stehen zu lassen hiesse,
+         * das Bild ueber die Blattkante zu schieben — beim Druck faellt dort
+         * eine Haarlinie weg, und im Betrachter sieht es aus wie ein Fehler.
+         * Deshalb wird in diesem Fall doch nach der Hoehe eingepasst; der
+         * Unterschied liegt unter einem Zehntelmillimeter. */
+        const skala = bildH * nachBreite <= nutzbarH
+          ? nachBreite
+          : Math.min(nachBreite, nutzbarH / bildH);
+        /* Waagerecht mittig, senkrecht OBEN.
+         *
+         * Bleibt trotz allem Platz — auf der letzten Seite ist das
+         * unvermeidlich, das Dokument endet nun einmal —, dann gehoert er
+         * nach unten. Ein Rest oben verschoebe den Text auf jeder Seite
+         * unterschiedlich weit nach unten; ein Rest unten sieht aus wie ein
+         * Seitenende, was er auch ist. */
+        einpassung = {
+          skala,
+          dx: randPt + (nutzbarB - bildB * skala) / 2,
+          dy: blatt.hoehe - randPt - bildH * skala,
+        };
+      }
 
       // Normalisiere: legacy einzelnes Bild -> Tile-Liste mit einem Eintrag.
       //
@@ -489,12 +646,39 @@
       //   pdfX = xPx * pxToPt
       //   pdfY = (heightPx - yPx - hPx) * pxToPt
       let contentStr = "";
+
+      /* Der freie Rest bekommt die Farbe der Seite, nicht Weiss.
+       *
+       * Bleibt unter dem Bild Platz — weil der Schnitt in die Zeilenluecke
+       * gezogen wurde oder weil das Dokument endet —, dann leuchtete dort
+       * bisher das blanke Blatt durch. Auf einer hellen Seite faellt das nicht
+       * auf. Auf einer dunklen ist es ein weisser Balken quer ueber die untere
+       * Blattkante, und genau so wurde es gemeldet: gemessen an einer Aufnahme
+       * vom 18.08.2026 vier bis fuenf Prozent der Blatthoehe, hell auf dunkel.
+       *
+       * Die Farbe kommt aus der Aufnahme selbst (unterste Bildzeile), nicht
+       * aus einer Annahme. Fehlt sie, bleibt alles wie bisher — ein falsch
+       * geratener Farbton waere schlimmer als der weisse Rest. */
+      if (blatt && pg.hintergrund && pg.hintergrund.length === 3) {
+        const [r, g, b] = pg.hintergrund.map(v => (Math.max(0, Math.min(255, v)) / 255).toFixed(4));
+        contentStr += "q\n" + r + " " + g + " " + b + " rg\n"
+                    + "0 0 " + wPt + " " + hPt + " re\nf\nQ\n";
+      }
+
       for (const x of xobjs) {
         const wptT = (x.t.wPx * pxToPt).toFixed(2);
         const hptT = (x.t.hPx * pxToPt).toFixed(2);
         const xptT = (x.t.xPx * pxToPt).toFixed(2);
         const yptT = ((pg.heightPx - x.t.yPx - x.t.hPx) * pxToPt + fussPt).toFixed(2);
-        contentStr += "q\n" + wptT + " 0 0 " + hptT + " " + xptT + " " + yptT + " cm\n/" + x.name + " Do\nQ\n";
+        /* Bei vorgegebenem Blatt wird das Bild eingepasst: erst der
+         * Massstab auf Groesse und Lage anwenden, dann zeichnen. Ohne
+         * Vorgabe ist skala 1 und der Versatz 0 — dieselbe Rechnung wie
+         * bisher, nur einmal aufgeschrieben statt zweimal. */
+        const sw = (parseFloat(wptT) * einpassung.skala).toFixed(2);
+        const sh = (parseFloat(hptT) * einpassung.skala).toFixed(2);
+        const sx = (parseFloat(xptT) * einpassung.skala + einpassung.dx).toFixed(2);
+        const sy = (parseFloat(yptT) * einpassung.skala + einpassung.dy).toFixed(2);
+        contentStr += "q\n" + sw + " 0 0 " + sh + " " + sx + " " + sy + " cm\n/" + x.name + " Do\nQ\n";
       }
 
       // Textebene. Die Wortkoordinaten beziehen sich auf das ganze Dokument;
@@ -567,13 +751,41 @@
       );
       const contentId = addObject(contentBytes);
 
+      /* Die Verweise dieses Blattes als Anmerkungen.
+       *
+       * Sie stehen bewusst nicht im Inhaltsstrom, sondern als eigene Objekte:
+       * Der Inhaltsstrom malt, Anmerkungen sind anklickbar. Ein gezeichnetes
+       * Rechteck haette wie ein Verweis ausgesehen und waere keiner gewesen —
+       * genau der Zustand, der behoben werden soll.
+       *
+       * Ohne /Border [0 0 0] umranden die meisten Betrachter jeden Verweis mit
+       * einem Kasten. Ueber einem Bildschirmfoto sieht das aus, als haette die
+       * Aufnahme Rahmen, die die Seite nie hatte. */
+      let annotsEintrag = "";
+      if (verweise && zuordenbar) {
+        const bezugL = opts.linksPageWidth || opts.textLayerPageWidth || pg.widthPx;
+        const skalaL = pg.widthPx / bezugL;
+        const flaechen = linkFlaechen(
+          verweise, skalaL, pg.heightPx, fussPt, pxToPt, pg.yPx || 0);
+        if (flaechen.length) {
+          const ids = flaechen.map(f => addObject(strToBytes(
+            "<< /Type /Annot /Subtype /Link " +
+            "/Rect [" + f.rect.map(v => v.toFixed(2)).join(" ") + "] " +
+            "/Border [0 0 0] /F 4 " +
+            "/A << /S /URI /URI (" + pdfString(f.uri) + ") >> >>"
+          )));
+          annotsEintrag = " /Annots [" + ids.map(id => id + " 0 R").join(" ") + "]";
+        }
+      }
+
       const xobjEntries = xobjs.map(x => "/" + x.name + " " + x.id + " 0 R").join(" ");
       const pageDict =
         "<< /Type /Page /Parent " + pagesId + " 0 R " +
         "/MediaBox [0 0 " + wPt + " " + hPt + "] " +
         "/Resources << /XObject << " + xobjEntries + " >>" +
         (brauchtFont ? " /Font << /F1 " + fontId + " 0 R >>" : "") + " >> " +
-        "/Contents " + contentId + " 0 R >>";
+        annotsEintrag +
+        " /Contents " + contentId + " 0 R >>";
       const pageId = addObject(strToBytes(pageDict));
       pageRefs.push(pageId);
     }
@@ -722,6 +934,23 @@
           ["ISBN",           quelle && quelle.isbn],
           ["ImageSHA256",    beleg.sha256],
           ["CitationSource", quelle && quelle.titel ? quelle.herkunft : null],
+          /* Der Wegweiser zur Zitationsdatei.
+           *
+           * Eingetragen wird die REGEL, nicht der Name. Der Name waere zur
+           * Bauzeit ohnehin nur eine Vermutung: Liegt schon eine Datei so da,
+           * haengt der Browser " (1)" an, und ein fest eingetragener Name
+           * zeigte dann ins Leere. Die Regel gilt immer — wer den Pfad dieses
+           * PDF hat, hat damit auch den der Zitationsdatei.
+           *
+           * Auf Englisch, weil dieses Feld an Werkzeuge gerichtet ist und
+           * nicht an den Leser; die Datei selbst erscheint in der eingestellten
+           * Sprache. */
+          ["CitationFile", opts.zitatBeilage
+            ? "Same folder as this PDF; same file name with the extension "
+              + '".pdf" replaced by ".zitate.txt". Contains the full citation '
+              + "in APA, MLA, Chicago, Harvard, DIN 1505-2 and ISO 690, plus "
+              + "BibTeX and RIS."
+            : null],
         ];
         for (const [schluessel, wert] of eigen) {
           if (wert) felder.push("/" + schluessel + " " + pdfTextString(String(wert)));
@@ -748,6 +977,9 @@
               ? "; text-layer=extracted from the page's own DOM, not OCR"
               : "") +
             (quelle && quelle.doi ? "; doi=" + quelle.doi : "") +
+            (opts.zitatBeilage
+              ? "; citation-file=<this file name with .pdf replaced by .zitate.txt>, same folder"
+              : "") +
             (quelle && quelle.titel ? "; citation-source=" + quelle.herkunft : "")
           ));
         }

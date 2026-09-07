@@ -17,17 +17,8 @@
   "popupCapture": {
     "message": "Capture whole page"
   },
-  "popupShortcut": {
-    "message": "Whole page shortcut:"
-  },
   "popupSettings": {
     "message": "Settings"
-  },
-  "popupRunning": {
-    "message": "Capturing…"
-  },
-  "popupDone": {
-    "message": "Saved."
   },
   "busy": {
     "message": "A capture is already running"
@@ -116,29 +107,11 @@
   "optJpeg": {
     "message": "JPEG quality"
   },
-  "optScrollWait": {
-    "message": "Scroll delay per step (ms)"
-  },
-  "optPdfFormat": {
-    "message": "PDF format"
-  },
   "optSinglePage": {
     "message": "One continuous page (default — no visible seams)"
   },
-  "optMultiPage": {
-    "message": "Multiple pages (for printing)"
-  },
   "optPageHeight": {
     "message": "Page height for multi-page (pixels)"
-  },
-  "optTileHeight": {
-    "message": "Tile height for single-page (pixels)"
-  },
-  "optHideSticky": {
-    "message": "Hide sticky/fixed elements"
-  },
-  "optHideStickyHint": {
-    "message": "Hide sidebars and top bars before capture. Navigation columns are kept once at the top."
   },
   "optAppLayout": {
     "message": "App layouts (Gmail, Outlook, Notion …)"
@@ -151,9 +124,6 @@
   },
   "optLayoutFull": {
     "message": "Capture everything — menu repeats"
-  },
-  "optAppLayoutHint": {
-    "message": "On pages that scroll their content in a separate area, the header and sidebar stay in place and would otherwise appear in every section of the PDF. Has no effect on ordinary pages."
   },
   "optAfter": {
     "message": "After capture"
@@ -169,9 +139,6 @@
   },
   "optAfterBoth": {
     "message": "Show folder and open the PDF"
-  },
-  "optAfterHint": {
-    "message": "Default is \"Show folder\": after saving, the download folder opens with the file preselected. \"Open the PDF\" starts the PDF viewer instead, \"Both\" does one after the other."
   },
   "optScale": {
     "message": "Capture scaling (resolution)"
@@ -189,7 +156,7 @@
     "message": "2.0x — maximum, for large prints"
   },
   "optScaleHint": {
-    "message": "Default is 1.0x: the PDF shows the page exactly as it appears on screen — enough for normal printing at 144 dpi. Higher values sharpen the text but fit less into the window, so menus and sidebars end earlier."
+    "message": "1.0x shows the page as on screen. Higher is sharper but fits less into the window."
   },
   "optLanguage": {
     "message": "Language"
@@ -207,22 +174,10 @@
     "message": "Saved."
   },
   "optSubfolderHint": {
-    "message": "Default: Full Page PDF Snap. Leave empty to save directly into Downloads/. For security reasons the browser only allows subfolders."
+    "message": "Leave empty to save straight into Downloads/. Only subfolders are possible."
   },
   "optSaveAsHint": {
-    "message": "Enable this if you want to save into folders outside Downloads/."
-  },
-  "optTitleLenHint": {
-    "message": "Prevents overly long filenames. Default 40."
-  },
-  "optCounterHint": {
-    "message": "Increases by one with every new PDF. Reset sets it back to zero."
-  },
-  "optPdfFormatHint": {
-    "message": "A single continuous page removes the visible seams between segments. Multi-page splits the result into pages — A4 by default, or the fixed height set below."
-  },
-  "optPageHeightHint": {
-    "message": "Only applies when \"Fixed height in pixels\" is selected above. Default 2400 px."
+    "message": "For folders outside Downloads/."
   },
   "optShortcut": {
     "message": "Keyboard shortcut"
@@ -230,11 +185,8 @@
   "optShortcutNone": {
     "message": "none assigned — conflicts with a browser shortcut"
   },
-  "optShortcutManage": {
-    "message": "Change shortcut"
-  },
   "optShortcutHint": {
-    "message": "Shown here is the shortcut the browser has actually assigned. Browser shortcuts always take precedence and cannot be overridden by an extension — if the field says none, the combination is taken by the browser itself. To change it, open the address next to the button in a new tab."
+    "message": "To change it, open the address next to the button."
   },
   "optShortcutCopy": {
     "message": "Copy address"
@@ -294,32 +246,11 @@
   "resultGone": {
     "message": "No capture available. Start a new one from the extension icon."
   },
-  "optProvenance": {
-    "message": "Add a provenance line below the capture"
-  },
-  "optProvenanceHint": {
-    "message": "Writes the page address, the time of capture and a SHA-256 checksum of the image data into a strip under the image. Useful when the file has to be filed or handed on. A screen capture is not a qualified electronic document: the time comes from your device clock, and the checksum shows the file has not changed since it was made — not that the page looked this way. The same details are always written into the PDF metadata, with or without this option."
-  },
-  "optTimeAnchor": {
-    "message": "Add a time anchor (needs internet)"
-  },
-  "optTimeAnchorHint": {
-    "message": "Fetches a public random value from the decentralised drand network before saving and writes it into the capture. Because nobody could know that value beforehand, it shows the capture is not older than that moment — without relying on your device clock. This is the only network access this extension makes, it is off unless you switch it on, and nothing is sent: the page, the capture and its checksum never leave your device. It still does not prove what the page showed, and it is not a qualified electronic timestamp under eIDAS. If the network is unavailable, the capture is saved without the anchor."
-  },
-  "optTextLayer": {
-    "message": "Make the PDF searchable (invisible text layer)"
-  },
-  "optTextLayerHint": {
-    "message": "Copies the page's own text into the PDF, invisibly, at the position where it appears in the image. The PDF becomes searchable and the text can be copied — without changing how it looks. The text is taken from the document, not recognised from the image: measured on a real page, every word survives, where OCR recovered 92.6 percent. Only applies to the one-continuous-page format."
-  },
   "popupRegion": {
     "message": "Select an area…"
   },
   "popupHideOverlays": {
     "message": "Hide banners and pop-ups"
-  },
-  "popupHideOverlaysHint": {
-    "message": "Consent dialogs and floating bars are hidden for the capture and restored afterwards."
   },
   "popupHideOn": {
     "message": "Banners will be hidden"
@@ -345,9 +276,6 @@
   "popupCite": {
     "message": "Add citation details"
   },
-  "popupCiteHint": {
-    "message": "Authors, DOI, licence and retrieval time into the PDF, plus an RIS record. For AI tools to read them too, also switch on the provenance line in the settings."
-  },
   "popupCiteOn": {
     "message": "Citation details will be added"
   },
@@ -357,20 +285,11 @@
   "optCopyPath": {
     "message": "Copy the file path to the clipboard after saving"
   },
-  "optCopyPathHint": {
-    "message": "For handing the file straight to a terminal or a language model: capture, then paste. Off by default."
-  },
   "optCopyPathFormat": {
     "message": "Path format"
   },
-  "optCopyPathFormatHint": {
-    "message": "A Windows path pasted into a Linux shell under Windows leads nowhere. Choosing WSL converts it once here instead of every time by hand."
-  },
   "popupCopyPath": {
-    "message": "Copy file path after saving"
-  },
-  "popupCopyPathHint": {
-    "message": "Paste the path straight into a terminal or a chat. Format for WSL and other shells in the settings."
+    "message": "Copy file path"
   },
   "popupCopyOn": {
     "message": "Path will be copied after saving"
@@ -378,74 +297,17 @@
   "popupCopyOff": {
     "message": "Path will not be copied"
   },
-  "optColourMode": {
-    "message": "Colour and file size"
-  },
-  "optColourModeHint": {
-    "message": "Greyscale and black and white cut the file to 58 % and 27 % — and they help OCR rather than hurt it: 989 words read back against 987 in colour. Pages with photographs need colour."
-  },
   "optHellerDruck": {
     "message": "Always keep the background white"
   },
-  "optHellerDruckHint": {
-    "message": "For greyscale and black and white: a page in dark mode is inverted so that the sheet stays white and the text dark. Saves toner and keeps small type legible. Turn this off if the PDF should look exactly like the screen. Colour captures are never changed."
-  },
-  "optSourceMetadata": {
-    "message": "Read citation details from the page"
-  },
-  "optSourceMetadataHint": {
-    "message": "Reads authors, journal, volume, DOI, licence and access time from the page that is already open, and writes them into the PDF metadata plus an attached RIS record for Citavi, Zotero and EndNote. No request is made to any service."
-  },
-  "optRisSidecar": {
-    "message": "Also save the RIS record as a separate file"
-  },
-  "optRisSidecarHint": {
-    "message": "The citation record is always embedded inside the PDF as an attachment called „quelle.ris“ — switching this off loses nothing. The separate file exists only for convenience: reference managers import it by double-click or drag, whereas an attachment has to be extracted from the PDF first. Turn it off if you would rather keep one file per capture."
-  },
   "optPageFormat": {
     "message": "Page size for multi-page"
-  },
-  "optPageFormatA4": {
-    "message": "A4 — pages fit printed paper (default)"
-  },
-  "optPageFormatFest": {
-    "message": "Fixed height in pixels (set below)"
-  },
-  "optPageFormatHint": {
-    "message": "A4 derives the page height from the captured width, so a printed page fills the sheet without scaling."
-  },
-  "optBreakAtLines": {
-    "message": "Break between lines, not through them"
-  },
-  "optBreakAtLinesHint": {
-    "message": "Moves each page break up to the nearest gap between text lines, images and tables. Measured on four publisher pages: 30 of 46 fixed-grid breaks cut through a line of text, 2 of 47 did with this setting on. Cost: 1–3 % empty margin per page."
   },
   "optFetchOriginal": {
     "message": "Also download the publisher's original file"
   },
   "optFetchOriginalHint": {
-    "message": "Off by default: this is the only feature that opens a network connection. It downloads the full-text address the page itself declares — the same request a click on \"PDF\" makes, with the same access rights. Nothing behind a paywall becomes reachable."
-  },
-  "optNoReview": {
-    "message": "Rating prompt"
-  },
-  "optNoReviewHint": {
-    "message": "Do not ask me to rate this extension. It asks once, after five captures, and never again — this switch prevents even that one."
-  },
-  "optLinkMap": {
-    "message": "Save a link map beside the PDF"
-  },
-  "optLinkMapHint": {
-    "message": "A JSON file listing every link on the page: where it sits in the image, where it leads, and what part of the page it belongs to — navigation, footer, content, pagination. For AI tools that have to find their way to a goal: on one encyclopedia page, 741 of 1,528 links turned out to be page furniture and could be ruled out before searching. Costs one extra file per capture."
-  },
-  "diagTitel": {
-    "message": "System information (for bug reports)"
-  },
-  "optFertigTon": {
-    "message": "Play a short sound when the capture is done"
-  },
-  "optFertigTonHint": {
-    "message": "Two soft notes, about a fifth of a second. On a phone the screen is rarely in view while the page scrolls through, so the notification alone is easy to miss. On by default on Android, off on the desktop — where the notification is visible anyway."
+    "message": "Fetches the full-text address the page declares itself."
   },
   "androidFertig": {
     "message": "PDF ready — open it to view or download"
@@ -475,5 +337,179 @@
         "example": "seite.pdf"
       }
     }
+  },
+  "optBildModus": {
+    "message": "Quality"
+  },
+  "optBildFarbe": {
+    "message": "Colour — as on screen (default)"
+  },
+  "optBildGrau": {
+    "message": "Greyscale — about 40% smaller"
+  },
+  "optBildSw": {
+    "message": "Black and white — smallest, for text pages"
+  },
+  "optBildModusHint": {
+    "message": "Greyscale and black and white make much smaller files at the same text recognition — but black and white loses photographs."
+  },
+  "optVektorTitel": {
+    "message": "Text PDF instead of image (Chrome)"
+  },
+  "optVektor": {
+    "message": "Capture the page as text, not as an image"
+  },
+  "optVektorHint": {
+    "message": "The browser typesets the PDF itself: selectable text, working links, one pass, much smaller files. Asks for one permission."
+  },
+  "optVektorModus": {
+    "message": "What to capture"
+  },
+  "optVektorSeite": {
+    "message": "The whole page, as it looks on screen (default)"
+  },
+  "optVektorArtikel": {
+    "message": "The article only — without navigation and sidebars"
+  },
+  "optVektorModusHint": {
+    "message": "If no article can be identified, the whole page is captured."
+  },
+  "optImmerTitel": {
+    "message": "Always in the PDF itself"
+  },
+  "optMehr": {
+    "message": "More settings"
+  },
+  "optSingleOne": {
+    "message": "One continuous page (default)"
+  },
+  "optSingleMany": {
+    "message": "Several pages (for printing)"
+  },
+  "optPageA4": {
+    "message": "A4 — fills a printed sheet"
+  },
+  "optPageFree": {
+    "message": "Fixed pixel height"
+  },
+  "optSettling": {
+    "message": "Settling time per step (ms)"
+  },
+  "optSettlingHint": {
+    "message": "Raise it on pages that load slowly."
+  },
+  "optTile": {
+    "message": "Tile height in pixels"
+  },
+  "optFooter": {
+    "message": "Visible provenance line under the capture"
+  },
+  "optFooterHint": {
+    "message": "Changes the image. The details are in the PDF properties anyway."
+  },
+  "optReviewOff": {
+    "message": "Never ask for a rating"
+  },
+  "optDiag": {
+    "message": "Diagnostics"
+  },
+  "optTriggerTitle": {
+    "message": "How to start a capture"
+  },
+  "optTriggerTitleAndroid": {
+    "message": "How to start a capture"
+  },
+  "optTriggerToolbar": {
+    "message": "The toolbar button"
+  },
+  "optTriggerMenu": {
+    "message": "Right-click on the page → the extension's entry"
+  },
+  "optTriggerAndroidMenu": {
+    "message": "Browser menu → the extension's entry"
+  },
+  "optImmerImPdf": {
+    "message": "Searchable text layer and time anchor — always. The citation whenever “Add citation details” is switched on: inside the PDF (document properties, attached RIS record) and as a text file next to the PDF in the same folder. A short tone when it is done."
+  },
+  "optJpegHint": {
+    "message": "0.92 is the default. Higher means a bigger file, lower means visible artefacts in colour gradients."
+  },
+  "popupArtikel": {
+    "message": "Article"
+  },
+  "artikelNichtGefunden": {
+    "message": "No article found on this page. Use \"Capture whole page\" instead."
+  },
+  "artikelNichtMoeglich": {
+    "message": "The article could not be read on this page."
+  },
+  "artikelAbgerufen": {
+    "message": "retrieved"
+  },
+  "optVektorAbgelehnt": {
+    "message": "Permission declined — the image path stays in use."
+  },
+  "popupDruck": {
+    "message": "Capture for printing"
+  },
+  "popupEinstellungenDazu": {
+    "message": "Settings for this output"
+  },
+  "popupEinseitig": {
+    "message": "One continuous page"
+  },
+  "popupPapier": {
+    "message": "Paper size"
+  },
+  "popupAusrichtung": {
+    "message": "Orientation"
+  },
+  "popupHoch": {
+    "message": "Portrait"
+  },
+  "popupQuer": {
+    "message": "Landscape"
+  },
+  "popupSchrift": {
+    "message": "Font size"
+  },
+  "popupArtikelText": {
+    "message": "As a text file instead of PDF"
+  },
+  "beilagenGespeichert": {
+    "message": "Saved alongside the PDF:"
+  },
+  "beilagenImPdf": {
+    "message": "Citation saved inside the PDF (RIS attachment + document properties)."
+  },
+  "beilagenFehlten": {
+    "message": "not saved:"
+  },
+  "popupHideOverlaysTitel": {
+    "message": "Consent dialogs and floating bars are hidden for the capture and restored afterwards."
+  },
+  "popupCiteTitel": {
+    "message": "Author, DOI, licence and retrieval time go into the PDF itself and into a text file beside it, in the same folder. AI tools can read them there."
+  },
+  "popupCopyPathTitel": {
+    "message": "Once finished, paste the path with Ctrl+V into a terminal or a chat."
+  },
+  "popupRand": {
+    "message": "Margin"
+  },
+  "popupRandOhne": {
+    "message": "None — image fills the sheet"
+  },
+  "optBeilagenTitel": {
+    "message": "Files next to the PDF"
+  },
+  "optBeilagenText": {
+    "message": "Only when “Add citation details” is switched on in the menu. Both land in the same folder as the PDF."
+  },
+  "optZitatDatei": {
+    "message": "Citation as a text file (.zitate.txt) — to read and copy"
+  },
+  "optRisDatei": {
+    "message": "File for reference managers (.ris) — Citavi, Zotero, EndNote"
   }
 }

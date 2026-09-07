@@ -69,6 +69,54 @@ def links_sammeln():
     return gefunden
 
 
+# Adressen, die kein Anbieter automatisiert beantwortet. Sie sind nicht tot —
+# sie wehren Abrufe ohne Browser ab. Ohne diese Liste meldet der Pruefer bei
+# jedem Lauf dieselben drei Fehlschlaege, und man gewoehnt sich an rote Zeilen.
+# Genau dann uebersieht man den echten toten Link.
+ABWEHR = {
+    "openai.com": "403 fuer alles ohne Browser",
+    "perma.cc": "403 fuer alles ohne Browser",
+    "web.archive.org": "503/429 bei automatisierten Abrufen",
+}
+
+# Pfade, die ein Worker beantwortet — es gibt dazu KEINE Datei unter docs/.
+# Der Dateisystem-Pruefer meldete sie darum als tot, obwohl sie im Betrieb
+# antworten. Sie werden ueber HTTP geprueft. (14.08.2026)
+WORKER_ROUTEN = {"/mcp"}
+ROUTEN_HINWEISE = set()
+
+
+def abwehr_grund(url):
+    for wirt, grund in ABWEHR.items():
+        if f"//{wirt}/" in url or f"//www.{wirt}/" in url or url.rstrip("/").endswith(wirt):
+            return grund
+    return None
+
+
+def route_pruefen(pfad):
+    """-> (erreichbar, Hinweis). Ein 405 auf GET heisst: die Route lebt, aber
+    wer den Link anklickt, sieht eine Fehlerseite statt einer Erklaerung."""
+    import urllib.request as _u
+    for methode in ("GET", "POST"):
+        try:
+            r = _u.Request(BASIS.rstrip("/") + pfad, method=methode,
+                           data=b"{}" if methode == "POST" else None,
+                           headers={**BROWSER, "Content-Type": "application/json"})
+            with _u.urlopen(r, timeout=20) as a:
+                if methode == "GET":
+                    return True, ""
+                return True, "antwortet nur auf POST — ein Klick im Browser zeigt 405"
+        except Exception as e:
+            code = getattr(e, "code", 0)
+            if methode == "GET" and code == 405:
+                continue          # POST gegenpruefen
+            if methode == "GET" and 200 <= code < 400:
+                return True, ""
+            if methode == "POST" and 200 <= code < 500 and code != 405:
+                return True, "antwortet nur auf POST — ein Klick im Browser zeigt 405"
+    return False, ""
+
+
 def intern_pruefen(ziel, fundstelle):
     """Existiert das Ziel — aufgeloest relativ zu der Seite, die darauf verweist?
 
@@ -80,6 +128,13 @@ def intern_pruefen(ziel, fundstelle):
     pfad = ziel.split("#")[0].split("?")[0]
     if not pfad:
         return True
+    if pfad in WORKER_ROUTEN or (pfad.startswith(BASIS) and
+                                 "/" + pfad[len(BASIS):].lstrip("/") in WORKER_ROUTEN):
+        erreichbar, hinweis = route_pruefen(
+            pfad if pfad.startswith("/") else "/" + pfad)
+        if hinweis:
+            ROUTEN_HINWEISE.add(f"{pfad}: {hinweis}")
+        return erreichbar
     if pfad.startswith(BASIS):
         pfad = "/" + pfad[len(BASIS):].lstrip("/")
     if pfad.startswith("/"):
@@ -154,16 +209,22 @@ def main():
 
     fehler = []
 
+    abgewehrt = []
     print("\nExterne Adressen")
     for url in sorted(extern):
         s, _, ende = hole(url, "HEAD" if "addons.mozilla" not in url else "GET")
         if s in (405, 403) and url.startswith("http"):        # HEAD nicht erlaubt
             s, _, ende = hole(url)
         ok = s == 200
+        grund = abwehr_grund(url) if not ok else None
         umleitung = "" if ende == url else f"  -> {ende[:70]}"
-        print(f"  {str(s):>5}  {url[:78]}{umleitung}")
-        if not ok:
+        marke = "ABWEHR" if grund else f"{s:>5}"
+        print(f"  {marke:>6}  {url[:78]}{umleitung}"
+              + (f"   ({grund})" if grund else ""))
+        if not ok and not grund:
             fehler.append((url, s, sorted(extern[url])))
+        elif grund:
+            abgewehrt.append(url)
 
     print("\nInterne Ziele")
     tot = 0
@@ -180,6 +241,11 @@ def main():
     warnungen = stores_pruefen()
 
     print()
+    if abgewehrt:
+        print(f"{len(abgewehrt)} Adresse(n) wehren automatisierte Abrufe ab — "
+              "nicht als tot gewertet.")
+    for h in sorted(ROUTEN_HINWEISE):
+        print(f"HINWEIS: {h}")
     for w in warnungen:
         print(f"WARNUNG: {w}")
     if fehler:

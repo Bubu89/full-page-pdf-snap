@@ -4,9 +4,6 @@
 <meta charset="utf-8">
 <title>Full Page PDF Snap</title>
 <style>
-  /* Farben folgen dem Browser. Hell ist der Ausgangswert, der dunkle Satz
-     ueberschreibt ihn - so bleibt die Oberflaeche in beiden Faellen lesbar,
-     statt wie bisher fest dunkel in einem hellen Fenster zu stehen. */
   :root {
     --bg: #ffffff;
     --fg: #111827;
@@ -29,73 +26,166 @@
       --gut: #86efac;
     }
   }
-  body { font-family: system-ui, sans-serif; width: 268px; margin: 0; padding: 14px; background: var(--bg); color: var(--fg); }
-  h1 { font-size: 14px; margin: 0 0 10px 0; }
-  button { width: 100%; padding: 10px 12px; border: 0; border-radius: 6px; font-size: 13px; cursor: pointer; }
+  body { font-family: system-ui, sans-serif; width: 272px; margin: 0; padding: 12px; background: var(--bg); color: var(--fg); }
+  h1 { font-size: 14px; margin: 0 0 9px 0; }
+
+  /* Jede Ausgabeart ist eine Zeile: der Knopf loest aus, das Zahnrad daneben
+     klappt auf, was fuer genau diese Ausgabe einstellbar ist. Die Einstellung
+     steht damit dort, wo sie wirkt, statt in einer Liste, in der man raten
+     muss, welcher Punkt zu welchem Knopf gehoert. */
+  .zeile { display: flex; gap: 6px; margin-top: 6px; }
+  .zeile:first-of-type { margin-top: 0; }
+  button { padding: 9px 12px; border: 0; border-radius: 6px; font-size: 13px; cursor: pointer; }
+  .tat { flex: 1; text-align: left; }
   .primary { background: #2563eb; color: #fff; font-weight: 600; }
   .primary:hover { background: #1d4ed8; }
-  .zweit { background: var(--kbd-bg); color: var(--fg); margin-top: 8px; border: 1px solid var(--kbd-rand); }
+  .zweit { background: var(--kbd-bg); color: var(--fg); border: 1px solid var(--kbd-rand); }
   .zweit:hover { border-color: #2563eb; }
-  .ghost { background: transparent; color: var(--ghost-fg); margin-top: 8px; text-decoration: underline; }
+  .rad { width: 34px; flex: 0 0 auto; background: var(--kbd-bg); color: var(--ghost-fg);
+         border: 1px solid var(--kbd-rand); font-size: 14px; line-height: 1; }
+  .rad:hover { border-color: #2563eb; color: #2563eb; }
+  .rad[aria-expanded="true"] { background: #2563eb; color: #fff; border-color: #2563eb; }
 
-  /* Schalter fuer stoerende Einblendungen.
-     Er sitzt zwischen den beiden Aufnahmeknoepfen, weil er beide betrifft —
-     und traegt seinen Zustand sichtbar, damit niemand raten muss, ob die
-     letzte Aufnahme mit oder ohne Zustimmungsdialog entstanden ist. */
-  .schalter { display: flex; align-items: center; gap: 10px; margin-top: 12px;
-              padding: 9px 10px; border-radius: 6px; background: var(--kbd-bg);
+  .fach { display: none; margin: 4px 0 2px 0; padding: 8px 10px; border-radius: 6px;
+          background: var(--kbd-bg); border: 1px solid var(--kbd-rand); }
+  .fach.auf { display: block; }
+  .fach label { display: block; font-size: 11px; color: var(--gedaempft); margin-top: 7px; }
+  .fach label:first-child { margin-top: 0; }
+  .fach select { width: 100%; margin-top: 3px; padding: 5px 7px; font-size: 12px;
+                 border: 1px solid var(--kbd-rand); border-radius: 5px;
+                 background: var(--bg); color: var(--fg); }
+  .fach .haken { display: flex; align-items: center; gap: 7px; margin-top: 8px;
+                 font-size: 12px; color: var(--fg); }
+  .fach .haken input { width: 15px; height: 15px; accent-color: #2563eb; margin: 0; }
+
+  .schalter { display: flex; align-items: center; gap: 9px; margin-top: 7px;
+              padding: 6px 9px; border-radius: 6px; background: var(--kbd-bg);
               border: 1px solid var(--kbd-rand); cursor: pointer; user-select: none; }
   .schalter:hover { border-color: #2563eb; }
-  .schalter input { appearance: none; width: 34px; height: 20px; border-radius: 10px;
+  .schalter input { appearance: none; width: 30px; height: 18px; border-radius: 9px;
                     background: var(--kbd-rand); position: relative; cursor: pointer;
                     flex: 0 0 auto; transition: background .15s; margin: 0; }
   .schalter input::after { content: ""; position: absolute; top: 2px; left: 2px;
-                           width: 16px; height: 16px; border-radius: 50%; background: #fff;
+                           width: 14px; height: 14px; border-radius: 50%; background: #fff;
                            transition: transform .15s; }
   .schalter input:checked { background: #2563eb; }
-  .schalter input:checked::after { transform: translateX(14px); }
-  .schalter-text { flex: 1; min-width: 0; }
-  .schalter-titel { font-size: 12.5px; font-weight: 600; line-height: 1.25; }
-  .schalter-hinweis { font-size: 10.5px; color: var(--gedaempft); margin-top: 2px; line-height: 1.3; }
-  .status { margin-top: 10px; font-size: 12px; color: var(--gedaempft); min-height: 16px; }
+  .schalter input:checked::after { transform: translateX(12px); }
+  .schalter-titel { font-size: 12.5px; font-weight: 600; line-height: 1.25; flex: 1; min-width: 0; }
+
+  .status { margin-top: 8px; font-size: 12px; color: var(--gedaempft); min-height: 15px; }
   .err { color: var(--fehler); }
   .ok { color: var(--gut); }
-  .kbd { background: var(--kbd-bg); border: 1px solid var(--kbd-rand); padding: 1px 6px; border-radius: 4px; font-family: monospace; font-size: 11px; }
-  p { font-size: 11px; color: var(--gedaempft); margin: 8px 0 0 0; }
+
+  .fuss { display: flex; align-items: center; justify-content: space-between;
+          gap: 8px; margin-top: 10px; padding-top: 9px;
+          border-top: 1px solid var(--kbd-rand); font-size: 11px; }
+  .kbd { background: var(--kbd-bg); border: 1px solid var(--kbd-rand); padding: 1px 6px;
+         border-radius: 4px; font-family: monospace; font-size: 11px; color: var(--fg); }
+  .fuss a { color: var(--ghost-fg); cursor: pointer; text-decoration: underline; white-space: nowrap; }
+  .fuss a:hover { color: #2563eb; }
 </style>
 </head>
 <body>
   <h1 data-i18n="popupHeading">Save the whole page as PDF</h1>
-  <button id="go" class="primary" data-i18n="popupCapture">Capture whole page</button>
-  <button id="region" class="zweit" data-i18n="popupRegion">Select an area…</button>
 
-  <label class="schalter" for="hideSticky">
-    <input type="checkbox" id="hideSticky" checked>
-    <span class="schalter-text">
-      <span class="schalter-titel" data-i18n="popupHideOverlays">Hide banners and pop-ups</span>
-      <span class="schalter-hinweis" id="hideStickyHint" data-i18n="popupHideOverlaysHint">Consent dialogs and floating bars are hidden for the capture and restored afterwards.</span>
-    </span>
+  <!-- "Ganze Seite" hat kein Zahnrad mehr.
+       Darin stand genau ein Schalter: "Eine fortlaufende Seite". Das ist aber
+       der Unterschied zum Knopf darunter — "Aufnahme fuer Druck" IST die
+       zerlegte Fassung derselben Aufnahme. Zwei Bedienelemente fuer dieselbe
+       Entscheidung, eines davon versteckt: Wer das Haekchen wegnahm, bekam
+       still das, wofuer es einen eigenen Knopf gibt. -->
+  <div class="zeile">
+    <button id="go" class="tat primary" data-i18n="popupCapture">Capture whole page</button>
+  </div>
+
+  <div class="zeile">
+    <button id="a4" class="tat zweit" data-i18n="popupDruck">Capture for printing</button>
+    <button class="rad" data-fach="fachDruck" aria-expanded="false"
+            data-i18n-title="popupEinstellungenDazu" title="Settings for this output">&#9881;</button>
+  </div>
+  <div class="fach" id="fachDruck">
+    <label><span data-i18n="popupPapier">Paper size</span>
+      <select id="druckPapier">
+        <option value="a4">A4</option>
+        <option value="letter">Letter</option>
+      </select>
+    </label>
+    <label><span data-i18n="popupAusrichtung">Orientation</span>
+      <select id="druckQuer">
+        <option value="hoch" data-i18n="popupHoch">Portrait</option>
+        <option value="quer" data-i18n="popupQuer">Landscape</option>
+      </select>
+    </label>
+    <label><span data-i18n="popupRand">Margin</span>
+      <select id="druckRand">
+        <option value="0" data-i18n="popupRandOhne">None — image fills the sheet</option>
+        <option value="5">5 mm</option>
+        <option value="10">10 mm</option>
+      </select>
+    </label>
+  </div>
+
+  <!-- Der Artikel-Weg ist Chromium-eigen und wird in Firefox ausgeblendet.
+       Beide Fassungen teilen sich diese Datei; die Unterscheidung trifft
+       popup.js anhand dessen, was der Browser tatsaechlich kann. Zwei
+       getrennte Dateien waeren zwei Orte, an denen dieselbe Schaltflaeche
+       kuenftig auseinanderlaeuft. -->
+  <div class="zeile" id="zeileArtikel">
+    <button id="artikel" class="tat zweit" data-i18n="popupArtikel">Article</button>
+    <button class="rad" data-fach="fachArtikel" aria-expanded="false"
+            data-i18n-title="popupEinstellungenDazu" title="Settings for this output">&#9881;</button>
+  </div>
+  <div class="fach" id="fachArtikel">
+    <label><span data-i18n="popupPapier">Paper size</span>
+      <select id="artikelPapier">
+        <option value="a4">A4</option>
+        <option value="letter">Letter</option>
+      </select>
+    </label>
+    <label><span data-i18n="popupAusrichtung">Orientation</span>
+      <select id="artikelQuer">
+        <option value="hoch" data-i18n="popupHoch">Portrait</option>
+        <option value="quer" data-i18n="popupQuer">Landscape</option>
+      </select>
+    </label>
+    <label><span data-i18n="popupSchrift">Font size</span>
+      <select id="artikelSchrift">
+        <option value="16">16px</option>
+        <option value="18" selected>18px</option>
+        <option value="20">20px</option>
+        <option value="22">22px</option>
+      </select>
+    </label>
+    <label class="haken"><input id="artikelText" type="checkbox">
+      <span data-i18n="popupArtikelText">As a text file instead of PDF</span></label>
+  </div>
+
+  <div class="zeile">
+    <button id="region" class="tat zweit" data-i18n="popupRegion">Select an area…</button>
+  </div>
+
+  <label class="schalter" for="hideSticky" data-i18n-title="popupHideOverlaysTitel" title="Consent dialogs and floating bars are hidden for the capture and restored afterwards.">
+    <input id="hideSticky" type="checkbox">
+    <span class="schalter-titel" data-i18n="popupHideOverlays">Hide banners and pop-ups</span>
   </label>
 
-  <label class="schalter" for="sourceMetadata">
-    <input type="checkbox" id="sourceMetadata" checked>
-    <span class="schalter-text">
-      <span class="schalter-titel" data-i18n="popupCite">Add citation details</span>
-      <span class="schalter-hinweis" data-i18n="popupCiteHint">Authors, DOI, licence and retrieval time into the PDF, plus an RIS record. For AI tools to read them too, also switch on the provenance line in the settings.</span>
-    </span>
+  <label class="schalter" for="sourceMetadata" data-i18n-title="popupCiteTitel" title="Authors, DOI, licence and retrieval time are written into the PDF itself.">
+    <input id="sourceMetadata" type="checkbox">
+    <span class="schalter-titel" data-i18n="popupCite">Add citation details</span>
   </label>
 
-  <label class="schalter" for="copyPath">
-    <input type="checkbox" id="copyPath">
-    <span class="schalter-text">
-      <span class="schalter-titel" data-i18n="popupCopyPath">Copy file path after saving</span>
-      <span class="schalter-hinweis" data-i18n="popupCopyPathHint">Paste the path straight into a terminal or a chat. Format for WSL and other shells in the settings.</span>
-    </span>
+  <label class="schalter" for="copyPath" data-i18n-title="popupCopyPathTitel" title="Paste the path straight into a terminal or a chat.">
+    <input id="copyPath" type="checkbox">
+    <span class="schalter-titel" data-i18n="popupCopyPath">Copy file path</span>
   </label>
 
-  <p><span data-i18n="popupShortcut">Whole page shortcut:</span> <span class="kbd" id="shortcut">…</span></p>
-  <button id="opts" class="ghost" data-i18n="popupSettings">Settings</button>
   <div id="status" class="status"></div>
+
+  <div class="fuss">
+    <span class="kbd" id="shortcut">…</span>
+    <a id="opts" data-i18n="popupSettings">Settings</a>
+  </div>
+
   <script src="i18n-data.js"></script>
   <script src="i18n.js"></script>
   <script src="popup.js"></script>

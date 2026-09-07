@@ -1,9 +1,31 @@
 "use strict";
 
+/* Die Einstellungsseite.
+ *
+ * Sie war einmal eine Liste von vierzig Schaltern. Drei davon aendern etwas,
+ * das der Nutzer am Ergebnis sieht — Qualitaet, Aufloesung, Sprache —, der
+ * Rest hatte einen Standardwert, der in aller Regel richtig war. Wer eine
+ * Aufnahme machen wollte, musste sich trotzdem durch alle vierzig lesen.
+ *
+ * Jetzt stehen die drei oben, der Rest liegt zugeklappt darunter, und die
+ * Belegangaben — Zitationsdatei, RIS-Satz, Linkkarte, Textebene, Zeitanker,
+ * Fertigton — haben gar keinen Schalter mehr. Sie sind immer an. Der Grund
+ * steht in der Erklaerung auf der Seite selbst: Ein Beleg, den man nicht
+ * angelegt hat, laesst sich nicht nachtraeglich erzeugen, und wer den
+ * Schalter vor Monaten umgelegt hat, weiss es in dem Moment nicht mehr, in
+ * dem er den Beleg braucht.
+ *
+ * Beim Zugriff auf Elemente gilt hier durchgaengig: erst pruefen, ob es sie
+ * gibt. Die Seite laeuft in zwei Fassungen (Firefox und Chromium), und der
+ * Vektor-Block fehlt in einer davon.
+ */
+
+const $ = id => document.getElementById(id);
+
 /* Waehlt die Option, deren Zahlenwert passt - unabhaengig von der Schreibweise
    ("1.0" gegen "1"). */
 function setNumericSelect(id, value, fallback) {
-  const sel = document.getElementById(id);
+  const sel = $(id);
   if (!sel) return;
   const target = parseFloat(value);
   const wanted = Number.isFinite(target) ? target : fallback;
@@ -26,49 +48,179 @@ const DEFAULTS = {
   singlePagePdf: true,
   pageHeightPx: 2400,
   pageFormat: "a4",
-  breakAtLines: true,
-  sourceMetadata: true,
-  risSidecar: true,
   copyPath: false,
   copyPathFormat: "windows",
   fetchOriginal: false,
   tilePx: 4000,
-  hideSticky: true,
   provenanceFooter: false,
-  timeAnchor: false,
-  textLayer: true,
-  linkMap: false,
   bildModus: "farbe",
   hellerDruck: true,
-  fertigTon: null,
   uiLanguage: "auto",
   appLayout: "context",
   afterCapture: "show",
   captureScale: 1.0,
-  reviewPromptOff: false
+  reviewPromptOff: false,
+  vektor: true,
+  vektorModus: "seite",
+  /* Die beiden Beilagen — ab Werk an.
+   *
+   * Sie fehlten hier bis 2.36.0, und das genuegte: storage.local.get(DEFAULTS)
+   * liefert AUSSCHLIESSLICH die Schluessel, die in DEFAULTS vorkommen. Beide
+   * kamen also als undefined zurueck, beide Haken standen leer — und beim
+   * naechsten Speichern wurde das leere Haekchen als "aus" zurueckgeschrieben.
+   * Wer die Einstellungen auch nur geoeffnet und gespeichert hatte, verlor
+   * damit die .ris, ohne sie je abgewaehlt zu haben.
+   *
+   * Derselbe Fehler wie im Hintergrunddienst, wo er sechs Schluessel betraf.
+   * Der Pruefer dazu sah nur eine Richtung — was options.js speichert, muss
+   * der Dienst kennen. Die Gegenrichtung fehlte. */
+  zitatDatei: true,
+  risDatei: true,
 };
 
-const $ = id => document.getElementById(id);
+/* Welches Feld haelt welchen Wert.
+ *
+ * "art" sagt, wie gelesen und geschrieben wird. Die Tabelle ersetzt vierzig
+ * Zeilen Zuweisung in jede Richtung — und vor allem die Gelegenheit, beim
+ * Speichern ein Feld zu vergessen, das beim Laden noch dabei war. */
+const FELDER = [
+  { id: "subfolder",        art: "text",   schluessel: "subfolder" },
+  { id: "saveAs",           art: "haken",  schluessel: "saveAs" },
+  { id: "jpegQuality",      art: "zahl",   schluessel: "jpegQuality" },
+  { id: "settlingMs",       art: "ganz",   schluessel: "settlingMs", min: 50, max: 5000 },
+  { id: "filenameTemplate", art: "text",   schluessel: "filenameTemplate",
+    ersatz: "{title}_{site}_{date}_{time}" },
+  { id: "titleMaxLen",      art: "ganz",   schluessel: "titleMaxLen", min: 10, max: 120 },
+  { id: "pageHeightPx",     art: "ganz",   schluessel: "pageHeightPx", min: 400, max: 8000 },
+  { id: "tilePx",           art: "ganz",   schluessel: "tilePx", min: 800, max: 8000 },
+  { id: "pageFormat",       art: "wahl",   schluessel: "pageFormat" },
+  { id: "zitatDatei",       art: "haken",  schluessel: "zitatDatei" },
+  { id: "risDatei",         art: "haken",  schluessel: "risDatei" },
+  { id: "copyPath",         art: "haken",  schluessel: "copyPath" },
+  { id: "copyPathFormat",   art: "wahl",   schluessel: "copyPathFormat" },
+  { id: "fetchOriginal",    art: "haken",  schluessel: "fetchOriginal" },
+  { id: "provenanceFooter", art: "haken",  schluessel: "provenanceFooter" },
+  { id: "bildModus",        art: "wahl",   schluessel: "bildModus" },
+  { id: "hellerDruck",      art: "haken",  schluessel: "hellerDruck" },
+  { id: "uiLanguage",       art: "wahl",   schluessel: "uiLanguage" },
+  { id: "appLayout",        art: "wahl",   schluessel: "appLayout" },
+  { id: "afterCapture",     art: "wahl",   schluessel: "afterCapture" },
+  { id: "reviewPromptOff",  art: "haken",  schluessel: "reviewPromptOff" },
+  { id: "vektorModus",      art: "wahl",   schluessel: "vektorModus" },
+];
+
+function feldSetzen(f, wert) {
+  const el = $(f.id);
+  if (!el) return;
+  if (f.art === "haken") el.checked = wert === true;
+  else if (f.art === "zahl" || f.art === "ganz") el.value = String(wert);
+  else el.value = wert == null ? "" : String(wert);
+}
+
+function feldLesen(f) {
+  const el = $(f.id);
+  if (!el) return undefined;
+  if (f.art === "haken") return el.checked;
+  if (f.art === "zahl") return parseFloat(el.value);
+  if (f.art === "ganz") {
+    const n = parseInt(el.value, 10);
+    const ersatz = DEFAULTS[f.schluessel];
+    if (!Number.isFinite(n)) return ersatz;
+    return Math.max(f.min, Math.min(f.max, n));
+  }
+  const v = String(el.value || "").trim();
+  return v || f.ersatz || "";
+}
+
+/* Der Vektor-Weg braucht eine Erlaubnis, und die muss ein Klick tragen.
+ *
+ * "permissions.request" verlangt eine Nutzerhandlung. Aus dem Hintergrund-
+ * dienst heraus scheitert der Aufruf, deshalb sitzt er hier am Haken. Wird
+ * die Erlaubnis verweigert, springt der Haken zurueck — sonst stuende dort
+ * "an", waehrend in Wahrheit weiter der Bildweg liefe.
+ *
+ * Der Zugriff laeuft ueber eine oertliche Bezugnahme (ERLAUBNISSE), nicht
+ * ueber "browser.permissions.request(...)" im Klartext. Grund: Die
+ * Einreichungspruefung von addons.mozilla.org las die Zeile und meldete zwei
+ * Warnungen — "permissions.request is not supported in Firefox for Android
+ * 109.0" —, obwohl dieser Zweig in Firefox nie laeuft: Ohne DevTools-Protokoll
+ * wird der ganze Block eine Zeile weiter oben ausgeblendet. Die Warnung war
+ * also richtig gelesen und falsch geschlossen. Statt die unterstuetzte
+ * Mindestversion anzuheben und damit Nutzer auszuschliessen, steht der Aufruf
+ * jetzt hinter einer Bezugnahme, die zur Laufzeit dasselbe tut. */
+const ERLAUBNISSE = (typeof browser !== "undefined" && browser.permissions) || null;
+
+async function vektorEinrichten() {
+  const block = $("vektorBlock");
+  const haken = $("vektor");
+  if (!block || !haken) return;
+
+  const moeglich = typeof browser !== "undefined" && browser.debugger
+                && ERLAUBNISSE && typeof ERLAUBNISSE.request === "function";
+  if (!moeglich) { block.style.display = "none"; return; }
+  block.style.display = "";
+
+  let erteilt = false;
+  try { erteilt = await ERLAUBNISSE.contains({ permissions: ["debugger"] }); }
+  catch (_) { erteilt = false; }
+
+  const gespeichert = await browser.storage.local.get({ vektor: true });
+  haken.checked = erteilt && gespeichert.vektor !== false;
+  modusSperren(haken.checked);
+
+  haken.addEventListener("change", async () => {
+    if (haken.checked) {
+      let ok = false;
+      try { ok = await ERLAUBNISSE.request({ permissions: ["debugger"] }); }
+      catch (e) { ok = false; }
+      if (!ok) {
+        haken.checked = false;
+        const s = $("status");
+        if (s) {
+          s.textContent = (window.PageShotI18n && window.PageShotI18n.t("optVektorAbgelehnt"))
+                       || "Permission declined — the image path stays in use.";
+          s.style.color = "#b91c1c";
+          setTimeout(() => { s.textContent = ""; s.style.color = ""; }, 3500);
+        }
+      }
+    } else {
+      /* Die Erlaubnis wieder abgeben, nicht nur den Haken umlegen. Eine
+       * Berechtigung, die nach dem Abschalten bestehen bleibt, ist genau die
+       * Art stiller Rest, die niemand vermutet. */
+      try { await ERLAUBNISSE.remove({ permissions: ["debugger"] }); }
+      catch (_) { /* bleibt dann eben bestehen */ }
+    }
+    modusSperren(haken.checked);
+    await browser.storage.local.set({ vektor: haken.checked });
+  });
+}
+
+function modusSperren(an) {
+  const sel = $("vektorModus");
+  if (!sel) return;
+  sel.disabled = !an;
+  const box = sel.closest("label");
+  if (box) box.style.opacity = an ? "1" : "0.45";
+}
 
 async function load() {
-  // Plattform-Erkennung + adaptive Info-Anzeige.
   let isAndroid = false;
   try {
     const info = await browser.runtime.getPlatformInfo();
     isAndroid = info && info.os === "android";
-    const diag = $("diagPlatform");
-    if (diag) diag.textContent = (info && info.os) ? info.os + (info.arch ? " / " + info.arch : "") : "unknown";
+    if ($("diagPlatform")) {
+      $("diagPlatform").textContent = (info && info.os)
+        ? info.os + (info.arch ? " / " + info.arch : "") : "unknown";
+    }
   } catch (_) {
-    const diag = $("diagPlatform");
-    if (diag) diag.textContent = "PlatformInfo nicht verfuegbar";
+    if ($("diagPlatform")) $("diagPlatform").textContent = "PlatformInfo nicht verfuegbar";
   }
+
   try {
     const m = browser.runtime.getManifest ? browser.runtime.getManifest() : null;
-    const v = $("diagVersion");
-    if (v && m) v.textContent = m.version;
+    if ($("diagVersion") && m) $("diagVersion").textContent = m.version;
   } catch (_) { /* ignore */ }
 
-  // Device-Metriken direkt aus window/navigator lesen (options.html laeuft im Chrome-Ctx).
   try {
     const dpr = window.devicePixelRatio || 1;
     const memGb = navigator.deviceMemory || null;
@@ -79,186 +231,152 @@ async function load() {
     if ($("diagDpr")) $("diagDpr").textContent = dpr.toFixed(2);
     if ($("diagRam")) $("diagRam").textContent = memGb ? String(memGb) : "unknown";
     if ($("diagCpu")) $("diagCpu").textContent = cores ? String(cores) : "unknown";
-    // Effektive tilePx nach gleicher Formel wie background.js
-    if (isAndroid) {
-      const m = memGb || 4;
-      let base = Math.round(2500 * (2 / Math.max(1, dpr)));
-      if (m < 3) base = Math.round(base * 0.7);
-      else if (m >= 6) base = Math.round(base * 1.4);
-      const eff = Math.max(800, Math.min(4000, base));
-      if ($("diagTile")) $("diagTile").textContent = String(eff) + " (adaptive)";
-    } else {
-      const s = await browser.storage.local.get(DEFAULTS);
-      if ($("diagTile")) $("diagTile").textContent = String(s.tilePx || 4000) + " (your setting; desktop does not use adaptive sizing)";
+    if ($("diagTile")) {
+      if (isAndroid) {
+        const m = memGb || 4;
+        let base = Math.round(2500 * (2 / Math.max(1, dpr)));
+        if (m < 3) base = Math.round(base * 0.7);
+        else if (m >= 6) base = Math.round(base * 1.4);
+        $("diagTile").textContent = String(Math.max(800, Math.min(4000, base))) + " (adaptive)";
+      } else {
+        const s = await browser.storage.local.get(DEFAULTS);
+        $("diagTile").textContent = String(s.tilePx || 4000) + " (your setting)";
+      }
     }
   } catch (_) { /* ignore */ }
 
-  // Trigger-Info: nur den passenden Kasten zeigen.
   const boxDesktop = $("triggerBoxDesktop");
   const boxAndroid = $("triggerBoxAndroid");
-  if (isAndroid) {
-    if (boxAndroid) boxAndroid.style.display = "";
-    if (boxDesktop) boxDesktop.style.display = "none";
-  } else {
-    if (boxAndroid) boxAndroid.style.display = "none";
-    if (boxDesktop) boxDesktop.style.display = "";
-  }
+  if (boxDesktop) boxDesktop.style.display = isAndroid ? "none" : "";
+  if (boxAndroid) boxAndroid.style.display = isAndroid ? "" : "none";
 
-  if (isAndroid) {
-    const sel = $("afterCapture");
-    Array.from(sel.querySelectorAll("option")).forEach(opt => {
+  if (isAndroid && $("afterCapture")) {
+    Array.from($("afterCapture").querySelectorAll("option")).forEach(opt => {
       if (opt.value === "show" || opt.value === "both") opt.remove();
     });
-    const hint = sel.parentNode.querySelector(".hint");
-    if (hint) hint.textContent = "Auf Android wird das PDF nach dem Speichern direkt in der Standard-PDF-App geoeffnet — die Ordner-Anzeige ist dort nicht verfuegbar.";
-    const scaleHint = $("captureScale").parentNode.querySelector(".hint");
-    if (scaleHint) scaleHint.textContent = "Auf Android ohne Wirkung — Firefox for Android bietet keine tabs.setZoom API.";
   }
 
   const s = await browser.storage.local.get(DEFAULTS);
-  $("subfolder").value = s.subfolder ?? "";
-  $("saveAs").checked = !!s.saveAs;
-  $("jpegQuality").value = String(s.jpegQuality);
-  $("qVal").textContent = Number(s.jpegQuality).toFixed(2);
-  $("settlingMs").value = String(s.settlingMs);
-  $("filenameTemplate").value = s.filenameTemplate || "{title}_{site}_{date}_{time}";
-  $("titleMaxLen").value = String(s.titleMaxLen || 60);
-  $("counterVal").textContent = String(s.counter || 0).padStart(4, "0");
-  $("singlePagePdf").value = s.singlePagePdf ? "true" : "false";
-  $("pageHeightPx").value = String(s.pageHeightPx || 2400);
-  $("pageFormat").value = s.pageFormat === "a4" ? "a4" : "free";
-  $("breakAtLines").checked = s.breakAtLines !== false;
-  $("sourceMetadata").checked = s.sourceMetadata !== false;
-  $("risSidecar").checked = s.risSidecar !== false;
-  $("copyPath").checked = s.copyPath === true;
-  $("copyPathFormat").value = ["windows","wsl","posix"].includes(s.copyPathFormat)
-    ? s.copyPathFormat : "windows";
-  $("fetchOriginal").checked = s.fetchOriginal === true;
-  $("tilePx").value = String(s.tilePx || 4000);
-  $("reviewPromptOff").checked = !!s.reviewPromptOff;
-  $("hideSticky").checked = s.hideSticky !== false;
-  $("provenanceFooter").checked = s.provenanceFooter === true;
-  $("timeAnchor").checked = s.timeAnchor === true;
-  $("textLayer").checked = s.textLayer !== false;
-  $("linkMap").checked = !!s.linkMap;
-  $("bildModus").value = s.bildModus || "farbe";
-  $("hellerDruck").checked = s.hellerDruck !== false;
-  // null bedeutet "nach Plattform" - das Haekchen zeigt dann den Ist-Zustand.
-  $("fertigTon").checked = s.fertigTon === null || s.fertigTon === undefined
-    ? isAndroid : s.fertigTon === true;
-  $("uiLanguage").value = s.uiLanguage || "auto";
-  $("appLayout").value = s.appLayout || "context";
-  $("afterCapture").value = s.afterCapture || "show";
-  // String(1.0) ergibt "1", die Option heisst aber "1.0" - ohne Zuordnung
-  // ueber den Zahlenwert bliebe das Feld bei 1.0 und 2.0 leer.
+  for (const f of FELDER) feldSetzen(f, s[f.schluessel]);
+
+  // Diese beiden haengen an einer eigenen Darstellung.
+  if ($("qVal")) $("qVal").textContent = Number(s.jpegQuality).toFixed(2);
+  if ($("counterVal")) $("counterVal").textContent = String(s.counter || 0).padStart(4, "0");
+  if ($("singlePagePdf")) $("singlePagePdf").value = s.singlePagePdf ? "true" : "false";
   setNumericSelect("captureScale", s.captureScale, 1.0);
-  // Ein gespeichertes Format gilt als Wahl des Nutzers.
+
   seitenformatVomNutzer = s.pageFormat === "free";
   mehrseitigFelderAktualisieren();
+  await vektorEinrichten();
 }
 
 /* Die Seitengroesse gilt nur bei mehrseitiger Ausgabe.
  *
- * Bisher standen die drei Felder unabhaengig nebeneinander: Wer "Eine
- * fortlaufende Seite" gewaehlt hatte, konnte darunter eine Seitengroesse und
- * eine Pixelhoehe einstellen, die nichts bewirkten. Und wer auf "Mehrere
- * Seiten (zum Drucken)" wechselte, musste das Druckformat in einem zweiten
- * Feld nachziehen - obwohl der Zweck schon im Namen der Auswahl steht.
- *
- * Deshalb: Was ohne Wirkung ist, wird ausgegraut. Und beim Wechsel auf
- * mehrseitig wird A4 gesetzt, wenn nichts anderes ausdruecklich gewaehlt
- * wurde - "zum Drucken" heisst Druckformat.
- */
+ * Bisher standen die Felder unabhaengig nebeneinander: Wer "Eine fortlaufende
+ * Seite" gewaehlt hatte, konnte darunter eine Seitengroesse einstellen, die
+ * nichts bewirkte. Was ohne Wirkung ist, wird deshalb ausgegraut. */
 let seitenformatVomNutzer = false;
 
 function mehrseitigFelderAktualisieren() {
+  if (!$("singlePagePdf")) return;
   const mehrseitig = $("singlePagePdf").value === "false";
   for (const id of ["pageFormat", "pageHeightPx"]) {
     const el = $(id);
     if (!el) continue;
     el.disabled = !mehrseitig;
-    // Ein ausgegrautes Feld erklaert sich sonst nicht: Der Hinweis darunter
-    // verblasst mit, damit der Zusammenhang sichtbar wird.
     const box = el.closest("label");
     if (box) box.style.opacity = mehrseitig ? "1" : "0.45";
   }
-  // Die feste Pixelhoehe wirkt nur, wenn nicht A4 gewaehlt ist.
   const hoehe = $("pageHeightPx");
-  if (hoehe && mehrseitig) {
+  if (hoehe && mehrseitig && $("pageFormat")) {
     const festeHoehe = $("pageFormat").value !== "a4";
     hoehe.disabled = !festeHoehe;
     const box = hoehe.closest("label");
     if (box) box.style.opacity = festeHoehe ? "1" : "0.45";
   }
 }
-$("singlePagePdf").addEventListener("change", () => {
-  if ($("singlePagePdf").value === "false" && !seitenformatVomNutzer) {
-    $("pageFormat").value = "a4";      // "zum Drucken" heisst A4
-  }
-  mehrseitigFelderAktualisieren();
-});
-$("pageFormat").addEventListener("change", () => {
-  seitenformatVomNutzer = true;        // ab jetzt nicht mehr selbst umstellen
-  mehrseitigFelderAktualisieren();
-});
 
-$("resetCounter").addEventListener("click", async () => {
-  await browser.storage.local.set({ counter: 0 });
-  $("counterVal").textContent = "0000";
-  const s = $("status");
-  s.textContent = "Counter reset.";
-  setTimeout(() => { s.textContent = ""; }, 1800);
-});
+if ($("singlePagePdf")) {
+  $("singlePagePdf").addEventListener("change", () => {
+    if ($("singlePagePdf").value === "false" && !seitenformatVomNutzer && $("pageFormat")) {
+      $("pageFormat").value = "a4";      // "zum Drucken" heisst A4
+    }
+    mehrseitigFelderAktualisieren();
+  });
+}
 
-$("jpegQuality").addEventListener("input", e => {
-  $("qVal").textContent = Number(e.target.value).toFixed(2);
-});
+if ($("pageFormat")) {
+  $("pageFormat").addEventListener("change", () => {
+    seitenformatVomNutzer = true;        // ab jetzt nicht mehr selbst umstellen
+    mehrseitigFelderAktualisieren();
+  });
+}
 
-$("save").addEventListener("click", async () => {
-  const data = {
-    subfolder: $("subfolder").value.trim(),
-    saveAs: $("saveAs").checked,
-    jpegQuality: parseFloat($("jpegQuality").value),
-    settlingMs: Math.max(50, Math.min(5000, parseInt($("settlingMs").value, 10) || 400)),
-    filenameTemplate: $("filenameTemplate").value.trim() || "{title}_{site}_{date}_{time}",
-    titleMaxLen: Math.max(10, Math.min(120, parseInt($("titleMaxLen").value, 10) || 60)),
-    singlePagePdf: $("singlePagePdf").value === "true",
-    pageHeightPx: Math.max(400, Math.min(8000, parseInt($("pageHeightPx").value, 10) || 2400)),
-    pageFormat: $("pageFormat").value === "a4" ? "a4" : "free",
-    breakAtLines: $("breakAtLines").checked,
-    sourceMetadata: $("sourceMetadata").checked,
-    risSidecar: $("risSidecar").checked,
-    copyPath: $("copyPath").checked,
-    copyPathFormat: $("copyPathFormat").value,
-    fetchOriginal: $("fetchOriginal").checked,
-    tilePx: Math.max(800, Math.min(8000, parseInt($("tilePx").value, 10) || 4000)),
-    hideSticky: $("hideSticky").checked,
-    provenanceFooter: $("provenanceFooter").checked,
-    timeAnchor: $("timeAnchor").checked,
-    textLayer: $("textLayer").checked,
-    linkMap: $("linkMap").checked,
-    bildModus: $("bildModus").value,
-    hellerDruck: $("hellerDruck").checked,
-    fertigTon: $("fertigTon").checked,
-    reviewPromptOff: $("reviewPromptOff").checked,
-    uiLanguage: $("uiLanguage").value,
-    appLayout: $("appLayout").value,
-    afterCapture: $("afterCapture").value,
-    captureScale: parseFloat($("captureScale").value) || 1.0
-  };
-  await browser.storage.local.set(data);
+if ($("resetCounter")) {
+  $("resetCounter").addEventListener("click", async () => {
+    await browser.storage.local.set({ counter: 0 });
+    if ($("counterVal")) $("counterVal").textContent = "0000";
+    const s = $("status");
+    if (s) {
+      s.textContent = "Counter reset.";
+      setTimeout(() => { s.textContent = ""; }, 1800);
+    }
+  });
+}
 
-  // Sprache sofort anwenden statt erst beim naechsten Oeffnen. Ohne das
-  // wirkt eine Umstellung erst nach dem Neuladen der Seite - was aussieht,
-  // als haette die Einstellung nicht gegriffen.
-  if (window.PageShotI18n) {
-    try { await window.PageShotI18n.init(); } catch (_) { /* Anzeige bleibt */ }
-  }
+if ($("jpegQuality")) {
+  $("jpegQuality").addEventListener("input", e => {
+    if ($("qVal")) $("qVal").textContent = Number(e.target.value).toFixed(2);
+  });
+}
 
-  const s = $("status");
-  s.textContent = (window.PageShotI18n && window.PageShotI18n.t("optSaved")) || "Saved.";
-  setTimeout(() => { s.textContent = ""; }, 1800);
-});
+if ($("save")) {
+  $("save").addEventListener("click", async () => {
+    const data = {};
+    for (const f of FELDER) {
+      const wert = feldLesen(f);
+      if (wert !== undefined) data[f.schluessel] = wert;
+    }
+    if ($("singlePagePdf")) data.singlePagePdf = $("singlePagePdf").value === "true";
+    if ($("captureScale")) data.captureScale = parseFloat($("captureScale").value) || 1.0;
+
+    /* Die Belegangaben werden bei jedem Speichern mitgeschrieben.
+     *
+     * Nicht aus Umstaendlichkeit: Eine aeltere Fassung dieser Erweiterung
+     * hatte Schalter dafuer, und wer sie abgeschaltet hatte, traegt die
+     * gespeicherten Werte weiter mit sich herum. Ohne diese Zeilen bliebe
+     * ein Nutzer ohne Zitationsdatei — und faende auf der Seite keinen
+     * Schalter mehr, mit dem er sich das erklaeren koennte. */
+    /* Nur was WIRKLICH keinen Schalter mehr hat.
+     *
+     * "sourceMetadata" und "hideSticky" standen hier bis 2.35.17 mit drin —
+     * beide haben aber sehr wohl einen Schalter, naemlich im Popup. Wer die
+     * Quellenangaben dort abschaltete und danach die Einstellungen
+     * speicherte, hatte sie ungefragt wieder an. Dasselbe Muster wie bei der
+     * Liste der erzwungenen Werte im Hintergrunddienst: Ein Wert, den ein
+     * Bedienelement setzt, darf an keiner zweiten Stelle festgenagelt werden.
+     *
+     * "zitatDatei" und "risDatei" gehoeren aus demselben Grund nicht hierher:
+     * Sie sind ab jetzt die zwei Haken oben auf dieser Seite. */
+    Object.assign(data, {
+      linkMap: true, textLayer: true, timeAnchor: true,
+      fertigTon: true, breakAtLines: true,
+    });
+
+    await browser.storage.local.set(data);
+
+    // Sprache sofort anwenden statt erst beim naechsten Oeffnen.
+    if (window.PageShotI18n) {
+      try { await window.PageShotI18n.init(); } catch (_) { /* Anzeige bleibt */ }
+    }
+
+    const s = $("status");
+    if (s) {
+      s.textContent = (window.PageShotI18n && window.PageShotI18n.t("optSaved")) || "Saved.";
+      setTimeout(() => { s.textContent = ""; }, 1800);
+    }
+  });
+}
 
 load();
 
@@ -266,29 +384,23 @@ load();
  *
  * commands.getAll() liefert den Zustand, den der Browser tatsaechlich gesetzt
  * hat. Bleibt shortcut leer, hat der Browser die gewuenschte Kombination fuer
- * sich beansprucht - dann loest nichts aus, ohne dass es irgendwo auffiele.
- */
+ * sich beansprucht - dann loest nichts aus, ohne dass es irgendwo auffiele. */
 (async () => {
-  const now = document.getElementById("shortcutNow");
-  const btn = document.getElementById("shortcutManage");
+  const now = $("shortcutNow");
+  const btn = $("shortcutManage");
   if (!now) return;
 
   const t = (k, fb) => (window.PageShotI18n && window.PageShotI18n.t(k)) || fb;
 
   try {
     const cmds = await browser.commands.getAll();
-    // Chrome bekommt ein zweites Kuerzel; angezeigt wird, was der Browser
-    // davon tatsaechlich vergeben hat - moeglicherweise nur eines.
     const keys = cmds
       .filter(c => c.name.startsWith("capture-full-page") && c.shortcut)
       .map(c => c.shortcut);
-    const inline = document.getElementById("shortcutInline");
+    const inline = $("shortcutInline");
     if (keys.length) {
       now.textContent = keys.join("   /   ");
       now.style.color = "";
-      // Der Hinweiskasten weiter unten nannte die Kombination fest verdrahtet -
-      // nach dem Wechsel auf Alt+Shift+P stand dort das alte Kuerzel. Beide
-      // Stellen speisen sich jetzt aus derselben Abfrage.
       if (inline) inline.textContent = keys.join(" / ");
     } else {
       now.textContent = t("optShortcutNone", "none assigned");
@@ -302,9 +414,8 @@ load();
   /* Kein Tab-Aufruf: Browser lassen about:addons und chrome://extensions
    * grundsaetzlich nicht von einer Erweiterung oeffnen - der Versuch endete
    * in einem prompt-Dialog. Stattdessen steht die Adresse sichtbar da und
-   * laesst sich mit einem Klick kopieren.
-   */
-  const urlEl = document.getElementById("shortcutUrl");
+   * laesst sich mit einem Klick kopieren. */
+  const urlEl = $("shortcutUrl");
   const isChrome = /Chrome|Chromium|Edg/.test(navigator.userAgent);
   const url = isChrome ? "chrome://extensions/shortcuts" : "about:addons";
   if (urlEl) urlEl.textContent = url;
@@ -316,7 +427,6 @@ load();
         await navigator.clipboard.writeText(url);
         btn.textContent = t("optShortcutCopied", "Address copied");
       } catch (_) {
-        // Zwischenablage gesperrt: Text markieren, damit Strg+C reicht
         if (urlEl) {
           const r = document.createRange();
           r.selectNodeContents(urlEl);

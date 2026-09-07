@@ -49,8 +49,18 @@
       lang = s.uiLanguage || "auto";
     } catch (_) { /* Standard bleibt auto */ }
     table = loadTable(lang);
-    document.documentElement.lang = lang !== "auto" ? lang.split("_")[0]
-      : ((browser.i18n.getUILanguage && browser.i18n.getUILanguage()) || FALLBACK).slice(0, 2);
+    /* Die Sprachauszeichnung des Dokuments muss zum ANGEZEIGTEN Text passen.
+     *
+     * Bisher wurde die Browsersprache uebernommen, auch wenn es fuer sie gar
+     * keine Uebersetzung gibt — dann stand dort etwa lang="xx" ueber
+     * englischem Text. Vorleseprogramme und Rechtschreibpruefungen richten
+     * sich danach; eine falsche Angabe ist schlechter als eine grobe. */
+    const gewaehlt = lang !== "auto"
+      ? lang.split("_")[0]
+      : ((browser.i18n.getUILanguage && browser.i18n.getUILanguage()) || FALLBACK).split("-")[0];
+    const alle = (typeof PAGESHOT_MESSAGES !== "undefined") ? PAGESHOT_MESSAGES : {};
+    const vorhanden = Object.keys(alle).some(k => k.split("_")[0] === gewaehlt);
+    document.documentElement.lang = vorhanden ? gewaehlt : FALLBACK;
     apply();
   }
 

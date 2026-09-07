@@ -745,6 +745,316 @@
    * Crawler: Ein Behoerdenportal in der Probe trug KEINE einzige Landmarke.
    * Dort bleibt nur die Lage, und die kennt nur, wer die Seite gerendert hat.
    */
+  /* Den Lesetext als Markdown, mit erhaltenen Verweisen.
+   *
+   * Ein PDF ist ein Beleg — man kann es ablegen und zitieren, aber schlecht
+   * weiterverarbeiten. Wer den Text in seine Arbeit uebernehmen, ihn einem
+   * Sprachmodell vorlegen oder ihn durchsuchen will, braucht Text. Markdown,
+   * weil es die Gliederung mitnimmt (Ueberschriften, Listen, Zitate) und weil
+   * Verweise darin als [Text](Ziel) stehen bleiben, statt zu verschwinden.
+   *
+   * Die Auswahl des Artikels folgt derselben Bewertung wie im Vektorweg —
+   * Textmenge mal Absaetze, geteilt durch den Verweisanteil. Der Rumpf des
+   * Dokuments bleibt dabei aussen vor: Er enthaelt jeden Kandidaten und
+   * gewaenne jede Mengenmessung, womit die Erkennung nie ein Ergebnis haette. */
+  function artikelKandidat() {
+    var wahl = "article, main, [role=main], [itemprop=articleBody], .post, " +
+               ".entry-content, .article-body, #content, .content";
+    var kandidaten = Array.prototype.slice.call(document.querySelectorAll(wahl))
+      .filter(function (el) {
+        return el !== document.body && el !== document.documentElement;
+      });
+    var bester = null, bestwert = -1;
+    for (var i = 0; i < kandidaten.length; i++) {
+      var el = kandidaten[i];
+      var text = (el.innerText || "").trim();
+      if (text.length < 200) continue;
+      var verweistext = 0;
+      var anker = el.querySelectorAll("a");
+      for (var j = 0; j < anker.length; j++) verweistext += (anker[j].innerText || "").length;
+      var absaetze = el.querySelectorAll("p").length;
+      var anteil = verweistext / Math.max(1, text.length);
+      var wert = text.length * (1 + absaetze / 10) * (1 - Math.min(0.95, anteil));
+      if (wert > bestwert) { bestwert = wert; bester = el; }
+    }
+    return bester;
+  }
+
+  function alsMarkdown(wurzel) {
+    var zeilen = [];
+    var absatz = [];
+
+    /* Unsichtbare Zeichen entfernen.
+     *
+     * Dokumentationsseiten setzen an jede Ueberschrift eine Sprungmarke, deren
+     * Text aus einem Zero-Width-Space besteht. Im Bild sieht man nichts; im
+     * Markdown stand daraufhin "### " als leere Ueberschrift und "## ​ Ueber-
+     * blick" mit einem Zeichen davor, das sich nicht loeschen laesst, weil man
+     * es nicht sieht. Gemessen an platform.kimi.ai: drei solcher Stellen in
+     * einem Text. Betroffen sind Zero-Width-Space, -Non-Joiner, -Joiner, die
+     * Byte-Reihenfolge-Marke und das weiche Trennzeichen. */
+    function sichtbar(t) {
+      return String(t == null ? "" : t)
+        .replace(/[\u200B-\u200D\uFEFF\u00AD]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function spuelen() {
+      var t = absatz.join("").replace(/[\u200B-\u200D\uFEFF\u00AD]/g, "").replace(/[ \t]+/g, " ").trim();
+      if (t) zeilen.push(t, "");
+      absatz = [];
+    }
+
+    /* Absolute Adressen schreiben, keine relativen.
+     *
+     * Im Dokument steht oft "/hilfe/start". Aus der Datei heraus fuehrt das
+     * nirgendwohin — ein Verweis, der nur im Zusammenhang der Ursprungsseite
+     * funktioniert, ist in einer abgelegten Datei kein Verweis. Die
+     * href-Eigenschaft loest bereits gegen die Seitenadresse auf. */
+    function laufe(knoten, tiefe) {
+      for (var i = 0; i < knoten.childNodes.length; i++) {
+        var k = knoten.childNodes[i];
+
+        if (k.nodeType === 3) { absatz.push(k.nodeValue); continue; }
+        if (k.nodeType !== 1) continue;
+
+        var tag = k.tagName;
+        if (tag === "SCRIPT" || tag === "STYLE" || tag === "NOSCRIPT") continue;
+        // Unsichtbares gehoert nicht in den Text — es stand auch nicht im Bild.
+        var stil = getComputedStyle(k);
+        if (stil.display === "none" || stil.visibility === "hidden") continue;
+
+        if (/^H[1-6]$/.test(tag)) {
+          spuelen();
+          var stufe = parseInt(tag.charAt(1), 10);
+          var titel = sichtbar(k.innerText);
+          if (titel) zeilen.push(new Array(stufe + 1).join("#") + " " + titel, "");
+          continue;
+        }
+        if (tag === "A") {
+          var text = sichtbar(k.innerText);
+          var ziel = k.href || "";
+          if (text && /^(https?:|mailto:)/i.test(ziel)) {
+            absatz.push("[" + text.replace(/[\[\]]/g, "") + "](" + ziel + ")");
+          } else if (text) {
+            absatz.push(text);
+          }
+          continue;
+        }
+        if (tag === "IMG") {
+          var alt = sichtbar(k.getAttribute("alt"));
+          if (k.src) absatz.push("![" + alt.replace(/[\[\]]/g, "") + "](" + k.src + ")");
+          continue;
+        }
+        if (tag === "BR") { absatz.push("  \n"); continue; }
+        if (tag === "LI") {
+          spuelen();
+          var li = sichtbar(k.innerText);
+          if (li) zeilen.push("- " + li);
+          continue;
+        }
+        if (tag === "PRE") {
+          spuelen();
+          zeilen.push("```", (k.innerText || "").replace(/\s+$/, ""), "```", "");
+          continue;
+        }
+        if (tag === "CODE" && knoten.tagName !== "PRE") {
+          var c = (k.innerText || "").trim();
+          if (c) absatz.push("`" + c + "`");
+          continue;
+        }
+        if (tag === "BLOCKQUOTE") {
+          spuelen();
+          var zit = sichtbar(k.innerText);
+          if (zit) zeilen.push("> " + zit, "");
+          continue;
+        }
+        if (tag === "P" || tag === "DIV" || tag === "SECTION" || tag === "UL" ||
+            tag === "OL" || tag === "TABLE" || tag === "FIGURE") {
+          spuelen();
+          laufe(k, tiefe + 1);
+          spuelen();
+          continue;
+        }
+        laufe(k, tiefe + 1);
+      }
+    }
+
+    laufe(wurzel, 0);
+    spuelen();
+
+    // Mehr als eine Leerzeile hintereinander sagt nichts aus.
+    return zeilen.join("\n").replace(/\n{3,}/g, "\n\n").trim() + "\n";
+  }
+
+  /* Leseansicht in der Seite selbst.
+   *
+   * Das Gegenstueck zum Artikelmodus des Vektorwegs — aber ohne
+   * DevTools-Protokoll, also auch in Firefox und auf dem Telefon. Der Ablauf
+   * ist derselbe: den Lesetext bestimmen, alles daneben ausblenden, eine
+   * eigene Typografie darueberlegen. Danach nimmt der gewoehnliche Bildweg
+   * auf, was er immer aufnimmt — nur sieht die Seite jetzt aus wie ein
+   * Dokument und nicht wie eine Website.
+   *
+   * Gerade auf einem Telefon ist das der Unterschied zwischen lesbar und
+   * unlesbar: Ein Bildschirmfoto einer Doku-Seite mit dunklen Codefeldern und
+   * dreispaltiger Navigation laesst sich auf sechs Zoll nicht lesen.
+   *
+   * Nichts wird umgebaut: ein Stylesheet, zwei Attribute, restlos
+   * zuruecknehmbar. Ein umgestelltes Dokument kaeme nicht zuverlaessig
+   * zurueck, und ein zerschossener Reiter ist ein hoeherer Preis als eine
+   * unschoene Zeile. */
+  function leselayoutAn(schriftgroesse) {
+    if (document.getElementById("pdfsnap-lese-stil")) return { ok: true, schon: true };
+    const bester = artikelKandidat();
+    if (!bester) return { ok: false, grund: "kein Artikel erkennbar" };
+
+    let knoten = bester;
+    while (knoten && knoten.parentElement && knoten !== document.documentElement) {
+      for (const g of Array.from(knoten.parentElement.children)) {
+        if (g !== knoten) g.dataset.pdfsnapLeseAus = "1";
+      }
+      /* Die Vorfahren mitmarkieren.
+       *
+       * Ausblenden allein genuegt nicht: Der Weg vom Rumpf bis zum Artikel
+       * traegt fast immer Abstaende, die fuer eine mitlaufende Kopfleiste
+       * gedacht sind — ein padding-top von mehreren hundert Pixeln, das leer
+       * bleibt, sobald die Leiste weg ist. Gemessen an platform.kimi.ai auf
+       * Telefonbreite: 440 px Leerraum ueber der Ueberschrift. Deshalb werden
+       * die Vorfahren flachgelegt. */
+      knoten = knoten.parentElement;
+      if (knoten && knoten !== document.documentElement) knoten.dataset.pdfsnapLeseWeg = "1";
+    }
+    bester.dataset.pdfsnapLese = "1";
+
+    const gr = Number(schriftgroesse) || 18;
+    const stil = document.createElement("style");
+    stil.id = "pdfsnap-lese-stil";
+    stil.textContent = [
+      "[data-pdfsnap-lese-aus] { display: none !important; }",
+      "[data-pdfsnap-lese-weg] {",
+      "  padding: 0 !important; margin: 0 !important;",
+      "  max-width: none !important; width: auto !important;",
+      "  min-height: 0 !important; height: auto !important;",
+      "  display: block !important; overflow: visible !important;",
+      "  background: #fff !important; }",
+      "html, body { background: #fff !important; margin: 0 !important;",
+      "  padding: 0 !important; overflow: visible !important; height: auto !important; }",
+      "[data-pdfsnap-lese] {",
+      "  display: block !important; float: none !important; position: static !important;",
+      "  width: auto !important; max-width: none !important;",
+      "  margin: 0 !important; padding: 1.5em 1.6em !important;",
+      "  background: #fff !important; color: #111 !important;",
+      "  font-size: " + gr + "px !important; line-height: 1.65 !important;",
+      "  font-family: Georgia, 'Times New Roman', serif !important; }",
+      "[data-pdfsnap-lese] * { background-color: transparent !important;",
+      "  color: #111 !important; max-width: 100% !important; box-shadow: none !important; }",
+      "[data-pdfsnap-lese] p, [data-pdfsnap-lese] li {",
+      "  font-size: 1em !important; line-height: 1.65 !important; margin: .7em 0 !important; }",
+      "[data-pdfsnap-lese] h1 { font-size: 1.9em !important; line-height: 1.25 !important;",
+      "  margin: 0 0 .5em !important; }",
+      "[data-pdfsnap-lese] h2 { font-size: 1.45em !important; margin: 1.4em 0 .4em !important; }",
+      "[data-pdfsnap-lese] h3 { font-size: 1.2em !important; margin: 1.2em 0 .3em !important; }",
+      "[data-pdfsnap-lese] a { color: #1a4fa0 !important; text-decoration: underline !important; }",
+      "[data-pdfsnap-lese] img, [data-pdfsnap-lese] figure, [data-pdfsnap-lese] svg {",
+      "  max-width: 100% !important; height: auto !important; margin: 1em 0 !important; }",
+      /* Code hell und umgebrochen: waagerechtes Schieben gibt es auf einem
+         Blatt nicht, und was rechts hinausragt, fehlt in der Aufnahme. */
+      "[data-pdfsnap-lese] pre, [data-pdfsnap-lese] code {",
+      "  background: #f5f5f5 !important; color: #111 !important;",
+      "  font-family: ui-monospace, Menlo, Consolas, monospace !important;",
+      "  font-size: .82em !important; white-space: pre-wrap !important;",
+      "  word-break: break-word !important; overflow: visible !important; }",
+      "[data-pdfsnap-lese] pre { padding: .8em !important; border: 1px solid #ddd !important;",
+      "  border-radius: 4px !important; margin: 1em 0 !important; }",
+      "[data-pdfsnap-lese] table { width: 100% !important; border-collapse: collapse !important;",
+      "  font-size: .9em !important; }",
+      "[data-pdfsnap-lese] th, [data-pdfsnap-lese] td {",
+      "  border: 1px solid #ccc !important; padding: .4em .6em !important; }",
+      "[data-pdfsnap-lese] blockquote { border-left: 3px solid #ccc !important;",
+      "  padding-left: 1em !important; margin: 1em 0 !important; font-style: italic !important; }"
+    ].join("\n");
+    document.documentElement.appendChild(stil);
+
+    /* Nach oben, bevor aufgenommen wird.
+     *
+     * Der Umbau macht die Seite kuerzer; stand der Bildlauf vorher weit
+     * unten, zeigt der erste Ausschnitt dann Leerraum. Die Aufnahme faengt
+     * ohnehin oben an — hier wird nur dafuer gesorgt, dass die Seite auch
+     * dort steht. */
+    try { window.scrollTo(0, 0); } catch (_) { /* egal */ }
+
+    return { ok: true, zeichen: (bester.innerText || "").length };
+  }
+
+  function leselayoutAus() {
+    const stil = document.getElementById("pdfsnap-lese-stil");
+    if (stil) stil.remove();
+    document.querySelectorAll("[data-pdfsnap-lese-aus]").forEach(
+      el => delete el.dataset.pdfsnapLeseAus);
+    document.querySelectorAll("[data-pdfsnap-lese-weg]").forEach(
+      el => delete el.dataset.pdfsnapLeseWeg);
+    document.querySelectorAll("[data-pdfsnap-lese]").forEach(
+      el => delete el.dataset.pdfsnapLese);
+    return { ok: true };
+  }
+
+  function collectArticle() {
+    var el = artikelKandidat();
+    if (!el) return { ok: false, grund: "kein Artikel erkennbar" };
+    var text = alsMarkdown(el);
+    if (!text || text.length < 100) return { ok: false, grund: "zu wenig Text" };
+    var anzahl = (text.match(/\]\(https?:/g) || []).length;
+    return {
+      ok: true,
+      markdown: text,
+      zeichen: text.length,
+      verweise: anzahl,
+      titel: (document.title || "").trim(),
+    };
+  }
+
+  /* Auf der aeusseren Ebene, damit zwei Aufrufer sie nutzen koennen.
+   *
+   * Sie stand bis 2.35.11 innerhalb von sammleQuelle. Die schlanke
+   * Titelabfrage (cmd "seitenTitel"), die es gibt, damit ein Dateiname auch
+   * dann stimmt, wenn die grosse Meta-Auswertung nicht durchkommt, konnte sie
+   * von dort aus nicht erreichen. */
+  /* Die sichtbare Hauptueberschrift, sofern sie eine ist.
+   *
+   * Genommen wird die erste <h1>, die im Inhalt steht und nicht bloss das
+   * Seitengeruest beschriftet. Ausgeschlossen sind Ueberschriften in
+   * Kopf-, Fuss- und Navigationsbereichen — dort steht der Name der
+   * Website, nicht der des Textes. Zu kurze und zu lange Zeilen sind
+   * ebenfalls keine Titel: ein Zeichen ist ein Logo, zweihundert sind ein
+   * Absatz. */
+  function ueberschriftTitel() {
+    const kandidaten = document.querySelectorAll("h1");
+    for (const h of kandidaten) {
+      // Navigation und Randspalten scheiden immer aus.
+      if (h.closest("nav, aside, [role=navigation], [role=banner], [role=contentinfo]"))
+        continue;
+      /* <header> und <footer> dagegen nur, wenn sie zum Seitengeruest
+       * gehoeren. Innerhalb von <main> oder <article> ist ein <header> der
+       * Kopf des Textes und traegt genau den gesuchten Titel — gemessen an
+       * platform.kimi.ai steht die Ueberschrift dort in
+       * "H1 < DIV < DIV < HEADER < DIV < DIV < MAIN". Der erste Entwurf
+       * schloss jedes <header> aus und fand deshalb ueberhaupt keine
+       * Ueberschrift. */
+      const geruest = h.closest("header, footer");
+      if (geruest && !geruest.closest("main, article, [role=main]")) continue;
+      const st = getComputedStyle(h);
+      if (st.display === "none" || st.visibility === "hidden") continue;
+      const t = (h.innerText || "")
+        .replace(/[\u200B-\u200D\uFEFF\u00AD]/g, "")
+        .replace(/\s+/g, " ").trim();
+      if (t.length >= 3 && t.length <= 180) return t;
+    }
+    return "";
+  }
+
+
   function collectLinks() {
     const BLAETTERN = /^(next|prev|previous|weiter|zurück|zurueck|nächste|vorige|»|«|›|‹|\d{1,3})$/i;
 
@@ -773,13 +1083,48 @@
     const seiteH = document.documentElement.scrollHeight;
     const eigenerHost = location.host;
     const links = [];
-    for (const a of document.querySelectorAll("a[href]")) {
+    /* Auch Schaltflaechen, sofern sich ein Ziel ermitteln laesst.
+     *
+     * Viele Seiten bauen Navigation aus <button> oder <div role="button">
+     * statt aus Verweisen. Wo diese Elemente ein Ziel TRAGEN — in data-href,
+     * data-url, formaction oder als Verweis im Elternpfad —, gehoeren sie ins
+     * PDF wie jeder andere Verweis auch.
+     *
+     * Wo sie keines tragen, kann nichts erzeugt werden, und das ist keine
+     * Nachlaessigkeit: Eine PDF-Anmerkung braucht eine Adresse. Ein Knopf, der
+     * per JavaScript eine Suchmaske oeffnet oder Text in die Zwischenablage
+     * legt, hat keine. Gemessen an platform.kimi.ai: 21 Schaltflaechen, keine
+     * einzige mit ermittelbarem Ziel — es sind Suche, "Copy page", Zoom und
+     * Menue-Oeffner. Ein Klickfeld ohne Ziel waere ein Versprechen, das die
+     * Datei nicht halten kann. */
+    function zielVonSchaltflaeche(el) {
+      const daten = el.getAttribute("data-href") || el.getAttribute("data-url")
+                 || el.getAttribute("data-link") || el.getAttribute("formaction");
+      if (daten) {
+        try { return new URL(daten, location.href).href; } catch (_) { return ""; }
+      }
+      const anker = el.closest("a[href]");
+      return anker ? anker.href : "";
+    }
+
+    const kandidaten = [
+      ...document.querySelectorAll("a[href]"),
+      ...document.querySelectorAll(
+        "button[data-href], button[data-url], button[data-link], button[formaction], " +
+        "[role=button][data-href], [role=button][data-url], [role=button][data-link], " +
+        "[role=link][data-href], [role=link][data-url]"),
+    ];
+
+    const gesehen = new Set();
+    for (const a of kandidaten) {
+      if (gesehen.has(a)) continue;
+      gesehen.add(a);
       const st = getComputedStyle(a);
       if (st.visibility === "hidden" || st.display === "none" || +st.opacity === 0)
         continue;
       const k = a.getBoundingClientRect();
       if (k.width < 2 || k.height < 2) continue;
-      const ziel = a.href;
+      const ziel = a.tagName === "A" ? a.href : zielVonSchaltflaeche(a);
       if (!/^https?:/i.test(ziel)) continue;
       let host = "";
       try { host = new URL(ziel).host; } catch (_) { continue; }
@@ -975,8 +1320,26 @@
     const journal = erste("citation_journal_title", "prism.publicationname", "dc.source") ||
                     buchTitel || tagung;
     const q = {
-      titel: erste("citation_title", "dc.title", "dcterms.title", "og:title") ||
-             (ld.headline || "") || document.title || "",
+      /* Der Titel, und warum die Ueberschrift der Seite mitreden darf.
+       *
+       * Auf Seiten, die ihre Unterseiten per JavaScript nachladen, werden die
+       * Meta-Angaben beim Weiterklicken oft NICHT aktualisiert — sie tragen
+       * dann bis zum Neuladen den Wert der Seite, auf der man eingestiegen
+       * ist. Gemeldet am 18.08.2026: Jede Aufnahme in einer
+       * Dokumentationsseite hiess "Quickstart", egal welche Unterseite gerade
+       * offenstand. Nachgemessen an platform.kimi.ai: og:title und
+       * document.title nennen "Kimi K2.6 - Kimi API Platform", die sichtbare
+       * Ueberschrift dagegen "Kimi K2.6" — und "Quickstart" kommt ueberhaupt
+       * nur in der Adresse vor.
+       *
+       * Die erste Ueberschrift steht im Dokument und wird beim Umschalten
+       * zwangslaeufig mit ausgetauscht; sie ist damit die zuverlaessigere
+       * Angabe. Vorrang bekommt sie aber nur, wenn keine ECHTE Verlagsangabe
+       * vorliegt: citation_title und dc.title stammen aus der
+       * Literaturauszeichnung und sind genauer als jede Ueberschrift. */
+      titel: erste("citation_title", "dc.title", "dcterms.title") ||
+             ueberschriftTitel() ||
+             erste("og:title") || (ld.headline || "") || document.title || "",
       autoren: autoren,
       jahr: jahr,
       datum: String(rohDatum || ""),
@@ -1085,6 +1448,36 @@
     const teile = location.hostname.split(".");
     const kern = teile.length > 1 ? teile[teile.length - 2] : teile[0];
     q.titel = q.titel.replace(/^[\s|–—-]+|[\s|–—-]+$/g, "").trim();
+
+    /* Den Namen der Website aus dem Titel nehmen.
+     *
+     * Fast jede Seite haengt ihn an: "Kimi K2.6 - Kimi API Platform",
+     * "Artikel | Zeitung", "Thema – Firma". Bei jeder Aufnahme derselben
+     * Website steht damit derselbe Zusatz im Dateinamen, und er ist es, der
+     * bei der Laengengrenze den eigentlichen Titel abschneidet — der Zusatz
+     * ueberlebt, weil er hinten steht, der Inhalt faellt weg.
+     *
+     * Entfernt wird nur, was nachweislich der Name der Website ist: der Wert
+     * aus og:site_name oder der Kern des Hostnamens, und nur hinter einem
+     * Trennzeichen. Ein Titel, der zufaellig so endet, bleibt unberuehrt —
+     * und was uebrig bliebe, muss noch etwas hergeben: "Impressum – Firma"
+     * darf nicht zu "Impressum" verkuemmern und "Firma" nicht zu nichts. */
+    (function seitennamenKuerzen() {
+      var namen = [];
+      if (seitenName) namen.push(String(seitenName).trim());
+      if (kern) namen.push(String(kern).trim());
+      for (var i = 0; i < namen.length; i++) {
+        var n = namen[i];
+        if (!n || n.length < 2) continue;
+        var esc = n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        var hinten = new RegExp("\\s*[-–—|:·]\\s*" + esc + "\\s*$", "i");
+        var vorne = new RegExp("^\\s*" + esc + "\\s*[-–—|:·]\\s*", "i");
+        var gekuerzt = q.titel.replace(hinten, "").replace(vorne, "").trim();
+        // Mindestens drei Zeichen muessen stehen bleiben, sonst war der
+        // vermeintliche Zusatz der Titel selbst.
+        if (gekuerzt.length >= 3 && gekuerzt !== q.titel) q.titel = gekuerzt;
+      }
+    })();
     // Bleibt nach der Bereinigung nur der Name der Website stehen, ist das
     // kein Werktitel — bioRxiv liefert "| bioRxiv".
     const nurSeitenname = q.titel.toLowerCase() === (seitenName || "").trim().toLowerCase() ||
@@ -1369,6 +1762,66 @@
             break;
           case "collectLinks":
             sendResponse(collectLinks());
+            break;
+          /* Nur der Titel — ein Aufruf, der nicht scheitern kann.
+           *
+           * collectSource wertet Dutzende Meta-Angaben aus; geht dort etwas
+           * schief, gibt es gar keinen Titel und der Dateiname faellt auf den
+           * Reitertitel zurueck. Der ist bei Seiten, die ihre Unterseiten
+           * nachladen, der Titel der EINSTIEGSSEITE — daher hiess jede
+           * Aufnahme "Quickstart". Diese Abfrage liest nur zwei Dinge und
+           * ueberlebt deshalb auch dann, wenn die grosse Auswertung nicht
+           * durchkommt. */
+          /* Eine Datei aus der Seite heraus ablegen.
+           *
+           * Der Rueckfallweg fuer Beilagen: Manche Browser lassen einer
+           * Erweiterung nur EINE Ablage ohne Rueckfrage durchgehen; das PDF
+           * kommt an, die Zitationsdatei nicht. Ein Anker mit
+           * download-Attribut zaehlt dagegen als Handlung der Seite.
+           *
+           * Der Blob wird hier erzeugt und sofort wieder freigegeben — eine
+           * liegengelassene Objekt-Adresse haelt den Speicher fest, solange
+           * die Seite offen ist. */
+          case "dateiAblegen": {
+            try {
+              const blob = new Blob([msg.inhalt || ""],
+                { type: (msg.mime || "text/plain") + ";charset=utf-8" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = String(msg.name || "datei.txt");
+              a.style.display = "none";
+              document.body.appendChild(a);
+              a.click();
+              setTimeout(() => {
+                try { a.remove(); URL.revokeObjectURL(url); } catch (_) { /* egal */ }
+              }, 4000);
+              sendResponse({ ok: true });
+            } catch (e) {
+              sendResponse({ ok: false, grund: (e && e.message) || "unbekannt" });
+            }
+            break;
+          }
+          case "seitenTitel":
+            sendResponse({
+              ok: true,
+              titel: (function () {
+                try {
+                  const h = ueberschriftTitel && ueberschriftTitel();
+                  if (h) return h;
+                } catch (_) { /* weiter zum Dokumenttitel */ }
+                return (document.title || "").trim();
+              })(),
+            });
+            break;
+          case "collectArticle":
+            sendResponse(collectArticle());
+            break;
+          case "leseAn":
+            sendResponse(leselayoutAn(msg.schriftgroesse));
+            break;
+          case "leseAus":
+            sendResponse(leselayoutAus());
             break;
           case "getLayout":
             sendResponse(measureLayout());

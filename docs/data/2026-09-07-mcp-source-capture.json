@@ -1,0 +1,181 @@
+{
+ "geprueft_am": "2026-09-07 13:37",
+ "faelle": 4,
+ "bestanden": 4,
+ "pruefungen": 23,
+ "erfuellt": 23,
+ "bytes_gesamt": 7955881,
+ "dauer_s": 3.6,
+ "ergebnisse": [
+  {
+   "name": "PDF im Rahmen (Zenodo)",
+   "url": "https://zenodo.org/records/22539062",
+   "schwierigkeit": "Vorschauadresse endet auf .pdf, liefert aber HTML",
+   "befunde": [
+    {
+     "pruefung": "exakte Dateigröße",
+     "erfuellt": true,
+     "wert": "495,073 erwartet 495,073"
+    },
+    {
+     "pruefung": "gültiges PDF",
+     "erfuellt": true,
+     "wert": null
+    },
+    {
+     "pruefung": "mindestens 20 Seiten",
+     "erfuellt": true,
+     "wert": 25
+    },
+    {
+     "pruefung": "Titel vorhanden",
+     "erfuellt": true,
+     "wert": "The Cognitive Divide in the Age of Artificial Inte"
+    },
+    {
+     "pruefung": "mindestens 1 Verfasser",
+     "erfuellt": true,
+     "wert": 1
+    },
+    {
+     "pruefung": "Jahr 2026",
+     "erfuellt": true,
+     "wert": "2026"
+    },
+    {
+     "pruefung": "RIS-Satz erzeugbar",
+     "erfuellt": true,
+     "wert": null
+    }
+   ],
+   "zitation_ms": 540,
+   "bytes": 495073,
+   "seiten": 25,
+   "sha256": "cfe73d5bc226fa8c",
+   "geholt_von": "https://zenodo.org/records/22539062/files/ANDRES_TheCognitiveDivideInTheAgeOfArtificialIntelligence_v3.pdf",
+   "dateiname": "Andres_2026_The-Cognitive-Divide-in-the-Age-of-Artificial-Intelligence-Def.pdf",
+   "dauer_ms": 1090,
+   "bestanden": true
+  },
+  {
+   "name": "Adresse ohne Endung (arXiv)",
+   "url": "https://arxiv.org/abs/1706.03762",
+   "schwierigkeit": "citation_pdf_url zeigt auf /pdf/… ohne .pdf",
+   "befunde": [
+    {
+     "pruefung": "exakte Dateigröße",
+     "erfuellt": true,
+     "wert": "2,215,244 erwartet 2,215,244"
+    },
+    {
+     "pruefung": "gültiges PDF",
+     "erfuellt": true,
+     "wert": null
+    },
+    {
+     "pruefung": "mindestens 14 Seiten",
+     "erfuellt": true,
+     "wert": 15
+    },
+    {
+     "pruefung": "Titel vorhanden",
+     "erfuellt": true,
+     "wert": "Attention Is All You Need"
+    },
+    {
+     "pruefung": "mindestens 8 Verfasser",
+     "erfuellt": true,
+     "wert": 8
+    },
+    {
+     "pruefung": "Jahr 2017",
+     "erfuellt": true,
+     "wert": "2017"
+    },
+    {
+     "pruefung": "RIS-Satz erzeugbar",
+     "erfuellt": true,
+     "wert": null
+    }
+   ],
+   "zitation_ms": 166,
+   "bytes": 2215244,
+   "seiten": 15,
+   "sha256": "bdfaa68d8984f0dc",
+   "geholt_von": "https://arxiv.org/pdf/1706.03762",
+   "dateiname": "Vaswani_2017_Attention-Is-All-You-Need.pdf",
+   "dauer_ms": 704,
+   "bestanden": true
+  },
+  {
+   "name": "Direkte PDF-Adresse",
+   "url": "https://arxiv.org/pdf/2303.08774",
+   "schwierigkeit": "keine HTML-Seite, keine Angaben zu holen",
+   "befunde": [
+    {
+     "pruefung": "exakte Dateigröße",
+     "erfuellt": true,
+     "wert": "5,245,564 erwartet 5,245,564"
+    },
+    {
+     "pruefung": "gültiges PDF",
+     "erfuellt": true,
+     "wert": null
+    },
+    {
+     "pruefung": "mindestens 90 Seiten",
+     "erfuellt": true,
+     "wert": 100
+    },
+    {
+     "pruefung": "Titel vorhanden",
+     "erfuellt": true,
+     "wert": "GPT-4 Technical Report"
+    },
+    {
+     "pruefung": "mindestens 1 Verfasser",
+     "erfuellt": true,
+     "wert": 281
+    },
+    {
+     "pruefung": "Jahr 2023",
+     "erfuellt": true,
+     "wert": "2023"
+    },
+    {
+     "pruefung": "RIS-Satz erzeugbar",
+     "erfuellt": true,
+     "wert": null
+    }
+   ],
+   "zitation_ms": 666,
+   "bytes": 5245564,
+   "seiten": 100,
+   "sha256": "c33a66dadca2388d",
+   "geholt_von": "https://arxiv.org/pdf/2303.08774",
+   "dateiname": "OpenAI_2023_GPT-4-Technical-Report.pdf",
+   "dauer_ms": 1259,
+   "bestanden": true
+  },
+  {
+   "name": "Gewöhnliche Seite ohne PDF",
+   "url": "https://de.wikipedia.org/wiki/PDF",
+   "schwierigkeit": "heißt PDF, ist keines — darf NICHTS liefern",
+   "befunde": [
+    {
+     "pruefung": "liefert korrekt kein PDF",
+     "erfuellt": true,
+     "wert": null
+    },
+    {
+     "pruefung": "Adresse nicht als PDF eingestuft",
+     "erfuellt": true,
+     "wert": null
+    }
+   ],
+   "zitation_ms": 270,
+   "dauer_ms": 590,
+   "bestanden": true
+  }
+ ]
+}

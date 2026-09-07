@@ -37,8 +37,12 @@ veraltet und die Seite sagt das selbst — eine Zahl ohne Datum wird
 stillschweigend falsch, und das ist schlimmer als keine Zahl.
 """
 import argparse
+import collections
 import datetime
+import ipaddress
 import json
+import os
+import socket
 import subprocess
 import sys
 import urllib.request
@@ -85,16 +89,69 @@ SCAN_MUSTER = (".env", ".git", "keys.json", ".tfvars", "wp-login", "wp-includes"
                "wp-admin", ".sql", "config.json", "credentials", ".aws", ".ssh")
 
 
+# Mehrere Vault-Eintraege tragen Cloudflare-Token fuer diese Zone, mit
+# unterschiedlichem Zuschnitt. Welcher davon Analytics lesen darf, steht in
+# keinem Feld — es muss ausprobiert werden.
+TOKEN_KURZ = ("c8b0a042", "0fd9f886", "84c722a0", "d0ba695f")
+
+
+def _analytics_lesbar(tok):
+    """Darf dieses Token die Zone-Analytik lesen?
+
+    NICHT ueber /user/tokens/verify pruefen. Ein Token ohne User-Scope
+    scheitert dort mit 401, obwohl es fuer Zone und Account gueltig ist — am
+    15.08.2026 galten dadurch drei brauchbare Token faelschlich als widerrufen,
+    darunter das einzige mit Analytics-Recht. Gefragt wird deshalb genau das,
+    was gebraucht wird.
+    """
+    seit = (datetime.datetime.now(datetime.UTC)
+            - datetime.timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    q = {"query": "query($z:String!,$s:Time!){viewer{zones(filter:{zoneTag:$z}){"
+                  "httpRequestsAdaptiveGroups(limit:1,filter:{datetime_geq:$s})"
+                  "{count}}}}",
+         "variables": {"z": ZONE, "s": seit}}
+    r = urllib.request.Request(
+        "https://api.cloudflare.com/client/v4/graphql", json.dumps(q).encode(),
+        {"authorization": "Bearer " + tok, "content-type": "application/json"})
+    try:
+        with urllib.request.urlopen(r, timeout=25) as a:
+            return not (json.load(a).get("errors"))
+    except Exception:
+        return False
+
+
 def token():
+    aus_umgebung = os.environ.get("CF_API_TOKEN", "").strip()
+    if aus_umgebung:
+        return aus_umgebung
     try:
         sitzung = open("/dev/shm/bw-session").read().strip()
     except OSError:
         sys.exit("Vaultwarden nicht offen — vault-popup-unlock ausfuehren.")
-    r = subprocess.run(["bw", "get", "item", ITEM, "--session", sitzung],
-                       capture_output=True, text=True)
-    if r.returncode:
-        sys.exit("Token nicht lesbar.")
-    return (json.loads(r.stdout).get("login") or {}).get("password", "").strip()
+    versucht = []
+    for kennung in TOKEN_KURZ:
+        r = subprocess.run(["bw", "get", "item", kennung, "--session", sitzung],
+                           capture_output=True, text=True)
+        if r.returncode:
+            continue
+        try:
+            eintrag = json.loads(r.stdout)
+        except Exception:
+            continue
+        tok = (eintrag.get("login") or {}).get("password", "").strip()
+        if not tok:
+            continue
+        versucht.append(eintrag.get("name", kennung))
+        if _analytics_lesbar(tok):
+            return tok
+    sys.exit(
+        "Kein hinterlegtes Token darf die Zone-Analytik lesen.\n"
+        "Geprueft: " + ", ".join(versucht or ["keines lesbar"]) + "\n\n"
+        "Neues Token erzeugen im Konto Blockinhalt@gmail.com:\n"
+        "  dash.cloudflare.com -> My Profile -> API Tokens -> Create Token\n"
+        "  Berechtigung: Zone -> Analytics -> Read\n"
+        "  Zone:         provinglab.dev\n\n"
+        "Oder fuer einen einzelnen Lauf: export CF_API_TOKEN=<token>")
 
 
 def frag(tok, abfrage, variablen):
@@ -122,14 +179,172 @@ ABFRAGE_PFADE = ("query($z:String!,$s:Time!){viewer{zones(filter:{zoneTag:$z}){"
                  "httpRequestsAdaptiveGroups(limit:500,filter:{datetime_geq:$s},"
                  "orderBy:[count_DESC]){count "
                  "dimensions{userAgent clientRequestPath}}}}}")
+# Kennzeichen GEGEN Herkunft. Ohne diese Abfrage bleibt der Bericht bei dem
+# stehen, was der Kopf der Anfrage behauptet — und genau das nennt die
+# Einleitung dieser Datei selbst „kein Ausweis".
+#
+# Die Feldnamen sind von der API bestaetigt (15.08.2026): Cloudflare prueft das
+# Schema VOR den Rechten. Ein erfundenes Feld liefert `unknown field "..."`,
+# diese Abfrage liefert nur den Rechtefehler — also ist sie schemagueltig.
+# Gegenprobe mit einem Token ohne Analytics-Recht gefahren, damit die Aussage
+# nicht auf einem geglueckten Lauf beruht, sondern auf dem Unterschied.
+ABFRAGE_HERKUNFT = ("query($z:String!,$s:Time!){viewer{zones(filter:{zoneTag:$z}){"
+                    "httpRequestsAdaptiveGroups(limit:2000,filter:{datetime_geq:$s},"
+                    "orderBy:[count_DESC]){count "
+                    "dimensions{userAgent clientIP}}}}}")
+
+# Pfade des MCP-Servers. Sie werden getrennt gezaehlt: ein Werkzeugaufruf ist
+# kein Seitenabruf, und die Frage "wie oft nutzt jemand den Server" ist eine
+# andere als "wie oft liest jemand die Seite".
+MCP_PFADE = ("/mcp", "/.well-known/mcp.json", "/server.json")
 
 
-def erheben(tok, stunden=23.9):
+# ---------------------------------------------------------------- Herkunft
+#
+# Zwei Wege, eine Anfrage dem genannten Anbieter zuzuordnen:
+#
+#   1. Veroeffentlichte Adressbereiche. OpenAI und Perplexity legen ihre
+#      Crawler-Netze als JSON offen. Faellt die Herkunft hinein, ist die
+#      Zuordnung gesichert.
+#   2. Rueckwaerts-DNS MIT Vorwaerts-Gegenprobe, fuer Anbieter ohne Liste
+#      (Anthropic, Google). Die IP muss auf einen Namen des Anbieters zeigen
+#      UND dieser Name wieder auf dieselbe IP. Ohne die zweite Haelfte beweist
+#      ein PTR-Eintrag nichts — den setzt, wer die Adresse kontrolliert.
+#
+# Was keinem der beiden Wege standhaelt, erscheint als "unbestaetigt". Es wird
+# nicht weggelassen: eine Faelschung ist ein Befund, kein Messfehler.
+
+IP_LISTEN = {
+    "OpenAI": ("https://openai.com/gptbot.json",
+               "https://openai.com/searchbot.json",
+               "https://openai.com/chatgpt-user.json"),
+    "Perplexity": ("https://www.perplexity.com/perplexitybot.json",
+                   "https://www.perplexity.com/perplexity-user.json"),
+}
+RDNS_ENDUNGEN = {
+    "anthropic.com": "Anthropic", "claudebot.com": "Anthropic",
+    "googlebot.com": "Google", "google.com": "Google",
+    "search.msn.com": "Microsoft", "applebot.apple.com": "Apple",
+    "crawl.yahoo.net": "Yahoo",
+}
+# Welcher Anbieter steckt hinter einem Kennzeichen? Fuer den Abgleich
+# Behauptung gegen Herkunft.
+KENNZEICHEN_ANBIETER = {
+    "claudebot": "Anthropic", "claude-web": "Anthropic",
+    "gptbot": "OpenAI", "chatgpt-user": "OpenAI", "oai-searchbot": "OpenAI",
+    "perplexitybot": "Perplexity", "perplexity-user": "Perplexity",
+    "google-extended": "Google", "applebot-extended": "Apple",
+    "googlebot": "Google", "bingbot": "Microsoft",
+}
+
+
+def netze_laden():
+    netze = collections.defaultdict(list)
+    for anbieter, urls in IP_LISTEN.items():
+        for url in urls:
+            try:
+                with urllib.request.urlopen(url, timeout=20) as r:
+                    d = json.load(r)
+            except Exception:
+                continue
+            for e in d.get("prefixes", []):
+                for s in ("ipv4Prefix", "ipv6Prefix"):
+                    if e.get(s):
+                        try:
+                            netze[anbieter].append(ipaddress.ip_network(e[s]))
+                        except ValueError:
+                            pass
+    return netze
+
+
+_RDNS = {}
+
+
+def _rdns(ip):
+    if ip in _RDNS:
+        return _RDNS[ip]
+    ergebnis = None
+    try:
+        name = socket.gethostbyaddr(ip)[0].lower().rstrip(".")
+        treffer = next((a for d, a in RDNS_ENDUNGEN.items()
+                        if name == d or name.endswith("." + d)), None)
+        if treffer and ip in {i[4][0] for i in socket.getaddrinfo(name, None)}:
+            ergebnis = treffer
+    except Exception:
+        pass
+    _RDNS[ip] = ergebnis
+    return ergebnis
+
+
+def herkunft_pruefen(ip, netze):
+    """-> Anbietername oder None."""
+    try:
+        adr = ipaddress.ip_address(ip)
+    except ValueError:
+        return None
+    for anbieter, liste in netze.items():
+        if any(adr in n for n in liste):
+            return anbieter
+    return _rdns(ip)
+
+
+def belege_sammeln(tok, seit_str, netze):
+    """Je Kennzeichen: wie viele Anfragen kamen aus bestaetigter Herkunft?
+
+    Rueckgabe: {kennzeichen_name: {"bestaetigt": n, "unbestaetigt": n,
+                                   "fremde_herkunft": {anbieter: n}}}
+    """
+    try:
+        zeilen = frag(tok, ABFRAGE_HERKUNFT,
+                      {"z": ZONE, "s": seit_str})["httpRequestsAdaptiveGroups"]
+    except Exception:
+        return {}
+    raus = {}
+    for x in zeilen:
+        ua = (x["dimensions"].get("userAgent") or "").lower()
+        kenn = next((k for k in KENNZEICHEN_ANBIETER if k in ua), None)
+        if not kenn:
+            continue
+        erwartet = KENNZEICHEN_ANBIETER[kenn]
+        tatsaechlich = herkunft_pruefen(x["dimensions"].get("clientIP", ""), netze)
+        e = raus.setdefault(kenn, {"erwartet": erwartet, "bestaetigt": 0,
+                                   "unbestaetigt": 0, "fremde_herkunft": {}})
+        if tatsaechlich == erwartet:
+            e["bestaetigt"] += x["count"]
+        else:
+            e["unbestaetigt"] += x["count"]
+            if tatsaechlich:
+                e["fremde_herkunft"][tatsaechlich] = \
+                    e["fremde_herkunft"].get(tatsaechlich, 0) + x["count"]
+    return raus
+
+
+def mcp_zaehlen(pfade_zeilen):
+    """Werkzeugaufrufe am MCP-Server, getrennt nach Pfad und Aufrufer."""
+    gesamt, je_pfad, je_ua = 0, {}, {}
+    for x in pfade_zeilen:
+        pfad = (x["dimensions"].get("clientRequestPath") or "").lower()
+        if not any(pfad == m or pfad.startswith(m + "/") for m in MCP_PFADE):
+            continue
+        n = x["count"]
+        gesamt += n
+        je_pfad[pfad] = je_pfad.get(pfad, 0) + n
+        ua = (x["dimensions"].get("userAgent") or "unbekannt")[:60]
+        je_ua[ua] = je_ua.get(ua, 0) + n
+    return {"gesamt": gesamt,
+            "je_pfad": dict(sorted(je_pfad.items(), key=lambda i: -i[1])),
+            "je_aufrufer": dict(sorted(je_ua.items(), key=lambda i: -i[1])[:10])}
+
+
+def erheben(tok, stunden=23.5):
     seit = (datetime.datetime.now(datetime.UTC)
             - datetime.timedelta(hours=stunden))
     v = {"z": ZONE, "s": seit.strftime("%Y-%m-%dT%H:%M:%SZ")}
     summen = frag(tok, ABFRAGE_SUMMEN, v)["httpRequestsAdaptiveGroups"]
     pfade = frag(tok, ABFRAGE_PFADE, v)["httpRequestsAdaptiveGroups"]
+    netze = netze_laden()
+    belege = belege_sammeln(tok, v["s"], netze)
+    mcp = mcp_zaehlen(pfade)
 
     def einordnen(ua):
         u = ua.lower()
@@ -183,6 +398,13 @@ def erheben(tok, stunden=23.9):
         "gemessen_am": datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%d"),
         "stand": datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "fenster_stunden": round(stunden, 1),
+        # Kennzeichen gegen Herkunft. Das Feld unterscheidet, was belegt ist,
+        # von dem, was nur behauptet wurde — der Rest des Berichts kann das
+        # nicht, weil er nur den Kopf der Anfrage kennt.
+        "herkunft_geprueft": belege,
+        # Werkzeugaufrufe am MCP-Server. Getrennt von den Leseabrufen, weil ein
+        # Aufruf von /mcp keine gelesene Seite ist.
+        "mcp_aufrufe": mcp,
         "lizenz": "CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/",
         "methode": {
             "quelle": ("Cloudflare GraphQL Analytics, httpRequestsAdaptiveGroups, "
@@ -240,8 +462,13 @@ def zeigen(d):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--zeigen", action="store_true", help="nichts schreiben")
+    # erheben() konnte das Fenster schon immer, nur liess es sich von aussen
+    # nicht setzen. Im Free-Plan reicht die Rueckschau ohnehin nur rund 24 h —
+    # groessere Werte liefern dort weniger, nicht mehr.
+    p.add_argument("--stunden", type=float, default=23.5,
+                   help="Erhebungsfenster in Stunden (Standard 23.5). Cloudflare lehnt ab 24 h mit 'wider than 1d' ab.")
     a = p.parse_args()
-    d = erheben(token())
+    d = erheben(token(), stunden=a.stunden)
     zeigen(d)
     if not a.zeigen:
         ZIEL.write_text(json.dumps(d, indent=2, ensure_ascii=False) + "\n",
