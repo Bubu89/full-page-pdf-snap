@@ -5,10 +5,17 @@
   <id>https://provinglab.dev/</id>
   <link rel="alternate" type="text/html" href="https://provinglab.dev/"/>
   <link rel="self" type="application/atom+xml" href="https://provinglab.dev/feed.xml"/>
-  <updated>2026-08-18T00:00:00Z</updated>
+  <updated>2026-09-07T00:00:00Z</updated>
   <author><name>Proving Lab</name><uri>https://provinglab.dev/</uri></author>
   <icon>https://provinglab.dev/icon-128.png</icon>
   <rights>Content licensed for reading and quoting with attribution.</rights>
+  <entry>
+    <title>Four addresses, one file each: an MCP server that fetches sources and says where they came from</title>
+    <link href="https://provinglab.dev/measurements/mcp-source-capture/"/>
+    <id>https://provinglab.dev/measurements/mcp-source-capture/</id>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary>A source is the file plus the claim of where it came from. Four addresses of increasing difficulty, 23 of 23 checks: byte-exact files, citation metadata from citation_* tags and schema.org, and the case where finding nothing is the correct answer.</summary>
+  </entry>
   <entry>
     <title>Everything a citation needs, beside the PDF</title>
     <id>https://provinglab.dev/notes/a-download-that-never-arrives/</id>
