@@ -19,7 +19,7 @@
 // dieser Worker gerade laeuft. Auf einer workers.dev-Adresse zeigte url.origin
 // sonst auf den Worker selbst und jede Datenabfrage endete im 404.
 const SITE = "https://provinglab.dev";
-const VERSION = "1.25.0";
+const VERSION = "1.26.0";
 
 /* Welche Fassung die Stores gerade ausliefern — gefragt, nicht eingetragen.
  *
@@ -115,6 +115,28 @@ const TOOLS = [
     inputSchema: {
       type: "object",
       properties: { name: { type: "string" } },
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "resolve_pdf_url",
+    description:
+      "Given any address, return the address that actually serves the PDF — " +
+      "verified, not guessed. Use this BEFORE downloading a document: an " +
+      "address ending in .pdf may return HTML. Zenodo's viewer URL " +
+      "(.../preview/Title.pdf) returns 7 kB of pdf.js markup; the real file " +
+      "sits at .../files/ and is named only in the page's citation_pdf_url. " +
+      "Checks the first five bytes (%PDF-) with a range request, so it costs " +
+      "512 bytes instead of a failed download. Prefers what the publisher " +
+      "declares over what an iframe points at. Returns pdfUrl when one is " +
+      "confirmed, and pdfUrl:null with a reason when the address serves no " +
+      "PDF at all — a page named PDF is not a PDF.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        url: { type: "string", description: "Address of the page or file" },
+      },
+      required: ["url"],
       additionalProperties: false,
     },
   },
@@ -336,6 +358,7 @@ const WERKZEUGNAMEN = new Set([
   "list_measurements", "get_measurement_data", "get_method",
   "extract_citation", "extract_citations", "how_to_capture",
   "recommend_settings", "install_extension", "adoption_stats", "open_work",
+  "resolve_pdf_url",
 ]);
 
 const UMGEZOGEN = {
@@ -451,6 +474,65 @@ function entzeichnen(s) {
 }
 
 /** Alle meta-Angaben als { name: [werte] }. */
+/* Wo liegt die PDF-Datei wirklich?
+ *
+ * Ein Agent, der ein Dokument holen will, hat eine Adresse und keine
+ * Gewissheit. Die Endung sagt nichts: Zenodos Rahmen zeigt auf
+ * ".../preview/Titel.pdf" und liefert den pdf.js-Betrachter als HTML, 7 kB.
+ * Wer das laedt, hat eine Datei mit .pdf im Namen und Betrachter-Markup
+ * darin — und merkt es oft erst, wenn die Volltextsuche nichts findet.
+ *
+ * Das kann ein Agent nicht selbst entscheiden, ohne es zu versuchen. Hier
+ * entscheidet es ein Bereichsabruf ueber die ersten Bytes, und die Antwort
+ * nennt die Adresse, die wirklich traegt.
+ *
+ * Drei Kandidaten in dieser Reihenfolge:
+ *   citation_pdf_url   Der Herausgeber sagt selbst, wo die Datei liegt.
+ *   der Rahmen         Ein <iframe>/<embed> mit PDF-Adresse.
+ *   die Adresse selbst
+ * Gemessen am 07.09.2026: Bei Zenodo zeigt der Rahmen auf /preview/ und die
+ * Zitationsangabe auf /files/ — dasselbe Dokument, eines davon echt.
+ */
+const PDF_WEGMARKEN = ["pdfft", "pdfdirect", "epdf", "full-pdf", "fullpdf",
+  "download-pdf", "downloadpdf", "pdfplus", "article-pdf", "articlepdf",
+  "bitstream"];
+
+function siehtNachPdfAus(url) {
+  const u = String(url || "").toLowerCase();
+  if (/\.pdf($|[?#])/.test(u)) return true;
+  if (/\/pdf\/[^/?#]/.test(u)) return true;
+  if (/[?&](format|type|download|mimetype)=pdf($|&)/.test(u)) return true;
+  return PDF_WEGMARKEN.some((w) => {
+    const i = u.indexOf("/" + w);
+    if (i < 0) return false;
+    const nach = u[i + w.length + 1];
+    return nach === undefined || nach === "/" || nach === "?" || nach === "#";
+  });
+}
+
+/* Liefert diese Adresse wirklich ein PDF? Fuenf Bytes entscheiden.
+ *
+ * Keine Groessenschwelle: Der erste Versuch wies alles unter 5 kB ab — eine
+ * geratene Zahl, und die 7 kB grosse Betrachterseite ging glatt hindurch. */
+async function liefertPdf(url) {
+  try {
+    const r = await fetch(url, {
+      headers: { Range: "bytes=0-511",
+                 "user-agent": "provinglab-mcp/" + VERSION },
+      redirect: "follow",
+    });
+    if (r.status === 204) return false;
+    if (!r.ok && r.status !== 206) return false;
+    const b = new Uint8Array(await r.arrayBuffer());
+    if (b.length < 5) return false;
+    return b[0] === 0x25 && b[1] === 0x50 && b[2] === 0x44 && b[3] === 0x46
+        && b[4] === 0x2d;
+  } catch (_) {
+    // Ein Server, der Bereichsabrufe verweigert, ist kein Grund aufzugeben.
+    return null;
+  }
+}
+
 function metaLesen(html) {
   const m = {};
   const kopf = html.slice(0, 400000);   // Angaben stehen im Kopf; der Rest waere Ballast
@@ -1718,6 +1800,82 @@ async function runTool(origin, name, args, env) {
     return textResult(JSON.stringify(await fetchJson(origin, "/data/" + name2), null, 2));
   }
 
+  if (name === "resolve_pdf_url") {
+    const roh = String((args && args.url) || "").trim();
+    if (!roh) throw new Error("url is required");
+    let ziel;
+    try { ziel = new URL(roh); }
+    catch (_) { throw new Error("url is not a valid address"); }
+    // Derselbe Schutz wie bei extract_citation: Ein Worker sitzt in fremdem
+    // Netz. Ohne diese Pruefung waere das Werkzeug ein Sprungbrett auf
+    // interne Dienste — serverseitige Anfragefaelschung.
+    if (!/^https?:$/.test(ziel.protocol)) throw new Error("only http and https are supported");
+    if (!istOeffentlich(ziel)) throw new Error("only public addresses can be read");
+
+    const t0 = Date.now();
+    const kandidaten = [];
+    let seiteGelesen = false;
+    // Die Adresse selbst, falls sie schon nach einer Datei aussieht.
+    if (siehtNachPdfAus(ziel.href)) kandidaten.push({ url: ziel.href, quelle: "the address itself" });
+    // Was die Seite ueber sich sagt — der Herausgeber weiss es am besten.
+    try {
+      const r = await fetch(ziel.href, {
+        headers: { "user-agent": "provinglab-mcp/" + VERSION,
+                   accept: "text/html,application/xhtml+xml" },
+        redirect: "follow",
+      });
+      if (r.ok) {
+        const ct = r.headers.get("content-type") || "";
+        if (/pdf/i.test(ct)) {
+          kandidaten.unshift({ url: r.url || ziel.href, quelle: "the address itself (served as PDF)" });
+        } else {
+          const html = (await r.text()).slice(0, 400000);
+          seiteGelesen = true;
+          const meta = metaLesen(html);
+          const erklaert = meta["citation_pdf_url"] || meta["citation_fulltext_html_url"];
+          if (erklaert) {
+            kandidaten.unshift({ url: new URL(erklaert, r.url || ziel.href).href,
+                                 quelle: "citation_pdf_url declared by the page" });
+          }
+          // Ein PDF im Rahmen — schwaecher als die Angabe des Herausgebers,
+          // denn genau hier steht bei Zenodo die Vorschau.
+          const rahmen = html.match(/<(?:iframe|embed|object)\s[^>]*?(?:src|data)\s*=\s*["']([^"']+)["']/gi) || [];
+          for (const treffer of rahmen) {
+            const m = treffer.match(/(?:src|data)\s*=\s*["']([^"']+)["']/i);
+            if (!m) continue;
+            const k = new URL(m[1].replace(/&amp;/g, "&"), r.url || ziel.href).href;
+            if (siehtNachPdfAus(k) || /\/preview\//i.test(k)) {
+              kandidaten.push({ url: k, quelle: "PDF inside an iframe on the page" });
+            }
+          }
+        }
+      }
+    } catch (e) { /* die Seite ist nicht lesbar — dann bleibt die Adresse */ }
+
+    if (!kandidaten.length) kandidaten.push({ url: ziel.href, quelle: "the address itself (unverified)" });
+
+    const geprueft = [];
+    for (const k of kandidaten.slice(0, 4)) {
+      const ok = await liefertPdf(k.url);
+      geprueft.push({ url: k.url, from: k.quelle,
+                      servesPdf: ok === null ? "unknown" : ok });
+      if (ok === true) {
+        return textResult(JSON.stringify({
+          input: roh, pdfUrl: k.url, verifiedBy: "first five bytes (%PDF-)",
+          from: k.quelle, pageRead: seiteGelesen,
+          candidates: geprueft, durationMs: Date.now() - t0,
+        }, null, 2));
+      }
+    }
+    return textResult(JSON.stringify({
+      input: roh, pdfUrl: null,
+      reason: geprueft.some((g) => g.servesPdf === "unknown")
+        ? "no candidate confirmed as PDF; at least one server refused a range request, so this is not conclusive"
+        : "no candidate serves a PDF — the address may name a page about PDFs rather than a document",
+      pageRead: seiteGelesen, candidates: geprueft, durationMs: Date.now() - t0,
+    }, null, 2));
+  }
+
   if (name === "extract_citation") {
     return textResult(JSON.stringify(
       await zitatFuerUrl(String((args && args.url) || "")), null, 2));
@@ -2698,9 +2856,12 @@ async function handleMcp(request, origin, env, ctx) {
                 // daraus, er sei falsch. Ein Trichterbruch genau an der
                 // Uebergabestelle, und der teuerste: der Agent ist schon da.
                 "Cite or capture a web page. Use extract_citation when a page " +
-                "needs to enter a reference manager, how_to_capture when a " +
-                "source has to be saved as evidence, install_extension when " +
-                "the capture has to run in a browser without a click. " +
+                "needs to enter a reference manager, resolve_pdf_url BEFORE " +
+                "downloading any document — an address ending in .pdf may " +
+                "return HTML, and checking costs 512 bytes instead of a failed " +
+                "download — how_to_capture when a source has to be saved as " +
+                "evidence, install_extension when the capture has to run in a " +
+                "browser without a click. " +
                 "Every figure behind these tools has a documented method and " +
                 "a control run — list_measurements shows them. " +
                 // Ohne diesen Satz weiss ein Agent nicht, dass es die Seiten in
