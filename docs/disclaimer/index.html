@@ -319,6 +319,7 @@
     nothing behind a login. Using it to place load on third-party servers is not permitted;
     requests carry an identifying user agent so that operators can distinguish and refuse
     them.
+  The same applies to <code>resolve_pdf_url</code>, which checks whether an address serves a PDF: it fetches at most 512 bytes per candidate and at most four candidates per call, and it retrieves nothing a provider does not serve to an ordinary request. It reports where a file lies; it does not obtain access to one. Where a provider blocks retrieval, the answer says so.
   </p>
 </div>
 
@@ -494,6 +495,7 @@
     erreicht nichts hinter einer Anmeldung. Ihn zu verwenden, um fremde Server zu belasten,
     ist nicht gestattet; Abrufe tragen ein erkennbares Kennzeichen, damit Betreiber sie
     unterscheiden und abweisen können.
+  Dasselbe gilt für <code>resolve_pdf_url</code>, das prüft, ob eine Adresse ein PDF ausliefert: höchstens 512 Byte je Kandidat, höchstens vier Kandidaten je Aufruf, und nichts, was ein Anbieter einer gewöhnlichen Anfrage nicht ohnehin ausliefert. Es nennt, wo eine Datei liegt; es verschafft keinen Zugang zu einer. Wo ein Anbieter den Abruf unterbindet, sagt die Antwort das.
   </p>
 </div>
 

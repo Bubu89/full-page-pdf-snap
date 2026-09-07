@@ -151,10 +151,15 @@ UMGEHUNG = re.compile(
 # Umfeld von 520 Zeichen kaeme sonst fast immer irgendein "no" vor und die
 # Regel wuerde nichts mehr fangen.
 UMGEHUNG_ERLAUBT = re.compile(
-    r"(do not|don't|never|nicht|statt dessen|stattdessen|does not work|funktioniert nicht"
-    r"|is not something|keine? (route|weg)"
+    r"(do(es)? not|don't|doesn't|never|nicht|statt dessen|stattdessen"
+    r"|funktioniert nicht|is not something|keine? (route|weg)"
     r"|\bno (circumvention|bypass\w*|workaround|umgehung)"
     r"|\bkeine? (umgehung|umgehen))", re.I)
+# 07.09.2026, zweiter Fehlalarm derselben Art: "It does not circumvent access
+# controls" ist die klarste Absage, die ein Satz treffen kann — und fiel durch,
+# weil das Muster "do not" kannte und "does not" nicht. Beim ersten Mal (siehe
+# oben) wurde die Liste um feste Wendungen ergaenzt; das traegt nur bis zur
+# naechsten Beugung. Jetzt deckt "do(es)? not" beide ab.
 
 # Verweise auf fremde Projekte ohne Distanzierung. Wer Dritt-Software empfiehlt,
 # ohne sie geprueft zu haben, sollte das sagen — sonst liest es sich als Zusage.

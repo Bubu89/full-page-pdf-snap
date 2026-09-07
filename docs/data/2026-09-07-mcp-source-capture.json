@@ -177,5 +177,10 @@
    "dauer_ms": 590,
    "bestanden": true
   }
- ]
+ ],
+ "license": "CC-BY-4.0",
+ "measurement": "MCP source capture on four addresses",
+ "question": "Does a source-capture server return the file the publisher actually serves, with the citation metadata of the page describing it — and does it correctly return nothing where there is no document?",
+ "method": "Four addresses of increasing difficulty. For each, the expected file size was established beforehand with curl, independently of the server. Checks cover byte size, PDF header, page count, citation completeness and elapsed time.",
+ "limits": "Four cases are four cases — chosen for distinct difficulties, not as a sample of the web. Timings from a single run on a domestic connection. Licensed content behind a publisher login is not covered."
 }
