@@ -4,9 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Four addresses, one file each: an MCP server that fetches sources and says where they came from — Proving Lab</title>
-<meta name="description" content="An MCP server for academic sources measured on four addresses of increasing difficulty: byte-exact files, citation metadata from citation_* and schema.org, and the one case where finding nothing is the correct answer. 23 of 23 checks, 3.6 s.">
+<meta name="description" content="A source is the file plus the claim of where it came from. Four addresses of increasing difficulty through a source-capture MCP server: byte-exact files, citation metadata from citation_* tags and schema.org, and the one case where finding nothing is the correct answer. 23 of 23 checks in 3.6 seconds.">
 <meta name="keywords" content="MCP server, source capture, citation metadata, PDF retrieval, schema.org JSON-LD, citation_pdf_url, RIS, Zenodo, arXiv, agent tools">
 <link rel="canonical" href="https://provinglab.dev/measurements/mcp-source-capture/">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/measurements/mcp-source-capture/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/measurements/mcp-source-capture/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/measurements/mcp-source-capture/">
 <link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
 <link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
 <link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
@@ -16,8 +19,9 @@
 
 <meta property="og:type" content="article">
 <meta property="og:title" content="Four addresses, one file each: an MCP server that fetches sources and says where they came from">
-<meta property="og:description" content="A source is a file plus the claim of where it came from. Measured on four addresses: a PDF inside an iframe whose preview URL ends in .pdf and returns HTML, an address without an extension, a bare PDF with no page to read, and a page that is named PDF but is not one. 23 of 23 checks.">
+<meta property="og:description" content="A source is the file plus the claim of where it came from. Four addresses of increasing difficulty through a source-capture MCP server: byte-exact files, citation metadata from citation_* tags and schema.org, and the one case where finding nothing is the correct answer. 23 of 23 checks in 3.6 seconds.">
 <meta property="og:url" content="https://provinglab.dev/measurements/mcp-source-capture/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
 <meta property="article:published_time" content="2026-09-07">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -26,14 +30,33 @@
   "@context": "https://schema.org",
   "@type": "TechArticle",
   "headline": "Four addresses, one file each: an MCP server that fetches sources and says where they came from",
-  "description": "An MCP server for academic source capture, measured on four addresses of increasing difficulty. Byte-exact files, citation metadata from citation_* tags and schema.org, and the case where returning nothing is correct. 23 of 23 checks in 3.6 seconds.",
+  "description": "A source is the file plus the claim of where it came from. Four addresses of increasing difficulty through a source-capture MCP server: byte-exact files, citation metadata from citation_* tags and schema.org, and the one case where finding nothing is the correct answer. 23 of 23 checks in 3.6 seconds.",
   "datePublished": "2026-09-07",
   "dateModified": "2026-09-07",
-  "inLanguage": "en",
+  "inLanguage": [
+    "en",
+    "de"
+  ],
   "url": "https://provinglab.dev/measurements/mcp-source-capture/",
-  "author": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
-  "publisher": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
-  "keywords": "MCP server, source capture, citation metadata, PDF retrieval, schema.org JSON-LD, citation_pdf_url, RIS, Zenodo, arXiv"
+  "about": [
+    "citation",
+    "MCP endpoint",
+    "bibliography",
+    "Literaturverzeichnis",
+    "Quellennachweis",
+    "Zitieren"
+  ],
+  "keywords": "MCP server, source capture, citation metadata, PDF retrieval, schema.org JSON-LD, citation_pdf_url, RIS, Zenodo, arXiv, agent tools",
+  "author": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  }
 }
 </script>
 <script type="application/ld+json">
@@ -41,43 +64,113 @@
   "@context": "https://schema.org",
   "@type": "Dataset",
   "name": "MCP source capture measured on four addresses",
-  "description": "Four addresses of increasing difficulty through an MCP source-capture server: byte size against an independently established reference, page count, citation completeness and elapsed time per case, 7 September 2026.",
+  "description": "Four addresses of increasing difficulty through a source-capture MCP server: byte size against an independently established reference, page count, citation completeness and elapsed time per case, 7 September 2026.",
   "url": "https://provinglab.dev/data/2026-09-07-mcp-source-capture.json",
   "identifier": "https://provinglab.dev/data/2026-09-07-mcp-source-capture.json",
   "datePublished": "2026-09-07",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "isAccessibleForFree": true,
   "inLanguage": "en",
-  "keywords": ["MCP", "source capture", "citation metadata", "PDF retrieval", "schema.org"],
-  "creator": { "@type": "Organization", "name": "Proving Lab", "url": "https://provinglab.dev/" },
-  "distribution": [{
-    "@type": "DataDownload",
-    "encodingFormat": "application/json",
-    "contentUrl": "https://provinglab.dev/data/2026-09-07-mcp-source-capture.json"
-  }]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "quellen-mcp",
-  "applicationCategory": "DeveloperApplication",
-  "operatingSystem": "Any (Python 3.10+)",
-  "description": "MCP server that turns an address into a source: fetches the file the publisher serves, reads the citation metadata of the page describing it, writes a RIS record and makes the full text searchable. No cloud, no credentials, no fixed paths.",
-  "softwareVersion": "1.0.0",
-  "url": "https://provinglab.dev/measurements/mcp-source-capture/",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
-  "featureList": [
-    "quelle_pruefen — does this address serve a PDF, without downloading it",
-    "quelle_zitation — citation metadata from citation_* tags and schema.org",
-    "quelle_holen — fetch, store with RIS record, index full text",
-    "bestand_suchen — full-text search across captured sources",
-    "bestand_stand — size of the collection"
+  "keywords": [
+    "MCP",
+    "source capture",
+    "citation metadata",
+    "PDF retrieval",
+    "schema.org"
   ]
 }
 </script>
-<link rel="stylesheet" href="../../style.css">
+<style>
+  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.87em;background:var(--card);
+       padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:34px 0 36px;border-bottom:1px solid var(--line);margin-bottom:32px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.16;letter-spacing:-.025em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:60ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+  h2{font-size:1.4rem;line-height:1.25;margin:46px 0 14px;letter-spacing:-.015em;text-wrap:balance}
+  h3{font-size:1.04rem;margin:28px 0 8px}
+  p{margin-bottom:17px} ul,ol{margin:0 0 18px 24px} li{margin-bottom:9px}
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0}
+  .kf{flex:1 1 160px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px}
+  .kf .n{font-size:1.8rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.a .n{color:var(--good)} .kf.b .n{color:var(--warn)}
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--bg2);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .win{color:var(--good);font-weight:600} .lose{color:var(--bad)}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.84rem;line-height:1.6}
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0} .box p:last-child{margin-bottom:0}
+  .faq{margin:44px 0 0}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin:44px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+  footer{margin-top:52px;padding:24px 0 64px;border-top:1px solid var(--line);
+    font-size:.83rem;color:var(--dim);line-height:1.6}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+
+  /* --- Sprachumschaltung --- */
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
+  .lang{display:flex;gap:6px;margin:0 0 26px}
+  .lang button{font:inherit;font-size:.86rem;font-weight:600;padding:7px 18px;cursor:pointer;
+    background:var(--card);color:var(--dim);border:1px solid var(--line);border-radius:8px}
+  .lang button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
+</style>
+<script src="/agent-tools.js" defer></script>
+<script src="/site-lang.js" defer></script>
 </head>
 <body>
 <nav class="topnav">
@@ -91,22 +184,32 @@
     <a class="n" href="../../mitmachen/">Mitmachen</a>
     <a class="n" href="../../tools/">Tools</a>
     <a class="n" href="../../about/">About</a>
-    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
       <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
   </div>
 </nav>
 
 <div class="wrap">
-<main>
 
-<p class="eyebrow"><a href="/measurements/">Measurements</a> · 7 September 2026</p>
+<header>
+  <h1 data-lang="en" class="on" lang="en">Four addresses, one file each: an MCP server that fetches sources and says where they came from</h1>
+  <h1 data-lang="de" lang="de">Vier Adressen, je eine Datei: ein MCP-Server, der Quellen holt und sagt, woher sie stammen</h1>
+  <p class="standfirst on" data-lang="en" lang="en">
+    A source is two things: the file, and the claim about where it came from.
+    Most tools deliver one of them. Measured on four addresses of increasing
+    difficulty — including one where finding nothing is the correct answer.
+  </p>
+  <p class="standfirst" data-lang="de" lang="de">
+    Eine Quelle ist zweierlei: die Datei und die Angabe, woher sie stammt. Die
+    meisten Werkzeuge liefern eines davon. Gemessen an vier Adressen steigender
+    Schwierigkeit — darunter eine, bei der nichts zu finden die richtige
+    Antwort ist.
+  </p>
+  <p class="meta"><span data-lang="en" class="on" lang="en">7 September 2026 · 4 addresses, one pass ·
+    <a href="/data/2026-09-07-mcp-source-capture.json">raw data</a></span><span data-lang="de" lang="de">7. September 2026 · 4 Adressen, ein Durchlauf ·
+    <a href="/data/2026-09-07-mcp-source-capture.json">Rohdaten</a></span></p>
+</header>
 
-<h1>Four addresses, one file each: an MCP server that fetches sources and says where they came from</h1>
-
-<p class="lead">A source is two things: the file, and the claim about where it
-came from. Most tools deliver one of them. Measured on four addresses of
-increasing difficulty — including one where finding nothing is the correct
-answer.</p>
+<div data-lang="en" class="on" lang="en">
 
 <h2>What was measured</h2>
 
@@ -117,27 +220,27 @@ a different difficulty. For every case the expected file was established
 independently beforehand — byte size taken with <code>curl</code>, not from the
 server under test.</p>
 
+<div class="tblwrap">
 <table>
-<thead><tr><th>Case</th><th>Difficulty</th><th>Result</th><th>Time</th></tr></thead>
+<thead><tr><th>Case</th><th>Difficulty</th><th>Result</th><th class="num">Time</th></tr></thead>
 <tbody>
-<tr><td>PDF inside an iframe<br><span class="fuss">zenodo.org/records/22539062</span></td>
-    <td>The preview URL ends in <code>.pdf</code> and returns HTML, 7 kB</td>
-    <td>495,073 B · 25 pages<br>1 author, year, DOI</td><td class="z">1,090 ms</td></tr>
-<tr><td>Address without extension<br><span class="fuss">arxiv.org/abs/1706.03762</span></td>
+<tr><td>PDF inside an iframe<br><small>zenodo.org/records/22539062</small></td>
+    <td>The preview URL ends in <code>.pdf</code> and returns HTML, 7&nbsp;kB</td>
+    <td>495,073&nbsp;B · 25 pages<br>1 author, year, DOI</td><td class="num">1,090&nbsp;ms</td></tr>
+<tr><td>Address without extension<br><small>arxiv.org/abs/1706.03762</small></td>
     <td><code>citation_pdf_url</code> points at <code>/pdf/…</code> with no extension</td>
-    <td>2,215,244 B · 15 pages<br>8 authors, year</td><td class="z">704 ms</td></tr>
-<tr><td>Bare PDF address<br><span class="fuss">arxiv.org/pdf/2303.08774</span></td>
+    <td>2,215,244&nbsp;B · 15 pages<br>8 authors, year</td><td class="num">704&nbsp;ms</td></tr>
+<tr><td>Bare PDF address<br><small>arxiv.org/pdf/2303.08774</small></td>
     <td>No HTML page exists — nothing to read metadata from</td>
-    <td>5,245,564 B · 100 pages<br>281 authors, year</td><td class="z">1,259 ms</td></tr>
-<tr><td>A page named PDF<br><span class="fuss">wikipedia.org/wiki/PDF</span></td>
+    <td>5,245,564&nbsp;B · 100 pages<br>281 authors, year</td><td class="num">1,259&nbsp;ms</td></tr>
+<tr><td>A page named PDF<br><small>wikipedia.org/wiki/PDF</small></td>
     <td>Named PDF, is not one — must return <em>nothing</em></td>
-    <td>correctly refused</td><td class="z">590 ms</td></tr>
+    <td>correctly refused</td><td class="num">590&nbsp;ms</td></tr>
 </tbody>
 </table>
+</div>
 
-<p><strong>23 of 23 checks passed, 7.6 MB in 3.6 seconds.</strong> Every file
-byte-identical to the reference. <a href="/data/2026-09-07-mcp-source-capture.json">Raw
-data</a>.</p>
+<p class="kf b">23 of 23 checks passed · 7.6 MB in 3.6 s · every file byte-identical to its reference</p>
 
 <h2>The three findings that cost the most work</h2>
 
@@ -145,22 +248,23 @@ data</a>.</p>
 
 <p>Zenodo shows its documents in an iframe pointing at
 <code>…/preview/Title.pdf</code>. The extension is right; the content is not.
-What comes back is the pdf.js viewer as an HTML page, 7 kB. A file named
+What comes back is the pdf.js viewer as an HTML page, 7&nbsp;kB. A file named
 <code>.pdf</code> containing viewer markup had already been filed as a source
 before this was caught.</p>
 
 <p>A size threshold does not fix it. The first attempt rejected anything under
-5 kB — a guessed number, and the 7 kB viewer page passed straight through. What
-does fix it is the first five bytes: <code>%PDF-</code> is unambiguous. A range
-request fetches 512 bytes and settles it before anything is downloaded.</p>
+5&nbsp;kB — a guessed number, and the 7&nbsp;kB viewer page passed straight
+through. What does fix it is the first five bytes: <code>%PDF-</code> is
+unambiguous. A range request fetches 512 bytes and settles it before anything
+is downloaded.</p>
 
 <h3>The publisher knows where the file is</h3>
 
 <p>Where a page carries <code>citation_pdf_url</code>, that address beats the
 iframe. On Zenodo the iframe points at <code>/preview/</code> and the citation
 tag at <code>/files/</code> — the same document, one of them real. Preferring
-the publisher's own statement turned a 7 kB viewer page into a 4.8 MB
-document.</p>
+the publisher's own statement turned a 7&nbsp;kB viewer page into a
+4.8&nbsp;MB document.</p>
 
 <h3>The year lives in JSON-LD, not in the meta tags</h3>
 
@@ -201,7 +305,9 @@ environment or from the call.</li>
 <p>Five tools: <code>quelle_pruefen</code> (does this address serve a PDF,
 without downloading), <code>quelle_zitation</code> (citation metadata only),
 <code>quelle_holen</code> (fetch, store, index), <code>bestand_suchen</code>
-(full-text search), <code>bestand_stand</code> (collection size).</p>
+(full-text search), <code>bestand_stand</code> (collection size). The step-by-step
+sheet for agents is at
+<a href="/.well-known/agent-skills/run-a-source-capture-server.md">run-a-source-capture-server.md</a>.</p>
 
 <p><code>pdftotext</code> and <code>pdfinfo</code> make the full text
 searchable. Without them a source is stored but not indexed — the reply says so
@@ -220,11 +326,147 @@ login, and how the patterns hold against the several hundred site translators
 that Zotero maintains. On breadth of site coverage, Zotero is ahead and will
 stay ahead.</p>
 
-<p class="fuss">Run by the developer of Full Page PDF Snap, the browser
-extension this server shares its logic with. The extension appears in several
-measurements on this site; this is disclosed wherever relevant.</p>
+<p><small>Run by the developer of Full Page PDF Snap, the browser extension
+this server shares its logic with. The extension appears in several
+measurements on this site; this is disclosed wherever relevant.</small></p>
 
-</main>
+</div>
+
+<div data-lang="de" lang="de">
+
+<h2>Was gemessen wurde</h2>
+
+<p>Ein MCP-Server, der aus einer Adresse eine Quelle macht: die Datei, die der
+Anbieter tatsächlich ausliefert, die Zitationsangaben der Seite, die sie
+beschreibt, einen RIS-Satz und den Volltext in einem durchsuchbaren Index.
+Vier Fälle, jeder mit einer eigenen Schwierigkeit. Für jeden stand die
+erwartete Datei vorher fest — die Byte-Größe mit <code>curl</code> ermittelt,
+nicht vom geprüften Server.</p>
+
+<div class="tblwrap">
+<table>
+<thead><tr><th>Fall</th><th>Schwierigkeit</th><th>Ergebnis</th><th class="num">Zeit</th></tr></thead>
+<tbody>
+<tr><td>PDF im Rahmen<br><small>zenodo.org/records/22539062</small></td>
+    <td>Die Vorschauadresse endet auf <code>.pdf</code> und liefert HTML, 7&nbsp;kB</td>
+    <td>495.073&nbsp;B · 25 Seiten<br>1 Verfasser, Jahr, DOI</td><td class="num">1.090&nbsp;ms</td></tr>
+<tr><td>Adresse ohne Endung<br><small>arxiv.org/abs/1706.03762</small></td>
+    <td><code>citation_pdf_url</code> zeigt auf <code>/pdf/…</code> ohne Endung</td>
+    <td>2.215.244&nbsp;B · 15 Seiten<br>8 Verfasser, Jahr</td><td class="num">704&nbsp;ms</td></tr>
+<tr><td>Blanke PDF-Adresse<br><small>arxiv.org/pdf/2303.08774</small></td>
+    <td>Es gibt keine HTML-Seite — nichts, woraus Angaben zu lesen wären</td>
+    <td>5.245.564&nbsp;B · 100 Seiten<br>281 Verfasser, Jahr</td><td class="num">1.259&nbsp;ms</td></tr>
+<tr><td>Eine Seite namens PDF<br><small>wikipedia.org/wiki/PDF</small></td>
+    <td>Heißt PDF, ist keines — muss <em>nichts</em> liefern</td>
+    <td>korrekt verweigert</td><td class="num">590&nbsp;ms</td></tr>
+</tbody>
+</table>
+</div>
+
+<p class="kf b">23 von 23 Prüfungen erfüllt · 7,6 MB in 3,6 s · jede Datei byteweise gleich ihrer Referenz</p>
+
+<h2>Die drei Befunde, die den meisten Aufwand gekostet haben</h2>
+
+<h3>Die Endung ist eine Behauptung, keine Tatsache</h3>
+
+<p>Zenodo zeigt seine Dokumente in einem Rahmen, der auf
+<code>…/preview/Titel.pdf</code> zeigt. Die Endung stimmt, der Inhalt nicht.
+Zurück kommt der pdf.js-Betrachter als HTML-Seite, 7&nbsp;kB. Eine Datei mit
+<code>.pdf</code> im Namen und Betrachter-Markup darin lag bereits als Quelle
+im Bestand, bevor das auffiel.</p>
+
+<p>Eine Größenschwelle behebt es nicht. Der erste Versuch wies alles unter
+5&nbsp;kB ab — eine geratene Zahl, und die 7&nbsp;kB große Betrachterseite ging
+glatt hindurch. Was es behebt, sind die ersten fünf Bytes: <code>%PDF-</code>
+ist eindeutig. Ein Bereichsabruf holt 512 Bytes und entscheidet, bevor
+irgendetwas geladen wird.</p>
+
+<h3>Der Anbieter weiß, wo die Datei liegt</h3>
+
+<p>Trägt eine Seite <code>citation_pdf_url</code>, schlägt diese Adresse den
+Rahmen. Bei Zenodo zeigt der Rahmen auf <code>/preview/</code> und die
+Zitationsangabe auf <code>/files/</code> — dasselbe Dokument, eines davon echt.
+Der Angabe des Anbieters den Vorrang zu geben machte aus einer 7&nbsp;kB großen
+Betrachterseite ein Dokument von 4,8&nbsp;MB.</p>
+
+<h3>Das Jahr steht in JSON-LD, nicht in den Meta-Tags</h3>
+
+<p>Zenodo veröffentlicht kein <code>citation_publication_date</code>. Das
+Erscheinungsjahr steht nur im schema.org-Block. Wer allein die
+citation_*-Tags liest, bekommt eine Datei namens <code>Andres_oJ_…</code> —
+<em>oJ</em>, ohne Jahr — über ein Werk von 2026. Moderne Repositorien legen
+ihre Angaben zunehmend in JSON-LD ab; ein Leser, der das übergeht, verschlechtert
+sich still, statt zu scheitern.</p>
+
+<h2>Wo nichts zu finden die Antwort ist</h2>
+
+<p>Den vierten Fall gibt es wegen eines Fehlers, den keine Trefferquote
+aufdeckt: Ein Werkzeug, das überall etwas findet, findet nichts Verlässliches.
+<code>wikipedia.org/wiki/PDF</code> ist ein Artikel <em>über</em> das Format.
+Ein früheres Muster hielt <code>/pdf</code> am Ende eines Pfades für eine Datei
+— und aus dem Lexikonartikel wurde ein Dokument. Die Regel verlangt jetzt ein
+Pfadsegment mit etwas dahinter.</p>
+
+<h2>Was er bewusst nicht kann</h2>
+
+<ul>
+<li><strong>Keine Cloud, keine Zugangsdaten.</strong> Er meldet sich nirgends
+an. Für lizenzpflichtige Literatur braucht es die Sitzung des Browsers — das
+ist die Aufgabe einer Erweiterung, nicht die eines Servers.</li>
+<li><strong>Er umgeht keine Schutzmaßnahme.</strong> Wo ein Anbieter den Abruf
+unterbindet, endet der Server mit einer Meldung.</li>
+<li><strong>Keine festen Pfade.</strong> Der Ablageort kommt aus der Umgebung
+oder aus dem Aufruf.</li>
+</ul>
+
+<h2>Einbinden</h2>
+
+<pre><code>{ "mcpServers": {
+    "quellen": { "command": "python3",
+                 "args": ["/pfad/zu/quellen-mcp/server.py"],
+                 "env": { "QUELLEN_ORDNER": "/pfad/zu/quellen" } } } }</code></pre>
+
+<p>Fünf Werkzeuge: <code>quelle_pruefen</code> (liefert diese Adresse ein PDF,
+ohne es zu laden), <code>quelle_zitation</code> (nur die Angaben),
+<code>quelle_holen</code> (holen, ablegen, indizieren),
+<code>bestand_suchen</code> (Volltextsuche), <code>bestand_stand</code>
+(Umfang). Das Schritt-für-Schritt-Blatt für Agenten liegt unter
+<a href="/.well-known/agent-skills/run-a-source-capture-server.md">run-a-source-capture-server.md</a>.</p>
+
+<p><code>pdftotext</code> und <code>pdfinfo</code> machen den Volltext
+durchsuchbar. Ohne sie wird eine Quelle abgelegt, aber nicht indiziert — die
+Antwort sagt das mit <code>seiten_durchsuchbar: 0</code>, statt still zu
+scheitern.</p>
+
+<h2>Methode und Grenzen</h2>
+
+<p>Vier Fälle sind vier Fälle. Sie wurden gewählt, weil jeder eine eigene
+Schwierigkeit trägt, nicht weil sie für das Netz repräsentativ wären. Die
+Referenzgrößen wurden vor dem Lauf mit <code>curl</code> ermittelt, unabhängig
+vom Server. Die Zeiten stammen aus einem einzigen Durchgang an einem
+Hausanschluss und sagen mehr über das Netz als über den Code.</p>
+
+<p>Was hier <em>nicht</em> gemessen ist: lizenzpflichtige Inhalte hinter einer
+Verlagsanmeldung, und wie sich die Muster gegen die mehreren hundert
+Seiten-Übersetzer halten, die Zotero pflegt. In der Breite der Seitenabdeckung
+liegt Zotero vorn und wird vorn bleiben.</p>
+
+<p><small>Betrieben vom Entwickler von Full Page PDF Snap, der Browser-Erweiterung,
+mit der dieser Server seine Logik teilt. Die Erweiterung kommt in mehreren
+Messungen auf dieser Seite vor; das wird überall dort angegeben, wo es
+sachdienlich ist.</small></p>
+
+</div>
+
+<footer>
+      Measured on 7 September 2026 in a single pass from a domestic connection.
+      Reference sizes established with curl beforehand, independently of the
+      server. Raw data:
+      <a href="/data/2026-09-07-mcp-source-capture.json">JSON</a>, CC BY 4.0.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a>
+    </footer>
+
 </div>
 </body>
 </html>
