@@ -291,11 +291,20 @@
   "popupCopyPath": {
     "message": "Скопировать путь"
   },
+  "popupShowFolder": {
+    "message": "Открывать папку после сохранения"
+  },
   "popupCopyOn": {
     "message": "Путь будет скопирован после сохранения"
   },
+  "popupShowFolderOn": {
+    "message": "Папка откроется после сохранения"
+  },
   "popupCopyOff": {
     "message": "Путь не будет скопирован"
+  },
+  "popupShowFolderOff": {
+    "message": "Папка не откроется"
   },
   "optHellerDruck": {
     "message": "Всегда сохранять белый фон"
@@ -493,6 +502,9 @@
   },
   "popupCopyPathTitel": {
     "message": "После завершения вставьте путь сочетанием Ctrl+V в терминал или чат."
+  },
+  "popupShowFolderTitel": {
+    "message": "Папка загрузок откроется в файловом менеджере, как только PDF будет готов."
   },
   "popupRand": {
     "message": "Поля"

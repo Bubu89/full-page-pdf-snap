@@ -291,11 +291,20 @@
   "popupCopyPath": {
     "message": "ファイルパスをコピー"
   },
+  "popupShowFolder": {
+    "message": "保存後にフォルダーを開く"
+  },
   "popupCopyOn": {
     "message": "保存後にパスをコピーします"
   },
+  "popupShowFolderOn": {
+    "message": "保存後にフォルダーを開きます"
+  },
   "popupCopyOff": {
     "message": "パスはコピーされません"
+  },
+  "popupShowFolderOff": {
+    "message": "フォルダーは開きません"
   },
   "optHellerDruck": {
     "message": "背景を常に白にする"
@@ -493,6 +502,9 @@
   },
   "popupCopyPathTitel": {
     "message": "完了後、Ctrl+V でパスをターミナルやチャットに貼り付けられます。"
+  },
+  "popupShowFolderTitel": {
+    "message": "PDF が完成すると、ダウンロードフォルダーがファイルマネージャーで開きます。"
   },
   "popupRand": {
     "message": "余白"

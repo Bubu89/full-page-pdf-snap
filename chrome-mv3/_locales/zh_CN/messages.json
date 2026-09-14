@@ -291,11 +291,20 @@
   "popupCopyPath": {
     "message": "复制文件路径"
   },
+  "popupShowFolder": {
+    "message": "保存后打开文件夹"
+  },
   "popupCopyOn": {
     "message": "保存后将复制路径"
   },
+  "popupShowFolderOn": {
+    "message": "保存后将打开文件夹"
+  },
   "popupCopyOff": {
     "message": "不会复制路径"
+  },
+  "popupShowFolderOff": {
+    "message": "不会打开文件夹"
   },
   "optHellerDruck": {
     "message": "始终保持白色背景"
@@ -493,6 +502,9 @@
   },
   "popupCopyPathTitel": {
     "message": "完成后可用 Ctrl+V 把路径粘贴到终端或聊天窗口。"
+  },
+  "popupShowFolderTitel": {
+    "message": "PDF 完成后，下载文件夹将在文件管理器中打开。"
   },
   "popupRand": {
     "message": "页边距"

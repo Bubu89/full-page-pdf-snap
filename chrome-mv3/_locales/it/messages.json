@@ -291,11 +291,20 @@
   "popupCopyPath": {
     "message": "Copiare il percorso"
   },
+  "popupShowFolder": {
+    "message": "Aprire la cartella dopo il salvataggio"
+  },
   "popupCopyOn": {
     "message": "Il percorso verrà copiato dopo il salvataggio"
   },
+  "popupShowFolderOn": {
+    "message": "La cartella verrà aperta dopo il salvataggio"
+  },
   "popupCopyOff": {
     "message": "Il percorso non verrà copiato"
+  },
+  "popupShowFolderOff": {
+    "message": "La cartella non verrà aperta"
   },
   "optHellerDruck": {
     "message": "Mantieni sempre lo sfondo bianco"
@@ -493,6 +502,9 @@
   },
   "popupCopyPathTitel": {
     "message": "Al termine, incolla il percorso con Ctrl+V nel terminale o in una chat."
+  },
+  "popupShowFolderTitel": {
+    "message": "La cartella dei download si apre nel gestore file non appena il PDF è pronto."
   },
   "popupRand": {
     "message": "Margine"

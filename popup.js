@@ -96,6 +96,56 @@ schalter("sourceMetadata", "sourceMetadata",
          ["popupCiteOn", "Citation details will be added"],
          ["popupCiteOff", "No citation details"]);
 
+/* Der Ordner-Schalter braucht eine eigene Funktion.
+ *
+ * Die anderen Schalter speichern ein Ja oder Nein. "afterCapture" hat vier
+ * Zustaende: none, show, open, both - es entscheidet auch darueber, ob das
+ * PDF selbst geoeffnet wird. Wer hier umlegt, darf die PDF-Einstellung nicht
+ * mitreissen; deshalb wird nur der Ordner-Anteil geaendert und der PDF-Anteil
+ * unveraendert uebernommen.
+ *
+ * Auf Android gibt es downloads.show nicht. Dort waere der Schalter eine
+ * Zusage, die das System nicht einhalten kann - er wird ausgeblendet.
+ */
+async function ordnerSchalter() {
+  const box = $("showFolder");
+  if (!box) return;
+  const zeile = box.closest("label");
+
+  try {
+    const p = await browser.runtime.getPlatformInfo();
+    if (p && p.os === "android") { if (zeile) zeile.hidden = true; return; }
+  } catch (_) { /* unbekannte Plattform: Schalter bleibt sichtbar */ }
+
+  const ORDNER_AN = new Set(["show", "both"]);
+  const PDF_AN    = new Set(["open", "both"]);
+  const wert = (ordner, pdf) => ordner ? (pdf ? "both" : "show")
+                                       : (pdf ? "open" : "none");
+  try {
+    const s = await browser.storage.local.get("afterCapture");
+    box.checked = ORDNER_AN.has(s.afterCapture === undefined ? "show" : s.afterCapture);
+  } catch (_) { box.checked = true; }   // Vorgabe am Rechner: Ordner zeigen
+
+  box.addEventListener("change", async () => {
+    const st = $("status");
+    try {
+      const s = await browser.storage.local.get("afterCapture");
+      const pdf = PDF_AN.has(s.afterCapture === undefined ? "show" : s.afterCapture);
+      await browser.storage.local.set({ afterCapture: wert(box.checked, pdf) });
+      st.className = "status ok";
+      st.textContent = box.checked
+        ? t("popupShowFolderOn", "Folder will open after saving")
+        : t("popupShowFolderOff", "Folder stays closed");
+      setTimeout(() => { if (st.textContent) { st.className = "status"; st.textContent = ""; } }, 1600);
+    } catch (e) {
+      st.className = "status err";
+      st.textContent = e.message || String(e);
+      box.checked = !box.checked;   // Anzeige nicht luegen lassen
+    }
+  });
+}
+ordnerSchalter();
+
 
 
 /* Die Zahnraeder.

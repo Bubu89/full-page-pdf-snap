@@ -291,11 +291,20 @@
   "popupCopyPath": {
     "message": "Dateipfad kopieren"
   },
+  "popupShowFolder": {
+    "message": "Ordner nach dem Speichern öffnen"
+  },
   "popupCopyOn": {
     "message": "Pfad wird nach dem Speichern kopiert"
   },
+  "popupShowFolderOn": {
+    "message": "Ordner wird nach dem Speichern geöffnet"
+  },
   "popupCopyOff": {
     "message": "Pfad wird nicht kopiert"
+  },
+  "popupShowFolderOff": {
+    "message": "Ordner bleibt geschlossen"
   },
   "optHellerDruck": {
     "message": "Hintergrund immer weiß halten"
@@ -493,6 +502,9 @@
   },
   "popupCopyPathTitel": {
     "message": "Nach dem Fertigstellen den Pfad mit Strg+V ins Terminal oder in einen Chat einfügen."
+  },
+  "popupShowFolderTitel": {
+    "message": "Der Download-Ordner wird im Dateimanager geöffnet, sobald das PDF fertig ist."
   },
   "popupRand": {
     "message": "Rand"

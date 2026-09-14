@@ -291,11 +291,20 @@
   "popupCopyPath": {
     "message": "Copiar o caminho"
   },
+  "popupShowFolder": {
+    "message": "Abrir a pasta após salvar"
+  },
   "popupCopyOn": {
     "message": "O caminho será copiado após salvar"
   },
+  "popupShowFolderOn": {
+    "message": "A pasta será aberta após salvar"
+  },
   "popupCopyOff": {
     "message": "O caminho não será copiado"
+  },
+  "popupShowFolderOff": {
+    "message": "A pasta não será aberta"
   },
   "optHellerDruck": {
     "message": "Manter sempre o fundo branco"
@@ -493,6 +502,9 @@
   },
   "popupCopyPathTitel": {
     "message": "Ao concluir, cole o caminho com Ctrl+V no terminal ou em um chat."
+  },
+  "popupShowFolderTitel": {
+    "message": "A pasta de downloads abre no gerenciador de arquivos assim que o PDF estiver pronto."
   },
   "popupRand": {
     "message": "Margem"

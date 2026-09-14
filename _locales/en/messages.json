@@ -291,11 +291,20 @@
   "popupCopyPath": {
     "message": "Copy file path"
   },
+  "popupShowFolder": {
+    "message": "Open folder after saving"
+  },
   "popupCopyOn": {
     "message": "Path will be copied after saving"
   },
+  "popupShowFolderOn": {
+    "message": "Folder will open after saving"
+  },
   "popupCopyOff": {
     "message": "Path will not be copied"
+  },
+  "popupShowFolderOff": {
+    "message": "Folder stays closed"
   },
   "optHellerDruck": {
     "message": "Always keep the background white"
@@ -493,6 +502,9 @@
   },
   "popupCopyPathTitel": {
     "message": "Once finished, paste the path with Ctrl+V into a terminal or a chat."
+  },
+  "popupShowFolderTitel": {
+    "message": "The download folder opens in your file manager as soon as the PDF is ready."
   },
   "popupRand": {
     "message": "Margin"

@@ -291,11 +291,20 @@
   "popupCopyPath": {
     "message": "Copier le chemin"
   },
+  "popupShowFolder": {
+    "message": "Ouvrir le dossier après l’enregistrement"
+  },
   "popupCopyOn": {
     "message": "Le chemin sera copié après l’enregistrement"
   },
+  "popupShowFolderOn": {
+    "message": "Le dossier s’ouvrira après l’enregistrement"
+  },
   "popupCopyOff": {
     "message": "Le chemin ne sera pas copié"
+  },
+  "popupShowFolderOff": {
+    "message": "Le dossier ne s’ouvrira pas"
   },
   "optHellerDruck": {
     "message": "Garder toujours le fond blanc"
@@ -493,6 +502,9 @@
   },
   "popupCopyPathTitel": {
     "message": "Une fois terminé, collez le chemin avec Ctrl+V dans un terminal ou une discussion."
+  },
+  "popupShowFolderTitel": {
+    "message": "Le dossier de téléchargement s’ouvre dans le gestionnaire de fichiers dès que le PDF est prêt."
   },
   "popupRand": {
     "message": "Marge"

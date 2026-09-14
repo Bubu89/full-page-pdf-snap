@@ -1,3 +1,43 @@
+## 2026-09-14 — Der Ordner-Schalter stand nur im Kontextmenü (2.39.0)
+
+„Nach dem Speichern: Ordner zeigen" gab es längst — als Häkchen im
+Rechtsklick-Menü, wo niemand danach sucht. Im Fenster selbst, zwischen den drei
+anderen Schaltern, fehlte er. Wer wissen wollte, ob sich der Ordner öffnet,
+musste raten oder in die Einstellungen gehen.
+
+Jetzt steht er dort, wo die Entscheidung fällt: **„Ordner nach dem Speichern
+öffnen"**, direkt unter „Dateipfad kopieren".
+
+**Er schreibt keinen neuen Wert.** Die Einstellung `afterCapture` gab es schon,
+und sie hat vier Zustände: `none`, `show`, `open`, `both` — sie entscheidet
+auch darüber, ob das PDF selbst geöffnet wird. Ein Schalter, der stumpf auf
+`show` oder `none` setzt, hätte die PDF-Einstellung stillschweigend mitgerissen.
+Deshalb ändert er nur den Ordner-Anteil und übernimmt den PDF-Anteil
+unverändert:
+
+| vorher | Schalter an | Schalter aus |
+|---|---|---|
+| `none` | `show` | `none` |
+| `open` | `both` | `open` |
+| `show` | `show` | `none` |
+| `both` | `both` | `open` |
+
+**Auf Android wird er ausgeblendet.** `downloads.show` gibt es dort nicht; ein
+sichtbarer Schalter wäre eine Zusage, die das System nicht einhalten kann.
+
+**Alle neun Sprachen sind mitgezogen** — de, en, es, fr, it, ja, pt_BR, ru,
+zh_CN, je vier neue Texte (Beschriftung, Erklärung, zwei Rückmeldungen), in der
+Firefox- und der Chrome-Fassung. Eingefügt jeweils direkt neben den
+verwandten `popupCopyPath`-Texten, damit beieinander steht, was zusammengehört.
+`i18n-data.js` wurde neu erzeugt: 170 Texte je Sprache.
+
+**Offen geblieben:** `chrome-mv3/port.py` bricht ab. Drei seiner Patches suchen
+Meldungstexte in `background.js`, die inzwischen in die Sprachdateien gewandert
+sind (`Interne Firefox-Seite`, `Firefox schuetzt diese Seite`, der
+Injektions-Fehlertext). Das bestand vor dieser Änderung — `background.js` wurde
+hier nicht angefasst. Die Chrome-Fassung hat die neuen Texte, aber noch nicht
+den Schalter selbst; dafür gehört erst die Patch-Liste nachgezogen.
+
 ## 2026-08-31 — Der Installationsweg meldete Erfolg und installierte nichts (Worker 1.25.0)
 
 Die Prüfung der eigenen Auto-Installation begann mit einem einfachen Lauf:
@@ -1362,6 +1402,23 @@ Datei als `.ris` ankommt.
 
 # CHANGELOG — Full Page PDF Snap
 
+<!-- change-stream:auto-block:2026-09-07:START -->
+### 2026-09-07 — Auto-Aggregat (change-stream)
+
+_Quelle: change-stream, 6 Events, generiert 2026-09-08T16:23_
+
+**Aktivitaet:** 0 Datei(en), 6 Tool-Calls (6 Bash), 1 Session(s).
+
+**Bemerkenswerte Commands:**
+- `cd ~/repos/full-page-pdf-snap-public && git add -A && git -c user.email=<adresse> -c user.name=Bubu89 commit -q -m "Mess`
+- `cd ~/repos/full-page-pdf-snap-public && python3 - <<'PYEOF'
+p = ".gitignore"
+s = open(p, encoding="utf-8").read()
+if ".w`
+- `cd ~/repos/full-page-pdf-snap-public && git add docs/measurements/mcp-source-capture/index.html && git -c user.email=<ad`
+- `cd ~/repos/full-page-pdf-snap-public && node --check worker/mcp.js && timeout 200 node /tmp/test_resolve.mjs 2>&1 | tail`
+
+<!-- change-stream:auto-block:2026-09-07:END -->
 <!-- change-stream:auto-block:2026-08-31:START -->
 ### 2026-08-31 — Auto-Aggregat (change-stream)
 

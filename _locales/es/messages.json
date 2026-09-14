@@ -291,11 +291,20 @@
   "popupCopyPath": {
     "message": "Copiar la ruta"
   },
+  "popupShowFolder": {
+    "message": "Abrir la carpeta tras guardar"
+  },
   "popupCopyOn": {
     "message": "La ruta se copiará tras guardar"
   },
+  "popupShowFolderOn": {
+    "message": "La carpeta se abrirá tras guardar"
+  },
   "popupCopyOff": {
     "message": "La ruta no se copiará"
+  },
+  "popupShowFolderOff": {
+    "message": "La carpeta no se abrirá"
   },
   "optHellerDruck": {
     "message": "Mantener siempre el fondo blanco"
@@ -493,6 +502,9 @@
   },
   "popupCopyPathTitel": {
     "message": "Al terminar, pega la ruta con Ctrl+V en el terminal o en un chat."
+  },
+  "popupShowFolderTitel": {
+    "message": "La carpeta de descargas se abre en el explorador de archivos en cuanto el PDF está listo."
   },
   "popupRand": {
     "message": "Margen"
