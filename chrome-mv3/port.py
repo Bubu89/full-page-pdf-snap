@@ -68,18 +68,16 @@ PATCHES = [
     # ruft die Firefox-Quelle dieselbe API mit derselben Signatur auf.
 
     # --- Meldungstexte: nennen Firefox, laufen aber in Chrome ---------------
-    ("Meldung 'Interne Firefox-Seite' -> browserneutral",
-     '"Interne Firefox-Seite — bitte zu einer normalen Webseite wechseln (https://...)."',
-     '"Interne Browser-Seite (chrome://, Web Store, Einstellungen) — '
-     'bitte zu einer normalen Webseite wechseln (https://...)."', 1),
-
-    ("Meldung 'Firefox schuetzt diese Seite' -> browserneutral",
-     '"Firefox schuetzt diese Seite. Bitte zu einer normalen Webseite wechseln (z.B. wikipedia.org)."',
-     '"Chrome schuetzt diese Seite. Bitte zu einer normalen Webseite wechseln (z.B. wikipedia.org)."', 1),
-
-    ("Injektions-Fehlertext -> Chrome-Beispiele",
-     '"Diese Seite erlaubt keine Erweiterungs-Skripte (about:/addons.mozilla.org/PDF-Viewer etc.)"',
-     '"Diese Seite erlaubt keine Erweiterungs-Skripte (chrome://, Chrome Web Store, PDF-Viewer)"', 1),
+    # --- Meldungstexte: entfallen am 14.09.2026 ---------------------------
+    # Hier standen drei Ersetzungen, die "Interne Firefox-Seite", "Firefox
+    # schuetzt diese Seite" und den Injektions-Fehlertext browserneutral
+    # machten. Sie griffen nicht mehr - und das ist richtig so: Die Texte
+    # stehen nicht mehr fest in background.js, sondern in den Sprachdateien,
+    # und sind dort bereits browserneutral formuliert ("Interne Browser-Seite",
+    # "Der Browser schuetzt diese Seite").
+    # Ein Patch, dessen Aufgabe anderswo erledigt wurde, gehoert geloescht und
+    # nicht umgeschrieben - sonst bricht der Portierer bei jedem Lauf ab, und
+    # ein Werkzeug, das immer abbricht, benutzt niemand mehr.
 
     ("Gesperrte Hosts: Mozilla -> Chrome Web Store",
      '''const BLOCKED_HOSTS = [

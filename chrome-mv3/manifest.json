@@ -3,7 +3,7 @@
   "name": "__MSG_extName__",
   "default_locale": "en",
   "short_name": "PDFSnap",
-  "version": "2.39.0",
+  "version": "2.43.0",
   "description": "__MSG_extDescription__",
   "author": "Bubu89",
   "minimum_chrome_version": "116",
@@ -21,9 +21,6 @@
     "notifications",
     "scripting"
   ],
-  "optional_permissions": [
-    "debugger"
-  ],
   "background": {
     "service_worker": "background.js"
   },
@@ -32,7 +29,7 @@
       "16": "icons/icon-16.png",
       "48": "icons/icon-48.png"
     },
-    "default_title": "Full Page PDF Snap — save the whole page as PDF",
+    "default_title": "Full Page PDF Snap \u2014 save the whole page as PDF",
     "default_popup": "popup.html"
   },
   "options_ui": {
@@ -41,15 +38,11 @@
   },
   "commands": {
     "capture-full-page": {
-      "suggested_key": {
-        "default": "Alt+Shift+Y"
-      },
+      "suggested_key": { "default": "Alt+Shift+Y" },
       "description": "Save the whole page as PDF"
     },
     "capture-full-page-alt": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+Y"
-      },
+      "suggested_key": { "default": "Ctrl+Shift+Y" },
       "description": "Save the whole page as PDF (second shortcut)"
     }
   }

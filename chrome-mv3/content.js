@@ -122,7 +122,34 @@
   }
 
   function getViewportHeight(state) {
+    /* Bewusst window.innerHeight, NICHT visualViewport.
+     *
+     * In 2.40.0 stand hier visualViewport, um der beweglichen Adressleiste auf
+     * Android zu folgen. Das hat den Android-Fehler nicht behoben UND auf dem
+     * Rechner neue erzeugt: visualViewport meldet bei gesetztem Zoom - und die
+     * Aufnahmequalitaet setzt Zoom - einen anderen Wert als innerHeight.
+     *
+     * Die Lehre: erst messen, dann aendern. Beide Werte werden jetzt in die
+     * Diagnose geschrieben (siehe messDiagnose); geaendert wird erst, wenn die
+     * Zahlen von einem echten Geraet vorliegen. */
     return state.isWindow ? window.innerHeight : state.root.clientHeight;
+  }
+
+  /* Diagnose: alles, was zur Nahtberechnung beitraegt - auch die Werte, die
+   * gerade NICHT benutzt werden. Landet unsichtbar in den PDF-Metadaten. */
+  function messDiagnose(state) {
+    const vv = window.visualViewport;
+    return {
+      innerH: window.innerHeight,
+      innerW: window.innerWidth,
+      vvH: vv ? Math.round(vv.height * 10) / 10 : null,
+      vvW: vv ? Math.round(vv.width * 10) / 10 : null,
+      vvScale: vv ? Math.round((vv.scale || 1) * 100) / 100 : null,
+      vvOffTop: vv ? Math.round((vv.offsetTop || 0) * 10) / 10 : null,
+      clientH: document.documentElement ? document.documentElement.clientHeight : null,
+      dpr: window.devicePixelRatio || 1,
+      scrollY: state ? getScrollTop(state) : (window.scrollY || 0)
+    };
   }
 
   function getViewportWidth(state) {
@@ -139,15 +166,60 @@
    *
    * Rueckgabe null bei normalen Seiten: dort ist der ganze Viewport gewollt.
    */
+  /* Klebende Kopfzeile INNERHALB des Scroll-Containers.
+   *
+   * Gmail, Outlook und aehnliche Oberflaechen haengen Werkzeugleiste und
+   * Betreffzeile als position: sticky in denselben Bereich, der den Inhalt
+   * scrollt. Ab dem zweiten Segment steht diese Zeile also im Ausschnitt,
+   * wurde ausgeblendet (visibility: hidden) und hinterliess ihren Platz als
+   * Leerband; zugleich begann der Inhalt nicht an der Container-Oberkante,
+   * sondern erst darunter - die Segmente lagen um genau diese Hoehe versetzt
+   * und Textzeilen erschienen doppelt.
+   *
+   * Gemessen am 27.09.2026 (Firefox, Gmail-Lesebereich, 2.42.0): Zuschnitt ab
+   * y=112, elf klebende Elemente ausgeblendet, Textzeile in beiden Segmenten
+   * 224 CSS-px auseinander statt der 943 gescrollten. 224 px war die Hoehe der
+   * klebenden Kopfzeile.
+   *
+   * Vermessen wird bei scrollTop 0, wo die Kopfzeile noch im Fluss an der
+   * Oberkante steht: alle sticky/fixed-Nachfahren, die die Oberkante des
+   * Containers beruehren und mindestens die halbe Breite einnehmen. Ihre
+   * Unterkante ist der Beginn des scrollenden Inhalts.
+   */
+  function stickyKopfImContainer(root, rect) {
+    let kopf = 0;
+    let els;
+    try { els = root.querySelectorAll("*"); } catch (_) { return 0; }
+    for (const el of els) {
+      let cs, r;
+      try { cs = getComputedStyle(el); r = el.getBoundingClientRect(); } catch (_) { continue; }
+      if (cs.position !== "sticky" && cs.position !== "fixed") continue;
+      if (cs.visibility === "hidden" || cs.display === "none") continue;
+      if (r.width < rect.width * 0.5) continue;             // schmale Elemente sind keine Kopfzeile
+      if (r.top > rect.top + 4 || r.bottom <= rect.top + 4) continue;   // muss die Oberkante beruehren
+      if (r.height > rect.height * 0.45) continue;          // hoeher als knapp die Haelfte: Inhalt, keine Leiste
+      kopf = Math.max(kopf, r.bottom - rect.top);
+    }
+    return Math.round(kopf);
+  }
+
   function computeClipRect(state) {
     if (state.isWindow) return null;
     let r;
     try { r = state.root.getBoundingClientRect(); } catch (_) { return null; }
 
     const x = Math.max(0, Math.round(r.left));
-    const y = Math.max(0, Math.round(r.top));
+    let y = Math.max(0, Math.round(r.top));
     const w = Math.round(Math.min(r.width, window.innerWidth - x));
-    const h = Math.round(Math.min(r.height, window.innerHeight - y));
+    let h = Math.round(Math.min(r.height, window.innerHeight - y));
+
+    // Klebende Kopfzeile im Container: der scrollende Inhalt beginnt darunter.
+    const kopf = stickyKopfImContainer(state.root, r);
+    if (kopf > 0 && kopf < h - 50) {
+      log("Klebende Kopfzeile im Scroll-Container:", kopf, "px - Zuschnitt beginnt darunter");
+      y += kopf;
+      h -= kopf;
+    }
 
     // Unbrauchbar schmale oder hohe Ausschnitte lieber verwerfen als ein
     // kaputtes PDF erzeugen - dann bleibt es beim vollen Viewport.
@@ -189,11 +261,11 @@
     if (links !== x || rechts !== x + w) {
       const nw = Math.round(Math.min(rechts - links, window.innerWidth - links));
       log("Clip um Navigationsspalte erweitert:", x, "->", links, "| Breite", w, "->", nw);
-      return { x: links, y, w: nw, h };
+      return { x: links, y, w: nw, h, kopf };
     }
 
-    log("Clip auf Scroll-Container:", x, y, w, h);
-    return { x, y, w, h };
+    log("Clip auf Scroll-Container:", x, y, w, h, "Kopf", kopf);
+    return { x, y, w, h, kopf };
   }
 
   /* Hintergrundfarbe fuer die Flaeche, auf der im Kontext-Modus unterhalb des
@@ -643,6 +715,7 @@
       n++;
     }
     log("Sticky/fixed ausgeblendet:", n, "| behalten:", keep.length);
+    return { versteckt: n, behalten: keep.length };
   }
 
   function scrollToYActive(targetY) {
@@ -1826,6 +1899,18 @@
           case "getLayout":
             sendResponse(measureLayout());
             break;
+            /* Nur Position und Fensterhoehe - ohne alles neu zu vermessen.
+             * Wird unmittelbar VOR jedem Screenshot gerufen: zwischen dem
+             * Scrollen und der Aufnahme liegen settlingMs (Vorgabe 400 ms),
+             * und genau darin verschiebt Android die Seite. */
+            case "stand":
+              sendResponse({
+                ok: true,
+                y: scrollState ? getScrollTop(scrollState) : (window.scrollY || 0),
+                viewportH: scrollState ? getViewportHeight(scrollState) : window.innerHeight,
+                diag: messDiagnose(scrollState)
+              });
+              break;
           case "probe":
             sendResponse(await probeScroll());
             break;
@@ -1834,6 +1919,9 @@
             sendResponse({ ok: true, scrollTop: getScrollTop(scrollState) });
             break;
           case "hideSticky":
+            sendResponse(hideStickyAndFixed(!!msg.includeSideNav) || { versteckt: 0 });
+            break;
+          case "hideStickyAlt":
             hideStickyAndFixed(!!msg.includeSideNav);
             sendResponse({ ok: true });
             break;

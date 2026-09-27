@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Fixture: App-Layout mit klebender Kopfzeile (Gmail-artig)</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#111;color:#eee;font:15px/1.45 Arial,sans-serif}
+#top{position:fixed;left:0;top:0;right:0;height:64px;background:#202124;border-bottom:1px solid #333;z-index:5;padding:20px;box-sizing:border-box}
+#side{position:fixed;left:0;top:64px;bottom:0;width:256px;background:#1b1b1b;overflow-y:auto;border-right:1px solid #333}
+#side .lbl{padding:9px 24px;border-bottom:1px solid #222}
+#main{position:absolute;left:256px;top:112px;right:0;bottom:0;overflow-y:auto;background:#141414}
+#hdr{position:sticky;top:0;height:224px;background:#2a2a2e;border-bottom:2px solid #444;box-sizing:border-box;padding:16px 24px;z-index:3}
+#hdr .tools{height:40px;background:#333;margin-bottom:12px}
+#hdr h1{font-size:22px;margin:0 0 8px}
+#mail{background:#fff;color:#111;margin:24px auto;width:720px;padding:32px 40px;box-sizing:border-box}
+#mail p{margin:0 0 14px}
+.z{font-weight:bold;color:#b00}
+</style></head><body>
+<div id="top">Kopfzeile fest (Suche, Konto)</div>
+<div id="side"><div class="lbl">Posteingang</div><div class="lbl">Markiert</div><div class="lbl">Gesendet</div><div class="lbl">Entwürfe</div>
+<script>for(let i=1;i<=60;i++)document.write('<div class="lbl">Label '+i+'</div>')</script></div>
+<div id="main">
+  <div id="hdr"><div class="tools">Werkzeugleiste (klebt)</div><h1>Betreff der Nachricht (klebt mit)</h1><div>Absender · Datum · 224 px hoch</div></div>
+  <div id="mail">
+    <script>for(let i=1;i<=52;i++)document.write('<p><span class="z">Zeile '+String(i).padStart(2,'0')+'</span> Dieser Absatz steht genau einmal im Dokument. Wird er im PDF doppelt oder gar nicht gezeigt, ist die Naht falsch gesetzt. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</p>')</script>
+    <p><span class="z">ENDE</span> Fußzeile der Nachricht.</p>
+  </div>
+</div>
+</body></html>

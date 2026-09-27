@@ -2,7 +2,7 @@
 
 // Chrome MV3 kennt keine background.html - alle dort geladenen
 // Skripte muessen hier importiert werden, sonst fehlen sie zur Laufzeit.
-importScripts("compat.js", "pdf-writer.js", "zeitanker.js", "zitate.js", "cdp-vektor.js");
+importScripts("compat.js", "pdf-writer.js", "zeitanker.js", "zitate.js");
 
 const TAG = "[PDFSnap/bg]";
 const log = (...a) => console.log(TAG, ...a);
@@ -101,9 +101,10 @@ const DEFAULTS_DESKTOP = {
   provenanceFooter: false,
   // Zeitanker: holt vor dem Speichern einen oeffentlichen Zufallswert des
   // drand-Netzes und legt ihn in die Aufnahme. Belegt "nicht vor dieser Runde
-  // entstanden", ohne der Geraeteuhr zu glauben. Standard AUS, weil es der
-  // einzige Netzzugriff des Add-ons ist — er findet nur statt, wenn er
-  // ausdruecklich verlangt wurde. Gesendet wird dabei nichts.
+  // Standard AN seit 2.34.0. Der Zeitanker ist der einzige Netzzugriff
+  // des Add-ons; wer diesen Wert aendert, aendert eine Datenschutz-
+  // aussage - docs/privacy.html, PRIVACY.md und README.md gehoeren
+  // dann im selben Zug nachgezogen.
   timeAnchor: true,
   // Unsichtbare Textebene aus dem Dokument. Standard an: sie macht das PDF
   // durchsuchbar, ohne das Bild zu veraendern.
@@ -881,7 +882,8 @@ async function ensureContentInjected(tabId) {
       log("Content injected (attempt " + (attempt + 1) + ").");
     } catch (e) {
       log("executeScript failed:", e);
-      throw new Error("Diese Seite erlaubt keine Erweiterungs-Skripte (chrome://, Chrome Web Store, PDF-Viewer)");
+      throw new Error(txt("noScripts",
+        "Diese Seite erlaubt keine Erweiterungs-Skripte."));
     }
     await sleep(120);
   }
@@ -1018,7 +1020,16 @@ async function beilageAblegen(name, mime, inhalt, tabId) {
      * nie an, ohne dass es irgendwo aufgefallen waere.
      *
      * Ein Anker mit download-Attribut zaehlt als Handlung der Seite, nicht
-     * der Erweiterung. */
+     * der Erweiterung.
+     *
+     * ACHTUNG, DIESER WEG VERLIERT DEN ORDNER. Das download-Attribut nimmt
+     * nur einen Dateinamen; Pfadanteile verwerfen alle Browser (HTML-Norm,
+     * 4.6.6: "the user agent should not use path components"). Die Datei
+     * landet also im Wurzelverzeichnis der Ablage, nicht beim PDF — genau
+     * das Bild, das eine Zitationsdatei in D:\Downloads statt in
+     * D:\Downloads\Full Page PDF Snap ergab. Seit die Adresse ueber blob
+     * laeuft, ist dieser Weg der seltene Ausnahmefall; er bleibt als
+     * Rueckfall, weil eine Datei am falschen Platz besser ist als keine. */
     if (tabId != null) {
       try {
         const r = await browser.tabs.sendMessage(tabId, {
@@ -1113,118 +1124,6 @@ async function belegeAblegen(stamm, quelle, linkKarte, zusatz) {
   return { abgelegt, gescheitert };
 }
 
-/* Die Seite als Vektor aufnehmen.
- *
- * Gibt null zurueck, wenn der Weg nicht gangbar ist — dann laeuft die
- * gewohnte Bildaufnahme. Ein fehlendes DevTools-Protokoll, eine nicht
- * erteilte Erlaubnis oder eine Seite, die den Druck verweigert, sind kein
- * Fehler des Nutzers und duerfen ihm nicht als solcher gezeigt werden. */
-async function vektorAufnahme(tab, settings, wahl) {
-  if (typeof PageShotVektor === "undefined") return null;
-  if (settings.vektor === false) return null;
-  /* Ein mit der Maus gewaehlter Ausschnitt hat im Vektor-Weg keine
-   * Entsprechung: gedruckt wird immer das ganze Dokument. Dafuer bleibt der
-   * Bildweg zustaendig. */
-  if (wahl && wahl.region) return null;
-  if (!(await PageShotVektor.vektorErlaubt())) return null;
-
-  const p = await getPlatform();
-  if (p.isAndroid) return null;
-
-  let quelle = null, linkKarte = null;
-
-  /* Die Angaben VOR dem Druck erheben: waehrend des Drucks steht die Seite
-   * unter einer veraenderten Fenstergroesse, und im Artikelmodus ist die
-   * Haelfte davon ausgeblendet. Die Koordinaten der Linkkarte waeren dann die
-   * einer anderen Seite. */
-  try {
-    await ensureContentInjected(tab.id);
-    if (settings.sourceMetadata !== false) {
-      const src = await browser.tabs.sendMessage(tab.id, { cmd: "collectSource" });
-      if (src && src.ok && src.quelle && src.quelle.titel) quelle = src.quelle;
-    }
-    const lm = await browser.tabs.sendMessage(tab.id, { cmd: "collectLinks" });
-    if (lm && lm.ok && lm.links && lm.links.length) linkKarte = lm;
-  } catch (e) {
-    log("Angaben vor dem Vektordruck nicht vollstaendig:", e && e.message);
-  }
-
-  let ergebnis;
-  try {
-    const modus = (wahl && wahl.modus) || settings.vektorModus || "seite";
-    const blattBreitePx = modus === "artikel" ? blattBreite(settings) : 0;
-    /* Beim Druck bekommt der Vektorweg die Blattmasse in Zoll — dieselben,
-     * die auch ein Drucker verwendet. A4 misst 8,27 x 11,69 Zoll, Letter
-     * 8,5 x 11. Quer gelegt tauschen Breite und Hoehe die Rollen. */
-    const druckblatt = modus === "a4" ? druckMasse(settings) : null;
-    ergebnis = await PageShotVektor.vektorAufnehmen(tab.id, {
-      modus,
-      blattBreitePx,
-      druckblatt,
-      settlingMs: settings.settlingMs,
-      hideSticky: settings.hideSticky,
-      artikelSchriftgroesse: settings.artikelSchriftgroesse || 18,
-    });
-  } catch (e) {
-    log("Vektorweg gescheitert, es laeuft der Bildweg:", e && e.message);
-    return null;
-  }
-  if (!ergebnis || !ergebnis.bytes || !ergebnis.bytes.length) return null;
-
-  const { filename, relPath } = await dateinamenBauen(tab, settings, quelle);
-
-  const blob = new Blob([ergebnis.bytes], { type: "application/pdf" });
-  const url = await blobToDataUrl(blob);
-  _lastPdfUrl = url;
-  _lastPages = 1;
-  _lastSaved = false;
-
-  const id = await browser.downloads.download({
-    url, filename: relPath, saveAs: !!settings.saveAs, conflictAction: "uniquify",
-  });
-  try { await waitForDownloadComplete(id, 30000); }
-  catch (e) { log("Warten auf den Download:", e.message); }
-
-  let pruefsumme = "";
-  try {
-    const digest = await crypto.subtle.digest("SHA-256", ergebnis.bytes);
-    pruefsumme = Array.from(new Uint8Array(digest))
-      .map(b => b.toString(16).padStart(2, "0")).join("");
-  } catch (e) { log("Pruefsumme nicht gebildet:", e && e.message); }
-
-  await belegeAblegen(relPath.replace(/\.pdf$/i, ""), quelle, linkKarte, {
-    url: tab.url,
-    sprache: belegSprache(settings),
-    pdfDatei: filename,
-    pruefsumme,
-    version: (browser.runtime.getManifest() || {}).version || "",
-    /* Ohne Reiter kein Rueckfall: Scheitert die Download-Schnittstelle, kann
-     * ohne ihn nicht die Seite einspringen. Fehlte hier bis 2.37.0. */
-    tabId: tab && tab.id,
-    /* Beide Beilagen haengen an den Quellenangaben: Ist der Schalter im
-     * Menue aus, kommt gar keine mit — dann liegt nur das PDF da. Ist er
-     * an, entscheidet die jeweilige Einstellung. */
-    risDatei: settings.sourceMetadata !== false && settings.risDatei !== false,
-    zitatDatei: settings.sourceMetadata !== false && settings.zitatDatei !== false,
-  });
-
-  _lastDownloadId = id;
-  _lastFilename = relPath;
-  _lastSaved = true;
-
-  try { await browser.notifications.clear("pdfsnap-progress"); } catch (_) { /* egal */ }
-  fertigTon(tab && tab.id, settings, p);
-
-  log("Vektoraufnahme fertig:", relPath,
-      Math.round(ergebnis.bytes.length / 1024) + " kB");
-
-  return {
-    ok: true, downloadId: id, filename: relPath,
-    pages: ergebnis.einBlatt ? 1 : null,
-    method: "vektor", modus: ergebnis.modus,
-  };
-}
-
 /* Den Artikel als Textdatei ablegen.
  *
  * Kein PDF: Ein PDF ist ein Beleg und laesst sich schlecht weiterverarbeiten.
@@ -1276,21 +1175,22 @@ async function artikelAlsDatei(tab, settings) {
   ].join("\n");
 
   const inhalt = kopf + ergebnis.markdown;
-  const url = "data:text/markdown;charset=utf-8," + encodeURIComponent(inhalt);
+  /* Ueber blob, nicht ueber data: — Firefox verweigert data: hier ebenso wie
+   * bei den Beilagen. Siehe beilagenAdresse(). */
+  const { url, blob } = beilagenAdresse("text/markdown", inhalt);
   const id = await browser.downloads.download({
     url, filename: stamm + ".md", saveAs: !!settings.saveAs, conflictAction: "uniquify",
   });
   try { await waitForDownloadComplete(id, 30000); }
   catch (e) { log("Warten auf den Download:", e.message); }
+  if (blob) { try { URL.revokeObjectURL(url); } catch (_) { /* egal */ } }
 
   await belegeAblegen(stamm, quelle, null, {
     url: tab.url,
     sprache: belegSprache(settings),
     pdfDatei: filename.replace(/\.pdf$/i, ".md"),
     version: (browser.runtime.getManifest() || {}).version || "",
-    /* Beide Beilagen haengen an den Quellenangaben: Ist der Schalter im
-     * Menue aus, kommt gar keine mit — dann liegt nur das PDF da. Ist er
-     * an, entscheidet die jeweilige Einstellung. */
+    tabId: tab && tab.id,
     risDatei: settings.sourceMetadata !== false && settings.risDatei !== false,
     zitatDatei: settings.sourceMetadata !== false && settings.zitatDatei !== false,
   });
@@ -1330,7 +1230,8 @@ async function captureFullPage(tab, wahl) {
     }
 
     /* Zuerst der Vektorweg — er setzt das Blatt selbst und liefert echten
-     * Text. Er braucht die Erlaubnis "debugger"; ohne sie faellt er aus. */
+     * Text. Den gibt es nur in Chromium; in Firefox faellt die Abfrage still
+     * aus. */
     try {
       const alsPdf = typeof vektorAufnahme === "function"
         ? await vektorAufnahme(tab, settings, wahl) : null;
@@ -1339,10 +1240,17 @@ async function captureFullPage(tab, wahl) {
       log("Vektor-Artikel nicht moeglich:", e && e.message);
     }
 
-    /* Sonst die Leseansicht im Bildweg — derselbe Weg, den Firefox nimmt.
-     * Die Seite wird VOR der Aufnahme umgestellt und danach zurueckgesetzt;
-     * das Zuruecksetzen steht in einem finally, damit eine misslungene
-     * Aufnahme die Seite nicht dauerhaft veraendert. */
+    /* Sonst die Leseansicht im Bildweg.
+     *
+     * Das ist der Weg fuer Firefox und fuer das Telefon, und dort ist er der
+     * wichtigere: Ein Bildschirmfoto einer Doku-Seite mit dunklen Codefeldern
+     * und dreispaltiger Navigation laesst sich auf sechs Zoll nicht lesen.
+     * Die Seite wird deshalb VOR der Aufnahme umgestellt — heller Grund,
+     * Leseschrift, eine Spalte — und danach zurueckgesetzt.
+     *
+     * Das Zuruecksetzen steht in einem finally: Bleibt die Seite umgestellt,
+     * sieht der Nutzer sie so, bis er neu laedt, und weiss nicht warum. Ein
+     * misslungener Artikel darf die Seite nicht dauerhaft veraendern. */
     let umgestellt = false;
     try {
       await ensureContentInjected(tab.id);
@@ -1354,9 +1262,14 @@ async function captureFullPage(tab, wahl) {
         umgestellt = true;
         log("Leseansicht gesetzt:", r.zeichen, "Zeichen");
       } else {
+        /* Kein Artikel erkennbar — dann ist die Textdatei die ehrlichere
+         * Antwort als eine Aufnahme der ganzen Seite unter dem Namen
+         * "Artikel". */
         log("Kein Artikel erkennbar:", r && r.grund);
         return await artikelAlsDatei(tab, settings);
       }
+      /* Kurz warten: Das neue Stylesheet aendert Umbruch und Hoehe der Seite,
+       * und die Aufnahme misst genau diese Hoehe. */
       await sleep(250);
       return await captureFullPageInner(tab, settings);
     } finally {
@@ -1455,19 +1368,6 @@ async function captureFullPage(tab, wahl) {
       ? { breite: blattLang, hoehe: blattKurz }
       : { breite: blattKurz, hoehe: blattLang };
   }
-
-  /* Zuerst der Vektor-Weg. Er liefert echte Buchstaben, anklickbare Verweise
-   * und eine deutlich kleinere Datei — und braucht dafuer weder Scrollen noch
-   * Zusammensetzen. Gibt er null zurueck, ist er auf diesem Browser, dieser
-   * Seite oder mit diesen Erlaubnissen nicht gangbar, und es laeuft
-   * unveraendert die Bildaufnahme. */
-  try {
-    const vektor = await vektorAufnahme(tab, settings, wahl);
-    if (vektor) return vektor;
-  } catch (e) {
-    log("Vektorweg uebersprungen:", e && e.message);
-  }
-
   // Der sichtbare Ausschnitt ist keine eigene Ausgabeform, sondern dieselbe
   // Aufnahme mit einem einzigen Abschnitt: ein Bild, eine Seite, gleiche
   // Textebene, gleiche Nachweiszeile. Alles andere waere ein zweiter Weg mit
@@ -1631,7 +1531,44 @@ async function captureFullPageInner(tab, settings) {
   }
 
   const segments = [];
-  const stepCss = Math.max(100, layout.viewportH - 40);
+  /* Schrittweite aus dem sichtbaren INHALT, nicht aus der Containerhoehe.
+   * Bei einem inneren Scroll-Container mit klebender Kopfzeile ist der
+   * Ausschnitt (clip.h) um diese Kopfzeile kleiner als der Container; wer
+   * um die volle Containerhoehe scrollt, laesst genau diese Hoehe an Inhalt
+   * aus (27.09.2026, Gmail: 224 px je Naht). */
+  const sichtbarCss = (layout.clip && !layout.isWindow && layout.clip.h)
+    ? layout.clip.h : layout.viewportH;
+  const stepCss = Math.max(100, sichtbarCss - 40);
+
+  /* PageShotDiagnose - interne Messwerte fuer die Fehlersuche.
+   *
+   * Anlass: Am 14.09.2026 zeigte ein Android-PDF doppelte Textzeilen. Die
+   * Ursache liess sich am Ergebnis nicht bestimmen - jede Erklaerung passte
+   * zu den Zahlen, zwei Reparaturversuche gingen daneben, einer davon machte
+   * die Rechner-Fassung schlechter.
+   *
+   * Deshalb misst das Add-on jetzt mit und legt die Werte in die
+   * PDF-Metadaten. Sie stehen nicht im sichtbaren Dokument und fallen keinem
+   * Leser auf; wer sie braucht, liest sie mit einem Werkzeug aus.
+   *
+   * Enthaelt KEINE Seiteninhalte - nur Zahlen zur Geometrie. */
+  const diagnose = {
+    v: (browser.runtime.getManifest() || {}).version || "?",
+    zeit: new Date().toISOString(),
+    stepCss: 0,
+    layout: null,
+    messungen: [],
+    fehler: []
+  };
+  diagnose.stepCss = stepCss;
+  diagnose.layout = {
+    totalH: layout.totalH, viewportH: layout.viewportH, viewportW: layout.viewportW,
+    winH: layout.winH, winW: layout.winW, dpr: layout.dpr,
+    isWindow: layout.isWindow, rootTag: layout.rootTag,
+    clip: layout.clip ? { x: layout.clip.x, y: layout.clip.y,
+                          w: layout.clip.w, h: layout.clip.h,
+                          kopf: layout.clip.kopf || 0 } : null
+  };
   let totalH = layout.totalH;
   let maxScroll = Math.max(0, totalH - layout.viewportH);
   let y = 0;
@@ -1776,6 +1713,49 @@ async function captureFullPageInner(tab, settings) {
 
       await sleep(settings.settlingMs);
 
+      /* Feste Leisten bei JEDER Aufnahme ausblenden, nicht nur zweimal.
+       *
+       * Bis 2.41.0 geschah das einmal vor der Aufnahme und einmal nach dem
+       * ersten Bild. Google macht seine Suchleiste aber erst beim
+       * Herunterscrollen fest - vorher steht sie normal im Textfluss und
+       * wird von beiden Durchlaeufen nicht erfasst. Im PDF vom 14.09.2026
+       * erschien sie dadurch viermal: einmal oben und an jeder der drei
+       * Nahtstellen.
+       *
+       * Der Durchlauf kostet einen Aufruf je Aufnahme. Das ist der Preis
+       * dafuer, dass auch Leisten verschwinden, die es beim Start noch
+       * nicht gab. */
+      let stickyJeAufnahme = 0;
+      if (settings.hideSticky && segments.length > 0) {
+        try {
+          const r = await browser.tabs.sendMessage(
+            tab.id, { cmd: "hideSticky", includeSideNav: true });
+          stickyJeAufnahme = (r && r.versteckt) || 0;
+          if (stickyJeAufnahme) log("Nachtraeglich ausgeblendet:", stickyJeAufnahme);
+        } catch (_) { /* Seite antwortet nicht - Aufnahme laeuft weiter */ }
+      }
+
+      /* Nur messen, nichts veraendern. Die Aufnahme arbeitet unveraendert mit
+       * actualY. Was hier gesammelt wird, dient allein der Fehlersuche -
+       * ein Reparaturversuch ohne diese Zahlen ist Raten. */
+      try {
+        const stand = await browser.tabs.sendMessage(tab.id, { cmd: "stand" });
+        if (stand && Number.isFinite(stand.y)) {
+          diagnose.messungen.push({
+            n: segments.length,
+            ziel: Math.round(targetY * 10) / 10,
+            nachScroll: Math.round(actualY * 10) / 10,
+            nachPause: Math.round(stand.y * 10) / 10,
+            drift: Math.round((stand.y - actualY) * 10) / 10,
+            vH: stand.viewportH,
+            sticky: stickyJeAufnahme,
+            d: stand.diag || null
+          });
+        }
+      } catch (e) {
+        diagnose.fehler.push("stand: " + String(e && e.message || e).slice(0, 60));
+      }
+
       // Sicherstellen dass unser Ziel-Tab noch aktiv ist. Auf Android verwechseln
       // Nutzer schnell den Tab, captureVisibleTab erfasst dann den falschen.
       try {
@@ -1807,6 +1787,18 @@ async function captureFullPageInner(tab, settings) {
         pxW: img.width,
         pxH: img.height
       });
+      /* Die Bildgroesse gehoert zur selben Messreihe: Aus ihr und dem
+       * Abstand ergibt sich, ob eine Naht ueberlappt oder klafft. */
+      if (diagnose.messungen.length) {
+        const m = diagnose.messungen[diagnose.messungen.length - 1];
+        /* Die bereits abgelegten Masse benutzen, nicht img.* erneut lesen:
+     In Chrome MV3 ist das Bild ein ImageBitmap ohne naturalWidth, und
+     der Portierer zaehlt die Vorkommen - ein drittes laesst ihn
+     abbrechen. */
+          const letztes = segments[segments.length - 1];
+          m.bildPx = letztes.pxW + "x" + letztes.pxH;
+        m.y = Math.round(actualY * 10) / 10;
+      }
 
       // Zweite Phase: Nach dem ersten Segment verschwindet auch eine fixe
       // Navigationsspalte. Sonst wandert sie durch jedes weitere Segment und
@@ -2062,7 +2054,44 @@ async function captureFullPageInner(tab, settings) {
   // der Screenshot bildet immer das ganze Fenster ab - auch wenn nur ein
   // innerer Container gescrollt wird. layout.winH fehlt bei alten Content-
   // Skripten, dann greift der bisherige Weg ueber viewportH.
-  const dprY = segments[0].pxH / (layout.winH || layout.viewportH);
+  /* Massstab aus der BREITE, nicht aus der Hoehe.
+   *
+   * Gemessen am 14.09.2026 auf einem Samsung S24 (Firefox for Android):
+   *
+   *     viewportW 480   viewportH 898   dpr 3
+   *     Aufnahme  1440 x 2937 px
+   *     aus Breite: 1440/480 = 3.000   <- stimmt mit dpr ueberein
+   *     aus Hoehe : 2937/898 = 3.271   <- 9 % daneben
+   *
+   * captureVisibleTab erfasst auf Android mehr Hoehe, als das Fenster
+   * meldet - den Bereich unter der Adressleiste. Wer daraus den Massstab
+   * ableitet, glaubt, die Aufnahme zeige 898 CSS-Pixel, waehrend sie 979
+   * zeigt. Die Differenz von 121 Pixeln je Naht erschien im PDF doppelt:
+   * zwei Textzeilen standen zweimal untereinander, eine davon mitten durch
+   * die Buchstaben geschnitten.
+   *
+   * Die Breite kennt dieses Problem nicht - seitlich blendet sich nichts
+   * ein oder aus. Am Rechner liefern beide Wege denselben Wert (dort
+   * 1489/1489 = 1188/1188 = 1.000), die Aenderung bleibt dort wirkungslos.
+   *
+   * Die Hoehe bleibt als Rueckfall, falls die Breitenangabe fehlt. */
+  /* ... und zwar aus der FENSTERbreite, nicht aus der Containerbreite.
+   *
+   * Die Aufnahme zeigt immer das ganze Fenster. Bei einem inneren
+   * Scroll-Container (Gmail, Outlook, Notion) ist layout.viewportW aber die
+   * Breite dieses Containers - schmaler als das Fenster, weil links die
+   * Seitenleiste steht. 2.42.0 rechnete damit und bekam einen zu grossen
+   * Massstab: Gmail, Fenster 1666 px, Container 1354 px, Aufnahme 1832 px ->
+   * 1832/1354 = 1,353 statt 1832/1666 = 1,100. Jede Naht rutschte um
+   * 23 % zu tief, dazwischen blieb ein Leerband, und die Zeilen davor
+   * erschienen doppelt. Am Fenster-Scroll fiel es nicht auf, dort sind
+   * beide Breiten gleich - genau der Fall, an dem 2.42.0 gemessen wurde.
+   * Gemessen am 27.09.2026 an einer Gmail-Aufnahme und an einer Testseite
+   * mit demselben Aufbau. */
+  const breiteCssFuerMassstab = layout.winW || layout.viewportW;
+  const dprY = (breiteCssFuerMassstab && segments[0].pxW)
+    ? segments[0].pxW / breiteCssFuerMassstab
+    : segments[0].pxH / (layout.winH || layout.viewportH);
 
   /* Bei App-Layouts (Gmail, Outlook, Notion) liefert das Content-Skript den
    * Ausschnitt des Scroll-Containers. Ohne ihn landen Kopfzeile und
@@ -2164,15 +2193,6 @@ async function captureFullPageInner(tab, settings) {
     const frameH = segments[0].pxH;
     bigCtx.drawImage(segments[0].img, 0, 0);
 
-    /* Nebenbereiche mit eigenem Inhalt fortsetzen.
-     *
-     * Eine scrollbare Seitenleiste endet sonst am Ende des ersten Segments,
-     * obwohl sie weitergeht. Ihre zusaetzlichen Segmente werden hier
-     * untereinander in dieselbe Spalte gezeichnet - so weit ihr Inhalt
-     * reicht. Erst danach greift die Fuellfarbe.
-     */
-    drawSideAreas();
-
     /* Die Flaeche unterhalb davon bekommt die Farbe, die im Screenshot
      * tatsaechlich neben dem Inhalt liegt. Aus CSS geraten geht daneben:
      * bei Gmail ist der Scroll-Container weiss, die Seitenleiste daneben
@@ -2211,6 +2231,23 @@ async function captureFullPageInner(tab, settings) {
       bigCtx.drawImage(segments[i].img, srcX, srcY, clipW, segH,
                        srcX, contentTop + Math.round(segments[i].y * dprY), clipW, segH);
     }
+
+    /* Nebenbereiche mit eigenem Inhalt fortsetzen - ZULETZT.
+     *
+     * Eine scrollbare Seitenleiste endet sonst am Ende des ersten Segments,
+     * obwohl sie weitergeht. Ihre zusaetzlichen Segmente werden hier
+     * untereinander in dieselbe Spalte gezeichnet - so weit ihr Inhalt reicht.
+     *
+     * Bis 2.42.0 stand dieser Aufruf VOR der Fuellfarbe: die Spalte wurde
+     * gezeichnet und gleich darauf uebermalt. Uebrig blieb eine leere Spalte,
+     * deren Laenge die Seite trotzdem bestimmte (27.09.2026, Gmail: rund
+     * 540 px leerer Schwanz). Nach der Fuellung reicht nicht: Ist der
+     * Zuschnitt um die Navigationsspalte erweitert, decken auch die weiteren
+     * Segmente die Spalte ab - mit ausgeblendeter Seitenleiste, also dunkel.
+     * Gemessen 27.09.2026 an der Testseite: 0 helle Zeilen unter dem ersten
+     * Segment, obwohl alle vier Nebenaufnahmen die Liste zeigten.
+     */
+    drawSideAreas();
   }
 
   // Adaptive tilePx-Berechnung fuer Android: passt sich an Device an.
@@ -2481,10 +2518,15 @@ async function captureFullPageInner(tab, settings) {
     log("Pruefsumme fehlgeschlagen:", e && e.message);
   }
 
+  diagnose.segmente = segments.length;
+  diagnose.seiten = pages.length;
   const pdfBytes = PageShotPdf.buildPdf(pages, {
     dpi: 144,
     title: tab.title || "",
     version: (browser.runtime.getManifest() || {}).version || "",
+    /* Messwerte fuer die Fehlersuche - landen Base64-kodiert im
+       Info-Dictionary unter /PSDiag, siehe pdf-writer.js. */
+    diagnose: diagnose,
     provenance: herkunft,
     textLayer: textWoerter,
     textLayerPageWidth: textSeiteBreite,
@@ -2748,11 +2790,15 @@ async function captureFullPageInner(tab, settings) {
      * beieinander. */
     if (quelle) {
       const stamm = (p.isAndroid ? filename : relPath).replace(/\.pdf$/i, "");
-      /* Der RIS-Satz wandert IN die Zitationsdatei, statt als eigene daneben
-       * zu liegen. Eine Beilage weniger heisst ein Download weniger — und
-       * Browser lassen eine Erweiterung nur begrenzt viele ohne Rueckfrage
-       * ablegen. Wer ihn einzeln braucht, kopiert den Block aus der Textdatei
-       * oder holt ihn aus dem PDF, wo er als Anlage steckt. */
+      /* Der RIS-Satz steht IN der Zitationsdatei — und seit 2.35.17 auf Wunsch
+       * zusaetzlich als eigene .ris daneben.
+       *
+       * Er war eine Zeitlang nur noch eingebettet, weil eine Beilage weniger
+       * ein Download weniger ist. Das half aber gerade dort nicht, wo es
+       * darauf ankommt: Citavi, Zotero und EndNote lesen kein Fliesstext-
+       * Dokument. Wer die Angaben in seine Literaturverwaltung bringen will,
+       * musste den Block von Hand herauskopieren. Darum jetzt beides, jedes
+       * einzeln abwaehlbar. */
       const risSatz = (typeof PageShotPdf !== "undefined" && PageShotPdf.risSatz && quelle.titel)
         ? PageShotPdf.risSatz(quelle) : "";
       const ergebnis = await belegeAblegen(stamm, quelle, linkKarte, {
@@ -3042,11 +3088,11 @@ const BLOCKED_HOSTS = [
 /* Ein uebersetzter Text, mit deutschem Rueckfall.
  *
  * Die Meldungen unten standen bis 2.35.3 fest auf Deutsch im Quelltext,
- * obwohl es sie in allen neun Sprachen gibt — die Schluessel lagen unbenutzt
- * in den Sprachdateien. Wer die Oberflaeche auf Japanisch oder Spanisch
- * gestellt hatte, bekam trotzdem "Chrome schuetzt diese Seite". Aufgefallen
- * ist es erst beim gezielten Abgleich zwischen den vorhandenen und den
- * verwendeten Schluesseln.
+ * obwohl es sie in allen neun Sprachen gibt — die Schluessel lagen
+ * unbenutzt in den Sprachdateien. Wer die Oberflaeche auf Japanisch oder
+ * Spanisch gestellt hatte, bekam trotzdem "Firefox schuetzt diese Seite".
+ * Aufgefallen ist es erst beim gezielten Abgleich zwischen den vorhandenen
+ * und den verwendeten Schluesseln.
  *
  * Der Rueckfall bleibt stehen: Schlaegt die Uebersetzung fehl, ist eine
  * deutsche Meldung besser als eine leere. */

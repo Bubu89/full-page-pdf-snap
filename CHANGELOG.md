@@ -1,3 +1,207 @@
+## 2026-09-27 — Gmail: die Naht saß um die Breite der Seitenleiste daneben (2.43.0)
+
+Anlass: eine Gmail-Nachricht aus Firefox, aufgenommen mit 2.42.0. An der Naht
+ein Leerband, darunter zwei Zeilen doppelt, unter dem Fuß rund 540 px Leere.
+Die Diagnose in der PDF (`PSDiag`) lieferte die Zahlen; eine Testseite mit
+demselben Aufbau (innerer Scroll-Container, klebende Kopfzeile, scrollbare
+Seitenleiste) hat den Fehler nachgestellt und die Korrektur gemessen.
+
+### Drei Ursachen, drei Änderungen
+
+1. **Maßstab aus der Fensterbreite, nicht aus der Containerbreite.** 2.42.0
+   hatte den Maßstab von der Höhe auf die Breite umgestellt — und dabei
+   `viewportW` genommen, das bei einem inneren Scroll-Container die Breite des
+   Containers ist. Gmail: Fenster 1666 px, Container 1354 px, Aufnahme 1832 px
+   → 1832/1354 = 1,353 statt 1832/1666 = 1,100. Jede Naht rutschte 23 % zu
+   tief. Am Fenster-Scroll gleich breit, deshalb dort nie aufgefallen.
+   Jetzt: `layout.winW`.
+2. **Klebende Kopfzeile im Container.** Werkzeugleiste und Betreff hängen bei
+   Gmail als `position: sticky` im selben Bereich, der den Inhalt scrollt
+   (224 px). Sie wurden ab dem zweiten Segment ausgeblendet und hinterließen
+   ein Leerband; der Inhalt begann erst darunter. Das Content-Skript vermisst
+   sie jetzt bei scrollTop 0 (`stickyKopfImContainer`) und legt den Zuschnitt
+   darunter; die Schrittweite folgt dem Ausschnitt (`clip.h`), nicht der
+   Containerhöhe — sonst fehlt je Naht genau diese Kopfzeilenhöhe.
+3. **Seitenleiste zuletzt zeichnen.** `drawSideAreas()` lief vor der
+   Füllfarbe und wurde übermalt; übrig blieb eine leere Spalte, deren Länge
+   die Seite trotzdem bestimmte. Jetzt nach Füllung und Segmenten.
+
+Nebenbei: die Diagnose schrieb `clip.width/height` statt `clip.w/h` und
+verlor damit die Ausschnittmaße; ergänzt um `kopf`.
+
+### Gemessen (Testseite, Chromium headless, Fenster 1666×1019)
+
+```
+                        2.42.0            2.43.0
+Zeilenmarken (Soll 53)  56 (3 doppelt)    53
+Abstand an der Naht     226 px (Soll 57)  57–58 px überall
+Seitenleiste unter S1   leer              77 + 51 helle Zeilen
+```
+
+Test: `tests/app-layout-naht.test.mjs` (rot auf 2.42.0, grün auf 2.43.0).
+Testseite und Messlauf: `tools/naht-messung/`. Die echte Gmail-Aufnahme
+bestätigt der Nutzer nach dem Update — dort liegen keine Testrechte vor.
+
+## 2026-09-14 — Der Maßstab kam aus der falschen Richtung (2.42.0)
+
+Zwei Fehler, beide durch die Messwerte aus 2.41.0 gefunden statt erraten.
+
+### Android: doppelte Textzeilen
+
+Die Diagnose im PDF lieferte die Zahlen, an denen zwei Reparaturversuche
+vorbeigegangen waren:
+
+```
+Samsung S24, Firefox for Android
+viewportW 480   viewportH 898   dpr 3
+Aufnahme  1440 x 2937 px
+
+Maßstab aus der Breite: 1440/480 = 3,000   ← stimmt mit dpr überein
+Maßstab aus der Höhe  : 2937/898 = 3,271   ← 9 % daneben
+```
+
+`captureVisibleTab` erfasst auf Android mehr Höhe, als das Fenster meldet — den
+Bereich unter der Adressleiste. Der Code leitete den Maßstab aus der Höhe ab und
+hielt die Aufnahme deshalb für 898 CSS-Pixel hoch, während sie 979 zeigt.
+Gescrollt wurde um 858. Die Differenz von **121 Pixeln je Naht** erschien
+doppelt im PDF.
+
+**Der Maßstab kommt jetzt aus der Breite.** Seitlich blendet sich nichts ein
+oder aus. Am Rechner liefern beide Wege denselben Wert (1489/1489 =
+1188/1188 = 1,000) — dort ändert sich nichts.
+
+### Windows: die Google-Leiste erschien viermal
+
+Im PDF einer Google-Suche stand die Suchleiste einmal oben und an jeder der drei
+Nahtstellen erneut. Das Ausblenden fester Elemente lief **zweimal**: vor der
+Aufnahme und nach dem ersten Bild. Google macht seine Suchleiste aber erst beim
+Herunterscrollen fest — vorher steht sie normal im Textfluss und wird von beiden
+Durchläufen nicht erfasst.
+
+**Ausgeblendet wird jetzt bei jeder Aufnahme.** Das kostet einen Aufruf je Bild
+und fängt dafür auch Leisten, die es beim Start noch nicht gab. Wie viele je
+Aufnahme verschwinden, steht in der Diagnose.
+
+### Warum es diesmal saß
+
+Die Messwerte aus 2.41.0 haben beide Ursachen in einem Durchgang gezeigt. Ohne
+sie hätte es einen dritten Reparaturversuch auf Verdacht gegeben — die ersten
+beiden waren plausibel und trotzdem falsch.
+
+## 2026-09-14 — Zwei Reparaturversuche zurückgenommen, dafür wird jetzt gemessen (2.41.0)
+
+Fassung 2.40.0 sollte doppelte Textzeilen auf Android beheben. Sie hat es nicht
+getan — und auf dem Rechner Fehler erzeugt, die es vorher nicht gab. Beide
+Änderungen sind zurückgenommen.
+
+**Was schiefging.** Aus einem fehlerhaften PDF lässt sich die Ursache nicht
+ableiten: Zu jeder Zahl passte mehr als eine Erklärung. Der erste Verdacht fiel
+auf die bewegliche Adressleiste, der zweite auf den Zeitpunkt der Messung.
+Beide waren plausibel, beide falsch. Gegen die zweite Erklärung sprach sogar
+eine Zahl, die schon vorlag: Die Abstände zwischen den 19 Aufnahmen waren
+**exakt** gleich — eine wandernde Leiste erzeugt unregelmäßige Werte.
+
+Zurückgenommen wurden:
+
+| Änderung aus 2.40.0 | warum zurück |
+|---|---|
+| `visualViewport` statt `innerHeight` | meldet bei gesetztem Zoom andere Werte — und die Aufnahmequalität setzt Zoom |
+| Position nach der Pause neu messen | hat den Fehler nicht behoben, änderte aber die Platzierung auf allen Plattformen |
+| Meldung bei Lücken | neue Meldung ohne belegten Nutzen |
+| Warnung auch auf Android | gehört zur selben Rücknahme |
+
+Geblieben ist nur, was nichts am Bild ändert: Die wirkungslose
+Aufnahmequalität bleibt auf Android ausgeblendet.
+
+### Stattdessen: Das Add-on misst sich selbst
+
+Jede Aufnahme schreibt ihre Messwerte in die PDF-Metadaten:
+
+```
+/PSVersion   2.41.0                    (Klartext)
+/PSDiag      eyJ2IjoiMi40MS4wIiwi…     (Base64)
+```
+
+`PSVersion` steht offen, damit an jeder Datei ablesbar ist, welche Fassung sie
+erzeugt hat. `PSDiag` trägt die Messreihe — je Aufnahme das Scrollziel, die
+Position direkt nach dem Scrollen, die Position nach der Beruhigungspause, die
+Differenz, die Fensterhöhe und die tatsächliche Bildgröße. Dazu das Layout mit
+`viewportH`, `winH`, `dpr` und dem Ausschnitt.
+
+Base64, nicht verschlüsselt: Es sind nur Zahlen. Aber auch nicht beiläufig
+lesbar — in einem Betrachter steht dort eine Zeichenkette, kein Klartext, der
+jemanden beunruhigt oder zum Herumstellen verleitet. **Keine Seiteninhalte,
+keine Adresse, kein Titel** — nur Geometrie.
+
+Die Sammlung ändert **nichts** am Ablauf: Die Aufnahme arbeitet unverändert mit
+`actualY` wie bis 2.39.0. Scheitert die Messung, entsteht das PDF trotzdem.
+
+Ende zu Ende geprüft: PDF gebaut, `/PSVersion` und `/PSDiag` ausgelesen,
+dekodiert, Messreihe vollständig.
+
+### Wie es weitergeht
+
+Eine Aufnahme derselben Seite vom Handy, dann sagen die Zahlen im PDF selbst,
+wo die Rechnung auseinanderläuft. Erst dann wird wieder etwas geändert.
+
+## 2026-09-14 — Doppelte Textzeilen auf Android (2.40.0)
+
+Ein PDF von einer Tarifseite zeigte zwei Textstellen doppelt, eine davon mitten
+durch die Buchstaben geschnitten. Die Datei selbst lieferte den Beweis:
+
+```
+19 Aufnahmen, Bildhöhe je 833,5 pt
+Abstand der Bilder  833,5 pt
+Überlappung           0,0 pt
+```
+
+Die Bilder standen Kante an Kante — ihr **Inhalt** überlappte sich aber um
+40 px je Naht, bei 18 Nähten also 720 px doppelter Text.
+
+**Die Ursache lag in 400 Millisekunden.** `actualY` stammt aus der Antwort auf
+`scrollTo`, gemessen also *vor* der Beruhigungspause (`settlingMs`, Vorgabe
+400 ms). Genau darin blendet Firefox for Android die Adressleiste aus; die
+Seite verschiebt sich darunter weg. Der Screenshot zeigt dann eine andere
+Stelle, als die gespeicherte Position behauptet.
+
+Am Rechner tritt das nicht auf — dort steht die Seite still. Deshalb blieb es
+lange unentdeckt.
+
+### Vier Änderungen
+
+**1. Die Position wird nach der Pause erneut gemessen.** Ein neuer Befehl
+`stand` im Inhaltsskript liefert Position und Fensterhöhe, ohne die Seite
+komplett neu zu vermessen. Weicht der Wert ab, steht es im Protokoll. Kennt ein
+altes Inhaltsskript den Befehl nicht, bleibt es beim bisherigen Wert — lieber
+der alte Fehler als gar keine Aufnahme.
+
+**2. `visualViewport` statt `innerHeight`.** Die dynamische Adressleiste ändert
+den sichtbaren Bereich um 50–90 px, während `window.innerHeight` denselben Wert
+weitermeldet. `visualViewport` folgt ihr. Am Rechner sind beide gleich.
+
+**3. Lücken werden gezählt und gemeldet.** Überlappen sich zwei Aufnahmen, ist
+das harmlos — die spätere überdeckt die frühere. Klafft dazwischen eine Lücke,
+fehlt Seiteninhalt, und im PDF sieht das aus wie ein Absatzwechsel. Neue
+Meldung `lueckeHint` in neun Sprachen.
+
+**4. Zwei Android-Eigenheiten geradegezogen:**
+
+| | vorher | jetzt |
+|---|---|---|
+| Warnung bei unvollständiger Aufnahme | nur am Rechner | **überall** |
+| Aufnahmequalität in den Einstellungen | sichtbar, ohne Wirkung | **auf Android ausgeblendet** |
+
+Die Warnung war auf Android unterdrückt — ausgerechnet dort, wo eine
+unvollständige Aufnahme am spätesten auffällt, weil niemand die Seite daneben
+offen hat. Und die Aufnahmequalität arbeitet über `tabs.setZoom`, das es auf
+Android nicht gibt; das Protokoll vermerkte nur `captureScale ignored on
+Android`, während die Auswahl weiter zur Wahl stand.
+
+**Was diese Fassung nicht behebt:** Der Fehler ist am Code nachgewiesen und die
+Rechnung geht auf, aber ein Durchlauf am echten Gerät steht aus. Die
+Lückenprüfung ist gegen drei konstruierte Fälle getestet (heutiger Fehler,
+korrekte Überlappung, echter Sprung) — nicht gegen eine echte Seite.
+
 ## 2026-09-14 — Der Ordner-Schalter stand nur im Kontextmenü (2.39.0)
 
 „Nach dem Speichern: Ordner zeigen" gab es längst — als Häkchen im
