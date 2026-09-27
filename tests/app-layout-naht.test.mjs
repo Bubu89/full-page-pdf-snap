@@ -8,6 +8,8 @@
 //      Containerhoehe - sonst fehlt je Naht die Hoehe der Kopfzeile.
 //   3. Klebende Kopfzeile im Container vermessen; Zuschnitt beginnt darunter.
 //   4. Nebenbereiche (Seitenleiste) zuletzt zeichnen, sonst uebermalt.
+// 2.44.0: Die Kopfzeile bleibt im ERSTEN Segment stehen (statt leerer Flaeche)
+//   und wird im Zuschnitt-Modus einmal ueber den Inhalt gezeichnet.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -64,7 +66,32 @@ test("Nebenbereiche werden nach Fuellung und Segmenten gezeichnet", () => {
   assert.ok(seite > fuellung && seite > schleife, "drawSideAreas() muss nach Fuellung und Segmentschleife stehen");
 });
 
+test("2.44.0: Kopfzeile im Container bleibt im ersten Segment stehen", () => {
+  const von = cs.indexOf("function hideStickyAndFixed(");
+  const bis = cs.indexOf("let n = 0;", von);
+  const block = cs.slice(von, bis);
+  assert.ok(block.includes("istKopfzeileImContainer(cs, r, containerRect)"), "Kopfzeile wird nicht behalten");
+  assert.ok(block.includes("!includeSideNav && scrollState && !scrollState.isWindow"), "nur erste Phase, nur innerer Container");
+  // Ein Merkmal fuer Messung und Ausblendung - sonst laufen beide auseinander.
+  assert.ok(cs.slice(cs.indexOf("function stickyKopfImContainer("), cs.indexOf("function computeClipRect("))
+              .includes("istKopfzeileImContainer(cs, r, rect)"), "Vermessung nutzt ein anderes Merkmal");
+});
+
+test("2.44.0: kopf im Zuschnitt ist 0, wenn er nicht abgezogen wurde", () => {
+  const von = cs.indexOf("let kopf = stickyKopfImContainer(state.root, r);");
+  assert.ok(von > 0, "kopf muss veraenderbar sein (let)");
+  assert.ok(/\} else \{\s*kopf = 0;\s*\}/.test(cs.slice(von, von + 400)), "kopf wird nicht auf 0 gesetzt");
+});
+
+test("2.44.0: Zuschnitt zeichnet das erste Segment mitsamt Kopfzeile, weitere ohne", () => {
+  assert.ok(bg.includes("const kopfPx = (!keepFrame && clip && clip.kopf) ? Math.round(clip.kopf * dprY) : 0;"), "kopfPx fehlt");
+  assert.ok(bg.includes("const contentTop = keepFrame ? srcY : kopfPx;"), "contentTop fehlt");
+  const zweig = bg.slice(bg.indexOf("} else if (!keepFrame) {"), bg.indexOf("} else {", bg.indexOf("} else if (!keepFrame) {")));
+  assert.ok(zweig.includes("srcY - kopfPx, clipW, segH + kopfPx"), "erstes Segment ohne Kopfzeile");
+  assert.ok(zweig.includes("contentTop + Math.round(segments[i].y * dprY)"), "weitere Segmente nicht unter der Kopfzeile");
+});
+
 test("Chrome-Fassung traegt dieselben Aenderungen", () => {
-  for (const s of ["breiteCssFuerMassstab", "sichtbarCss"]) assert.ok(bgChrome.includes(s), s + " fehlt in chrome-mv3/background.js");
-  assert.ok(csChrome.includes("function stickyKopfImContainer("), "chrome-mv3/content.js ohne Kopfzeilen-Vermessung");
+  for (const s of ["breiteCssFuerMassstab", "sichtbarCss", "const kopfPx", "const contentTop"]) assert.ok(bgChrome.includes(s), s + " fehlt in chrome-mv3/background.js");
+  for (const s of ["function stickyKopfImContainer(", "istKopfzeileImContainer(cs, r, containerRect)", "kopf = 0;"]) assert.ok(csChrome.includes(s), "chrome-mv3/content.js ohne " + s);
 });

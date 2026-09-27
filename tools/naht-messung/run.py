@@ -2,6 +2,8 @@
    python3 run.py <chrome-mv3-Ordner> <label> [seite.html]
 Baut eine Testkopie mit <all_urls> (Ausloesung ohne Geste), nimmt die Seite auf,
 legt out/<label>.pdf und die rohen Einzelaufnahmen out/<label>-shotN.png ab.
+Umgebungsvariable SNAP_SETTINGS (JSON) setzt Einstellungen vor der Aufnahme,
+z. B. SNAP_SETTINGS='{"appLayout":"crop"}'.
 Bricht mit Exit 1 ab, wenn die Erweiterung nicht laedt, kein Hintergrundprozess
 antwortet, die Aufnahme scheitert oder keine PDF entsteht. Altdateien desselben
 Labels werden vorher geloescht - ein alter Stand darf nie als neuer gelten."""
@@ -54,6 +56,10 @@ with sync_playwright() as p:
     w.close(); v.close(); page.bring_to_front()
     if not sw:
         ctx.close(); fehl("kein Service Worker")
+    import os as _os
+    if _os.environ.get("SNAP_SETTINGS"):
+        sw.evaluate("(s)=>chrome.storage.local.set(s)", json.loads(_os.environ["SNAP_SETTINGS"]))
+        print("Einstellungen gesetzt:", _os.environ["SNAP_SETTINGS"])
     sw.evaluate("""()=>{ self.__shots=[]; const orig=chrome.tabs.captureVisibleTab.bind(chrome.tabs);
       chrome.tabs.captureVisibleTab=async function(...a){ const d=await orig(...a); self.__shots.push(d); return d; }; }""")
     res = sw.evaluate("""async()=>{ try{ const r=await runOnActiveTab({region:false}); return {ok:r&&r.ok!==false,err:r&&r.error}; }

@@ -1,3 +1,70 @@
+## 2026-09-27 — Die Kopfzeile stand als leere Fläche im PDF (2.44.0)
+
+Anlass: die Gegenprobe zu 2.43.0 im Zuschnitt-Modus (`appLayout: crop`).
+2.43.0 vermisst die klebende Kopfzeile eines inneren Scroll-Containers
+(Gmail: Betreff und Werkzeugleiste, 224 px) und beginnt den Zuschnitt
+darunter — richtig. Aber die Ausblendung der ersten Phase (vor der ersten
+Aufnahme) nahm die Kopfzeile bereits mit. Ergebnis im Kontext-Modus: über dem
+Mailtext eine 224 px hohe Fläche in Containerfarbe, wo Betreff und Leiste
+stehen sollten. Im Zuschnitt-Modus fehlte die Kopfzeile ganz.
+
+### Ursache
+
+`hideStickyAndFixed(includeSideNav=false)` behielt nur Navigationsspalten.
+Für die Kopfzeile des Containers galt dieselbe Ausnahme nicht, obwohl der
+Grund derselbe ist: einmal oben zeigen, ab dem zweiten Segment ausblenden.
+Messung und Ausblendung benutzten außerdem verschiedene Regeln — die eine
+fand die Leiste, die andere hatte sie schon entfernt.
+
+### Änderung
+
+1. **Ein Merkmal für beide** (`istKopfzeileImContainer`): sticky/fixed,
+   Nachfahre des Scroll-Containers, berührt dessen Oberkante, mindestens halbe
+   Breite, höchstens 45 % Höhe. `stickyKopfImContainer` misst damit,
+   `hideStickyAndFixed` behält damit — nur in der ersten Phase, nur bei
+   innerem Container (`scrollState && !scrollState.isWindow`). Ab dem zweiten
+   Segment (`includeSideNav=true`) verschwindet sie wie bisher.
+2. **Zuschnitt-Modus zeichnet das erste Segment ab Container-Oberkante**
+   (`srcY - kopfPx`, Höhe `segH + kopfPx`); alle weiteren Segmente sitzen um
+   `contentTop = kopfPx` tiefer. Kontext-Modus unverändert (`contentTop = srcY`).
+3. `clip.kopf` ist 0, wenn die Leiste zwar gemessen, aber nicht abgezogen
+   wurde (Container zu niedrig). Sonst zeichnete der Zuschnitt oberhalb des
+   Containers.
+
+### Gemessen (Testseite gmail-like, Chromium headless, 1666×1019)
+
+```
+                              2.43.0 (AMO-XPI, portiert)   2.44.0
+Kopfzeile #2a2a2e im PDF      0× (leere Fläche)            1× (oben, Zeilen 56–221 bzw. 168–333)
+Zeilenmarken (Soll 53)        53                           53
+Abstände                      57–58 px                     57–58 px
+Zuschnitt-Modus, Bildhöhe     3138 px                      3362 px (+224 = Kopfzeile)
+innen-ohne-kopf               61/61, Kopfzeile 0×          61/61, Kopfzeile 0×
+fenster-sticky                71/71, Leiste 1×             71/71, Leiste 1×
+```
+
+Die Nahtmessung (`tools/naht-messung/messen.py`) prüft ab jetzt zusätzlich
+„Kopfzeile genau 1×" (gmail-like) und „0×" (innen-ohne-kopf). `run.py` nimmt
+Einstellungen über `SNAP_SETTINGS='{"appLayout":"crop"}'` entgegen, damit der
+Zuschnitt-Modus ohne Umbau messbar ist.
+
+### Rückblick auf die Vorversionen — was 2.44.0 davon berührt
+
+| Fassung | dort behoben | berührt? | Beleg |
+|---|---|---|---|
+| 2.43.0 | Maßstab aus Fensterbreite; Zuschnitt unter der Kopfzeile; Seitenleiste zuletzt | nein — Maßstab, `clip.y/h`, Schrittweite und Zeichenreihenfolge unverändert; nur Sichtbarkeit der Leiste in Segment 0 und Zeichenursprung im Zuschnitt | 53/53, 61/61, Abstände identisch; Tests 1–6 unverändert grün |
+| 2.42.0 | Google-Leiste viermal: Ausblenden bei jeder Aufnahme | nein — die Ausnahme gilt nur für `includeSideNav=false` (erste Phase); der Lauf je Aufnahme (`includeSideNav=true`) blendet weiter alles aus | `fenster-sticky`: Leiste 1×; gmail-like: Kopfzeile 1×, nicht an den Nähten |
+| 2.42.0 | Maßstab breitenbasiert (Android) | nein | `fenster-sticky` identisch |
+| 2.41.0 | `PSDiag` im PDF | erweitert: `clip.kopf` jetzt 0 statt Messwert, wenn nicht abgezogen | Messlauf liest `kopf=224` bzw. `0` |
+
+**Nicht geprüft:** die echte Gmail-Aufnahme in Firefox und auf Android (keine
+Testrechte). Ein Container, dessen Kopfzeile erst nach dem Scrollen klebend
+wird, wird in Segment 0 nicht als Kopfzeile erkannt und bleibt ab Segment 1
+ausgeblendet — so wie in 2.43.0.
+
+Tests: `tests/app-layout-naht.test.mjs` (9, davon 3 neu für 2.44.0).
+Firefox, Android und Chrome aus derselben Quelle (`chrome-mv3/port.py`).
+
 ## 2026-09-27 — Gmail: die Naht saß um die Breite der Seitenleiste daneben (2.43.0)
 
 Anlass: eine Gmail-Nachricht aus Firefox, aufgenommen mit 2.42.0. An der Naht

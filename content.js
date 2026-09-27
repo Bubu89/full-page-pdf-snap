@@ -186,6 +186,19 @@
    * Containers beruehren und mindestens die halbe Breite einnehmen. Ihre
    * Unterkante ist der Beginn des scrollenden Inhalts.
    */
+  /* Ein Merkmal, zwei Nutzer: computeClipRect misst daran die Hoehe der
+   * Kopfzeile, hideStickyAndFixed behaelt sie damit im ersten Segment.
+   * Zwei getrennte Regeln liefen auseinander - dann wuerde eine Leiste
+   * gemessen, die im Bild gar nicht steht (leere Flaeche, 27.09.2026). */
+  function istKopfzeileImContainer(cs, r, rect) {
+    if (cs.position !== "sticky" && cs.position !== "fixed") return false;
+    if (cs.visibility === "hidden" || cs.display === "none") return false;
+    if (r.width < rect.width * 0.5) return false;             // schmale Elemente sind keine Kopfzeile
+    if (r.top > rect.top + 4 || r.bottom <= rect.top + 4) return false;   // muss die Oberkante beruehren
+    if (r.height > rect.height * 0.45) return false;          // hoeher als knapp die Haelfte: Inhalt, keine Leiste
+    return true;
+  }
+
   function stickyKopfImContainer(root, rect) {
     let kopf = 0;
     let els;
@@ -193,11 +206,7 @@
     for (const el of els) {
       let cs, r;
       try { cs = getComputedStyle(el); r = el.getBoundingClientRect(); } catch (_) { continue; }
-      if (cs.position !== "sticky" && cs.position !== "fixed") continue;
-      if (cs.visibility === "hidden" || cs.display === "none") continue;
-      if (r.width < rect.width * 0.5) continue;             // schmale Elemente sind keine Kopfzeile
-      if (r.top > rect.top + 4 || r.bottom <= rect.top + 4) continue;   // muss die Oberkante beruehren
-      if (r.height > rect.height * 0.45) continue;          // hoeher als knapp die Haelfte: Inhalt, keine Leiste
+      if (!istKopfzeileImContainer(cs, r, rect)) continue;
       kopf = Math.max(kopf, r.bottom - rect.top);
     }
     return Math.round(kopf);
@@ -214,11 +223,16 @@
     let h = Math.round(Math.min(r.height, window.innerHeight - y));
 
     // Klebende Kopfzeile im Container: der scrollende Inhalt beginnt darunter.
-    const kopf = stickyKopfImContainer(state.root, r);
+    // "kopf" im Ergebnis bedeutet: um so viel wurde der Zuschnitt verschoben.
+    // Eine gemessene, aber nicht abgezogene Leiste bleibt 0 - sonst zeichnet
+    // der Hintergrund oberhalb des Containers (2.44.0).
+    let kopf = stickyKopfImContainer(state.root, r);
     if (kopf > 0 && kopf < h - 50) {
       log("Klebende Kopfzeile im Scroll-Container:", kopf, "px - Zuschnitt beginnt darunter");
       y += kopf;
       h -= kopf;
+    } else {
+      kopf = 0;
     }
 
     // Unbrauchbar schmale oder hohe Ausschnitte lieber verwerfen als ein
@@ -678,6 +692,18 @@
     const keep = [];
     const candidates = [];
 
+    /* Klebende Kopfzeile eines scrollenden Containers (Gmail: Betreff und
+     * Werkzeugleiste ueber dem Mailtext) bleibt im ersten Segment stehen -
+     * derselbe Grundsatz wie bei der Navigationsspalte. Bis 2.43.0 wurde
+     * sie schon vor der ersten Aufnahme ausgeblendet: der Zuschnitt begann
+     * zwar richtig darunter, aber ueber dem Inhalt stand eine leere Flaeche
+     * in Containerfarbe statt der Leiste. Ab dem zweiten Segment
+     * (includeSideNav=true) verschwindet sie wie alles andere. */
+    let containerRect = null;
+    if (!includeSideNav && scrollState && !scrollState.isWindow) {
+      try { containerRect = scrollState.root.getBoundingClientRect(); } catch (_) { /* egal */ }
+    }
+
     for (const el of els) {
       let cs;
       try { cs = getComputedStyle(el); } catch (_) { continue; }
@@ -688,6 +714,11 @@
       if (!includeSideNav && isSideNavigation(r)) {
         keep.push(el);
         log("Sticky behalten (Navigationsspalte):",
+            el.tagName.toLowerCase(), Math.round(r.width) + "x" + Math.round(r.height));
+      } else if (containerRect && scrollState.root.contains(el) &&
+                 istKopfzeileImContainer(cs, r, containerRect)) {
+        keep.push(el);
+        log("Sticky behalten (Kopfzeile im Container, erstes Segment):",
             el.tagName.toLowerCase(), Math.round(r.width) + "x" + Math.round(r.height));
       } else {
         candidates.push(el);

@@ -2138,7 +2138,17 @@ async function captureFullPageInner(tab, settings) {
   // Nicht const: der Zuschnitt auf einen gewaehlten Bereich aendert die
   // Breite, und alles Folgende — Kacheln, Seiten, PDF — rechnet mit pxW.
   let pxW = keepFrame ? segments[0].pxW : clipW;
-  const contentTop = keepFrame ? srcY : 0;
+  /* Klebende Kopfzeile (Gmail: Werkzeugleiste + Betreff) im Zuschnitt-Modus.
+   *
+   * Seit 2.43.0 beginnt der Ausschnitt unterhalb der Kopfzeile, damit sie
+   * nicht an jeder Naht wiederkehrt. Im Kontext-Modus bleibt sie im ersten
+   * Segment sichtbar, weil dort das ganze Fenster steht. Im Zuschnitt-Modus
+   * ("nur Inhaltsbereich") fiel sie damit ganz weg - bei einer Mail ist das
+   * die Betreffzeile. Deshalb: das erste Segment beginnt an der Oberkante
+   * des Containers (Kopfzeile einmal), alle weiteren darunter. Gemessen
+   * 27.09.2026 an der Testseite: Kopfzeile 0x -> 1x, Zeilen unveraendert. */
+  const kopfPx = (!keepFrame && clip && clip.kopf) ? Math.round(clip.kopf * dprY) : 0;
+  const contentTop = keepFrame ? srcY : kopfPx;
 
   /* Die Hoehe richtet sich nach dem LAENGSTEN Bereich, nicht nur nach dem
    * Hauptbereich. Sonst wird eine Seitenleiste, die mehr Inhalt hat als die
@@ -2203,9 +2213,12 @@ async function captureFullPageInner(tab, settings) {
     }
     drawSideAreas();
   } else if (!keepFrame) {
-    for (const seg of segments) {
-      bigCtx.drawImage(seg.img, srcX, srcY, clipW, segH,
-                       0, Math.round(seg.y * dprY), clipW, segH);
+    // Erstes Segment mitsamt Kopfzeile (ab Container-Oberkante), einmal.
+    bigCtx.drawImage(segments[0].img, srcX, srcY - kopfPx, clipW, segH + kopfPx,
+                     0, 0, clipW, segH + kopfPx);
+    for (let i = 1; i < segments.length; i++) {
+      bigCtx.drawImage(segments[i].img, srcX, srcY, clipW, segH,
+                       0, contentTop + Math.round(segments[i].y * dprY), clipW, segH);
     }
   } else {
     // Erstes Segment vollstaendig - hier bleiben Menue und Seitenleiste.

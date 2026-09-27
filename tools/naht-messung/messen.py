@@ -29,10 +29,10 @@ from pathlib import Path
 HIER = Path(__file__).resolve().parent
 BUILD = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else HIER.parent.parent / "chrome-mv3"
 OUT = HIER / "out"
-SEITEN = [  # (Datei, Soll-Marken = Zeilen + ENDE, Leiste erwartet)
-    ("gmail-like.html", 53, None),
-    ("fenster-sticky.html", 71, 1),
-    ("innen-ohne-kopf.html", 61, None),
+SEITEN = [  # (Datei, Soll-Marken = Zeilen + ENDE, Leiste erwartet, Kopfzeile erwartet)
+    ("gmail-like.html", 53, None, 1),      # klebende Kopfzeile #2a2a2e: genau einmal, oben (seit 2.44.0)
+    ("fenster-sticky.html", 71, 1, None),
+    ("innen-ohne-kopf.html", 61, None, 0),
 ]
 
 
@@ -76,12 +76,25 @@ def leisten(im):
     return sum(1 for a, c in b if c - a >= 20)
 
 
+def kopfzeilen(im):
+    """Dunkle Kopfzeile (#2a2a2e) ueber >= 60 % der Breite, Baender >= 100 px hoch.
+    2.43.0: 0 (vor der ersten Aufnahme ausgeblendet, leere Flaeche). 2.44.0: 1."""
+    W, H = im.size
+    rows = [y for y in range(H) if sum(1 for x in range(0, W, 8)
+            if (lambda p: abs(p[0] - 42) < 8 and abs(p[2] - 46) < 8)(im.getpixel((x, y)))) > W / 8 * 0.6]
+    b = []
+    for y in rows:
+        if b and y - b[-1][1] <= 3: b[-1][1] = y
+        else: b.append([y, y])
+    return sum(1 for a, c in b if c - a >= 100)
+
+
 def main():
     from pypdf import PdfReader
     OUT.mkdir(exist_ok=True)
     rot_gesamt = False
     print(f"Nahtmessung gegen {BUILD}")
-    for datei, soll, leiste_soll in SEITEN:
+    for datei, soll, leiste_soll, kopf_soll in SEITEN:
         tag = "mess-" + datei.replace(".html", "")
         r = subprocess.run([sys.executable, str(HIER / "run.py"), str(BUILD), tag, datei], capture_output=True, text=True)
         pdf = OUT / f"{tag}.pdf"
@@ -94,15 +107,18 @@ def main():
         med = sorted(dd)[len(dd) // 2] if dd else 0
         ausreisser = [x for x in dd if abs(x - med) > 4]
         nl = leisten(big) if leiste_soll is not None else None
+        nk = kopfzeilen(big) if kopf_soll is not None else None
         fehler = []
         if len(t) != soll: fehler.append(f"{len(t)} statt {soll} Zeilenmarken")
         if ausreisser: fehler.append(f"Abstaende {ausreisser} statt ~{med}")
         if leiste_soll is not None and nl != leiste_soll: fehler.append(f"Leiste {nl}x statt {leiste_soll}x")
+        if kopf_soll is not None and nk != kopf_soll: fehler.append(f"Kopfzeile {nk}x statt {kopf_soll}x")
         ok = not fehler
         rot_gesamt |= not ok
         lay = diag["layout"]
         print(f"  {'OK  ' if ok else 'FEHL'}  {datei:18} Marken {len(t)}/{soll}, Abstand ~{med} px"
               + (f", Leiste {nl}x" if nl is not None else "")
+              + (f", Kopfzeile {nk}x" if nk is not None else "")
               + f"  [win={lay['isWindow']} clip={lay.get('clip')} step={diag['stepCss']} seg={diag['segmente']} v={diag['v']}]"
               + ("" if ok else "  <- " + "; ".join(fehler)))
     print("  Ergebnis:", "ROT" if rot_gesamt else "GRUEN")
