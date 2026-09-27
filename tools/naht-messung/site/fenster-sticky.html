@@ -1,0 +1,11 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Fixture: Fenster-Scroll, Leiste wird fest</title>
+<!-- Platzhalter #barplatz haelt die Hoehe, wenn #bar fixed wird - wie echte Seiten. Ohne ihn rutscht der Inhalt beim Festwerden um 56 px, und eine Zeile fehlt an der ersten Naht (Messfehler, nicht Add-on-Fehler; 27.09.2026). -->
+<style>body{margin:0;font:15px/1.45 Arial;background:#fff;color:#111}
+#hero{height:180px;background:#dfe7ff;padding:20px}
+#bar{height:56px;background:#ff8800;color:#fff;font-weight:bold;padding:16px 24px;box-sizing:border-box}
+#bar.fest{position:fixed;top:0;left:0;right:0;z-index:9}
+#txt{width:760px;margin:24px auto} #txt p{margin:0 0 14px} .z{font-weight:bold;color:#b00}</style></head><body>
+<div id="hero">Kopfbereich (scrollt weg)</div><div id="barplatz" style="height:56px"><div id="bar">LEISTE — wird beim Scrollen fest (darf im PDF nur einmal erscheinen)</div></div>
+<div id="txt"><script>for(let i=1;i<=70;i++)document.write('<p><span class="z">Zeile '+String(i).padStart(2,'0')+'</span> Fensterscroll-Absatz, genau einmal im Dokument. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy.</p>')</script><p><span class="z">ENDE</span></p></div><div style="height:160px"></div>
+<script>const b=document.getElementById('bar');addEventListener('scroll',()=>{b.classList.toggle('fest',scrollY>180)});</script>
+</body></html>

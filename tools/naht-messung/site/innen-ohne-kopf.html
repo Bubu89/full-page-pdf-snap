@@ -1,0 +1,8 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Fixture: innerer Container ohne Kopfzeile</title>
+<style>html,body{margin:0;height:100%;overflow:hidden;font:15px/1.45 Arial;background:#f3f3f3;color:#111}
+#nav{position:fixed;left:0;top:0;bottom:0;width:300px;background:#222;color:#ddd;padding:20px;box-sizing:border-box}
+#main{position:absolute;left:300px;top:0;right:0;bottom:0;overflow-y:auto;background:#fff}
+#txt{width:720px;margin:32px auto} #txt p{margin:0 0 14px} .z{font-weight:bold;color:#b00}</style></head><body>
+<div id="nav">Feste Navigation (nicht scrollbar)</div>
+<div id="main"><div id="txt"><script>for(let i=1;i<=60;i++)document.write('<p><span class="z">Zeile '+String(i).padStart(2,'0')+'</span> Innerer Container ohne Kopfzeile, genau einmal im Dokument. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</p>')</script><p><span class="z">ENDE</span></p></div></div>
+</body></html>

@@ -23,6 +23,41 @@ oeffentlich gefuehrt — sie enthielten Betriebsinterna, die niemand ausserhalb
 des Projekts braucht. Was ein Beitrag wissen muss, steht in dieser Datei, im
 [README](README.md) und im [CHANGELOG](CHANGELOG.md).
 
+## Vor jeder Auslieferung: Messung, Protokoll, Rückblick (Pflicht seit 27.09.2026)
+
+`python3 release.py` bricht ab, wenn eine dieser Stufen rot ist:
+
+1. **Tests** (`node --test tests/*.mjs`), darunter `app-layout-naht.test.mjs`.
+2. **Nahtmessung** (`python3 tools/naht-messung/messen.py`): echte Aufnahme
+   dreier Testseiten im headless Chromium — Fenster-Scroll mit fest werdender
+   Leiste, innerer Container mit klebender Kopfzeile und Seitenleiste, innerer
+   Container ohne Kopfzeile. Geprüft wird das Bild: jede Zeile genau einmal,
+   Abstände gleich, Leiste einmal. `--ohne-messung` gibt es nur mit Begründung
+   im CHANGELOG.
+
+Warum beides: 2.42.0 hat den Maßstab geändert und wurde nur am Fenster-Scroll
+gemessen. Dort sind Fenster- und Containerbreite gleich; der Fehler lag im
+zweiten Layout und fiel erst beim Nutzer auf (Gmail, 27.09.2026). Ein Test
+prüft den Wortlaut des Codes, die Messung prüft das Ergebnis — nur beides
+zusammen fängt eine plausible, falsche Reparatur.
+
+**Protokoll je Version** (CHANGELOG, vor dem Bauen, nicht danach):
+
+| Pflichtpunkt | Inhalt |
+|---|---|
+| Anlass | die konkrete Datei oder Meldung, mit `PSDiag`-Zahlen, wenn vorhanden |
+| Ursache | benannt am Code, nicht am Symptom; wenn geraten, steht „Vermutung" |
+| Änderung | was, wo, und welche Vorversion es so eingeführt hat |
+| Messung | vorher/nachher an den drei Layouts, Zahlen, nicht Adjektive |
+| Rückblick | welche Reparatur der Vorversionen berührt wird und wie belegt ist, dass sie hält |
+| Nicht geprüft | was offen bleibt (z. B. echtes Gerät, echte Seite) |
+
+Der Rückblick ist der Punkt, der am ehesten fehlt: Vor der Änderung die
+CHANGELOG-Einträge der letzten drei Fassungen lesen und jede dort behobene
+Stelle benennen, die der eigene Eingriff berührt. 2.43.0 berührt den
+Maßstab aus 2.42.0 (Android) und die Ausblendung je Aufnahme aus 2.42.0
+(Google-Leiste); beides ist in `messen.py` als Fall abgedeckt.
+
 ## Vor der ersten Änderung
 
 ```bash

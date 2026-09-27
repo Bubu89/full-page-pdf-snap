@@ -38,6 +38,34 @@ Abstand an der Naht     226 px (Soll 57)  57–58 px überall
 Seitenleiste unter S1   leer              77 + 51 helle Zeilen
 ```
 
+### Rückblick auf die Vorversionen — was 2.43.0 davon berührt
+
+| Fassung | dort behoben | berührt? | Beleg |
+|---|---|---|---|
+| 2.42.0 | Android: Maßstab aus der Breite statt der Höhe | ja — der Maßstab bleibt breitenbasiert, nur die Bezugsbreite wechselt von Container auf Fenster. Beim Fenster-Scroll (Android-Fall) sind beide gleich | Test „Fenster-Scroll: beide Breiten gleich, Maßstab unverändert"; Messung `fenster-sticky` identisch zu 2.42.0 |
+| 2.42.0 | Google-Leiste viermal: Ausblenden bei jeder Aufnahme | nein — unverändert | Messung `fenster-sticky`: Leiste 1× in 2.42.0 und 2.43.0 |
+| 2.41.0 | `innerHeight` statt `visualViewport`; Messwerte im PDF | nein — `getViewportHeight` unverändert; `PSDiag` erweitert um `clip.w/h/kopf` | Diagnose in allen Messläufen lesbar |
+
+### Verifikation gegen die signierte 2.42.0 (von AMO geladen, gleicher Testlauf)
+
+```
+Seite              2.42.0                       2.43.0
+gmail-like         56/53 Marken, Nähte 226 px   53/53, Abstände 57–58 px
+innen-ohne-kopf    66/61 Marken, Nähte 228 px   61/61, Abstände 57–58 px
+fenster-sticky     identisch (Leiste 1×)        identisch (Leiste 1×)
+```
+
+Die zweite Zeile ist die wichtige: ein innerer Container **ohne** Kopfzeile,
+schmaler als das Fenster, zeigt in 2.42.0 denselben Fehler. Der Maßstab war
+die Hauptursache, nicht die Kopfzeile.
+
+**Nicht geprüft:** die echte Gmail-Aufnahme im Firefox des Nutzers (dort keine
+Testrechte) und ein echtes Android-Gerät. Beides bleibt als Rückmeldung offen.
+
+**Seit dieser Fassung Pflicht:** `release.py` führt die Nahtmessung
+(`tools/naht-messung/messen.py`) vor dem Bauen aus und bricht bei Rot ab;
+Protokollpunkte je Version stehen in AGENTS.md.
+
 Test: `tests/app-layout-naht.test.mjs` (rot auf 2.42.0, grün auf 2.43.0).
 Testseite und Messlauf: `tools/naht-messung/`. Die echte Gmail-Aufnahme
 bestätigt der Nutzer nach dem Update — dort liegen keine Testrechte vor.
