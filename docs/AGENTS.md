@@ -149,8 +149,17 @@ mit einem Token, das ausschließlich Worker-Skripte schreiben darf.
 
 ## Was ohne Rückfrage nicht geändert wird
 
-- **Berechtigungen im Manifest.** `activeTab` und keine Host-Rechte sind der
-  Kern des Versprechens und in mehreren Messungen belegt.
+- **Berechtigungen im Manifest.** Auf Chrome/Chromium bleiben `activeTab` und
+  keine Host-Rechte der Kern des Versprechens. Auf Firefox deklariert die
+  Erweiterung seit Version 2.52.0 (29. September 2026) zusätzlich
+  `<all_urls>`, angefragt bei der Installation statt nach einer Geste —
+  Firefox gibt die Einmal-Erfassung der ganzen Seite nur Erweiterungen mit
+  dieser Berechtigung frei. Der Kern des Versprechens ist seitdem eine Eigenschaft
+  des Codes, nicht mehr des Manifests: gelesen wird nur während einer laufenden
+  Aufnahme, nur auf dem gestarteten Tab. Diese Verschiebung ist in mehreren
+  Messungen dokumentiert (`/notes/what-an-agent-can-do-with-an-extension/`,
+  `/notes/what-an-agent-may-install/`, `/privacy.html`) — nicht stillschweigend
+  rückgängig machen, ohne diese Seiten mitzuziehen.
 - **Der Haftungsausschluss** und die Offenlegungen auf `/about/`.
 - **Versionsnummern.** `bump-version.py` ist der einzige Weg; eine vergebene
   Nummer fällt beim Store-Upload durch.

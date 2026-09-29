@@ -94,11 +94,17 @@ This route does **not** count in store user statistics — that is intended.
 
 ## Using it after that
 
-The extension declares `activeTab` and no host permissions, so it sees a tab
-only after a **real input event** — `Alt+Shift+Y` through the platform's input
-layer (X11 XTEST, Windows SendInput). A synthetic DOM event or CDP does not
-clear that bar. Measured: tabs visible went 0 → 1 with a real keystroke, stayed
-0 over CDP.
+On Chrome/Chromium, and on Firefox before version 2.52.0, the extension
+declares `activeTab` and no host permissions, so it sees a tab only after a
+**real input event** — `Alt+Shift+Y` through the platform's input layer (X11
+XTEST, Windows SendInput). A synthetic DOM event or CDP does not clear that
+bar. Measured: tabs visible went 0 → 1 with a real keystroke, stayed 0 over
+CDP. Since 2.52.0 (29 September 2026), the Firefox build additionally
+declares `<all_urls>`, requested at installation rather than after a gesture
+— needed for Firefox's one-pass whole-page capture. Whether that also
+changes tab visibility over CDP without a gesture has not been re-measured;
+the CDP-stays-0 result above still applies to the Chrome/Chromium build,
+which is unaffected.
 
 ## Finding scholarly sources, in order
 

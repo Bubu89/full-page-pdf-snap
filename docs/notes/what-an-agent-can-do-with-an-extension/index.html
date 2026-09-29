@@ -237,6 +237,22 @@
         <td>none</td></tr>
   </tbody>
 </table>
+<div class="box">
+  <p><strong>Update, 29 September 2026:</strong> this measurement was taken
+  against a Firefox build before 2.52.0, when the host permission above was
+  genuinely <code>none</code>. Since 2.52.0, the Firefox build declares
+  <code>&lt;all_urls&gt;</code> and requests it at installation, because
+  Firefox only exposes single-pass whole-page capture
+  (<code>tabs.captureTab</code>) to extensions that hold it — without it the
+  extension falls back to capturing section by section while scrolling. The
+  Chrome/Chromium build is untouched by this change and still holds no host
+  permissions, so the second row and the CDP/XTEST findings below still apply
+  to it unchanged. Whether the Firefox build's <code>tabs.query</code> now
+  returns full URLs without a gesture, given the broader host permission, has
+  not been re-measured since 2.52.0 and is left open here rather than
+  asserted either way. Current permission table:
+  <a href="/privacy.html">privacy policy</a>.</p>
+</div>
 <p>
   <code>activeTab</code> grants access to the current tab <em>only after a real
   user gesture</em>: a click on the toolbar icon, the keyboard command, or a

@@ -311,11 +311,27 @@
     </tr>
     <tr class="own">
       <td>Full Page PDF Snap</td><td class="num">3</td>
-      <td class="host r-narrow">none — activeTab only</td><td class="num">2026-08-01</td>
+      <td class="host r-wide">&lt;all_urls&gt; <span style="font-weight:400">(Firefox, since 2.52.0)</span></td><td class="num">2026-09-29</td>
     </tr>
   </tbody>
 </table>
 </div>
+
+<p class="meta-line">
+  <strong>Update, 29 September 2026:</strong> on 1 August 2026, when this table was
+  measured, the Firefox build of Full Page PDF Snap declared no host permissions at
+  all — the row above read “none — activeTab only”, the only one in this table without
+  all-sites access. As of version 2.52.0, it declares <code>&lt;all_urls&gt;</code> and
+  requests it at installation, like the other seven extensions here. The reason is a
+  Firefox API restriction, not a change in what the extension does: Firefox exposes
+  <code>tabs.captureTab</code> — capturing a page in one pass beyond the visible
+  viewport — only to extensions holding <code>&lt;all_urls&gt;</code>; without it, the
+  extension would have to fall back to capturing section by section while scrolling.
+  The access is used only when a capture is started, only for the current tab, and can
+  be switched off again in Firefox's extension settings. The Chrome build is a separate
+  submission and is unaffected: it still asks only for the current tab. See the
+  <a href="../../privacy.html">privacy policy</a> for the current permission table.
+</p>
 
 <div class="box caution">
   <h3>What this table does not say</h3>
@@ -383,14 +399,18 @@
 <div class="box">
   <h3>A note on our own entry</h3>
   <p>
-    We build one of the extensions in that table, so treat the framing accordingly. What
-    we can offer instead of a promise: the permission list is
-    <code>activeTab, downloads, downloads.open, storage, menus, notifications, scripting</code>
-    with no host permissions at all, the source is
+    We build one of the extensions in that table, so treat the framing accordingly. As of
+    2.52.0, the Firefox build's permission list is
+    <code>activeTab, downloads, downloads.open, storage, menus, notifications,
+    scripting, clipboardWrite</code> plus the host permission <code>&lt;all_urls&gt;</code>,
+    requested at installation — see the update note above for why. The Chrome build still
+    declares <code>activeTab</code> with no host permissions. What we can offer instead of
+    a promise: the source is
     <a href="https://github.com/Bubu89/full-page-pdf-snap">public under the MIT licence</a>,
     and the submitted files are the source files — no bundler, no minification. The
-    network check described above is the honest way to verify that, and it works on our
-    extension exactly as it does on any other.
+    network check described above is the honest way to verify what each build actually
+    does with the permission it holds, and it works on our extension exactly as it does
+    on any other.
   </p>
 </div>
 

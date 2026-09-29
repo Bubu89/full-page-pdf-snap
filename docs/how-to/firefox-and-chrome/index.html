@@ -319,10 +319,15 @@
 
 <h2>5. Why it works behind a university login</h2>
 <p>
-  The extension requests <code>activeTab</code> and no host permissions — it reads
-  exactly the tab you start it on, while you start it. There is no server of the
-  author's, no analytics, no telemetry; the PDF is built in the browser process on
-  your device. That is why it captures what a web archiver cannot reach: the page
+  On Chrome, the extension requests <code>activeTab</code> and no host permissions
+  — it reads exactly the tab you start it on, while you start it. On Firefox,
+  since version 2.52.0, it requests access to all websites at installation
+  instead — Firefox only exposes one-pass whole-page capture to extensions
+  holding that permission — but its code still only reads the tab you start it
+  on, while you start it. There is no server of the author's, no analytics, no
+  telemetry beyond one request of its own (a public time anchor, see the
+  <a href="/privacy.html">privacy policy</a>); the PDF is built in the browser
+  process on your device. That is why it captures what a web archiver cannot reach: the page
   as your session shows it, behind the library VPN you are signed into. Capture
   only what you have legitimate access to — that limit is yours to keep.
   <a href="/measurements/pdf-extension-permissions/">What eight capture extensions
@@ -462,9 +467,15 @@
 
 <h2>5. Warum es hinter einem Hochschul-Login funktioniert</h2>
 <p>
-  Die Erweiterung fragt <code>activeTab</code> an und keine Host-Berechtigungen —
-  sie liest genau den Tab, auf dem Sie sie starten, und nur während Sie sie
-  starten. Es gibt keinen Server des Anbieters, keine Analytik, keine Telemetrie;
+  Auf Chrome fragt die Erweiterung <code>activeTab</code> an und keine
+  Host-Berechtigungen — sie liest genau den Tab, auf dem Sie sie starten, und
+  nur während Sie sie starten. Auf Firefox fragt sie seit Version 2.52.0
+  stattdessen bei der Installation nach Zugriff auf alle Websites — Firefox
+  gibt die Einmal-Erfassung der ganzen Seite nur Erweiterungen mit dieser
+  Berechtigung frei —, aber ihr Code liest weiterhin nur den Tab, auf dem Sie
+  sie starten, und nur während Sie sie starten. Es gibt keinen Server des
+  Anbieters, keine Analytik, keine Telemetrie außer einer eigenen Anfrage (ein
+  öffentlicher Zeitanker, siehe <a href="/privacy.html">Datenschutzerklärung</a>);
   das PDF entsteht im Browser-Prozess auf Ihrem Gerät. Deshalb nimmt sie auf, was
   ein Web-Archivierer nicht erreicht: die Seite, wie Ihre Sitzung sie zeigt,
   hinter dem Bibliotheks-VPN, in das Sie angemeldet sind. Nehmen Sie nur auf, wozu
@@ -605,9 +616,15 @@
 
 <h2>5. Por qué funciona tras un inicio de sesión universitario</h2>
 <p>
-  La extensión solicita <code>activeTab</code> y ningún permiso de host — lee
-  exactamente la pestaña en la que la inicias, y solo mientras la inicias. No hay
-  servidor del autor, ni analítica, ni telemetría; el PDF se construye en el
+  En Chrome, la extensión solicita <code>activeTab</code> y ningún permiso de
+  host — lee exactamente la pestaña en la que la inicias, y solo mientras la
+  inicias. En Firefox, desde la versión 2.52.0, pide en su lugar acceso a todos
+  los sitios al instalarla — Firefox solo permite la captura de página completa
+  en un solo paso a las extensiones que tienen ese permiso —, pero su código
+  sigue leyendo solo la pestaña en la que la inicias, y solo mientras la
+  inicias. No hay servidor del autor, ni analítica, ni telemetría más allá de
+  una petición propia (un ancla de tiempo pública, ver la
+  <a href="/privacy.html">política de privacidad</a>); el PDF se construye en el
   proceso del navegador en tu dispositivo. Por eso captura lo que un archivador
   web no alcanza: la página tal como la muestra tu sesión, tras la VPN de la
   biblioteca en la que has iniciado sesión. Captura solo aquello a lo que tienes
@@ -753,10 +770,17 @@
 
 <h2>5. Pourquoi cela fonctionne derrière une identification universitaire</h2>
 <p>
-  L'extension demande <code>activeTab</code> et aucune permission d'hôte — elle
-  lit exactement l'onglet sur lequel vous la lancez, et seulement pendant que vous
-  la lancez. Il n'y a ni serveur de l'auteur, ni analytique, ni télémétrie ; le
-  PDF est construit dans le processus du navigateur sur votre appareil. C'est
+  Sur Chrome, l'extension demande <code>activeTab</code> et aucune permission
+  d'hôte — elle lit exactement l'onglet sur lequel vous la lancez, et seulement
+  pendant que vous la lancez. Sur Firefox, depuis la version 2.52.0, elle
+  demande à la place l'accès à tous les sites dès l'installation — Firefox ne
+  réserve la capture en un seul passage qu'aux extensions détenant cette
+  permission —, mais son code continue de ne lire que l'onglet sur lequel vous
+  la lancez, et seulement pendant que vous la lancez. Il n'y a ni serveur de
+  l'auteur, ni analytique, ni télémétrie au-delà d'une requête propre (une
+  ancre temporelle publique, voir la
+  <a href="/privacy.html">politique de confidentialité</a>) ; le PDF est
+  construit dans le processus du navigateur sur votre appareil. C'est
   pourquoi elle capture ce qu'un archiveur web ne peut atteindre : la page telle
   que votre session la montre, derrière le VPN de la bibliothèque où vous êtes
   identifié. Ne capturez que ce à quoi vous avez légitimement accès — cette limite
@@ -900,10 +924,16 @@
 
 <h2>5. Perché funziona dietro un login universitario</h2>
 <p>
-  L'estensione richiede <code>activeTab</code> e nessun permesso host — legge
-  esattamente la scheda su cui la avvii, e solo mentre la avvii. Non c'è un server
-  dell'autore, né analitica, né telemetria; il PDF viene costruito nel processo
-  del browser sul tuo dispositivo. Per questo cattura ciò che un archiviatore web
+  Su Chrome, l'estensione richiede <code>activeTab</code> e nessun permesso host
+  — legge esattamente la scheda su cui la avvii, e solo mentre la avvii. Su
+  Firefox, dalla versione 2.52.0, chiede invece l'accesso a tutti i siti
+  all'installazione — Firefox riserva la cattura in un solo passaggio solo alle
+  estensioni che hanno quel permesso —, ma il suo codice continua a leggere solo
+  la scheda su cui la avvii, e solo mentre la avvii. Non c'è un server
+  dell'autore, né analitica, né telemetria oltre a una richiesta propria
+  (un'ancora temporale pubblica, vedi l'<a href="/privacy.html">informativa sulla
+  privacy</a>); il PDF viene costruito nel processo del browser sul tuo
+  dispositivo. Per questo cattura ciò che un archiviatore web
   non raggiunge: la pagina come la mostra la tua sessione, dietro la VPN della
   biblioteca in cui hai effettuato l'accesso. Cattura solo ciò a cui hai accesso
   legittimo — quel limite è tuo.
@@ -1031,9 +1061,14 @@
 
 <h2>5. 大学のログインの後ろで機能する理由</h2>
 <p>
-  この拡張機能が要求するのは <code>activeTab</code> のみで、ホスト権限はありません —
-  あなたが起動したタブを、起動している間だけ読みます。作者のサーバー、アナリティクス、
-  テレメトリーはなく、PDF はあなたのデバイス上のブラウザプロセスで作られます。だからこそ、
+  Chrome では、この拡張機能が要求するのは <code>activeTab</code> のみで、ホスト権限は
+  ありません — あなたが起動したタブを、起動している間だけ読みます。Firefox では、
+  バージョン 2.52.0 以降、代わりにインストール時にすべてのサイトへのアクセスを要求します
+  — Firefox はワンパス全ページキャプチャをこの権限を持つ拡張機能にしか許可しないためです
+  — ただしそのコードは、あなたが起動したタブを、起動している間だけ読む点は変わりません。
+  作者のサーバー、アナリティクスはなく、テレメトリーも自前の1つのリクエスト(公開の
+  タイムアンカー、詳細は<a href="/privacy.html">プライバシーポリシー</a>)を除いて
+  ありません。PDF はあなたのデバイス上のブラウザプロセスで作られます。だからこそ、
   ウェブアーカイバーが届かないものをキャプチャできます: あなたがログインしている図書館 VPN の
   後ろで、あなたのセッションに表示される通りのページです。正当なアクセス権のあるものだけを
   キャプチャしてください — その境界はあなたのものです。
@@ -1156,9 +1191,14 @@
 
 <h2>5. Por que funciona atrás de um login universitário</h2>
 <p>
-  A extensão pede <code>activeTab</code> e nenhuma permissão de host — ela lê exatamente a aba em
-  que você a inicia, e só enquanto você a inicia. Não há servidor do autor, nem analítica, nem
-  telemetria; o PDF é construído no processo do navegador no seu dispositivo. Por isso ela captura
+  No Chrome, a extensão pede <code>activeTab</code> e nenhuma permissão de host — ela lê exatamente
+  a aba em que você a inicia, e só enquanto você a inicia. No Firefox, desde a versão 2.52.0, ela
+  pede em vez disso acesso a todos os sites na instalação — o Firefox só libera a captura de página
+  inteira em uma única passada para extensões com essa permissão —, mas o código dela continua lendo
+  apenas a aba em que você a inicia, e só enquanto você a inicia. Não há servidor do autor, nem
+  analítica, nem telemetria além de uma requisição própria (uma âncora de tempo pública, veja a
+  <a href="/privacy.html">política de privacidade</a>); o PDF é construído no processo do navegador
+  no seu dispositivo. Por isso ela captura
   o que um arquivador web não alcança: a página como a sua sessão a mostra, atrás da VPN da
   biblioteca em que você está logado. Capture apenas aquilo a que você tem acesso legítimo — esse
   limite é seu.
@@ -1280,9 +1320,14 @@
 
 <h2>5. Почему это работает за университетским логином</h2>
 <p>
-  Расширение запрашивает <code>activeTab</code> и никаких host-разрешений — оно читает ровно ту
-  вкладку, на которой вы его запускаете, и только пока вы его запускаете. Нет сервера автора, нет
-  аналитики, нет телеметрии; PDF собирается в процессе браузера на вашем устройстве. Поэтому оно
+  В Chrome расширение запрашивает <code>activeTab</code> и никаких host-разрешений — оно читает
+  ровно ту вкладку, на которой вы его запускаете, и только пока вы его запускаете. В Firefox с
+  версии 2.52.0 оно вместо этого запрашивает доступ ко всем сайтам при установке — Firefox
+  открывает однопроходный захват всей страницы только расширениям с этим разрешением, — но его код
+  по-прежнему читает только ту вкладку, на которой вы его запускаете, и только пока вы его
+  запускаете. Нет сервера автора, нет аналитики, нет телеметрии, кроме одного собственного запроса
+  (публичный временной якорь, см. <a href="/privacy.html">политику конфиденциальности</a>); PDF
+  собирается в процессе браузера на вашем устройстве. Поэтому оно
   захватывает то, чего веб-архиватор не достанет: страницу такой, какой её показывает ваша сессия,
   за библиотечным VPN, в который вы вошли. Захватывайте только то, к чему у вас есть законный
   доступ — эта граница остаётся за вами.
@@ -1394,9 +1439,13 @@
 
 <h2>5. 为什么它能在大学登录之后正常工作</h2>
 <p>
-  该扩展只请求 <code>activeTab</code>,不请求任何主机权限——它只读取您启动它时所在的那个标签页,
-  且仅在启动期间读取。没有开发者的服务器,没有分析,没有遥测;PDF 在您设备上的浏览器进程中
-  生成。正因如此,它能捕获网络存档工具无法触及的内容:您登录的图书馆 VPN 之后、以您的会话
+  在 Chrome 上,该扩展只请求 <code>activeTab</code>,不请求任何主机权限——它只读取您启动它时
+  所在的那个标签页,且仅在启动期间读取。在 Firefox 上,自 2.52.0 版起,它改为在安装时请求
+  访问所有网站——因为 Firefox 只把一次性整页截取开放给持有该权限的扩展——但它的代码仍然只读取
+  您启动它时所在的那个标签页,且仅在启动期间读取。没有开发者的服务器,没有分析,除了一次
+  自身的请求(一个公开的时间锚点,参见<a href="/privacy.html">隐私政策</a>)外没有遥测;PDF
+  在您设备上的浏览器进程中生成。正因如此,它能捕获网络存档工具无法触及的内容:您登录的图书馆
+  VPN 之后、以您的会话
   呈现的页面。请只捕获您有合法访问权限的内容——这条界限由您自己把握。
   <a href="/measurements/pdf-extension-permissions/">八款捕获扩展声明了什么</a>,基于其清单文件测量。
 </p>

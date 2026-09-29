@@ -485,6 +485,44 @@
       "description": "Die Fehlschläge stehen zuerst, weil sie die verwertbare Auskunft sind. Jede zurückgegebene Adresse wurde zweimal abgerufen — einmal mit der Kennung des Lesers …"
     }
   },
+  "/measurements/full-page-pdf-size-without-losing-text/": {
+    "en": {
+      "title": "How small can a full-page PDF get before the text suffers?",
+      "description": "We cut the size of full-page PDF captures by 52 to 78&nbsp;% against the previous version. The searchable text layer stayed word for word the same, OCR …"
+    },
+    "de": {
+      "title": "Wie klein kann eine Ganzseiten-PDF werden, bevor der Text darunter leidet?",
+      "description": "Wir haben die Größe von Ganzseiten-PDF-Aufnahmen um 52 bis 78&nbsp;% gegenüber der Vorversion reduziert. Die durchsuchbare Textebene blieb wortgleich erhalten …"
+    },
+    "es": {
+      "title": "¿Qué tan pequeño puede llegar a ser un PDF de página completa antes de que el texto se resienta?",
+      "description": "Redujimos el tamaño de las capturas de PDF de página completa entre un 52 y un 78&nbsp;% respecto a la versión anterior. La capa de texto buscable permaneció …"
+    },
+    "fr": {
+      "title": "Jusqu'où un PDF pleine page peut-il rétrécir avant que le texte n'en pâtisse ?",
+      "description": "Nous avons réduit la taille des captures PDF pleine page de 52 à 78&nbsp;% par rapport à la version précédente. La couche de texte consultable est restée …"
+    },
+    "it": {
+      "title": "Quanto può rimpicciolirsi un PDF a pagina intera prima che il testo ne risenta?",
+      "description": "Abbiamo ridotto la dimensione delle acquisizioni PDF a pagina intera del 52-78&nbsp;% rispetto alla versione precedente. Il livello di testo ricercabile è …"
+    },
+    "ja": {
+      "title": "全ページPDFは、テキストが劣化する前にどこまで小さくできるか?",
+      "description": "私たちは全ページPDFキャプチャのサイズを、前バージョンに対して52~78&nbsp;%削減した。 検索可能なテキスト層は一字一句変わらず保たれ、OCRは以前と同じだけ認識し、 4種類のPDFリーダーはすべてのファイルを同一に描画した。効果があったのは、テキストと写真を …"
+    },
+    "pt-BR": {
+      "title": "Até que ponto um PDF de página inteira pode encolher antes que o texto sofra?",
+      "description": "Reduzimos o tamanho das capturas de PDF de página inteira em 52 a 78&nbsp;% em relação à versão anterior. A camada de texto pesquisável permaneceu exatamente a …"
+    },
+    "ru": {
+      "title": "Насколько маленьким может стать PDF целой страницы, прежде чем пострадает текст?",
+      "description": "Мы уменьшили размер PDF-снимков целой страницы на 52–78&nbsp;% по сравнению с предыдущей версией. Слой текста, доступный для поиска, остался слово в слово …"
+    },
+    "zh-CN": {
+      "title": "整页 PDF 在文字受损之前,体积能缩小到多小?",
+      "description": "与上一版本相比,我们将整页 PDF 截图的体积削减了 52 至 78&nbsp;%。 可搜索的文本层逐字保持不变,OCR 识别率与之前相同, 四款 PDF 阅读器渲染出的每个文件都完全一致。真正有效的做法是把文字和照片 区别对待。两种看似显而易见的方法反而让文件 变大 了。"
+    }
+  },
   "/measurements/": {
     "en": {
       "title": "Measurements",
@@ -521,6 +559,16 @@
     "zh-CN": {
       "title": "测量",
       "description": "每一项都附有复现它的命令、背后的原始数据和对照运行——因为不会在应当失败之处失败的方法,什么也测不到。"
+    }
+  },
+  "/measurements/mcp-source-capture/": {
+    "en": {
+      "title": "Four addresses, one file each: an MCP server that fetches sources and says where they came from",
+      "description": "An MCP server that takes an address and returns a source: the file the publisher actually serves, the citation metadata of the page describing it, a RIS …"
+    },
+    "de": {
+      "title": "Vier Adressen, je eine Datei: ein MCP-Server, der Quellen holt und sagt, woher sie stammen",
+      "description": "Ein MCP-Server, der aus einer Adresse eine Quelle macht: die Datei, die der Anbieter tatsächlich ausliefert, die Zitationsangaben der Seite, die sie …"
     }
   },
   "/measurements/reading-list-to-bibliography/": {
@@ -781,6 +829,40 @@
       "description": "一份阅读清单中的二十个来源，十个以完成的引文返回，十个被退回。退回是正确的行为。本文讲的是如何处理这些被退回的来源：处理方式因原因而异，而三种情况中只有一种能靠在浏览器里打开页面来解决。"
     }
   },
+  "/notes/what-an-agent-may-install/": {
+    "de": {
+      "title": "Welche Seiten-Speicher-Erweiterungen laufen wirklich auf Firefox für Android?",
+      "description": "Firefox für Android unterstützt Erweiterungen seit 2023 — und genau das kann Chrome für Android bis heute überhaupt nicht. Die interessante Frage ist deshalb …"
+    },
+    "es": {
+      "title": "¿Qué extensiones para guardar páginas funcionan realmente en Firefox para Android?",
+      "description": "Firefox para Android admite extensiones desde 2023, y eso es justo lo que Chrome para Android sigue sin poder hacer. La pregunta interesante no es, por tanto …"
+    },
+    "fr": {
+      "title": "Quelles extensions d’enregistrement de pages fonctionnent vraiment sur Firefox pour Android ?",
+      "description": "Firefox pour Android prend en charge les extensions depuis 2023, et c’est précisément ce que Chrome pour Android ne sait toujours pas faire. La question …"
+    },
+    "it": {
+      "title": "Quali estensioni per salvare pagine funzionano davvero su Firefox per Android?",
+      "description": "Firefox per Android supporta le estensioni dal 2023, ed è proprio ciò che Chrome per Android tuttora non sa fare affatto. La domanda interessante non è dunque …"
+    },
+    "ja": {
+      "title": "Firefox for Android で実際に動くページ保存拡張機能はどれか",
+      "description": "Firefox for Android は 2023 年から拡張機能に対応しており、それは Chrome for Android が今なおまったくできないことである。したがって興味深い問いは、そこで拡張機能が動くかどうかではなく、実際に手を伸ばすであろうもののうち何割が動くのか、である。248 件を調べた。"
+    },
+    "pt-BR": {
+      "title": "Quais extensões de salvar páginas realmente funcionam no Firefox para Android?",
+      "description": "O Firefox para Android suporta extensões desde 2023, e é justamente isso que o Chrome para Android ainda não consegue fazer de jeito nenhum. A pergunta …"
+    },
+    "ru": {
+      "title": "Какие расширения для сохранения страниц действительно работают в Firefox для Android?",
+      "description": "Firefox для Android поддерживает расширения с 2023 года — и именно этого Chrome для Android до сих пор не умеет вовсе. Поэтому интересен не вопрос, работают ли …"
+    },
+    "zh-CN": {
+      "title": "哪些保存网页的扩展在 Firefox for Android 上真的能用？",
+      "description": "Firefox for Android 自 2023 年起支持扩展，而这恰恰是 Chrome for Android 至今完全做不到的事。因此有意思的问题不是那里能否运行扩展，而是人们真正会去用的那些里有多少能运行。我们查了 248 个。"
+    }
+  },
   "/notes/who-actually-reads-this/": {
     "en": {
       "title": "Who actually reads this site: 24 hours of crawler logs, published",
@@ -892,7 +974,7 @@
     },
     "zh-CN": {
       "title": "工具",
-      "description": "把整个网页下载为一份无缝 PDF——整个可滚动页面在一张连续的纸上,无分页符、无裁切。完全在设备上运行:无上传、无账户、无数据收集,只请求 activeTab 而非访问你浏览的每个网站。支持桌面端和 Android 的 Firefox,以及 Chrome。"
+      "description": "把整个网页下载为一份无缝 PDF——整个可滚动页面在一张连续的纸上,无分页符、无裁切。完全在设备上运行:无上传、无账户、无数据收集。在 Chrome 上仅请求当前标签页( activeTab );在 Firefox 上,自 2.52.0 版起,安装时即请求访问所有网站——这是 Firefox …"
     }
   }
 }

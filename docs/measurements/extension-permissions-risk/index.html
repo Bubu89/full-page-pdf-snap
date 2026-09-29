@@ -343,22 +343,43 @@
 
 <p>
   We build one of the extensions in this category, so here is the same test turned on
-  ourselves. Full Page PDF Snap declares:
+  ourselves. On Chrome/Chromium, Full Page PDF Snap declares:
 </p>
 
 <p>
   <code>activeTab</code>, <code>downloads</code>, <code>downloads.open</code>,
-  <code>storage</code>, <code>menus</code>, <code>notifications</code>,
+  <code>storage</code>, <code>contextMenus</code>, <code>notifications</code>,
   <code>scripting</code> — and no host permissions at all.
 </p>
 
 <p>
-  In the worst case — the account compromised, a malicious update shipped — the reachable
-  surface is a page on which the user has just pressed the button. There is no standing
-  access to browsing, no cookies, no history, no background window into open tabs. That is
-  not immunity. It is a smaller blast radius, and it is the part that survives when trust
-  does not.
+  In the worst case on Chrome — the account compromised, a malicious update shipped — the
+  reachable surface is a page on which the user has just pressed the button. There is no
+  standing access to browsing, no cookies, no history, no background window into open
+  tabs. That is not immunity. It is a smaller blast radius, and it is the part that
+  survives when trust does not.
 </p>
+
+<div class="box caution">
+  <h3>Update, 29 September 2026 — the Firefox build no longer matches this</h3>
+  <p>
+    Since version 2.52.0, the Firefox build additionally declares
+    <code>&lt;all_urls&gt;</code>, requested at installation like the other extensions in
+    the table above, not per click. The reason is a Firefox API restriction: Firefox only
+    exposes <code>tabs.captureTab</code> — a one-pass capture beyond the visible viewport —
+    to extensions holding that host permission; without it, capture falls back to
+    section-by-section while scrolling. In the worst case, the Firefox build's reachable
+    surface is therefore the wider one from the table above — every page, at any time —
+    not the narrow <code>activeTab</code> case described just above, which now applies to
+    the Chrome build only. What still limits the Firefox build in practice is that its own
+    code only reads a tab while a capture runs, on the tab the capture was started on;
+    unlike <code>activeTab</code>, that is a property of the code, not a boundary the
+    browser enforces, so it is worth checking against the
+    <a href="https://github.com/Bubu89/full-page-pdf-snap">published source</a> or the
+    network-tab test above rather than taken on trust. The permission can be switched off
+    again in Firefox's extension settings; it is then asked for again on the next capture.
+  </p>
+</div>
 
 <div class="box">
   <h3>What it explicitly does not do</h3>

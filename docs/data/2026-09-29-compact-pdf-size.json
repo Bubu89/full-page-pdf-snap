@@ -1,0 +1,214 @@
+{
+ "title": "Full-page PDF size versus text quality: compact colour mode",
+ "date": "2026-09-29",
+ "extension": "Full Page PDF Snap",
+ "versions": {
+  "baseline": "2.49.0",
+  "split": "2.50.0",
+  "compact": "2.51.0/2.52.0"
+ },
+ "setup": {
+  "browser": "Firefox ESR, real browser driven via Marionette, headless",
+  "window_css_px": [
+   1816,
+   1244
+  ],
+  "device_pixel_ratio": 1,
+  "pdf_resolution_dpi": 144,
+  "readers": [
+   "pdf.js",
+   "Poppler",
+   "MuPDF",
+   "PDFium"
+  ],
+  "ocr": "Tesseract 5, language deu, OMP_THREAD_LIMIT=1"
+ },
+ "file_size_bytes": {
+  "de.wikipedia.org/wiki/Untersberg": {
+   "2.49.0": 4676585,
+   "2.50.0_split": 2604968,
+   "compact": 1043648
+  },
+  "de.wikipedia.org/wiki/Salzburg": {
+   "2.49.0": 17645495,
+   "2.50.0_split": 11486591,
+   "compact": 5543043
+  },
+  "doi.org/10.3389/feart.2023.1090803 (Frontiers)": {
+   "2.50.0_split": 7280273,
+   "compact": 3337060
+  },
+  "developer.mozilla.org CSS columns (MDN)": {
+   "2.49.0": 1464087,
+   "2.50.0_split": 1433835,
+   "compact": 704054
+  }
+ },
+ "size_reduction_vs_2_49_percent": {
+  "de.wikipedia.org/wiki/Untersberg": 78,
+  "de.wikipedia.org/wiki/Salzburg": 69,
+  "developer.mozilla.org CSS columns (MDN)": 52
+ },
+ "text_layer_unchanged": {
+  "Salzburg_words": 25970,
+  "Salzburg_links": 2120,
+  "Untersberg_words": 4048,
+  "Untersberg_links": 477
+ },
+ "ocr_recall_first_1500pt_Untersberg": {
+  "split_lossless_text": 0.715,
+  "compact": 0.719
+ },
+ "variants_first_4000px_section_Untersberg": [
+  {
+   "variant": "lossless text + photos JPEG 92",
+   "kb": 1202,
+   "ocr": 0.711
+  },
+  {
+   "variant": "photos JPEG 75",
+   "kb": 870,
+   "ocr": 0.717
+  },
+  {
+   "variant": "photos JPEG 60 at half resolution",
+   "kb": 493,
+   "ocr": 0.715
+  },
+  {
+   "variant": "text 64 colours + photos JPEG 75",
+   "kb": 754,
+   "ocr": 0.717
+  },
+  {
+   "variant": "text 32 colours + photos JPEG 60 half resolution (chosen)",
+   "kb": 372,
+   "ocr": 0.717
+  },
+  {
+   "variant": "text 16 colours + photos JPEG 60 half resolution",
+   "kb": 312,
+   "ocr": 0.7
+  },
+  {
+   "variant": "whole page JPEG 60 (reference)",
+   "kb": 575,
+   "ocr": 0.711
+  },
+  {
+   "variant": "whole page JPEG 40 (reference)",
+   "kb": 472,
+   "ocr": 0.704
+  }
+ ],
+ "rejected": [
+  {
+   "method": "PNG row predictors before Deflate",
+   "result": "screen captures 4 to 9 % LARGER (Untersberg +4 %, Salzburg +9 %)"
+  },
+  {
+   "method": "palette for whole tiles",
+   "result": "tiles hold up to 190,000 colours because of photos; no gain"
+  },
+  {
+   "method": "decode captured blocks early with createImageBitmap",
+   "result": "assembly 9.3 s -> 8.8 s at device pixel ratio 2, within noise"
+  },
+  {
+   "method": "clamp blur taps only at the edges",
+   "result": "byte-identical but slower in V8 (1.99 -> 2.23 s)"
+  }
+ ],
+ "photo_detection": {
+  "cell_px": 32,
+  "rule": "more than 48 distinct colours per cell",
+  "text_cells_colours": {
+   "median": 9,
+   "p95": 46
+  },
+  "photo_regions_vs_lossless_Salzburg": {
+   "regions": 161,
+   "psnr_db_median": 38.9,
+   "ssim_median": 0.99,
+   "below_0.95": 3
+  }
+ },
+ "control": {
+  "lossless_areas_pixel_identical": "where both versions are lossless, rendered pixels identical except changing ads",
+  "four_readers_agree": true,
+  "test_counter_proof": "photo-detection test fails with threshold 4; content-compression test fails with compression switched off"
+ },
+ "known_limit": "Text on gradient backgrounds (coloured buttons, gradient boxes) exceeds 48 colours per cell and is treated as photo, so in compact mode it is stored at half resolution. A second feature (share of medium neighbour differences >= 0.2) separates it in simulation; not yet shipped.",
+ "timing_after_capture_Salzburg_ms": {
+  "text_collection": 930,
+  "assembly": 665,
+  "encoding": 3672,
+  "preview": 381,
+  "pdf_build": 174,
+  "download": 551
+ },
+ "jpeg_area_share_Untersberg": {
+  "2.49.0_whole_tile_choice": 0.306,
+  "2.50.0_split": 0.078
+ },
+ "page_content_compression_Salzburg_bytes": {
+  "uncompressed_2_51_0": 1729317,
+  "deflate_2_51_0_final": 278147,
+  "note": "sum of the page content streams (text layer) of the Salzburg PDF, before and after content compression"
+ },
+ "max_page_height_pt": 14400,
+ "photo_feature_2_54_0": {
+  "medium_neighbour_difference_range": [
+   3,
+   40
+  ],
+  "threshold_share": 0.2,
+  "text_cells_median_share": 0.04
+ },
+ "update_2_54_0": {
+  "status": "live on addons.mozilla.org since 29 Sep 2026",
+  "palette_colours": 64,
+  "palette_min_distance": 12,
+  "photo_resolution": "full",
+  "edge_sharpness_graphic_cells_simulation": {
+   "Klimawandel": [
+    0.389,
+    0.998
+   ],
+   "OWID CO2": [
+    0.458,
+    1.0
+   ],
+   "Untersberg": [
+    0.663,
+    0.974
+   ],
+   "Stripe": [
+    0.597,
+    0.999
+   ],
+   "Normal distribution": [
+    0.422,
+    0.998
+   ]
+  },
+  "file_size_bytes_2_53_to_2_54": {
+   "Untersberg": [
+    1043648,
+    1332666
+   ],
+   "Salzburg": [
+    5543043,
+    6216411
+   ],
+   "Frontiers": [
+    3337060,
+    3799014
+   ]
+  },
+  "reduction_vs_2_49_0_percent": {
+   "Untersberg": 72,
+   "Salzburg": 65
+  }
+ }
+}

@@ -106,10 +106,10 @@
   <a class="back" href="./">← Full Page PDF Snap</a>
 
   <h1>Privacy Policy</h1>
-  <p class="updated">Last updated: 3 August 2026 · Applies to the browser extension “Full Page PDF Snap” for Firefox and Chrome.</p>
+  <p class="updated">Last updated: 29 September 2026 · Applies to the browser extension “Full Page PDF Snap” for Firefox and Chrome.</p>
 
   <div class="key">
-    <p>This extension collects no data. It has no server, sends no network requests, and contains no analytics or telemetry code.</p>
+    <p>This extension collects no data. It has no server and contains no analytics or telemetry code. It makes exactly one network request: before each capture, the time anchor fetches a public random value from the drand network (api.drand.sh, drand.cloudflare.com, api2.drand.sh) so the capture time can be verified afterwards. This is on by default. Nothing of yours is sent — no address, no page content, no identifier — but like any HTTP request it reveals your IP address and the time to whoever answers it.</p>
   </div>
 
   <h2>What data is collected</h2>
@@ -122,7 +122,7 @@
   <h2>Why the permissions are needed</h2>
   <table>
     <tr><th scope="col">Permission</th><th scope="col">Purpose</th></tr>
-    <tr><td>Access to website data</td><td>To measure, scroll and capture the page you are currently viewing. Only used while a capture runs, and only for the page you started it on.</td></tr>
+    <tr><td>Access to website data</td><td>On Firefox, since version 2.52.0, this is granted for all websites at installation: Firefox only exposes single-pass whole-page capture (<code>tabs.captureTab</code>) to extensions holding that permission, and without it the extension would have to fall back to capturing section by section while scrolling. You can switch it off in Firefox's extension settings; it will then ask again the next time you start a capture. On Chrome it is still requested per click, for the current tab only. On either browser it is only used while a capture runs, and only for the page you started it on — nothing is read in the background and no page content is sent anywhere.</td></tr>
     <tr><td>Downloads</td><td>To save the finished PDF, and to open the folder or file afterwards if you enabled that.</td></tr>
     <tr><td>Storage</td><td>To remember your settings.</td></tr>
     <tr><td>Notifications</td><td>To report that a capture finished or failed.</td></tr>
@@ -130,12 +130,12 @@
   </table>
 
   <h2>Third parties</h2>
-  <p>There are none. No external services, no content delivery networks, no fonts or scripts loaded from elsewhere, no advertising, no third-party libraries that phone home.</p>
+  <p>One: the drand network, for the time anchor described above. Apart from that, no external services, no content delivery networks, no fonts or scripts loaded from elsewhere, no advertising, no third-party libraries that phone home.</p>
 
   <h2 id="endpoint-logs">The citation endpoint on provinglab.dev</h2>
-  <p>Everything above covers the extension. The website additionally runs a public endpoint (/mcp) that fetches citation data from addresses its callers name. It runs as a Cloudflare Worker with the platform’s request logging (Cloudflare Workers Logs) switched on.</p>
+  <p>Everything above covers the extension. The website additionally runs a public endpoint (/mcp) that fetches citation data from addresses its callers name. When a page does not declare enough itself, the endpoint may additionally ask Crossref, DataCite, the German National Library, PsychArchives or the EU Publications Office about the identifier in question — those services then see that this identifier was looked up, and from which Cloudflare location. <code>adoption_stats</code> reads a public download figure from addons.mozilla.org, <code>open_work</code> reads public issues from api.github.com. No caller data is passed on in any of these requests. It runs as a Cloudflare Worker with the platform’s request logging (Cloudflare Workers Logs) switched on.</p>
   <ul>
-    <li><strong>What is stored:</strong> for each request, an invocation log with the request method and URL, the response and related technical metadata — the content is documented by Cloudflare. The worker itself writes no log entries of its own; that is verifiable in the published source code.</li>
+    <li><strong>What is stored:</strong> for each request, an invocation log with the request method and URL, the response and related technical metadata — the content is documented by Cloudflare. Beyond Cloudflare's own logging, the worker keeps one counter of its own: it increments a tally per tool name for each tool call, and a tally per client name — as the client reports it — for each opened session. This is stored in Cloudflare KV for 90 days. No address, no arguments, no page content and no user identity are recorded. Only the <em>number</em> of distinct clients is published through <code>adoption_stats</code> — the names themselves are not handed out. All of this is verifiable in the published source code.</li>
     <li><strong>Where:</strong> in the operator’s Cloudflare account, in the Workers Logs of that worker.</li>
     <li><strong>How long:</strong> the project operates the worker on the Workers Free plan, under which Cloudflare keeps logs for a maximum of 3 days; on the Workers Paid plan the maximum is 7 days (source: <a href="https://developers.cloudflare.com/workers/observability/logs/workers-logs/">Cloudflare Workers Logs documentation</a>, retrieved 3 August 2026).</li>
     <li><strong>What does not happen:</strong> the logs are not analysed into usage profiles, not combined with other data and not passed to third parties. They exist for error diagnosis and for detecting abuse of the open endpoint.</li>
@@ -153,10 +153,10 @@
   <hr>
 
   <h1>Datenschutzerklärung</h1>
-  <p class="updated">Stand: 3. August 2026 · Gilt für die Browser-Erweiterung „Full Page PDF Snap“ für Firefox und Chrome.</p>
+  <p class="updated">Stand: 29. September 2026 · Gilt für die Browser-Erweiterung „Full Page PDF Snap“ für Firefox und Chrome.</p>
 
   <div class="key">
-    <p>Diese Erweiterung erhebt keine Daten. Sie hat keinen Server, sendet keine Netzwerkanfragen und enthält keinen Analytics- oder Telemetrie-Code.</p>
+    <p>Diese Erweiterung erhebt keine Daten. Sie hat keinen Server und enthält keinen Analyse- oder Telemetriecode. Sie stellt genau eine Netzwerkanfrage: Vor jeder Aufnahme holt der Zeitanker einen öffentlichen Zufallswert vom drand-Netz (api.drand.sh, drand.cloudflare.com, api2.drand.sh), damit der Aufnahmezeitpunkt später nachweisbar ist. Das ist standardmäßig eingeschaltet. Übermittelt wird nichts von Ihnen — keine Adresse, kein Seiteninhalt, keine Kennung — aber wie jede HTTP-Anfrage verrät sie dem Empfänger IP-Adresse und Zeitpunkt.</p>
   </div>
 
   <h2>Welche Daten erhoben werden</h2>
@@ -169,7 +169,7 @@
   <h2>Warum die Berechtigungen nötig sind</h2>
   <table>
     <tr><th scope="col">Berechtigung</th><th scope="col">Zweck</th></tr>
-    <tr><td>Zugriff auf Webseiten-Daten</td><td>Um die aktuell betrachtete Seite zu vermessen, zu scrollen und aufzunehmen. Wird nur während einer laufenden Aufnahme genutzt, und nur für die Seite, auf der Sie sie gestartet haben.</td></tr>
+    <tr><td>Zugriff auf Webseiten-Daten</td><td>Auf Firefox wird dieser Zugriff seit Version 2.52.0 bereits bei der Installation für alle Websites erteilt: Firefox gibt die Einmal-Erfassung der ganzen Seite über den sichtbaren Bereich hinaus (<code>tabs.captureTab</code>) nur Erweiterungen mit dieser Berechtigung frei; ohne sie müsste die Erweiterung stattdessen abschnittsweise beim Scrollen aufnehmen. Sie können den Zugriff in den Firefox-Erweiterungseinstellungen abschalten — beim nächsten Start einer Aufnahme wird erneut gefragt. Auf Chrome wird weiterhin bei jedem Klick nur für den aktuellen Tab gefragt. Genutzt wird der Zugriff in beiden Fällen nur während einer laufenden Aufnahme und nur für die Seite, auf der Sie sie gestartet haben — im Hintergrund wird nichts gelesen und nichts vom Seiteninhalt irgendwohin gesendet.</td></tr>
     <tr><td>Downloads</td><td>Um das fertige PDF zu speichern und danach — sofern aktiviert — den Ordner oder die Datei zu öffnen.</td></tr>
     <tr><td>Speicher</td><td>Um Ihre Einstellungen zu merken.</td></tr>
     <tr><td>Benachrichtigungen</td><td>Um zu melden, dass eine Aufnahme fertig ist oder fehlgeschlagen ist.</td></tr>
@@ -177,12 +177,12 @@
   </table>
 
   <h2>Dritte</h2>
-  <p>Es gibt keine. Keine externen Dienste, keine Content-Delivery-Netzwerke, keine von außen geladenen Schriften oder Skripte, keine Werbung, keine Fremdbibliotheken, die nach Hause telefonieren.</p>
+  <p>Einen: das drand-Netz, für den oben beschriebenen Zeitanker. Sonst keine externen Dienste, keine Content-Delivery-Netzwerke, keine von außen geladenen Schriften oder Skripte, keine Werbung, keine Fremdbibliotheken, die nach Hause telefonieren.</p>
 
   <h2>Der Zitations-Endpunkt auf provinglab.dev</h2>
-  <p>Alles bis hier betrifft die Erweiterung. Die Website betreibt zusätzlich einen offenen Endpunkt (/mcp), der Zitationsdaten von Adressen abruft, die Aufrufende nennen. Er läuft als Cloudflare Worker mit eingeschalteter Anfragen-Protokollierung der Plattform (Cloudflare Workers Logs).</p>
+  <p>Alles bis hier betrifft die Erweiterung. Die Website betreibt zusätzlich einen offenen Endpunkt (/mcp), der Zitationsdaten von Adressen abruft, die Aufrufende nennen. Gibt eine Seite zu wenig selbst preis, fragt der Endpunkt zusätzlich bei Crossref, DataCite, der Deutschen Nationalbibliothek, PsychArchives oder dem EU-Amt für Veröffentlichungen nach der betreffenden Kennung — diese Dienste sehen dann, dass nach dieser Kennung gesucht wurde, und von welchem Cloudflare-Standort aus. <code>adoption_stats</code> liest eine öffentliche Downloadzahl bei addons.mozilla.org, <code>open_work</code> öffentliche Vorgänge bei api.github.com. Bei keiner dieser Anfragen werden Daten des Aufrufers weitergegeben. Er läuft als Cloudflare Worker mit eingeschalteter Anfragen-Protokollierung der Plattform (Cloudflare Workers Logs).</p>
   <ul>
-    <li><strong>Was gespeichert wird:</strong> je Anfrage ein Protokolleintrag mit Methode und Adresse der Anfrage, der Antwort und zugehörigen technischen Metadaten — der Inhalt ist von Cloudflare dokumentiert. Der Worker selbst schreibt keine eigenen Protokolleinträge; das ist im veröffentlichten Quellcode nachprüfbar.</li>
+    <li><strong>Was gespeichert wird:</strong> je Anfrage ein Protokolleintrag mit Methode und Adresse der Anfrage, der Antwort und zugehörigen technischen Metadaten — der Inhalt ist von Cloudflare dokumentiert. Über Cloudflares eigene Protokollierung hinaus führt der Worker einen eigenen Zähler: Für jeden Werkzeugaufruf erhöht er eine Zählung nach Werkzeugname, für jede eröffnete Sitzung eine nach dem Client-Namen, wie ihn der Client selbst angibt. Das liegt 90 Tage in Cloudflare KV. Weder Adresse noch Argumente, Seiteninhalt oder Nutzeridentität werden erfasst. Veröffentlicht wird über <code>adoption_stats</code> allein die <em>Anzahl</em> verschiedener Clients — die Namen selbst werden nicht herausgegeben. Das alles ist im veröffentlichten Quelltext nachprüfbar.</li>
     <li><strong>Wo:</strong> im Cloudflare-Konto des Betreibers, in den Workers Logs dieses Workers.</li>
     <li><strong>Wie lange:</strong> das Projekt betreibt den Worker im Tarif Workers Free, in dem Cloudflare Protokolle höchstens 3 Tage aufbewahrt; im Tarif Workers Paid beträgt das Maximum 7 Tage (Quelle: <a href="https://developers.cloudflare.com/workers/observability/logs/workers-logs/">Dokumentation zu Cloudflare Workers Logs</a>, abgerufen am 3. August 2026).</li>
     <li><strong>Was nicht geschieht:</strong> die Protokolle werden nicht zu Nutzungsprofilen ausgewertet, nicht mit anderen Daten verknüpft und nicht an Dritte weitergegeben. Sie dienen der Fehlerdiagnose und dem Erkennen von Missbrauch des offenen Endpunkts.</li>

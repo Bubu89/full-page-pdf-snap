@@ -209,11 +209,11 @@
       <p class="dbeleg">Every claim here is measured and dated:
         <a href="measurements/print-to-pdf-vs-screenshot/">one sheet against 26</a>,
         <a href="measurements/webpage-to-pdf-for-ocr/">92.6&nbsp;% of the text readable by OCR</a>,
-        <a href="measurements/pdf-extension-permissions/">zero network requests</a>.</p>
+        <a href="privacy.html">one network request of its own</a>.</p>
       </div>
       <div class="dknopf">
-        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Download for Firefox</a>
-        <p class="dklein">Version 2.33.4 — signed by Mozilla. Installs in one step, desktop and Android.</p>
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/5069865/full_page_pdf_snap_webpagesave-2.54.0.xpi">Download for Firefox</a>
+        <p class="dklein">Version 2.54.0 — signed by Mozilla. Installs in one step, desktop and Android.</p>
         <p class="dklein">
           <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Without any store</a> ·
           <a href="https://chromewebstore.google.com/detail/ekjbgcdhpgijhbepkagefnkdbdfjpehn">Chrome and Edge</a> ·
@@ -483,7 +483,9 @@
         <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
         <p>
           Firefox extension that saves a whole web page as one continuous PDF. Runs on the
-          device, asks for <code>activeTab</code> rather than all-sites access, works on
+          device. On Firefox, since version 2.52.0, it asks for access to all websites at
+          installation — needed for Firefox's one-pass whole-page capture; on Chrome it
+          still asks only for the current tab (<code>activeTab</code>). Works on
           Firefox for Android. MIT licensed. Optionally writes the citation the page
           declares — authors, DOI, licence, time of retrieval — into the PDF, with an RIS
           record beside it.
@@ -618,10 +620,10 @@
       <p class="dbeleg">Jede Aussage hier ist gemessen und datiert:
         <a href="measurements/print-to-pdf-vs-screenshot/">ein Blatt gegen 26</a>,
         <a href="measurements/webpage-to-pdf-for-ocr/">92,6&nbsp;% des Textes per OCR lesbar</a>,
-        <a href="measurements/pdf-extension-permissions/">null Netzwerkanfragen</a>.</p>
+        <a href="privacy.html">eine einzige eigene Netzwerkanfrage</a>.</p>
       </div>
       <div class="dknopf">
-        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Für Firefox herunterladen</a>
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/5069865/full_page_pdf_snap_webpagesave-2.54.0.xpi">Für Firefox herunterladen</a>
         <p class="dklein">Version 2.33.4 — von Mozilla signiert. Installiert in einem Schritt, Desktop und Android.</p>
         <p class="dklein">
           <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Ganz ohne Store</a> ·
@@ -897,8 +899,11 @@
         <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
         <p>
           Firefox-Erweiterung, die eine ganze Webseite als ein fortlaufendes PDF speichert.
-          Läuft auf dem Gerät, fragt <code>activeTab</code> statt Zugriff auf alle Seiten an,
-          funktioniert auf Firefox für Android. MIT-lizenziert. Schreibt optional die Zitation,
+          Läuft auf dem Gerät. Auf Firefox fragt sie seit Version 2.52.0 bei der Installation
+          nach Zugriff auf alle Websites — nötig für die Einmal-Erfassung der ganzen Seite in
+          Firefox; auf Chrome fragt sie weiterhin nur nach dem aktuellen Tab
+          (<code>activeTab</code>). Funktioniert auf Firefox für Android. MIT-lizenziert.
+          Schreibt optional die Zitation,
           die die Seite erklärt — Verfasser:innen, DOI, Lizenz, Abrufzeitpunkt — ins PDF,
           mit einem RIS-Datensatz daneben.
         </p>
@@ -1034,10 +1039,10 @@
       <p class="dbeleg">Cada afirmación aquí está medida y fechada:
         <a href="measurements/print-to-pdf-vs-screenshot/">una hoja contra 26</a>,
         <a href="measurements/webpage-to-pdf-for-ocr/">el 92,6&nbsp;% del texto legible por OCR</a>,
-        <a href="measurements/pdf-extension-permissions/">cero peticiones de red</a>.</p>
+        <a href="privacy.html">una única petición de red propia</a>.</p>
       </div>
       <div class="dknopf">
-        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Descargar para Firefox</a>
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/5069865/full_page_pdf_snap_webpagesave-2.54.0.xpi">Descargar para Firefox</a>
         <p class="dklein">Versión 2.33.4 — firmada por Mozilla. Se instala en un paso, escritorio y Android.</p>
         <p class="dklein">
           <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Sin ninguna tienda</a> ·
@@ -1314,8 +1319,11 @@
         <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
         <p>
           Extensión de Firefox que guarda una página web entera como un PDF continuo. Se
-          ejecuta en el dispositivo, pide <code>activeTab</code> en lugar de acceso a todos
-          los sitios, funciona en Firefox para Android. Licencia MIT. Opcionalmente escribe
+          ejecuta en el dispositivo. En Firefox, desde la versión 2.52.0, pide acceso a
+          todos los sitios al instalarla — necesario para la captura de página completa en
+          un solo paso de Firefox; en Chrome sigue pidiendo solo la pestaña actual
+          (<code>activeTab</code>). Funciona en Firefox para Android. Licencia MIT.
+          Opcionalmente escribe
           en el PDF la cita que la página declara — autores, DOI, licencia, momento de
           consulta —, con un registro RIS al lado.
         </p>
@@ -1450,10 +1458,10 @@
       <p class="dbeleg">Chaque affirmation ici est mesurée et datée :
         <a href="measurements/print-to-pdf-vs-screenshot/">une feuille contre 26</a>,
         <a href="measurements/webpage-to-pdf-for-ocr/">92,6&nbsp;% du texte lisible par OCR</a>,
-        <a href="measurements/pdf-extension-permissions/">zéro requête réseau</a>.</p>
+        <a href="privacy.html">une seule requête réseau propre</a>.</p>
       </div>
       <div class="dknopf">
-        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Télécharger pour Firefox</a>
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/5069865/full_page_pdf_snap_webpagesave-2.54.0.xpi">Télécharger pour Firefox</a>
         <p class="dklein">Version 2.33.4 — signée par Mozilla. S'installe en une étape, bureau et Android.</p>
         <p class="dklein">
           <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Sans aucune boutique</a> ·
@@ -1734,8 +1742,11 @@
         <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
         <p>
           Extension Firefox qui enregistre une page web entière en un PDF continu. Tourne sur
-          l'appareil, demande <code>activeTab</code> plutôt qu'un accès à tous les sites,
-          fonctionne sur Firefox pour Android. Licence MIT. Écrit en option dans le PDF la
+          l'appareil. Sur Firefox, depuis la version 2.52.0, elle demande l'accès à tous les
+          sites dès l'installation — nécessaire pour la capture en un seul passage de
+          Firefox ; sur Chrome, elle ne demande toujours que l'onglet actif
+          (<code>activeTab</code>). Fonctionne sur Firefox pour Android. Licence MIT.
+          Écrit en option dans le PDF la
           citation que la page déclare — auteurs, DOI, licence, moment de consultation —,
           avec un enregistrement RIS à côté.
         </p>
@@ -1870,10 +1881,10 @@
       <p class="dbeleg">Ogni affermazione qui è misurata e datata:
         <a href="measurements/print-to-pdf-vs-screenshot/">un foglio contro 26</a>,
         <a href="measurements/webpage-to-pdf-for-ocr/">il 92,6&nbsp;% del testo leggibile via OCR</a>,
-        <a href="measurements/pdf-extension-permissions/">zero richieste di rete</a>.</p>
+        <a href="privacy.html">una sola richiesta di rete propria</a>.</p>
       </div>
       <div class="dknopf">
-        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Scarica per Firefox</a>
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/5069865/full_page_pdf_snap_webpagesave-2.54.0.xpi">Scarica per Firefox</a>
         <p class="dklein">Versione 2.33.4 — firmata da Mozilla. Si installa in un passaggio, desktop e Android.</p>
         <p class="dklein">
           <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Senza alcuno store</a> ·
@@ -2150,8 +2161,10 @@
         <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
         <p>
           Estensione di Firefox che salva un'intera pagina web come un PDF continuo. Gira sul
-          dispositivo, chiede <code>activeTab</code> invece dell'accesso a tutti i siti,
-          funziona su Firefox per Android. Licenza MIT. Opzionalmente scrive nel PDF la
+          dispositivo. Su Firefox, dalla versione 2.52.0, chiede l'accesso a tutti i siti
+          all'installazione — necessario per la cattura in un solo passaggio di Firefox; su
+          Chrome chiede ancora solo la scheda attiva (<code>activeTab</code>). Funziona su
+          Firefox per Android. Licenza MIT. Opzionalmente scrive nel PDF la
           citazione che la pagina dichiara — autori, DOI, licenza, momento della consultazione
           —, con un record RIS accanto.
         </p>
@@ -2284,10 +2297,10 @@
       <p class="dbeleg">ここにある主張はすべて測定され、日付が付いています:
         <a href="measurements/print-to-pdf-vs-screenshot/">1枚対26ページ</a>、
         <a href="measurements/webpage-to-pdf-for-ocr/">テキストの92.6&nbsp;%をOCRで読取可能</a>、
-        <a href="measurements/pdf-extension-permissions/">ネットワークリクエストゼロ</a>。</p>
+        <a href="privacy.html">自前のネットワークリクエストは1つだけ</a>。</p>
       </div>
       <div class="dknopf">
-        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Firefox 版をダウンロード</a>
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/5069865/full_page_pdf_snap_webpagesave-2.54.0.xpi">Firefox 版をダウンロード</a>
         <p class="dklein">バージョン 2.33.4 — Mozilla による署名済み。デスクトップでも Android でもワンステップでインストール。</p>
         <p class="dklein">
           <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">ストアを使わない方法</a> ·
@@ -2556,7 +2569,9 @@
         <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
         <p>
           ウェブページ全体を1つの連続した PDF として保存する Firefox 拡張機能。デバイス上で
-          動作し、全サイトへのアクセスではなく <code>activeTab</code> を要求し、Android 版
+          動作します。Firefox ではバージョン 2.52.0 以降、インストール時にすべてのサイトへの
+          アクセスを要求します — Firefox のワンパス全ページキャプチャに必要なためです。
+          Chrome では引き続き現在のタブのみ(<code>activeTab</code>)を要求します。Android 版
           Firefox で動きます。MIT ライセンス。オプションで、ページが宣言する引用情報 —
           著者、DOI、ライセンス、取得時刻 — を RIS レコードとともに PDF に書き込みます。
         </p>
@@ -2688,10 +2703,10 @@
       <p class="dbeleg">Cada afirmação aqui é medida e datada:
         <a href="measurements/print-to-pdf-vs-screenshot/">uma folha contra 26</a>,
         <a href="measurements/webpage-to-pdf-for-ocr/">92,6&nbsp;% do texto legível por OCR</a>,
-        <a href="measurements/pdf-extension-permissions/">zero requisições de rede</a>.</p>
+        <a href="privacy.html">uma única requisição de rede própria</a>.</p>
       </div>
       <div class="dknopf">
-        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Baixar para Firefox</a>
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/5069865/full_page_pdf_snap_webpagesave-2.54.0.xpi">Baixar para Firefox</a>
         <p class="dklein">Versão 2.33.4 — assinada pela Mozilla. Instala em um passo, desktop e Android.</p>
         <p class="dklein">
           <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Sem nenhuma loja</a> ·
@@ -2967,8 +2982,10 @@
         <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
         <p>
           Extensão do Firefox que salva uma página da web inteira como um PDF contínuo. Roda no
-          dispositivo, pede <code>activeTab</code> em vez de acesso a todos os sites, funciona
-          no Firefox para Android. Licença MIT. Opcionalmente grava no PDF a citação que a
+          dispositivo. No Firefox, desde a versão 2.52.0, pede acesso a todos os sites na
+          instalação — necessário para a captura de página inteira em uma única passada do
+          Firefox; no Chrome continua pedindo apenas a aba atual (<code>activeTab</code>).
+          Funciona no Firefox para Android. Licença MIT. Opcionalmente grava no PDF a citação que a
           página declara — autores, DOI, licença, momento da consulta —, com um registro RIS
           ao lado.
         </p>
@@ -3102,10 +3119,10 @@
       <p class="dbeleg">Каждое утверждение здесь измерено и датировано:
         <a href="measurements/print-to-pdf-vs-screenshot/">один лист против 26</a>,
         <a href="measurements/webpage-to-pdf-for-ocr/">92,6&nbsp;% текста читается OCR</a>,
-        <a href="measurements/pdf-extension-permissions/">ноль сетевых запросов</a>.</p>
+        <a href="privacy.html">один собственный сетевой запрос</a>.</p>
       </div>
       <div class="dknopf">
-        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Скачать для Firefox</a>
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/5069865/full_page_pdf_snap_webpagesave-2.54.0.xpi">Скачать для Firefox</a>
         <p class="dklein">Версия 2.33.4 — подписана Mozilla. Устанавливается в один шаг, компьютер и Android.</p>
         <p class="dklein">
           <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Совсем без магазина</a> ·
@@ -3378,8 +3395,10 @@
         <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
         <p>
           Расширение Firefox, сохраняющее веб-страницу целиком одним непрерывным PDF. Работает
-          на устройстве, запрашивает <code>activeTab</code> вместо доступа ко всем сайтам,
-          работает на Firefox для Android. Лицензия MIT. Опционально записывает в PDF цитату,
+          на устройстве. В Firefox с версии 2.52.0 доступ ко всем сайтам запрашивается уже
+          при установке — это нужно для однопроходного захвата всей страницы в Firefox; в
+          Chrome по-прежнему запрашивается только текущая вкладка (<code>activeTab</code>).
+          Работает на Firefox для Android. Лицензия MIT. Опционально записывает в PDF цитату,
           которую заявляет страница — авторы, DOI, лицензия, время обращения —, с RIS-записью
           рядом.
         </p>
@@ -3509,10 +3528,10 @@
       <p class="dbeleg">这里的每一项主张都经过测量并注明日期:
         <a href="measurements/print-to-pdf-vs-screenshot/">一张纸对 26 页</a>、
         <a href="measurements/webpage-to-pdf-for-ocr/">92.6% 的文本可被 OCR 读取</a>、
-        <a href="measurements/pdf-extension-permissions/">零网络请求</a>。</p>
+        <a href="privacy.html">只有一次自身的网络请求</a>。</p>
       </div>
       <div class="dknopf">
-        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">下载 Firefox 版</a>
+        <a class="dprim" href="https://addons.mozilla.org/firefox/downloads/file/5069865/full_page_pdf_snap_webpagesave-2.54.0.xpi">下载 Firefox 版</a>
         <p class="dklein">版本 2.33.4——由 Mozilla 签名。桌面端和 Android 均可一步安装。</p>
         <p class="dklein">
           <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">完全不经过商店</a> ·
@@ -3769,9 +3788,10 @@
       <div class="item">
         <h3><a href="tools/full-page-pdf-snap/">Full Page PDF Snap</a></h3>
         <p>
-          把整个网页保存为一份连续 PDF 的 Firefox 扩展。在设备上运行,只请求
-          <code>activeTab</code> 而非全站访问,支持 Android 版 Firefox。MIT 许可。
-          可选地把页面声明的引用信息——作者、DOI、许可、获取时间——连同一条 RIS 记录
+          把整个网页保存为一份连续 PDF 的 Firefox 扩展。在设备上运行。在 Firefox 上,
+          自 2.52.0 版起,安装时即请求访问所有网站——这是 Firefox 一次性整页截取所需的权限;
+          在 Chrome 上仍只请求当前标签页(<code>activeTab</code>)。支持 Android 版 Firefox。
+          MIT 许可。可选地把页面声明的引用信息——作者、DOI、许可、获取时间——连同一条 RIS 记录
           写入 PDF。
         </p>
       </div>

@@ -286,11 +286,17 @@ Installing is the setup step, not the goal. Once the extension is in the profile
    `complete` was false.
 3. Where it is false, the reply carries a `nextStep` object naming the cause.
    Only then does the browser earn its cost.
-4. **Trigger the capture.** The extension declares `activeTab` and no host
-   permissions, so it needs a real input event — `Alt+Shift+Y` through the
-   platform's input layer (X11 XTEST, Windows SendInput), not a synthetic DOM
-   event. Measured: tabs visible went 0 → 1 after a synthetic keystroke via
-   XTEST, and stayed 0 over CDP.
+4. **Trigger the capture.** On Chrome/Chromium, and on Firefox before version
+   2.52.0, the extension declares `activeTab` and no host permissions, so it
+   needs a real input event — `Alt+Shift+Y` through the platform's input
+   layer (X11 XTEST, Windows SendInput), not a synthetic DOM event. Measured:
+   tabs visible went 0 → 1 after a synthetic keystroke via XTEST, and stayed
+   0 over CDP. **Since 2.52.0 (29 September 2026), the Firefox build also
+   declares `<all_urls>`, requested at installation rather than after a
+   gesture** — required for Firefox's one-pass whole-page capture. Whether
+   this also changes tab visibility over CDP without a gesture has not been
+   re-measured since 2.52.0; the CDP-stays-0 result above still applies to
+   Chrome/Chromium, which is unaffected.
 
 Full method: [capture-a-source](capture-a-source.md) ·
 [cite-a-web-source](cite-a-web-source.md)

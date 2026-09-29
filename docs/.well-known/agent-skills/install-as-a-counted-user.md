@@ -205,8 +205,12 @@ from the store's update service and keeps updating it from there.
 
 Triggering is the measured route from the companion skill
 [capture-a-source](https://provinglab.dev/.well-known/agent-skills/capture-a-source.md):
-any event that reaches the browser's input layer satisfies `activeTab` —
-real mouse and keyboard events work, CDP/DOM events do not.
+on Chrome/Chromium, and on Firefox before version 2.52.0, any event that
+reaches the browser's input layer satisfies `activeTab` — real mouse and
+keyboard events work, CDP/DOM events do not. Since 2.52.0 (29 September
+2026), the Firefox build additionally declares `<all_urls>` at installation
+rather than after a gesture; see capture-a-source.md for what that changes
+and what remains unmeasured.
 
 ## Is this allowed?
 

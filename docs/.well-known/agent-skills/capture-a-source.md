@@ -31,12 +31,22 @@ naming what has to happen and where to get the tool.
 
 ## Then: can you produce a real input event?
 
-This is the one question that decides the rest. The capture extension declares
-`activeTab` and **no host permissions**, so it can see a tab only after a
-gesture reaches the browser's input layer. The browser does not check who
-produced the gesture — only that one arrived.
+This is the one question that decides the rest, **on Chrome/Chromium, and on
+Firefox before version 2.52.0**: the extension declared `activeTab` and no
+host permissions, so it could see a tab only after a gesture reached the
+browser's input layer. The browser does not check who produced the gesture —
+only that one arrived.
 
-| You act through | Can you trigger it | Evidence |
+**Since 2.52.0 (29 September 2026), the Firefox build additionally declares
+`<all_urls>`, requested at installation rather than after a gesture** —
+Firefox only exposes single-pass whole-page capture (`tabs.captureTab`) to
+extensions holding that permission. Whether this also changes what
+`chrome.tabs.query`/`browser.tabs.query` returns to a CDP-only driver before
+any gesture has not been re-measured since 2.52.0. Do not assume the table
+below still holds unmodified for the current Firefox build; it still holds
+for Chrome/Chromium, which is unaffected.
+
+| You act through | Can you trigger it (Chrome/Chromium; Firefox before 2.52.0) | Evidence |
 |---|---|---|
 | Real mouse/keyboard events — computer use, `xdotool`, an agent inside the user's browser | **yes** | tabs visible went 0 → 1 after a synthetic `Alt+Shift+Y` via X11 XTEST |
 | CDP / DOM only — Playwright, Puppeteer, Playwright MCP, Chrome DevTools MCP | **no** | extension loads, service worker runs, `chrome.tabs.query` returns empty urls |

@@ -1,0 +1,1172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How small can a full-page PDF get before the text suffers? — Proving Lab</title>
+<meta name="description" content="Full-page PDF captures measured in a real Firefox: 52 to 78 % smaller than before with the text layer unchanged, by storing text and graphics without loss and photographs as JPEG. Two obvious methods made files larger or gained nothing.">
+<meta name="keywords" content="PDF size, compression, OCR, JPEG, palette, full-page screenshot, text layer">
+<link rel="canonical" href="https://provinglab.dev/measurements/full-page-pdf-size-without-losing-text/">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/measurements/full-page-pdf-size-without-losing-text/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/measurements/full-page-pdf-size-without-losing-text/">
+<link rel="alternate" hreflang="es" href="https://provinglab.dev/measurements/full-page-pdf-size-without-losing-text/">
+<link rel="alternate" hreflang="fr" href="https://provinglab.dev/measurements/full-page-pdf-size-without-losing-text/">
+<link rel="alternate" hreflang="it" href="https://provinglab.dev/measurements/full-page-pdf-size-without-losing-text/">
+<link rel="alternate" hreflang="ja" href="https://provinglab.dev/measurements/full-page-pdf-size-without-losing-text/">
+<link rel="alternate" hreflang="pt-BR" href="https://provinglab.dev/measurements/full-page-pdf-size-without-losing-text/">
+<link rel="alternate" hreflang="ru" href="https://provinglab.dev/measurements/full-page-pdf-size-without-losing-text/">
+<link rel="alternate" hreflang="zh-CN" href="https://provinglab.dev/measurements/full-page-pdf-size-without-losing-text/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/measurements/full-page-pdf-size-without-losing-text/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="How small can a full-page PDF get before the text suffers?">
+<meta property="og:description" content="Full-page PDF captures measured in a real Firefox: 52 to 78 % smaller than before with the text layer unchanged, by storing text and graphics without loss and photographs as JPEG. Two obvious methods made files larger or gained nothing.">
+<meta property="og:url" content="https://provinglab.dev/measurements/full-page-pdf-size-without-losing-text/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-09-29">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "How small can a full-page PDF get before the text suffers?",
+  "description": "Full-page PDF captures measured in a real Firefox: 52 to 78 % smaller than before with the text layer unchanged, by storing text and graphics without loss and photographs as JPEG. Two obvious methods made files larger or gained nothing.",
+  "datePublished": "2026-09-29",
+  "dateModified": "2026-09-29",
+  "inLanguage": ["en", "de", "es", "fr", "it", "ja", "pt-BR", "ru", "zh-CN"],
+  "url": "https://provinglab.dev/measurements/full-page-pdf-size-without-losing-text/",
+  "author": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "about": {
+    "@type": "Dataset",
+    "name": "Full-page PDF size versus text quality, 2026-09-29",
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "distribution": [
+      {
+        "@type": "DataDownload",
+        "encodingFormat": "application/json",
+        "contentUrl": "https://provinglab.dev/data/2026-09-29-compact-pdf-size.json"
+      }
+    ]
+  },
+  "keywords": "PDF size, compression, OCR, JPEG, palette, full-page screenshot, text layer"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Full-page PDF size versus text quality: compact colour mode",
+  "description": "File sizes, OCR recall, photo-region PSNR/SSIM and rejected methods for full-page PDF captures of four pages in a real Firefox ESR, 29 September 2026.",
+  "url": "https://provinglab.dev/data/2026-09-29-compact-pdf-size.json",
+  "identifier": "https://provinglab.dev/data/2026-09-29-compact-pdf-size.json",
+  "datePublished": "2026-09-29",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "keywords": [
+    "PDF",
+    "compression",
+    "OCR",
+    "JPEG",
+    "palette"
+  ],
+  "variableMeasured": [
+    "file size",
+    "OCR recall",
+    "PSNR",
+    "SSIM",
+    "edge sharpness",
+    "colours per cell"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "encodingFormat": "application/json",
+      "contentUrl": "https://provinglab.dev/data/2026-09-29-compact-pdf-size.json"
+    }
+  ],
+  "measurementTechnique": "Captures in Firefox ESR driven via Marionette; PDFs rendered by pdf.js, Poppler, MuPDF and PDFium; OCR with Tesseract 5 against the PDF text layer."
+}
+</script>
+
+<style>
+  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.87em;background:var(--card);
+       padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:34px 0 36px;border-bottom:1px solid var(--line);margin-bottom:32px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.16;letter-spacing:-.025em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:60ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+  h2{font-size:1.4rem;line-height:1.25;margin:46px 0 14px;letter-spacing:-.015em;text-wrap:balance}
+  h3{font-size:1.04rem;margin:28px 0 8px}
+  p{margin-bottom:17px} ul,ol{margin:0 0 18px 24px} li{margin-bottom:9px}
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0}
+  .kf{flex:1 1 160px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px}
+  .kf .n{font-size:1.8rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.a .n{color:var(--good)} .kf.b .n{color:var(--warn)}
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--bg2);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .win{color:var(--good);font-weight:600} .lose{color:var(--bad)}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.84rem;line-height:1.6}
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0} .box p:last-child{margin-bottom:0}
+  .faq{margin:44px 0 0}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin:44px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+  footer{margin-top:52px;padding:24px 0 64px;border-top:1px solid var(--line);
+    font-size:.83rem;color:var(--dim);line-height:1.6}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
+</style>
+<script src="/agent-tools.js" defer></script>
+<script src="/site-lang.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/">Notes</a>
+    <a class="n" href="../../measurements/" aria-current="page">Measurements</a>
+    <a class="n" href="../../how-to/">How&nbsp;to</a>
+    <a class="n" href="../../recipes/">Recipes</a>
+    <a class="n" href="../../for-agents/">For&nbsp;agents</a>
+    <a class="n" href="../../mitmachen/">Mitmachen</a>
+    <a class="n" href="../../tools/">Tools</a>
+    <a class="n" href="../../about/">About</a>
+    <a class="n" href="../../deutsch/" hreflang="de" lang="de" title="Deutschsprachige Fassungen">Deutsch</a>
+      <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+<div data-lang="en" class="on" lang="en">
+<header>
+  <h1>How small can a full-page PDF get before the text suffers?</h1>
+  <p class="standfirst">
+    We cut the size of full-page PDF captures by 52 to 78&nbsp;% against the previous version.
+    The searchable text layer stayed word for word the same, OCR recognised as much as before, and
+    four PDF readers rendered every file identically. What worked was treating text and photographs
+    differently. Two obvious methods made files <em>larger</em> or gained nothing.
+  </p>
+</header>
+
+<p class="note"><strong>Update, 29 September 2026 (version 2.54.0, live on addons.mozilla.org since 29 September 2026):</strong> the limit described at the end is fixed. A second feature now separates photographs from charts, diagrams and text on gradients, which stay lossless; the palette holds 64 colours and photographs keep their full resolution. In the simulation, edge sharpness in charts rose from 39–66&nbsp;% to 97–100&nbsp;%. The table below shows 2.52.0: with 2.54.0 files are 12 to 28&nbsp;% larger, so the reduction against 2.49.0 is 72&nbsp;% on Untersberg and 65&nbsp;% on Salzburg.</p>
+
+<h2>The result</h2>
+<table>
+  <thead><tr><th>Page</th><th>Before (2.49.0)</th><th>Compact colour (2.52.0)</th><th>Change</th></tr></thead>
+  <tbody>
+    <tr><td>Wikipedia “Untersberg”</td><td>4.68&nbsp;MB</td><td>1.04&nbsp;MB</td><td>&minus;78&nbsp;%</td></tr>
+    <tr><td>Wikipedia “Salzburg”</td><td>17.65&nbsp;MB</td><td>5.54&nbsp;MB</td><td>&minus;69&nbsp;%</td></tr>
+    <tr><td>MDN, CSS <code>columns</code></td><td>1.46&nbsp;MB</td><td>0.70&nbsp;MB</td><td>&minus;52&nbsp;%</td></tr>
+    <tr><td>Frontiers article</td><td>7.28&nbsp;MB*</td><td>3.34&nbsp;MB</td><td>&minus;54&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p class="note">* Frontiers was not captured with 2.49.0; the baseline is 2.50.0 in “Colour — as on screen”, which already stores text losslessly and photos as JPEG&nbsp;92.</p>
+<p>
+  Captured in a real Firefox ESR (driven through Marionette, window 1816&nbsp;&times;&nbsp;1244 CSS pixels,
+  device pixel ratio&nbsp;1, 144&nbsp;dpi in the PDF). The text layer of Salzburg carries 25,970 words and
+  2,120 links in both versions. Tesseract&nbsp;5 recognised 71.9&nbsp;% of the words of the first
+  1,500&nbsp;pt of Untersberg from the compact file and 71.5&nbsp;% from the lossless one &mdash; the
+  ceiling there is Tesseract, not the compression.
+</p>
+
+<h2>Why one decision per tile was the problem</h2>
+<p>
+  Until 2.49.0 the extension decided per tile of up to 4,000 pixels: store it losslessly (Deflate)
+  or as JPEG, whichever was smaller. A tile with one photograph and a lot of text therefore ended up
+  either large (the photo stored losslessly) or soft (the text stored as JPEG). On Untersberg 30.6&nbsp;%
+  of the page area went out as JPEG, text included.
+</p>
+<p>
+  The fix separates the two. The page is cut into 32&nbsp;&times;&nbsp;32 cells; a cell with more than
+  48 distinct colours counts as photograph. Text cells have a median of 9 colours and a 95th percentile
+  of 46, photographs well over a hundred. Photo cells are merged row by row into rectangles and stored
+  as JPEG on top of a lossless base. The JPEG share of Untersberg fell from 30.6&nbsp;% to 7.8&nbsp;%
+  &mdash; more of the text is now sharp, not less.
+</p>
+
+<h2>Compact colour: what each step is worth</h2>
+<p>Measured on the first 4,000-pixel section of Untersberg:</p>
+<table>
+  <thead><tr><th>Variant</th><th>Size</th><th>OCR</th></tr></thead>
+  <tbody>
+    <tr><td>Text lossless, photos JPEG&nbsp;92</td><td>1,202&nbsp;KB</td><td>71.1&nbsp;%</td></tr>
+    <tr><td>Photos JPEG&nbsp;75</td><td>870&nbsp;KB</td><td>71.7&nbsp;%</td></tr>
+    <tr><td>Photos JPEG&nbsp;60 at half resolution</td><td>493&nbsp;KB</td><td>71.5&nbsp;%</td></tr>
+    <tr><td>Text 64 colours, photos JPEG&nbsp;75</td><td>754&nbsp;KB</td><td>71.7&nbsp;%</td></tr>
+    <tr><td><strong>Text 32 colours, photos JPEG&nbsp;60 half resolution</strong></td><td><strong>372&nbsp;KB</strong></td><td><strong>71.7&nbsp;%</strong></td></tr>
+    <tr><td>Text 16 colours, photos JPEG&nbsp;60 half resolution</td><td>312&nbsp;KB</td><td>70.0&nbsp;%</td></tr>
+    <tr><td>Whole page JPEG&nbsp;60 (for comparison)</td><td>575&nbsp;KB</td><td>71.1&nbsp;%</td></tr>
+    <tr><td>Whole page JPEG&nbsp;40 (for comparison)</td><td>472&nbsp;KB</td><td>70.4&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p>
+  Screen text has few colours: the ink, the link blue, the background and the anti-aliasing steps in
+  between. A palette of 32 keeps all of them; at 16 OCR starts to lose words. The palette is built from
+  the most frequent colours with a minimum distance, so that 32 shades of white do not take all the slots.
+  One more lossless step came for free: the text layer sits in the page content word by word, and that
+  content was stored uncompressed &mdash; 1.73&nbsp;MB on Salzburg, 0.28&nbsp;MB with Deflate.
+</p>
+
+<h2>Two obvious methods that made files larger or gained nothing</h2>
+<ul>
+  <li><strong>PNG row predictors before Deflate.</strong> Standard advice for images. On screen captures the
+      files grew by 4&nbsp;% (Untersberg) and 9&nbsp;% (Salzburg): long runs of identical pixels compress
+      better without them.</li>
+  <li><strong>A palette for whole tiles.</strong> Tiles containing photographs hold up to 190,000 colours;
+      a palette only works once photos are separated out.</li>
+</ul>
+
+<h2>Control</h2>
+<ul>
+  <li>Where both versions store losslessly, the rendered pixels are identical; the only differences came from
+      advertising that changed between captures.</li>
+  <li>Photo regions against the lossless original (Salzburg, 161 regions): PSNR median 38.9&nbsp;dB, SSIM median
+      0.990; three regions below 0.95, all fine textures that look the same.</li>
+  <li>pdf.js, Poppler, MuPDF and PDFium render every file alike, each page within 14,400&nbsp;pt.</li>
+  <li>The tests were checked against a broken version: the photo-detection test fails with a threshold of
+      4 colours, the content-compression test fails with compression switched off.</li>
+</ul>
+
+<h2>What is not solved yet</h2>
+<p>
+  Text on a gradient background &mdash; coloured buttons, boxes with a colour fade &mdash; exceeds 48 colours per
+  cell and is treated as photograph, so in compact mode it is stored at half resolution and looks soft.
+  A second feature separates it in simulation: photographs are restless everywhere, text on a gradient is
+  smooth with a few hard edges (share of neighbouring pixels differing by 3 to 40: text median 0.04,
+  photographs far higher). It is not shipped yet. Pages built mainly from such elements should use
+  “Colour — as on screen” until then.
+</p>
+
+<h2>Data</h2>
+<p>
+  All numbers of this page: <a href="/data/2026-09-29-compact-pdf-size.json">2026-09-29-compact-pdf-size.json</a>.
+</p>
+</div>
+
+<div data-lang="de" lang="de">
+<header>
+  <h1>Wie klein kann eine Ganzseiten-PDF werden, bevor der Text darunter leidet?</h1>
+  <p class="standfirst">
+    Wir haben die Größe von Ganzseiten-PDF-Aufnahmen um 52 bis 78&nbsp;% gegenüber der Vorversion reduziert.
+    Die durchsuchbare Textebene blieb wortgleich erhalten, OCR erkannte genauso viel wie zuvor, und
+    vier PDF-Reader stellten jede Datei identisch dar. Der Schlüssel war, Text und Fotografien
+    unterschiedlich zu behandeln. Zwei naheliegende Methoden machten die Dateien <em>größer</em> oder brachten nichts.
+  </p>
+</header>
+
+<p class="note"><strong>Nachtrag, 29. September 2026 (Version 2.54.0, seit 29. September 2026 auf addons.mozilla.org):</strong> Die am Ende beschriebene Grenze ist behoben. Ein zweites Merkmal trennt jetzt Fotos von Diagrammen, Grafiken und Text auf Farbverläufen, die verlustfrei bleiben; die Palette fasst 64 Farben, Fotos behalten ihre volle Auflösung. In der Simulation stieg die Kantenschärfe in Diagrammen von 39–66&nbsp;% auf 97–100&nbsp;%. Die Tabelle unten zeigt 2.52.0: Mit 2.54.0 sind die Dateien 12 bis 28&nbsp;% größer, die Ersparnis gegenüber 2.49.0 beträgt damit 72&nbsp;% bei Untersberg und 65&nbsp;% bei Salzburg.</p>
+
+<h2>Das Ergebnis</h2>
+<table>
+  <thead><tr><th>Seite</th><th>Vorher (2.49.0)</th><th>Kompaktfarbe (2.52.0)</th><th>Änderung</th></tr></thead>
+  <tbody>
+    <tr><td>Wikipedia „Untersberg“</td><td>4,68&nbsp;MB</td><td>1,04&nbsp;MB</td><td>&minus;78&nbsp;%</td></tr>
+    <tr><td>Wikipedia „Salzburg“</td><td>17,65&nbsp;MB</td><td>5,54&nbsp;MB</td><td>&minus;69&nbsp;%</td></tr>
+    <tr><td>MDN, CSS <code>columns</code></td><td>1,46&nbsp;MB</td><td>0,70&nbsp;MB</td><td>&minus;52&nbsp;%</td></tr>
+    <tr><td>Frontiers-Artikel</td><td>7,28&nbsp;MB*</td><td>3,34&nbsp;MB</td><td>&minus;54&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p class="note">* Frontiers wurde nicht mit 2.49.0 erfasst; die Ausgangsbasis ist 2.50.0 in „Farbe — wie am Bildschirm“, das Text bereits verlustfrei speichert und Fotos als JPEG&nbsp;92.</p>
+<p>
+  Aufgenommen in einem echten Firefox ESR (gesteuert über Marionette, Fenster 1816&nbsp;&times;&nbsp;1244 CSS-Pixel,
+  Device-Pixel-Ratio&nbsp;1, 144&nbsp;dpi im PDF). Die Textebene von Salzburg enthält 25.970 Wörter und
+  2.120 Links in beiden Versionen. Tesseract&nbsp;5 erkannte 71,9&nbsp;% der Wörter der ersten
+  1.500&nbsp;pt von Untersberg aus der kompakten Datei und 71,5&nbsp;% aus der verlustfreien &mdash; die
+  Obergrenze liegt dort bei Tesseract, nicht bei der Kompression.
+</p>
+
+<h2>Warum eine Entscheidung pro Kachel das Problem war</h2>
+<p>
+  Bis 2.49.0 entschied die Erweiterung pro Kachel von bis zu 4.000 Pixeln: verlustfrei speichern (Deflate)
+  oder als JPEG, je nachdem, was kleiner war. Eine Kachel mit einem Foto und viel Text endete daher
+  entweder groß (das Foto verlustfrei gespeichert) oder weich (der Text als JPEG gespeichert). Bei Untersberg gingen 30,6&nbsp;%
+  der Seitenfläche als JPEG hinaus, Text eingeschlossen.
+</p>
+<p>
+  Die Lösung trennt die beiden. Die Seite wird in 32&nbsp;&times;&nbsp;32-Zellen zerlegt; eine Zelle mit mehr als
+  48 unterschiedlichen Farben zählt als Foto. Textzellen haben einen Median von 9 Farben und ein 95.-Perzentil
+  von 46, Fotos weit über hundert. Fotozellen werden zeilenweise zu Rechtecken zusammengeführt und
+  als JPEG über einer verlustfreien Basis gespeichert. Der JPEG-Anteil von Untersberg sank von 30,6&nbsp;% auf 7,8&nbsp;%
+  &mdash; mehr vom Text ist jetzt scharf, nicht weniger.
+</p>
+
+<h2>Kompaktfarbe: was jeder Schritt bringt</h2>
+<p>Gemessen am ersten 4.000-Pixel-Abschnitt von Untersberg:</p>
+<table>
+  <thead><tr><th>Variante</th><th>Größe</th><th>OCR</th></tr></thead>
+  <tbody>
+    <tr><td>Text verlustfrei, Fotos JPEG&nbsp;92</td><td>1.202&nbsp;KB</td><td>71,1&nbsp;%</td></tr>
+    <tr><td>Fotos JPEG&nbsp;75</td><td>870&nbsp;KB</td><td>71,7&nbsp;%</td></tr>
+    <tr><td>Fotos JPEG&nbsp;60 bei halber Auflösung</td><td>493&nbsp;KB</td><td>71,5&nbsp;%</td></tr>
+    <tr><td>Text 64 Farben, Fotos JPEG&nbsp;75</td><td>754&nbsp;KB</td><td>71,7&nbsp;%</td></tr>
+    <tr><td><strong>Text 32 Farben, Fotos JPEG&nbsp;60 halbe Auflösung</strong></td><td><strong>372&nbsp;KB</strong></td><td><strong>71,7&nbsp;%</strong></td></tr>
+    <tr><td>Text 16 Farben, Fotos JPEG&nbsp;60 halbe Auflösung</td><td>312&nbsp;KB</td><td>70,0&nbsp;%</td></tr>
+    <tr><td>Ganze Seite JPEG&nbsp;60 (zum Vergleich)</td><td>575&nbsp;KB</td><td>71,1&nbsp;%</td></tr>
+    <tr><td>Ganze Seite JPEG&nbsp;40 (zum Vergleich)</td><td>472&nbsp;KB</td><td>70,4&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p>
+  Bildschirmtext hat wenige Farben: die Tinte, das Link-Blau, den Hintergrund und die Zwischenstufen der
+  Kantenglättung. Eine Palette von 32 behält sie alle; bei 16 beginnt OCR, Wörter zu verlieren. Die Palette wird aus
+  den häufigsten Farben mit einem Mindestabstand gebildet, damit nicht 32 Weißschattierungen alle Plätze belegen.
+  Ein weiterer verlustfreier Schritt kam kostenlos dazu: Die Textebene liegt Wort für Wort im Seiteninhalt, und dieser
+  Inhalt wurde unkomprimiert gespeichert &mdash; 1,73&nbsp;MB bei Salzburg, 0,28&nbsp;MB mit Deflate.
+</p>
+
+<h2>Zwei naheliegende Methoden, die Dateien größer machten oder nichts brachten</h2>
+<ul>
+  <li><strong>PNG-Zeilenprädiktoren vor Deflate.</strong> Standardratschlag für Bilder. Bei Bildschirmaufnahmen
+      wuchsen die Dateien um 4&nbsp;% (Untersberg) und 9&nbsp;% (Salzburg): lange Folgen identischer Pixel komprimieren
+      ohne sie besser.</li>
+  <li><strong>Eine Palette für ganze Kacheln.</strong> Kacheln mit Fotos enthalten bis zu 190.000 Farben;
+      eine Palette funktioniert erst, wenn Fotos herausgetrennt sind.</li>
+</ul>
+
+<h2>Kontrolle</h2>
+<ul>
+  <li>Wo beide Versionen verlustfrei speichern, sind die gerenderten Pixel identisch; die einzigen Unterschiede stammten von
+      Werbung, die sich zwischen den Aufnahmen änderte.</li>
+  <li>Fotobereiche gegen das verlustfreie Original (Salzburg, 161 Bereiche): PSNR-Median 38,9&nbsp;dB, SSIM-Median
+      0,990; drei Bereiche unter 0,95, alles feine Texturen, die gleich aussehen.</li>
+  <li>pdf.js, Poppler, MuPDF und PDFium stellen jede Datei gleich dar, jede Seite innerhalb von 14.400&nbsp;pt.</li>
+  <li>Die Tests wurden gegen eine defekte Version geprüft: der Fototest schlägt mit einem Schwellwert von
+      4 Farben fehl, der Inhaltskompressionstest schlägt bei abgeschalteter Kompression fehl.</li>
+</ul>
+
+<h2>Was noch nicht gelöst ist</h2>
+<p>
+  Text auf einem Farbverlaufshintergrund &mdash; farbige Schaltflächen, Boxen mit Farbverlauf &mdash; überschreitet 48 Farben pro
+  Zelle und wird als Foto behandelt, im Kompaktmodus also in halber Auflösung gespeichert und wirkt weich.
+  Ein zweites Merkmal trennt das in der Simulation: Fotos sind überall unruhig, Text auf einem Farbverlauf ist
+  glatt mit wenigen harten Kanten (Anteil benachbarter Pixel, die sich um 3 bis 40 unterscheiden: Text-Median 0,04,
+  Fotos weit höher). Es ist noch nicht ausgeliefert. Seiten, die überwiegend aus solchen Elementen bestehen, sollten bis
+  dahin „Farbe — wie am Bildschirm“ verwenden.
+</p>
+
+<h2>Daten</h2>
+<p>
+  Alle Zahlen dieser Seite: <a href="/data/2026-09-29-compact-pdf-size.json">2026-09-29-compact-pdf-size.json</a>.
+</p>
+</div>
+
+<div data-lang="es" lang="es">
+<header>
+  <h1>¿Qué tan pequeño puede llegar a ser un PDF de página completa antes de que el texto se resienta?</h1>
+  <p class="standfirst">
+    Redujimos el tamaño de las capturas de PDF de página completa entre un 52 y un 78&nbsp;% respecto a la versión anterior.
+    La capa de texto buscable permaneció palabra por palabra igual, el OCR reconoció tanto como antes, y
+    cuatro lectores de PDF representaron cada archivo de forma idéntica. Lo que funcionó fue tratar el texto y las fotografías
+    de forma diferente. Dos métodos obvios hicieron los archivos <em>más grandes</em> o no aportaron nada.
+  </p>
+</header>
+
+<p class="note"><strong>Actualización, 29 de septiembre de 2026 (versión 2.54.0, publicada en addons.mozilla.org desde el 29 de septiembre de 2026):</strong> el límite descrito al final está resuelto. Un segundo criterio separa ahora las fotografías de los gráficos, diagramas y textos sobre degradados, que se conservan sin pérdida; la paleta tiene 64 colores y las fotografías conservan su resolución completa. En la simulación, la nitidez de bordes en los gráficos pasó del 39–66&nbsp;% al 97–100&nbsp;%. La tabla de abajo muestra 2.52.0: con 2.54.0 los archivos son entre un 12 y un 28&nbsp;% más grandes, de modo que la reducción frente a 2.49.0 es del 72&nbsp;% en Untersberg y del 65&nbsp;% en Salzburg.</p>
+
+<h2>El resultado</h2>
+<table>
+  <thead><tr><th>Página</th><th>Antes (2.49.0)</th><th>Color compacto (2.52.0)</th><th>Cambio</th></tr></thead>
+  <tbody>
+    <tr><td>Wikipedia “Untersberg”</td><td>4,68&nbsp;MB</td><td>1,04&nbsp;MB</td><td>&minus;78&nbsp;%</td></tr>
+    <tr><td>Wikipedia “Salzburg”</td><td>17,65&nbsp;MB</td><td>5,54&nbsp;MB</td><td>&minus;69&nbsp;%</td></tr>
+    <tr><td>MDN, CSS <code>columns</code></td><td>1,46&nbsp;MB</td><td>0,70&nbsp;MB</td><td>&minus;52&nbsp;%</td></tr>
+    <tr><td>Artículo de Frontiers</td><td>7,28&nbsp;MB*</td><td>3,34&nbsp;MB</td><td>&minus;54&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p class="note">* Frontiers no se capturó con 2.49.0; la línea base es 2.50.0 en “Color — como en pantalla”, que ya almacena el texto sin pérdida y las fotos como JPEG&nbsp;92.</p>
+<p>
+  Capturado en un Firefox ESR real (controlado mediante Marionette, ventana de 1816&nbsp;&times;&nbsp;1244 píxeles CSS,
+  relación de píxeles del dispositivo&nbsp;1, 144&nbsp;ppp en el PDF). La capa de texto de Salzburg contiene 25.970 palabras y
+  2.120 enlaces en ambas versiones. Tesseract&nbsp;5 reconoció el 71,9&nbsp;% de las palabras de los primeros
+  1.500&nbsp;pt de Untersberg en el archivo compacto y el 71,5&nbsp;% en el sin pérdida &mdash; el
+  techo ahí lo pone Tesseract, no la compresión.
+</p>
+
+<h2>Por qué una decisión por mosaico era el problema</h2>
+<p>
+  Hasta 2.49.0 la extensión decidía por mosaico de hasta 4.000 píxeles: almacenarlo sin pérdida (Deflate)
+  o como JPEG, lo que resultara más pequeño. Un mosaico con una fotografía y mucho texto acababa por tanto
+  o bien grande (la foto almacenada sin pérdida) o bien borroso (el texto almacenado como JPEG). En Untersberg, el 30,6&nbsp;%
+  del área de la página salió como JPEG, texto incluido.
+</p>
+<p>
+  La corrección separa ambas cosas. La página se corta en celdas de 32&nbsp;&times;&nbsp;32; una celda con más de
+  48 colores distintos cuenta como fotografía. Las celdas de texto tienen una mediana de 9 colores y un percentil 95
+  de 46, las fotografías muy por encima de cien. Las celdas de foto se fusionan fila por fila en rectángulos y se almacenan
+  como JPEG sobre una base sin pérdida. La proporción de JPEG en Untersberg bajó del 30,6&nbsp;% al 7,8&nbsp;%
+  &mdash; ahora hay más texto nítido, no menos.
+</p>
+
+<h2>Color compacto: qué aporta cada paso</h2>
+<p>Medido en la primera sección de 4.000 píxeles de Untersberg:</p>
+<table>
+  <thead><tr><th>Variante</th><th>Tamaño</th><th>OCR</th></tr></thead>
+  <tbody>
+    <tr><td>Texto sin pérdida, fotos JPEG&nbsp;92</td><td>1.202&nbsp;KB</td><td>71,1&nbsp;%</td></tr>
+    <tr><td>Fotos JPEG&nbsp;75</td><td>870&nbsp;KB</td><td>71,7&nbsp;%</td></tr>
+    <tr><td>Fotos JPEG&nbsp;60 a media resolución</td><td>493&nbsp;KB</td><td>71,5&nbsp;%</td></tr>
+    <tr><td>Texto 64 colores, fotos JPEG&nbsp;75</td><td>754&nbsp;KB</td><td>71,7&nbsp;%</td></tr>
+    <tr><td><strong>Texto 32 colores, fotos JPEG&nbsp;60 media resolución</strong></td><td><strong>372&nbsp;KB</strong></td><td><strong>71,7&nbsp;%</strong></td></tr>
+    <tr><td>Texto 16 colores, fotos JPEG&nbsp;60 media resolución</td><td>312&nbsp;KB</td><td>70,0&nbsp;%</td></tr>
+    <tr><td>Página completa JPEG&nbsp;60 (para comparar)</td><td>575&nbsp;KB</td><td>71,1&nbsp;%</td></tr>
+    <tr><td>Página completa JPEG&nbsp;40 (para comparar)</td><td>472&nbsp;KB</td><td>70,4&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p>
+  El texto en pantalla tiene pocos colores: la tinta, el azul del enlace, el fondo y los pasos de suavizado de bordes
+  intermedios. Una paleta de 32 los conserva todos; con 16, el OCR empieza a perder palabras. La paleta se construye con
+  los colores más frecuentes con una distancia mínima, para que 32 tonos de blanco no ocupen todas las plazas.
+  Se ganó gratis un paso sin pérdida más: la capa de texto está en el contenido de la página palabra por palabra, y ese
+  contenido se almacenaba sin comprimir &mdash; 1,73&nbsp;MB en Salzburg, 0,28&nbsp;MB con Deflate.
+</p>
+
+<h2>Dos métodos obvios que agrandaron los archivos o no aportaron nada</h2>
+<ul>
+  <li><strong>Predictores de fila PNG antes de Deflate.</strong> Consejo estándar para imágenes. En capturas de pantalla
+      los archivos crecieron un 4&nbsp;% (Untersberg) y un 9&nbsp;% (Salzburg): las tiradas largas de píxeles idénticos comprimen
+      mejor sin ellos.</li>
+  <li><strong>Una paleta para mosaicos enteros.</strong> Los mosaicos que contienen fotografías tienen hasta 190.000 colores;
+      una paleta solo funciona una vez separadas las fotos.</li>
+</ul>
+
+<h2>Control</h2>
+<ul>
+  <li>Donde ambas versiones almacenan sin pérdida, los píxeles renderizados son idénticos; las únicas diferencias provinieron de
+      la publicidad, que cambió entre capturas.</li>
+  <li>Regiones fotográficas frente al original sin pérdida (Salzburg, 161 regiones): mediana de PSNR 38,9&nbsp;dB, mediana de SSIM
+      0,990; tres regiones por debajo de 0,95, todas texturas finas que se ven igual.</li>
+  <li>pdf.js, Poppler, MuPDF y PDFium representan cada archivo de forma similar, cada página dentro de 14.400&nbsp;pt.</li>
+  <li>Las pruebas se verificaron contra una versión defectuosa: la prueba de detección de fotos falla con un umbral de
+      4 colores, la prueba de compresión de contenido falla con la compresión desactivada.</li>
+</ul>
+
+<h2>Lo que aún no está resuelto</h2>
+<p>
+  El texto sobre un fondo degradado &mdash; botones de color, cajas con degradado de color &mdash; supera los 48 colores por
+  celda y se trata como fotografía, así que en modo compacto se almacena a media resolución y se ve borroso.
+  Una segunda característica lo separa en simulación: las fotografías son inquietas en todas partes, el texto sobre un degradado es
+  suave con pocos bordes duros (proporción de píxeles vecinos que difieren entre 3 y 40: mediana del texto 0,04,
+  fotografías mucho más alta). Aún no se ha implementado. Las páginas construidas principalmente con esos elementos deberían usar
+  “Color — como en pantalla” hasta entonces.
+</p>
+
+<h2>Datos</h2>
+<p>
+  Todas las cifras de esta página: <a href="/data/2026-09-29-compact-pdf-size.json">2026-09-29-compact-pdf-size.json</a>.
+</p>
+</div>
+
+<div data-lang="fr" lang="fr">
+<header>
+  <h1>Jusqu'où un PDF pleine page peut-il rétrécir avant que le texte n'en pâtisse ?</h1>
+  <p class="standfirst">
+    Nous avons réduit la taille des captures PDF pleine page de 52 à 78&nbsp;% par rapport à la version précédente.
+    La couche de texte consultable est restée identique mot pour mot, l'OCR a reconnu autant de mots qu'avant, et
+    quatre lecteurs PDF ont rendu chaque fichier de façon identique. Ce qui a fonctionné, c'est de traiter le texte et les photographies
+    différemment. Deux méthodes évidentes ont rendu les fichiers <em>plus volumineux</em> ou n'ont rien apporté.
+  </p>
+</header>
+
+<p class="note"><strong>Mise à jour, 29 septembre 2026 (version 2.54.0, en ligne sur addons.mozilla.org depuis le 29 septembre 2026) :</strong> la limite décrite à la fin est corrigée. Un second critère sépare désormais les photographies des graphiques, diagrammes et textes sur dégradé, qui restent sans perte ; la palette compte 64 couleurs et les photographies gardent leur pleine résolution. Dans la simulation, la netteté des contours dans les graphiques est passée de 39–66&nbsp;% à 97–100&nbsp;%. Le tableau ci-dessous montre 2.52.0 : avec 2.54.0, les fichiers sont 12 à 28&nbsp;% plus gros, la réduction par rapport à 2.49.0 est donc de 72&nbsp;% pour Untersberg et de 65&nbsp;% pour Salzburg.</p>
+
+<h2>Le résultat</h2>
+<table>
+  <thead><tr><th>Page</th><th>Avant (2.49.0)</th><th>Couleur compacte (2.52.0)</th><th>Changement</th></tr></thead>
+  <tbody>
+    <tr><td>Wikipédia « Untersberg »</td><td>4,68&nbsp;MB</td><td>1,04&nbsp;MB</td><td>&minus;78&nbsp;%</td></tr>
+    <tr><td>Wikipédia « Salzburg »</td><td>17,65&nbsp;MB</td><td>5,54&nbsp;MB</td><td>&minus;69&nbsp;%</td></tr>
+    <tr><td>MDN, CSS <code>columns</code></td><td>1,46&nbsp;MB</td><td>0,70&nbsp;MB</td><td>&minus;52&nbsp;%</td></tr>
+    <tr><td>Article Frontiers</td><td>7,28&nbsp;MB*</td><td>3,34&nbsp;MB</td><td>&minus;54&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p class="note">* Frontiers n'a pas été capturé avec 2.49.0 ; la référence est 2.50.0 en « Couleur — comme à l'écran », qui stocke déjà le texte sans perte et les photos en JPEG&nbsp;92.</p>
+<p>
+  Capturé dans un vrai Firefox ESR (piloté via Marionette, fenêtre de 1816&nbsp;&times;&nbsp;1244 pixels CSS,
+  rapport de pixels de l'appareil&nbsp;1, 144&nbsp;dpi dans le PDF). La couche de texte de Salzburg comporte 25 970 mots et
+  2 120 liens dans les deux versions. Tesseract&nbsp;5 a reconnu 71,9&nbsp;% des mots des premiers
+  1 500&nbsp;pt d'Untersberg à partir du fichier compact et 71,5&nbsp;% à partir du fichier sans perte &mdash; le
+  plafond vient ici de Tesseract, pas de la compression.
+</p>
+
+<h2>Pourquoi une décision par tuile posait problème</h2>
+<p>
+  Jusqu'à la version 2.49.0, l'extension décidait par tuile allant jusqu'à 4 000 pixels : la stocker sans perte (Deflate)
+  ou en JPEG, selon ce qui était le plus petit. Une tuile contenant une photo et beaucoup de texte finissait donc
+  soit volumineuse (la photo stockée sans perte), soit floue (le texte stocké en JPEG). Sur Untersberg, 30,6&nbsp;%
+  de la surface de la page est sortie en JPEG, texte compris.
+</p>
+<p>
+  Le correctif sépare les deux. La page est découpée en cellules de 32&nbsp;&times;&nbsp;32 ; une cellule avec plus de
+  48 couleurs distinctes compte comme photo. Les cellules de texte ont une médiane de 9 couleurs et un 95e centile
+  de 46, les photos bien plus d'une centaine. Les cellules de photo sont fusionnées ligne par ligne en rectangles et stockées
+  en JPEG sur une base sans perte. La part de JPEG sur Untersberg est tombée de 30,6&nbsp;% à 7,8&nbsp;%
+  &mdash; il y a désormais plus de texte net, pas moins.
+</p>
+
+<h2>Couleur compacte : ce que vaut chaque étape</h2>
+<p>Mesuré sur la première section de 4 000 pixels d'Untersberg :</p>
+<table>
+  <thead><tr><th>Variante</th><th>Taille</th><th>OCR</th></tr></thead>
+  <tbody>
+    <tr><td>Texte sans perte, photos JPEG&nbsp;92</td><td>1 202&nbsp;KB</td><td>71,1&nbsp;%</td></tr>
+    <tr><td>Photos JPEG&nbsp;75</td><td>870&nbsp;KB</td><td>71,7&nbsp;%</td></tr>
+    <tr><td>Photos JPEG&nbsp;60 à demi-résolution</td><td>493&nbsp;KB</td><td>71,5&nbsp;%</td></tr>
+    <tr><td>Texte 64 couleurs, photos JPEG&nbsp;75</td><td>754&nbsp;KB</td><td>71,7&nbsp;%</td></tr>
+    <tr><td><strong>Texte 32 couleurs, photos JPEG&nbsp;60 demi-résolution</strong></td><td><strong>372&nbsp;KB</strong></td><td><strong>71,7&nbsp;%</strong></td></tr>
+    <tr><td>Texte 16 couleurs, photos JPEG&nbsp;60 demi-résolution</td><td>312&nbsp;KB</td><td>70,0&nbsp;%</td></tr>
+    <tr><td>Page entière JPEG&nbsp;60 (pour comparaison)</td><td>575&nbsp;KB</td><td>71,1&nbsp;%</td></tr>
+    <tr><td>Page entière JPEG&nbsp;40 (pour comparaison)</td><td>472&nbsp;KB</td><td>70,4&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p>
+  Le texte à l'écran a peu de couleurs : l'encre, le bleu des liens, le fond et les étapes de lissage intermédiaires.
+  Une palette de 32 les conserve toutes ; à 16, l'OCR commence à perdre des mots. La palette est construite à partir
+  des couleurs les plus fréquentes avec une distance minimale, afin que 32 nuances de blanc n'occupent pas toutes les places.
+  Une étape sans perte supplémentaire est venue gratuitement : la couche de texte se trouve mot par mot dans le contenu de la page, et ce
+  contenu était stocké non compressé &mdash; 1,73&nbsp;MB sur Salzburg, 0,28&nbsp;MB avec Deflate.
+</p>
+
+<h2>Deux méthodes évidentes qui ont agrandi les fichiers ou n'ont rien apporté</h2>
+<ul>
+  <li><strong>Prédicteurs de ligne PNG avant Deflate.</strong> Conseil standard pour les images. Sur les captures d'écran,
+      les fichiers ont grossi de 4&nbsp;% (Untersberg) et 9&nbsp;% (Salzburg) : les longues suites de pixels identiques se compressent
+      mieux sans eux.</li>
+  <li><strong>Une palette pour des tuiles entières.</strong> Les tuiles contenant des photos comptent jusqu'à 190 000 couleurs ;
+      une palette ne fonctionne qu'une fois les photos séparées.</li>
+</ul>
+
+<h2>Contrôle</h2>
+<ul>
+  <li>Là où les deux versions stockent sans perte, les pixels rendus sont identiques ; les seules différences provenaient
+      des publicités, qui changeaient entre les captures.</li>
+  <li>Régions photo par rapport à l'original sans perte (Salzburg, 161 régions) : PSNR médian 38,9&nbsp;dB, SSIM médian
+      0,990 ; trois régions sous 0,95, toutes des textures fines qui paraissent identiques.</li>
+  <li>pdf.js, Poppler, MuPDF et PDFium rendent chaque fichier de façon similaire, chaque page à moins de 14 400&nbsp;pt près.</li>
+  <li>Les tests ont été vérifiés contre une version défectueuse : le test de détection des photos échoue avec un seuil de
+      4 couleurs, le test de compression du contenu échoue lorsque la compression est désactivée.</li>
+</ul>
+
+<h2>Ce qui n'est pas encore résolu</h2>
+<p>
+  Le texte sur un fond dégradé &mdash; boutons colorés, encadrés avec un dégradé de couleur &mdash; dépasse 48 couleurs par
+  cellule et est traité comme une photo ; en mode compact, il est donc stocké à demi-résolution et paraît flou.
+  Une seconde fonctionnalité le sépare en simulation : les photos sont agitées partout, le texte sur un dégradé est
+  lisse avec peu de bords nets (part des pixels voisins différant de 3 à 40 : médiane du texte 0,04,
+  photos bien plus élevée). Ce n'est pas encore déployé. Les pages construites principalement à partir de tels éléments devraient utiliser
+  « Couleur — comme à l'écran » d'ici là.
+</p>
+
+<h2>Données</h2>
+<p>
+  Tous les chiffres de cette page : <a href="/data/2026-09-29-compact-pdf-size.json">2026-09-29-compact-pdf-size.json</a>.
+</p>
+</div>
+
+<div data-lang="it" lang="it">
+<header>
+  <h1>Quanto può rimpicciolirsi un PDF a pagina intera prima che il testo ne risenta?</h1>
+  <p class="standfirst">
+    Abbiamo ridotto la dimensione delle acquisizioni PDF a pagina intera del 52-78&nbsp;% rispetto alla versione precedente.
+    Il livello di testo ricercabile è rimasto identico parola per parola, l'OCR ha riconosciuto tanto quanto prima, e
+    quattro lettori PDF hanno reso ogni file in modo identico. Ciò che ha funzionato è stato trattare testo e fotografie
+    in modo diverso. Due metodi ovvi hanno reso i file <em>più grandi</em> o non hanno portato nulla.
+  </p>
+</header>
+
+<p class="note"><strong>Aggiornamento, 29 settembre 2026 (versione 2.54.0, pubblicata su addons.mozilla.org dal 29 settembre 2026):</strong> il limite descritto alla fine è risolto. Un secondo criterio separa ora le fotografie da grafici, diagrammi e testo su sfumature, che restano senza perdita; la tavolozza ha 64 colori e le fotografie mantengono la risoluzione piena. Nella simulazione, la nitidezza dei bordi nei grafici è salita dal 39–66&nbsp;% al 97–100&nbsp;%. La tabella qui sotto mostra 2.52.0: con 2.54.0 i file sono più grandi del 12–28&nbsp;%, quindi la riduzione rispetto a 2.49.0 è del 72&nbsp;% su Untersberg e del 65&nbsp;% su Salzburg.</p>
+
+<h2>Il risultato</h2>
+<table>
+  <thead><tr><th>Pagina</th><th>Prima (2.49.0)</th><th>Colore compatto (2.52.0)</th><th>Variazione</th></tr></thead>
+  <tbody>
+    <tr><td>Wikipedia “Untersberg”</td><td>4,68&nbsp;MB</td><td>1,04&nbsp;MB</td><td>&minus;78&nbsp;%</td></tr>
+    <tr><td>Wikipedia “Salzburg”</td><td>17,65&nbsp;MB</td><td>5,54&nbsp;MB</td><td>&minus;69&nbsp;%</td></tr>
+    <tr><td>MDN, CSS <code>columns</code></td><td>1,46&nbsp;MB</td><td>0,70&nbsp;MB</td><td>&minus;52&nbsp;%</td></tr>
+    <tr><td>Articolo Frontiers</td><td>7,28&nbsp;MB*</td><td>3,34&nbsp;MB</td><td>&minus;54&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p class="note">* Frontiers non è stato acquisito con la 2.49.0; il riferimento è la 2.50.0 in “Colore — come sullo schermo”, che già memorizza il testo senza perdita e le foto come JPEG&nbsp;92.</p>
+<p>
+  Acquisito con un vero Firefox ESR (pilotato tramite Marionette, finestra di 1816&nbsp;&times;&nbsp;1244 pixel CSS,
+  device pixel ratio&nbsp;1, 144&nbsp;dpi nel PDF). Il livello di testo di Salzburg contiene 25.970 parole e
+  2.120 link in entrambe le versioni. Tesseract&nbsp;5 ha riconosciuto il 71,9&nbsp;% delle parole dei primi
+  1.500&nbsp;pt di Untersberg dal file compatto e il 71,5&nbsp;% da quello senza perdita &mdash; il
+  tetto lì è dato da Tesseract, non dalla compressione.
+</p>
+
+<h2>Perché una decisione per riquadro era il problema</h2>
+<p>
+  Fino alla 2.49.0 l'estensione decideva per riquadro fino a 4.000 pixel: memorizzarlo senza perdita (Deflate)
+  oppure come JPEG, a seconda di quale fosse più piccolo. Un riquadro con una fotografia e molto testo finiva quindi
+  per essere o grande (la foto memorizzata senza perdita) o sfocato (il testo memorizzato come JPEG). Su Untersberg il 30,6&nbsp;%
+  dell'area della pagina è uscito come JPEG, testo compreso.
+</p>
+<p>
+  La correzione separa i due elementi. La pagina è divisa in celle di 32&nbsp;&times;&nbsp;32; una cella con più di
+  48 colori distinti conta come fotografia. Le celle di testo hanno una mediana di 9 colori e un 95° percentile
+  di 46, le fotografie ben oltre cento. Le celle fotografiche vengono unite riga per riga in rettangoli e memorizzate
+  come JPEG sopra una base senza perdita. La quota JPEG di Untersberg è scesa dal 30,6&nbsp;% al 7,8&nbsp;%
+  &mdash; ora più testo è nitido, non meno.
+</p>
+
+<h2>Colore compatto: quanto vale ogni passaggio</h2>
+<p>Misurato sulla prima sezione da 4.000 pixel di Untersberg:</p>
+<table>
+  <thead><tr><th>Variante</th><th>Dimensione</th><th>OCR</th></tr></thead>
+  <tbody>
+    <tr><td>Testo senza perdita, foto JPEG&nbsp;92</td><td>1.202&nbsp;KB</td><td>71,1&nbsp;%</td></tr>
+    <tr><td>Foto JPEG&nbsp;75</td><td>870&nbsp;KB</td><td>71,7&nbsp;%</td></tr>
+    <tr><td>Foto JPEG&nbsp;60 a metà risoluzione</td><td>493&nbsp;KB</td><td>71,5&nbsp;%</td></tr>
+    <tr><td>Testo 64 colori, foto JPEG&nbsp;75</td><td>754&nbsp;KB</td><td>71,7&nbsp;%</td></tr>
+    <tr><td><strong>Testo 32 colori, foto JPEG&nbsp;60 metà risoluzione</strong></td><td><strong>372&nbsp;KB</strong></td><td><strong>71,7&nbsp;%</strong></td></tr>
+    <tr><td>Testo 16 colori, foto JPEG&nbsp;60 metà risoluzione</td><td>312&nbsp;KB</td><td>70,0&nbsp;%</td></tr>
+    <tr><td>Pagina intera JPEG&nbsp;60 (per confronto)</td><td>575&nbsp;KB</td><td>71,1&nbsp;%</td></tr>
+    <tr><td>Pagina intera JPEG&nbsp;40 (per confronto)</td><td>472&nbsp;KB</td><td>70,4&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p>
+  Il testo a schermo ha pochi colori: l'inchiostro, il blu dei link, lo sfondo e i passaggi di anti-aliasing
+  intermedi. Una palette di 32 li conserva tutti; a 16 l'OCR comincia a perdere parole. La palette è costruita a partire dai
+  colori più frequenti con una distanza minima, così che 32 sfumature di bianco non occupino tutti i posti.
+  Un ulteriore passaggio senza perdita è arrivato gratis: il livello di testo si trova parola per parola nel contenuto della pagina, e quel
+  contenuto era memorizzato non compresso &mdash; 1,73&nbsp;MB su Salzburg, 0,28&nbsp;MB con Deflate.
+</p>
+
+<h2>Due metodi ovvi che hanno ingrandito i file o non hanno portato nulla</h2>
+<ul>
+  <li><strong>Predittori di riga PNG prima di Deflate.</strong> Consiglio standard per le immagini. Nelle acquisizioni di schermo
+      i file sono cresciuti del 4&nbsp;% (Untersberg) e del 9&nbsp;% (Salzburg): lunghe sequenze di pixel identici si comprimono
+      meglio senza di essi.</li>
+  <li><strong>Una palette per interi riquadri.</strong> I riquadri contenenti fotografie hanno fino a 190.000 colori;
+      una palette funziona solo una volta separate le foto.</li>
+</ul>
+
+<h2>Controllo</h2>
+<ul>
+  <li>Dove entrambe le versioni memorizzano senza perdita, i pixel renderizzati sono identici; le uniche differenze derivavano
+      dalla pubblicità, che cambiava tra le acquisizioni.</li>
+  <li>Regioni fotografiche rispetto all'originale senza perdita (Salzburg, 161 regioni): PSNR mediano 38,9&nbsp;dB, SSIM mediano
+      0,990; tre regioni sotto 0,95, tutte texture fini che appaiono uguali.</li>
+  <li>pdf.js, Poppler, MuPDF e PDFium rendono ogni file in modo simile, ogni pagina entro 14.400&nbsp;pt.</li>
+  <li>I test sono stati verificati contro una versione difettosa: il test di rilevamento foto fallisce con una soglia di
+      4 colori, il test di compressione del contenuto fallisce con la compressione disattivata.</li>
+</ul>
+
+<h2>Cosa non è ancora risolto</h2>
+<p>
+  Il testo su uno sfondo sfumato &mdash; pulsanti colorati, riquadri con una sfumatura di colore &mdash; supera i 48 colori per
+  cella e viene trattato come fotografia, quindi in modalità compatta viene memorizzato a metà risoluzione e appare sfocato.
+  Una seconda funzionalità lo separa in simulazione: le fotografie sono irrequiete ovunque, il testo su uno sfondo sfumato è
+  liscio con pochi bordi netti (quota di pixel vicini che differiscono da 3 a 40: mediana del testo 0,04,
+  fotografie molto più alta). Non è ancora stato rilasciato. Le pagine costruite principalmente con tali elementi dovrebbero usare
+  “Colore — come sullo schermo” fino ad allora.
+</p>
+
+<h2>Dati</h2>
+<p>
+  Tutti i numeri di questa pagina: <a href="/data/2026-09-29-compact-pdf-size.json">2026-09-29-compact-pdf-size.json</a>.
+</p>
+</div>
+
+<div data-lang="ja" lang="ja">
+<header>
+  <h1>全ページPDFは、テキストが劣化する前にどこまで小さくできるか?</h1>
+  <p class="standfirst">
+    私たちは全ページPDFキャプチャのサイズを、前バージョンに対して52~78&nbsp;%削減した。
+    検索可能なテキスト層は一字一句変わらず保たれ、OCRは以前と同じだけ認識し、
+    4種類のPDFリーダーはすべてのファイルを同一に描画した。効果があったのは、テキストと写真を
+    別々に扱うことだった。一見もっともらしい2つの手法は、ファイルを<em>大きく</em>するか、効果がなかった。
+  </p>
+</header>
+
+<p class="note"><strong>追記（2026年9月29日、バージョン 2.54.0：2026年9月29日より addons.mozilla.org で公開）：</strong>末尾に記した制限は解消しました。第二の特徴量により、写真とグラフ・図・グラデーション上の文字を区別し、後者は可逆のまま保存します。パレットは 64 色、写真はフル解像度を保ちます。シミュレーションでは、グラフのエッジの鮮明さは 39–66&nbsp;% から 97–100&nbsp;% に向上しました。下の表は 2.52.0 の値です。2.54.0 ではファイルが 12〜28&nbsp;% 大きく、2.49.0 比の削減率は Untersberg で 72&nbsp;%、Salzburg で 65&nbsp;% です。</p>
+
+<h2>結果</h2>
+<table>
+  <thead><tr><th>ページ</th><th>変更前 (2.49.0)</th><th>コンパクトカラー (2.52.0)</th><th>変化</th></tr></thead>
+  <tbody>
+    <tr><td>Wikipedia「Untersberg」</td><td>4.68&nbsp;MB</td><td>1.04&nbsp;MB</td><td>&minus;78&nbsp;%</td></tr>
+    <tr><td>Wikipedia「Salzburg」</td><td>17.65&nbsp;MB</td><td>5.54&nbsp;MB</td><td>&minus;69&nbsp;%</td></tr>
+    <tr><td>MDN、CSS <code>columns</code></td><td>1.46&nbsp;MB</td><td>0.70&nbsp;MB</td><td>&minus;52&nbsp;%</td></tr>
+    <tr><td>Frontiersの記事</td><td>7.28&nbsp;MB*</td><td>3.34&nbsp;MB</td><td>&minus;54&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p class="note">* Frontiersは2.49.0ではキャプチャされていない。基準は「カラー — 画面のまま」の2.50.0で、これはすでにテキストをロスレスで、写真をJPEG&nbsp;92で保存している。</p>
+<p>
+  実際のFirefox ESRでキャプチャ(Marionette経由で操作、ウィンドウ1816&nbsp;&times;&nbsp;1244 CSSピクセル、
+  デバイスピクセル比&nbsp;1、PDF内144&nbsp;dpi)。Salzburgのテキスト層には両バージョンとも25,970語と
+  2,120個のリンクが含まれる。Tesseract&nbsp;5は、コンパクト版のUntersbergの最初の
+  1,500&nbsp;ptの単語の71.9&nbsp;%を認識し、ロスレス版では71.5&nbsp;%を認識した &mdash; ここでの
+  上限はTesseractによるものであり、圧縮によるものではない。
+</p>
+
+<h2>タイルごとに1つの判断を下すことが問題だった理由</h2>
+<p>
+  2.49.0までは、拡張機能は最大4,000ピクセルのタイルごとに判断していた。ロスレス(Deflate)で保存するか、
+  JPEGで保存するか、どちらか小さい方を選んでいた。そのため、1枚の写真と多くのテキストを含むタイルは、
+  大きくなる(写真がロスレスで保存される)か、ぼやける(テキストがJPEGで保存される)かのどちらかになっていた。Untersbergでは、ページ面積の30.6&nbsp;%が
+  テキストを含んだままJPEGとして出力されていた。
+</p>
+<p>
+  この修正は両者を分離する。ページは32&nbsp;&times;&nbsp;32のセルに分割され、
+  48色を超える異なる色を持つセルは写真とみなされる。テキストセルの色数の中央値は9色、95パーセンタイルは
+  46色だが、写真は優に100色を超える。写真セルは行ごとに矩形へ統合され、
+  ロスレスの土台の上にJPEGとして保存される。UntersbergのJPEGの割合は30.6&nbsp;%から7.8&nbsp;%に下がった
+  &mdash; 今ではより多くのテキストが鮮明になっており、少なくなってはいない。
+</p>
+
+<h2>コンパクトカラー: 各ステップの価値</h2>
+<p>Untersbergの最初の4,000ピクセル区間で測定:</p>
+<table>
+  <thead><tr><th>バリエーション</th><th>サイズ</th><th>OCR</th></tr></thead>
+  <tbody>
+    <tr><td>テキストはロスレス、写真はJPEG&nbsp;92</td><td>1,202&nbsp;KB</td><td>71.1&nbsp;%</td></tr>
+    <tr><td>写真はJPEG&nbsp;75</td><td>870&nbsp;KB</td><td>71.7&nbsp;%</td></tr>
+    <tr><td>写真はJPEG&nbsp;60、解像度半分</td><td>493&nbsp;KB</td><td>71.5&nbsp;%</td></tr>
+    <tr><td>テキスト64色、写真はJPEG&nbsp;75</td><td>754&nbsp;KB</td><td>71.7&nbsp;%</td></tr>
+    <tr><td><strong>テキスト32色、写真はJPEG&nbsp;60・解像度半分</strong></td><td><strong>372&nbsp;KB</strong></td><td><strong>71.7&nbsp;%</strong></td></tr>
+    <tr><td>テキスト16色、写真はJPEG&nbsp;60・解像度半分</td><td>312&nbsp;KB</td><td>70.0&nbsp;%</td></tr>
+    <tr><td>ページ全体をJPEG&nbsp;60(比較用)</td><td>575&nbsp;KB</td><td>71.1&nbsp;%</td></tr>
+    <tr><td>ページ全体をJPEG&nbsp;40(比較用)</td><td>472&nbsp;KB</td><td>70.4&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p>
+  画面上のテキストは色数が少ない: インク、リンクの青、背景、そしてその間のアンチエイリアシングの段階だけだ。
+  32色のパレットならそのすべてを保持できるが、16色になるとOCRは単語を取りこぼし始める。パレットは
+  最小距離を保ちながら最も頻出する色から構築されるため、32段階の白が全ての枠を占有することはない。
+  もう一つのロスレスの改善が無償で得られた: テキスト層は単語ごとにページのコンテンツ内に置かれているが、その
+  コンテンツは無圧縮で保存されていた &mdash; Salzburgで1.73&nbsp;MB、Deflateを使えば0.28&nbsp;MBになる。
+</p>
+
+<h2>ファイルを大きくした、または効果がなかった、もっともらしい2つの手法</h2>
+<ul>
+  <li><strong>Deflateの前にPNGの行予測フィルタを使う。</strong> 画像に対する標準的な助言。スクリーンキャプチャでは
+      ファイルが4&nbsp;%(Untersberg)、9&nbsp;%(Salzburg)大きくなった: 同一ピクセルが長く続く箇所は、
+      これを使わない方がよく圧縮される。</li>
+  <li><strong>タイル全体に対するパレット化。</strong> 写真を含むタイルは最大190,000色を持つため、
+      写真を分離して初めてパレットが機能する。</li>
+</ul>
+
+<h2>対照実験</h2>
+<ul>
+  <li>両バージョンがロスレスで保存している箇所では、描画されるピクセルは同一であり、唯一の差異は
+      キャプチャの間に変化した広告に起因していた。</li>
+  <li>ロスレスの原本に対する写真領域の比較(Salzburg、161領域): PSNR中央値38.9&nbsp;dB、SSIM中央値
+      0.990、0.95を下回る領域は3つのみで、いずれも同じに見える細かいテクスチャだった。</li>
+  <li>pdf.js、Poppler、MuPDF、PDFiumはすべてのファイルを同様に描画し、各ページの差は14,400&nbsp;pt以内だった。</li>
+  <li>テストは壊れたバージョンに対しても検証された: 写真検出テストは4色というしきい値で失敗し、
+      コンテンツ圧縮テストは圧縮を無効にすると失敗する。</li>
+</ul>
+
+<h2>まだ解決していないこと</h2>
+<p>
+  グラデーション背景の上のテキスト &mdash; 色付きボタンや、色のグラデーションを持つボックス &mdash; は1セルあたり48色を
+  超えてしまうため写真として扱われ、コンパクトモードでは解像度半分で保存されてぼやけて見える。
+  2つ目の特徴によってシミュレーション上ではこれを分離できる: 写真はどこでも落ち着きがないのに対し、グラデーション上のテキストは
+  滑らかで硬いエッジが少ない(隣接ピクセルの差が3~40である割合: テキストの中央値は0.04、
+  写真ははるかに高い)。まだ実装・配信はされていない。主にこうした要素で構成されたページは、それまでは
+  「カラー — 画面のまま」を使うべきである。
+</p>
+
+<h2>データ</h2>
+<p>
+  このページのすべての数値: <a href="/data/2026-09-29-compact-pdf-size.json">2026-09-29-compact-pdf-size.json</a>。
+</p>
+</div>
+
+<div data-lang="pt-BR" lang="pt-BR">
+<header>
+  <h1>Até que ponto um PDF de página inteira pode encolher antes que o texto sofra?</h1>
+  <p class="standfirst">
+    Reduzimos o tamanho das capturas de PDF de página inteira em 52 a 78&nbsp;% em relação à versão anterior.
+    A camada de texto pesquisável permaneceu exatamente a mesma, palavra por palavra, o OCR reconheceu tanto quanto antes, e
+    quatro leitores de PDF renderizaram cada arquivo de forma idêntica. O que funcionou foi tratar texto e fotografias
+    de maneira diferente. Dois métodos aparentemente óbvios deixaram os arquivos <em>maiores</em> ou não trouxeram ganho.
+  </p>
+</header>
+
+<p class="note"><strong>Atualização, 29 de setembro de 2026 (versão 2.54.0, publicada no addons.mozilla.org desde 29 de setembro de 2026):</strong> o limite descrito no final foi resolvido. Um segundo critério agora separa fotografias de gráficos, diagramas e texto sobre degradês, que permanecem sem perdas; a paleta tem 64 cores e as fotografias mantêm a resolução total. Na simulação, a nitidez das bordas nos gráficos subiu de 39–66&nbsp;% para 97–100&nbsp;%. A tabela abaixo mostra a 2.52.0: com a 2.54.0 os arquivos ficam de 12 a 28&nbsp;% maiores, então a redução em relação à 2.49.0 é de 72&nbsp;% no Untersberg e de 65&nbsp;% em Salzburg.</p>
+
+<h2>O resultado</h2>
+<table>
+  <thead><tr><th>Página</th><th>Antes (2.49.0)</th><th>Cor compacta (2.52.0)</th><th>Mudança</th></tr></thead>
+  <tbody>
+    <tr><td>Wikipédia “Untersberg”</td><td>4,68&nbsp;MB</td><td>1,04&nbsp;MB</td><td>&minus;78&nbsp;%</td></tr>
+    <tr><td>Wikipédia “Salzburg”</td><td>17,65&nbsp;MB</td><td>5,54&nbsp;MB</td><td>&minus;69&nbsp;%</td></tr>
+    <tr><td>MDN, CSS <code>columns</code></td><td>1,46&nbsp;MB</td><td>0,70&nbsp;MB</td><td>&minus;52&nbsp;%</td></tr>
+    <tr><td>Artigo da Frontiers</td><td>7,28&nbsp;MB*</td><td>3,34&nbsp;MB</td><td>&minus;54&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p class="note">* A Frontiers não foi capturada com a 2.49.0; a linha de base é a 2.50.0 em “Cor — como na tela”, que já armazena o texto sem perdas e as fotos como JPEG&nbsp;92.</p>
+<p>
+  Capturado em um Firefox ESR real (controlado via Marionette, janela de 1816&nbsp;&times;&nbsp;1244 pixels CSS,
+  proporção de pixels do dispositivo&nbsp;1, 144&nbsp;dpi no PDF). A camada de texto de Salzburg contém 25.970 palavras e
+  2.120 links em ambas as versões. O Tesseract&nbsp;5 reconheceu 71,9&nbsp;% das palavras dos primeiros
+  1.500&nbsp;pt de Untersberg a partir do arquivo compacto e 71,5&nbsp;% a partir do arquivo sem perdas &mdash; o
+  teto ali é do Tesseract, não da compressão.
+</p>
+
+<h2>Por que uma decisão por bloco era o problema</h2>
+<p>
+  Até a 2.49.0, a extensão decidia por bloco de até 4.000 pixels: armazená-lo sem perdas (Deflate)
+  ou como JPEG, o que fosse menor. Um bloco com uma fotografia e muito texto acabava, portanto,
+  grande demais (a foto armazenada sem perdas) ou borrado (o texto armazenado como JPEG). Em Untersberg, 30,6&nbsp;%
+  da área da página saiu como JPEG, texto incluído.
+</p>
+<p>
+  A correção separa os dois. A página é dividida em células de 32&nbsp;&times;&nbsp;32; uma célula com mais de
+  48 cores distintas conta como fotografia. As células de texto têm mediana de 9 cores e percentil 95
+  de 46, as fotografias, bem mais de cem. As células de foto são mescladas linha a linha em retângulos e armazenadas
+  como JPEG sobre uma base sem perdas. A fração de JPEG em Untersberg caiu de 30,6&nbsp;% para 7,8&nbsp;%
+  &mdash; agora há mais texto nítido, não menos.
+</p>
+
+<h2>Cor compacta: o que vale cada etapa</h2>
+<p>Medido na primeira seção de 4.000 pixels de Untersberg:</p>
+<table>
+  <thead><tr><th>Variante</th><th>Tamanho</th><th>OCR</th></tr></thead>
+  <tbody>
+    <tr><td>Texto sem perdas, fotos JPEG&nbsp;92</td><td>1.202&nbsp;KB</td><td>71,1&nbsp;%</td></tr>
+    <tr><td>Fotos JPEG&nbsp;75</td><td>870&nbsp;KB</td><td>71,7&nbsp;%</td></tr>
+    <tr><td>Fotos JPEG&nbsp;60 em meia resolução</td><td>493&nbsp;KB</td><td>71,5&nbsp;%</td></tr>
+    <tr><td>Texto 64 cores, fotos JPEG&nbsp;75</td><td>754&nbsp;KB</td><td>71,7&nbsp;%</td></tr>
+    <tr><td><strong>Texto 32 cores, fotos JPEG&nbsp;60 meia resolução</strong></td><td><strong>372&nbsp;KB</strong></td><td><strong>71,7&nbsp;%</strong></td></tr>
+    <tr><td>Texto 16 cores, fotos JPEG&nbsp;60 meia resolução</td><td>312&nbsp;KB</td><td>70,0&nbsp;%</td></tr>
+    <tr><td>Página inteira JPEG&nbsp;60 (para comparação)</td><td>575&nbsp;KB</td><td>71,1&nbsp;%</td></tr>
+    <tr><td>Página inteira JPEG&nbsp;40 (para comparação)</td><td>472&nbsp;KB</td><td>70,4&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p>
+  O texto na tela tem poucas cores: a tinta, o azul dos links, o fundo e os degradês intermediários da
+  suavização de bordas. Uma paleta de 32 preserva todas elas; com 16, o OCR começa a perder palavras. A paleta é construída a partir das
+  cores mais frequentes com uma distância mínima, para que 32 tons de branco não ocupem todos os espaços.
+  Mais uma etapa sem perdas veio de graça: a camada de texto está palavra por palavra no conteúdo da página, e esse
+  conteúdo era armazenado sem compressão &mdash; 1,73&nbsp;MB em Salzburg, 0,28&nbsp;MB com Deflate.
+</p>
+
+<h2>Dois métodos aparentemente óbvios que aumentaram os arquivos ou não trouxeram ganho</h2>
+<ul>
+  <li><strong>Preditores de linha PNG antes do Deflate.</strong> Recomendação padrão para imagens. Em capturas de tela,
+      os arquivos cresceram 4&nbsp;% (Untersberg) e 9&nbsp;% (Salzburg): longas sequências de pixels idênticos se comprimem
+      melhor sem eles.</li>
+  <li><strong>Uma paleta para blocos inteiros.</strong> Blocos que contêm fotografias têm até 190.000 cores;
+      uma paleta só funciona depois que as fotos são separadas.</li>
+</ul>
+
+<h2>Controle</h2>
+<ul>
+  <li>Onde ambas as versões armazenam sem perdas, os pixels renderizados são idênticos; as únicas diferenças vieram de
+      anúncios que mudaram entre as capturas.</li>
+  <li>Regiões de foto em comparação com o original sem perdas (Salzburg, 161 regiões): PSNR mediano de 38,9&nbsp;dB, SSIM mediano
+      de 0,990; três regiões abaixo de 0,95, todas texturas finas que parecem iguais.</li>
+  <li>pdf.js, Poppler, MuPDF e PDFium renderizam cada arquivo de forma semelhante, cada página dentro de 14.400&nbsp;pt.</li>
+  <li>Os testes foram verificados contra uma versão quebrada: o teste de detecção de fotos falha com um limiar de
+      4 cores, o teste de compressão de conteúdo falha com a compressão desativada.</li>
+</ul>
+
+<h2>O que ainda não está resolvido</h2>
+<p>
+  Texto sobre um fundo em gradiente &mdash; botões coloridos, caixas com um degradê de cor &mdash; ultrapassa 48 cores por
+  célula e é tratado como fotografia, então, no modo compacto, é armazenado em meia resolução e parece borrado.
+  Um segundo recurso o separa em simulação: fotografias são inquietas por toda parte, o texto sobre um gradiente é
+  suave, com poucas bordas duras (fração de pixels vizinhos que diferem de 3 a 40: mediana do texto 0,04,
+  fotografias bem mais alta). Ainda não foi lançado. Páginas construídas principalmente com esses elementos devem usar
+  “Cor — como na tela” até lá.
+</p>
+
+<h2>Dados</h2>
+<p>
+  Todos os números desta página: <a href="/data/2026-09-29-compact-pdf-size.json">2026-09-29-compact-pdf-size.json</a>.
+</p>
+</div>
+
+<div data-lang="ru" lang="ru">
+<header>
+  <h1>Насколько маленьким может стать PDF целой страницы, прежде чем пострадает текст?</h1>
+  <p class="standfirst">
+    Мы уменьшили размер PDF-снимков целой страницы на 52–78&nbsp;% по сравнению с предыдущей версией.
+    Слой текста, доступный для поиска, остался слово в слово прежним, OCR распознавал столько же, сколько раньше, а
+    четыре PDF-читалки отображали каждый файл одинаково. Сработало то, что текст и фотографии стали
+    обрабатываться по-разному. Два очевидных на первый взгляд метода увеличивали файлы или ничего не давали.
+  </p>
+</header>
+
+<p class="note"><strong>Дополнение, 29 сентября 2026 (версия 2.54.0, опубликована на addons.mozilla.org с 29 сентября 2026):</strong> ограничение, описанное в конце, устранено. Второй признак теперь отделяет фотографии от графиков, диаграмм и текста на градиентах, которые сохраняются без потерь; палитра содержит 64 цвета, фотографии сохраняют полное разрешение. В моделировании резкость краёв на графиках выросла с 39–66&nbsp;% до 97–100&nbsp;%. Таблица ниже относится к 2.52.0: в 2.54.0 файлы на 12–28&nbsp;% больше, поэтому сокращение относительно 2.49.0 составляет 72&nbsp;% для Untersberg и 65&nbsp;% для Salzburg.</p>
+
+<h2>Результат</h2>
+<table>
+  <thead><tr><th>Страница</th><th>До (2.49.0)</th><th>Компактный цвет (2.52.0)</th><th>Изменение</th></tr></thead>
+  <tbody>
+    <tr><td>Wikipedia «Untersberg»</td><td>4,68&nbsp;MB</td><td>1,04&nbsp;MB</td><td>&minus;78&nbsp;%</td></tr>
+    <tr><td>Wikipedia «Salzburg»</td><td>17,65&nbsp;MB</td><td>5,54&nbsp;MB</td><td>&minus;69&nbsp;%</td></tr>
+    <tr><td>MDN, CSS <code>columns</code></td><td>1,46&nbsp;MB</td><td>0,70&nbsp;MB</td><td>&minus;52&nbsp;%</td></tr>
+    <tr><td>Статья Frontiers</td><td>7,28&nbsp;MB*</td><td>3,34&nbsp;MB</td><td>&minus;54&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p class="note">* Frontiers не снималась в версии 2.49.0; за базовую версию принята 2.50.0 в режиме «Цвет — как на экране», которая уже хранит текст без потерь, а фото — как JPEG&nbsp;92.</p>
+<p>
+  Снято в настоящем Firefox ESR (управление через Marionette, окно 1816&nbsp;&times;&nbsp;1244 CSS-пикселей,
+  соотношение пикселей устройства&nbsp;1, 144&nbsp;dpi в PDF). Слой текста страницы Salzburg содержит 25 970 слов и
+  2 120 ссылок в обеих версиях. Tesseract&nbsp;5 распознал 71,9&nbsp;% слов первых
+  1 500&nbsp;pt страницы Untersberg из компактного файла и 71,5&nbsp;% из файла без потерь &mdash;
+  потолок здесь задаёт Tesseract, а не сжатие.
+</p>
+
+<h2>Почему проблемой было одно решение на плитку</h2>
+<p>
+  До версии 2.49.0 расширение принимало решение для каждой плитки размером до 4000 пикселей: хранить без потерь (Deflate)
+  или как JPEG — в зависимости от того, что получалось меньше. Поэтому плитка с одной фотографией и большим количеством текста
+  оказывалась либо большой (фото хранилось без потерь), либо размытой (текст хранился как JPEG). На странице Untersberg 30,6&nbsp;%
+  площади страницы выходило как JPEG, включая текст.
+</p>
+<p>
+  Исправление разделяет эти два случая. Страница разбивается на ячейки 32&nbsp;&times;&nbsp;32; ячейка с более чем
+  48 различными цветами считается фотографией. Медиана числа цветов в текстовых ячейках — 9, а 95-й процентиль —
+  46, у фотографий — намного больше сотни. Ячейки с фото объединяются построчно в прямоугольники и хранятся
+  как JPEG поверх основы без потерь. Доля JPEG на странице Untersberg снизилась с 30,6&nbsp;% до 7,8&nbsp;%
+  &mdash; теперь больше текста стало чётким, а не меньше.
+</p>
+
+<h2>Компактный цвет: что даёт каждый шаг</h2>
+<p>Измерено на первом участке в 4000 пикселей страницы Untersberg:</p>
+<table>
+  <thead><tr><th>Вариант</th><th>Размер</th><th>OCR</th></tr></thead>
+  <tbody>
+    <tr><td>Текст без потерь, фото JPEG&nbsp;92</td><td>1202&nbsp;KB</td><td>71,1&nbsp;%</td></tr>
+    <tr><td>Фото JPEG&nbsp;75</td><td>870&nbsp;KB</td><td>71,7&nbsp;%</td></tr>
+    <tr><td>Фото JPEG&nbsp;60 при половинном разрешении</td><td>493&nbsp;KB</td><td>71,5&nbsp;%</td></tr>
+    <tr><td>Текст 64 цвета, фото JPEG&nbsp;75</td><td>754&nbsp;KB</td><td>71,7&nbsp;%</td></tr>
+    <tr><td><strong>Текст 32 цвета, фото JPEG&nbsp;60, половинное разрешение</strong></td><td><strong>372&nbsp;KB</strong></td><td><strong>71,7&nbsp;%</strong></td></tr>
+    <tr><td>Текст 16 цветов, фото JPEG&nbsp;60, половинное разрешение</td><td>312&nbsp;KB</td><td>70,0&nbsp;%</td></tr>
+    <tr><td>Вся страница JPEG&nbsp;60 (для сравнения)</td><td>575&nbsp;KB</td><td>71,1&nbsp;%</td></tr>
+    <tr><td>Вся страница JPEG&nbsp;40 (для сравнения)</td><td>472&nbsp;KB</td><td>70,4&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p>
+  У текста на экране мало цветов: чернила, синий цвет ссылок, фон и промежуточные ступени сглаживания краёв.
+  Палитра из 32 цветов сохраняет их все; при 16 OCR начинает терять слова. Палитра строится из
+  самых частых цветов с минимальным расстоянием между ними, чтобы 32 оттенка белого не заняли все места.
+  Ещё один шаг без потерь достался бесплатно: слой текста находится слово в слово в содержимом страницы, а это
+  содержимое хранилось несжатым &mdash; 1,73&nbsp;MB на странице Salzburg, 0,28&nbsp;MB при сжатии Deflate.
+</p>
+
+<h2>Два очевидных метода, которые увеличивали файлы или ничего не давали</h2>
+<ul>
+  <li><strong>Построчные предикторы PNG перед Deflate.</strong> Стандартный совет для изображений. На снимках экрана
+      файлы выросли на 4&nbsp;% (Untersberg) и 9&nbsp;% (Salzburg): длинные последовательности одинаковых пикселей сжимаются
+      лучше без них.</li>
+  <li><strong>Палитра для целых плиток.</strong> Плитки с фотографиями содержат до 190 000 цветов;
+      палитра работает только после того, как фото отделены.</li>
+</ul>
+
+<h2>Контроль</h2>
+<ul>
+  <li>Там, где обе версии хранят данные без потерь, отрисованные пиксели идентичны; единственные различия возникали из-за
+      рекламы, менявшейся между снимками.</li>
+  <li>Области с фото по сравнению с оригиналом без потерь (Salzburg, 161 область): медиана PSNR 38,9&nbsp;dB, медиана SSIM
+      0,990; три области ниже 0,95 — всё это мелкие текстуры, которые выглядят одинаково.</li>
+  <li>pdf.js, Poppler, MuPDF и PDFium отображают каждый файл одинаково, с расхождением по странице не более 14 400&nbsp;pt.</li>
+  <li>Тесты проверялись на заведомо сломанной версии: тест обнаружения фото не проходит при пороге в
+      4 цвета, тест сжатия содержимого не проходит при отключённом сжатии.</li>
+</ul>
+
+<h2>Что пока не решено</h2>
+<p>
+  Текст на градиентном фоне &mdash; цветные кнопки, блоки с цветовым переходом &mdash; превышает 48 цветов на
+  ячейку и распознаётся как фотография, поэтому в компактном режиме сохраняется с половинным разрешением и выглядит размытым.
+  Вторая функция разделяет их в симуляции: фотографии везде «беспокойны», а текст на градиенте
+  гладкий, с немногочисленными резкими краями (доля соседних пикселей, различающихся на 3–40: медиана для текста 0,04,
+  для фотографий — намного выше). Пока это не реализовано. Страницам, построенным в основном из таких элементов, до тех пор стоит использовать
+  «Цвет — как на экране».
+</p>
+
+<h2>Данные</h2>
+<p>
+  Все цифры этой страницы: <a href="/data/2026-09-29-compact-pdf-size.json">2026-09-29-compact-pdf-size.json</a>.
+</p>
+</div>
+
+<div data-lang="zh-CN" lang="zh-CN">
+<header>
+  <h1>整页 PDF 在文字受损之前,体积能缩小到多小?</h1>
+  <p class="standfirst">
+    与上一版本相比,我们将整页 PDF 截图的体积削减了 52 至 78&nbsp;%。
+    可搜索的文本层逐字保持不变,OCR 识别率与之前相同,
+    四款 PDF 阅读器渲染出的每个文件都完全一致。真正有效的做法是把文字和照片
+    区别对待。两种看似显而易见的方法反而让文件<em>变大</em>，或毫无收益。
+  </p>
+</header>
+
+<p class="note"><strong>补充（2026年9月29日，版本 2.54.0：自 2026年9月29日起在 addons.mozilla.org 上线）：</strong>文末所述的限制已解决。第二项特征现在把照片与图表、示意图及渐变背景上的文字区分开，后者保持无损；调色板为 64 色，照片保留完整分辨率。在模拟中，图表边缘清晰度从 39–66&nbsp;% 提升到 97–100&nbsp;%。下表为 2.52.0 的数据：2.54.0 的文件大 12% 至 28%，相对 2.49.0 的缩减在 Untersberg 为 72%，在 Salzburg 为 65%。</p>
+
+<h2>结果</h2>
+<table>
+  <thead><tr><th>页面</th><th>之前 (2.49.0)</th><th>紧凑彩色 (2.52.0)</th><th>变化</th></tr></thead>
+  <tbody>
+    <tr><td>维基百科"Untersberg"</td><td>4.68&nbsp;MB</td><td>1.04&nbsp;MB</td><td>&minus;78&nbsp;%</td></tr>
+    <tr><td>维基百科"Salzburg"</td><td>17.65&nbsp;MB</td><td>5.54&nbsp;MB</td><td>&minus;69&nbsp;%</td></tr>
+    <tr><td>MDN,CSS <code>columns</code></td><td>1.46&nbsp;MB</td><td>0.70&nbsp;MB</td><td>&minus;52&nbsp;%</td></tr>
+    <tr><td>Frontiers 文章</td><td>7.28&nbsp;MB*</td><td>3.34&nbsp;MB</td><td>&minus;54&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p class="note">* Frontiers 页面并非用 2.49.0 截取;基准版本是 2.50.0 的"彩色 — 与屏幕一致"模式,该模式已经以无损方式保存文字,并以 JPEG&nbsp;92 保存照片。</p>
+<p>
+  截图使用真实的 Firefox ESR(通过 Marionette 驱动,窗口为 1816&nbsp;&times;&nbsp;1244 个 CSS 像素,
+  设备像素比为&nbsp;1,PDF 内分辨率为 144&nbsp;dpi)。两个版本中,Salzburg 页面的文本层都含有 25,970 个单词和
+  2,120 个链接。对于紧凑文件,Tesseract&nbsp;5 识别出了 Untersberg 页面前
+  1,500&nbsp;pt 中 71.9&nbsp;% 的单词;对于无损文件则识别出 71.5&nbsp;% &mdash; 这里的
+  上限来自 Tesseract 本身,而不是压缩。
+</p>
+
+<h2>为什么按每个图块单独决策是问题所在</h2>
+<p>
+  在 2.49.0 之前,扩展程序会对每个最大 4,000 像素的图块单独做决定:以无损方式(Deflate)存储,
+  或以 JPEG 存储,取两者中较小的一个。因此,一个既含照片又含大量文字的图块,
+  最终要么体积大(照片以无损方式存储),要么变模糊(文字以 JPEG 存储)。在 Untersberg 页面上,30.6&nbsp;%
+  的页面区域是以 JPEG 形式输出的,其中包含文字。
+</p>
+<p>
+  这项修复把两者分开处理。页面被切分为 32&nbsp;&times;&nbsp;32 的单元格;拥有超过
+  48 种不同颜色的单元格被视为照片。文字单元格颜色数的中位数为 9,第 95 百分位为
+  46,而照片则远超一百种颜色。照片单元格按行合并成矩形,
+  并在无损底图之上以 JPEG 存储。Untersberg 页面中 JPEG 所占比例从 30.6&nbsp;% 降至 7.8&nbsp;%
+  &mdash; 如今清晰的文字更多了,而不是更少。
+</p>
+
+<h2>紧凑彩色:每一步的价值</h2>
+<p>在 Untersberg 页面前 4,000 像素的区段上测得:</p>
+<table>
+  <thead><tr><th>方案</th><th>体积</th><th>OCR</th></tr></thead>
+  <tbody>
+    <tr><td>文字无损,照片 JPEG&nbsp;92</td><td>1,202&nbsp;KB</td><td>71.1&nbsp;%</td></tr>
+    <tr><td>照片 JPEG&nbsp;75</td><td>870&nbsp;KB</td><td>71.7&nbsp;%</td></tr>
+    <tr><td>照片 JPEG&nbsp;60、半分辨率</td><td>493&nbsp;KB</td><td>71.5&nbsp;%</td></tr>
+    <tr><td>文字 64 色,照片 JPEG&nbsp;75</td><td>754&nbsp;KB</td><td>71.7&nbsp;%</td></tr>
+    <tr><td><strong>文字 32 色,照片 JPEG&nbsp;60、半分辨率</strong></td><td><strong>372&nbsp;KB</strong></td><td><strong>71.7&nbsp;%</strong></td></tr>
+    <tr><td>文字 16 色,照片 JPEG&nbsp;60、半分辨率</td><td>312&nbsp;KB</td><td>70.0&nbsp;%</td></tr>
+    <tr><td>整页 JPEG&nbsp;60(用于对比)</td><td>575&nbsp;KB</td><td>71.1&nbsp;%</td></tr>
+    <tr><td>整页 JPEG&nbsp;40(用于对比)</td><td>472&nbsp;KB</td><td>70.4&nbsp;%</td></tr>
+  </tbody>
+</table>
+<p>
+  屏幕上的文字颜色很少:墨色、链接的蓝色、背景色,以及两者之间的抗锯齿过渡色阶。
+  32 色的调色板足以保留全部这些颜色;而在 16 色时,OCR 就开始丢失单词。调色板由
+  最常见的颜色按最小间距挑选而成,这样 32 种白色深浅就不会占满所有名额。
+  还免费获得了另一个无损优化:文本层逐字存在于页面内容中,而这部分
+  内容此前是未压缩存储的 &mdash; Salzburg 页面为 1.73&nbsp;MB,使用 Deflate 后为 0.28&nbsp;MB。
+</p>
+
+<h2>两种让文件变大或毫无收益的"显而易见"方法</h2>
+<ul>
+  <li><strong>在 Deflate 之前使用 PNG 行预测器。</strong> 这是针对图像的标准建议。但在屏幕截图中,
+      文件反而增大了 4&nbsp;%(Untersberg)和 9&nbsp;%(Salzburg):大段相同像素在不使用行预测器时
+      压缩效果更好。</li>
+  <li><strong>对整个图块使用调色板。</strong> 含有照片的图块颜色多达 190,000 种;
+      只有把照片分离出去之后,调色板才起作用。</li>
+</ul>
+
+<h2>对照检验</h2>
+<ul>
+  <li>在两个版本都以无损方式存储的地方,渲染出的像素完全相同;唯一的差异来自
+      两次截图之间发生变化的广告内容。</li>
+  <li>照片区域与无损原图的对比(Salzburg,161 个区域):PSNR 中位数为 38.9&nbsp;dB,SSIM 中位数为
+      0.990;有三个区域低于 0.95,均为看起来相同的精细纹理。</li>
+  <li>pdf.js、Poppler、MuPDF 和 PDFium 对每个文件的渲染结果都一致,每页误差都在 14,400&nbsp;pt 以内。</li>
+  <li>测试也在一个人为损坏的版本上做过校验:将阈值设为 4 种颜色时,照片检测测试会失败;
+      关闭压缩后,内容压缩测试也会失败。</li>
+</ul>
+
+<h2>尚未解决的问题</h2>
+<p>
+  渐变背景上的文字 &mdash; 彩色按钮、带有颜色渐变的方框 &mdash; 每个单元格的颜色数会超过 48 种,
+  因而被当作照片处理,在紧凑模式下以半分辨率存储,看起来比较模糊。
+  第二个特征在模拟中可以将两者区分开:照片在各处都显得"躁动",而渐变背景上的文字则
+  平滑,只有少数硬边(相邻像素差值在 3 到 40 之间的比例:文字的中位数为 0.04,
+  照片则高得多)。这项功能尚未上线。在此之前,主要由这类元素构成的页面应当使用
+  "彩色 — 与屏幕一致"模式。
+</p>
+
+<h2>数据</h2>
+<p>
+  本页所有数据:<a href="/data/2026-09-29-compact-pdf-size.json">2026-09-29-compact-pdf-size.json</a>。
+</p>
+</div>
+</div>
+</body>
+</html>

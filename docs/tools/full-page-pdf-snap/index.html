@@ -20,7 +20,7 @@
 <meta property="og:title" content="Full Page PDF Snap">
 <meta property="og:description" content="Save any webpage as a single high-resolution PDF. Runs entirely on your device.">
 <meta property="og:url" content="https://provinglab.dev/tools/full-page-pdf-snap/">
-<meta property="og:image" content="https://provinglab.dev/tools/full-page-pdf-snap/screenshots/01_capture_en.png">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
 <meta name="twitter:card" content="summary_large_image">
 
 <script type="application/ld+json">
@@ -33,7 +33,7 @@
   "applicationSubCategory": "Browser Extension",
   "operatingSystem": "Firefox 109+ (Windows, macOS, Linux), Firefox for Android 127+",
   "browserRequirements": "Firefox 109 or later",
-  "softwareVersion": "2.33.4",
+  "softwareVersion": "2.54.0",
   "url": "https://provinglab.dev/tools/full-page-pdf-snap/",
   "downloadUrl": "https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/",
   "installUrl": "https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/",
@@ -43,7 +43,7 @@
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
   "inLanguage": ["en","de","es","fr","it","ja","pt-BR","ru","zh-Hans"],
   "privacyPolicy": "https://provinglab.dev/privacy.html",
-  "description": "Browser extension that downloads an entire webpage as one seamless high-resolution PDF. Auto-scrolls the whole page — no cropping, no page breaks, no print dialog, no upload. Runs entirely on the device with no network requests, and works on Firefox for Android.",
+  "description": "Browser extension that downloads an entire webpage as one seamless high-resolution PDF. Auto-scrolls the whole page — no cropping, no page breaks, no print dialog, no upload. Runs entirely on the device, makes exactly one network request of its own (a public time anchor), and works on Firefox for Android.",
   "keywords": "download entire webpage as PDF, save whole web page as PDF, download full page PDF, seamless PDF without page breaks, webpage to PDF Firefox, save webpage as PDF on Android, archive transaction history as PDF, capture page behind login, full page screenshot to PDF, gesamte Webseite nahtlos als PDF herunterladen, ganze Webseite als PDF speichern, Webseite komplett herunterladen, Kontoverlauf als PDF archivieren",
   "featureList": [
     "Downloads the entire webpage as one seamless PDF, without page breaks",
@@ -51,8 +51,8 @@
     "Auto-scroll for lazy-loading pages",
     "Resolution scaling from 1.0x to 2.0x",
     "Runs on Firefox for Android",
-    "No network requests, no account, no data collection",
-    "activeTab permission only — no access to all websites"
+    "One network request of its own (a time anchor), no account, no data collection",
+    "Chrome: activeTab permission only. Firefox (since 2.52.0): all-websites access requested at installation, used only during a capture"
   ]
 }
 </script>
@@ -255,8 +255,8 @@
         <div class="card">
           <h3>Firefox — desktop and Android</h3>
           <p>One click opens the installation dialog directly. The file is served and signed by Mozilla, which is what keeps automatic updates working.</p>
-          <p style="margin:14px 0 6px"><a class="btn btn-primary" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Download for Firefox</a></p>
-          <p style="font-size:.85rem">Version 2.33.4 — signed by Mozilla. Prefer the listing? <a href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Open on addons.mozilla.org</a> — same file, plus reviews and permission details.</p>
+          <p style="margin:14px 0 6px"><a class="btn btn-primary" href="https://addons.mozilla.org/firefox/downloads/file/5069865/full_page_pdf_snap_webpagesave-2.54.0.xpi">Download for Firefox</a></p>
+          <p style="font-size:.85rem">Version 2.54.0 — signed by Mozilla. Prefer the listing? <a href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Open on addons.mozilla.org</a> — same file, plus reviews and permission details.</p>
         </div>
         <div class="card">
           <h3>Firefox — without any store</h3>
@@ -285,8 +285,8 @@
         <div class="card">
           <h3>Firefox — Desktop und Android</h3>
           <p>Ein Klick öffnet direkt den Installationsdialog. Die Datei liegt bei Mozilla und ist von dort signiert — dadurch funktionieren die automatischen Updates weiter.</p>
-          <p style="margin:14px 0 6px"><a class="btn btn-primary" href="https://addons.mozilla.org/firefox/downloads/file/4944968/full_page_pdf_snap_webpagesave-2.33.4.xpi">Für Firefox herunterladen</a></p>
-          <p style="font-size:.85rem">Version 2.33.4 — von Mozilla signiert. Lieber über das Verzeichnis? <a href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Auf addons.mozilla.org öffnen</a> — dieselbe Datei, dazu Bewertungen und Berechtigungsdetails.</p>
+          <p style="margin:14px 0 6px"><a class="btn btn-primary" href="https://addons.mozilla.org/firefox/downloads/file/5069865/full_page_pdf_snap_webpagesave-2.54.0.xpi">Für Firefox herunterladen</a></p>
+          <p style="font-size:.85rem">Version 2.54.0 — von Mozilla signiert. Lieber über das Verzeichnis? <a href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Auf addons.mozilla.org öffnen</a> — dieselbe Datei, dazu Bewertungen und Berechtigungsdetails.</p>
         </div>
         <div class="card">
           <h3>Firefox — ganz ohne Store</h3>
@@ -541,7 +541,7 @@ function zeig(n){const [s,c]=SHOTS[n];lbimg.src=s;lbimg.alt=c;lbcap.textContent=
         <tr><td>Watermark</td><td>None, at any resolution.</td></tr>
         <tr><td>Page limit</td><td>None. No daily quota.</td></tr>
         <tr><td>Upload</td><td>None. Processing happens in the browser.</td></tr>
-        <tr><td>Permissions</td><td><code>activeTab, downloads, downloads.open, storage, menus, notifications, scripting</code> — no host permissions.</td></tr>
+        <tr><td>Permissions</td><td><code>activeTab, downloads, downloads.open, storage, menus, notifications, scripting, clipboardWrite</code>. On Chrome, no host permissions. On Firefox, since version 2.52.0, additionally <code>&lt;all_urls&gt;</code>, requested at installation — required for Firefox's one-pass whole-page capture, used only while a capture runs. Details on the <a href="../../privacy.html">privacy policy</a>.</td></tr>
         <tr><td>Languages</td><td>Nine: English, German, Spanish, French, Italian, Portuguese (BR), Russian, Japanese, Chinese (Simplified).</td></tr>
         <tr><td>Licence</td><td>MIT. Submitted files are the source files — no bundler, no minification.</td></tr>
         <tr><td>Platforms</td><td>Firefox 109+ on desktop, Firefox for Android 127+.</td></tr>
@@ -557,7 +557,7 @@ function zeig(n){const [s,c]=SHOTS[n];lbimg.src=s;lbimg.alt=c;lbcap.textContent=
         <tr><td>Wasserzeichen</td><td>Keines, bei keiner Auflösung.</td></tr>
         <tr><td>Seitenlimit</td><td>Keines. Kein Tageskontingent.</td></tr>
         <tr><td>Upload</td><td>Keiner. Die Verarbeitung findet im Browser statt.</td></tr>
-        <tr><td>Berechtigungen</td><td><code>activeTab, downloads, downloads.open, storage, menus, notifications, scripting</code> — keine Host-Berechtigungen.</td></tr>
+        <tr><td>Berechtigungen</td><td><code>activeTab, downloads, downloads.open, storage, menus, notifications, scripting, clipboardWrite</code>. Auf Chrome keine Host-Berechtigungen. Auf Firefox seit Version 2.52.0 zusätzlich <code>&lt;all_urls&gt;</code>, angefragt bei der Installation — nötig für die Einmal-Erfassung der ganzen Seite in Firefox, genutzt nur während einer laufenden Aufnahme. Details in der <a href="../../privacy.html">Datenschutzerklärung</a>.</td></tr>
         <tr><td>Sprachen</td><td>Neun: Deutsch, Englisch, Spanisch, Französisch, Italienisch, Portugiesisch (BR), Russisch, Japanisch, Chinesisch (vereinfacht).</td></tr>
         <tr><td>Lizenz</td><td>MIT. Die eingereichten Dateien sind die Quelldateien — kein Bundler, keine Minifizierung.</td></tr>
         <tr><td>Plattformen</td><td>Firefox 109+ am Desktop, Firefox für Android 127+.</td></tr>
@@ -770,18 +770,18 @@ function zeig(n){const [s,c]=SHOTS[n];lbimg.src=s;lbimg.alt=c;lbcap.textContent=
 <details><summary>How do I download an entire webpage as a PDF?</summary><p>Install the extension, open the page you want, and start a capture — toolbar icon, <code>Alt+Shift+Y</code>, or the right-click menu. It scrolls the whole page from top to bottom, stitches every viewport together and writes one PDF to your download folder. Nothing is uploaded on the way. <a href="#install">Download for Firefox</a> — desktop and Android, or as a signed file without any store.</p></details>
   <details><summary>Can I download a long page seamlessly, without page breaks?</summary><p>Yes — that is the default. Single-page output puts the complete scrolling page on one continuous sheet, with no visible seams between the segments and no page break cutting through a table or a transaction row. Multi-page output stays available for printing, where A4 slices are what you actually want.</p></details>
   <details><summary>Is it really free, or is there a paid tier later?</summary><p>Free, with no paid tier. No ads, no account, no watermark, no page limit, no expiring trial. It is published under the MIT licence, so the source stays available regardless of what happens to the project.</p></details>
-  <details><summary>Does the page get uploaded to a server?</summary><p>No. Capture and PDF assembly happen in the browser. The extension declares no host permissions and makes no network requests. You can verify this yourself: about:debugging → Inspect → Network, then run a capture and watch that nothing appears. The one address in the source is the store's review page, and it opens only if you tap the rating notice — your action, in your browser, like any other link.</p></details>
+  <details><summary>Does the page get uploaded to a server?</summary><p>No. Capture and PDF assembly happen in the browser — nothing of the page is uploaded. The extension makes exactly one network request of its own: before each capture, a time anchor fetches a public random value from the drand network so the capture time can be verified afterwards; nothing about you or the page is sent, on by default since version 2.34.0. On Chrome the extension holds no host permissions; on Firefox, since version 2.52.0, it holds <code>&lt;all_urls&gt;</code>, requested at installation, but its code still only reads the tab you are capturing, while you are capturing it. You can verify this yourself: about:debugging → Inspect → Network, then run a capture and watch what appears — the drand request, and nothing carrying your page's content. The one address in the interface itself is the store's review page, and it opens only if you tap the rating notice — your action, in your browser, like any other link.</p></details>
   <details><summary>Does it work on a phone?</summary><p>Yes, on Firefox for Android 127 and later. Tap the icon and wait for the completion notification — nothing interrupts you while it runs. Tapping the notification opens the result page: a preview of the whole capture, with a download button and a share button side by side for passing the PDF to mail, a messenger or cloud storage. In Firefox the sharing step goes through the system app chooser, because Firefox does not yet hand files to the share sheet directly. The file is in the download folder either way.</p></details>
-  <details><summary>Which permissions does it request, and why?</summary><p>activeTab, downloads, downloads.open, storage, menus, notifications and scripting — and no host permissions. activeTab means it can read a page only while you start a capture on it, unlike extensions that request access to every site you visit.</p></details>
+  <details><summary>Which permissions does it request, and why?</summary><p>activeTab, downloads, downloads.open, storage, menus, notifications, scripting and clipboardWrite. On Chrome, no host permissions: it can read a page only while you start a capture on it. On Firefox, since version 2.52.0, additionally <code>&lt;all_urls&gt;</code>, requested at installation — Firefox only exposes one-pass whole-page capture to extensions holding that permission. The extension's code still only reads the tab you are capturing, and only while you are capturing it; you can switch the permission off again in Firefox's extension settings.</p></details>
   <details><summary>Can I use the PDF as legal evidence?</summary><p>It is not a qualified electronic document: no qualified signature, no trusted timestamp, no chain of custody. It documents what a browser displayed at a moment in time, which is suitable for your own records. Where evidentiary weight matters, use a service built for that purpose.</p></details>
 </div>
 <div data-lang="de" class="faqde" lang="de">
   <details><summary>Wie lade ich eine ganze Webseite als PDF herunter?</summary><p>Erweiterung installieren, die gewünschte Seite öffnen, Aufnahme starten — über das Symbol in der Leiste, mit <code>Alt+Shift+Y</code> oder über das Kontextmenü. Sie scrollt die Seite von oben bis unten durch, fügt alle Ansichten zusammen und schreibt ein PDF in den Download-Ordner. Unterwegs wird nichts hochgeladen. <a href="#install">Für Firefox herunterladen</a> — Desktop und Android, oder als signierte Datei ganz ohne Store.</p></details>
   <details><summary>Lässt sich eine lange Seite nahtlos, ohne Seitenumbrüche herunterladen?</summary><p>Ja, das ist die Voreinstellung. Die Single-Page-Ausgabe legt die komplette scrollbare Seite auf ein einziges durchgehendes Blatt — ohne sichtbare Kanten zwischen den Abschnitten und ohne Seitenumbruch mitten durch eine Tabelle oder eine Transaktionszeile. Die mehrseitige Ausgabe bleibt für den Druck erhalten, wo A4-Abschnitte genau das Richtige sind.</p></details>
   <details><summary>Ist es wirklich kostenlos, oder kommt später eine Bezahlstufe?</summary><p>Kostenlos, ohne Bezahlstufe. Keine Werbung, kein Konto, kein Wasserzeichen, kein Seitenlimit, keine ablaufende Testphase. Veröffentlicht unter der MIT-Lizenz — der Quellcode bleibt verfügbar, unabhängig davon, was mit dem Projekt geschieht.</p></details>
-  <details><summary>Wird die Seite auf einen Server hochgeladen?</summary><p>Nein. Aufnahme und PDF-Erzeugung finden im Browser statt. Die Erweiterung deklariert keine Host-Berechtigungen und stellt keine Netzwerkanfragen. Sie können es selbst prüfen: about:debugging → Untersuchen → Netzwerkanalyse, dann eine Aufnahme starten und beobachten, dass nichts erscheint. Die einzige Adresse im Quelltext ist die Bewertungsseite des Stores, und sie öffnet sich nur, wenn Sie den Bewertungshinweis antippen — auf Ihre Aktion, in Ihrem Browser, wie jeder andere Link.</p></details>
+  <details><summary>Wird die Seite auf einen Server hochgeladen?</summary><p>Nein. Aufnahme und PDF-Erzeugung finden im Browser statt — nichts von der Seite wird hochgeladen. Die Erweiterung stellt genau eine eigene Netzwerkanfrage: Vor jeder Aufnahme holt ein Zeitanker einen öffentlichen Zufallswert vom drand-Netz, damit der Aufnahmezeitpunkt später nachweisbar ist; übermittelt wird nichts von Ihnen oder der Seite, standardmäßig eingeschaltet seit Version 2.34.0. Auf Chrome hält die Erweiterung keine Host-Berechtigungen; auf Firefox seit Version 2.52.0 <code>&lt;all_urls&gt;</code>, angefragt bei der Installation — ihr Code liest aber weiterhin nur den Tab, den Sie gerade aufnehmen, und nur während Sie ihn aufnehmen. Sie können es selbst prüfen: about:debugging → Untersuchen → Netzwerkanalyse, dann eine Aufnahme starten und beobachten, was erscheint — die drand-Anfrage, und nichts mit Inhalt Ihrer Seite. Die einzige Adresse in der Oberfläche selbst ist die Bewertungsseite des Stores, und sie öffnet sich nur, wenn Sie den Bewertungshinweis antippen — auf Ihre Aktion, in Ihrem Browser, wie jeder andere Link.</p></details>
   <details><summary>Funktioniert es am Telefon?</summary><p>Ja, auf Firefox für Android ab Version 127. Symbol antippen und die Fertig-Meldung abwarten — währenddessen unterbricht nichts. Ein Tippen auf die Meldung öffnet die Ergebnisseite: eine Vorschau der gesamten Aufnahme, darüber nebeneinander ein Knopf zum Herunterladen und einer zum Weiterleiten an Mail, Messenger oder Cloud-Speicher. In Firefox läuft das Weiterleiten über die App-Auswahl des Systems, weil Firefox Dateien noch nicht direkt an das Teilen-Menü übergibt. Im Download-Ordner liegt die Datei ohnehin.</p></details>
-  <details><summary>Welche Berechtigungen verlangt es, und wofür?</summary><p>activeTab, downloads, downloads.open, storage, menus, notifications und scripting — keine Host-Berechtigungen. activeTab bedeutet: Die Erweiterung kann eine Seite nur lesen, während Sie dort eine Aufnahme starten. Anders als Erweiterungen, die Zugriff auf jede besuchte Seite verlangen.</p></details>
+  <details><summary>Welche Berechtigungen verlangt es, und wofür?</summary><p>activeTab, downloads, downloads.open, storage, menus, notifications, scripting und clipboardWrite. Auf Chrome keine Host-Berechtigungen: Die Erweiterung kann eine Seite nur lesen, während Sie dort eine Aufnahme starten. Auf Firefox seit Version 2.52.0 zusätzlich <code>&lt;all_urls&gt;</code>, angefragt bei der Installation — Firefox gibt die Einmal-Erfassung der ganzen Seite nur Erweiterungen mit dieser Berechtigung frei. Der Code der Erweiterung liest weiterhin nur den Tab, den Sie gerade aufnehmen, und nur während der Aufnahme; Sie können die Berechtigung in den Firefox-Erweiterungseinstellungen wieder abschalten.</p></details>
   <details><summary>Kann ich das PDF als Beweismittel verwenden?</summary><p>Es ist kein qualifiziertes elektronisches Dokument: keine qualifizierte Signatur, kein vertrauenswürdiger Zeitstempel, keine lückenlose Nachweiskette. Es dokumentiert, was ein Browser zu einem Zeitpunkt angezeigt hat — geeignet für die eigenen Unterlagen. Wo es auf Beweiskraft ankommt, gehört ein dafür gebauter Dienst eingesetzt.</p></details>
 </div>
 </div>
@@ -821,7 +821,7 @@ function zeig(n){const [s,c]=SHOTS[n];lbimg.src=s;lbimg.alt=c;lbcap.textContent=
    "name": "Does the page get uploaded to a server?",
    "acceptedAnswer": {
     "@type": "Answer",
-    "text": "No. Capture and PDF assembly happen in the browser. The extension declares no host permissions and makes no network requests. You can verify this yourself: about:debugging → Inspect → Network, then run a capture and watch that nothing appears. The one address in the source is the store's review page, and it opens only if you tap the rating notice — your action, in your browser, like any other link."
+    "text": "No. Capture and PDF assembly happen in the browser — nothing of the page is uploaded. The extension makes exactly one network request of its own, a time anchor from the public drand network, on by default since version 2.34.0; nothing about you or the page is sent. On Chrome the extension holds no host permissions; on Firefox, since version 2.52.0, it holds <all_urls>, requested at installation, but its code still only reads the tab you are capturing, while you are capturing it. You can verify this yourself: about:debugging → Inspect → Network, then run a capture and watch what appears — the drand request, and nothing carrying your page's content."
    }
   },
   {
@@ -837,7 +837,7 @@ function zeig(n){const [s,c]=SHOTS[n];lbimg.src=s;lbimg.alt=c;lbcap.textContent=
    "name": "Which permissions does it request, and why?",
    "acceptedAnswer": {
     "@type": "Answer",
-    "text": "activeTab, downloads, downloads.open, storage, menus, notifications and scripting — and no host permissions. activeTab means it can read a page only while you start a capture on it, unlike extensions that request access to every site you visit."
+    "text": "activeTab, downloads, downloads.open, storage, menus, notifications, scripting and clipboardWrite. On Chrome, no host permissions: it can read a page only while you start a capture on it. On Firefox, since version 2.52.0, additionally <all_urls>, requested at installation — Firefox only exposes one-pass whole-page capture to extensions holding that permission. The extension's code still only reads the tab you are capturing, and only while you are capturing it; the permission can be switched off again in Firefox's extension settings."
    }
   },
   {

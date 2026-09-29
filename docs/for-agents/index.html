@@ -61,7 +61,8 @@
     "@type": "Organization",
     "name": "Proving Lab",
     "url": "https://provinglab.dev/"
-  }
+  },
+  "keywords": "MCP server, AI agents, citation endpoint, extract_citation, RIS, BibTeX, headless install, browser extension"
 }
 </script>
 <script type="application/ld+json">
@@ -290,6 +291,18 @@
   <strong>0 to 1</strong> after a synthetic <code>Alt+Shift+Y</code> sent through
   X11 XTEST. The browser does not ask who produced the gesture.
 </p>
+<div class="box">
+  <p><strong>Update, 29 September 2026:</strong> that finding describes the
+  Chrome/Chromium build, and the Firefox build before version 2.52.0, when
+  Firefox held no host permissions either. Since 2.52.0, the Firefox build
+  additionally declares <code>&lt;all_urls&gt;</code>, requested at
+  installation rather than after a gesture — Firefox only exposes
+  single-pass whole-page capture to extensions holding it. Whether that also
+  changes what <code>tabs.query()</code> returns to a CDP-only driver before
+  any gesture has not been re-measured since 2.52.0 — do not assume the
+  table below still holds unmodified for the current Firefox build. The
+  Chrome/Chromium build is unaffected.</p>
+</div>
 <table>
   <thead><tr><th scope="col">Your agent acts through</th><th scope="col">Can trigger it</th></tr></thead>
   <tbody>
@@ -528,6 +541,18 @@
   ein synthetisches <code>Alt+Shift+Y</code> durch X11 XTEST gesendet wurde.
   Der Browser fragt nicht, wer die Geste erzeugt hat.
 </p>
+<div class="box">
+  <p><strong>Update, 29. September 2026:</strong> Dieser Befund beschreibt die
+  Chrome/Chromium-Fassung sowie die Firefox-Fassung vor Version 2.52.0, als
+  Firefox ebenfalls keine Host-Berechtigungen hielt. Seit 2.52.0 deklariert die
+  Firefox-Fassung zusätzlich <code>&lt;all_urls&gt;</code>, angefragt bei der
+  Installation statt nach einer Geste — Firefox gibt die Einmal-Erfassung der
+  ganzen Seite nur Erweiterungen mit dieser Berechtigung frei. Ob sich dadurch
+  auch ändert, was <code>tabs.query()</code> einem reinen CDP-Treiber vor einer
+  Geste liefert, wurde seit 2.52.0 nicht erneut gemessen — die Tabelle unten
+  sollte für die aktuelle Firefox-Fassung nicht ungeprüft übernommen werden.
+  Die Chrome/Chromium-Fassung ist davon nicht betroffen.</p>
+</div>
 <table>
   <thead><tr><th scope="col">Ihr Agent wirkt durch</th><th scope="col">Kann sie auslösen</th></tr></thead>
   <tbody>
@@ -770,6 +795,19 @@
   <code>Alt+Shift+Y</code> sintético enviado por X11 XTEST. El navegador no
   pregunta quién produjo el gesto.
 </p>
+<div class="box">
+  <p><strong>Actualización, 29 de septiembre de 2026:</strong> ese hallazgo
+  describe la versión Chrome/Chromium, y la versión Firefox anterior a la
+  2.52.0, cuando Firefox tampoco tenía permisos de host. Desde la 2.52.0, la
+  versión Firefox declara además <code>&lt;all_urls&gt;</code>, solicitado al
+  instalarla en lugar de tras un gesto — Firefox solo expone la captura de
+  página completa en un solo paso a las extensiones que lo tienen. No se ha
+  vuelto a medir desde la 2.52.0 si eso también cambia lo que
+  <code>tabs.query()</code> devuelve a un controlador solo-CDP antes de
+  cualquier gesto — no asumas que la tabla siguiente sigue siendo válida sin
+  cambios para la versión Firefox actual. La versión Chrome/Chromium no se ve
+  afectada.</p>
+</div>
 <table>
   <thead><tr><th scope="col">Tu agente actúa a través de</th><th scope="col">Puede dispararla</th></tr></thead>
   <tbody>
@@ -1009,6 +1047,19 @@
   <code>Alt+Shift+Y</code> synthétique envoyé via X11 XTEST. Le navigateur ne
   demande pas qui a produit le geste.
 </p>
+<div class="box">
+  <p><strong>Mise à jour, 29 septembre 2026 :</strong> ce constat décrit la
+  version Chrome/Chromium, et la version Firefox antérieure à la 2.52.0,
+  quand Firefox ne détenait pas non plus de permission d'hôte. Depuis la
+  2.52.0, la version Firefox déclare en plus <code>&lt;all_urls&gt;</code>,
+  demandé à l'installation plutôt qu'après un geste — Firefox ne réserve la
+  capture en un seul passage qu'aux extensions qui la détiennent. La question
+  de savoir si cela change aussi ce que <code>tabs.query()</code> renvoie à un
+  pilote purement CDP avant tout geste n'a pas été remesurée depuis la
+  2.52.0 — ne considérez pas le tableau ci-dessous comme valable sans
+  changement pour la version Firefox actuelle. La version Chrome/Chromium
+  n'est pas concernée.</p>
+</div>
 <table>
   <thead><tr><th scope="col">Votre agent agit par</th><th scope="col">Peut la déclencher</th></tr></thead>
   <tbody>
@@ -1250,6 +1301,18 @@
   <code>Alt+Shift+Y</code> sintetico inviato tramite X11 XTEST. Il browser non
   chiede chi ha prodotto il gesto.
 </p>
+<div class="box">
+  <p><strong>Aggiornamento, 29 settembre 2026:</strong> questo risultato
+  descrive la versione Chrome/Chromium, e la versione Firefox precedente alla
+  2.52.0, quando anche Firefox non aveva permessi host. Dalla 2.52.0, la
+  versione Firefox dichiara in più <code>&lt;all_urls&gt;</code>, richiesto
+  all'installazione invece che dopo un gesto — Firefox riserva la cattura in
+  un solo passaggio solo alle estensioni che lo possiedono. Se questo cambi
+  anche ciò che <code>tabs.query()</code> restituisce a un driver solo-CDP
+  prima di qualunque gesto non è stato rimisurato dalla 2.52.0 — non dare per
+  scontato che la tabella sotto valga ancora invariata per l'attuale versione
+  Firefox. La versione Chrome/Chromium non è interessata.</p>
+</div>
 <table>
   <thead><tr><th scope="col">Il tuo agente agisce tramite</th><th scope="col">Può attivarla</th></tr></thead>
   <tbody>
@@ -1486,6 +1549,17 @@
   <code>Alt+Shift+Y</code> を送ったあと、認識できるタブは <strong>0 から 1</strong>
   になりました。ブラウザは、そのジェスチャを誰が作ったか尋ねません。
 </p>
+<div class="box">
+  <p><strong>更新、2026年9月29日:</strong> この結果は Chrome/Chromium 版、
+  および 2.52.0 より前の Firefox 版(当時は Firefox もホスト権限を持って
+  いませんでした)についてのものです。2.52.0 以降、Firefox 版はジェスチャの
+  後ではなくインストール時に要求される <code>&lt;all_urls&gt;</code> を追加で
+  宣言します — Firefox はワンパスの全ページキャプチャをこの権限を持つ拡張機能
+  にしか許可しません。これによって CDP のみのドライバがジェスチャなしで
+  <code>tabs.query()</code> から受け取る結果が変わるかどうかは 2.52.0 以降
+  再測定されていません — 下の表を現在の Firefox 版にそのまま当てはめないで
+  ください。Chrome/Chromium 版はこの変更の影響を受けません。</p>
+</div>
 <table>
   <thead><tr><th scope="col">エージェントの動作経路</th><th scope="col">起動できるか</th></tr></thead>
   <tbody>
@@ -1722,6 +1796,18 @@
   sintético enviado via X11 XTEST. O navegador não pergunta quem produziu o
   gesto.
 </p>
+<div class="box">
+  <p><strong>Atualização, 29 de setembro de 2026:</strong> essa constatação
+  descreve a versão Chrome/Chromium, e a versão Firefox anterior à 2.52.0,
+  quando o Firefox também não tinha permissões de host. Desde a 2.52.0, a
+  versão Firefox declara adicionalmente <code>&lt;all_urls&gt;</code>,
+  solicitado na instalação em vez de após um gesto — o Firefox só libera a
+  captura de página inteira em uma única passada para extensões que a
+  possuem. Se isso também muda o que <code>tabs.query()</code> retorna a um
+  driver somente-CDP antes de qualquer gesto não foi remedido desde a 2.52.0
+  — não presuma que a tabela abaixo ainda vale sem alteração para a versão
+  Firefox atual. A versão Chrome/Chromium não é afetada.</p>
+</div>
 <table>
   <thead><tr><th scope="col">Seu agente atua através de</th><th scope="col">Consegue dispará-la</th></tr></thead>
   <tbody>
@@ -1958,6 +2044,18 @@
   выросли с <strong>0 до 1</strong> после синтетического <code>Alt+Shift+Y</code>,
   отправленного через X11 XTEST. Браузер не спрашивает, кто произвёл жест.
 </p>
+<div class="box">
+  <p><strong>Обновление, 29 сентября 2026:</strong> этот результат описывает
+  сборку Chrome/Chromium и сборку Firefox до версии 2.52.0, когда Firefox
+  тоже не имел host-разрешений. С версии 2.52.0 сборка Firefox дополнительно
+  декларирует <code>&lt;all_urls&gt;</code>, запрашиваемое при установке, а
+  не после жеста — Firefox открывает однопроходный захват всей страницы
+  только расширениям с этим разрешением. Меняет ли это также то, что
+  <code>tabs.query()</code> возвращает драйверу, работающему только через
+  CDP, до какого-либо жеста, с версии 2.52.0 не перепроверялось — не
+  считайте таблицу ниже по-прежнему верной без изменений для текущей сборки
+  Firefox. Сборка Chrome/Chromium этим не затронута.</p>
+</div>
 <table>
   <thead><tr><th scope="col">Ваш агент действует через</th><th scope="col">Может её вызвать</th></tr></thead>
   <tbody>
@@ -2185,6 +2283,16 @@
   通过 X11 XTEST 发送合成的 <code>Alt+Shift+Y</code> 之后,它能看到的标签页
   从 <strong>0 变成了 1</strong>。浏览器不会问这个动作是谁产生的。
 </p>
+<div class="box">
+  <p><strong>更新,2026 年 9 月 29 日:</strong>该结果描述的是 Chrome/Chromium
+  版本,以及 2.52.0 之前的 Firefox 版本——当时 Firefox 同样没有主机权限。
+  自 2.52.0 起,Firefox 版本额外声明 <code>&lt;all_urls&gt;</code>,在安装时
+  即被请求,而非在手势之后——Firefox 只把一次性整页截取开放给持有该权限的
+  扩展。这是否也改变了 <code>tabs.query()</code> 在没有任何手势的情况下
+  向仅使用 CDP 的驱动返回的内容,自 2.52.0 以来尚未重新测量——不要想当然地
+  认为下表对当前的 Firefox 版本仍然完全适用。Chrome/Chromium 版本不受此
+  影响。</p>
+</div>
 <table>
   <thead><tr><th scope="col">你的代理通过什么行动</th><th scope="col">能否触发</th></tr></thead>
   <tbody>

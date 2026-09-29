@@ -65,15 +65,14 @@
   li[data-lang].on{display:list-item}
   span[data-lang].on,a[data-lang].on{display:inline}
 </style>
-<script type="application/ld+json">
-{
+<script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "Tools built at Proving Lab",
   "description": "Software built here and measured here under the same rules as everything else, including where it loses against an alternative.",
   "url": "https://provinglab.dev/tools/",
   "itemListOrder": "https://schema.org/ItemListUnordered",
-  "numberOfItems": 2,
+  "numberOfItems": 3,
   "itemListElement": [
     {
       "@type": "ListItem",
@@ -132,8 +131,7 @@
     }
   ],
   "keywords": "tools, browser extension, webpage to PDF, citation endpoint, MCP server"
-}
-</script>
+}</script>
 <script src="/agent-tools.js" defer></script>
 <script src="/site-lang.js" defer></script>
 </head>
@@ -162,8 +160,8 @@
 </header>
 <div class="item">
   <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
-  <p>Downloads an entire webpage as one seamless PDF — the complete scrolling page on a single continuous sheet, no page breaks, nothing cropped. Runs entirely on the device: no upload, no account, no data collection, and <code>activeTab</code> instead of access to every site you visit. Works in Firefox on desktop and Android, and in Chrome.</p>
-  <div class="figures"><span><b>92.6&nbsp;%</b> of text survives OCR</span><span><b>0</b> network requests</span><span><b>MIT</b> licence</span></div>
+  <p>Downloads an entire webpage as one seamless PDF — the complete scrolling page on a single continuous sheet, no page breaks, nothing cropped. Runs entirely on the device: no upload, no account, no data collection. On Chrome it asks only for the current tab (<code>activeTab</code>); on Firefox, since version 2.52.0, it asks for access to all websites at installation — needed for Firefox's one-pass whole-page capture. Works in Firefox on desktop and Android, and in Chrome.</p>
+  <div class="figures"><span><b>92.6&nbsp;%</b> of text survives OCR</span><span><b>1</b> network request (time anchor)</span><span><b>MIT</b> licence</span></div>
   <div class="holen">
     <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download for Firefox</a>
     <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Without any store</a>
@@ -210,8 +208,8 @@
 </header>
 <div class="item">
   <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
-  <p>Lädt eine ganze Webseite als ein nahtloses PDF herunter — die komplette scrollende Seite auf einem einzigen fortlaufenden Blatt, keine Seitenumbrüche, nichts abgeschnitten. Läuft vollständig auf dem Gerät: kein Upload, kein Konto, keine Datenerhebung, und <code>activeTab</code> statt Zugriff auf jede besuchte Seite. Funktioniert in Firefox auf Desktop und Android sowie in Chrome.</p>
-  <div class="figures"><span><b>92,6&nbsp;%</b> des Textes überlebt OCR</span><span><b>0</b> Netzwerkanfragen</span><span><b>MIT</b>-Lizenz</span></div>
+  <p>Lädt eine ganze Webseite als ein nahtloses PDF herunter — die komplette scrollende Seite auf einem einzigen fortlaufenden Blatt, keine Seitenumbrüche, nichts abgeschnitten. Läuft vollständig auf dem Gerät: kein Upload, kein Konto, keine Datenerhebung. Auf Chrome fragt sie nur nach dem aktuellen Tab (<code>activeTab</code>); auf Firefox fragt sie seit Version 2.52.0 bei der Installation nach Zugriff auf alle Websites — nötig für die Einmal-Erfassung der ganzen Seite in Firefox. Funktioniert in Firefox auf Desktop und Android sowie in Chrome.</p>
+  <div class="figures"><span><b>92,6&nbsp;%</b> des Textes überlebt OCR</span><span><b>1</b> Netzwerkanfrage (Zeitanker)</span><span><b>MIT</b>-Lizenz</span></div>
   <div class="holen">
     <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Für Firefox herunterladen</a>
     <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Ganz ohne Store</a>
@@ -258,8 +256,8 @@
 </header>
 <div class="item">
   <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
-  <p>Descarga una página web entera como un PDF sin costuras — toda la página desplazable en una sola hoja continua, sin saltos de página, nada recortado. Funciona enteramente en el dispositivo: sin subidas, sin cuenta, sin recolección de datos, y <code>activeTab</code> en lugar de acceso a cada sitio que visitas. Funciona en Firefox en escritorio y Android, y en Chrome.</p>
-  <div class="figures"><span>el <b>92,6&nbsp;%</b> del texto sobrevive al OCR</span><span><b>0</b> peticiones de red</span><span>licencia <b>MIT</b></span></div>
+  <p>Descarga una página web entera como un PDF sin costuras — toda la página desplazable en una sola hoja continua, sin saltos de página, nada recortado. Funciona enteramente en el dispositivo: sin subidas, sin cuenta, sin recolección de datos. En Chrome solo pide la pestaña actual (<code>activeTab</code>); en Firefox, desde la versión 2.52.0, pide acceso a todos los sitios al instalarla — necesario para la captura de página completa en un solo paso de Firefox. Funciona en Firefox en escritorio y Android, y en Chrome.</p>
+  <div class="figures"><span>el <b>92,6&nbsp;%</b> del texto sobrevive al OCR</span><span><b>1</b> petición de red (ancla de tiempo)</span><span>licencia <b>MIT</b></span></div>
   <div class="holen">
     <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Descargar para Firefox</a>
     <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Sin ninguna tienda</a>
@@ -306,8 +304,8 @@
 </header>
 <div class="item">
   <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
-  <p>Télécharge une page web entière en un PDF sans couture — toute la page défilante sur une seule feuille continue, sans sauts de page, rien de rogné. Tourne entièrement sur l'appareil : aucun téléversement, aucun compte, aucune collecte de données, et <code>activeTab</code> plutôt qu'un accès à chaque site visité. Fonctionne dans Firefox sur bureau et Android, et dans Chrome.</p>
-  <div class="figures"><span><b>92,6&nbsp;%</b> du texte survit à l'OCR</span><span><b>0</b> requête réseau</span><span>licence <b>MIT</b></span></div>
+  <p>Télécharge une page web entière en un PDF sans couture — toute la page défilante sur une seule feuille continue, sans sauts de page, rien de rogné. Tourne entièrement sur l'appareil : aucun téléversement, aucun compte, aucune collecte de données. Sur Chrome, elle ne demande que l'onglet actif (<code>activeTab</code>) ; sur Firefox, depuis la version 2.52.0, elle demande l'accès à tous les sites dès l'installation — nécessaire pour la capture en un seul passage de Firefox. Fonctionne dans Firefox sur bureau et Android, et dans Chrome.</p>
+  <div class="figures"><span><b>92,6&nbsp;%</b> du texte survit à l'OCR</span><span><b>1</b> requête réseau (ancre temporelle)</span><span>licence <b>MIT</b></span></div>
   <div class="holen">
     <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Télécharger pour Firefox</a>
     <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Sans aucune boutique</a>
@@ -354,8 +352,8 @@
 </header>
 <div class="item">
   <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
-  <p>Scarica un'intera pagina web come un PDF senza cuciture — tutta la pagina scorrevole su un unico foglio continuo, senza interruzioni di pagina, niente di ritagliato. Funziona interamente sul dispositivo: nessun caricamento, nessun account, nessuna raccolta dati, e <code>activeTab</code> invece dell'accesso a ogni sito visitato. Funziona in Firefox su desktop e Android, e in Chrome.</p>
-  <div class="figures"><span>il <b>92,6&nbsp;%</b> del testo sopravvive all'OCR</span><span><b>0</b> richieste di rete</span><span>licenza <b>MIT</b></span></div>
+  <p>Scarica un'intera pagina web come un PDF senza cuciture — tutta la pagina scorrevole su un unico foglio continuo, senza interruzioni di pagina, niente di ritagliato. Funziona interamente sul dispositivo: nessun caricamento, nessun account, nessuna raccolta dati. Su Chrome chiede solo la scheda attiva (<code>activeTab</code>); su Firefox, dalla versione 2.52.0, chiede l'accesso a tutti i siti all'installazione — necessario per la cattura in un solo passaggio di Firefox. Funziona in Firefox su desktop e Android, e in Chrome.</p>
+  <div class="figures"><span>il <b>92,6&nbsp;%</b> del testo sopravvive all'OCR</span><span><b>1</b> richiesta di rete (ancora temporale)</span><span>licenza <b>MIT</b></span></div>
   <div class="holen">
     <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Scarica per Firefox</a>
     <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Senza alcuno store</a>
@@ -402,8 +400,8 @@
 </header>
 <div class="item">
   <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
-  <p>ウェブページ全体を継ぎ目のない1つの PDF としてダウンロードします — スクロールするページ全体が1枚の連続したシートに。改ページなし、切り取りなし。完全にデバイス上で動作: アップロードなし、アカウントなし、データ収集なし、訪問するすべてのサイトへのアクセスではなく <code>activeTab</code>。デスクトップと Android の Firefox、および Chrome で動作します。</p>
-  <div class="figures"><span>テキストの <b>92.6&nbsp;%</b> が OCR を通過</span><span>ネットワークリクエスト <b>0</b></span><span><b>MIT</b> ライセンス</span></div>
+  <p>ウェブページ全体を継ぎ目のない1つの PDF としてダウンロードします — スクロールするページ全体が1枚の連続したシートに。改ページなし、切り取りなし。完全にデバイス上で動作: アップロードなし、アカウントなし、データ収集なし。Chrome では現在のタブのみ(<code>activeTab</code>)を要求し、Firefox ではバージョン 2.52.0 以降、インストール時にすべてのサイトへのアクセスを要求します — Firefox のワンパス全ページキャプチャに必要なためです。デスクトップと Android の Firefox、および Chrome で動作します。</p>
+  <div class="figures"><span>テキストの <b>92.6&nbsp;%</b> が OCR を通過</span><span>ネットワークリクエスト <b>1</b>回(タイムアンカー)</span><span><b>MIT</b> ライセンス</span></div>
   <div class="holen">
     <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Firefox 版をダウンロード</a>
     <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">ストアを使わない方法</a>
@@ -450,8 +448,8 @@
 </header>
 <div class="item">
   <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
-  <p>Baixa uma página da web inteira como um PDF sem emendas — toda a página rolável numa única folha contínua, sem quebras de página, nada cortado. Roda inteiramente no dispositivo: sem upload, sem conta, sem coleta de dados, e <code>activeTab</code> em vez de acesso a cada site visitado. Funciona no Firefox no desktop e no Android, e no Chrome.</p>
-  <div class="figures"><span><b>92,6&nbsp;%</b> do texto sobrevive ao OCR</span><span><b>0</b> requisições de rede</span><span>licença <b>MIT</b></span></div>
+  <p>Baixa uma página da web inteira como um PDF sem emendas — toda a página rolável numa única folha contínua, sem quebras de página, nada cortado. Roda inteiramente no dispositivo: sem upload, sem conta, sem coleta de dados. No Chrome pede apenas a aba atual (<code>activeTab</code>); no Firefox, desde a versão 2.52.0, pede acesso a todos os sites na instalação — necessário para a captura de página inteira em uma única passada do Firefox. Funciona no Firefox no desktop e no Android, e no Chrome.</p>
+  <div class="figures"><span><b>92,6&nbsp;%</b> do texto sobrevive ao OCR</span><span><b>1</b> requisição de rede (âncora de tempo)</span><span>licença <b>MIT</b></span></div>
   <div class="holen">
     <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Baixar para Firefox</a>
     <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Sem nenhuma loja</a>
@@ -498,8 +496,8 @@
 </header>
 <div class="item">
   <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
-  <p>Скачивает веб-страницу целиком одним бесшовным PDF — вся прокручиваемая страница на одном непрерывном листе, без разрывов страниц, без обрезки. Работает полностью на устройстве: без выгрузки, без учётной записи, без сбора данных, и <code>activeTab</code> вместо доступа к каждому посещаемому сайту. Работает в Firefox на компьютере и Android, и в Chrome.</p>
-  <div class="figures"><span><b>92,6&nbsp;%</b> текста переживает OCR</span><span><b>0</b> сетевых запросов</span><span>лицензия <b>MIT</b></span></div>
+  <p>Скачивает веб-страницу целиком одним бесшовным PDF — вся прокручиваемая страница на одном непрерывном листе, без разрывов страниц, без обрезки. Работает полностью на устройстве: без выгрузки, без учётной записи, без сбора данных. В Chrome запрашивается только текущая вкладка (<code>activeTab</code>); в Firefox с версии 2.52.0 доступ ко всем сайтам запрашивается при установке — это нужно для однопроходного захвата всей страницы в Firefox. Работает в Firefox на компьютере и Android, и в Chrome.</p>
+  <div class="figures"><span><b>92,6&nbsp;%</b> текста переживает OCR</span><span><b>1</b> сетевой запрос (временной якорь)</span><span>лицензия <b>MIT</b></span></div>
   <div class="holen">
     <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Скачать для Firefox</a>
     <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">Совсем без магазина</a>
@@ -546,8 +544,8 @@
 </header>
 <div class="item">
   <h2><a href="full-page-pdf-snap/">Full Page PDF Snap</a></h2>
-  <p>把整个网页下载为一份无缝 PDF——整个可滚动页面在一张连续的纸上,无分页符、无裁切。完全在设备上运行:无上传、无账户、无数据收集,只请求 <code>activeTab</code> 而非访问你浏览的每个网站。支持桌面端和 Android 的 Firefox,以及 Chrome。</p>
-  <div class="figures"><span><b>92.6&nbsp;%</b> 的文本通过 OCR</span><span>网络请求 <b>0</b></span><span><b>MIT</b> 许可</span></div>
+  <p>把整个网页下载为一份无缝 PDF——整个可滚动页面在一张连续的纸上,无分页符、无裁切。完全在设备上运行:无上传、无账户、无数据收集。在 Chrome 上仅请求当前标签页(<code>activeTab</code>);在 Firefox 上,自 2.52.0 版起,安装时即请求访问所有网站——这是 Firefox 一次性整页截取所需的权限。支持桌面端和 Android 的 Firefox,以及 Chrome。</p>
+  <div class="figures"><span><b>92.6&nbsp;%</b> 的文本通过 OCR</span><span>网络请求 <b>1</b> 次(时间锚点)</span><span><b>MIT</b> 许可</span></div>
   <div class="holen">
     <a class="erst" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">下载 Firefox 版</a>
     <a href="https://github.com/Bubu89/full-page-pdf-snap/releases/latest">完全不经过商店</a>
