@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://provinglab.dev/</loc>
-    <lastmod>2026-08-16</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -20,19 +20,19 @@
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/</loc>
-    <lastmod>2026-09-07</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/notes/</loc>
-    <lastmod>2026-08-18</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/tools/</loc>
-    <lastmod>2026-08-16</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -80,13 +80,13 @@
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/extension-permissions-risk/</loc>
-    <lastmod>2026-08-16</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/full-page-pdf-size-without-losing-text/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -104,7 +104,7 @@
   </url>
   <url>
     <loc>https://provinglab.dev/measurements/pdf-extension-permissions/</loc>
-    <lastmod>2026-08-16</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -134,7 +134,7 @@
   </url>
   <url>
     <loc>https://provinglab.dev/notes/a-download-that-never-arrives/</loc>
-    <lastmod>2026-08-18</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -188,13 +188,13 @@
   </url>
   <url>
     <loc>https://provinglab.dev/notes/what-an-agent-can-do-with-an-extension/</loc>
-    <lastmod>2026-08-16</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/notes/what-an-agent-may-install/</loc>
-    <lastmod>2026-08-16</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -212,19 +212,19 @@
   </url>
   <url>
     <loc>https://provinglab.dev/for-agents/</loc>
-    <lastmod>2026-08-16</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/how-to/</loc>
-    <lastmod>2026-08-16</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://provinglab.dev/how-to/firefox-and-chrome/</loc>
-    <lastmod>2026-09-07</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -266,7 +266,7 @@
   </url>
   <url>
     <loc>https://provinglab.dev/privacy.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
