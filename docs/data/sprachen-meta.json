@@ -227,6 +227,44 @@
       "description": "一个把 URL 变成引用记录的端点,一份说明何时使用它的技能索引,以及一条针对 它无法完成之情况的实测规则。无需账户,无需密钥。如果你正在接入一个处理 来源的代理,这个页面就是整个界面。"
     }
   },
+  "/how-to/abrufdatum-literaturverzeichnis/": {
+    "en": {
+      "title": "Retrieval date and bibliography: citing web sources, measured rather than asserted",
+      "description": "Why a reference list carries a retrieval date, how much a tool takes off your hands when you build the bibliography, and where it hands the work back …"
+    },
+    "de": {
+      "title": "Abrufdatum und Literaturverzeichnis: Internetquellen zitieren, gemessen statt behauptet",
+      "description": "Wozu das Abrufdatum im Literaturverzeichnis steht, wie viel ein Werkzeug beim Erstellen des Literaturverzeichnisses abnimmt und an welcher Stelle es die Arbeit …"
+    },
+    "es": {
+      "title": "Fecha de consulta y bibliografía: citar fuentes web, medido en lugar de afirmado",
+      "description": "Para qué sirve la fecha de consulta en la bibliografía, cuánto trabajo le quita una herramienta al elaborarla y en qué punto se lo devuelve — resumido a partir …"
+    },
+    "fr": {
+      "title": "Date de consultation et bibliographie : citer des sources web, mesuré plutôt qu’affirmé",
+      "description": "À quoi sert la date de consultation dans la bibliographie, quelle part du travail un outil prend en charge pour la constituer et à quel moment il vous le rend …"
+    },
+    "it": {
+      "title": "Data di consultazione e bibliografia: citare fonti web, misurato invece che affermato",
+      "description": "A che cosa serve la data di consultazione in bibliografia, quanto lavoro uno strumento toglie nel compilarla e in quale punto lo restituisce a voi — riassunto …"
+    },
+    "ja": {
+      "title": "参照日と参考文献リスト：ウェブ資料の引用を、主張ではなく測定で",
+      "description": "参考文献リストに参照日（ドイツ語で Abrufdatum）を書く理由、文献リスト作りでツールがどこまで肩代わりし、どこで作業をあなたに返すのか ― 本サイトの引用に関する測定をまとめました。すべての数値に日付があり、元データにリンクしています。"
+    },
+    "pt-BR": {
+      "title": "Data de acesso e bibliografia: citar fontes da web, medido em vez de afirmado",
+      "description": "Para que serve a data de acesso na bibliografia, quanto trabalho uma ferramenta tira das suas mãos ao montá-la e em que ponto o devolve — resumido das medições …"
+    },
+    "ru": {
+      "title": "Дата обращения и список литературы: как цитировать веб-источники — измерено, а не заявлено",
+      "description": "Зачем в списке литературы стоит дата обращения, какую часть работы над списком берёт на себя инструмент и в какой момент он возвращает её вам — по материалам …"
+    },
+    "zh-CN": {
+      "title": "访问日期与参考文献：引用网络来源，靠测量而非断言",
+      "description": "为什么参考文献里要写访问日期（德语 Abrufdatum）、编制参考文献时工具能替你分担多少、又在哪里把工作交还给你 —— 本页汇总了本站有关引用的测量。每个数字都带有日期，并链接到原始数据。"
+    }
+  },
   "/how-to/firefox-and-chrome/": {
     "en": {
       "title": "For researchers and students: the add-on in Firefox and Chrome",
@@ -520,7 +558,7 @@
     },
     "zh-CN": {
       "title": "整页 PDF 在文字受损之前,体积能缩小到多小?",
-      "description": "与上一版本相比,我们将整页 PDF 截图的体积削减了 52 至 78&nbsp;%。 可搜索的文本层逐字保持不变,OCR 识别率与之前相同, 四款 PDF 阅读器渲染出的每个文件都完全一致。真正有效的做法是把文字和照片 区别对待。两种看似显而易见的方法反而让文件 变大 了。"
+      "description": "与上一版本相比,我们将整页 PDF 截图的体积削减了 52 至 78&nbsp;%。 可搜索的文本层逐字保持不变,OCR 识别率与之前相同, 四款 PDF 阅读器渲染出的每个文件都完全一致。真正有效的做法是把文字和照片 区别对待。两种看似显而易见的方法反而让文件 变大 ，或毫无收益。"
     }
   },
   "/measurements/": {

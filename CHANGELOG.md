@@ -1,3 +1,81 @@
+## 2026-10-23 — Abrufdatum und Literaturverzeichnis: die Zitations-Messungen auf Deutsch (Website)
+
+Anlass: AGENTS.md, „Wo Beiträge am meisten helfen“, Punkt 1. Wer eine
+Seminararbeit schreibt, sucht „Abrufdatum“, „Literaturverzeichnis erstellen“,
+„Internetquellen zitieren“ — und fand dazu auf dieser Seite nur englische
+Messseiten: `citation-extraction` nur englisch, `reading-list-to-bibliography`
+und `de-plattformen` zweisprachig, keine Seite, die die Befunde zusammenführt.
+Zweiter Anlass: die Download-Links standen auf 2.54.0, AMO liefert seit dem
+23.10.2026 (API, 08:30 UTC) 2.56.0.
+
+### Was
+
+1. **Neue Anleitung** `/how-to/abrufdatum-literaturverzeichnis/`, neun
+   Sprachen, **Deutsch als Ausgangsfassung** (`BASIS = "de"`, wie
+   `texte_deutsch_seite.py`). Text in `texte_abrufdatum_literaturverzeichnis.py`,
+   Gerüst über `tools/neue-seite.py anlegen`, Rumpf über
+   `tools/seite-neunsprachig.py`. Kopf (Titel, Beschreibung, og:*, JSON-LD)
+   einmalig auf die neue Seite gesetzt; der Renderer schreibt den Kopf nicht.
+2. **Keine neue Zahl.** Jede Zahl stammt aus einem vorhandenen Datensatz unter
+   `docs/data/` und steht schon auf der verlinkten Messseite
+   (`2026-08-02-quellen-archiv`, `2026-08-03-reading-list-to-bibliography`,
+   `2026-08-04-…-nach-ableitung`, `2026-08-03-de-plattformen`,
+   `…-nach-fallback`, `2026-08-02-citation-extraction` → `comparison`).
+   Die Zahlen stehen einmal im Modul und werden je Sprache nur im
+   Dezimaltrennzeichen angepasst. Die Angaben zur Belegdatei stammen aus
+   `/notes/a-download-that-never-arrives/` und `zitate.js` („o. J.“).
+3. **Vergleichsregel:** Der Citoid-Abschnitt nennt, wo Citoid vorn liegt
+   (häufiger überhaupt ein Datensatz, 14 gegen 11; erreicht MDPI, PeerJ, OECD).
+4. **Verzeichnis `/how-to/`:** Eintrag in allen neun Sprachen
+   (`texte_indexseiten.py`, `build-indexseiten.py`). Dabei die Quelle auf den
+   ausgelieferten Wortlaut „0 host permissions (Chrome)“ nachgezogen — ohne
+   das hätte der Bau die Korrektur aus dc9d841 zurückgedreht.
+5. **Feed und Sitemap** über `build-feed.py` / `build-sitemap.py`. Der Feed
+   holt dabei zwei fehlende Einträge nach (`full-page-pdf-size-without-losing-text`,
+   `for-agents` mit neuem Änderungsdatum). Damit die Zusammenfassung von
+   „Everything a citation needs, beside the PDF“ nicht nach „with“ abbricht,
+   stehen in deren `description`/`og:description` typografische statt gerader
+   Anführungszeichen — die geraden beendeten das Attribut, auch für
+   Suchmaschinen.
+6. **Download-Links 2.54.0 → 2.56.0** auf Startseite (9×) und Produktseite
+   (2× plus `softwareVersion`) über `sync-site.py` (Quelle AMO-API:
+   `file/5069941/…-2.56.0.xpi`).
+7. **rechtscheck auf 0 Fehler** (seit dc9d841 standen 4): Fußzeile mit Verweis
+   auf den Haftungsausschluss und den Korrekturweg auf
+   `/measurements/full-page-pdf-size-without-losing-text/` (die Seite hatte
+   keine); Prüfsummen in `agent-skills/index.json` und `api-catalog` über
+   `build-agent-discovery.py` neu berechnet.
+
+### Bewusst nicht
+
+- `extension-versions.json` nicht neu gebaut: `build-versionen.py` liest den
+  Quellstand aus `manifest.json`, und der steht in `main` auf 2.44.0 ohne
+  Host-Rechte. Ein Neubau hätte den ausgelieferten Quellstand (2.54.0,
+  `<all_urls>`) zurückgedreht.
+- `docs/agent.md`, `llms.txt` nicht übernommen: `build-llms-index.py` hätte
+  die Berechtigungs-Korrektur (Firefox ab 2.52.0 `<all_urls>`) entfernt.
+- `measurements/`, `notes/`, `tools/` nicht neu gebaut: `texte_indexseiten.py`
+  kennt die Einträge vom 07. und 29.09. nicht; der Bau hätte sie gelöscht.
+
+### Ergebnis / Prüfung
+
+`rechtscheck.py` 0 Fehler; `tools/pruefe-alle-sprachen.py` grün (neue Seite
+9 Sprachen); `tools/seiten-systematik.py` ohne Fehler; `build-sitemap.py --check`
+grün; keine unaufgelösten Platzhalter.
+
+### Nicht grün, vorbestehend (nicht Teil dieser Änderung)
+
+- `node --test tests/*.mjs`: 45/47 — `aufrufe-vorhanden` (vektorAufnahme nur in
+  der Chrome-Fassung) und `ladekette` (`cdp-vektor.js` wird nicht geladen).
+  Erweiterungsquellen in `main` stehen auf 2.44.0; die laufende Arbeit daran
+  liegt außerhalb dieses Beitrags.
+- `tools/daten-pruefen.py`: 5 Fehler in vorhandenen Datensätzen (`docs/data/`
+  wird ohne Rückfrage nicht geändert).
+- `pruefe-sprachwahl.py`: erwartet `/recipes/` einsprachig, die Seite ist
+  inzwischen neunsprachig.
+- `tools/links-pruefen.py`: `save-chatgpt-as-pdf` (AMO 404) und
+  `opensource.org` (403) — beides fremde Adressen.
+
 ## 2026-09-27 — Die Kopfzeile stand als leere Fläche im PDF (2.44.0)
 
 Anlass: die Gegenprobe zu 2.43.0 im Zuschnitt-Modus (`appLayout: crop`).

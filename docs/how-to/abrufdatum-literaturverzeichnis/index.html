@@ -1,0 +1,1114 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abrufdatum und Literaturverzeichnis, gemessen — Proving Lab</title>
+<meta name="description" content="Wozu das Abrufdatum dient, wie viel ein Werkzeug beim Literaturverzeichnis abnimmt und wo nicht: die Zitations-Messungen auf Deutsch, jede Zahl mit Rohdaten.">
+<meta name="keywords" content="Abrufdatum, Literaturverzeichnis erstellen, Internetquellen zitieren, Zitierweise, DIN 1505-2, ISO 690, APA, RIS, Citavi, Zotero, Webquellen sichern">
+<link rel="canonical" href="https://provinglab.dev/how-to/abrufdatum-literaturverzeichnis/">
+<link rel="alternate" hreflang="en" href="https://provinglab.dev/how-to/abrufdatum-literaturverzeichnis/">
+<link rel="alternate" hreflang="de" href="https://provinglab.dev/how-to/abrufdatum-literaturverzeichnis/">
+<link rel="alternate" hreflang="es" href="https://provinglab.dev/how-to/abrufdatum-literaturverzeichnis/">
+<link rel="alternate" hreflang="fr" href="https://provinglab.dev/how-to/abrufdatum-literaturverzeichnis/">
+<link rel="alternate" hreflang="it" href="https://provinglab.dev/how-to/abrufdatum-literaturverzeichnis/">
+<link rel="alternate" hreflang="ja" href="https://provinglab.dev/how-to/abrufdatum-literaturverzeichnis/">
+<link rel="alternate" hreflang="pt-BR" href="https://provinglab.dev/how-to/abrufdatum-literaturverzeichnis/">
+<link rel="alternate" hreflang="ru" href="https://provinglab.dev/how-to/abrufdatum-literaturverzeichnis/">
+<link rel="alternate" hreflang="zh-CN" href="https://provinglab.dev/how-to/abrufdatum-literaturverzeichnis/">
+<link rel="alternate" hreflang="x-default" href="https://provinglab.dev/how-to/abrufdatum-literaturverzeichnis/">
+<link rel="alternate" type="application/atom+xml" title="Proving Lab" href="/feed.xml">
+<link rel="describedby" href="/.well-known/agent-skills/index.json" type="application/json">
+<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json">
+<link rel="service-doc" href="/llms.txt" type="text/plain">
+<link rel="icon" href="../../icon-128.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Abrufdatum und Literaturverzeichnis: Internetquellen zitieren, gemessen statt behauptet">
+<meta property="og:description" content="Wozu das Abrufdatum dient, wie viel ein Werkzeug beim Literaturverzeichnis abnimmt und wo nicht: die Zitations-Messungen auf Deutsch, jede Zahl mit Rohdaten.">
+<meta property="og:url" content="https://provinglab.dev/how-to/abrufdatum-literaturverzeichnis/">
+<meta property="og:image" content="https://provinglab.dev/screenshots/01_capture_en.png">
+<meta property="article:published_time" content="2026-10-23">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Abrufdatum und Literaturverzeichnis: Internetquellen zitieren, gemessen statt behauptet",
+  "description": "Wozu das Abrufdatum dient, wie viel ein Werkzeug beim Literaturverzeichnis abnimmt und wo nicht: die Zitations-Messungen auf Deutsch, jede Zahl mit Rohdaten.",
+  "datePublished": "2026-10-23",
+  "dateModified": "2026-10-23",
+  "inLanguage": [
+    "en",
+    "de",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "pt-BR",
+    "ru",
+    "zh-CN"
+  ],
+  "url": "https://provinglab.dev/how-to/abrufdatum-literaturverzeichnis/",
+  "author": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Proving Lab",
+    "url": "https://provinglab.dev/"
+  },
+  "keywords": "Abrufdatum, Literaturverzeichnis erstellen, Internetquellen zitieren, Zitierweise, DIN 1505-2, ISO 690, APA, RIS, Citavi, Zotero, Webquellen sichern"
+}
+</script>
+<style>
+  :root{ --bg:#141320; --bg2:#1c1b28; --card:#232232; --line:#33324a;
+    --tx:#f2f2f7; --dim:#a8a8bc; --acc:#4c7aff; --good:#3fbf87; --warn:#e0a24f; --bad:#e2695c; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f7fb; --bg2:#ffffff; --card:#ffffff; --line:#e2e2ee;
+           --tx:#16162a; --dim:#5a5a72; --good:#17724f; --warn:#8a5a12; --bad:#a83a2e; } }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);line-height:1.7;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 24px}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.87em;background:var(--card);
+       padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+  .crumb{padding:26px 0 0;font-size:.85rem;color:var(--dim)}
+  header{padding:34px 0 36px;border-bottom:1px solid var(--line);margin-bottom:32px}
+  h1{font-size:clamp(1.75rem,4.4vw,2.6rem);line-height:1.16;letter-spacing:-.025em;
+     margin-bottom:18px;text-wrap:balance}
+  .standfirst{font-size:1.12rem;color:var(--dim);max-width:60ch}
+  .meta-line{margin-top:20px;font-size:.85rem;color:var(--dim)}
+  h2{font-size:1.4rem;line-height:1.25;margin:46px 0 14px;letter-spacing:-.015em;text-wrap:balance}
+  h3{font-size:1.04rem;margin:28px 0 8px}
+  p{margin-bottom:17px} ul,ol{margin:0 0 18px 24px} li{margin-bottom:9px}
+  .privhint{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+    padding:14px 18px;margin:22px 0 0;font-size:.88rem;color:var(--dim);line-height:1.6}
+  .privhint strong{color:var(--tx)}
+  .keyfig{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0}
+  .kf{flex:1 1 160px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px}
+  .kf .n{font-size:1.8rem;font-weight:650;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .kf .l{font-size:.82rem;color:var(--dim);margin-top:6px}
+  .kf.a .n{color:var(--good)} .kf.b .n{color:var(--warn)}
+  .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:.93rem}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--bg2);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--dim);font-weight:600;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .win{color:var(--good);font-weight:600} .lose{color:var(--bad)}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 18px;
+      overflow-x:auto;margin:18px 0;font-size:.84rem;line-height:1.6}
+  .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+       border-radius:0 8px 8px 0;padding:18px 20px;margin:26px 0}
+  .box h3{margin-top:0} .box p:last-child{margin-bottom:0}
+  .faq{margin:44px 0 0}
+  .faq details{border-top:1px solid var(--line);padding:14px 0}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;font-weight:600;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"+ ";color:var(--acc);font-weight:700}
+  .faq details[open] summary::before{content:"− "}
+  .faq details p{margin:12px 0 0;color:var(--dim);font-size:.95rem}
+  .related{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin:44px 0 0}
+  .related h3{margin-top:0} .related ul{margin-bottom:0}
+  footer{margin-top:52px;padding:24px 0 64px;border-top:1px solid var(--line);
+    font-size:.83rem;color:var(--dim);line-height:1.6}
+
+  /* --- Durchgehende Kopfnavigation --- */
+  .topnav{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .topnav .inner{max-width:1080px;margin:0 auto;padding:11px 24px;
+    display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-weight:700;letter-spacing:-.01em;font-size:.98rem;
+    color:var(--tx);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:9px}
+  .topnav .brand:hover{text-decoration:none;color:var(--acc)}
+  .topnav .brand img{width:22px;height:22px;border-radius:5px}
+  .topnav a.n{font-size:.9rem;color:var(--dim);text-decoration:none;padding:3px 0;
+    border-bottom:2px solid transparent}
+  .topnav a.n:hover{color:var(--tx);text-decoration:none}
+  /* Abgesetzter Knopf: von jeder Seite ein Klick bis zur Installation. */
+  .topnav a.dl{font-size:.86rem;font-weight:600;padding:6px 14px;border-radius:7px;
+    background:var(--acc);color:#fff;text-decoration:none;border-bottom:0;white-space:nowrap}
+  .topnav a.dl:hover{text-decoration:none;filter:brightness(1.08)}
+  .topnav a.n[aria-current="page"]{color:var(--tx);border-bottom-color:var(--acc)}
+  @media (max-width:640px){
+    .topnav .inner{gap:14px;padding:10px 18px}
+    .topnav .brand{width:100%;margin-right:0}
+    .topnav a.n{font-size:.85rem}
+  }
+
+  /* --- Sprachumschaltung --- */
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  li[data-lang].on{display:list-item}
+  span[data-lang].on,a[data-lang].on{display:inline}
+  .lang{display:flex;gap:6px;margin:0 0 26px}
+  .lang button{font:inherit;font-size:.86rem;font-weight:600;padding:7px 18px;cursor:pointer;
+    background:var(--card);color:var(--dim);border:1px solid var(--line);border-radius:8px}
+  .lang button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
+</style>
+<script src="/agent-tools.js" defer></script>
+<script src="/site-lang.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <a class="brand" href="../../"><img src="../../icon-128.png" alt="" width="128" height="128">Proving&nbsp;Lab</a>
+    <a class="n" href="../../notes/">Notes</a>
+    <a class="n" href="../../measurements/">Measurements</a>
+    <a class="n" href="../../how-to/">How&nbsp;to</a>
+    <a class="n" href="../../recipes/">Recipes</a>
+    <a class="n" href="../../for-agents/">For&nbsp;agents</a>
+    <a class="n" href="../../mitmachen/">Mitmachen</a>
+    <a class="n" href="../../tools/">Tools</a>
+    <a class="n" href="../../about/">About</a>
+      <a class="dl" href="https://addons.mozilla.org/firefox/addon/full_page_pdf_snap_webpagesave/">Download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+<div data-lang="en" lang="en">
+<header>
+  <h1>Retrieval date and bibliography: citing web sources, measured rather than asserted</h1>
+  <p class="standfirst">
+    Why a reference list carries a retrieval date, how much a tool takes off your hands when you build the bibliography, and where it hands the work back — summarised from this site's citation measurements. Every figure carries its date and links to its raw data.
+  </p>
+  <p class="meta-line">As of 23 October 2026 · German-first summary · measurements from 2 to 18 August 2026</p>
+</header>
+
+<div class="box"><p>
+  A private, non-commercial account — not legal advice and not guidance from a university. Which citation style applies and how the retrieval date is written is set by your department; its rules come before anything here. Disclosure: the author develops <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a>, which appears below as one of several options.
+</p></div>
+
+<h2>1. What the retrieval date is for</h2>
+<p>
+  A web source is not a book: it can be edited, moved or deleted after you cite it. The retrieval date says <em>this is what stood there on that day</em>. How often that matters shows in a sample from 2 August 2026: 150 sources from the references of German-language Wikipedia articles on economic and social policy, at most one per server.
+</p>
+<table>
+  <thead><tr><th scope="col">Finding</th><th scope="col">Share</th></tr></thead>
+  <tbody>
+    <tr><td>The server reports the page as deleted (HTTP 404 or 410)</td><td>19.3&nbsp;% (29/150)</td></tr>
+    <tr><td>No copy in the Internet Archive</td><td>8.7&nbsp;% (13)</td></tr>
+    <tr><td>Deleted and never archived — unrecoverable</td><td><strong>2.0&nbsp;%</strong> (3)</td></tr>
+    <tr><td>Age of the newest archived copy, median</td><td>603 days</td></tr>
+  </tbody>
+</table>
+<p>
+  Wikipedia references are maintained, so these values err on the kind side. And where an archived copy exists, it is a median of 603 days old — often not the version you read. A date alone does not make a claim checkable; that takes a copy. The consequence: secure the source at the moment you cite it, not at the end of the work.
+  <a href="/measurements/web-citations-that-vanish/">measurement</a> ·
+  <a href="/data/2026-08-02-quellen-archiv.json">raw data</a>
+</p>
+
+<h2>2. How the retrieval date appears in the entry</h2>
+<p>
+  The citation style sets the form — APA, Harvard, DIN 1505-2 and ISO 690 differ in it, and German entries join it with „abgerufen am“. Full Page PDF Snap puts a file ending in <code>.zitate.txt</code> beside every PDF: one finished line each in APA 7, MLA 9, Chicago, Harvard, DIN 1505-2 and ISO 690, plus BibTeX and an RIS record for Citavi, Zotero and EndNote. In the RIS record the retrieval date is written in the form Citavi and EndNote import, with the time — pages change in the course of a day:
+</p>
+<pre><code>Y2  - 2026/08/18/11:00</code></pre>
+<p>
+  If the page gives no year of publication, the entry says „o. J.“ (n.d.), not the year of retrieval. An invented year costs more than a gap that shows.
+  <a href="/notes/a-download-that-never-arrives/">measurement</a> ·
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/zitate.js">zitate.js</a>
+</p>
+
+<h2>3. Building the bibliography: what a machine takes off your hands</h2>
+<p>
+  Two measurements asked the same question: how many sources become a complete record without typing — read from what the page declares about itself? Measured on this site's citation endpoint (<code>extract_citation</code>), each selection fixed before the run.
+</p>
+<table>
+  <thead><tr><th scope="col">Run</th><th scope="col">Date</th><th scope="col">complete</th><th scope="col">per source</th></tr></thead>
+  <tbody>
+    <tr><td>Reading list of a term paper, 20 sources</td><td>3 Aug 2026</td><td>10/20</td><td>0.4&nbsp;s</td></tr>
+    <tr><td>the same 20, identifiers derived (DOI, CELEX)</td><td>4 Aug 2026</td><td><strong>14/20</strong></td><td>0.58&nbsp;s</td></tr>
+    <tr><td>11 German-language platforms</td><td>3 Aug 2026</td><td>4/11</td><td>0.75&nbsp;s</td></tr>
+    <tr><td>the same 11, using the platforms' own interfaces</td><td>3 Aug 2026</td><td><strong>5/11</strong></td><td>0.69&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  Readable were the publisher platforms Springer Link and Nomos eLibrary, the repositories PsychArchives and peDOCS and — through its SRU interface — the German National Library. Handed back were a licensed database behind a login (beck-online), a page with a case number instead of a title (openJur), two statistics portals without a year (Statistik Austria, Destatis), a repository that refuses the endpoint (OPUS 4), and SSOAR as the control case behind an access wall.
+</p>
+<p>
+  Where a detail is missing, the record comes back marked incomplete instead of the year being guessed.
+  <a href="/measurements/reading-list-to-bibliography/">measurement</a> (<a href="/data/2026-08-03-reading-list-to-bibliography.json">raw data</a>, <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">raw data</a>) ·
+  <a href="/measurements/de-plattformen/">measurement</a> (<a href="/data/2026-08-03-de-plattformen.json">raw data</a>, <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">raw data</a>)
+</p>
+
+<h2>4. The comparison — and where the alternative is ahead</h2>
+<p>
+  On 2 August 2026, 18 works drawn at random from OpenAlex went through this endpoint and through Citoid, the Wikimedia service built on the Zotero translators.
+</p>
+<table>
+  <thead><tr><th scope="col">18 works, drawn at random</th><th scope="col">this endpoint</th><th scope="col">Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>Coverage</td><td>61&nbsp;%</td><td>61&nbsp;%</td></tr>
+    <tr><td>Accuracy of what came back</td><td><strong>100&nbsp;%</strong></td><td>79&nbsp;%</td></tr>
+    <tr><td>Wrong records</td><td>0</td><td>3</td></tr>
+    <tr><td>Median per source</td><td>0.68&nbsp;s</td><td>1.92&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  Citoid returns a record of some kind more often (14 against 11) and reaches MDPI, PeerJ and the OECD, which refuse this endpoint. In exchange three wrong records came back from it, among them „Redirect URL“ as the title of a work. In a bibliography a wrong entry costs more than a gap: you see the gap while writing; the wrong entry is found by whoever marks the work.
+  <a href="/measurements/citation-extraction/">measurement</a> ·
+  <a href="/data/2026-08-02-citation-extraction.json">raw data</a>
+</p>
+
+<h2>5. What stays with you</h2>
+<ul>
+  <li><strong>Read the completeness flag, not the title.</strong> A statistics portal returned „Forschung, Innovation, Digitalisierung“ with STATISTIK AUSTRIA as author — it looked finished and was marked incomplete.</li>
+  <li><strong>Pages behind a login you have access to:</strong> open them in your own browser and save them there. A server outside cannot read them; an extension in your session can.</li>
+  <li><strong>Newspaper articles, statistics pages and grey literature:</strong> describe them yourself. These pages answered in full and still did not declare what a reference needs — sometimes the author was missing, sometimes the year.</li>
+  <li><strong>Keep the copy that goes with the retrieval date</strong> — as a PDF, or for public pages via <a href="https://web.archive.org/save">Save Page Now</a> at the Internet Archive, which creates a dated link any reader can check.</li>
+</ul>
+
+<h2>Limits</h2>
+<p>
+  Every figure comes from a single run on a stated day in August 2026; pages and platforms change, and a run today may come out differently. The platform measurement ran from a commercial VPN exit, not a residential line. This page introduces no new figures — it summarises the linked measurements.
+</p>
+
+<footer>
+      Published 23 October 2026. Every figure links to its raw data under <a href="/data/">/data/</a>, CC BY 4.0. Corrections via GitHub issues.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Disclaimer</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a>
+    </footer>
+</div>
+
+<div data-lang="de" class="on" lang="de">
+<header>
+  <h1>Abrufdatum und Literaturverzeichnis: Internetquellen zitieren, gemessen statt behauptet</h1>
+  <p class="standfirst">
+    Wozu das Abrufdatum im Literaturverzeichnis steht, wie viel ein Werkzeug beim Erstellen des Literaturverzeichnisses abnimmt und an welcher Stelle es die Arbeit an Sie zurückgibt — zusammengefasst aus den Zitations-Messungen dieser Seite. Jede Zahl trägt ihr Datum und verweist auf ihre Rohdaten.
+  </p>
+  <p class="meta-line">Stand 23. Oktober 2026 · deutsche Zusammenfassung · Messungen vom 2. bis 18. August 2026</p>
+</header>
+
+<div class="box"><p>
+  Ein privater, nicht kommerzieller Bericht — keine Rechtsberatung und keine Auskunft einer Hochschule. Welche Zitierweise gilt und wie das Abrufdatum zu schreiben ist, legt Ihr Institut fest; dessen Vorgabe geht allem hier vor. Offenlegung: Der Autor entwickelt <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a>, das unten als eines von mehreren Mitteln vorkommt.
+</p></div>
+
+<h2>1. Wozu das Abrufdatum dient</h2>
+<p>
+  Eine Internetquelle ist kein Buch: Sie kann nach dem Zitieren geändert, verschoben oder gelöscht werden. Das Abrufdatum sagt, <em>das stand an diesem Tag dort</em>. Wie oft das zählt, zeigt eine Stichprobe vom 2. August 2026: 150 Quellen aus den Literaturangaben deutschsprachiger Wikipedia-Artikel zu Wirtschafts- und Sozialpolitik, höchstens eine je Server.
+</p>
+<table>
+  <thead><tr><th scope="col">Befund</th><th scope="col">Anteil</th></tr></thead>
+  <tbody>
+    <tr><td>Der Server meldet die Seite als gelöscht (HTTP 404 oder 410)</td><td>19,3&nbsp;% (29/150)</td></tr>
+    <tr><td>Keine Kopie im Internet Archive</td><td>8,7&nbsp;% (13)</td></tr>
+    <tr><td>Gelöscht und nie archiviert — unwiederbringlich</td><td><strong>2,0&nbsp;%</strong> (3)</td></tr>
+    <tr><td>Alter der jüngsten Archivkopie, Median</td><td>603 Tage</td></tr>
+  </tbody>
+</table>
+<p>
+  Wikipedia-Belege werden gepflegt; die Werte sind deshalb eher zu günstig als zu streng. Und wo eine Archivkopie existiert, ist sie im Median 603 Tage alt — oft nicht die Fassung, die Sie gelesen haben. Ein Datum allein macht eine Aussage nicht nachprüfbar, dafür braucht es eine Kopie. Die Folgerung: die Quelle in dem Moment sichern, in dem Sie sie zitieren, nicht am Ende der Arbeit.
+  <a href="/measurements/web-citations-that-vanish/">Messung</a> ·
+  <a href="/data/2026-08-02-quellen-archiv.json">Rohdaten</a>
+</p>
+
+<h2>2. Wie das Abrufdatum im Eintrag steht</h2>
+<p>
+  Die Form legt die Zitierweise fest — APA, Harvard, DIN 1505-2 und ISO 690 unterscheiden sich darin, und deutschsprachige Einträge verbinden mit „abgerufen am“. Full Page PDF Snap legt neben jedes PDF eine Datei mit der Endung <code>.zitate.txt</code>: je eine fertige Zeile in APA 7, MLA 9, Chicago, Harvard, DIN 1505-2 und ISO 690, dazu BibTeX und einen RIS-Satz für Citavi, Zotero und EndNote. Im RIS-Satz steht das Abrufdatum in der Form, die Citavi und EndNote einlesen, mit Uhrzeit — Seiten ändern sich im Lauf eines Tages:
+</p>
+<pre><code>Y2  - 2026/08/18/11:00</code></pre>
+<p>
+  Fehlt auf der Seite das Erscheinungsjahr, steht „o. J.“ im Eintrag und nicht das Jahr des Abrufs. Ein erfundenes Jahr ist teurer als eine Lücke, die auffällt.
+  <a href="/notes/a-download-that-never-arrives/">Messung</a> ·
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/zitate.js">zitate.js</a>
+</p>
+
+<h2>3. Literaturverzeichnis erstellen: was eine Maschine abnimmt</h2>
+<p>
+  Zwei Messungen haben dieselbe Frage gestellt: Wie viele Quellen werden ohne Abtippen zu einem vollständigen Nachweis — gelesen aus dem, was die Seite selbst über sich ausweist? Gemessen am Zitations-Endpunkt dieser Seite (<code>extract_citation</code>), die Auswahl jeweils vor dem Lauf festgelegt.
+</p>
+<table>
+  <thead><tr><th scope="col">Lauf</th><th scope="col">Datum</th><th scope="col">vollständig</th><th scope="col">je Quelle</th></tr></thead>
+  <tbody>
+    <tr><td>Leseliste einer Seminararbeit, 20 Quellen</td><td>3. Aug. 2026</td><td>10/20</td><td>0,4&nbsp;s</td></tr>
+    <tr><td>dieselben 20, Kennungen abgeleitet (DOI, CELEX)</td><td>4. Aug. 2026</td><td><strong>14/20</strong></td><td>0,58&nbsp;s</td></tr>
+    <tr><td>11 deutschsprachige Plattformen</td><td>3. Aug. 2026</td><td>4/11</td><td>0,75&nbsp;s</td></tr>
+    <tr><td>dieselben 11, mit den Schnittstellen der Plattformen</td><td>3. Aug. 2026</td><td><strong>5/11</strong></td><td>0,69&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  Lesbar waren die Verlagsplattformen Springer Link und Nomos eLibrary, die Repositorien PsychArchives und peDOCS und — über ihre SRU-Schnittstelle — die Deutsche Nationalbibliothek. Zurückgegeben wurden eine lizenzierte Datenbank hinter einer Anmeldung (beck-online), eine Seite mit einer Aktennummer statt eines Titels (openJur), zwei Statistikportale ohne Jahresangabe (Statistik Austria, Destatis), ein Repositorium, das den Endpunkt abweist (OPUS 4), und SSOAR als Kontrollfall mit Zugangsschranke.
+</p>
+<p>
+  Wo eine Angabe fehlt, kommt der Nachweis als unvollständig markiert zurück, statt dass das Jahr geraten wird.
+  <a href="/measurements/reading-list-to-bibliography/">Messung</a> (<a href="/data/2026-08-03-reading-list-to-bibliography.json">Rohdaten</a>, <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">Rohdaten</a>) ·
+  <a href="/measurements/de-plattformen/">Messung</a> (<a href="/data/2026-08-03-de-plattformen.json">Rohdaten</a>, <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">Rohdaten</a>)
+</p>
+
+<h2>4. Der Vergleich — und wo die Alternative vorn liegt</h2>
+<p>
+  Am 2. August 2026 liefen 18 zufällig aus OpenAlex gezogene Werke durch diesen Endpunkt und durch Citoid, den Dienst der Wikimedia auf Grundlage der Zotero-Übersetzer.
+</p>
+<table>
+  <thead><tr><th scope="col">18 Werke, zufällig gezogen</th><th scope="col">dieser Endpunkt</th><th scope="col">Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>Abdeckung</td><td>61&nbsp;%</td><td>61&nbsp;%</td></tr>
+    <tr><td>Richtigkeit des Gelieferten</td><td><strong>100&nbsp;%</strong></td><td>79&nbsp;%</td></tr>
+    <tr><td>falsche Nachweise</td><td>0</td><td>3</td></tr>
+    <tr><td>Median je Quelle</td><td>0,68&nbsp;s</td><td>1,92&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  Citoid liefert häufiger überhaupt einen Datensatz (14 gegen 11) und erreicht MDPI, PeerJ und die OECD, die diesen Endpunkt abweisen. Dafür kamen dort drei falsche Angaben zurück, darunter „Redirect URL“ als Titel eines Werks. Für ein Literaturverzeichnis ist ein falscher Eintrag teurer als eine Lücke: Die Lücke sehen Sie beim Schreiben, den falschen Eintrag findet, wer die Arbeit bewertet.
+  <a href="/measurements/citation-extraction/">Messung</a> ·
+  <a href="/data/2026-08-02-citation-extraction.json">Rohdaten</a>
+</p>
+
+<h2>5. Was bei Ihnen bleibt</h2>
+<ul>
+  <li><strong>Das Kennzeichen „vollständig“ lesen, nicht den Titel.</strong> Ein Statistikportal lieferte „Forschung, Innovation, Digitalisierung“ mit STATISTIK AUSTRIA als Verfasser — es sah fertig aus und war als unvollständig markiert.</li>
+  <li><strong>Seiten hinter einer Anmeldung, zu der Sie Zugang haben,</strong> im eigenen Browser öffnen und dort sichern. Ein Server von außen kann sie nicht lesen, eine Erweiterung in Ihrer Sitzung schon.</li>
+  <li><strong>Zeitungsartikel, Statistikseiten und graue Literatur</strong> selbst angeben: Diese Seiten antworteten vollständig und wiesen trotzdem nicht aus, was ein Nachweis braucht — mal fehlte der Verfasser, mal das Jahr.</li>
+  <li><strong>Die Kopie zum Abrufdatum aufheben</strong> — als PDF, oder bei öffentlichen Seiten über <a href="https://web.archive.org/save">Save Page Now</a> des Internet Archive, das einen datierten, für alle Lesenden prüfbaren Link erzeugt.</li>
+</ul>
+
+<h2>Grenzen</h2>
+<p>
+  Jede Zahl stammt aus einem einzelnen Durchlauf an einem genannten Tag im August 2026; Seiten und Plattformen ändern sich, ein Lauf heute kann anders ausfallen. Die Plattform-Messung lief über einen kommerziellen VPN-Ausgang, nicht über einen privaten Anschluss. Neue Zahlen führt diese Seite nicht ein — sie fasst die verlinkten Messungen auf Deutsch zusammen.
+</p>
+
+<footer>
+      Veröffentlicht am 23. Oktober 2026. Jede Zahl verweist auf ihre Rohdaten unter <a href="/data/">/data/</a>, CC BY 4.0. Korrekturen über die GitHub-Issues.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Haftungsausschluss</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a>
+    </footer>
+</div>
+
+<div data-lang="es" lang="es">
+<header>
+  <h1>Fecha de consulta y bibliografía: citar fuentes web, medido en lugar de afirmado</h1>
+  <p class="standfirst">
+    Para qué sirve la fecha de consulta en la bibliografía, cuánto trabajo le quita una herramienta al elaborarla y en qué punto se lo devuelve — resumido a partir de las mediciones de citas de este sitio. Cada cifra lleva su fecha y enlaza con sus datos brutos.
+  </p>
+  <p class="meta-line">A 23 de octubre de 2026 · resumen en alemán y ocho idiomas · mediciones del 2 al 18 de agosto de 2026</p>
+</header>
+
+<div class="box"><p>
+  Un informe privado y no comercial: no es asesoramiento jurídico ni una indicación de una universidad. Qué estilo de cita se aplica y cómo se escribe la fecha de consulta lo decide su departamento; sus normas prevalecen sobre todo lo que aquí se dice. Divulgación: el autor desarrolla <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a>, que aparece abajo como una de varias opciones.
+</p></div>
+
+<h2>1. Para qué sirve la fecha de consulta</h2>
+<p>
+  Una fuente web no es un libro: puede modificarse, moverse o borrarse después de citarla. La fecha de consulta dice <em>esto es lo que había ese día</em>. Cuánto importa lo muestra una muestra del 2 de agosto de 2026: 150 fuentes de las referencias de artículos de la Wikipedia en alemán sobre política económica y social, como máximo una por servidor.
+</p>
+<table>
+  <thead><tr><th scope="col">Resultado</th><th scope="col">Proporción</th></tr></thead>
+  <tbody>
+    <tr><td>El servidor indica que la página se ha borrado (HTTP 404 o 410)</td><td>19,3&nbsp;% (29/150)</td></tr>
+    <tr><td>Ninguna copia en el Internet Archive</td><td>8,7&nbsp;% (13)</td></tr>
+    <tr><td>Borrada y nunca archivada — irrecuperable</td><td><strong>2,0&nbsp;%</strong> (3)</td></tr>
+    <tr><td>Antigüedad de la copia archivada más reciente, mediana</td><td>603 días</td></tr>
+  </tbody>
+</table>
+<p>
+  Las referencias de Wikipedia se mantienen, así que estos valores pecan de favorables. Y donde existe una copia archivada, tiene una mediana de 603 días — a menudo no es la versión que usted leyó. Una fecha por sí sola no hace comprobable una afirmación; para eso hace falta una copia. La consecuencia: asegurar la fuente en el momento de citarla, no al final del trabajo.
+  <a href="/measurements/web-citations-that-vanish/">medición</a> ·
+  <a href="/data/2026-08-02-quellen-archiv.json">datos brutos</a>
+</p>
+
+<h2>2. Cómo aparece la fecha de consulta en la entrada</h2>
+<p>
+  La forma la fija el estilo de cita: APA, Harvard, DIN 1505-2 e ISO 690 difieren en ello, y las entradas en alemán la unen con „abgerufen am“. Full Page PDF Snap coloca junto a cada PDF un archivo terminado en <code>.zitate.txt</code>: una línea lista en APA 7, MLA 9, Chicago, Harvard, DIN 1505-2 e ISO 690, además de BibTeX y un registro RIS para Citavi, Zotero y EndNote. En el registro RIS la fecha de consulta figura en la forma que importan Citavi y EndNote, con la hora — las páginas cambian a lo largo de un día:
+</p>
+<pre><code>Y2  - 2026/08/18/11:00</code></pre>
+<p>
+  Si la página no indica año de publicación, la entrada dice „o. J.“ (s. f.) y no el año de la consulta. Un año inventado cuesta más que un hueco que se ve.
+  <a href="/notes/a-download-that-never-arrives/">medición</a> ·
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/zitate.js">zitate.js</a>
+</p>
+
+<h2>3. Elaborar la bibliografía: lo que una máquina le quita de encima</h2>
+<p>
+  Dos mediciones hicieron la misma pregunta: ¿cuántas fuentes se convierten en una referencia completa sin teclear, leída de lo que la página declara sobre sí misma? Medido en el endpoint de citas de este sitio (<code>extract_citation</code>), con la selección fijada antes de cada pasada.
+</p>
+<table>
+  <thead><tr><th scope="col">Pasada</th><th scope="col">Fecha</th><th scope="col">completas</th><th scope="col">por fuente</th></tr></thead>
+  <tbody>
+    <tr><td>Lista de lectura de un trabajo de curso, 20 fuentes</td><td>3 ago. 2026</td><td>10/20</td><td>0,4&nbsp;s</td></tr>
+    <tr><td>las mismas 20, identificadores derivados (DOI, CELEX)</td><td>4 ago. 2026</td><td><strong>14/20</strong></td><td>0,58&nbsp;s</td></tr>
+    <tr><td>11 plataformas en alemán</td><td>3 ago. 2026</td><td>4/11</td><td>0,75&nbsp;s</td></tr>
+    <tr><td>las mismas 11, con las interfaces propias de las plataformas</td><td>3 ago. 2026</td><td><strong>5/11</strong></td><td>0,69&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  Fueron legibles las plataformas editoriales Springer Link y Nomos eLibrary, los repositorios PsychArchives y peDOCS y — mediante su interfaz SRU — la Biblioteca Nacional Alemana. Se devolvieron una base de datos con licencia tras un inicio de sesión (beck-online), una página con un número de expediente en lugar de título (openJur), dos portales estadísticos sin año (Statistik Austria, Destatis), un repositorio que rechaza el endpoint (OPUS 4) y SSOAR como caso de control tras una barrera de acceso.
+</p>
+<p>
+  Donde falta un dato, la referencia vuelve marcada como incompleta en lugar de adivinar el año.
+  <a href="/measurements/reading-list-to-bibliography/">medición</a> (<a href="/data/2026-08-03-reading-list-to-bibliography.json">datos brutos</a>, <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">datos brutos</a>) ·
+  <a href="/measurements/de-plattformen/">medición</a> (<a href="/data/2026-08-03-de-plattformen.json">datos brutos</a>, <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">datos brutos</a>)
+</p>
+
+<h2>4. La comparación — y dónde va por delante la alternativa</h2>
+<p>
+  El 2 de agosto de 2026, 18 obras extraídas al azar de OpenAlex pasaron por este endpoint y por Citoid, el servicio de Wikimedia basado en los traductores de Zotero.
+</p>
+<table>
+  <thead><tr><th scope="col">18 obras, extraídas al azar</th><th scope="col">este endpoint</th><th scope="col">Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>Cobertura</td><td>61&nbsp;%</td><td>61&nbsp;%</td></tr>
+    <tr><td>Exactitud de lo devuelto</td><td><strong>100&nbsp;%</strong></td><td>79&nbsp;%</td></tr>
+    <tr><td>Referencias erróneas</td><td>0</td><td>3</td></tr>
+    <tr><td>Mediana por fuente</td><td>0,68&nbsp;s</td><td>1,92&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  Citoid devuelve algún registro con más frecuencia (14 frente a 11) y llega a MDPI, PeerJ y la OCDE, que rechazan este endpoint. A cambio, devolvió tres datos erróneos, entre ellos „Redirect URL“ como título de una obra. En una bibliografía una entrada errónea cuesta más que un hueco: el hueco se ve al escribir; la entrada errónea la descubre quien evalúa el trabajo.
+  <a href="/measurements/citation-extraction/">medición</a> ·
+  <a href="/data/2026-08-02-citation-extraction.json">datos brutos</a>
+</p>
+
+<h2>5. Lo que queda en sus manos</h2>
+<ul>
+  <li><strong>Leer el indicador de completitud, no el título.</strong> Un portal estadístico devolvió „Forschung, Innovation, Digitalisierung“ con STATISTIK AUSTRIA como autor: parecía terminado y estaba marcado como incompleto.</li>
+  <li><strong>Páginas tras un inicio de sesión al que usted tiene acceso:</strong> ábralas en su propio navegador y guárdelas allí. Un servidor externo no puede leerlas; una extensión en su sesión sí.</li>
+  <li><strong>Artículos de prensa, páginas estadísticas y literatura gris:</strong> descríbalos usted. Estas páginas respondieron por completo y aun así no declaraban lo que necesita una referencia: a veces faltaba el autor, a veces el año.</li>
+  <li><strong>Conservar la copia que corresponde a la fecha de consulta</strong>: como PDF o, en páginas públicas, mediante <a href="https://web.archive.org/save">Save Page Now</a> del Internet Archive, que crea un enlace fechado que cualquier lector puede comprobar.</li>
+</ul>
+
+<h2>Límites</h2>
+<p>
+  Cada cifra procede de una sola pasada en un día indicado de agosto de 2026; las páginas y las plataformas cambian, y una pasada hoy puede dar otro resultado. La medición de plataformas se hizo desde una salida VPN comercial, no desde una conexión doméstica. Esta página no introduce cifras nuevas: resume las mediciones enlazadas.
+</p>
+
+<footer>
+      Publicado el 23 de octubre de 2026. Cada cifra enlaza con sus datos brutos en <a href="/data/">/data/</a>, CC BY 4.0. Correcciones a través de GitHub issues.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Aviso legal</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a>
+    </footer>
+</div>
+
+<div data-lang="fr" lang="fr">
+<header>
+  <h1>Date de consultation et bibliographie : citer des sources web, mesuré plutôt qu’affirmé</h1>
+  <p class="standfirst">
+    À quoi sert la date de consultation dans la bibliographie, quelle part du travail un outil prend en charge pour la constituer et à quel moment il vous le rend — d’après les mesures de citation de ce site. Chaque chiffre porte sa date et renvoie à ses données brutes.
+  </p>
+  <p class="meta-line">État au 23 octobre 2026 · résumé d’abord en allemand · mesures du 2 au 18 août 2026</p>
+</header>
+
+<div class="box"><p>
+  Un compte rendu privé et non commercial — ni un conseil juridique ni une consigne universitaire. Le style de citation applicable et la manière d’écrire la date de consultation relèvent de votre établissement ; ses règles priment sur tout ce qui est écrit ici. Divulgation : l’auteur développe <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a>, cité plus bas parmi plusieurs moyens.
+</p></div>
+
+<h2>1. À quoi sert la date de consultation</h2>
+<p>
+  Une source web n’est pas un livre : elle peut être modifiée, déplacée ou supprimée après avoir été citée. La date de consultation dit <em>voici ce qui figurait là ce jour-là</em>. Un échantillon du 2 août 2026 montre à quel point cela compte : 150 sources tirées des références d’articles de la Wikipédia germanophone sur la politique économique et sociale, au plus une par serveur.
+</p>
+<table>
+  <thead><tr><th scope="col">Constat</th><th scope="col">Part</th></tr></thead>
+  <tbody>
+    <tr><td>Le serveur signale la page comme supprimée (HTTP 404 ou 410)</td><td>19,3&nbsp;% (29/150)</td></tr>
+    <tr><td>Aucune copie dans l’Internet Archive</td><td>8,7&nbsp;% (13)</td></tr>
+    <tr><td>Supprimée et jamais archivée — irrécupérable</td><td><strong>2,0&nbsp;%</strong> (3)</td></tr>
+    <tr><td>Âge de la copie archivée la plus récente, médiane</td><td>603 jours</td></tr>
+  </tbody>
+</table>
+<p>
+  Les références de Wikipédia sont entretenues ; ces valeurs sont donc plutôt favorables. Et là où une copie archivée existe, elle a en médiane 603 jours — souvent pas la version que vous avez lue. Une date seule ne rend pas une affirmation vérifiable ; il faut une copie. La conséquence : sauvegarder la source au moment où vous la citez, pas à la fin du travail.
+  <a href="/measurements/web-citations-that-vanish/">mesure</a> ·
+  <a href="/data/2026-08-02-quellen-archiv.json">données brutes</a>
+</p>
+
+<h2>2. Comment la date de consultation figure dans la référence</h2>
+<p>
+  Le style de citation en fixe la forme — APA, Harvard, DIN 1505-2 et ISO 690 diffèrent sur ce point, et les références en allemand la relient par „abgerufen am“. Full Page PDF Snap dépose à côté de chaque PDF un fichier se terminant par <code>.zitate.txt</code> : une ligne prête dans chacun des styles APA 7, MLA 9, Chicago, Harvard, DIN 1505-2 et ISO 690, plus BibTeX et un enregistrement RIS pour Citavi, Zotero et EndNote. Dans l’enregistrement RIS, la date de consultation est écrite sous la forme qu’importent Citavi et EndNote, avec l’heure — les pages changent au cours d’une journée :
+</p>
+<pre><code>Y2  - 2026/08/18/11:00</code></pre>
+<p>
+  Si la page n’indique pas d’année de publication, la référence porte „o. J.“ (s. d.) et non l’année de consultation. Une année inventée coûte plus cher qu’une lacune visible.
+  <a href="/notes/a-download-that-never-arrives/">mesure</a> ·
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/zitate.js">zitate.js</a>
+</p>
+
+<h2>3. Constituer la bibliographie : ce qu’une machine prend en charge</h2>
+<p>
+  Deux mesures ont posé la même question : combien de sources deviennent une référence complète sans rien saisir, lue à partir de ce que la page déclare sur elle-même ? Mesuré sur le point d’accès de citation de ce site (<code>extract_citation</code>), la sélection étant fixée avant chaque passage.
+</p>
+<table>
+  <thead><tr><th scope="col">Passage</th><th scope="col">Date</th><th scope="col">complètes</th><th scope="col">par source</th></tr></thead>
+  <tbody>
+    <tr><td>Liste de lecture d’un mémoire, 20 sources</td><td>3 août 2026</td><td>10/20</td><td>0,4&nbsp;s</td></tr>
+    <tr><td>les mêmes 20, identifiants dérivés (DOI, CELEX)</td><td>4 août 2026</td><td><strong>14/20</strong></td><td>0,58&nbsp;s</td></tr>
+    <tr><td>11 plateformes germanophones</td><td>3 août 2026</td><td>4/11</td><td>0,75&nbsp;s</td></tr>
+    <tr><td>les mêmes 11, via les interfaces propres des plateformes</td><td>3 août 2026</td><td><strong>5/11</strong></td><td>0,69&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  Étaient lisibles les plateformes d’éditeurs Springer Link et Nomos eLibrary, les dépôts PsychArchives et peDOCS et — via son interface SRU — la Bibliothèque nationale allemande. Ont été rendus : une base de données sous licence derrière une connexion (beck-online), une page portant un numéro de dossier au lieu d’un titre (openJur), deux portails statistiques sans année (Statistik Austria, Destatis), un dépôt qui refuse le point d’accès (OPUS 4) et SSOAR comme cas de contrôle derrière une barrière d’accès.
+</p>
+<p>
+  Là où une donnée manque, la référence revient marquée incomplète au lieu que l’année soit devinée.
+  <a href="/measurements/reading-list-to-bibliography/">mesure</a> (<a href="/data/2026-08-03-reading-list-to-bibliography.json">données brutes</a>, <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">données brutes</a>) ·
+  <a href="/measurements/de-plattformen/">mesure</a> (<a href="/data/2026-08-03-de-plattformen.json">données brutes</a>, <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">données brutes</a>)
+</p>
+
+<h2>4. La comparaison — et où l’alternative fait mieux</h2>
+<p>
+  Le 2 août 2026, 18 œuvres tirées au hasard dans OpenAlex sont passées par ce point d’accès et par Citoid, le service de Wikimedia fondé sur les traducteurs de Zotero.
+</p>
+<table>
+  <thead><tr><th scope="col">18 œuvres, tirées au hasard</th><th scope="col">ce point d’accès</th><th scope="col">Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>Couverture</td><td>61&nbsp;%</td><td>61&nbsp;%</td></tr>
+    <tr><td>Exactitude de ce qui revient</td><td><strong>100&nbsp;%</strong></td><td>79&nbsp;%</td></tr>
+    <tr><td>Références erronées</td><td>0</td><td>3</td></tr>
+    <tr><td>Médiane par source</td><td>0,68&nbsp;s</td><td>1,92&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  Citoid renvoie plus souvent un enregistrement quelconque (14 contre 11) et atteint MDPI, PeerJ et l’OCDE, qui refusent ce point d’accès. En contrepartie, il a renvoyé trois données erronées, dont „Redirect URL“ comme titre d’une œuvre. Dans une bibliographie, une référence fausse coûte plus cher qu’une lacune : la lacune se voit en écrivant, la référence fausse est découverte par celui qui évalue le travail.
+  <a href="/measurements/citation-extraction/">mesure</a> ·
+  <a href="/data/2026-08-02-citation-extraction.json">données brutes</a>
+</p>
+
+<h2>5. Ce qui vous reste à faire</h2>
+<ul>
+  <li><strong>Lire l’indicateur de complétude, pas le titre.</strong> Un portail statistique a renvoyé „Forschung, Innovation, Digitalisierung“ avec STATISTIK AUSTRIA comme auteur — l’ensemble paraissait terminé et était marqué incomplet.</li>
+  <li><strong>Pages derrière une connexion à laquelle vous avez accès :</strong> ouvrez-les dans votre propre navigateur et sauvegardez-les là. Un serveur extérieur ne peut pas les lire ; une extension dans votre session, si.</li>
+  <li><strong>Articles de presse, pages statistiques et littérature grise :</strong> décrivez-les vous-même. Ces pages répondaient intégralement et ne déclaraient pourtant pas ce dont une référence a besoin — tantôt l’auteur manquait, tantôt l’année.</li>
+  <li><strong>Conserver la copie qui correspond à la date de consultation</strong> — en PDF ou, pour les pages publiques, via <a href="https://web.archive.org/save">Save Page Now</a> de l’Internet Archive, qui crée un lien daté vérifiable par tout lecteur.</li>
+</ul>
+
+<h2>Limites</h2>
+<p>
+  Chaque chiffre provient d’un seul passage à un jour indiqué d’août 2026 ; pages et plateformes changent, et un passage aujourd’hui peut donner un autre résultat. La mesure des plateformes a été faite depuis une sortie VPN commerciale, pas depuis une ligne résidentielle. Cette page n’introduit aucun chiffre nouveau — elle résume les mesures liées.
+</p>
+
+<footer>
+      Publié le 23 octobre 2026. Chaque chiffre renvoie à ses données brutes sous <a href="/data/">/data/</a>, CC BY 4.0. Corrections via les GitHub issues.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Avertissement</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a>
+    </footer>
+</div>
+
+<div data-lang="it" lang="it">
+<header>
+  <h1>Data di consultazione e bibliografia: citare fonti web, misurato invece che affermato</h1>
+  <p class="standfirst">
+    A che cosa serve la data di consultazione in bibliografia, quanto lavoro uno strumento toglie nel compilarla e in quale punto lo restituisce a voi — riassunto dalle misurazioni sulle citazioni di questo sito. Ogni cifra porta la sua data e rimanda ai dati grezzi.
+  </p>
+  <p class="meta-line">Aggiornato al 23 ottobre 2026 · sintesi nata in tedesco · misurazioni dal 2 al 18 agosto 2026</p>
+</header>
+
+<div class="box"><p>
+  Un resoconto privato e non commerciale — non è consulenza legale né un’indicazione di un’università. Quale stile di citazione valga e come si scriva la data di consultazione lo stabilisce il vostro dipartimento; le sue regole prevalgono su quanto scritto qui. Trasparenza: l’autore sviluppa <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a>, che compare sotto come uno di più strumenti.
+</p></div>
+
+<h2>1. A che cosa serve la data di consultazione</h2>
+<p>
+  Una fonte web non è un libro: può essere modificata, spostata o cancellata dopo la citazione. La data di consultazione dice <em>questo c’era quel giorno</em>. Quanto conti lo mostra un campione del 2 agosto 2026: 150 fonti dalle note di voci della Wikipedia in lingua tedesca su politica economica e sociale, al massimo una per server.
+</p>
+<table>
+  <thead><tr><th scope="col">Risultato</th><th scope="col">Quota</th></tr></thead>
+  <tbody>
+    <tr><td>Il server segnala la pagina come cancellata (HTTP 404 o 410)</td><td>19,3&nbsp;% (29/150)</td></tr>
+    <tr><td>Nessuna copia nell’Internet Archive</td><td>8,7&nbsp;% (13)</td></tr>
+    <tr><td>Cancellata e mai archiviata — irrecuperabile</td><td><strong>2,0&nbsp;%</strong> (3)</td></tr>
+    <tr><td>Età della copia archiviata più recente, mediana</td><td>603 giorni</td></tr>
+  </tbody>
+</table>
+<p>
+  Le note di Wikipedia vengono curate, quindi questi valori sono semmai ottimistici. E dove esiste una copia archiviata, ha in mediana 603 giorni — spesso non è la versione che avete letto. Una data da sola non rende verificabile un’affermazione; serve una copia. La conseguenza: mettere al sicuro la fonte nel momento in cui la citate, non alla fine del lavoro.
+  <a href="/measurements/web-citations-that-vanish/">misurazione</a> ·
+  <a href="/data/2026-08-02-quellen-archiv.json">dati grezzi</a>
+</p>
+
+<h2>2. Come compare la data di consultazione nella voce</h2>
+<p>
+  La forma la stabilisce lo stile di citazione — APA, Harvard, DIN 1505-2 e ISO 690 differiscono in questo, e le voci in tedesco la introducono con „abgerufen am“. Full Page PDF Snap affianca a ogni PDF un file che termina in <code>.zitate.txt</code>: una riga pronta in APA 7, MLA 9, Chicago, Harvard, DIN 1505-2 e ISO 690, più BibTeX e un record RIS per Citavi, Zotero ed EndNote. Nel record RIS la data di consultazione è scritta nella forma che Citavi ed EndNote importano, con l’ora — le pagine cambiano nel corso di una giornata:
+</p>
+<pre><code>Y2  - 2026/08/18/11:00</code></pre>
+<p>
+  Se la pagina non indica l’anno di pubblicazione, la voce riporta „o. J.“ (s. d.) e non l’anno della consultazione. Un anno inventato costa più di una lacuna che si vede.
+  <a href="/notes/a-download-that-never-arrives/">misurazione</a> ·
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/zitate.js">zitate.js</a>
+</p>
+
+<h2>3. Compilare la bibliografia: che cosa toglie di mano una macchina</h2>
+<p>
+  Due misurazioni hanno posto la stessa domanda: quante fonti diventano un riferimento completo senza digitare nulla, letto da ciò che la pagina dichiara di sé? Misurato sull’endpoint di citazione di questo sito (<code>extract_citation</code>), con la selezione fissata prima di ogni passaggio.
+</p>
+<table>
+  <thead><tr><th scope="col">Passaggio</th><th scope="col">Data</th><th scope="col">complete</th><th scope="col">per fonte</th></tr></thead>
+  <tbody>
+    <tr><td>Lista di lettura di una tesina, 20 fonti</td><td>3 ago 2026</td><td>10/20</td><td>0,4&nbsp;s</td></tr>
+    <tr><td>le stesse 20, identificatori ricavati (DOI, CELEX)</td><td>4 ago 2026</td><td><strong>14/20</strong></td><td>0,58&nbsp;s</td></tr>
+    <tr><td>11 piattaforme in lingua tedesca</td><td>3 ago 2026</td><td>4/11</td><td>0,75&nbsp;s</td></tr>
+    <tr><td>le stesse 11, con le interfacce proprie delle piattaforme</td><td>3 ago 2026</td><td><strong>5/11</strong></td><td>0,69&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  Leggibili erano le piattaforme editoriali Springer Link e Nomos eLibrary, i repository PsychArchives e peDOCS e — tramite la sua interfaccia SRU — la Biblioteca nazionale tedesca. Restituiti sono stati una banca dati in licenza dietro un accesso (beck-online), una pagina con un numero di fascicolo al posto del titolo (openJur), due portali statistici senza anno (Statistik Austria, Destatis), un repository che respinge l’endpoint (OPUS 4) e SSOAR come caso di controllo dietro una barriera d’accesso.
+</p>
+<p>
+  Dove manca un dato, il riferimento torna segnato come incompleto invece di indovinare l’anno.
+  <a href="/measurements/reading-list-to-bibliography/">misurazione</a> (<a href="/data/2026-08-03-reading-list-to-bibliography.json">dati grezzi</a>, <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">dati grezzi</a>) ·
+  <a href="/measurements/de-plattformen/">misurazione</a> (<a href="/data/2026-08-03-de-plattformen.json">dati grezzi</a>, <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">dati grezzi</a>)
+</p>
+
+<h2>4. Il confronto — e dove l’alternativa è avanti</h2>
+<p>
+  Il 2 agosto 2026, 18 opere estratte a caso da OpenAlex sono passate per questo endpoint e per Citoid, il servizio di Wikimedia basato sui traduttori di Zotero.
+</p>
+<table>
+  <thead><tr><th scope="col">18 opere, estratte a caso</th><th scope="col">questo endpoint</th><th scope="col">Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>Copertura</td><td>61&nbsp;%</td><td>61&nbsp;%</td></tr>
+    <tr><td>Esattezza di ciò che torna</td><td><strong>100&nbsp;%</strong></td><td>79&nbsp;%</td></tr>
+    <tr><td>Riferimenti errati</td><td>0</td><td>3</td></tr>
+    <tr><td>Mediana per fonte</td><td>0,68&nbsp;s</td><td>1,92&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  Citoid restituisce più spesso un record di qualche tipo (14 contro 11) e raggiunge MDPI, PeerJ e l’OCSE, che respingono questo endpoint. In cambio ha restituito tre dati errati, tra cui „Redirect URL“ come titolo di un’opera. In una bibliografia una voce sbagliata costa più di una lacuna: la lacuna la vedete mentre scrivete, la voce sbagliata la scopre chi valuta il lavoro.
+  <a href="/measurements/citation-extraction/">misurazione</a> ·
+  <a href="/data/2026-08-02-citation-extraction.json">dati grezzi</a>
+</p>
+
+<h2>5. Che cosa resta a voi</h2>
+<ul>
+  <li><strong>Leggere l’indicatore di completezza, non il titolo.</strong> Un portale statistico ha restituito „Forschung, Innovation, Digitalisierung“ con STATISTIK AUSTRIA come autore — sembrava finito ed era segnato come incompleto.</li>
+  <li><strong>Pagine dietro un accesso di cui disponete:</strong> apritele nel vostro browser e salvatele lì. Un server esterno non può leggerle; un’estensione nella vostra sessione sì.</li>
+  <li><strong>Articoli di giornale, pagine statistiche e letteratura grigia:</strong> descriveteli voi. Queste pagine rispondevano per intero e tuttavia non dichiaravano ciò che serve a un riferimento — a volte mancava l’autore, a volte l’anno.</li>
+  <li><strong>Conservare la copia che corrisponde alla data di consultazione</strong> — come PDF o, per le pagine pubbliche, con <a href="https://web.archive.org/save">Save Page Now</a> dell’Internet Archive, che crea un link datato verificabile da qualunque lettore.</li>
+</ul>
+
+<h2>Limiti</h2>
+<p>
+  Ogni cifra proviene da un singolo passaggio in un giorno indicato di agosto 2026; pagine e piattaforme cambiano, e un passaggio oggi può dare un altro esito. La misurazione delle piattaforme è stata eseguita da un’uscita VPN commerciale, non da una linea domestica. Questa pagina non introduce cifre nuove — riassume le misurazioni collegate.
+</p>
+
+<footer>
+      Pubblicato il 23 ottobre 2026. Ogni cifra rimanda ai dati grezzi in <a href="/data/">/data/</a>, CC BY 4.0. Correzioni tramite le GitHub issues.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Esclusione di responsabilità</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a>
+    </footer>
+</div>
+
+<div data-lang="ja" lang="ja">
+<header>
+  <h1>参照日と参考文献リスト：ウェブ資料の引用を、主張ではなく測定で</h1>
+  <p class="standfirst">
+    参考文献リストに参照日（ドイツ語で Abrufdatum）を書く理由、文献リスト作りでツールがどこまで肩代わりし、どこで作業をあなたに返すのか ― 本サイトの引用に関する測定をまとめました。すべての数値に日付があり、元データにリンクしています。
+  </p>
+  <p class="meta-line">2026年10月23日時点 · ドイツ語版を基にした要約 · 測定は2026年8月2日〜18日</p>
+</header>
+
+<div class="box"><p>
+  個人による非営利の報告であり、法的助言でも大学の指示でもありません。どの引用スタイルを使い、参照日をどう書くかは所属機関が定めます。その規定がここに書かれたすべてに優先します。開示：著者は <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a> を開発しており、下で複数の手段の一つとして登場します。
+</p></div>
+
+<h2>1. 参照日は何のためにあるか</h2>
+<p>
+  ウェブ資料は本ではありません。引用した後に書き換えられ、移動され、削除されることがあります。参照日は<em>その日そこにはこう書かれていた</em>という表明です。それがどれほど重要かを、2026年8月2日の標本が示します。経済・社会政策に関するドイツ語版ウィキペディア記事の出典から150件、1サーバーにつき最大1件を抽出しました。
+</p>
+<table>
+  <thead><tr><th scope="col">結果</th><th scope="col">割合</th></tr></thead>
+  <tbody>
+    <tr><td>サーバーがページを削除済みと応答（HTTP 404 または 410）</td><td>19.3&nbsp;% (29/150)</td></tr>
+    <tr><td>Internet Archive にコピーが一つもない</td><td>8.7&nbsp;% (13)</td></tr>
+    <tr><td>削除済みで一度も保存されていない ― 回復不能</td><td><strong>2.0&nbsp;%</strong> (3)</td></tr>
+    <tr><td>最新の保存コピーの経過日数（中央値）</td><td>603 日</td></tr>
+  </tbody>
+</table>
+<p>
+  ウィキペディアの出典は手入れされているため、これらの値はむしろ甘めです。保存コピーがある場合でも中央値で603日前のもので、あなたが読んだ版ではないことが多いのです。日付だけでは主張を検証できず、そのためにはコピーが必要です。結論：資料は論文の最後ではなく、引用したその時に保存すること。
+  <a href="/measurements/web-citations-that-vanish/">測定</a> ·
+  <a href="/data/2026-08-02-quellen-archiv.json">元データ</a>
+</p>
+
+<h2>2. 参照日は文献項目にどう書かれるか</h2>
+<p>
+  書式は引用スタイルが決めます。APA、Harvard、DIN 1505-2、ISO 690 で異なり、ドイツ語の項目では„abgerufen am“でつなぎます。Full Page PDF Snap はすべての PDF の隣に <code>.zitate.txt</code> で終わるファイルを置きます。APA 7、MLA 9、Chicago、Harvard、DIN 1505-2、ISO 690 の完成した行が各1行、さらに BibTeX と、Citavi・Zotero・EndNote 用の RIS レコードが入っています。RIS レコードでは参照日が Citavi と EndNote が読み込める形式で、時刻付きで書かれます ― ページは一日のうちにも変わるからです：
+</p>
+<pre><code>Y2  - 2026/08/18/11:00</code></pre>
+<p>
+  ページに出版年がなければ、項目には参照した年ではなく„o. J.“（年不明）と書かれます。作り上げた年は、目に見える空欄よりも高くつきます。
+  <a href="/notes/a-download-that-never-arrives/">測定</a> ·
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/zitate.js">zitate.js</a>
+</p>
+
+<h2>3. 参考文献リストを作る：機械が肩代わりできること</h2>
+<p>
+  二つの測定が同じ問いを立てました。ページ自身が宣言している情報から、打ち込みなしで完全な文献記録になる資料はいくつあるか。本サイトの引用エンドポイント（<code>extract_citation</code>）で測定し、対象はいずれも実行前に固定しました。
+</p>
+<table>
+  <thead><tr><th scope="col">実行</th><th scope="col">日付</th><th scope="col">完全</th><th scope="col">1件あたり</th></tr></thead>
+  <tbody>
+    <tr><td>期末レポートの文献リスト、20件</td><td>2026年8月3日</td><td>10/20</td><td>0.4&nbsp;s</td></tr>
+    <tr><td>同じ20件、識別子を導出（DOI、CELEX）</td><td>2026年8月4日</td><td><strong>14/20</strong></td><td>0.58&nbsp;s</td></tr>
+    <tr><td>ドイツ語圏のプラットフォーム11件</td><td>2026年8月3日</td><td>4/11</td><td>0.75&nbsp;s</td></tr>
+    <tr><td>同じ11件、各プラットフォーム自身のインターフェースを利用</td><td>2026年8月3日</td><td><strong>5/11</strong></td><td>0.69&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  読み取れたのは出版社プラットフォームの Springer Link と Nomos eLibrary、リポジトリの PsychArchives と peDOCS、そして SRU インターフェース経由のドイツ国立図書館です。返却されたのは、ログインの向こうにある契約データベース（beck-online）、タイトルの代わりに事件番号しかないページ（openJur）、年の記載がない統計ポータル二つ（Statistik Austria、Destatis）、エンドポイントを拒否するリポジトリ（OPUS 4）、そしてアクセス制限の向こうにある対照例の SSOAR です。
+</p>
+<p>
+  情報が欠けている場合、年を推測するのではなく、記録は「不完全」と印を付けて返されます。
+  <a href="/measurements/reading-list-to-bibliography/">測定</a> (<a href="/data/2026-08-03-reading-list-to-bibliography.json">元データ</a>, <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">元データ</a>) ·
+  <a href="/measurements/de-plattformen/">測定</a> (<a href="/data/2026-08-03-de-plattformen.json">元データ</a>, <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">元データ</a>)
+</p>
+
+<h2>4. 比較 ― そして代替手段が勝る点</h2>
+<p>
+  2026年8月2日、OpenAlex から無作為に抽出した18件の著作を、このエンドポイントと、Zotero のトランスレーターを基にした Wikimedia のサービス Citoid に通しました。
+</p>
+<table>
+  <thead><tr><th scope="col">無作為抽出の18件</th><th scope="col">このエンドポイント</th><th scope="col">Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>カバー率</td><td>61&nbsp;%</td><td>61&nbsp;%</td></tr>
+    <tr><td>返された内容の正確さ</td><td><strong>100&nbsp;%</strong></td><td>79&nbsp;%</td></tr>
+    <tr><td>誤った記録</td><td>0</td><td>3</td></tr>
+    <tr><td>1件あたりの中央値</td><td>0.68&nbsp;s</td><td>1.92&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  Citoid は何らかの記録を返す頻度が高く（14対11）、このエンドポイントを拒否する MDPI、PeerJ、OECD にも届きます。その代わり誤ったデータが3件返り、その中には著作のタイトルとしての„Redirect URL“もありました。参考文献リストでは、誤った項目は空欄より高くつきます。空欄は書いている間に見えますが、誤った項目は論文を評価する人が見つけるのです。
+  <a href="/measurements/citation-extraction/">測定</a> ·
+  <a href="/data/2026-08-02-citation-extraction.json">元データ</a>
+</p>
+
+<h2>5. あなたの手に残ること</h2>
+<ul>
+  <li><strong>タイトルではなく「完全」フラグを読むこと。</strong>ある統計ポータルは STATISTIK AUSTRIA を著者として„Forschung, Innovation, Digitalisierung“を返しました。完成して見えましたが、不完全と印が付いていました。</li>
+  <li><strong>あなたがアクセス権を持つログインの向こうのページ：</strong>自分のブラウザーで開き、そこで保存してください。外部のサーバーには読めませんが、あなたのセッション内の拡張機能なら読めます。</li>
+  <li><strong>新聞記事、統計ページ、灰色文献：</strong>自分で記述してください。これらのページは完全に応答しながら、文献記録に必要な情報を宣言していませんでした。著者が欠けることもあれば、年が欠けることもありました。</li>
+  <li><strong>参照日に対応するコピーを保管すること</strong> ― PDF として、あるいは公開ページなら Internet Archive の <a href="https://web.archive.org/save">Save Page Now</a> で。誰でも確認できる日付入りのリンクが作られます。</li>
+</ul>
+
+<h2>限界</h2>
+<p>
+  どの数値も、2026年8月の特定の日の1回の実行によるものです。ページやプラットフォームは変わるため、今日実行すれば結果が異なることがあります。プラットフォームの測定は家庭用回線ではなく商用 VPN の出口から行いました。このページは新しい数値を加えず、リンク先の測定をまとめたものです。
+</p>
+
+<footer>
+      2026年10月23日公開。すべての数値は <a href="/data/">/data/</a> の元データ（CC BY 4.0）にリンクしています。訂正は GitHub issues へ。
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">免責事項</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a>
+    </footer>
+</div>
+
+<div data-lang="pt-BR" lang="pt-BR">
+<header>
+  <h1>Data de acesso e bibliografia: citar fontes da web, medido em vez de afirmado</h1>
+  <p class="standfirst">
+    Para que serve a data de acesso na bibliografia, quanto trabalho uma ferramenta tira das suas mãos ao montá-la e em que ponto o devolve — resumido das medições de citação deste site. Cada número traz a sua data e leva aos dados brutos.
+  </p>
+  <p class="meta-line">Situação em 23 de outubro de 2026 · resumo nascido em alemão · medições de 2 a 18 de agosto de 2026</p>
+</header>
+
+<div class="box"><p>
+  Um relato privado e não comercial — não é assessoria jurídica nem orientação de uma universidade. Qual estilo de citação vale e como se escreve a data de acesso é definido pelo seu departamento; as regras dele prevalecem sobre tudo o que está aqui. Divulgação: o autor desenvolve <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a>, que aparece abaixo como uma de várias opções.
+</p></div>
+
+<h2>1. Para que serve a data de acesso</h2>
+<p>
+  Uma fonte da web não é um livro: pode ser alterada, movida ou apagada depois de citada. A data de acesso diz <em>isto é o que estava lá naquele dia</em>. Uma amostra de 2 de agosto de 2026 mostra o quanto isso pesa: 150 fontes das referências de artigos da Wikipédia em alemão sobre política econômica e social, no máximo uma por servidor.
+</p>
+<table>
+  <thead><tr><th scope="col">Resultado</th><th scope="col">Parcela</th></tr></thead>
+  <tbody>
+    <tr><td>O servidor informa a página como apagada (HTTP 404 ou 410)</td><td>19,3&nbsp;% (29/150)</td></tr>
+    <tr><td>Nenhuma cópia no Internet Archive</td><td>8,7&nbsp;% (13)</td></tr>
+    <tr><td>Apagada e nunca arquivada — irrecuperável</td><td><strong>2,0&nbsp;%</strong> (3)</td></tr>
+    <tr><td>Idade da cópia arquivada mais recente, mediana</td><td>603 dias</td></tr>
+  </tbody>
+</table>
+<p>
+  As referências da Wikipédia são cuidadas; por isso estes valores tendem a ser favoráveis. E onde existe uma cópia arquivada, ela tem em mediana 603 dias — muitas vezes não é a versão que você leu. Uma data sozinha não torna uma afirmação verificável; para isso é preciso uma cópia. A consequência: guardar a fonte no momento em que você a cita, não no fim do trabalho.
+  <a href="/measurements/web-citations-that-vanish/">medição</a> ·
+  <a href="/data/2026-08-02-quellen-archiv.json">dados brutos</a>
+</p>
+
+<h2>2. Como a data de acesso aparece na referência</h2>
+<p>
+  A forma é definida pelo estilo de citação — APA, Harvard, DIN 1505-2 e ISO 690 diferem nisso, e as referências em alemão a introduzem com „abgerufen am“. O Full Page PDF Snap coloca ao lado de cada PDF um arquivo terminado em <code>.zitate.txt</code>: uma linha pronta em APA 7, MLA 9, Chicago, Harvard, DIN 1505-2 e ISO 690, além de BibTeX e um registro RIS para Citavi, Zotero e EndNote. No registro RIS a data de acesso é escrita na forma que Citavi e EndNote importam, com a hora — as páginas mudam ao longo de um dia:
+</p>
+<pre><code>Y2  - 2026/08/18/11:00</code></pre>
+<p>
+  Se a página não informa o ano de publicação, a referência traz „o. J.“ (s.d.) e não o ano do acesso. Um ano inventado custa mais do que uma lacuna que se vê.
+  <a href="/notes/a-download-that-never-arrives/">medição</a> ·
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/zitate.js">zitate.js</a>
+</p>
+
+<h2>3. Montar a bibliografia: o que uma máquina tira das suas mãos</h2>
+<p>
+  Duas medições fizeram a mesma pergunta: quantas fontes viram uma referência completa sem digitação, lida a partir do que a própria página declara sobre si? Medido no endpoint de citação deste site (<code>extract_citation</code>), com a seleção fixada antes de cada rodada.
+</p>
+<table>
+  <thead><tr><th scope="col">Rodada</th><th scope="col">Data</th><th scope="col">completas</th><th scope="col">por fonte</th></tr></thead>
+  <tbody>
+    <tr><td>Lista de leitura de um trabalho acadêmico, 20 fontes</td><td>3 ago. 2026</td><td>10/20</td><td>0,4&nbsp;s</td></tr>
+    <tr><td>as mesmas 20, identificadores derivados (DOI, CELEX)</td><td>4 ago. 2026</td><td><strong>14/20</strong></td><td>0,58&nbsp;s</td></tr>
+    <tr><td>11 plataformas em alemão</td><td>3 ago. 2026</td><td>4/11</td><td>0,75&nbsp;s</td></tr>
+    <tr><td>as mesmas 11, com as interfaces próprias das plataformas</td><td>3 ago. 2026</td><td><strong>5/11</strong></td><td>0,69&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  Foram legíveis as plataformas editoriais Springer Link e Nomos eLibrary, os repositórios PsychArchives e peDOCS e — pela sua interface SRU — a Biblioteca Nacional Alemã. Foram devolvidos uma base de dados licenciada atrás de um login (beck-online), uma página com um número de processo em vez de título (openJur), dois portais estatísticos sem ano (Statistik Austria, Destatis), um repositório que recusa o endpoint (OPUS 4) e o SSOAR como caso de controle atrás de uma barreira de acesso.
+</p>
+<p>
+  Onde falta um dado, a referência volta marcada como incompleta em vez de o ano ser adivinhado.
+  <a href="/measurements/reading-list-to-bibliography/">medição</a> (<a href="/data/2026-08-03-reading-list-to-bibliography.json">dados brutos</a>, <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">dados brutos</a>) ·
+  <a href="/measurements/de-plattformen/">medição</a> (<a href="/data/2026-08-03-de-plattformen.json">dados brutos</a>, <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">dados brutos</a>)
+</p>
+
+<h2>4. A comparação — e onde a alternativa sai na frente</h2>
+<p>
+  Em 2 de agosto de 2026, 18 obras sorteadas no OpenAlex passaram por este endpoint e pelo Citoid, o serviço da Wikimedia baseado nos tradutores do Zotero.
+</p>
+<table>
+  <thead><tr><th scope="col">18 obras, sorteadas</th><th scope="col">este endpoint</th><th scope="col">Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>Cobertura</td><td>61&nbsp;%</td><td>61&nbsp;%</td></tr>
+    <tr><td>Exatidão do que voltou</td><td><strong>100&nbsp;%</strong></td><td>79&nbsp;%</td></tr>
+    <tr><td>Referências erradas</td><td>0</td><td>3</td></tr>
+    <tr><td>Mediana por fonte</td><td>0,68&nbsp;s</td><td>1,92&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  O Citoid devolve algum registro com mais frequência (14 contra 11) e alcança MDPI, PeerJ e a OCDE, que recusam este endpoint. Em troca, devolveu três dados errados, entre eles „Redirect URL“ como título de uma obra. Numa bibliografia, uma entrada errada custa mais do que uma lacuna: a lacuna você vê ao escrever; a entrada errada é descoberta por quem avalia o trabalho.
+  <a href="/measurements/citation-extraction/">medição</a> ·
+  <a href="/data/2026-08-02-citation-extraction.json">dados brutos</a>
+</p>
+
+<h2>5. O que fica com você</h2>
+<ul>
+  <li><strong>Ler o indicador de completude, não o título.</strong> Um portal estatístico devolveu „Forschung, Innovation, Digitalisierung“ com STATISTIK AUSTRIA como autor — parecia pronto e estava marcado como incompleto.</li>
+  <li><strong>Páginas atrás de um login ao qual você tem acesso:</strong> abra-as no seu próprio navegador e salve-as ali. Um servidor externo não consegue lê-las; uma extensão na sua sessão consegue.</li>
+  <li><strong>Artigos de jornal, páginas estatísticas e literatura cinzenta:</strong> descreva-os você mesmo. Essas páginas responderam por completo e ainda assim não declaravam o que uma referência precisa — às vezes faltava o autor, às vezes o ano.</li>
+  <li><strong>Guardar a cópia que corresponde à data de acesso</strong> — como PDF ou, em páginas públicas, pelo <a href="https://web.archive.org/save">Save Page Now</a> do Internet Archive, que cria um link datado que qualquer leitor pode verificar.</li>
+</ul>
+
+<h2>Limites</h2>
+<p>
+  Cada número vem de uma única rodada num dia indicado de agosto de 2026; páginas e plataformas mudam, e uma rodada hoje pode dar outro resultado. A medição das plataformas foi feita a partir de uma saída de VPN comercial, não de uma conexão residencial. Esta página não introduz números novos — resume as medições vinculadas.
+</p>
+
+<footer>
+      Publicado em 23 de outubro de 2026. Cada número leva aos dados brutos em <a href="/data/">/data/</a>, CC BY 4.0. Correções pelas GitHub issues.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Aviso legal</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a>
+    </footer>
+</div>
+
+<div data-lang="ru" lang="ru">
+<header>
+  <h1>Дата обращения и список литературы: как цитировать веб-источники — измерено, а не заявлено</h1>
+  <p class="standfirst">
+    Зачем в списке литературы стоит дата обращения, какую часть работы над списком берёт на себя инструмент и в какой момент он возвращает её вам — по материалам измерений цитирования на этом сайте. У каждой цифры есть дата и ссылка на исходные данные.
+  </p>
+  <p class="meta-line">По состоянию на 23 октября 2026 г. · сводка, написанная сначала по-немецки · измерения со 2 по 18 августа 2026 г.</p>
+</header>
+
+<div class="box"><p>
+  Частный некоммерческий отчёт — не юридическая консультация и не указание университета. Какой стиль цитирования применять и как писать дату обращения, определяет ваша кафедра; её правила важнее всего, что здесь написано. Раскрытие: автор разрабатывает <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a>, который ниже упоминается как одно из нескольких средств.
+</p></div>
+
+<h2>1. Зачем нужна дата обращения</h2>
+<p>
+  Веб-источник — не книга: после цитирования его могут изменить, перенести или удалить. Дата обращения говорит: <em>вот что было там в тот день</em>. Насколько это важно, показывает выборка от 2 августа 2026 г.: 150 источников из ссылок статей немецкоязычной Википедии об экономической и социальной политике, не более одного на сервер.
+</p>
+<table>
+  <thead><tr><th scope="col">Результат</th><th scope="col">Доля</th></tr></thead>
+  <tbody>
+    <tr><td>Сервер сообщает, что страница удалена (HTTP 404 или 410)</td><td>19,3&nbsp;% (29/150)</td></tr>
+    <tr><td>Нет ни одной копии в Internet Archive</td><td>8,7&nbsp;% (13)</td></tr>
+    <tr><td>Удалена и ни разу не архивирована — невосстановима</td><td><strong>2,0&nbsp;%</strong> (3)</td></tr>
+    <tr><td>Возраст самой свежей архивной копии, медиана</td><td>603 дн.</td></tr>
+  </tbody>
+</table>
+<p>
+  Ссылки в Википедии поддерживаются, поэтому эти значения скорее занижены. А там, где архивная копия есть, её медианный возраст — 603 дня, и часто это не та версия, которую вы читали. Одна лишь дата не делает утверждение проверяемым; для этого нужна копия. Вывод: сохранять источник в момент цитирования, а не в конце работы.
+  <a href="/measurements/web-citations-that-vanish/">измерение</a> ·
+  <a href="/data/2026-08-02-quellen-archiv.json">исходные данные</a>
+</p>
+
+<h2>2. Как дата обращения выглядит в записи</h2>
+<p>
+  Форму задаёт стиль цитирования — APA, Harvard, DIN 1505-2 и ISO 690 здесь различаются, а немецкие записи вводят её словами „abgerufen am“. Full Page PDF Snap кладёт рядом с каждым PDF файл с окончанием <code>.zitate.txt</code>: по одной готовой строке в APA 7, MLA 9, Chicago, Harvard, DIN 1505-2 и ISO 690, а также BibTeX и запись RIS для Citavi, Zotero и EndNote. В записи RIS дата обращения стоит в том виде, который импортируют Citavi и EndNote, со временем — страницы меняются в течение дня:
+</p>
+<pre><code>Y2  - 2026/08/18/11:00</code></pre>
+<p>
+  Если на странице нет года издания, в записи стоит „o. J.“ (б. г.), а не год обращения. Выдуманный год обходится дороже, чем заметный пробел.
+  <a href="/notes/a-download-that-never-arrives/">измерение</a> ·
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/zitate.js">zitate.js</a>
+</p>
+
+<h2>3. Составление списка литературы: что берёт на себя машина</h2>
+<p>
+  Два измерения задавали один и тот же вопрос: сколько источников превращаются в полную библиографическую запись без ручного ввода — по тому, что страница сама о себе сообщает? Измерено на эндпоинте цитирования этого сайта (<code>extract_citation</code>), выборка каждый раз зафиксирована до прогона.
+</p>
+<table>
+  <thead><tr><th scope="col">Прогон</th><th scope="col">Дата</th><th scope="col">полных</th><th scope="col">на источник</th></tr></thead>
+  <tbody>
+    <tr><td>Список литературы курсовой работы, 20 источников</td><td>3 авг. 2026</td><td>10/20</td><td>0,4&nbsp;s</td></tr>
+    <tr><td>те же 20, идентификаторы выведены (DOI, CELEX)</td><td>4 авг. 2026</td><td><strong>14/20</strong></td><td>0,58&nbsp;s</td></tr>
+    <tr><td>11 немецкоязычных платформ</td><td>3 авг. 2026</td><td>4/11</td><td>0,75&nbsp;s</td></tr>
+    <tr><td>те же 11, через собственные интерфейсы платформ</td><td>3 авг. 2026</td><td><strong>5/11</strong></td><td>0,69&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  Прочитаны были издательские платформы Springer Link и Nomos eLibrary, репозитории PsychArchives и peDOCS и — через интерфейс SRU — Немецкая национальная библиотека. Возвращены: лицензионная база данных за входом в систему (beck-online), страница с номером дела вместо заглавия (openJur), два статистических портала без года (Statistik Austria, Destatis), репозиторий, отказывающий эндпоинту (OPUS 4), и SSOAR как контрольный случай за барьером доступа.
+</p>
+<p>
+  Если сведений не хватает, запись возвращается с пометкой «неполная», а год не угадывается.
+  <a href="/measurements/reading-list-to-bibliography/">измерение</a> (<a href="/data/2026-08-03-reading-list-to-bibliography.json">исходные данные</a>, <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">исходные данные</a>) ·
+  <a href="/measurements/de-plattformen/">измерение</a> (<a href="/data/2026-08-03-de-plattformen.json">исходные данные</a>, <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">исходные данные</a>)
+</p>
+
+<h2>4. Сравнение — и где альтернатива впереди</h2>
+<p>
+  2 августа 2026 г. 18 работ, случайно выбранных из OpenAlex, прошли через этот эндпоинт и через Citoid — сервис Wikimedia на основе трансляторов Zotero.
+</p>
+<table>
+  <thead><tr><th scope="col">18 работ, случайная выборка</th><th scope="col">этот эндпоинт</th><th scope="col">Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>Охват</td><td>61&nbsp;%</td><td>61&nbsp;%</td></tr>
+    <tr><td>Точность возвращённого</td><td><strong>100&nbsp;%</strong></td><td>79&nbsp;%</td></tr>
+    <tr><td>Ошибочные записи</td><td>0</td><td>3</td></tr>
+    <tr><td>Медиана на источник</td><td>0,68&nbsp;s</td><td>1,92&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  Citoid чаще возвращает хоть какую-то запись (14 против 11) и достаёт до MDPI, PeerJ и ОЭСР, которые отказывают этому эндпоинту. Зато от него пришли три ошибочных значения, среди них „Redirect URL“ в качестве заглавия работы. В списке литературы ошибочная запись дороже пробела: пробел вы видите, пока пишете, а ошибочную запись находит тот, кто оценивает работу.
+  <a href="/measurements/citation-extraction/">измерение</a> ·
+  <a href="/data/2026-08-02-citation-extraction.json">исходные данные</a>
+</p>
+
+<h2>5. Что остаётся за вами</h2>
+<ul>
+  <li><strong>Смотреть на флаг полноты, а не на заглавие.</strong> Статистический портал вернул „Forschung, Innovation, Digitalisierung“ с автором STATISTIK AUSTRIA — выглядело готовым и было помечено как неполное.</li>
+  <li><strong>Страницы за входом, к которому у вас есть доступ:</strong> откройте их в своём браузере и сохраните там. Внешний сервер их прочитать не может, расширение в вашем сеансе — может.</li>
+  <li><strong>Газетные статьи, страницы статистики и «серую» литературу</strong> описывайте сами: эти страницы отвечали полностью и всё же не сообщали того, что нужно для записи: где-то не было автора, где-то года.</li>
+  <li><strong>Хранить копию, соответствующую дате обращения</strong> — в виде PDF или, для открытых страниц, через <a href="https://web.archive.org/save">Save Page Now</a> в Internet Archive, который создаёт датированную ссылку, доступную для проверки любому читателю.</li>
+</ul>
+
+<h2>Ограничения</h2>
+<p>
+  Каждая цифра получена в одном прогоне в указанный день августа 2026 г.; страницы и платформы меняются, и прогон сегодня может дать другой результат. Измерение платформ выполнялось с выхода коммерческого VPN, а не с домашней линии. Новых цифр эта страница не вводит — она сводит указанные измерения.
+</p>
+
+<footer>
+      Опубликовано 23 октября 2026 г. Каждая цифра ведёт к исходным данным в <a href="/data/">/data/</a>, CC BY 4.0. Исправления — через GitHub issues.
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">Отказ от ответственности</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a>
+    </footer>
+</div>
+
+<div data-lang="zh-CN" lang="zh-CN">
+<header>
+  <h1>访问日期与参考文献：引用网络来源，靠测量而非断言</h1>
+  <p class="standfirst">
+    为什么参考文献里要写访问日期（德语 Abrufdatum）、编制参考文献时工具能替你分担多少、又在哪里把工作交还给你 —— 本页汇总了本站有关引用的测量。每个数字都带有日期，并链接到原始数据。
+  </p>
+  <p class="meta-line">截至 2026 年 10 月 23 日 · 以德语版为底本的摘要 · 测量时间为 2026 年 8 月 2 日至 18 日</p>
+</header>
+
+<div class="box"><p>
+  这是个人的非商业报告，不是法律建议，也不是大学的指引。采用哪种引用格式、访问日期怎样书写，由你所在的院系决定；其规定优先于本页的一切内容。披露：作者开发了 <a href="/tools/full-page-pdf-snap/">Full Page PDF Snap</a>，下文把它作为几种手段之一提及。
+</p></div>
+
+<h2>1. 访问日期有什么用</h2>
+<p>
+  网络来源不是书：被引用之后，它可能被修改、移动或删除。访问日期表明<em>那一天那里写的是这些</em>。它有多重要，2026 年 8 月 2 日的一份样本可以说明：从德语维基百科经济与社会政策条目的参考资料中抽取 150 个来源，每个服务器最多一个。
+</p>
+<table>
+  <thead><tr><th scope="col">结果</th><th scope="col">比例</th></tr></thead>
+  <tbody>
+    <tr><td>服务器表示页面已删除（HTTP 404 或 410）</td><td>19.3&nbsp;% (29/150)</td></tr>
+    <tr><td>Internet Archive 中没有任何副本</td><td>8.7&nbsp;% (13)</td></tr>
+    <tr><td>已删除且从未存档 —— 无法恢复</td><td><strong>2.0&nbsp;%</strong> (3)</td></tr>
+    <tr><td>最新存档副本的时间间隔（中位数）</td><td>603 天</td></tr>
+  </tbody>
+</table>
+<p>
+  维基百科的参考资料有人维护，因此这些数值偏于乐观。即使存在存档副本，其中位数也是 603 天前的 —— 往往不是你读到的那个版本。仅有日期并不能让论断可核查，为此需要一份副本。结论：在引用的那一刻就保存来源，而不是等到论文结尾。
+  <a href="/measurements/web-citations-that-vanish/">测量</a> ·
+  <a href="/data/2026-08-02-quellen-archiv.json">原始数据</a>
+</p>
+
+<h2>2. 访问日期在条目中如何呈现</h2>
+<p>
+  格式由引用规范决定 —— APA、Harvard、DIN 1505-2 和 ISO 690 各不相同，德语条目用„abgerufen am“连接。Full Page PDF Snap 会在每个 PDF 旁边放一个以 <code>.zitate.txt</code> 结尾的文件：APA 7、MLA 9、Chicago、Harvard、DIN 1505-2 和 ISO 690 各一行现成条目，另附 BibTeX 以及供 Citavi、Zotero 和 EndNote 使用的 RIS 记录。在 RIS 记录中，访问日期按 Citavi 和 EndNote 能导入的格式书写，并带有时间 —— 页面在一天之内也会变化：
+</p>
+<pre><code>Y2  - 2026/08/18/11:00</code></pre>
+<p>
+  如果页面没有给出出版年份，条目中写的是„o. J.“（无年份），而不是访问的年份。编造的年份比一眼可见的空缺代价更高。
+  <a href="/notes/a-download-that-never-arrives/">测量</a> ·
+  <a href="https://github.com/Bubu89/full-page-pdf-snap/blob/main/zitate.js">zitate.js</a>
+</p>
+
+<h2>3. 编制参考文献：机器能替你做什么</h2>
+<p>
+  两项测量提出了同一个问题：仅凭页面对自身的声明，有多少来源无需手动输入就能成为完整的文献记录？测量使用本站的引用端点（<code>extract_citation</code>），每次的样本都在运行前确定。
+</p>
+<table>
+  <thead><tr><th scope="col">运行</th><th scope="col">日期</th><th scope="col">完整</th><th scope="col">每个来源</th></tr></thead>
+  <tbody>
+    <tr><td>一篇课程论文的阅读清单，20 个来源</td><td>2026 年 8 月 3 日</td><td>10/20</td><td>0.4&nbsp;s</td></tr>
+    <tr><td>同样的 20 个，推导出标识符（DOI、CELEX）</td><td>2026 年 8 月 4 日</td><td><strong>14/20</strong></td><td>0.58&nbsp;s</td></tr>
+    <tr><td>11 个德语平台</td><td>2026 年 8 月 3 日</td><td>4/11</td><td>0.75&nbsp;s</td></tr>
+    <tr><td>同样的 11 个，使用各平台自己的接口</td><td>2026 年 8 月 3 日</td><td><strong>5/11</strong></td><td>0.69&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  能够读取的是出版平台 Springer Link 和 Nomos eLibrary、仓储 PsychArchives 和 peDOCS，以及通过 SRU 接口读取的德国国家图书馆。被退回的有：需要登录的授权数据库（beck-online）、只有案号而没有标题的页面（openJur）、两个没有年份的统计门户（Statistik Austria、Destatis）、拒绝该端点的仓储（OPUS 4），以及位于访问屏障之后、作为对照的 SSOAR。
+</p>
+<p>
+  缺少信息时，记录会被标为“不完整”返回，而不是去猜年份。
+  <a href="/measurements/reading-list-to-bibliography/">测量</a> (<a href="/data/2026-08-03-reading-list-to-bibliography.json">原始数据</a>, <a href="/data/2026-08-04-reading-list-to-bibliography-nach-ableitung.json">原始数据</a>) ·
+  <a href="/measurements/de-plattformen/">测量</a> (<a href="/data/2026-08-03-de-plattformen.json">原始数据</a>, <a href="/data/2026-08-03-de-plattformen-nach-fallback.json">原始数据</a>)
+</p>
+
+<h2>4. 对比 —— 以及替代方案领先之处</h2>
+<p>
+  2026 年 8 月 2 日，从 OpenAlex 随机抽取的 18 部作品分别经过了本端点和 Citoid —— 后者是 Wikimedia 基于 Zotero 翻译器构建的服务。
+</p>
+<table>
+  <thead><tr><th scope="col">随机抽取的 18 部作品</th><th scope="col">本端点</th><th scope="col">Citoid</th></tr></thead>
+  <tbody>
+    <tr><td>覆盖率</td><td>61&nbsp;%</td><td>61&nbsp;%</td></tr>
+    <tr><td>返回内容的准确率</td><td><strong>100&nbsp;%</strong></td><td>79&nbsp;%</td></tr>
+    <tr><td>错误记录</td><td>0</td><td>3</td></tr>
+    <tr><td>每个来源的中位数</td><td>0.68&nbsp;s</td><td>1.92&nbsp;s</td></tr>
+  </tbody>
+</table>
+<p>
+  Citoid 更常返回某种记录（14 比 11），并能访问拒绝本端点的 MDPI、PeerJ 和经合组织（OECD）。代价是它返回了三条错误数据，其中包括把„Redirect URL“当作作品标题。在参考文献里，错误条目比空缺代价更高：空缺你在写作时就能看到，错误条目则由评阅论文的人发现。
+  <a href="/measurements/citation-extraction/">测量</a> ·
+  <a href="/data/2026-08-02-citation-extraction.json">原始数据</a>
+</p>
+
+<h2>5. 仍需你自己完成的事</h2>
+<ul>
+  <li><strong>看“完整”标记，而不是看标题。</strong>一个统计门户以 STATISTIK AUSTRIA 为作者返回了„Forschung, Innovation, Digitalisierung“ —— 看上去已经完成，实际被标为不完整。</li>
+  <li><strong>你有权访问的登录后页面：</strong>在你自己的浏览器中打开并在那里保存。外部服务器读不到它们，而你会话中的扩展可以。</li>
+  <li><strong>报纸文章、统计页面和灰色文献：</strong>自己填写著录信息。这些页面完整地作出了响应，却没有声明一条记录所需的信息：有的缺作者，有的缺年份。</li>
+  <li><strong>保存与访问日期对应的副本</strong> —— 保存为 PDF；如果是公开页面，也可以用 Internet Archive 的 <a href="https://web.archive.org/save">Save Page Now</a>，它会生成任何读者都能核查的带日期链接。</li>
+</ul>
+
+<h2>局限</h2>
+<p>
+  每个数字都来自 2026 年 8 月某个指定日期的一次运行；页面和平台会变化，今天再运行结果可能不同。平台测量是从商用 VPN 出口进行的，而不是家庭宽带。本页没有引入新的数字 —— 它汇总的是所链接的测量。
+</p>
+
+<footer>
+      发布于 2026 年 10 月 23 日。每个数字都链接到 <a href="/data/">/data/</a> 下的原始数据，CC BY 4.0。更正请提交 GitHub issues。
+      <br><br>
+      <a href="../../">← Proving Lab</a> · <a href="../../disclaimer/">免责声明</a> · <a href="https://github.com/Bubu89/full-page-pdf-snap/issues">GitHub Issues</a>
+    </footer>
+</div>
+</div>
+</body>
+</html>
