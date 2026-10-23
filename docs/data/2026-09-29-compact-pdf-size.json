@@ -210,5 +210,7 @@
    "Untersberg": 72,
    "Salzburg": 65
   }
- }
+ },
+ "license": "CC-BY-4.0",
+ "method": "Conditions in 'setup', control run in 'control', limits in 'known_limit' (fields of this dataset)."
 }
