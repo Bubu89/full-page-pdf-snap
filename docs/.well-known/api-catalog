@@ -463,6 +463,44 @@
       ]
     },
     {
+      "anchor": "https://provinglab.dev/data/2026-09-07-mcp-source-capture.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
+      "anchor": "https://provinglab.dev/data/2026-09-29-compact-pdf-size.json",
+      "type": [
+        {
+          "href": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://provinglab.dev/data/",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ]
+    },
+    {
       "anchor": "https://provinglab.dev/data/ki-crawler-aktuell.json",
       "type": [
         {
