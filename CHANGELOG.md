@@ -1,3 +1,19 @@
+## 2026-11-09 — provinglab.dev: Fehler 526 (Betrieb, nur Doku)
+
+Anlass: Search Console „Serverfehler (5xx)“. Ursache: Das GitHub-Pages-Zertifikat
+für provinglab.dev war `bad_authz` (abgelaufen 2026-10-30), die Cloudflare-Zone
+stand auf SSL „Full (strict)“ → 526 auf allen nicht gecachten URLs.
+
+### Was
+Einträge kurz auf „DNS only“, Pages-Domain neu gesetzt, 60 min auf ein neues
+Zertifikat gewartet (blieb `bad_authz`). Brücke: SSL-Modus „Full“, Einträge
+wieder Proxied, Cache geleert. Danach 200 auf /, /sitemap.xml, /llms.txt,
+/feed.xml, /for-agents/; /gibtsnicht 404; /mcp GET 405.
+
+### Offen
+Zertifikat bei GitHub weiter `bad_authz`; SSL erst nach Neuausstellung zurück
+auf „Full (strict)“ (Enforce HTTPS dann an).
+
 ## 2026-10-23 — Abrufdatum und Literaturverzeichnis: die Zitations-Messungen auf Deutsch (Website)
 
 Anlass: AGENTS.md, „Wo Beiträge am meisten helfen“, Punkt 1. Wer eine
